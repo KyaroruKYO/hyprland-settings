@@ -1,3 +1,4 @@
+pub mod config_discovery;
 pub mod export;
 pub mod metadata;
 pub mod search;

@@ -1,3 +1,4 @@
+use crate::config_discovery::ConfigDiscovery;
 use crate::export::{ExportBundle, InventoryEntry, TabEntry};
 use crate::validation::ValidationSummary;
 
@@ -7,13 +8,18 @@ pub struct UiProjection {
     pub hyprland_version: String,
     pub schema_version: u32,
     pub summary: ValidationSummary,
+    pub config_discovery: ConfigDiscovery,
     pub tabs: Vec<UiTab>,
     pub settings: Vec<UiSetting>,
     pub active_write_candidates: Vec<UiWriteCandidate>,
 }
 
 impl UiProjection {
-    pub fn from_bundle(bundle: &ExportBundle, summary: &ValidationSummary) -> Self {
+    pub fn from_bundle(
+        bundle: &ExportBundle,
+        summary: &ValidationSummary,
+        config_discovery: ConfigDiscovery,
+    ) -> Self {
         let mut tabs: Vec<_> = bundle.inventory.tabs.iter().map(UiTab::from).collect();
         tabs.sort_by_key(|tab| tab.order);
 
@@ -59,6 +65,7 @@ impl UiProjection {
                 active_write_candidate_ids: summary.active_write_candidate_ids.clone(),
                 structured_family_count: summary.structured_family_count,
             },
+            config_discovery,
             tabs,
             settings,
             active_write_candidates,

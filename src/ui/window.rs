@@ -4,13 +4,23 @@ use std::rc::Rc;
 use adw::prelude::*;
 use gtk4 as gtk;
 
+use crate::config_discovery::ConfigDiscovery;
 use crate::export::ExportBundle;
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::ui::model::UiProjection;
 use crate::validation::ValidationSummary;
 
-pub fn show_main_window(app: &adw::Application, bundle: ExportBundle, summary: ValidationSummary) {
-    let model = Rc::new(UiProjection::from_bundle(&bundle, &summary));
+pub fn show_main_window(
+    app: &adw::Application,
+    bundle: ExportBundle,
+    summary: ValidationSummary,
+    config_discovery: ConfigDiscovery,
+) {
+    let model = Rc::new(UiProjection::from_bundle(
+        &bundle,
+        &summary,
+        config_discovery,
+    ));
     let selected_tab_id = Rc::new(RefCell::new(
         model
             .tabs
@@ -268,8 +278,10 @@ fn build_summary_card(model: &UiProjection) -> gtk::Frame {
         model.summary.structured_family_count
     )));
     content.append(&body_label(
-        "Read-only export metadata. No live Hyprland config is read. No settings are changed. AGS is not required at runtime.",
+        "Read-only export metadata. Hyprland config discovery is read-only. No settings are changed. AGS is not required at runtime.",
     ));
+    content.append(&body_label(&model.config_discovery.summary()));
+    content.append(&small_label(model.config_discovery.live_read_status()));
     content.append(&body_label(&write_safety_text(model)));
 
     frame.set_child(Some(&content));

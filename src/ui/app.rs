@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use adw::prelude::*;
 use gtk4::glib;
 
+use crate::config_discovery::discover_hyprland_config;
 use crate::export::ExportBundle;
 use crate::metadata::{resolve_metadata_path, MetadataPathResolution};
 use crate::ui::window::{show_error_window, show_main_window};
@@ -17,9 +18,10 @@ pub fn run() -> glib::ExitCode {
 
     app.connect_activate(move |app| {
         let cli_override = cli_override.clone();
+        let config_discovery = discover_hyprland_config();
         match resolve_metadata_path(cli_override) {
             Ok(resolution) => match load_validated_bundle(&resolution) {
-                Ok((bundle, summary)) => show_main_window(app, bundle, summary),
+                Ok((bundle, summary)) => show_main_window(app, bundle, summary, config_discovery),
                 Err(error) => show_error_window(
                     app,
                     &format!(

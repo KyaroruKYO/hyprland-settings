@@ -1,6 +1,7 @@
 use std::path::Path;
 
 use anyhow::Result;
+use hyprland_settings::config_discovery::{ConfigDiscovery, ConfigDiscoveryStatus};
 use hyprland_settings::export::ExportBundle;
 use hyprland_settings::metadata::resolve_metadata_path_with_env;
 use hyprland_settings::ui::model::{RowDetailProjection, UiProjection};
@@ -10,7 +11,14 @@ fn load_projection() -> Result<UiProjection> {
     let resolution = resolve_metadata_path_with_env(None, None)?;
     let bundle = ExportBundle::load(Path::new(&resolution.export_dir))?;
     let summary = validate_bundle(&bundle)?;
-    Ok(UiProjection::from_bundle(&bundle, &summary))
+    Ok(UiProjection::from_bundle(
+        &bundle,
+        &summary,
+        ConfigDiscovery {
+            status: ConfigDiscoveryStatus::Missing,
+            attempted_paths: Vec::new(),
+        },
+    ))
 }
 
 fn detail_for(row_id: &str) -> Result<RowDetailProjection> {
