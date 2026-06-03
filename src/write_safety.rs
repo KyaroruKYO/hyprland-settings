@@ -32,11 +32,17 @@ impl WriteReview {
 pub struct WritePlan {
     pub setting_id: String,
     pub target_path: PathBuf,
-    pub source_line_number: usize,
-    pub old_value: String,
+    pub action: WritePlanAction,
+    pub old_value: Option<String>,
     pub proposed_value: String,
     pub backup_path: PathBuf,
     pub rollback: RollbackPlan,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum WritePlanAction {
+    ReplaceLine { line_number: usize },
+    AppendSetting,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -84,28 +90,37 @@ pub fn review_write_plan(request: WritePlanRequest) -> WriteReview {
             failures.push(WriteGateFailure::InvalidProposedValue(reason.clone()));
         }
     }
-    if request.current_value.status == CurrentValueSourceStatus::DuplicateConflict {
-        failures.push(WriteGateFailure::DuplicateConflict);
-    }
-
-    let Some(source_path) = request.current_value.source_path.clone() else {
-        failures.push(WriteGateFailure::MissingCurrentSource);
-        return WriteReview {
-            plan: None,
-            failures,
-        };
+    let action = match request.current_value.status {
+        CurrentValueSourceStatus::Configured => {
+            let Some(source_path) = request.current_value.source_path.clone() else {
+                failures.push(WriteGateFailure::MissingCurrentSource);
+                return WriteReview {
+                    plan: None,
+                    failures,
+                };
+            };
+            let Some(line_number) = request.current_value.line_number else {
+                failures.push(WriteGateFailure::MissingCurrentSource);
+                return WriteReview {
+                    plan: None,
+                    failures,
+                };
+            };
+            if source_path != request.detected_config_path {
+                failures.push(WriteGateFailure::TargetMismatch);
+            }
+            Some(WritePlanAction::ReplaceLine { line_number })
+        }
+        CurrentValueSourceStatus::NotConfigured => Some(WritePlanAction::AppendSetting),
+        CurrentValueSourceStatus::DuplicateConflict => {
+            failures.push(WriteGateFailure::DuplicateConflict);
+            None
+        }
+        CurrentValueSourceStatus::ReadUnavailable => {
+            failures.push(WriteGateFailure::MissingCurrentSource);
+            None
+        }
     };
-    let Some(source_line_number) = request.current_value.line_number else {
-        failures.push(WriteGateFailure::MissingCurrentSource);
-        return WriteReview {
-            plan: None,
-            failures,
-        };
-    };
-    if source_path != request.detected_config_path {
-        failures.push(WriteGateFailure::TargetMismatch);
-    }
-
     let Some(backup) = request.backup else {
         failures.push(WriteGateFailure::MissingBackup);
         return WriteReview {
@@ -123,12 +138,13 @@ pub fn review_write_plan(request: WritePlanRequest) -> WriteReview {
             failures,
         };
     }
+    let action = action.expect("valid write review should have action");
 
     let plan = WritePlan {
         setting_id: setting_id.to_string(),
         target_path: request.detected_config_path.clone(),
-        source_line_number,
-        old_value: request.current_value.raw_value.clone().unwrap_or_default(),
+        action,
+        old_value: request.current_value.raw_value.clone(),
         proposed_value: request.pending_change.proposed_value,
         backup_path: backup.backup_path.clone(),
         rollback: RollbackPlan {

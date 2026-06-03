@@ -8,7 +8,9 @@ use hyprland_settings::config_backup::BackupManager;
 use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueProjection};
 use hyprland_settings::pending_change::{stage_pending_change, ACTIVE_PENDING_CHANGE_SETTING};
-use hyprland_settings::write_safety::{review_write_plan, WriteGateFailure, WritePlanRequest};
+use hyprland_settings::write_safety::{
+    review_write_plan, WriteGateFailure, WritePlanAction, WritePlanRequest,
+};
 
 fn temp_root(name: &str) -> Result<PathBuf> {
     let stamp = SystemTime::now().duration_since(UNIX_EPOCH)?.as_nanos();
@@ -54,7 +56,8 @@ fn valid_plan_for_windows_snap_enabled_is_approved() -> Result<()> {
     let plan = review.plan.expect("valid review should produce plan");
     assert_eq!(plan.setting_id, ACTIVE_PENDING_CHANGE_SETTING);
     assert_eq!(plan.target_path, source);
-    assert_eq!(plan.old_value, "false");
+    assert_eq!(plan.action, WritePlanAction::ReplaceLine { line_number: 1 });
+    assert_eq!(plan.old_value.as_deref(), Some("false"));
     assert_eq!(plan.proposed_value, "true");
 
     fs::remove_dir_all(root)?;
