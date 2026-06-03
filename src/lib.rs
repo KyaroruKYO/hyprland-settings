@@ -1,3 +1,4 @@
+pub mod config_backup;
 pub mod config_discovery;
 pub mod config_parser;
 pub mod current_config;
