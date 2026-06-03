@@ -194,3 +194,51 @@ fn ui_projection_marks_duplicate_current_value_conflict() -> Result<()> {
 
     Ok(())
 }
+
+#[test]
+fn ui_projection_groups_structured_family_entries_read_only() -> Result<()> {
+    let parsed = parse_hyprland_config_text(
+        "/tmp/structured-ui.conf",
+        r#"
+monitor = ,preferred,auto,1
+bind = SUPER,Return,exec,kitty
+animation = windows,1,7,default
+bezier = snappy,0.2,0.8,0.2,1.0
+device {
+  name = test-device
+}
+permission = /usr/bin/app, screencopy, allow
+"#,
+    );
+    let projection =
+        load_projection_with_current_config(CurrentConfigSnapshot::from_parsed(parsed))?;
+
+    let monitor = projection
+        .structured_families
+        .iter()
+        .find(|family| family.family_id == "hl.monitor")
+        .expect("monitor family should be projected");
+    assert_eq!(monitor.label, "Monitors");
+    assert_eq!(monitor.entries.len(), 1);
+    assert_eq!(monitor.entries[0].line_number, 2);
+    assert!(monitor.entries[0].raw_line.contains("monitor ="));
+    assert!(monitor.edit_status.contains("read-only"));
+
+    let device = projection
+        .structured_families
+        .iter()
+        .find(|family| family.family_id == "hl.device")
+        .expect("device family should be projected");
+    assert_eq!(device.entries.len(), 3);
+    assert!(device.warning_count >= 1);
+
+    let permission = projection
+        .structured_families
+        .iter()
+        .find(|family| family.family_id == "hl.permission")
+        .expect("permission family should be projected");
+    assert_eq!(permission.entries.len(), 1);
+    assert!(permission.entries[0].raw_line.contains("permission ="));
+
+    Ok(())
+}

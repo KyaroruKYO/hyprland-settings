@@ -288,10 +288,45 @@ fn build_summary_card(model: &UiProjection) -> gtk::Frame {
     content.append(&small_label(model.config_discovery.live_read_status()));
     content.append(&body_label(&model.current_config.summary()));
     content.append(&body_label(&model.current_config.structured_summary()));
+    append_structured_family_summary(model, &content);
     content.append(&body_label(&write_safety_text(model)));
 
     frame.set_child(Some(&content));
     frame
+}
+
+fn append_structured_family_summary(model: &UiProjection, content: &gtk::Box) {
+    if model.structured_families.is_empty() {
+        return;
+    }
+
+    content.append(&body_label("Structured config entries"));
+    for family in &model.structured_families {
+        content.append(&small_label(&format!(
+            "{} ({}) · {} entries · warnings: {} · {}",
+            family.label,
+            family.family_id,
+            family.entries.len(),
+            family.warning_count,
+            family.edit_status
+        )));
+        for entry in family.entries.iter().take(3) {
+            content.append(&small_label(&format!(
+                "{}:{} · {} · {}",
+                entry.source_path, entry.line_number, entry.parser_status, entry.raw_line
+            )));
+            if let Some(warning) = &entry.warning {
+                content.append(&small_label(&format!("warning: {warning}")));
+            }
+        }
+        if family.entries.len() > 3 {
+            content.append(&small_label(&format!(
+                "{} more {} entries preserved read-only",
+                family.entries.len() - 3,
+                family.family_id
+            )));
+        }
+    }
 }
 
 fn render_settings_view(

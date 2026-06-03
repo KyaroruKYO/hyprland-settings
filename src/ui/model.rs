@@ -1,6 +1,7 @@
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 use crate::config_discovery::ConfigDiscovery;
+use crate::config_parser::ParsedConfigLine;
 use crate::current_config::{
     CurrentConfigSnapshot, CurrentValueProjection, CurrentValueSourceStatus,
 };
@@ -23,6 +24,7 @@ pub struct UiProjection {
     pub tabs: Vec<UiTab>,
     pub settings: Vec<UiSetting>,
     pub active_write_candidates: Vec<UiWriteCandidate>,
+    pub structured_families: Vec<UiStructuredFamily>,
 }
 
 impl UiProjection {
@@ -65,6 +67,8 @@ impl UiProjection {
             .collect();
         settings.sort_by_key(|setting| (setting.tab_order(&tabs), setting.row_order));
 
+        let structured_families = structured_families_from_config(&current_config);
+
         Self {
             export_dir: bundle.export_dir.display().to_string(),
             hyprland_version: bundle.manifest.hyprland_version.clone(),
@@ -89,6 +93,7 @@ impl UiProjection {
             tabs,
             settings,
             active_write_candidates,
+            structured_families,
         }
     }
 
@@ -119,6 +124,24 @@ impl UiProjection {
                 RowDetailProjection::from_setting(setting, &self.active_write_candidates)
             })
     }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct UiStructuredFamily {
+    pub family_id: String,
+    pub label: String,
+    pub entries: Vec<UiStructuredEntry>,
+    pub warning_count: usize,
+    pub edit_status: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct UiStructuredEntry {
+    pub source_path: String,
+    pub line_number: usize,
+    pub raw_line: String,
+    pub parser_status: String,
+    pub warning: Option<String>,
 }
 
 #[derive(Debug, Clone)]
@@ -216,6 +239,62 @@ fn current_value_for_entry(
     }
 
     current_config.value_for(&entry.official_setting)
+}
+
+fn structured_families_from_config(
+    current_config: &CurrentConfigSnapshot,
+) -> Vec<UiStructuredFamily> {
+    let mut groups: BTreeMap<String, Vec<UiStructuredEntry>> = BTreeMap::new();
+    for record in &current_config.structured_records {
+        let Some(family_id) = &record.normalized_setting_id else {
+            continue;
+        };
+        groups
+            .entry(family_id.clone())
+            .or_default()
+            .push(structured_entry_from_record(record));
+    }
+
+    groups
+        .into_iter()
+        .map(|(family_id, entries)| {
+            let warning_count = entries
+                .iter()
+                .filter(|entry| entry.warning.is_some())
+                .count();
+            UiStructuredFamily {
+                label: structured_family_label(&family_id).to_string(),
+                family_id,
+                entries,
+                warning_count,
+                edit_status: "read-only; structured editing is not implemented yet".to_string(),
+            }
+        })
+        .collect()
+}
+
+fn structured_entry_from_record(record: &ParsedConfigLine) -> UiStructuredEntry {
+    UiStructuredEntry {
+        source_path: record.path.display().to_string(),
+        line_number: record.line_number,
+        raw_line: record.raw_line.clone(),
+        parser_status: "preserved raw structured entry".to_string(),
+        warning: record.warning.clone(),
+    }
+}
+
+fn structured_family_label(family_id: &str) -> &str {
+    match family_id {
+        "hl.monitor" => "Monitors",
+        "hl.bind" => "Key bindings",
+        "hl.animation" => "Animations",
+        "hl.curve" => "Curves",
+        "hl.gesture" => "Gestures",
+        "hl.device" => "Devices",
+        "hl.permission" => "Permissions",
+        "hl.windowrule" => "Window rules",
+        _ => "Structured entries",
+    }
 }
 
 #[derive(Debug, Clone)]
