@@ -142,13 +142,15 @@ impl SearchIndexEntry {
         ));
         let description = searchable(&setting.description);
         let metadata = searchable(&format!(
-            "{} {} {} {} {} {} {} {}",
+            "{} {} {} {} {} {} {} {} {} {}",
             setting.read_support,
             setting.write_support,
             setting.risk_class,
             setting.preview_status,
             setting.current_value.status_label(),
             setting.current_value.raw_value.as_deref().unwrap_or(""),
+            setting.comparison.badge,
+            setting.comparison.detail,
             if setting.report_only {
                 "report-only"
             } else {

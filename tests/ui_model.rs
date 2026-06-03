@@ -137,6 +137,12 @@ fn ui_projection_marks_configured_current_value() -> Result<()> {
         detail.current_value.raw_line.as_deref(),
         Some("animations:enabled = true")
     );
+    assert_eq!(detail.comparison.badge, "User configured");
+    assert!(detail.comparison.detail.contains("user override present"));
+    assert!(detail
+        .comparison
+        .detail
+        .contains("official default value is not exported"));
 
     Ok(())
 }
@@ -156,6 +162,8 @@ fn ui_projection_marks_unconfigured_current_value_after_config_load() -> Result<
         CurrentValueSourceStatus::NotConfigured
     );
     assert_eq!(detail.current_value.raw_value, None);
+    assert_eq!(detail.comparison.badge, "Default");
+    assert!(detail.comparison.detail.contains("no user override found"));
 
     Ok(())
 }
@@ -178,6 +186,11 @@ fn ui_projection_marks_duplicate_current_value_conflict() -> Result<()> {
     );
     assert_eq!(detail.current_value.raw_value.as_deref(), Some("false"));
     assert_eq!(detail.current_value.duplicate_lines, vec![1, 2]);
+    assert_eq!(detail.comparison.badge, "Conflict");
+    assert!(detail
+        .comparison
+        .detail
+        .contains("duplicate user config entries"));
 
     Ok(())
 }

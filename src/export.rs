@@ -133,6 +133,8 @@ pub struct InventoryEntry {
     pub row_order: usize,
     pub label: String,
     pub description: String,
+    #[serde(rename = "defaultConfigPresence")]
+    pub default_config_presence: String,
     #[serde(rename = "readSupport")]
     pub read_support: String,
     #[serde(rename = "writeSupport")]

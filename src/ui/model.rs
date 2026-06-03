@@ -1,5 +1,7 @@
 use crate::config_discovery::ConfigDiscovery;
-use crate::current_config::{CurrentConfigSnapshot, CurrentValueProjection};
+use crate::current_config::{
+    CurrentConfigSnapshot, CurrentValueProjection, CurrentValueSourceStatus,
+};
 use crate::export::{ExportBundle, InventoryEntry, TabEntry};
 use crate::validation::ValidationSummary;
 
@@ -134,6 +136,7 @@ pub struct UiSetting {
     pub row_order: usize,
     pub label: String,
     pub description: String,
+    pub default_config_presence: String,
     pub read_support: String,
     pub write_support: String,
     pub risk_class: String,
@@ -141,6 +144,7 @@ pub struct UiSetting {
     pub report_only: bool,
     pub is_write_candidate: bool,
     pub current_value: CurrentValueProjection,
+    pub comparison: ComparisonProjection,
 }
 
 impl UiSetting {
@@ -158,6 +162,7 @@ impl UiSetting {
             row_order: entry.row_order,
             label: entry.label.clone(),
             description: entry.description.clone(),
+            default_config_presence: entry.default_config_presence.clone(),
             read_support: entry.read_support.clone(),
             write_support: entry.write_support.clone(),
             risk_class: entry.risk_class.clone(),
@@ -165,6 +170,10 @@ impl UiSetting {
             report_only: entry.report_only,
             is_write_candidate: active_write_ids.contains(&entry.row_id.as_str()),
             current_value: current_config.value_for(&entry.row_id),
+            comparison: ComparisonProjection::from_current_value(
+                &entry.default_config_presence,
+                &current_config.value_for(&entry.row_id),
+            ),
         }
     }
 
@@ -185,6 +194,44 @@ pub struct UiWriteCandidate {
 }
 
 #[derive(Debug, Clone)]
+pub struct ComparisonProjection {
+    pub badge: String,
+    pub detail: String,
+}
+
+impl ComparisonProjection {
+    fn from_current_value(
+        default_config_presence: &str,
+        current_value: &CurrentValueProjection,
+    ) -> Self {
+        let default_detail = if default_config_presence == "not-exported" {
+            "official default value is not exported"
+        } else {
+            default_config_presence
+        };
+
+        match current_value.status {
+            CurrentValueSourceStatus::Configured => Self {
+                badge: "User configured".to_string(),
+                detail: format!("user override present; {default_detail}"),
+            },
+            CurrentValueSourceStatus::DuplicateConflict => Self {
+                badge: "Conflict".to_string(),
+                detail: format!("duplicate user config entries; {default_detail}"),
+            },
+            CurrentValueSourceStatus::NotConfigured => Self {
+                badge: "Default".to_string(),
+                detail: format!("no user override found; {default_detail}"),
+            },
+            CurrentValueSourceStatus::ReadUnavailable => Self {
+                badge: "Read unavailable".to_string(),
+                detail: format!("user config was not parsed; {default_detail}"),
+            },
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
 pub struct RowDetailProjection {
     pub label: String,
     pub row_id: String,
@@ -192,6 +239,7 @@ pub struct RowDetailProjection {
     pub tab_label: String,
     pub subsection: String,
     pub description: String,
+    pub default_config_presence: String,
     pub read_support: String,
     pub non_read_status: Option<String>,
     pub preview_status: String,
@@ -203,6 +251,7 @@ pub struct RowDetailProjection {
     pub write_candidate_executable: Option<bool>,
     pub write_candidate_command_generation_allowed: Option<bool>,
     pub current_value: CurrentValueProjection,
+    pub comparison: ComparisonProjection,
     pub safety_notes: Vec<String>,
 }
 
@@ -222,6 +271,7 @@ impl RowDetailProjection {
             tab_label: setting.tab_label.clone(),
             subsection: setting.subsection.clone(),
             description: setting.description.clone(),
+            default_config_presence: setting.default_config_presence.clone(),
             read_support: setting.read_support.clone(),
             non_read_status: (!is_read_supported)
                 .then(|| "Current-value reads blocked".to_string()),
@@ -244,6 +294,7 @@ impl RowDetailProjection {
             write_candidate_command_generation_allowed: write_candidate
                 .map(|candidate| candidate.command_generation_allowed),
             current_value: setting.current_value.clone(),
+            comparison: setting.comparison.clone(),
             safety_notes: vec![
                 "Current values are parsed from hyprland.conf as read-only text when available."
                     .to_string(),

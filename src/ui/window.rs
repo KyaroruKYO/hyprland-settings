@@ -386,9 +386,10 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
     };
 
     row_box.append(&small_label(&format!(
-        "{} · current: {} · {} · {} · preview: {} · risk: {} · write support: {}",
+        "{} · current: {} · {} · {} · {} · preview: {} · risk: {} · write support: {}",
         read_status,
         setting.current_value.status_label(),
+        setting.comparison.badge,
         report_status,
         write_status,
         setting.preview_status,
@@ -439,6 +440,17 @@ fn render_detail(model: &UiProjection, row_id: &str, detail_content: &gtk::Box) 
     if !detail.description.is_empty() {
         append_detail_line(detail_content, "Description", &detail.description);
     }
+    append_detail_line(
+        detail_content,
+        "Default metadata",
+        &detail.default_config_presence,
+    );
+    append_detail_line(detail_content, "Comparison", &detail.comparison.badge);
+    append_detail_line(
+        detail_content,
+        "Comparison detail",
+        &detail.comparison.detail,
+    );
     append_detail_line(detail_content, "Read support", &detail.read_support);
     append_detail_line(
         detail_content,
