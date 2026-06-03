@@ -163,3 +163,58 @@ fn apply_flow_blocks_non_allowlisted_setting() {
     assert_eq!(error.reason, "setting is not write-allowlisted");
     assert!(error.failures.contains(&"NotAllowlisted".to_string()));
 }
+
+#[test]
+fn apply_flow_blocks_duplicate_before_backup_side_effect() -> Result<()> {
+    let root = temp_root("duplicate-before-backup")?;
+    let source = root.join("hyprland.conf");
+    let backup_root = root.join("backups");
+    fs::write(
+        &source,
+        "general:snap:enabled = false\ngeneral:snap:enabled = true\n",
+    )?;
+    let snapshot = snapshot_for(&source, &fs::read_to_string(&source)?);
+    let backup_manager = BackupManager::new(&backup_root);
+
+    let error = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery_for(source),
+        &snapshot,
+        ACTIVE_PENDING_CHANGE_SETTING,
+        "false",
+        &backup_manager,
+    )
+    .expect_err("duplicate conflict should block apply");
+
+    assert!(error.failures.contains(&"DuplicateConflict".to_string()));
+    assert!(!backup_root.exists());
+
+    fs::remove_dir_all(root)?;
+    Ok(())
+}
+
+#[test]
+fn apply_flow_blocks_invalid_value_before_backup_side_effect() -> Result<()> {
+    let root = temp_root("invalid-before-backup")?;
+    let source = root.join("hyprland.conf");
+    let backup_root = root.join("backups");
+    fs::write(&source, "general:snap:enabled = false\n")?;
+    let snapshot = snapshot_for(&source, &fs::read_to_string(&source)?);
+    let backup_manager = BackupManager::new(&backup_root);
+
+    let error = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery_for(source),
+        &snapshot,
+        ACTIVE_PENDING_CHANGE_SETTING,
+        "maybe",
+        &backup_manager,
+    )
+    .expect_err("invalid value should block apply");
+
+    assert!(error.failures.contains(&"InvalidProposedValue".to_string()));
+    assert!(!backup_root.exists());
+
+    fs::remove_dir_all(root)?;
+    Ok(())
+}

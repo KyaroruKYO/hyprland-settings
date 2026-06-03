@@ -121,6 +121,12 @@ pub fn apply_setting_change_with_backup_manager(
             failures: vec!["NotAllowlisted".to_string()],
         });
     }
+    if !known_setting_ids.contains(setting_id) {
+        return Err(ApplyFailure {
+            reason: "setting is not known to the export inventory".to_string(),
+            failures: vec!["UnknownSetting".to_string()],
+        });
+    }
 
     let target_path = detected_config_path(discovery).map_err(|reason| ApplyFailure {
         reason,
@@ -128,6 +134,29 @@ pub fn apply_setting_change_with_backup_manager(
     })?;
     let current_value = current_config.value_for(WINDOWS_SNAP_CONFIG_SETTING);
     let pending_change = stage_pending_change(setting_id, &current_value, proposed_value);
+    match &pending_change.validation {
+        PendingChangeValidation::Valid => {}
+        PendingChangeValidation::Invalid { reason }
+        | PendingChangeValidation::NotAllowed { reason } => {
+            return Err(ApplyFailure {
+                reason: reason.clone(),
+                failures: vec!["InvalidProposedValue".to_string()],
+            });
+        }
+    }
+    if let Some(reason) = review_block_reason(current_value.status) {
+        let failure = match current_value.status {
+            CurrentValueSourceStatus::DuplicateConflict => "DuplicateConflict",
+            CurrentValueSourceStatus::ReadUnavailable => "MissingCurrentSource",
+            CurrentValueSourceStatus::Configured | CurrentValueSourceStatus::NotConfigured => {
+                "MissingCurrentSource"
+            }
+        };
+        return Err(ApplyFailure {
+            reason: reason.to_string(),
+            failures: vec![failure.to_string()],
+        });
+    }
 
     let backup = backup_manager
         .create_backup(&target_path)
