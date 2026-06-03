@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyprland-settings://exports/0.55.2/schemas/hyprland-settings-preview-candidates.v0.55.2.schema.json",
+  "title": "Hyprland Settings Preview Candidates Export v0.55.2",
+  "type": "object",
+  "required": [
+    "hyprlandVersion",
+    "schemaVersion",
+    "artifactKind",
+    "generatedAt",
+    "generatedFrom",
+    "counts",
+    "items"
+  ],
+  "properties": {
+    "hyprlandVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/hyprlandVersion"
+    },
+    "schemaVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/schemaVersion"
+    },
+    "artifactKind": { "const": "preview-candidates" },
+    "generatedAt": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedAt"
+    },
+    "generatedFrom": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedFrom"
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "rows",
+        "safeParsedPreviewCandidates",
+        "warningPreviewCandidates",
+        "deferredParserRows"
+      ],
+      "properties": {
+        "rows": { "type": "integer" },
+        "safeParsedPreviewCandidates": { "type": "integer" },
+        "warningPreviewCandidates": { "type": "integer" },
+        "deferredParserRows": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/previewCandidateItem" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "previewCandidateItem": {
+      "type": "object",
+      "required": [
+        "rowId",
+        "valueFamily",
+        "previewKind",
+        "status",
+        "fixtureBacked",
+        "liveReadBacked",
+        "warningCopy",
+        "rawValueRequired",
+        "snapshotMetadataKind"
+      ],
+      "properties": {
+        "rowId": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/rowId"
+        },
+        "valueFamily": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/valueFamily"
+        },
+        "previewKind": {
+          "type": "string",
+          "enum": [
+            "color",
+            "gradient",
+            "path-or-shader",
+            "regex-rule-like-string",
+            "text-only font-family preview",
+            "text-only sanitized value with warning copy",
+            "vector-tuple",
+            "warning-only numeric-token list"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "safe-parsed-preview",
+            "warning-preview",
+            "deferred-parser-preview"
+          ]
+        },
+        "fixtureBacked": { "type": "boolean" },
+        "liveReadBacked": { "const": false },
+        "warningCopy": { "type": "string" },
+        "rawValueRequired": { "type": "boolean" },
+        "snapshotMetadataKind": {
+          "type": "string",
+          "enum": ["parsedPreviewRowIds", "warningPreviewRowIds", "none"]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

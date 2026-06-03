@@ -1,0 +1,134 @@
+{
+  "artifactKind": "structured-families-design-index",
+  "counts": {
+    "families": 7
+  },
+  "families": [
+    {
+      "artifactPaths": [
+        ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-INVENTORY.md",
+        ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-PARSER-DESIGN.md",
+        ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-UI-BINDING-DESIGN.md",
+        ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-LIVE-READ-DESIGN.md",
+        ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-PROVENANCE-CACHE-DESIGN.md"
+      ],
+      "displayStatus": "implemented-fixture-only-read-only",
+      "familyId": "hl.curve",
+      "officialSources": [
+        "Hyprland 0.55.2 documentation/source references"
+      ],
+      "parserStatus": "implemented-fixture-only",
+      "recommendedRustPhase": "structured-read-only-after-scalar-parity",
+      "riskNotes": "Raw records must be preserved; live reads and writes remain future work.",
+      "status": [
+        "inventory-complete",
+        "parser-design-complete",
+        "helper-implemented",
+        "fixture-ui-implemented"
+      ],
+      "writeStatus": "not-designed"
+    },
+    {
+      "artifactPaths": [
+        ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-INVENTORY.md",
+        ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-PARSER-DESIGN.md",
+        ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-UI-BINDING-DESIGN.md",
+        ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-LIVE-READ-DESIGN.md",
+        ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-PROVENANCE-CACHE-DESIGN.md"
+      ],
+      "displayStatus": "implemented-fixture-only-read-only",
+      "familyId": "hl.animation",
+      "officialSources": [
+        "Hyprland 0.55.2 documentation/source references"
+      ],
+      "parserStatus": "implemented-fixture-only",
+      "recommendedRustPhase": "structured-read-only-after-scalar-parity",
+      "riskNotes": "Tree ordering, duplicate leaves, and unresolved references remain read-only.",
+      "status": [
+        "inventory-complete",
+        "parser-design-complete",
+        "helper-implemented",
+        "fixture-ui-implemented"
+      ],
+      "writeStatus": "not-designed"
+    },
+    {
+      "artifactPaths": [],
+      "displayStatus": "design-needed",
+      "familyId": "hl.monitor",
+      "officialSources": [],
+      "parserStatus": "design-needed",
+      "recommendedRustPhase": "structured-design-before-editor",
+      "riskNotes": "Display/session-sensitive; keep report-only until dedicated design.",
+      "status": [
+        "design-needed"
+      ],
+      "writeStatus": "not-designed"
+    },
+    {
+      "artifactPaths": [],
+      "displayStatus": "design-needed",
+      "familyId": "hl.bind",
+      "officialSources": [],
+      "parserStatus": "design-needed",
+      "recommendedRustPhase": "structured-design-before-editor",
+      "riskNotes": "Input/action-sensitive; no editor before source and write-safety design.",
+      "status": [
+        "design-needed",
+        "security-sensitive"
+      ],
+      "writeStatus": "not-designed"
+    },
+    {
+      "artifactPaths": [],
+      "displayStatus": "design-needed",
+      "familyId": "hl.device",
+      "officialSources": [],
+      "parserStatus": "design-needed",
+      "recommendedRustPhase": "structured-design-before-editor",
+      "riskNotes": "Device-specific behavior requires privacy and source-selection design.",
+      "status": [
+        "design-needed"
+      ],
+      "writeStatus": "not-designed"
+    },
+    {
+      "artifactPaths": [],
+      "displayStatus": "design-needed",
+      "familyId": "hl.gesture",
+      "officialSources": [],
+      "parserStatus": "design-needed",
+      "recommendedRustPhase": "structured-design-before-editor",
+      "riskNotes": "Gesture behavior affects input workflows; keep read-only during design.",
+      "status": [
+        "design-needed"
+      ],
+      "writeStatus": "not-designed"
+    },
+    {
+      "artifactPaths": [],
+      "displayStatus": "design-needed",
+      "familyId": "hl.permission",
+      "officialSources": [],
+      "parserStatus": "design-needed",
+      "recommendedRustPhase": "structured-design-before-editor",
+      "riskNotes": "Permission policy is security-sensitive and must stay report-only first.",
+      "status": [
+        "design-needed",
+        "security-sensitive"
+      ],
+      "writeStatus": "not-designed"
+    }
+  ],
+  "generatedAt": "2026-06-03T01:20:07Z",
+  "generatedFrom": [
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-INVENTORY.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-PARSER-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-UI-BINDING-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-LIVE-READ-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-PROVENANCE-CACHE-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-RUST-MIGRATION-SOURCE-SELECTION-HANDOFF-DESIGN.md"
+  ],
+  "hyprlandVersion": "0.55.2",
+  "schemaVersion": 1
+}

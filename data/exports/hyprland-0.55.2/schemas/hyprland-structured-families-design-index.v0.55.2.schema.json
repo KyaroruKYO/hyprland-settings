@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyprland-settings://exports/0.55.2/schemas/hyprland-structured-families-design-index.v0.55.2.schema.json",
+  "title": "Hyprland Structured Families Design Index Export v0.55.2",
+  "type": "object",
+  "required": [
+    "hyprlandVersion",
+    "schemaVersion",
+    "artifactKind",
+    "generatedAt",
+    "generatedFrom",
+    "counts",
+    "families"
+  ],
+  "properties": {
+    "hyprlandVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/hyprlandVersion"
+    },
+    "schemaVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/schemaVersion"
+    },
+    "artifactKind": { "const": "structured-families-design-index" },
+    "generatedAt": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedAt"
+    },
+    "generatedFrom": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedFrom"
+    },
+    "counts": {
+      "type": "object",
+      "required": ["families"],
+      "properties": {
+        "families": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "families": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/structuredFamily" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "structuredFamily": {
+      "type": "object",
+      "required": [
+        "familyId",
+        "status",
+        "artifactPaths",
+        "officialSources",
+        "parserStatus",
+        "displayStatus",
+        "writeStatus",
+        "riskNotes",
+        "recommendedRustPhase"
+      ],
+      "properties": {
+        "familyId": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/familyId"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "design-needed",
+              "fixture-ui-implemented",
+              "helper-implemented",
+              "inventory-complete",
+              "parser-design-complete",
+              "security-sensitive"
+            ]
+          }
+        },
+        "artifactPaths": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/stringArray"
+        },
+        "officialSources": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/stringArray"
+        },
+        "parserStatus": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/parserStatus"
+        },
+        "displayStatus": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/displaySupport"
+        },
+        "writeStatus": {
+          "type": "string",
+          "enum": ["not-designed"]
+        },
+        "riskNotes": { "type": "string" },
+        "recommendedRustPhase": {
+          "type": "string",
+          "enum": [
+            "structured-design-before-editor",
+            "structured-read-only-after-scalar-parity"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "artifactKind": "source-provenance-index",
+  "compactMetadataExclusions": [
+    "raw source text",
+    "parser payloads",
+    "curve points",
+    "spring parameters",
+    "style strings",
+    "config contents",
+    "generated write text",
+    "rendered UI row details"
+  ],
+  "designArtifactReferences": [
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-LIVE-READ-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-PROVENANCE-CACHE-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-RUST-MIGRATION-SOURCE-SELECTION-HANDOFF-DESIGN.md"
+  ],
+  "generatedAt": "2026-06-03T01:20:07Z",
+  "generatedFrom": [
+    ".config/hypr/docs/HYPRLAND-0.55.2-PORTABLE-EXPORT-SCHEMA-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-PORTABLE-EXPORT-GENERATOR-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-RUST-MIGRATION-SOURCE-SELECTION-HANDOFF-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-LIVE-READ-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-PROVENANCE-CACHE-DESIGN.md"
+  ],
+  "hyprlandVersion": "0.55.2",
+  "privacyRules": [
+    "Do not export user configuration contents.",
+    "Do not export live values.",
+    "Do not export source paths unless a later phase explicitly approves them.",
+    "Do not scan broad directories."
+  ],
+  "schemaVersion": 1,
+  "sourceKinds": [
+    "fixture",
+    "user-main-config",
+    "user-included-config",
+    "packaged-example",
+    "unknown"
+  ],
+  "sourceReadStatuses": [
+    "not-read",
+    "reading",
+    "read-success",
+    "read-warning",
+    "read-failed"
+  ],
+  "sourceSelectionPolicy": {
+    "automaticScanningAllowed": false,
+    "firstNativeImplementationTarget": "explicit-user-selected-single-source",
+    "includeTraversalDefault": "deferred",
+    "liveConfigPathsIncluded": false,
+    "liveConfigValuesIncluded": false,
+    "mode": "design-only",
+    "rawSourceIncluded": false
+  },
+  "sourceTrustLevels": [
+    "fixture",
+    "user-approved",
+    "example",
+    "unknown"
+  ]
+}

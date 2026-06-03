@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.kyarorukyo.hyprlandsettings</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <name>Hyprland Settings</name>
+  <summary>Explore Hyprland settings from official metadata</summary>
+  <description>
+    <p>Hyprland Settings is a GTK/libadwaita application for browsing official Hyprland setting metadata, search results, and safety classifications. The current release is read-only. It does not read live Hyprland config files or change settings.</p>
+  </description>
+  <launchable type="desktop-id">io.github.kyarorukyo.hyprlandsettings.desktop</launchable>
+  <url type="homepage">https://github.com/Kyaroru_KYO/hyprland-settings</url>
+  <categories>
+    <category>Settings</category>
+    <category>GTK</category>
+  </categories>
+  <content_rating type="oars-1.1" />
+</component>

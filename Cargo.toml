@@ -1,0 +1,17 @@
+[package]
+name = "hyprland-settings"
+version = "0.1.0"
+edition = "2021"
+description = "Read-only GTK shell for AGS-derived Hyprland Settings export metadata"
+license = "MIT"
+
+[[bin]]
+name = "hyprland-settings"
+path = "src/main.rs"
+
+[dependencies]
+adw = { package = "libadwaita", version = "0.9.1" }
+anyhow = "1"
+gtk4 = "0.11.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

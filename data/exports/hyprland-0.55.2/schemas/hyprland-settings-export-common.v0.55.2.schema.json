@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyprland-settings://exports/0.55.2/schemas/hyprland-settings-export-common.v0.55.2.schema.json",
+  "title": "Hyprland Settings Export Common Definitions v0.55.2",
+  "type": "object",
+  "additionalProperties": false,
+  "$defs": {
+    "artifactHeader": {
+      "type": "object",
+      "required": [
+        "hyprlandVersion",
+        "schemaVersion",
+        "artifactKind",
+        "generatedAt",
+        "generatedFrom"
+      ],
+      "properties": {
+        "hyprlandVersion": { "$ref": "#/$defs/hyprlandVersion" },
+        "schemaVersion": { "$ref": "#/$defs/schemaVersion" },
+        "artifactKind": { "$ref": "#/$defs/artifactKind" },
+        "generatedAt": { "$ref": "#/$defs/generatedAt" },
+        "generatedFrom": { "$ref": "#/$defs/generatedFrom" }
+      },
+      "additionalProperties": true
+    },
+    "hyprlandVersion": {
+      "type": "string",
+      "const": "0.55.2"
+    },
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "generatedFrom": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "artifactKind": {
+      "type": "string",
+      "enum": [
+        "export-manifest",
+        "inventory",
+        "read-allowlist",
+        "non-read-classifications",
+        "value-families",
+        "preview-candidates",
+        "write-safety",
+        "structured-families-design-index",
+        "source-provenance-index"
+      ]
+    },
+    "rowId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "officialSetting": {
+      "type": "string",
+      "minLength": 1
+    },
+    "familyId": {
+      "type": "string",
+      "enum": [
+        "hl.curve",
+        "hl.animation",
+        "hl.monitor",
+        "hl.bind",
+        "hl.device",
+        "hl.gesture",
+        "hl.permission"
+      ]
+    },
+    "valueFamily": {
+      "type": "string",
+      "enum": [
+        "color",
+        "vector_tuple",
+        "gradient",
+        "path_shader_path",
+        "regex_rule_like_string",
+        "mixed_freeform_string",
+        "bezierish_numeric_list",
+        "none",
+        "structured_curve_animation"
+      ]
+    },
+    "parserStatus": {
+      "type": "string",
+      "enum": [
+        "blocked_by_risk_review",
+        "deferred",
+        "design-needed",
+        "design-only",
+        "implemented",
+        "implemented-fixture-only",
+        "needs_color_parser",
+        "needs_enum_or_custom_string_parser",
+        "needs_gradient_or_color_list_parser",
+        "needs_numeric_list_parser",
+        "needs_sanitized_path_preview",
+        "needs_sanitized_regex_preview",
+        "needs_vec2_tuple_parser",
+        "scalar-current-value-parser"
+      ]
+    },
+    "displaySupport": {
+      "type": "string",
+      "enum": [
+        "deferred",
+        "design-needed",
+        "implemented-fixture-only-read-only",
+        "report-only",
+        "safe-preview",
+        "structured-design",
+        "text-only",
+        "warning-preview"
+      ]
+    },
+    "previewStatus": {
+      "type": "string",
+      "enum": [
+        "none",
+        "safe-parsed-preview",
+        "warning-preview",
+        "deferred-parser-preview"
+      ]
+    },
+    "writeSupport": {
+      "type": "string",
+      "enum": [
+        "not-write-allowlisted",
+        "pending-change-only"
+      ]
+    },
+    "readSupport": {
+      "type": "string",
+      "enum": [
+        "current-value-read-allowlisted-scalar",
+        "not-current-value-read-allowlisted"
+      ]
+    },
+    "riskClass": {
+      "type": "string",
+      "enum": [
+        "advanced",
+        "cursor_input_risk",
+        "debug_crash_risk",
+        "display_render_session_risk",
+        "ecosystem_permission_risk",
+        "freeform_string_parser_risk",
+        "input_file_preview_risk",
+        "low",
+        "numeric_list_parser_risk",
+        "path_or_shader_preview_risk",
+        "regex_rule_behavior_risk",
+        "safe",
+        "tuple_shape_parser_risk",
+        "visual_color_parser_risk"
+      ]
+    },
+    "sourceKind": {
+      "type": "string",
+      "enum": [
+        "fixture",
+        "user-main-config",
+        "user-included-config",
+        "packaged-example",
+        "unknown"
+      ]
+    },
+    "sourceTrustLevel": {
+      "type": "string",
+      "enum": [
+        "fixture",
+        "user-approved",
+        "example",
+        "unknown"
+      ]
+    },
+    "sourceReadStatus": {
+      "type": "string",
+      "enum": [
+        "not-read",
+        "reading",
+        "read-success",
+        "read-warning",
+        "read-failed"
+      ]
+    },
+    "officialScalarCoverage": {
+      "type": "object",
+      "required": ["covered", "total"],
+      "properties": {
+        "covered": { "type": "integer" },
+        "total": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "sourceProvenanceEntry": {
+      "type": "object",
+      "required": ["source", "trustLevel"],
+      "properties": {
+        "source": { "type": "string", "minLength": 1 },
+        "trustLevel": {
+          "type": "string",
+          "enum": [
+            "design-artifact",
+            "fixture",
+            "generated-export",
+            "official-source",
+            "project-design",
+            "project-metadata",
+            "source-metadata"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "stringArray": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "nonEmptyStringArray": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    }
+  }
+}

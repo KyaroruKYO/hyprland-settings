@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Hyprland Settings
+Comment=Explore Hyprland settings and metadata
+Exec=hyprland-settings
+Icon=io.github.kyarorukyo.hyprlandsettings
+Terminal=false
+Type=Application
+Categories=Settings;GTK;
+Keywords=Hyprland;Wayland;Settings;Configuration;
+StartupNotify=true
+DBusActivatable=false

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyprland-settings://exports/0.55.2/schemas/hyprland-settings-source-provenance-index.v0.55.2.schema.json",
+  "title": "Hyprland Settings Source Provenance Index Export v0.55.2",
+  "type": "object",
+  "required": [
+    "hyprlandVersion",
+    "schemaVersion",
+    "artifactKind",
+    "generatedAt",
+    "generatedFrom",
+    "sourceKinds",
+    "sourceTrustLevels",
+    "sourceReadStatuses",
+    "sourceSelectionPolicy",
+    "privacyRules",
+    "compactMetadataExclusions",
+    "designArtifactReferences"
+  ],
+  "properties": {
+    "hyprlandVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/hyprlandVersion"
+    },
+    "schemaVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/schemaVersion"
+    },
+    "artifactKind": { "const": "source-provenance-index" },
+    "generatedAt": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedAt"
+    },
+    "generatedFrom": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedFrom"
+    },
+    "sourceKinds": {
+      "type": "array",
+      "items": {
+        "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/sourceKind"
+      }
+    },
+    "sourceTrustLevels": {
+      "type": "array",
+      "items": {
+        "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/sourceTrustLevel"
+      }
+    },
+    "sourceReadStatuses": {
+      "type": "array",
+      "items": {
+        "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/sourceReadStatus"
+      }
+    },
+    "sourceSelectionPolicy": {
+      "type": "object",
+      "required": [
+        "mode",
+        "automaticScanningAllowed",
+        "firstNativeImplementationTarget",
+        "includeTraversalDefault",
+        "liveConfigPathsIncluded",
+        "liveConfigValuesIncluded",
+        "rawSourceIncluded"
+      ],
+      "properties": {
+        "mode": { "const": "design-only" },
+        "automaticScanningAllowed": { "const": false },
+        "firstNativeImplementationTarget": {
+          "const": "explicit-user-selected-single-source"
+        },
+        "includeTraversalDefault": { "const": "deferred" },
+        "liveConfigPathsIncluded": { "const": false },
+        "liveConfigValuesIncluded": { "const": false },
+        "rawSourceIncluded": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "privacyRules": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/nonEmptyStringArray"
+    },
+    "compactMetadataExclusions": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/nonEmptyStringArray"
+    },
+    "designArtifactReferences": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/nonEmptyStringArray"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyprland-settings://exports/0.55.2/schemas/hyprland-settings-inventory.v0.55.2.schema.json",
+  "title": "Hyprland Settings Inventory Export v0.55.2",
+  "type": "object",
+  "required": [
+    "hyprlandVersion",
+    "schemaVersion",
+    "artifactKind",
+    "generatedAt",
+    "generatedFrom",
+    "counts",
+    "tabs",
+    "settings"
+  ],
+  "properties": {
+    "hyprlandVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/hyprlandVersion"
+    },
+    "schemaVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/schemaVersion"
+    },
+    "artifactKind": { "const": "inventory" },
+    "generatedAt": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedAt"
+    },
+    "generatedFrom": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedFrom"
+    },
+    "counts": {
+      "type": "object",
+      "required": ["rows", "tabs", "officialScalarCoverage"],
+      "properties": {
+        "rows": { "type": "integer" },
+        "tabs": { "type": "integer" },
+        "officialScalarCoverage": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/officialScalarCoverage"
+        }
+      },
+      "additionalProperties": false
+    },
+    "tabs": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/tab" }
+    },
+    "settings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/setting" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "tab": {
+      "type": "object",
+      "required": ["tabId", "tabLabel", "tabOrder", "rowCount", "purpose"],
+      "properties": {
+        "tabId": { "type": "string", "minLength": 1 },
+        "tabLabel": { "type": "string", "minLength": 1 },
+        "tabOrder": { "type": "integer" },
+        "rowCount": { "type": "integer" },
+        "purpose": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "setting": {
+      "type": "object",
+      "required": [
+        "rowId",
+        "officialSetting",
+        "tabId",
+        "tabLabel",
+        "subsection",
+        "rowOrder",
+        "label",
+        "description",
+        "valueFamily",
+        "controlKind",
+        "readSupport",
+        "writeSupport",
+        "riskClass",
+        "sourceUrls",
+        "sourceNotes",
+        "defaultConfigPresence",
+        "documentationPresence",
+        "parserStatus",
+        "previewStatus",
+        "reportOnly",
+        "structuredFamily",
+        "notes"
+      ],
+      "properties": {
+        "rowId": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/rowId"
+        },
+        "officialSetting": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/officialSetting"
+        },
+        "tabId": { "type": "string", "minLength": 1 },
+        "tabLabel": { "type": "string", "minLength": 1 },
+        "subsection": { "type": "string" },
+        "rowOrder": { "type": "integer" },
+        "label": { "type": "string" },
+        "description": { "type": "string" },
+        "valueFamily": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/valueFamily"
+        },
+        "controlKind": {
+          "type": "string",
+          "enum": [
+            "dropdown",
+            "number-input",
+            "percent-slider",
+            "slider",
+            "toggle"
+          ]
+        },
+        "readSupport": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/readSupport"
+        },
+        "writeSupport": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/writeSupport"
+        },
+        "riskClass": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/riskClass"
+        },
+        "sourceUrls": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/stringArray"
+        },
+        "sourceNotes": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/stringArray"
+        },
+        "defaultConfigPresence": {
+          "type": "string",
+          "enum": ["not-exported"]
+        },
+        "documentationPresence": {
+          "type": "string",
+          "enum": ["official-source-present"]
+        },
+        "parserStatus": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/parserStatus"
+        },
+        "previewStatus": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/previewStatus"
+        },
+        "reportOnly": { "type": "boolean" },
+        "structuredFamily": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/familyId"
+            }
+          ]
+        },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

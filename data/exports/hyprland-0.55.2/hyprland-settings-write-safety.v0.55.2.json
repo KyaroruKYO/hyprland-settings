@@ -1,0 +1,66 @@
+{
+  "activeCandidates": [
+    {
+      "backupRequired": false,
+      "commandGenerationAllowed": false,
+      "confirmationRequired": true,
+      "enabled": true,
+      "executable": false,
+      "notes": "Pending-change-only metadata for floating window snapping.",
+      "officialSetting": "general.snap.enabled",
+      "owner": "ags-future",
+      "reloadPolicy": "none",
+      "reviewRequired": true,
+      "rollbackRequired": false,
+      "rowId": "windows.snap.enabled",
+      "targetMode": "pending-change-only",
+      "valueKind": "boolean",
+      "writeRiskClass": "low"
+    }
+  ],
+  "artifactKind": "write-safety",
+  "counts": {
+    "activeCandidates": 1,
+    "disabledCandidateMetadata": 1,
+    "disabledRuntimeMetadata": 1
+  },
+  "currentAgsState": {
+    "activeAllowlistMode": "pending-change-only",
+    "commandGenerationAllowed": false,
+    "disabledRuntimeMetadataEnabled": false,
+    "executorExists": false,
+    "writeRuntimeExecutorExists": false
+  },
+  "disabledCandidateMetadata": [
+    {
+      "enabled": false,
+      "executable": false,
+      "notes": "Pending-change candidate metadata for floating window snapping.",
+      "officialSetting": "general.snap.enabled",
+      "rowId": "windows.snap.enabled",
+      "targetMode": "scaffold-only",
+      "valueKind": "boolean",
+      "writeRiskClass": "low"
+    }
+  ],
+  "disabledRuntimeMetadata": [
+    {
+      "enabled": false,
+      "executable": false,
+      "notes": "Disabled runtime planning metadata for floating window snapping.",
+      "officialSetting": "general.snap.enabled",
+      "requiresConfirmation": true,
+      "requiresCurrentValueSnapshot": true,
+      "requiresRollbackPlan": true,
+      "rollbackStrategy": "previous-runtime-value",
+      "rowId": "windows.snap.enabled",
+      "targetMode": "runtime-only"
+    }
+  ],
+  "generatedAt": "2026-06-03T01:20:07Z",
+  "generatedFrom": [
+    ".config/ags/widget/hyprland-settings/writeAllowlist.ts"
+  ],
+  "hyprlandVersion": "0.55.2",
+  "schemaVersion": 1
+}

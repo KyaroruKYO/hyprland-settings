@@ -1,0 +1,186 @@
+{
+  "artifactFiles": {
+    "inventory": "hyprland-settings-inventory.v0.55.2.json",
+    "non-read-classifications": "hyprland-settings-non-read-classifications.v0.55.2.json",
+    "preview-candidates": "hyprland-settings-preview-candidates.v0.55.2.json",
+    "read-allowlist": "hyprland-settings-read-allowlist.v0.55.2.json",
+    "source-provenance-index": "hyprland-settings-source-provenance-index.v0.55.2.json",
+    "structured-families-design-index": "hyprland-structured-families-design-index.v0.55.2.json",
+    "value-families": "hyprland-settings-value-families.v0.55.2.json",
+    "write-safety": "hyprland-settings-write-safety.v0.55.2.json"
+  },
+  "artifactKind": "export-manifest",
+  "counts": {
+    "activeWriteCandidateIds": [
+      "windows.snap.enabled"
+    ],
+    "activeWriteCandidates": 1,
+    "deferredParserRows": 5,
+    "inventoryRows": 341,
+    "nonReadClassificationRows": 109,
+    "officialScalarCoverage": {
+      "covered": 341,
+      "total": 341
+    },
+    "previewParserNeededRows": 37,
+    "readAllowlistRows": 232,
+    "reportOnlyHighRiskRows": 72,
+    "safeParsedPreviewCandidates": 16,
+    "warningPreviewCandidates": 16
+  },
+  "generatedAt": "2026-06-03T01:20:07Z",
+  "generatedFrom": [
+    ".config/hypr/ags/settings-ui-design.draft.json",
+    ".config/hypr/ags/settings-schema.draft.json",
+    ".config/ags/widget/hyprland-settings/model.ts",
+    ".config/ags/widget/hyprland-settings/currentValueAllowlist.ts",
+    ".config/ags/widget/hyprland-settings/nonReadClassification.ts",
+    ".config/ags/widget/hyprland-settings/parsedPreviewCandidateIds.ts",
+    ".config/ags/widget/hyprland-settings/warningPreviewCandidateIds.ts",
+    ".config/ags/widget/hyprland-settings/writeAllowlist.ts",
+    ".config/ags/widget/hyprland-settings/structuredCurveAnimationParsers.ts",
+    ".config/ags/widget/hyprland-settings/structuredCurveAnimationDisplay.ts",
+    ".config/ags/widget/hyprland-settings/structuredCurveAnimationFixtures.ts",
+    ".config/hypr/docs/HYPRLAND-0.55.2-PORTABLE-EXPORT-SCHEMA-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-PORTABLE-EXPORT-GENERATOR-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-RUST-MIGRATION-SOURCE-SELECTION-HANDOFF-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-INVENTORY.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-PARSER-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-UI-BINDING-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-LIVE-READ-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-PROVENANCE-CACHE-DESIGN.md",
+    ".config/hypr/docs/HYPRLAND-0.55.2-DEFERRED-PARSER-ROWS-DESIGN.md"
+  ],
+  "hyprlandVersion": "0.55.2",
+  "rustParitySupport": {
+    "phase1CanValidateRows": true,
+    "phase1CanValidateTabs": true,
+    "phase1MustNotExposeWriteControls": true,
+    "phase1MustNotReadLiveConfig": true
+  },
+  "schemaVersion": 1,
+  "sourceProvenance": [
+    {
+      "source": ".config/hypr/ags/settings-ui-design.draft.json",
+      "trustLevel": "project-metadata"
+    },
+    {
+      "source": ".config/hypr/ags/settings-schema.draft.json",
+      "trustLevel": "project-metadata"
+    },
+    {
+      "source": ".config/ags/widget/hyprland-settings/model.ts",
+      "trustLevel": "project-metadata"
+    },
+    {
+      "source": ".config/ags/widget/hyprland-settings/currentValueAllowlist.ts",
+      "trustLevel": "project-metadata"
+    },
+    {
+      "source": ".config/ags/widget/hyprland-settings/nonReadClassification.ts",
+      "trustLevel": "project-metadata"
+    },
+    {
+      "source": ".config/ags/widget/hyprland-settings/parsedPreviewCandidateIds.ts",
+      "trustLevel": "project-metadata"
+    },
+    {
+      "source": ".config/ags/widget/hyprland-settings/warningPreviewCandidateIds.ts",
+      "trustLevel": "project-metadata"
+    },
+    {
+      "source": ".config/ags/widget/hyprland-settings/writeAllowlist.ts",
+      "trustLevel": "project-metadata"
+    },
+    {
+      "source": ".config/ags/widget/hyprland-settings/structuredCurveAnimationParsers.ts",
+      "trustLevel": "project-metadata"
+    },
+    {
+      "source": ".config/ags/widget/hyprland-settings/structuredCurveAnimationDisplay.ts",
+      "trustLevel": "project-metadata"
+    },
+    {
+      "source": ".config/ags/widget/hyprland-settings/structuredCurveAnimationFixtures.ts",
+      "trustLevel": "project-metadata"
+    },
+    {
+      "source": ".config/hypr/docs/HYPRLAND-0.55.2-PORTABLE-EXPORT-SCHEMA-DESIGN.md",
+      "trustLevel": "design-artifact"
+    },
+    {
+      "source": ".config/hypr/docs/HYPRLAND-0.55.2-PORTABLE-EXPORT-GENERATOR-DESIGN.md",
+      "trustLevel": "design-artifact"
+    },
+    {
+      "source": ".config/hypr/docs/HYPRLAND-0.55.2-RUST-MIGRATION-SOURCE-SELECTION-HANDOFF-DESIGN.md",
+      "trustLevel": "design-artifact"
+    },
+    {
+      "source": ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-INVENTORY.md",
+      "trustLevel": "design-artifact"
+    },
+    {
+      "source": ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-PARSER-DESIGN.md",
+      "trustLevel": "design-artifact"
+    },
+    {
+      "source": ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-UI-BINDING-DESIGN.md",
+      "trustLevel": "design-artifact"
+    },
+    {
+      "source": ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-LIVE-READ-DESIGN.md",
+      "trustLevel": "design-artifact"
+    },
+    {
+      "source": ".config/hypr/docs/HYPRLAND-0.55.2-STRUCTURED-CURVE-ANIMATION-PROVENANCE-CACHE-DESIGN.md",
+      "trustLevel": "design-artifact"
+    },
+    {
+      "source": ".config/hypr/docs/HYPRLAND-0.55.2-DEFERRED-PARSER-ROWS-DESIGN.md",
+      "trustLevel": "design-artifact"
+    }
+  ],
+  "validationStatus": {
+    "status": "passed",
+    "summary": {
+      "activeWriteCandidateIds": [
+        "windows.snap.enabled"
+      ],
+      "activeWriteCandidates": 1,
+      "deferredParserRows": 5,
+      "inventoryRows": 341,
+      "nonReadClassificationRows": 109,
+      "officialScalarCoverage": {
+        "covered": 341,
+        "total": 341
+      },
+      "previewParserNeededRows": 37,
+      "readAllowlistRows": 232,
+      "reportOnlyHighRiskRows": 72,
+      "safeParsedPreviewCandidates": 16,
+      "structuredFamilyIds": [
+        "hl.animation",
+        "hl.bind",
+        "hl.curve",
+        "hl.device",
+        "hl.gesture",
+        "hl.monitor",
+        "hl.permission"
+      ],
+      "valueFamilies": [
+        "bezierish_numeric_list",
+        "color",
+        "gradient",
+        "mixed_freeform_string",
+        "none",
+        "path_shader_path",
+        "regex_rule_like_string",
+        "structured_curve_animation",
+        "vector_tuple"
+      ],
+      "warningPreviewCandidates": 16
+    },
+    "validatedBy": ".config/hypr/ags/validate-hyprland-settings-export-v0552.py"
+  }
+}

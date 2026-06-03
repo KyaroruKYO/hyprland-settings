@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyprland-settings://exports/0.55.2/schemas/hyprland-settings-export-manifest.v0.55.2.schema.json",
+  "title": "Hyprland Settings Export Manifest v0.55.2",
+  "type": "object",
+  "required": [
+    "hyprlandVersion",
+    "schemaVersion",
+    "artifactKind",
+    "generatedAt",
+    "generatedFrom",
+    "artifactFiles",
+    "counts",
+    "validationStatus",
+    "sourceProvenance",
+    "rustParitySupport"
+  ],
+  "properties": {
+    "hyprlandVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/hyprlandVersion"
+    },
+    "schemaVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/schemaVersion"
+    },
+    "artifactKind": { "const": "export-manifest" },
+    "generatedAt": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedAt"
+    },
+    "generatedFrom": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedFrom"
+    },
+    "artifactFiles": {
+      "type": "object",
+      "required": [
+        "inventory",
+        "read-allowlist",
+        "non-read-classifications",
+        "value-families",
+        "preview-candidates",
+        "write-safety",
+        "structured-families-design-index",
+        "source-provenance-index"
+      ],
+      "properties": {
+        "inventory": { "type": "string" },
+        "read-allowlist": { "type": "string" },
+        "non-read-classifications": { "type": "string" },
+        "value-families": { "type": "string" },
+        "preview-candidates": { "type": "string" },
+        "write-safety": { "type": "string" },
+        "structured-families-design-index": { "type": "string" },
+        "source-provenance-index": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "counts": {
+      "$ref": "#/$defs/exportCounts"
+    },
+    "validationStatus": {
+      "anyOf": [
+        {
+          "type": "object",
+          "required": ["stage"],
+          "properties": {
+            "stage": { "const": "pre-validation" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["status", "summary", "validatedBy"],
+          "properties": {
+            "status": { "const": "passed" },
+            "summary": {
+              "type": "object",
+              "required": [
+                "inventoryRows",
+                "officialScalarCoverage",
+                "readAllowlistRows",
+                "nonReadClassificationRows",
+                "previewParserNeededRows",
+                "reportOnlyHighRiskRows",
+                "safeParsedPreviewCandidates",
+                "warningPreviewCandidates",
+                "deferredParserRows",
+                "activeWriteCandidates",
+                "activeWriteCandidateIds",
+                "valueFamilies",
+                "structuredFamilyIds"
+              ],
+              "properties": {
+                "inventoryRows": { "type": "integer" },
+                "officialScalarCoverage": {
+                  "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/officialScalarCoverage"
+                },
+                "readAllowlistRows": { "type": "integer" },
+                "nonReadClassificationRows": { "type": "integer" },
+                "previewParserNeededRows": { "type": "integer" },
+                "reportOnlyHighRiskRows": { "type": "integer" },
+                "safeParsedPreviewCandidates": { "type": "integer" },
+                "warningPreviewCandidates": { "type": "integer" },
+                "deferredParserRows": { "type": "integer" },
+                "activeWriteCandidates": { "type": "integer" },
+                "activeWriteCandidateIds": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                },
+                "valueFamilies": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/valueFamily"
+                  }
+                },
+                "structuredFamilyIds": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/familyId"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "validatedBy": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "sourceProvenance": {
+      "type": "array",
+      "items": {
+        "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/sourceProvenanceEntry"
+      }
+    },
+    "rustParitySupport": {
+      "type": "object",
+      "required": [
+        "phase1CanValidateRows",
+        "phase1CanValidateTabs",
+        "phase1MustNotExposeWriteControls",
+        "phase1MustNotReadLiveConfig"
+      ],
+      "properties": {
+        "phase1CanValidateRows": { "const": true },
+        "phase1CanValidateTabs": { "const": true },
+        "phase1MustNotExposeWriteControls": { "const": true },
+        "phase1MustNotReadLiveConfig": { "const": true }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "exportCounts": {
+      "type": "object",
+      "required": [
+        "inventoryRows",
+        "officialScalarCoverage",
+        "readAllowlistRows",
+        "nonReadClassificationRows",
+        "previewParserNeededRows",
+        "reportOnlyHighRiskRows",
+        "safeParsedPreviewCandidates",
+        "warningPreviewCandidates",
+        "deferredParserRows",
+        "activeWriteCandidates",
+        "activeWriteCandidateIds"
+      ],
+      "properties": {
+        "inventoryRows": { "type": "integer" },
+        "officialScalarCoverage": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/officialScalarCoverage"
+        },
+        "readAllowlistRows": { "type": "integer" },
+        "nonReadClassificationRows": { "type": "integer" },
+        "previewParserNeededRows": { "type": "integer" },
+        "reportOnlyHighRiskRows": { "type": "integer" },
+        "safeParsedPreviewCandidates": { "type": "integer" },
+        "warningPreviewCandidates": { "type": "integer" },
+        "deferredParserRows": { "type": "integer" },
+        "activeWriteCandidates": { "type": "integer" },
+        "activeWriteCandidateIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

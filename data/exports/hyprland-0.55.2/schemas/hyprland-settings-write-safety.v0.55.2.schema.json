@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyprland-settings://exports/0.55.2/schemas/hyprland-settings-write-safety.v0.55.2.schema.json",
+  "title": "Hyprland Settings Write Safety Export v0.55.2",
+  "type": "object",
+  "required": [
+    "hyprlandVersion",
+    "schemaVersion",
+    "artifactKind",
+    "generatedAt",
+    "generatedFrom",
+    "counts",
+    "currentAgsState",
+    "activeCandidates",
+    "disabledCandidateMetadata",
+    "disabledRuntimeMetadata"
+  ],
+  "properties": {
+    "hyprlandVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/hyprlandVersion"
+    },
+    "schemaVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/schemaVersion"
+    },
+    "artifactKind": { "const": "write-safety" },
+    "generatedAt": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedAt"
+    },
+    "generatedFrom": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedFrom"
+    },
+    "counts": {
+      "type": "object",
+      "required": [
+        "activeCandidates",
+        "disabledCandidateMetadata",
+        "disabledRuntimeMetadata"
+      ],
+      "properties": {
+        "activeCandidates": { "type": "integer" },
+        "disabledCandidateMetadata": { "type": "integer" },
+        "disabledRuntimeMetadata": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "currentAgsState": {
+      "type": "object",
+      "required": [
+        "activeAllowlistMode",
+        "commandGenerationAllowed",
+        "disabledRuntimeMetadataEnabled",
+        "executorExists",
+        "writeRuntimeExecutorExists"
+      ],
+      "properties": {
+        "activeAllowlistMode": { "const": "pending-change-only" },
+        "commandGenerationAllowed": { "const": false },
+        "disabledRuntimeMetadataEnabled": { "const": false },
+        "executorExists": { "const": false },
+        "writeRuntimeExecutorExists": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "activeCandidates": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/activeCandidate" }
+    },
+    "disabledCandidateMetadata": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/disabledCandidate" }
+    },
+    "disabledRuntimeMetadata": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/disabledRuntimeMetadata" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "activeCandidate": {
+      "type": "object",
+      "required": [
+        "rowId",
+        "officialSetting",
+        "enabled",
+        "executable",
+        "targetMode",
+        "owner",
+        "valueKind",
+        "writeRiskClass",
+        "reviewRequired",
+        "confirmationRequired",
+        "backupRequired",
+        "rollbackRequired",
+        "reloadPolicy",
+        "commandGenerationAllowed",
+        "notes"
+      ],
+      "properties": {
+        "rowId": { "const": "windows.snap.enabled" },
+        "officialSetting": { "const": "general.snap.enabled" },
+        "enabled": { "const": true },
+        "executable": { "const": false },
+        "targetMode": { "const": "pending-change-only" },
+        "owner": { "type": "string" },
+        "valueKind": { "const": "boolean" },
+        "writeRiskClass": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/riskClass"
+        },
+        "reviewRequired": { "const": true },
+        "confirmationRequired": { "const": true },
+        "backupRequired": { "const": false },
+        "rollbackRequired": { "const": false },
+        "reloadPolicy": { "const": "none" },
+        "commandGenerationAllowed": { "const": false },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "disabledCandidate": {
+      "type": "object",
+      "required": [
+        "rowId",
+        "officialSetting",
+        "enabled",
+        "executable",
+        "targetMode",
+        "valueKind",
+        "writeRiskClass",
+        "notes"
+      ],
+      "properties": {
+        "rowId": { "const": "windows.snap.enabled" },
+        "officialSetting": { "const": "general.snap.enabled" },
+        "enabled": { "const": false },
+        "executable": { "const": false },
+        "targetMode": { "const": "scaffold-only" },
+        "valueKind": { "const": "boolean" },
+        "writeRiskClass": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/riskClass"
+        },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "disabledRuntimeMetadata": {
+      "type": "object",
+      "required": [
+        "rowId",
+        "officialSetting",
+        "enabled",
+        "executable",
+        "targetMode",
+        "requiresConfirmation",
+        "requiresCurrentValueSnapshot",
+        "requiresRollbackPlan",
+        "rollbackStrategy",
+        "notes"
+      ],
+      "properties": {
+        "rowId": { "const": "windows.snap.enabled" },
+        "officialSetting": { "const": "general.snap.enabled" },
+        "enabled": { "const": false },
+        "executable": { "const": false },
+        "targetMode": { "const": "runtime-only" },
+        "requiresConfirmation": { "const": true },
+        "requiresCurrentValueSnapshot": { "const": true },
+        "requiresRollbackPlan": { "const": true },
+        "rollbackStrategy": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

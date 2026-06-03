@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyprland-settings://exports/0.55.2/schemas/hyprland-settings-value-families.v0.55.2.schema.json",
+  "title": "Hyprland Settings Value Families Export v0.55.2",
+  "type": "object",
+  "required": [
+    "hyprlandVersion",
+    "schemaVersion",
+    "artifactKind",
+    "generatedAt",
+    "generatedFrom",
+    "counts",
+    "items"
+  ],
+  "properties": {
+    "hyprlandVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/hyprlandVersion"
+    },
+    "schemaVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/schemaVersion"
+    },
+    "artifactKind": { "const": "value-families" },
+    "generatedAt": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedAt"
+    },
+    "generatedFrom": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedFrom"
+    },
+    "counts": {
+      "type": "object",
+      "required": ["families"],
+      "properties": {
+        "families": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/valueFamilyItem" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "valueFamilyItem": {
+      "type": "object",
+      "required": [
+        "valueFamily",
+        "parserKind",
+        "parserStatus",
+        "displaySupport",
+        "rawPreservationRequired",
+        "writeNormalizationAllowed",
+        "sourceArtifacts",
+        "notes"
+      ],
+      "properties": {
+        "valueFamily": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/valueFamily"
+        },
+        "parserKind": {
+          "type": "string",
+          "enum": [
+            "color-token",
+            "freeform-string-preview",
+            "gradient-or-color-list",
+            "numeric-list-preview",
+            "sanitized-path-preview",
+            "sanitized-regex-preview",
+            "scalar-or-report-only",
+            "structured-family",
+            "vec2-tuple"
+          ]
+        },
+        "parserStatus": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/parserStatus"
+        },
+        "displaySupport": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/displaySupport"
+        },
+        "rawPreservationRequired": { "type": "boolean" },
+        "writeNormalizationAllowed": { "const": false },
+        "sourceArtifacts": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/nonEmptyStringArray"
+        },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

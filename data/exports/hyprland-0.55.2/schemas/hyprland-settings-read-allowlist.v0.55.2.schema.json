@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyprland-settings://exports/0.55.2/schemas/hyprland-settings-read-allowlist.v0.55.2.schema.json",
+  "title": "Hyprland Settings Read Allowlist Export v0.55.2",
+  "type": "object",
+  "required": [
+    "hyprlandVersion",
+    "schemaVersion",
+    "artifactKind",
+    "generatedAt",
+    "generatedFrom",
+    "counts",
+    "items"
+  ],
+  "properties": {
+    "hyprlandVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/hyprlandVersion"
+    },
+    "schemaVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/schemaVersion"
+    },
+    "artifactKind": { "const": "read-allowlist" },
+    "generatedAt": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedAt"
+    },
+    "generatedFrom": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedFrom"
+    },
+    "counts": {
+      "type": "object",
+      "required": ["rows"],
+      "properties": {
+        "rows": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/readAllowlistItem" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "readAllowlistItem": {
+      "type": "object",
+      "required": [
+        "rowId",
+        "officialSetting",
+        "readStrategy",
+        "parser",
+        "scalarOnly",
+        "safetyNotes",
+        "readSupportSource",
+        "liveValuePayloadIncluded",
+        "commandStringIncluded"
+      ],
+      "properties": {
+        "rowId": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/rowId"
+        },
+        "officialSetting": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/officialSetting"
+        },
+        "readStrategy": { "const": "current-value-scalar-read" },
+        "parser": {
+          "type": "string",
+          "enum": [
+            "hyprctl-getoption-bool",
+            "hyprctl-getoption-css-gap",
+            "hyprctl-getoption-number",
+            "hyprctl-getoption-string"
+          ]
+        },
+        "scalarOnly": { "const": true },
+        "safetyNotes": { "type": "string" },
+        "readSupportSource": { "type": "string" },
+        "liveValuePayloadIncluded": { "const": false },
+        "commandStringIncluded": { "const": false }
+      },
+      "additionalProperties": false
+    }
+  }
+}

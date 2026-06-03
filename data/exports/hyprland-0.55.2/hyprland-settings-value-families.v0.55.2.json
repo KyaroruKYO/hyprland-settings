@@ -1,0 +1,133 @@
+{
+  "artifactKind": "value-families",
+  "counts": {
+    "families": 9
+  },
+  "generatedAt": "2026-06-03T01:20:07Z",
+  "generatedFrom": [
+    ".config/hypr/docs/HYPRLAND-0.55.2-PORTABLE-EXPORT-SCHEMA-DESIGN.md",
+    ".config/ags/widget/hyprland-settings/parsedPreviewCandidateIds.ts",
+    ".config/ags/widget/hyprland-settings/warningPreviewCandidateIds.ts",
+    ".config/hypr/docs/HYPRLAND-0.55.2-DEFERRED-PARSER-ROWS-DESIGN.md"
+  ],
+  "hyprlandVersion": "0.55.2",
+  "items": [
+    {
+      "displaySupport": "safe-preview",
+      "notes": "Read-only color preview metadata; no write normalization in export.",
+      "parserKind": "color-token",
+      "parserStatus": "implemented",
+      "rawPreservationRequired": true,
+      "sourceArtifacts": [
+        "parsedPreviewCandidateIds.ts",
+        "PORTABLE-EXPORT-SCHEMA-DESIGN"
+      ],
+      "valueFamily": "color",
+      "writeNormalizationAllowed": false
+    },
+    {
+      "displaySupport": "safe-preview",
+      "notes": "Read-only tuple preview metadata; no live payloads in export.",
+      "parserKind": "vec2-tuple",
+      "parserStatus": "implemented",
+      "rawPreservationRequired": true,
+      "sourceArtifacts": [
+        "parsedPreviewCandidateIds.ts",
+        "PORTABLE-EXPORT-SCHEMA-DESIGN"
+      ],
+      "valueFamily": "vector_tuple",
+      "writeNormalizationAllowed": false
+    },
+    {
+      "displaySupport": "warning-preview",
+      "notes": "Warning-only preview candidate until parser/control design is accepted.",
+      "parserKind": "gradient-or-color-list",
+      "parserStatus": "design-only",
+      "rawPreservationRequired": true,
+      "sourceArtifacts": [
+        "warningPreviewCandidateIds.ts",
+        "nonReadClassification.ts"
+      ],
+      "valueFamily": "gradient",
+      "writeNormalizationAllowed": false
+    },
+    {
+      "displaySupport": "warning-preview",
+      "notes": "Path-like values remain warning-only and do not verify local files.",
+      "parserKind": "sanitized-path-preview",
+      "parserStatus": "design-only",
+      "rawPreservationRequired": true,
+      "sourceArtifacts": [
+        "warningPreviewCandidateIds.ts",
+        "nonReadClassification.ts"
+      ],
+      "valueFamily": "path_shader_path",
+      "writeNormalizationAllowed": false
+    },
+    {
+      "displaySupport": "warning-preview",
+      "notes": "Regex-like values remain warning-only and behavior is not inferred.",
+      "parserKind": "sanitized-regex-preview",
+      "parserStatus": "design-only",
+      "rawPreservationRequired": true,
+      "sourceArtifacts": [
+        "warningPreviewCandidateIds.ts",
+        "nonReadClassification.ts"
+      ],
+      "valueFamily": "regex_rule_like_string",
+      "writeNormalizationAllowed": false
+    },
+    {
+      "displaySupport": "deferred",
+      "notes": "Deferred until official source review clarifies safe display treatment.",
+      "parserKind": "freeform-string-preview",
+      "parserStatus": "deferred",
+      "rawPreservationRequired": true,
+      "sourceArtifacts": [
+        "HYPRLAND-0.55.2-DEFERRED-PARSER-ROWS-DESIGN.md"
+      ],
+      "valueFamily": "mixed_freeform_string",
+      "writeNormalizationAllowed": false
+    },
+    {
+      "displaySupport": "deferred",
+      "notes": "Deferred until expected numeric-list shape is source-confirmed.",
+      "parserKind": "numeric-list-preview",
+      "parserStatus": "deferred",
+      "rawPreservationRequired": true,
+      "sourceArtifacts": [
+        "HYPRLAND-0.55.2-DEFERRED-PARSER-ROWS-DESIGN.md"
+      ],
+      "valueFamily": "bezierish_numeric_list",
+      "writeNormalizationAllowed": false
+    },
+    {
+      "displaySupport": "text-only",
+      "notes": "Default scalar/report-only family for rows without a specialized preview family.",
+      "parserKind": "scalar-or-report-only",
+      "parserStatus": "implemented",
+      "rawPreservationRequired": false,
+      "sourceArtifacts": [
+        "settings-ui-design.draft.json",
+        "currentValueAllowlist.ts"
+      ],
+      "valueFamily": "none",
+      "writeNormalizationAllowed": false
+    },
+    {
+      "displaySupport": "structured-design",
+      "notes": "Structured curve/animation support is fixture-backed in AGS and read-only.",
+      "parserKind": "structured-family",
+      "parserStatus": "implemented-fixture-only",
+      "rawPreservationRequired": true,
+      "sourceArtifacts": [
+        "structuredCurveAnimationParsers.ts",
+        "structuredCurveAnimationDisplay.ts",
+        "structuredCurveAnimationFixtures.ts"
+      ],
+      "valueFamily": "structured_curve_animation",
+      "writeNormalizationAllowed": false
+    }
+  ],
+  "schemaVersion": 1
+}

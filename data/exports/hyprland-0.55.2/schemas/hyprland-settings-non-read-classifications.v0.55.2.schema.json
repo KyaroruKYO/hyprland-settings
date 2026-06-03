@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "hyprland-settings://exports/0.55.2/schemas/hyprland-settings-non-read-classifications.v0.55.2.schema.json",
+  "title": "Hyprland Settings Non-Read Classifications Export v0.55.2",
+  "type": "object",
+  "required": [
+    "hyprlandVersion",
+    "schemaVersion",
+    "artifactKind",
+    "generatedAt",
+    "generatedFrom",
+    "counts",
+    "items"
+  ],
+  "properties": {
+    "hyprlandVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/hyprlandVersion"
+    },
+    "schemaVersion": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/schemaVersion"
+    },
+    "artifactKind": { "const": "non-read-classifications" },
+    "generatedAt": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedAt"
+    },
+    "generatedFrom": {
+      "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/generatedFrom"
+    },
+    "counts": {
+      "type": "object",
+      "required": ["rows", "previewParserNeededRows", "reportOnlyHighRiskRows"],
+      "properties": {
+        "rows": { "type": "integer" },
+        "previewParserNeededRows": { "type": "integer" },
+        "reportOnlyHighRiskRows": { "type": "integer" }
+      },
+      "additionalProperties": false
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nonReadItem" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonReadItem": {
+      "type": "object",
+      "required": [
+        "rowId",
+        "officialSetting",
+        "unresolvedCategory",
+        "valueFamily",
+        "reason",
+        "riskClass",
+        "parserDesignStatus",
+        "futureControlKind",
+        "shouldRemainReportOnly",
+        "currentValueReadsBlocked",
+        "notes"
+      ],
+      "properties": {
+        "rowId": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/rowId"
+        },
+        "officialSetting": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/officialSetting"
+        },
+        "unresolvedCategory": {
+          "type": "string",
+          "enum": ["preview-parser-needed", "report-only-high-risk"]
+        },
+        "valueFamily": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/valueFamily"
+        },
+        "reason": { "type": "string" },
+        "riskClass": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/riskClass"
+        },
+        "parserDesignStatus": {
+          "$ref": "hyprland-settings-export-common.v0.55.2.schema.json#/$defs/parserStatus"
+        },
+        "futureControlKind": {
+          "type": "string",
+          "enum": [
+            "inert_report_only_status",
+            "read_only_color_swatch",
+            "read_only_gradient_preview",
+            "read_only_numeric_list_display",
+            "read_only_text_or_enum_label",
+            "read_only_tuple_display",
+            "sanitized_path_preview",
+            "sanitized_regex_preview"
+          ]
+        },
+        "shouldRemainReportOnly": { "type": "boolean" },
+        "currentValueReadsBlocked": { "const": true },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

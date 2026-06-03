@@ -1,0 +1,119 @@
+use std::path::Path;
+
+use anyhow::Result;
+use hyprland_settings::export::ExportBundle;
+use hyprland_settings::metadata::resolve_metadata_path_with_env;
+use hyprland_settings::ui::model::{RowDetailProjection, UiProjection};
+use hyprland_settings::validation::validate_bundle;
+
+fn load_projection() -> Result<UiProjection> {
+    let resolution = resolve_metadata_path_with_env(None, None)?;
+    let bundle = ExportBundle::load(Path::new(&resolution.export_dir))?;
+    let summary = validate_bundle(&bundle)?;
+    Ok(UiProjection::from_bundle(&bundle, &summary))
+}
+
+fn detail_for(row_id: &str) -> Result<RowDetailProjection> {
+    let projection = load_projection()?;
+    Ok(projection
+        .detail_for_row(row_id)
+        .unwrap_or_else(|| panic!("missing detail for {row_id}")))
+}
+
+#[test]
+fn row_detail_projection_includes_required_metadata() -> Result<()> {
+    let detail = detail_for("animations.enabled")?;
+
+    assert_eq!(detail.row_id, "animations.enabled");
+    assert_eq!(detail.official_setting, "animations.enabled");
+    assert_eq!(detail.tab_label, "Animations");
+    assert!(!detail.label.is_empty());
+    assert!(!detail.description.is_empty());
+    assert!(!detail.read_support.is_empty());
+    assert!(!detail.preview_status.is_empty());
+    assert!(!detail.risk_class.is_empty());
+    assert_eq!(detail.non_read_status, None);
+    assert!(detail
+        .safety_notes
+        .iter()
+        .any(|note| note == "No live value is read."));
+
+    Ok(())
+}
+
+#[test]
+fn row_detail_projection_has_no_live_values_or_command_strings() -> Result<()> {
+    let detail = detail_for("appearance.blur.enabled")?;
+    let combined = [
+        detail.label,
+        detail.row_id,
+        detail.official_setting,
+        detail.description,
+        detail.read_support,
+        detail.write_support,
+        detail.preview_status,
+        detail.risk_class,
+        detail.write_candidate_status,
+    ]
+    .join(" ");
+    let forbidden = ["hypr", "ctl"].concat();
+
+    assert!(!combined.contains(forbidden.as_str()));
+    assert!(!combined.contains("current value:"));
+    assert!(!combined.contains("write command"));
+
+    Ok(())
+}
+
+#[test]
+fn write_candidate_detail_remains_disabled_metadata() -> Result<()> {
+    let detail = detail_for("windows.snap.enabled")?;
+
+    assert_eq!(
+        detail.write_candidate_status,
+        "active write candidate metadata, disabled"
+    );
+    assert_eq!(
+        detail.write_candidate_target_mode.as_deref(),
+        Some("pending-change-only")
+    );
+    assert_eq!(detail.write_candidate_executable, Some(false));
+    assert_eq!(
+        detail.write_candidate_command_generation_allowed,
+        Some(false)
+    );
+
+    Ok(())
+}
+
+#[test]
+fn row_detail_projection_has_no_live_config_paths() -> Result<()> {
+    let projection = load_projection()?;
+    let user_config_prefix = ["/home", "kyo", ".config"].join("/");
+
+    for setting in &projection.settings {
+        let detail = projection
+            .detail_for_row(&setting.row_id)
+            .unwrap_or_else(|| panic!("missing detail for {}", setting.row_id));
+        let combined = [
+            detail.label,
+            detail.row_id,
+            detail.official_setting,
+            detail.tab_label,
+            detail.subsection,
+            detail.description,
+            detail.read_support,
+            detail.write_support,
+            detail.preview_status,
+            detail.risk_class,
+            detail.write_candidate_status,
+        ]
+        .join(" ");
+
+        assert!(!combined.contains(&user_config_prefix));
+        assert!(!combined.contains("raw user config"));
+        assert!(!combined.contains("included path"));
+    }
+
+    Ok(())
+}
