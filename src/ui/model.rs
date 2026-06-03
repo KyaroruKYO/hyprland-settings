@@ -25,6 +25,7 @@ pub struct UiProjection {
     pub settings: Vec<UiSetting>,
     pub active_write_candidates: Vec<UiWriteCandidate>,
     pub structured_families: Vec<UiStructuredFamily>,
+    pub current_value_summary: UiCurrentValueSummary,
 }
 
 impl UiProjection {
@@ -68,6 +69,7 @@ impl UiProjection {
         settings.sort_by_key(|setting| (setting.tab_order(&tabs), setting.row_order));
 
         let structured_families = structured_families_from_config(&current_config);
+        let current_value_summary = current_value_summary_from_settings(&settings);
 
         Self {
             export_dir: bundle.export_dir.display().to_string(),
@@ -94,6 +96,7 @@ impl UiProjection {
             settings,
             active_write_candidates,
             structured_families,
+            current_value_summary,
         }
     }
 
@@ -124,6 +127,17 @@ impl UiProjection {
                 RowDetailProjection::from_setting(setting, &self.active_write_candidates)
             })
     }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct UiCurrentValueSummary {
+    pub total_rows: usize,
+    pub readable_rows: usize,
+    pub unreadable_rows: usize,
+    pub configured_rows: usize,
+    pub unconfigured_rows: usize,
+    pub duplicate_conflict_rows: usize,
+    pub parser_warning_rows: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -271,6 +285,41 @@ fn structured_families_from_config(
             }
         })
         .collect()
+}
+
+fn current_value_summary_from_settings(settings: &[UiSetting]) -> UiCurrentValueSummary {
+    let total_rows = settings.len();
+    let configured_rows = settings
+        .iter()
+        .filter(|setting| setting.current_value.status == CurrentValueSourceStatus::Configured)
+        .count();
+    let unconfigured_rows = settings
+        .iter()
+        .filter(|setting| setting.current_value.status == CurrentValueSourceStatus::NotConfigured)
+        .count();
+    let duplicate_conflict_rows = settings
+        .iter()
+        .filter(|setting| {
+            setting.current_value.status == CurrentValueSourceStatus::DuplicateConflict
+        })
+        .count();
+    let unreadable_rows = settings
+        .iter()
+        .filter(|setting| setting.current_value.status == CurrentValueSourceStatus::ReadUnavailable)
+        .count();
+    let parser_warning_rows = settings
+        .iter()
+        .filter(|setting| setting.current_value.warning.is_some())
+        .count();
+    UiCurrentValueSummary {
+        total_rows,
+        readable_rows: total_rows - unreadable_rows,
+        unreadable_rows,
+        configured_rows,
+        unconfigured_rows,
+        duplicate_conflict_rows,
+        parser_warning_rows,
+    }
 }
 
 fn structured_entry_from_record(record: &ParsedConfigLine) -> UiStructuredEntry {

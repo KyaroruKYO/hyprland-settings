@@ -287,6 +287,16 @@ fn build_summary_card(model: &UiProjection) -> gtk::Frame {
     content.append(&body_label(&model.config_discovery.summary()));
     content.append(&small_label(model.config_discovery.live_read_status()));
     content.append(&body_label(&model.current_config.summary()));
+    content.append(&body_label(&format!(
+        "Current-value rows: readable {} / {} · unreadable {} · configured {} · unconfigured {} · conflicts {} · parser warnings {}",
+        model.current_value_summary.readable_rows,
+        model.current_value_summary.total_rows,
+        model.current_value_summary.unreadable_rows,
+        model.current_value_summary.configured_rows,
+        model.current_value_summary.unconfigured_rows,
+        model.current_value_summary.duplicate_conflict_rows,
+        model.current_value_summary.parser_warning_rows
+    )));
     content.append(&body_label(&model.current_config.structured_summary()));
     append_structured_family_summary(model, &content);
     content.append(&body_label(&write_safety_text(model)));
