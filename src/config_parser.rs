@@ -163,14 +163,16 @@ fn parse_structured_line(
 }
 
 fn normalize_scalar_key(key: &str) -> Option<String> {
-    let key = key.trim();
-    let (section, setting) = key.split_once(':')?;
-    let section = section.trim();
-    let setting = setting.trim();
-    if section.is_empty() || setting.is_empty() || setting.contains(':') {
+    let parts: Vec<_> = key
+        .trim()
+        .split(':')
+        .map(str::trim)
+        .filter(|part| !part.is_empty())
+        .collect();
+    if parts.len() < 2 {
         return None;
     }
-    Some(format!("{section}.{setting}"))
+    Some(parts.join("."))
 }
 
 fn duplicate_scalar_keys(records: &[ParsedConfigLine]) -> BTreeMap<String, Vec<usize>> {

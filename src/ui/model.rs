@@ -169,10 +169,10 @@ impl UiSetting {
             preview_status: entry.preview_status.clone(),
             report_only: entry.report_only,
             is_write_candidate: active_write_ids.contains(&entry.row_id.as_str()),
-            current_value: current_config.value_for(&entry.row_id),
+            current_value: current_value_for_entry(entry, current_config),
             comparison: ComparisonProjection::from_current_value(
                 &entry.default_config_presence,
-                &current_config.value_for(&entry.row_id),
+                &current_value_for_entry(entry, current_config),
             ),
         }
     }
@@ -183,6 +183,18 @@ impl UiSetting {
             .map(|tab| tab.order)
             .unwrap_or(usize::MAX)
     }
+}
+
+fn current_value_for_entry(
+    entry: &InventoryEntry,
+    current_config: &CurrentConfigSnapshot,
+) -> CurrentValueProjection {
+    let row_value = current_config.value_for(&entry.row_id);
+    if row_value.status != CurrentValueSourceStatus::NotConfigured {
+        return row_value;
+    }
+
+    current_config.value_for(&entry.official_setting)
 }
 
 #[derive(Debug, Clone)]

@@ -3,6 +3,7 @@ pub mod config_parser;
 pub mod current_config;
 pub mod export;
 pub mod metadata;
+pub mod pending_change;
 pub mod search;
 pub mod ui;
 pub mod validation;

@@ -28,11 +28,12 @@ input:kb_layout = us
 decoration:rounding = 10
 animations:enabled = true
 misc:disable_hyprland_logo = true
+general:snap:enabled = false
 "#,
     );
 
     let scalars: Vec<_> = parsed.scalar_records().collect();
-    assert_eq!(scalars.len(), 5);
+    assert_eq!(scalars.len(), 6);
     assert_eq!(
         scalars
             .iter()
@@ -44,6 +45,7 @@ misc:disable_hyprland_logo = true
             Some("decoration.rounding"),
             Some("animations.enabled"),
             Some("misc.disable_hyprland_logo"),
+            Some("general.snap.enabled"),
         ]
     );
     assert_eq!(scalars[0].raw_value.as_deref(), Some("5"));
