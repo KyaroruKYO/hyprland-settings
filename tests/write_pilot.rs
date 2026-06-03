@@ -188,9 +188,9 @@ fn invalid_value_is_rejected_before_write_pilot() -> Result<()> {
 #[test]
 fn no_other_setting_gets_writable_plan() {
     let current = CurrentValueProjection::not_configured();
-    let pending = stage_pending_change("animations.enabled", &current, "false");
+    let pending = stage_pending_change("appearance.blur.size", &current, "10");
     let review = review_write_plan(WritePlanRequest {
-        known_setting_ids: ["animations.enabled"]
+        known_setting_ids: ["appearance.blur.size"]
             .into_iter()
             .map(str::to_string)
             .collect(),

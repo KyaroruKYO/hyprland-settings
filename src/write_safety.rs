@@ -3,9 +3,8 @@ use std::path::PathBuf;
 
 use crate::config_backup::ConfigBackup;
 use crate::current_config::{CurrentValueProjection, CurrentValueSourceStatus};
-use crate::pending_change::{
-    PendingChange, PendingChangeValidation, ACTIVE_PENDING_CHANGE_SETTING,
-};
+use crate::pending_change::{PendingChange, PendingChangeValidation};
+use crate::write_classification::is_safe_writable_setting;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct WritePlanRequest {
@@ -77,7 +76,7 @@ pub fn review_write_plan(request: WritePlanRequest) -> WriteReview {
     if !request.known_setting_ids.contains(setting_id) {
         failures.push(WriteGateFailure::UnknownSetting);
     }
-    if setting_id != ACTIVE_PENDING_CHANGE_SETTING {
+    if !is_safe_writable_setting(setting_id) {
         failures.push(WriteGateFailure::NotAllowlisted);
     }
     if setting_id.starts_with("hl.") {

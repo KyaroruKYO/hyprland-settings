@@ -84,13 +84,13 @@ fn rejects_unknown_setting() {
 fn rejects_unsafe_setting() {
     let current = current_value_for(
         "/tmp/hyprland.conf",
-        "animations.enabled",
-        "animations:enabled = true\n",
+        "decoration.blur.size",
+        "decoration:blur:size = 8\n",
     );
-    let pending = stage_pending_change("animations.enabled", &current, "false");
+    let pending = stage_pending_change("appearance.blur.size", &current, "10");
 
     let review = review_write_plan(WritePlanRequest {
-        known_setting_ids: known_ids(&["animations.enabled"]),
+        known_setting_ids: known_ids(&["appearance.blur.size"]),
         detected_config_path: PathBuf::from("/tmp/hyprland.conf"),
         current_value: current,
         pending_change: pending,

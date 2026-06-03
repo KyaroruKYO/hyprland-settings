@@ -36,17 +36,17 @@ fn invalid_pending_change_for_windows_snap_enabled_is_rejected() {
     assert_eq!(
         change.validation,
         PendingChangeValidation::Invalid {
-            reason: "windows.snap.enabled requires a boolean value".to_string(),
+            reason: "safe scalar toggle writes require a boolean value".to_string(),
         }
     );
     assert!(!change.can_be_applied());
 }
 
 #[test]
-fn only_windows_snap_enabled_can_be_staged() {
-    let current = current_value_for("animations.enabled", "animations:enabled = true\n");
+fn only_safe_writable_toggles_can_be_staged() {
+    let current = current_value_for("decoration.blur.size", "decoration:blur:size = 8\n");
 
-    let change = stage_pending_change("animations.enabled", &current, "false");
+    let change = stage_pending_change("appearance.blur.size", &current, "10");
 
     assert_eq!(
         change.validation,
@@ -56,7 +56,7 @@ fn only_windows_snap_enabled_can_be_staged() {
     );
     assert_eq!(
         change.non_editable_reason.as_deref(),
-        Some("only windows.snap.enabled can be staged")
+        Some("setting is not in the safe scalar write allowlist")
     );
 }
 

@@ -108,7 +108,7 @@ fn write_candidate_detail_remains_disabled_metadata() -> Result<()> {
 
 #[test]
 fn non_allowlisted_detail_explains_disabled_edit_state() -> Result<()> {
-    let detail = detail_for("animations.enabled")?;
+    let detail = detail_for("appearance.blur.size")?;
 
     assert!(!detail.edit.editable);
     assert_eq!(

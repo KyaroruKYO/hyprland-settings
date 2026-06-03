@@ -48,15 +48,22 @@ fn snapshot_for(path: &PathBuf, contents: &str) -> CurrentConfigSnapshot {
 }
 
 #[test]
-fn edit_projection_only_allows_windows_snap_enabled() {
+fn edit_projection_allows_only_safe_writable_toggles() {
     let current =
         CurrentConfigSnapshot::read_unavailable("no config").value_for("general.snap.enabled");
-    let editable = edit_projection_for_setting(ACTIVE_PENDING_CHANGE_SETTING, &current);
-    let blocked = edit_projection_for_setting("animations.enabled", &current);
+    let blocked = edit_projection_for_setting("appearance.blur.size", &current);
 
-    assert!(editable.editable);
-    assert_eq!(editable.proposed_value.as_deref(), Some("true"));
-    assert!(!editable.pending.expect("pending projection").can_review);
+    for row_id in [
+        "appearance.blur.enabled",
+        "appearance.shadow.enabled",
+        "animations.enabled",
+        ACTIVE_PENDING_CHANGE_SETTING,
+    ] {
+        let editable = edit_projection_for_setting(row_id, &current);
+        assert!(editable.editable, "{row_id} should be editable");
+        assert_eq!(editable.proposed_value.as_deref(), Some("true"));
+        assert!(!editable.pending.expect("pending projection").can_review);
+    }
     assert!(!blocked.editable);
     assert_eq!(
         blocked.disabled_reason.as_deref(),
@@ -154,7 +161,7 @@ fn apply_flow_blocks_non_allowlisted_setting() {
         known_ids(),
         &discovery,
         &snapshot,
-        "animations.enabled",
+        "appearance.blur.size",
         "false",
         &backup_manager,
     )

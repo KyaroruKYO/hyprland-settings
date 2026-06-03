@@ -8,13 +8,10 @@ use crate::config_discovery::{ConfigDiscovery, ConfigDiscoveryStatus};
 use crate::current_config::{
     CurrentConfigSnapshot, CurrentValueProjection, CurrentValueSourceStatus,
 };
-use crate::pending_change::{
-    stage_pending_change, PendingChange, PendingChangeValidation, ACTIVE_PENDING_CHANGE_SETTING,
-};
-use crate::write_pilot::apply_windows_snap_enabled_plan;
+use crate::pending_change::{stage_pending_change, PendingChange, PendingChangeValidation};
+use crate::scalar_write::apply_scalar_write_plan;
+use crate::write_classification::{is_safe_writable_setting, safe_writable_official_setting};
 use crate::write_safety::{review_write_plan, WriteGateFailure, WritePlanRequest, WriteResult};
-
-const WINDOWS_SNAP_CONFIG_SETTING: &str = "general.snap.enabled";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SettingEditProjection {
@@ -56,7 +53,7 @@ pub fn edit_projection_for_setting(
     setting_id: &str,
     current_value: &CurrentValueProjection,
 ) -> SettingEditProjection {
-    if setting_id != ACTIVE_PENDING_CHANGE_SETTING {
+    if !is_safe_writable_setting(setting_id) {
         return SettingEditProjection {
             setting_id: setting_id.to_string(),
             editable: false,
@@ -115,7 +112,7 @@ pub fn apply_setting_change_with_backup_manager(
     proposed_value: &str,
     backup_manager: &BackupManager,
 ) -> Result<ApplyOutcome, ApplyFailure> {
-    if setting_id != ACTIVE_PENDING_CHANGE_SETTING {
+    if !is_safe_writable_setting(setting_id) {
         return Err(ApplyFailure {
             reason: "setting is not write-allowlisted".to_string(),
             failures: vec!["NotAllowlisted".to_string()],
@@ -132,7 +129,12 @@ pub fn apply_setting_change_with_backup_manager(
         reason,
         failures: vec!["MissingCurrentSource".to_string()],
     })?;
-    let current_value = current_config.value_for(WINDOWS_SNAP_CONFIG_SETTING);
+    let official_setting =
+        safe_writable_official_setting(setting_id).ok_or_else(|| ApplyFailure {
+            reason: "setting is not write-allowlisted".to_string(),
+            failures: vec!["NotAllowlisted".to_string()],
+        })?;
+    let current_value = current_config.value_for(official_setting);
     let pending_change = stage_pending_change(setting_id, &current_value, proposed_value);
     match &pending_change.validation {
         PendingChangeValidation::Valid => {}
@@ -179,7 +181,7 @@ pub fn apply_setting_change_with_backup_manager(
         });
     }
 
-    let result = apply_windows_snap_enabled_plan(
+    let result = apply_scalar_write_plan(
         &review
             .plan
             .clone()
@@ -302,7 +304,7 @@ fn format_gate_failure(failure: &WriteGateFailure) -> String {
 }
 
 pub fn write_flow_config_setting(setting_id: &str) -> Option<&'static str> {
-    (setting_id == ACTIVE_PENDING_CHANGE_SETTING).then_some(WINDOWS_SNAP_CONFIG_SETTING)
+    safe_writable_official_setting(setting_id)
 }
 
 pub fn status_allows_review(status: CurrentValueSourceStatus) -> bool {

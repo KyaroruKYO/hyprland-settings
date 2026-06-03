@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use crate::current_config::CurrentValueProjection;
+use crate::write_classification::is_safe_writable_setting;
 
 pub const ACTIVE_PENDING_CHANGE_SETTING: &str = "windows.snap.enabled";
 
@@ -50,7 +51,7 @@ pub fn stage_pending_change(
             raw_line: current_value.raw_line.clone().unwrap_or_default(),
         });
 
-    if setting_id != ACTIVE_PENDING_CHANGE_SETTING {
+    if !is_safe_writable_setting(setting_id) {
         return PendingChange {
             setting_id: setting_id.to_string(),
             old_parsed_value: current_value.raw_value.clone(),
@@ -59,7 +60,9 @@ pub fn stage_pending_change(
                 reason: "setting is not pending-change allowlisted".to_string(),
             },
             source,
-            non_editable_reason: Some("only windows.snap.enabled can be staged".to_string()),
+            non_editable_reason: Some(
+                "setting is not in the safe scalar write allowlist".to_string(),
+            ),
         };
     }
 
@@ -67,7 +70,7 @@ pub fn stage_pending_change(
         PendingChangeValidation::Valid
     } else {
         PendingChangeValidation::Invalid {
-            reason: "windows.snap.enabled requires a boolean value".to_string(),
+            reason: "safe scalar toggle writes require a boolean value".to_string(),
         }
     };
     let non_editable_reason = (validation != PendingChangeValidation::Valid)

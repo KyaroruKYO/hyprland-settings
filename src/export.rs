@@ -133,6 +133,14 @@ pub struct InventoryEntry {
     pub row_order: usize,
     pub label: String,
     pub description: String,
+    #[serde(rename = "controlKind")]
+    pub control_kind: String,
+    #[serde(rename = "valueFamily")]
+    pub value_family: String,
+    #[serde(rename = "parserStatus")]
+    pub parser_status: String,
+    #[serde(rename = "structuredFamily")]
+    pub structured_family: Option<bool>,
     #[serde(rename = "defaultConfigPresence")]
     pub default_config_presence: String,
     #[serde(rename = "readSupport")]
