@@ -9,6 +9,7 @@ use hyprland_settings::export::ExportBundle;
 use hyprland_settings::metadata::resolve_metadata_path_with_env;
 use hyprland_settings::ui::model::UiProjection;
 use hyprland_settings::validation::validate_bundle;
+use hyprland_settings::write_classification::SAFE_WRITABLE_TOGGLE_ROWS;
 use serde_json::Value;
 
 fn load_bundle() -> Result<ExportBundle> {
@@ -110,6 +111,58 @@ fn scalar_coverage_report_contains_all_rows_with_explicit_statuses() -> Result<(
             assert!(
                 row["writeBlocker"].as_str().is_some(),
                 "{} needs a write blocker",
+                row["rowId"]
+            );
+        }
+    }
+
+    Ok(())
+}
+
+#[test]
+fn coverage_report_enforces_safe_writable_rows() -> Result<()> {
+    let report: Value = serde_json::from_str(include_str!(
+        "../data/reports/scalar-read-write-coverage.v0.55.2.json"
+    ))?;
+    let rows = report["rows"]
+        .as_array()
+        .expect("coverage report rows should be an array");
+    let writable = rows
+        .iter()
+        .filter(|row| row["writeStatus"].as_str() == Some("writable"))
+        .map(|row| row["rowId"].as_str().expect("rowId should be a string"))
+        .collect::<BTreeSet<_>>();
+    let expected = SAFE_WRITABLE_TOGGLE_ROWS
+        .iter()
+        .map(|(row_id, _)| *row_id)
+        .collect::<BTreeSet<_>>();
+    let allowed_statuses = [
+        "writable",
+        "blocked",
+        "deferred",
+        "unsupported",
+        "high-risk",
+        "structured",
+        "parser-needed",
+        "validator-needed",
+        "manual-review-needed",
+    ]
+    .into_iter()
+    .collect::<BTreeSet<_>>();
+
+    assert_eq!(writable, expected);
+    for row in rows {
+        let status = row["writeStatus"]
+            .as_str()
+            .expect("writeStatus should be a string");
+        assert!(
+            allowed_statuses.contains(status),
+            "unknown write status {status}"
+        );
+        if status != "writable" {
+            assert!(
+                row["writeBlocker"].as_str().is_some(),
+                "{} must have a blocker",
                 row["rowId"]
             );
         }
