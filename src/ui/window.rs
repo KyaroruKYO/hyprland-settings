@@ -286,6 +286,7 @@ fn build_summary_card(model: &UiProjection) -> gtk::Frame {
     content.append(&body_label(&model.config_discovery.summary()));
     content.append(&small_label(model.config_discovery.live_read_status()));
     content.append(&body_label(&model.current_config.summary()));
+    content.append(&body_label(&model.current_config.structured_summary()));
     content.append(&body_label(&write_safety_text(model)));
 
     frame.set_child(Some(&content));

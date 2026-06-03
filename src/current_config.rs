@@ -157,6 +157,29 @@ impl CurrentConfigSnapshot {
             }
         }
     }
+
+    pub fn structured_family_counts(&self) -> BTreeMap<String, usize> {
+        let mut counts = BTreeMap::new();
+        for record in &self.structured_records {
+            if let Some(family) = &record.normalized_setting_id {
+                *counts.entry(family.clone()).or_insert(0) += 1;
+            }
+        }
+        counts
+    }
+
+    pub fn structured_summary(&self) -> String {
+        let counts = self.structured_family_counts();
+        if counts.is_empty() {
+            return "Structured config entries: none parsed.".to_string();
+        }
+        let entries = counts
+            .iter()
+            .map(|(family, count)| format!("{family}: {count}"))
+            .collect::<Vec<_>>()
+            .join(" · ");
+        format!("Structured config entries preserved read-only: {entries}")
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
