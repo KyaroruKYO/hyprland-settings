@@ -8,8 +8,9 @@ use crate::config_discovery::ConfigDiscovery;
 use crate::current_config::CurrentConfigSnapshot;
 use crate::export::ExportBundle;
 use crate::search::{search_projection, SearchRank, SearchResult};
-use crate::ui::model::UiProjection;
+use crate::ui::model::{RowDetailProjection, UiProjection};
 use crate::validation::ValidationSummary;
+use crate::write_flow::apply_setting_change;
 
 pub fn show_main_window(
     app: &adw::Application,
@@ -45,7 +46,7 @@ pub fn show_main_window(
 
     let root = gtk::Box::new(gtk::Orientation::Vertical, 0);
 
-    let title = adw::WindowTitle::new("Hyprland Settings", "Read-only export preview");
+    let title = adw::WindowTitle::new("Hyprland Settings", "Hyprland config metadata and values");
     let header = adw::HeaderBar::new();
     header.set_title_widget(Some(&title));
     root.append(&header);
@@ -281,7 +282,7 @@ fn build_summary_card(model: &UiProjection) -> gtk::Frame {
         model.summary.structured_family_count
     )));
     content.append(&body_label(
-        "Read-only export metadata. Hyprland config discovery is read-only. No settings are changed. AGS is not required at runtime.",
+        "Export metadata is bundled. Current values are parsed from hyprland.conf as plain text when available. AGS is not required at runtime.",
     ));
     content.append(&body_label(&model.config_discovery.summary()));
     content.append(&small_label(model.config_discovery.live_read_status()));
@@ -380,10 +381,12 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
     } else {
         "not report-only"
     };
-    let write_status = if setting.is_write_candidate {
-        "write metadata disabled"
+    let write_status = if setting.edit.editable {
+        "editable pilot"
+    } else if setting.is_write_candidate {
+        "write metadata present"
     } else {
-        "no write metadata"
+        "not editable"
     };
 
     row_box.append(&small_label(&format!(
@@ -513,10 +516,125 @@ fn render_detail(model: &UiProjection, row_id: &str, detail_content: &gtk::Box) 
             &command_generation_allowed.to_string(),
         );
     }
-    detail_content.append(&small_label("Write controls disabled · no write executor"));
+    append_detail_line(
+        detail_content,
+        "Editable in app",
+        if detail.edit.editable { "yes" } else { "no" },
+    );
+    if let Some(reason) = &detail.edit.disabled_reason {
+        append_detail_line(detail_content, "Disabled reason", reason);
+    }
+    if let Some(proposed_value) = &detail.edit.proposed_value {
+        append_detail_line(detail_content, "Suggested pending value", proposed_value);
+    }
+    if let Some(pending) = &detail.edit.pending {
+        append_detail_line(
+            detail_content,
+            "Pending change validation",
+            &pending.validation_label,
+        );
+        append_detail_line(
+            detail_content,
+            "Pending review available",
+            if pending.can_review { "yes" } else { "no" },
+        );
+        for line in &pending.review_summary {
+            detail_content.append(&small_label(line));
+        }
+    }
+    append_write_controls(model, &detail, detail_content);
     for note in &detail.safety_notes {
         detail_content.append(&small_label(note));
     }
+}
+
+fn append_write_controls(
+    model: &UiProjection,
+    detail: &RowDetailProjection,
+    detail_content: &gtk::Box,
+) {
+    if !detail.edit.editable {
+        return;
+    }
+
+    let controls = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    controls.set_margin_top(8);
+
+    controls.append(&body_label("Write review"));
+    controls.append(&small_label(
+        "Only this allowlisted pilot setting can be applied. A backup is created first, the config is rewritten, and the value is reread for verification. Hyprland reload is not run.",
+    ));
+
+    let value_row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    value_row.append(&body_label("Proposed value"));
+    let value_choice = gtk::ComboBoxText::new();
+    value_choice.append_text("true");
+    value_choice.append_text("false");
+    if detail.edit.proposed_value.as_deref() == Some("false") {
+        value_choice.set_active(Some(1));
+    } else {
+        value_choice.set_active(Some(0));
+    }
+    value_row.append(&value_choice);
+    controls.append(&value_row);
+
+    let apply_button = gtk::Button::with_label("Apply reviewed change");
+    let can_review = detail
+        .edit
+        .pending
+        .as_ref()
+        .map(|pending| pending.can_review)
+        .unwrap_or(false);
+    apply_button.set_sensitive(can_review);
+    controls.append(&apply_button);
+
+    let result_label = small_label(if can_review {
+        "Ready for backup, write, and reread verification."
+    } else {
+        "Apply is blocked until current config is readable and conflict-free."
+    });
+    controls.append(&result_label);
+
+    let known_setting_ids = model.known_setting_ids.clone();
+    let config_discovery = model.config_discovery.clone();
+    let current_config = model.current_config.clone();
+    let setting_id = detail.row_id.clone();
+    apply_button.connect_clicked(move |button| {
+        let proposed_value = value_choice
+            .active_text()
+            .map(|value| value.to_string())
+            .unwrap_or_else(|| "true".to_string());
+        match apply_setting_change(
+            known_setting_ids.clone(),
+            &config_discovery,
+            &current_config,
+            &setting_id,
+            &proposed_value,
+        ) {
+            Ok(outcome) => {
+                button.set_sensitive(false);
+                result_label.set_label(&format!(
+                    "Applied and verified {} = {}. Backup: {}. Rollback source: {}. {}",
+                    outcome.setting_id,
+                    outcome
+                        .verified_value
+                        .unwrap_or_else(|| "unknown".to_string()),
+                    outcome.backup_path.display(),
+                    outcome.rollback_source_path.display(),
+                    outcome.reload_note
+                ));
+            }
+            Err(error) => {
+                result_label.set_label(&format!(
+                    "Apply blocked: {} ({})",
+                    error.reason,
+                    error.failures.join(", ")
+                ));
+            }
+        }
+    });
+
+    detail_content.append(&controls);
 }
 
 fn append_detail_line(parent: &gtk::Box, label: &str, value: &str) {
@@ -542,7 +660,7 @@ fn search_rank_label(rank: Option<SearchRank>) -> &'static str {
 }
 
 fn write_safety_text(model: &UiProjection) -> String {
-    let mut parts = vec!["Write controls disabled".to_string()];
+    let mut parts = vec!["Write controls gated".to_string()];
     for candidate in &model.active_write_candidates {
         parts.push(format!(
             "active candidate: {} · target mode: {} · executable: {} · command generation: {}",
@@ -552,7 +670,8 @@ fn write_safety_text(model: &UiProjection) -> String {
             candidate.command_generation_allowed
         ));
     }
-    parts.push("no write executor".to_string());
+    parts.push("first pilot requires backup and reread verification".to_string());
+    parts.push("no Hyprland reload command is run".to_string());
     parts.join(" · ")
 }
 

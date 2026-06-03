@@ -1,0 +1,165 @@
+use std::collections::BTreeSet;
+use std::fs;
+use std::path::PathBuf;
+use std::time::{SystemTime, UNIX_EPOCH};
+
+use anyhow::Result;
+use hyprland_settings::config_backup::BackupManager;
+use hyprland_settings::config_discovery::{
+    ConfigDiscovery, ConfigDiscoveryStatus, ConfigPathSource,
+};
+use hyprland_settings::config_parser::parse_hyprland_config_text;
+use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueSourceStatus};
+use hyprland_settings::pending_change::ACTIVE_PENDING_CHANGE_SETTING;
+use hyprland_settings::write_flow::{
+    apply_setting_change_with_backup_manager, edit_projection_for_setting,
+    pending_projection_for_value,
+};
+
+fn temp_root(name: &str) -> Result<PathBuf> {
+    let stamp = SystemTime::now().duration_since(UNIX_EPOCH)?.as_nanos();
+    let root = std::env::temp_dir().join(format!(
+        "hyprland-settings-write-flow-{name}-{}-{stamp}",
+        std::process::id()
+    ));
+    fs::create_dir_all(&root)?;
+    Ok(root)
+}
+
+fn known_ids() -> BTreeSet<String> {
+    [ACTIVE_PENDING_CHANGE_SETTING]
+        .into_iter()
+        .map(str::to_string)
+        .collect()
+}
+
+fn discovery_for(path: PathBuf) -> ConfigDiscovery {
+    ConfigDiscovery {
+        status: ConfigDiscoveryStatus::Found {
+            path: path.clone(),
+            source: ConfigPathSource::HomeFallback,
+        },
+        attempted_paths: vec![path],
+    }
+}
+
+fn snapshot_for(path: &PathBuf, contents: &str) -> CurrentConfigSnapshot {
+    CurrentConfigSnapshot::from_parsed(parse_hyprland_config_text(path, contents))
+}
+
+#[test]
+fn edit_projection_only_allows_windows_snap_enabled() {
+    let current =
+        CurrentConfigSnapshot::read_unavailable("no config").value_for("general.snap.enabled");
+    let editable = edit_projection_for_setting(ACTIVE_PENDING_CHANGE_SETTING, &current);
+    let blocked = edit_projection_for_setting("animations.enabled", &current);
+
+    assert!(editable.editable);
+    assert_eq!(editable.proposed_value.as_deref(), Some("true"));
+    assert!(!editable.pending.expect("pending projection").can_review);
+    assert!(!blocked.editable);
+    assert_eq!(
+        blocked.disabled_reason.as_deref(),
+        Some("not write-allowlisted")
+    );
+}
+
+#[test]
+fn pending_projection_blocks_duplicate_conflict() {
+    let parsed = parse_hyprland_config_text(
+        "/tmp/hyprland.conf",
+        "general:snap:enabled = false\ngeneral:snap:enabled = true\n",
+    );
+    let current = CurrentConfigSnapshot::from_parsed(parsed).value_for("general.snap.enabled");
+
+    assert_eq!(current.status, CurrentValueSourceStatus::DuplicateConflict);
+    let pending = pending_projection_for_value(ACTIVE_PENDING_CHANGE_SETTING, &current, "false");
+
+    assert_eq!(pending.validation_label, "valid");
+    assert!(!pending.can_review);
+    assert!(pending
+        .review_summary
+        .iter()
+        .any(|line| line.contains("duplicate config entries")));
+}
+
+#[test]
+fn apply_flow_writes_fixture_and_reports_backup_and_rollback() -> Result<()> {
+    let root = temp_root("apply")?;
+    let source = root.join("hyprland.conf");
+    fs::write(&source, "general:snap:enabled = false\n")?;
+    let contents = fs::read_to_string(&source)?;
+    let snapshot = snapshot_for(&source, &contents);
+    let backup_manager = BackupManager::new(root.join("backups"));
+
+    let outcome = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery_for(source.clone()),
+        &snapshot,
+        ACTIVE_PENDING_CHANGE_SETTING,
+        "true",
+        &backup_manager,
+    )
+    .map_err(|failure| anyhow::anyhow!("{failure:?}"))?;
+
+    assert_eq!(outcome.setting_id, ACTIVE_PENDING_CHANGE_SETTING);
+    assert_eq!(outcome.target_path, source);
+    assert!(outcome.backup_path.exists());
+    assert_eq!(outcome.rollback_source_path, outcome.target_path);
+    assert_eq!(outcome.rollback_backup_path, outcome.backup_path);
+    assert_eq!(outcome.verified_value.as_deref(), Some("true"));
+    assert!(outcome.reload_note.contains("not performed"));
+    assert_eq!(
+        fs::read_to_string(&outcome.target_path)?,
+        "general:snap:enabled = true\n"
+    );
+
+    fs::remove_dir_all(root)?;
+    Ok(())
+}
+
+#[test]
+fn apply_flow_blocks_missing_config_target() {
+    let discovery = ConfigDiscovery {
+        status: ConfigDiscoveryStatus::Missing,
+        attempted_paths: Vec::new(),
+    };
+    let snapshot = CurrentConfigSnapshot::read_unavailable("missing");
+    let backup_manager = BackupManager::new(std::env::temp_dir().join("unused"));
+
+    let error = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery,
+        &snapshot,
+        ACTIVE_PENDING_CHANGE_SETTING,
+        "true",
+        &backup_manager,
+    )
+    .expect_err("missing config should block apply");
+
+    assert!(error.reason.contains("no Hyprland config file"));
+    assert!(error.failures.contains(&"MissingCurrentSource".to_string()));
+}
+
+#[test]
+fn apply_flow_blocks_non_allowlisted_setting() {
+    let discovery = ConfigDiscovery {
+        status: ConfigDiscoveryStatus::Missing,
+        attempted_paths: Vec::new(),
+    };
+    let snapshot = CurrentConfigSnapshot::read_unavailable("missing");
+    let backup_manager = BackupManager::new(std::env::temp_dir().join("unused"));
+
+    let error = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery,
+        &snapshot,
+        "animations.enabled",
+        "false",
+        &backup_manager,
+    )
+    .expect_err("non-allowlisted setting should block apply");
+
+    assert_eq!(error.reason, "setting is not write-allowlisted");
+    assert!(error.failures.contains(&"NotAllowlisted".to_string()));
+}

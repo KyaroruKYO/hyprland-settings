@@ -1,9 +1,15 @@
+use std::collections::BTreeSet;
+
 use crate::config_discovery::ConfigDiscovery;
 use crate::current_config::{
     CurrentConfigSnapshot, CurrentValueProjection, CurrentValueSourceStatus,
 };
 use crate::export::{ExportBundle, InventoryEntry, TabEntry};
 use crate::validation::ValidationSummary;
+use crate::write_flow::{
+    edit_projection_for_setting, review_block_reason, write_flow_config_setting,
+    SettingEditProjection,
+};
 
 #[derive(Debug)]
 pub struct UiProjection {
@@ -13,6 +19,7 @@ pub struct UiProjection {
     pub summary: ValidationSummary,
     pub config_discovery: ConfigDiscovery,
     pub current_config: CurrentConfigSnapshot,
+    pub known_setting_ids: BTreeSet<String>,
     pub tabs: Vec<UiTab>,
     pub settings: Vec<UiSetting>,
     pub active_write_candidates: Vec<UiWriteCandidate>,
@@ -44,6 +51,12 @@ impl UiProjection {
             .iter()
             .map(|entry| entry.row_id.as_str())
             .collect();
+        let known_setting_ids = bundle
+            .inventory
+            .settings
+            .iter()
+            .map(|entry| entry.row_id.clone())
+            .collect::<BTreeSet<_>>();
         let mut settings: Vec<_> = bundle
             .inventory
             .settings
@@ -72,6 +85,7 @@ impl UiProjection {
             },
             config_discovery,
             current_config,
+            known_setting_ids,
             tabs,
             settings,
             active_write_candidates,
@@ -145,6 +159,7 @@ pub struct UiSetting {
     pub is_write_candidate: bool,
     pub current_value: CurrentValueProjection,
     pub comparison: ComparisonProjection,
+    pub edit: SettingEditProjection,
 }
 
 impl UiSetting {
@@ -153,6 +168,11 @@ impl UiSetting {
         active_write_ids: &[&str],
         current_config: &CurrentConfigSnapshot,
     ) -> Self {
+        let current_value = current_value_for_entry(entry, current_config);
+        let edit_current_value = write_flow_config_setting(&entry.row_id)
+            .map(|setting_id| current_config.value_for(setting_id))
+            .unwrap_or_else(|| current_value.clone());
+
         Self {
             row_id: entry.row_id.clone(),
             official_setting: entry.official_setting.clone(),
@@ -169,11 +189,12 @@ impl UiSetting {
             preview_status: entry.preview_status.clone(),
             report_only: entry.report_only,
             is_write_candidate: active_write_ids.contains(&entry.row_id.as_str()),
-            current_value: current_value_for_entry(entry, current_config),
+            current_value: current_value.clone(),
             comparison: ComparisonProjection::from_current_value(
                 &entry.default_config_presence,
-                &current_value_for_entry(entry, current_config),
+                &current_value,
             ),
+            edit: edit_projection_for_setting(&entry.row_id, &edit_current_value),
         }
     }
 
@@ -264,6 +285,7 @@ pub struct RowDetailProjection {
     pub write_candidate_command_generation_allowed: Option<bool>,
     pub current_value: CurrentValueProjection,
     pub comparison: ComparisonProjection,
+    pub edit: SettingEditProjection,
     pub safety_notes: Vec<String>,
 }
 
@@ -275,6 +297,29 @@ impl RowDetailProjection {
         let is_read_supported = setting
             .read_support
             .contains("current-value-read-allowlisted");
+
+        let mut safety_notes = vec![
+            "Current values are parsed from hyprland.conf as read-only text when available."
+                .to_string(),
+        ];
+        if setting.edit.editable {
+            safety_notes.push(
+                "This row is the only active write pilot and requires review, backup, write, and reread verification."
+                    .to_string(),
+            );
+            if let Some(reason) = review_block_reason(setting.current_value.status) {
+                safety_notes.push(format!("Apply currently blocked: {reason}."));
+            }
+        } else {
+            safety_notes.push(
+                setting
+                    .edit
+                    .disabled_reason
+                    .clone()
+                    .unwrap_or_else(|| "not write-allowlisted".to_string()),
+            );
+        }
+        safety_notes.push("No Hyprland reload command is run.".to_string());
 
         Self {
             label: setting.label.clone(),
@@ -296,7 +341,7 @@ impl RowDetailProjection {
             },
             write_support: setting.write_support.clone(),
             write_candidate_status: if write_candidate.is_some() {
-                "active write candidate metadata, disabled".to_string()
+                "active write candidate gated by backup and review".to_string()
             } else {
                 "not an active write candidate".to_string()
             },
@@ -307,12 +352,8 @@ impl RowDetailProjection {
                 .map(|candidate| candidate.command_generation_allowed),
             current_value: setting.current_value.clone(),
             comparison: setting.comparison.clone(),
-            safety_notes: vec![
-                "Current values are parsed from hyprland.conf as read-only text when available."
-                    .to_string(),
-                "This row is read-only metadata.".to_string(),
-                "No settings are changed.".to_string(),
-            ],
+            edit: setting.edit.clone(),
+            safety_notes,
         }
     }
 }

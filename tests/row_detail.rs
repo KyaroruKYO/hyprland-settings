@@ -81,7 +81,7 @@ fn write_candidate_detail_remains_disabled_metadata() -> Result<()> {
 
     assert_eq!(
         detail.write_candidate_status,
-        "active write candidate metadata, disabled"
+        "active write candidate gated by backup and review"
     );
     assert_eq!(
         detail.write_candidate_target_mode.as_deref(),
@@ -92,6 +92,30 @@ fn write_candidate_detail_remains_disabled_metadata() -> Result<()> {
         detail.write_candidate_command_generation_allowed,
         Some(false)
     );
+    assert!(detail.edit.editable);
+    assert_eq!(detail.edit.proposed_value.as_deref(), Some("true"));
+    let pending = detail.edit.pending.expect("pending projection expected");
+    assert_eq!(pending.setting_id, "windows.snap.enabled");
+    assert_eq!(pending.validation_label, "valid");
+    assert!(!pending.can_review);
+    assert!(pending
+        .review_summary
+        .iter()
+        .any(|line| line.contains("current config could not be read")));
+
+    Ok(())
+}
+
+#[test]
+fn non_allowlisted_detail_explains_disabled_edit_state() -> Result<()> {
+    let detail = detail_for("animations.enabled")?;
+
+    assert!(!detail.edit.editable);
+    assert_eq!(
+        detail.edit.disabled_reason.as_deref(),
+        Some("not write-allowlisted")
+    );
+    assert!(detail.edit.pending.is_none());
 
     Ok(())
 }
