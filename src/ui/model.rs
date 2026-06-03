@@ -1,4 +1,5 @@
 use crate::config_discovery::ConfigDiscovery;
+use crate::current_config::{CurrentConfigSnapshot, CurrentValueProjection};
 use crate::export::{ExportBundle, InventoryEntry, TabEntry};
 use crate::validation::ValidationSummary;
 
@@ -9,6 +10,7 @@ pub struct UiProjection {
     pub schema_version: u32,
     pub summary: ValidationSummary,
     pub config_discovery: ConfigDiscovery,
+    pub current_config: CurrentConfigSnapshot,
     pub tabs: Vec<UiTab>,
     pub settings: Vec<UiSetting>,
     pub active_write_candidates: Vec<UiWriteCandidate>,
@@ -19,6 +21,7 @@ impl UiProjection {
         bundle: &ExportBundle,
         summary: &ValidationSummary,
         config_discovery: ConfigDiscovery,
+        current_config: CurrentConfigSnapshot,
     ) -> Self {
         let mut tabs: Vec<_> = bundle.inventory.tabs.iter().map(UiTab::from).collect();
         tabs.sort_by_key(|tab| tab.order);
@@ -43,7 +46,7 @@ impl UiProjection {
             .inventory
             .settings
             .iter()
-            .map(|entry| UiSetting::from_entry(entry, &active_write_ids))
+            .map(|entry| UiSetting::from_entry(entry, &active_write_ids, &current_config))
             .collect();
         settings.sort_by_key(|setting| (setting.tab_order(&tabs), setting.row_order));
 
@@ -66,6 +69,7 @@ impl UiProjection {
                 structured_family_count: summary.structured_family_count,
             },
             config_discovery,
+            current_config,
             tabs,
             settings,
             active_write_candidates,
@@ -136,10 +140,15 @@ pub struct UiSetting {
     pub preview_status: String,
     pub report_only: bool,
     pub is_write_candidate: bool,
+    pub current_value: CurrentValueProjection,
 }
 
 impl UiSetting {
-    fn from_entry(entry: &InventoryEntry, active_write_ids: &[&str]) -> Self {
+    fn from_entry(
+        entry: &InventoryEntry,
+        active_write_ids: &[&str],
+        current_config: &CurrentConfigSnapshot,
+    ) -> Self {
         Self {
             row_id: entry.row_id.clone(),
             official_setting: entry.official_setting.clone(),
@@ -155,6 +164,7 @@ impl UiSetting {
             preview_status: entry.preview_status.clone(),
             report_only: entry.report_only,
             is_write_candidate: active_write_ids.contains(&entry.row_id.as_str()),
+            current_value: current_config.value_for(&entry.row_id),
         }
     }
 
@@ -192,6 +202,7 @@ pub struct RowDetailProjection {
     pub write_candidate_target_mode: Option<String>,
     pub write_candidate_executable: Option<bool>,
     pub write_candidate_command_generation_allowed: Option<bool>,
+    pub current_value: CurrentValueProjection,
     pub safety_notes: Vec<String>,
 }
 
@@ -232,8 +243,10 @@ impl RowDetailProjection {
             write_candidate_executable: write_candidate.map(|candidate| candidate.executable),
             write_candidate_command_generation_allowed: write_candidate
                 .map(|candidate| candidate.command_generation_allowed),
+            current_value: setting.current_value.clone(),
             safety_notes: vec![
-                "No live value is read.".to_string(),
+                "Current values are parsed from hyprland.conf as read-only text when available."
+                    .to_string(),
                 "This row is read-only metadata.".to_string(),
                 "No settings are changed.".to_string(),
             ],

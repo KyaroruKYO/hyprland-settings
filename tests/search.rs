@@ -2,6 +2,7 @@ use std::path::Path;
 
 use anyhow::Result;
 use hyprland_settings::config_discovery::{ConfigDiscovery, ConfigDiscoveryStatus};
+use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::export::ExportBundle;
 use hyprland_settings::metadata::resolve_metadata_path_with_env;
 use hyprland_settings::search::{search_projection, SearchRank};
@@ -19,6 +20,7 @@ fn load_projection() -> Result<UiProjection> {
             status: ConfigDiscoveryStatus::Missing,
             attempted_paths: Vec::new(),
         },
+        CurrentConfigSnapshot::read_unavailable("test fixture has no live config"),
     ))
 }
 

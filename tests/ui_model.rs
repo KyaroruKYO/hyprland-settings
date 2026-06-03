@@ -2,12 +2,22 @@ use std::path::Path;
 
 use anyhow::Result;
 use hyprland_settings::config_discovery::{ConfigDiscovery, ConfigDiscoveryStatus};
+use hyprland_settings::config_parser::parse_hyprland_config_text;
+use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueSourceStatus};
 use hyprland_settings::export::ExportBundle;
 use hyprland_settings::metadata::resolve_metadata_path_with_env;
 use hyprland_settings::ui::model::UiProjection;
 use hyprland_settings::validation::validate_bundle;
 
 fn load_projection() -> Result<UiProjection> {
+    load_projection_with_current_config(CurrentConfigSnapshot::read_unavailable(
+        "test fixture has no live config",
+    ))
+}
+
+fn load_projection_with_current_config(
+    current_config: CurrentConfigSnapshot,
+) -> Result<UiProjection> {
     let resolution = resolve_metadata_path_with_env(None, None)?;
     let bundle = ExportBundle::load(Path::new(&resolution.export_dir))?;
     let summary = validate_bundle(&bundle)?;
@@ -18,6 +28,7 @@ fn load_projection() -> Result<UiProjection> {
             status: ConfigDiscoveryStatus::Missing,
             attempted_paths: Vec::new(),
         },
+        current_config,
     ))
 }
 
@@ -102,6 +113,71 @@ fn ui_projection_selected_tab_rows_are_read_only_metadata() -> Result<()> {
         assert!(!setting.read_support.contains(forbidden_command.as_str()));
         assert!(!setting.write_support.contains(forbidden_command.as_str()));
     }
+
+    Ok(())
+}
+
+#[test]
+fn ui_projection_marks_configured_current_value() -> Result<()> {
+    let parsed =
+        parse_hyprland_config_text("/tmp/current-values.conf", "animations:enabled = true\n");
+    let projection =
+        load_projection_with_current_config(CurrentConfigSnapshot::from_parsed(parsed))?;
+    let detail = projection
+        .detail_for_row("animations.enabled")
+        .expect("animations.enabled detail should exist");
+
+    assert_eq!(
+        detail.current_value.status,
+        CurrentValueSourceStatus::Configured
+    );
+    assert_eq!(detail.current_value.raw_value.as_deref(), Some("true"));
+    assert_eq!(detail.current_value.line_number, Some(1));
+    assert_eq!(
+        detail.current_value.raw_line.as_deref(),
+        Some("animations:enabled = true")
+    );
+
+    Ok(())
+}
+
+#[test]
+fn ui_projection_marks_unconfigured_current_value_after_config_load() -> Result<()> {
+    let parsed =
+        parse_hyprland_config_text("/tmp/current-values.conf", "animations:enabled = true\n");
+    let projection =
+        load_projection_with_current_config(CurrentConfigSnapshot::from_parsed(parsed))?;
+    let detail = projection
+        .detail_for_row("windows.snap.enabled")
+        .expect("windows.snap.enabled detail should exist");
+
+    assert_eq!(
+        detail.current_value.status,
+        CurrentValueSourceStatus::NotConfigured
+    );
+    assert_eq!(detail.current_value.raw_value, None);
+
+    Ok(())
+}
+
+#[test]
+fn ui_projection_marks_duplicate_current_value_conflict() -> Result<()> {
+    let parsed = parse_hyprland_config_text(
+        "/tmp/current-values.conf",
+        "animations:enabled = true\nanimations:enabled = false\n",
+    );
+    let projection =
+        load_projection_with_current_config(CurrentConfigSnapshot::from_parsed(parsed))?;
+    let detail = projection
+        .detail_for_row("animations.enabled")
+        .expect("animations.enabled detail should exist");
+
+    assert_eq!(
+        detail.current_value.status,
+        CurrentValueSourceStatus::DuplicateConflict
+    );
+    assert_eq!(detail.current_value.raw_value.as_deref(), Some("false"));
+    assert_eq!(detail.current_value.duplicate_lines, vec![1, 2]);
 
     Ok(())
 }

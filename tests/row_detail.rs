@@ -2,6 +2,7 @@ use std::path::Path;
 
 use anyhow::Result;
 use hyprland_settings::config_discovery::{ConfigDiscovery, ConfigDiscoveryStatus};
+use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::export::ExportBundle;
 use hyprland_settings::metadata::resolve_metadata_path_with_env;
 use hyprland_settings::ui::model::{RowDetailProjection, UiProjection};
@@ -18,6 +19,7 @@ fn load_projection() -> Result<UiProjection> {
             status: ConfigDiscoveryStatus::Missing,
             attempted_paths: Vec::new(),
         },
+        CurrentConfigSnapshot::read_unavailable("test fixture has no live config"),
     ))
 }
 
@@ -44,7 +46,7 @@ fn row_detail_projection_includes_required_metadata() -> Result<()> {
     assert!(detail
         .safety_notes
         .iter()
-        .any(|note| note == "No live value is read."));
+        .any(|note| note.contains("read-only text when available")));
 
     Ok(())
 }

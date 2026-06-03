@@ -5,6 +5,7 @@ use adw::prelude::*;
 use gtk4 as gtk;
 
 use crate::config_discovery::ConfigDiscovery;
+use crate::current_config::CurrentConfigSnapshot;
 use crate::export::ExportBundle;
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::ui::model::UiProjection;
@@ -15,11 +16,13 @@ pub fn show_main_window(
     bundle: ExportBundle,
     summary: ValidationSummary,
     config_discovery: ConfigDiscovery,
+    current_config: CurrentConfigSnapshot,
 ) {
     let model = Rc::new(UiProjection::from_bundle(
         &bundle,
         &summary,
         config_discovery,
+        current_config,
     ));
     let selected_tab_id = Rc::new(RefCell::new(
         model
@@ -282,6 +285,7 @@ fn build_summary_card(model: &UiProjection) -> gtk::Frame {
     ));
     content.append(&body_label(&model.config_discovery.summary()));
     content.append(&small_label(model.config_discovery.live_read_status()));
+    content.append(&body_label(&model.current_config.summary()));
     content.append(&body_label(&write_safety_text(model)));
 
     frame.set_child(Some(&content));
@@ -382,8 +386,9 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
     };
 
     row_box.append(&small_label(&format!(
-        "{} · {} · {} · preview: {} · risk: {} · write support: {}",
+        "{} · current: {} · {} · {} · preview: {} · risk: {} · write support: {}",
         read_status,
+        setting.current_value.status_label(),
         report_status,
         write_status,
         setting.preview_status,
@@ -435,6 +440,37 @@ fn render_detail(model: &UiProjection, row_id: &str, detail_content: &gtk::Box) 
         append_detail_line(detail_content, "Description", &detail.description);
     }
     append_detail_line(detail_content, "Read support", &detail.read_support);
+    append_detail_line(
+        detail_content,
+        "Current value status",
+        detail.current_value.status_label(),
+    );
+    if let Some(raw_value) = &detail.current_value.raw_value {
+        append_detail_line(detail_content, "Current value", raw_value);
+    }
+    if let (Some(path), Some(line_number)) = (
+        &detail.current_value.source_path,
+        detail.current_value.line_number,
+    ) {
+        append_detail_line(
+            detail_content,
+            "Current value source",
+            &format!("{}:{line_number}", path.display()),
+        );
+    }
+    if let Some(raw_line) = &detail.current_value.raw_line {
+        append_detail_line(detail_content, "Source line", raw_line);
+    }
+    if !detail.current_value.duplicate_lines.is_empty() {
+        append_detail_line(
+            detail_content,
+            "Duplicate lines",
+            &format!("{:?}", detail.current_value.duplicate_lines),
+        );
+    }
+    if let Some(warning) = &detail.current_value.warning {
+        append_detail_line(detail_content, "Current value warning", warning);
+    }
     if let Some(status) = &detail.non_read_status {
         append_detail_line(detail_content, "Non-read status", status);
     }

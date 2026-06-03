@@ -4,6 +4,7 @@ use adw::prelude::*;
 use gtk4::glib;
 
 use crate::config_discovery::discover_hyprland_config;
+use crate::current_config::CurrentConfigSnapshot;
 use crate::export::ExportBundle;
 use crate::metadata::{resolve_metadata_path, MetadataPathResolution};
 use crate::ui::window::{show_error_window, show_main_window};
@@ -19,9 +20,12 @@ pub fn run() -> glib::ExitCode {
     app.connect_activate(move |app| {
         let cli_override = cli_override.clone();
         let config_discovery = discover_hyprland_config();
+        let current_config = CurrentConfigSnapshot::from_discovery(&config_discovery);
         match resolve_metadata_path(cli_override) {
             Ok(resolution) => match load_validated_bundle(&resolution) {
-                Ok((bundle, summary)) => show_main_window(app, bundle, summary, config_discovery),
+                Ok((bundle, summary)) => {
+                    show_main_window(app, bundle, summary, config_discovery, current_config)
+                }
                 Err(error) => show_error_window(
                     app,
                     &format!(
