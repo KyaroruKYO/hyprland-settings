@@ -65,6 +65,39 @@ fn valid_plan_for_windows_snap_enabled_is_approved() -> Result<()> {
 }
 
 #[test]
+fn valid_plan_for_validator_backed_numeric_row_is_approved() -> Result<()> {
+    let root = temp_root("valid-numeric")?;
+    let source = root.join("hyprland.conf");
+    fs::write(&source, "decoration:blur:size = 8\n")?;
+    let backup = BackupManager::new(root.join("backups")).create_backup(&source)?;
+    let current = current_value_for(
+        source.to_str().expect("utf-8 fixture path"),
+        "decoration.blur.size",
+        "decoration:blur:size = 8\n",
+    );
+    let pending = stage_pending_change("appearance.blur.size", &current, "10");
+
+    let review = review_write_plan(WritePlanRequest {
+        known_setting_ids: known_ids(&["appearance.blur.size"]),
+        detected_config_path: source.clone(),
+        current_value: current,
+        pending_change: pending,
+        backup: Some(backup),
+    });
+
+    assert!(review.is_approved());
+    let plan = review.plan.expect("valid review should produce plan");
+    assert_eq!(plan.setting_id, "appearance.blur.size");
+    assert_eq!(plan.target_path, source);
+    assert_eq!(plan.action, WritePlanAction::ReplaceLine { line_number: 1 });
+    assert_eq!(plan.old_value.as_deref(), Some("8"));
+    assert_eq!(plan.proposed_value, "10");
+
+    fs::remove_dir_all(root)?;
+    Ok(())
+}
+
+#[test]
 fn rejects_unknown_setting() {
     let current = CurrentValueProjection::not_configured();
     let pending = stage_pending_change("unknown.setting", &current, "true");
@@ -84,13 +117,13 @@ fn rejects_unknown_setting() {
 fn rejects_unsafe_setting() {
     let current = current_value_for(
         "/tmp/hyprland.conf",
-        "decoration.blur.size",
-        "decoration:blur:size = 8\n",
+        "decoration.glow.range",
+        "decoration:glow:range = 8\n",
     );
-    let pending = stage_pending_change("appearance.blur.size", &current, "10");
+    let pending = stage_pending_change("appearance.glow.range", &current, "10");
 
     let review = review_write_plan(WritePlanRequest {
-        known_setting_ids: known_ids(&["appearance.blur.size"]),
+        known_setting_ids: known_ids(&["appearance.glow.range"]),
         detected_config_path: PathBuf::from("/tmp/hyprland.conf"),
         current_value: current,
         pending_change: pending,

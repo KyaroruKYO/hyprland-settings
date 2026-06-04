@@ -33,11 +33,111 @@ pub enum ScalarWriteValueKind {
     Unknown,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct SafeWritableRow {
+    pub row_id: &'static str,
+    pub official_setting: &'static str,
+    pub value_kind: ScalarWriteValueKind,
+}
+
 pub const SAFE_WRITABLE_TOGGLE_ROWS: &[(&str, &str)] = &[
     ("appearance.blur.enabled", "decoration.blur.enabled"),
     ("appearance.shadow.enabled", "decoration.shadow.enabled"),
     ("animations.enabled", "animations.enabled"),
     ("windows.snap.enabled", "general.snap.enabled"),
+];
+
+pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
+    SafeWritableRow {
+        row_id: "appearance.blur.enabled",
+        official_setting: "decoration.blur.enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.size",
+        official_setting: "decoration.blur.size",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.brightness",
+        official_setting: "decoration.blur.brightness",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.contrast",
+        official_setting: "decoration.blur.contrast",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.shadow.enabled",
+        official_setting: "decoration.shadow.enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "appearance.shadow.range",
+        official_setting: "decoration.shadow.range",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "appearance.shadow.render_power",
+        official_setting: "decoration.shadow.render_power",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "appearance.gaps_in",
+        official_setting: "general.gaps_in",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "appearance.gaps_out",
+        official_setting: "general.gaps_out",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "appearance.border_size",
+        official_setting: "general.border_size",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "appearance.rounding",
+        official_setting: "decoration.rounding",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "appearance.active_opacity",
+        official_setting: "decoration.active_opacity",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.inactive_opacity",
+        official_setting: "decoration.inactive_opacity",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "animations.enabled",
+        official_setting: "animations.enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "windows.snap.enabled",
+        official_setting: "general.snap.enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "windows.snap.window_gap",
+        official_setting: "general.snap.window_gap",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "windows.snap.monitor_gap",
+        official_setting: "general.snap.monitor_gap",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.pointer_sensitivity",
+        official_setting: "input.sensitivity",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
 ];
 
 pub fn classify_inventory_entry(entry: &InventoryEntry) -> ScalarWriteClassification {
@@ -97,10 +197,17 @@ pub fn is_safe_writable_setting(row_id: &str) -> bool {
 }
 
 pub fn safe_writable_official_setting(row_id: &str) -> Option<&'static str> {
-    SAFE_WRITABLE_TOGGLE_ROWS
+    safe_writable_row(row_id).map(|row| row.official_setting)
+}
+
+pub fn safe_writable_value_kind(row_id: &str) -> Option<ScalarWriteValueKind> {
+    safe_writable_row(row_id).map(|row| row.value_kind)
+}
+
+pub fn safe_writable_row(row_id: &str) -> Option<&'static SafeWritableRow> {
+    SAFE_WRITABLE_ROWS
         .iter()
-        .find(|(candidate, _)| *candidate == row_id)
-        .map(|(_, official_setting)| *official_setting)
+        .find(|candidate| candidate.row_id == row_id)
 }
 
 pub fn config_key_from_official_setting(setting: &str) -> String {

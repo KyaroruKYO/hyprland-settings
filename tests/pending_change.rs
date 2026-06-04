@@ -43,10 +43,10 @@ fn invalid_pending_change_for_windows_snap_enabled_is_rejected() {
 }
 
 #[test]
-fn only_safe_writable_toggles_can_be_staged() {
-    let current = current_value_for("decoration.blur.size", "decoration:blur:size = 8\n");
+fn only_safe_writable_rows_can_be_staged() {
+    let current = current_value_for("decoration.glow.range", "decoration:glow:range = 8\n");
 
-    let change = stage_pending_change("appearance.blur.size", &current, "10");
+    let change = stage_pending_change("appearance.glow.range", &current, "10");
 
     assert_eq!(
         change.validation,
@@ -58,6 +58,91 @@ fn only_safe_writable_toggles_can_be_staged() {
         change.non_editable_reason.as_deref(),
         Some("setting is not in the safe scalar write allowlist")
     );
+}
+
+#[test]
+fn validator_needed_rows_can_be_staged_with_valid_values() {
+    let cases = [
+        ("appearance.blur.size", "decoration.blur.size", "10"),
+        (
+            "appearance.blur.brightness",
+            "decoration.blur.brightness",
+            "0.75",
+        ),
+        (
+            "appearance.blur.contrast",
+            "decoration.blur.contrast",
+            "0.75",
+        ),
+        ("appearance.shadow.range", "decoration.shadow.range", "10"),
+        (
+            "appearance.shadow.render_power",
+            "decoration.shadow.render_power",
+            "3",
+        ),
+        ("appearance.gaps_in", "general.gaps_in", "8"),
+        ("appearance.gaps_out", "general.gaps_out", "12"),
+        ("appearance.border_size", "general.border_size", "2"),
+        ("appearance.rounding", "decoration.rounding", "8"),
+        (
+            "appearance.active_opacity",
+            "decoration.active_opacity",
+            "0.9",
+        ),
+        (
+            "appearance.inactive_opacity",
+            "decoration.inactive_opacity",
+            "0.8",
+        ),
+        ("windows.snap.window_gap", "general.snap.window_gap", "5"),
+        ("windows.snap.monitor_gap", "general.snap.monitor_gap", "5"),
+        ("input.pointer_sensitivity", "input.sensitivity", "-0.25"),
+    ];
+
+    for (row_id, official_setting, proposed) in cases {
+        let config_key = official_setting.replace('.', ":");
+        let current = current_value_for(official_setting, &format!("{config_key} = 0\n"));
+
+        let change = stage_pending_change(row_id, &current, proposed);
+
+        assert_eq!(
+            change.validation,
+            PendingChangeValidation::Valid,
+            "{row_id} should accept {proposed}"
+        );
+        assert!(change.can_be_applied(), "{row_id} should be applicable");
+    }
+}
+
+#[test]
+fn validator_needed_rows_reject_invalid_values() {
+    let cases = [
+        ("appearance.blur.size", "-1"),
+        ("appearance.blur.brightness", "1.5"),
+        ("appearance.blur.contrast", "not-a-number"),
+        ("appearance.shadow.range", "-2"),
+        ("appearance.shadow.render_power", "2.5"),
+        ("appearance.gaps_in", "-8"),
+        ("appearance.gaps_out", "8 px"),
+        ("appearance.border_size", "wide"),
+        ("appearance.rounding", "-1"),
+        ("appearance.active_opacity", "-0.1"),
+        ("appearance.inactive_opacity", "2"),
+        ("windows.snap.window_gap", "-5"),
+        ("windows.snap.monitor_gap", "5 px"),
+        ("input.pointer_sensitivity", "2"),
+    ];
+
+    let current = CurrentValueProjection::not_configured();
+    for (row_id, proposed) in cases {
+        let change = stage_pending_change(row_id, &current, proposed);
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "{row_id} should reject {proposed}, got {:?}",
+            change.validation
+        );
+        assert!(!change.can_be_applied(), "{row_id} should not apply");
+    }
 }
 
 #[test]

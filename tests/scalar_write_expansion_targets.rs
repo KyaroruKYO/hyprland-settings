@@ -17,6 +17,10 @@ fn scalar_write_expansion_target_report_has_expected_counts() -> Result<()> {
     assert_eq!(report["counts"]["validatorNeededTargets"], 14);
     assert_eq!(report["counts"]["parserNeededTargets"], 37);
     assert_eq!(report["counts"]["totalTargets"], 51);
+    assert_eq!(report["counts"]["validatorNeededTargetsEnabled"], 14);
+    assert_eq!(report["counts"]["validatorNeededTargetsBlocked"], 0);
+    assert_eq!(report["counts"]["parserNeededTargetsEnabled"], 0);
+    assert_eq!(report["counts"]["parserNeededTargetsBlocked"], 37);
     assert_eq!(targets.len(), 51);
 
     let validator_needed = targets
@@ -35,7 +39,7 @@ fn scalar_write_expansion_target_report_has_expected_counts() -> Result<()> {
 }
 
 #[test]
-fn scalar_write_expansion_targets_have_decisions_and_blockers() -> Result<()> {
+fn scalar_write_expansion_targets_have_decisions_tests_and_blockers() -> Result<()> {
     let report = target_report()?;
     let targets = report["targets"]
         .as_array()
@@ -53,19 +57,25 @@ fn scalar_write_expansion_targets_have_decisions_and_blockers() -> Result<()> {
             target["decision"].as_str().is_some(),
             "{row_id} needs a decision"
         );
-        assert!(
-            target["blocker"].as_str().is_some(),
-            "{row_id} needs a blocker while not enabled"
-        );
-        assert_eq!(
-            target["enabled"].as_bool(),
-            Some(false),
-            "{row_id} should not be enabled during target audit"
-        );
-        assert!(
-            target["tests"].as_array().is_some(),
-            "{row_id} needs a tests array"
-        );
+        let enabled = target["enabled"].as_bool().expect("enabled should be bool");
+        let tests = target["tests"]
+            .as_array()
+            .expect("target tests should be an array");
+        if enabled {
+            assert!(
+                !tests.is_empty(),
+                "{row_id} needs tests when enabled for writing"
+            );
+            assert!(
+                target["blocker"].is_null(),
+                "{row_id} should not retain a blocker when enabled"
+            );
+        } else {
+            assert!(
+                target["blocker"].as_str().is_some(),
+                "{row_id} needs a blocker while not enabled"
+            );
+        }
     }
 
     Ok(())

@@ -9,7 +9,7 @@ use hyprland_settings::export::ExportBundle;
 use hyprland_settings::metadata::resolve_metadata_path_with_env;
 use hyprland_settings::ui::model::UiProjection;
 use hyprland_settings::validation::validate_bundle;
-use hyprland_settings::write_classification::SAFE_WRITABLE_TOGGLE_ROWS;
+use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 use serde_json::Value;
 
 fn load_bundle() -> Result<ExportBundle> {
@@ -97,8 +97,8 @@ fn scalar_coverage_report_contains_all_rows_with_explicit_statuses() -> Result<(
     assert_eq!(report_ids, inventory_ids);
     assert_eq!(report["counts"]["readableRows"], 341);
     assert_eq!(report["counts"]["blockedReadRows"], 0);
-    assert_eq!(report["counts"]["writableRows"], 4);
-    assert_eq!(report["counts"]["blockedWriteRows"], 337);
+    assert_eq!(report["counts"]["writableRows"], 18);
+    assert_eq!(report["counts"]["blockedWriteRows"], 323);
     for row in rows {
         assert_eq!(row["readStatus"].as_str(), Some("readable"));
         assert_eq!(row["parserSupported"].as_bool(), Some(true));
@@ -132,9 +132,9 @@ fn coverage_report_enforces_safe_writable_rows() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() == Some("writable"))
         .map(|row| row["rowId"].as_str().expect("rowId should be a string"))
         .collect::<BTreeSet<_>>();
-    let expected = SAFE_WRITABLE_TOGGLE_ROWS
+    let expected = SAFE_WRITABLE_ROWS
         .iter()
-        .map(|(row_id, _)| *row_id)
+        .map(|row| row.row_id)
         .collect::<BTreeSet<_>>();
     let allowed_statuses = [
         "writable",

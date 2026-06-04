@@ -107,8 +107,22 @@ fn write_candidate_detail_remains_disabled_metadata() -> Result<()> {
 }
 
 #[test]
-fn non_allowlisted_detail_explains_disabled_edit_state() -> Result<()> {
+fn validator_backed_detail_is_editable() -> Result<()> {
     let detail = detail_for("appearance.blur.size")?;
+
+    assert!(detail.edit.editable);
+    assert_eq!(detail.edit.proposed_value.as_deref(), Some("0"));
+    let pending = detail.edit.pending.expect("pending projection expected");
+    assert_eq!(pending.setting_id, "appearance.blur.size");
+    assert_eq!(pending.validation_label, "valid");
+    assert!(!pending.can_review);
+
+    Ok(())
+}
+
+#[test]
+fn non_allowlisted_detail_explains_disabled_edit_state() -> Result<()> {
+    let detail = detail_for("appearance.glow.range")?;
 
     assert!(!detail.edit.editable);
     assert_eq!(

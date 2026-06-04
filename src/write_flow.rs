@@ -10,7 +10,10 @@ use crate::current_config::{
 };
 use crate::pending_change::{stage_pending_change, PendingChange, PendingChangeValidation};
 use crate::scalar_write::apply_scalar_write_plan;
-use crate::write_classification::{is_safe_writable_setting, safe_writable_official_setting};
+use crate::write_classification::{
+    is_safe_writable_setting, safe_writable_official_setting, safe_writable_value_kind,
+    ScalarWriteValueKind,
+};
 use crate::write_safety::{review_write_plan, WriteGateFailure, WritePlanRequest, WriteResult};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -63,7 +66,7 @@ pub fn edit_projection_for_setting(
         };
     }
 
-    let proposed_value = next_bool_value(current_value);
+    let proposed_value = next_proposed_value(setting_id, current_value);
     let pending = stage_pending_change(setting_id, current_value, proposed_value.clone());
     SettingEditProjection {
         setting_id: setting_id.to_string(),
@@ -255,6 +258,32 @@ fn pending_projection(
     }
 }
 
+fn next_proposed_value(setting_id: &str, current_value: &CurrentValueProjection) -> String {
+    match safe_writable_value_kind(setting_id) {
+        Some(ScalarWriteValueKind::Boolean) => next_bool_value(current_value),
+        Some(ScalarWriteValueKind::Number) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "0".to_string()),
+        Some(ScalarWriteValueKind::Percent) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| {
+                if setting_id == "input.pointer_sensitivity" {
+                    "0".to_string()
+                } else {
+                    "1.0".to_string()
+                }
+            }),
+        Some(ScalarWriteValueKind::StringLike)
+        | Some(ScalarWriteValueKind::ComplexRaw)
+        | Some(ScalarWriteValueKind::Unknown)
+        | None => current_value.raw_value.clone().unwrap_or_default(),
+    }
+}
+
 fn next_bool_value(current_value: &CurrentValueProjection) -> String {
     match current_value
         .raw_value
@@ -305,6 +334,10 @@ fn format_gate_failure(failure: &WriteGateFailure) -> String {
 
 pub fn write_flow_config_setting(setting_id: &str) -> Option<&'static str> {
     safe_writable_official_setting(setting_id)
+}
+
+pub fn write_flow_value_kind(setting_id: &str) -> Option<ScalarWriteValueKind> {
+    safe_writable_value_kind(setting_id)
 }
 
 pub fn status_allows_review(status: CurrentValueSourceStatus) -> bool {

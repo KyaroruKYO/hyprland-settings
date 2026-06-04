@@ -1,7 +1,9 @@
 use std::path::PathBuf;
 
 use crate::current_config::CurrentValueProjection;
-use crate::write_classification::is_safe_writable_setting;
+use crate::write_classification::{
+    is_safe_writable_setting, safe_writable_value_kind, ScalarWriteValueKind,
+};
 
 pub const ACTIVE_PENDING_CHANGE_SETTING: &str = "windows.snap.enabled";
 
@@ -66,13 +68,7 @@ pub fn stage_pending_change(
         };
     }
 
-    let validation = if is_bool_literal(&proposed_value) {
-        PendingChangeValidation::Valid
-    } else {
-        PendingChangeValidation::Invalid {
-            reason: "safe scalar toggle writes require a boolean value".to_string(),
-        }
-    };
+    let validation = validate_safe_writable_value(setting_id, &proposed_value);
     let non_editable_reason = (validation != PendingChangeValidation::Valid)
         .then(|| "proposed value failed validation".to_string());
 
@@ -91,4 +87,75 @@ fn is_bool_literal(value: &str) -> bool {
         value.trim().to_ascii_lowercase().as_str(),
         "true" | "false" | "1" | "0" | "yes" | "no" | "on" | "off"
     )
+}
+
+fn validate_safe_writable_value(setting_id: &str, value: &str) -> PendingChangeValidation {
+    match safe_writable_value_kind(setting_id) {
+        Some(ScalarWriteValueKind::Boolean) => {
+            if is_bool_literal(value) {
+                PendingChangeValidation::Valid
+            } else {
+                PendingChangeValidation::Invalid {
+                    reason: "safe scalar toggle writes require a boolean value".to_string(),
+                }
+            }
+        }
+        Some(ScalarWriteValueKind::Number) => validate_number_setting(setting_id, value),
+        Some(ScalarWriteValueKind::Percent) => validate_percent_setting(setting_id, value),
+        Some(ScalarWriteValueKind::StringLike)
+        | Some(ScalarWriteValueKind::ComplexRaw)
+        | Some(ScalarWriteValueKind::Unknown)
+        | None => PendingChangeValidation::Invalid {
+            reason: "no safe validator is available for this value family".to_string(),
+        },
+    }
+}
+
+fn validate_number_setting(setting_id: &str, value: &str) -> PendingChangeValidation {
+    let trimmed = value.trim();
+    if trimmed.is_empty() {
+        return invalid("numeric value cannot be empty");
+    }
+    if trimmed.contains(char::is_whitespace) {
+        return invalid("numeric value cannot contain whitespace");
+    }
+    if setting_id == "input.pointer_sensitivity" {
+        return validate_unit_float(trimmed, -1.0, 1.0, "pointer sensitivity");
+    }
+    match trimmed.parse::<i64>() {
+        Ok(number) if number >= 0 => PendingChangeValidation::Valid,
+        Ok(_) => invalid("numeric value must be non-negative"),
+        Err(_) => invalid("numeric value must be an integer"),
+    }
+}
+
+fn validate_percent_setting(setting_id: &str, value: &str) -> PendingChangeValidation {
+    let trimmed = value.trim();
+    if setting_id == "input.pointer_sensitivity" {
+        return validate_unit_float(trimmed, -1.0, 1.0, "pointer sensitivity");
+    }
+    validate_unit_float(trimmed, 0.0, 1.0, "percent-like value")
+}
+
+fn validate_unit_float(value: &str, min: f64, max: f64, label: &str) -> PendingChangeValidation {
+    if value.is_empty() {
+        return invalid("floating-point value cannot be empty");
+    }
+    if value.contains(char::is_whitespace) {
+        return invalid("floating-point value cannot contain whitespace");
+    }
+    match value.parse::<f64>() {
+        Ok(number) if number.is_finite() && number >= min && number <= max => {
+            PendingChangeValidation::Valid
+        }
+        Ok(number) if !number.is_finite() => invalid("floating-point value must be finite"),
+        Ok(_) => invalid(&format!("{label} must be between {min} and {max}")),
+        Err(_) => invalid("floating-point value must be numeric"),
+    }
+}
+
+fn invalid(reason: &str) -> PendingChangeValidation {
+    PendingChangeValidation::Invalid {
+        reason: reason.to_string(),
+    }
 }

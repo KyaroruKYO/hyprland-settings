@@ -11,6 +11,7 @@ use hyprland_settings::config_discovery::{
 use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueSourceStatus};
 use hyprland_settings::pending_change::ACTIVE_PENDING_CHANGE_SETTING;
+use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 use hyprland_settings::write_flow::{
     apply_setting_change_with_backup_manager, edit_projection_for_setting,
     pending_projection_for_value,
@@ -27,9 +28,9 @@ fn temp_root(name: &str) -> Result<PathBuf> {
 }
 
 fn known_ids() -> BTreeSet<String> {
-    [ACTIVE_PENDING_CHANGE_SETTING]
-        .into_iter()
-        .map(str::to_string)
+    SAFE_WRITABLE_ROWS
+        .iter()
+        .map(|row| row.row_id.to_string())
         .collect()
 }
 
@@ -48,20 +49,19 @@ fn snapshot_for(path: &PathBuf, contents: &str) -> CurrentConfigSnapshot {
 }
 
 #[test]
-fn edit_projection_allows_only_safe_writable_toggles() {
+fn edit_projection_allows_only_safe_writable_rows() {
     let current =
         CurrentConfigSnapshot::read_unavailable("no config").value_for("general.snap.enabled");
-    let blocked = edit_projection_for_setting("appearance.blur.size", &current);
+    let blocked = edit_projection_for_setting("appearance.glow.range", &current);
 
-    for row_id in [
-        "appearance.blur.enabled",
-        "appearance.shadow.enabled",
-        "animations.enabled",
-        ACTIVE_PENDING_CHANGE_SETTING,
-    ] {
-        let editable = edit_projection_for_setting(row_id, &current);
-        assert!(editable.editable, "{row_id} should be editable");
-        assert_eq!(editable.proposed_value.as_deref(), Some("true"));
+    for row in SAFE_WRITABLE_ROWS {
+        let editable = edit_projection_for_setting(row.row_id, &current);
+        assert!(editable.editable, "{} should be editable", row.row_id);
+        assert!(
+            editable.proposed_value.as_deref().is_some(),
+            "{} should provide a proposed value",
+            row.row_id
+        );
         assert!(!editable.pending.expect("pending projection").can_review);
     }
     assert!(!blocked.editable);
@@ -126,6 +126,38 @@ fn apply_flow_writes_fixture_and_reports_backup_and_rollback() -> Result<()> {
 }
 
 #[test]
+fn apply_flow_writes_validator_backed_numeric_fixture() -> Result<()> {
+    let root = temp_root("apply-numeric")?;
+    let source = root.join("hyprland.conf");
+    fs::write(&source, "decoration:blur:size = 5\n")?;
+    let contents = fs::read_to_string(&source)?;
+    let snapshot = snapshot_for(&source, &contents);
+    let backup_manager = BackupManager::new(root.join("backups"));
+
+    let outcome = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery_for(source.clone()),
+        &snapshot,
+        "appearance.blur.size",
+        "10",
+        &backup_manager,
+    )
+    .map_err(|failure| anyhow::anyhow!("{failure:?}"))?;
+
+    assert_eq!(outcome.setting_id, "appearance.blur.size");
+    assert_eq!(outcome.target_path, source);
+    assert!(outcome.backup_path.exists());
+    assert_eq!(outcome.verified_value.as_deref(), Some("10"));
+    assert_eq!(
+        fs::read_to_string(&outcome.target_path)?,
+        "decoration:blur:size = 10\n"
+    );
+
+    fs::remove_dir_all(root)?;
+    Ok(())
+}
+
+#[test]
 fn apply_flow_blocks_missing_config_target() {
     let discovery = ConfigDiscovery {
         status: ConfigDiscoveryStatus::Missing,
@@ -161,7 +193,7 @@ fn apply_flow_blocks_non_allowlisted_setting() {
         known_ids(),
         &discovery,
         &snapshot,
-        "appearance.blur.size",
+        "appearance.glow.range",
         "false",
         &backup_manager,
     )

@@ -10,7 +10,8 @@ use crate::export::ExportBundle;
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::ui::model::{RowDetailProjection, UiProjection};
 use crate::validation::ValidationSummary;
-use crate::write_flow::apply_setting_change;
+use crate::write_classification::ScalarWriteValueKind;
+use crate::write_flow::{apply_setting_change, write_flow_value_kind};
 
 pub fn show_main_window(
     app: &adw::Application,
@@ -607,20 +608,34 @@ fn append_write_controls(
 
     controls.append(&body_label("Write review"));
     controls.append(&small_label(
-        "Only this allowlisted pilot setting can be applied. A backup is created first, the config is rewritten, and the value is reread for verification. Hyprland reload is not run.",
+        "Only allowlisted scalar settings can be applied. A backup is created first, the config is rewritten, and the value is reread for verification. Hyprland reload is not run.",
     ));
 
     let value_row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
     value_row.append(&body_label("Proposed value"));
-    let value_choice = gtk::ComboBoxText::new();
-    value_choice.append_text("true");
-    value_choice.append_text("false");
-    if detail.edit.proposed_value.as_deref() == Some("false") {
-        value_choice.set_active(Some(1));
+    let value_kind = write_flow_value_kind(&detail.row_id);
+    let value_choice = if value_kind == Some(ScalarWriteValueKind::Boolean) {
+        let value_choice = gtk::ComboBoxText::new();
+        value_choice.append_text("true");
+        value_choice.append_text("false");
+        if detail.edit.proposed_value.as_deref() == Some("false") {
+            value_choice.set_active(Some(1));
+        } else {
+            value_choice.set_active(Some(0));
+        }
+        value_row.append(&value_choice);
+        Some(value_choice)
     } else {
-        value_choice.set_active(Some(0));
-    }
-    value_row.append(&value_choice);
+        None
+    };
+    let value_entry = if value_kind != Some(ScalarWriteValueKind::Boolean) {
+        let value_entry = gtk::Entry::new();
+        value_entry.set_text(detail.edit.proposed_value.as_deref().unwrap_or_default());
+        value_row.append(&value_entry);
+        Some(value_entry)
+    } else {
+        None
+    };
     controls.append(&value_row);
 
     let apply_button = gtk::Button::with_label("Apply reviewed change");
@@ -646,9 +661,11 @@ fn append_write_controls(
     let setting_id = detail.row_id.clone();
     apply_button.connect_clicked(move |button| {
         let proposed_value = value_choice
-            .active_text()
+            .as_ref()
+            .and_then(|choice| choice.active_text())
             .map(|value| value.to_string())
-            .unwrap_or_else(|| "true".to_string());
+            .or_else(|| value_entry.as_ref().map(|entry| entry.text().to_string()))
+            .unwrap_or_default();
         match apply_setting_change(
             known_setting_ids.clone(),
             &config_discovery,

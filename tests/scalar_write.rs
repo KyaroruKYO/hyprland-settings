@@ -10,7 +10,7 @@ use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueProje
 use hyprland_settings::pending_change::stage_pending_change;
 use hyprland_settings::scalar_write::apply_scalar_write_plan;
 use hyprland_settings::write_classification::{
-    config_key_from_official_setting, SAFE_WRITABLE_TOGGLE_ROWS,
+    config_key_from_official_setting, SafeWritableRow, SAFE_WRITABLE_ROWS,
 };
 use hyprland_settings::write_safety::{review_write_plan, WritePlanRequest};
 
@@ -25,9 +25,9 @@ fn temp_root(name: &str) -> Result<PathBuf> {
 }
 
 fn known_ids() -> BTreeSet<String> {
-    SAFE_WRITABLE_TOGGLE_ROWS
+    SAFE_WRITABLE_ROWS
         .iter()
-        .map(|(row_id, _)| row_id.to_string())
+        .map(|row| row.row_id.to_string())
         .collect()
 }
 
@@ -36,17 +36,51 @@ fn current_value_for(path: &PathBuf, setting_id: &str, contents: &str) -> Curren
     CurrentConfigSnapshot::from_parsed(parsed).value_for(setting_id)
 }
 
+fn valid_value_for(row: &SafeWritableRow) -> &'static str {
+    match row.row_id {
+        "appearance.blur.enabled"
+        | "appearance.shadow.enabled"
+        | "animations.enabled"
+        | "windows.snap.enabled" => "true",
+        "appearance.blur.brightness"
+        | "appearance.blur.contrast"
+        | "appearance.active_opacity"
+        | "appearance.inactive_opacity" => "0.75",
+        "input.pointer_sensitivity" => "-0.25",
+        _ => "10",
+    }
+}
+
+fn existing_value_for(row: &SafeWritableRow) -> &'static str {
+    match row.row_id {
+        "appearance.blur.enabled"
+        | "appearance.shadow.enabled"
+        | "animations.enabled"
+        | "windows.snap.enabled" => "false",
+        "appearance.blur.brightness"
+        | "appearance.blur.contrast"
+        | "appearance.active_opacity"
+        | "appearance.inactive_opacity" => "0.5",
+        "input.pointer_sensitivity" => "0",
+        _ => "5",
+    }
+}
+
 #[test]
-fn generic_scalar_writer_replaces_each_safe_toggle_row() -> Result<()> {
-    for (row_id, official_setting) in SAFE_WRITABLE_TOGGLE_ROWS {
-        let root = temp_root(row_id)?;
+fn generic_scalar_writer_replaces_each_safe_writable_row() -> Result<()> {
+    for row in SAFE_WRITABLE_ROWS {
+        let root = temp_root(row.row_id)?;
         let source = root.join("hyprland.conf");
-        let config_key = config_key_from_official_setting(official_setting);
-        fs::write(&source, format!("{config_key} = false # keep\n"))?;
+        let config_key = config_key_from_official_setting(row.official_setting);
+        let proposed = valid_value_for(row);
+        fs::write(
+            &source,
+            format!("{config_key} = {} # keep\n", existing_value_for(row)),
+        )?;
         let contents = fs::read_to_string(&source)?;
         let backup = BackupManager::new(root.join("backups")).create_backup(&source)?;
-        let current = current_value_for(&source, official_setting, &contents);
-        let pending = stage_pending_change(row_id, &current, "true");
+        let current = current_value_for(&source, row.official_setting, &contents);
+        let pending = stage_pending_change(row.row_id, &current, proposed);
         let review = review_write_plan(WritePlanRequest {
             known_setting_ids: known_ids(),
             detected_config_path: source.clone(),
@@ -57,10 +91,10 @@ fn generic_scalar_writer_replaces_each_safe_toggle_row() -> Result<()> {
 
         let result = apply_scalar_write_plan(&review.plan.expect("safe toggle should plan"))?;
 
-        assert_eq!(result.verified_value.as_deref(), Some("true"));
+        assert_eq!(result.verified_value.as_deref(), Some(proposed));
         assert_eq!(
             fs::read_to_string(&source)?,
-            format!("{config_key} = true # keep\n")
+            format!("{config_key} = {proposed} # keep\n")
         );
         fs::remove_dir_all(root)?;
     }
@@ -68,15 +102,16 @@ fn generic_scalar_writer_replaces_each_safe_toggle_row() -> Result<()> {
 }
 
 #[test]
-fn generic_scalar_writer_appends_missing_safe_toggle_row() -> Result<()> {
-    for (row_id, official_setting) in SAFE_WRITABLE_TOGGLE_ROWS {
-        let root = temp_root(&format!("{row_id}-append"))?;
+fn generic_scalar_writer_appends_missing_safe_writable_row() -> Result<()> {
+    for row in SAFE_WRITABLE_ROWS {
+        let root = temp_root(&format!("{}-append", row.row_id))?;
         let source = root.join("hyprland.conf");
-        let config_key = config_key_from_official_setting(official_setting);
+        let config_key = config_key_from_official_setting(row.official_setting);
+        let proposed = valid_value_for(row);
         fs::write(&source, "general:gaps_in = 5\n")?;
         let backup = BackupManager::new(root.join("backups")).create_backup(&source)?;
         let current = CurrentValueProjection::not_configured();
-        let pending = stage_pending_change(row_id, &current, "false");
+        let pending = stage_pending_change(row.row_id, &current, proposed);
         let review = review_write_plan(WritePlanRequest {
             known_setting_ids: known_ids(),
             detected_config_path: source.clone(),
@@ -87,8 +122,8 @@ fn generic_scalar_writer_appends_missing_safe_toggle_row() -> Result<()> {
 
         let result = apply_scalar_write_plan(&review.plan.expect("safe toggle should plan"))?;
 
-        assert_eq!(result.verified_value.as_deref(), Some("false"));
-        assert!(fs::read_to_string(&source)?.contains(&format!("{config_key} = false")));
+        assert_eq!(result.verified_value.as_deref(), Some(proposed));
+        assert!(fs::read_to_string(&source)?.contains(&format!("{config_key} = {proposed}")));
         fs::remove_dir_all(root)?;
     }
     Ok(())

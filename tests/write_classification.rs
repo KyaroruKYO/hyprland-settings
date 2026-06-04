@@ -4,8 +4,7 @@ use anyhow::Result;
 use hyprland_settings::export::ExportBundle;
 use hyprland_settings::metadata::resolve_metadata_path_with_env;
 use hyprland_settings::write_classification::{
-    classify_inventory_entry, is_safe_writable_setting, ScalarWriteStatus,
-    SAFE_WRITABLE_TOGGLE_ROWS,
+    classify_inventory_entry, is_safe_writable_setting, ScalarWriteStatus, SAFE_WRITABLE_ROWS,
 };
 
 fn load_bundle() -> Result<ExportBundle> {
@@ -29,7 +28,7 @@ fn every_inventory_row_has_write_classification() -> Result<()> {
             .iter()
             .filter(|classification| classification.status == ScalarWriteStatus::SafeWritable)
             .count(),
-        SAFE_WRITABLE_TOGGLE_ROWS.len()
+        SAFE_WRITABLE_ROWS.len()
     );
     for classification in &classifications {
         if classification.status == ScalarWriteStatus::SafeWritable {
@@ -49,20 +48,35 @@ fn every_inventory_row_has_write_classification() -> Result<()> {
 
 #[test]
 fn safe_writable_rows_are_the_reviewed_toggle_subset() {
-    let row_ids = SAFE_WRITABLE_TOGGLE_ROWS
+    let row_ids = SAFE_WRITABLE_ROWS
         .iter()
-        .map(|(row_id, _)| *row_id)
+        .map(|row| row.row_id)
         .collect::<Vec<_>>();
 
     assert_eq!(
         row_ids,
         vec![
             "appearance.blur.enabled",
+            "appearance.blur.size",
+            "appearance.blur.brightness",
+            "appearance.blur.contrast",
             "appearance.shadow.enabled",
+            "appearance.shadow.range",
+            "appearance.shadow.render_power",
+            "appearance.gaps_in",
+            "appearance.gaps_out",
+            "appearance.border_size",
+            "appearance.rounding",
+            "appearance.active_opacity",
+            "appearance.inactive_opacity",
             "animations.enabled",
-            "windows.snap.enabled"
+            "windows.snap.enabled",
+            "windows.snap.window_gap",
+            "windows.snap.monitor_gap",
+            "input.pointer_sensitivity"
         ]
     );
     assert!(is_safe_writable_setting("animations.enabled"));
-    assert!(!is_safe_writable_setting("appearance.blur.size"));
+    assert!(is_safe_writable_setting("appearance.blur.size"));
+    assert!(!is_safe_writable_setting("appearance.glow.range"));
 }
