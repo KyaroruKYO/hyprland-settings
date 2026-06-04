@@ -125,6 +125,17 @@ jq -r '.items[] | [.rowId, .runtimeSetting, .keywordExitSuccess, .postApplyParse
 
 Current diagnosis: `hyprctl keyword` exits successfully for the sampled rows and reverts verify, but `hyprctl getoption` remains at the original parsed value after the candidate apply. Batch A is not enabled from that signal.
 
+The semantics policy and Batch A classification are available here:
+
+```sh
+jq '.counts' data/reports/live-validation-semantics.v0.55.2.json
+jq '.counts' data/reports/live-validation-batch-a-semantics-classification.v0.55.2.json
+```
+
+The selected policy is strict for automatic enablement: `keyword` success, clean config errors, candidate-visible `getoption`, and verified revert. Rows that only show `keyword` success with unchanged `getoption` remain blocked as accepted-unobservable.
+
+For the next proof path, see [CONFIG_PERSISTENCE_VALIDATION.md](CONFIG_PERSISTENCE_VALIDATION.md).
+
 Dry-run the Batch A plan:
 
 ```sh
