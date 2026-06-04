@@ -27,6 +27,12 @@ fn future_batch_report() -> Result<Value> {
     ))?)
 }
 
+fn level3_diagnostics_report() -> Result<Value> {
+    Ok(serde_json::from_str(include_str!(
+        "../data/reports/live-validation-level3-diagnostics.v0.55.2.json"
+    ))?)
+}
+
 #[test]
 fn live_validation_plan_contains_only_batch_a_rows() -> Result<()> {
     let plan = plan_report()?;
@@ -148,6 +154,45 @@ fn future_live_validation_batches_remain_plan_only() -> Result<()> {
         report["invariants"]["requiresRollbackWatchdogForFutureLiveProbe"].as_bool(),
         Some(true)
     );
+
+    Ok(())
+}
+
+#[test]
+fn level3_diagnostics_record_three_row_subset_without_enablement() -> Result<()> {
+    let report = level3_diagnostics_report()?;
+    let items = report["items"]
+        .as_array()
+        .expect("diagnostic items should be an array");
+
+    assert_eq!(report["counts"]["rows"], 3);
+    assert_eq!(report["counts"]["accepted"], 0);
+    assert_eq!(report["counts"]["revertVerified"], 3);
+    assert_eq!(report["counts"]["safeToRetest"], 3);
+
+    let row_ids = items
+        .iter()
+        .map(|item| item["rowId"].as_str().expect("rowId should be present"))
+        .collect::<BTreeSet<_>>();
+    assert_eq!(
+        row_ids,
+        [
+            "appearance.dim.modal",
+            "misc.disable_hyprland_logo",
+            "misc.disable_splash_rendering"
+        ]
+        .into_iter()
+        .collect()
+    );
+    for item in items {
+        assert_eq!(item["keywordExitSuccess"].as_bool(), Some(true));
+        assert_eq!(item["valuesEquivalent"].as_bool(), Some(false));
+        assert_eq!(item["revertVerified"].as_bool(), Some(true));
+        assert_eq!(
+            item["diagnosis"].as_str(),
+            Some("keyword-succeeded-but-getoption-stayed-original")
+        );
+    }
 
     Ok(())
 }
