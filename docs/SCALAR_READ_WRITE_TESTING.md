@@ -106,9 +106,29 @@ The remaining blocked rows are classified for future review without changing wri
 ```sh
 jq '.counts' data/reports/manual-review-write-candidates.v0.55.2.json
 jq '.counts' data/reports/high-risk-write-candidates.v0.55.2.json
+jq '.counts' data/reports/live-validation-results.v0.55.2.json
+jq '.currentBatchAResult' data/reports/future-live-validation-batches.v0.55.2.json
 ```
 
-These reports are planning metadata only. They do not make any row writable. Batch A is the recommended first review target; high-risk rows should remain blocked until a dedicated safety design exists.
+These reports are planning metadata only. They do not make any row writable. Batch A has a rollback-protected live-validation record: 39 rows were probed, Level 1 and Level 2 passed for all rows, revert verification passed for all rows, and runtime acceptance was not proven for any row. Batch A remains blocked until the live acceptance check is improved or reviewed. High-risk rows should remain blocked until a dedicated safety design exists.
+
+## Live Validation Harness
+
+The live-validation harness is for controlled runtime probing only. It does not persistently edit `hyprland.conf`.
+
+Dry-run the Batch A plan:
+
+```sh
+cargo run --bin hyprland-settings -- live-validate --dry-run --plan data/reports/live-validation-plan.v0.55.2.json --results /tmp/hyprland-settings-live-validation-dry-run.json
+```
+
+Run live validation only from an active Hyprland session, one setting at a time through the harness, with rollback armed:
+
+```sh
+cargo run --bin hyprland-settings -- live-validate --live --batch batch-a-likely-safe-booleans --timeout-seconds 5 --plan data/reports/live-validation-plan.v0.55.2.json --results data/reports/live-validation-results.v0.55.2.json
+```
+
+Do not run ad hoc `hyprctl keyword` commands for write approval. The harness prepares rollback first, applies the candidate, reverts immediately, and verifies the original value is restored. It does not run `hyprctl reload`.
 
 Parser-backed writable families currently include:
 

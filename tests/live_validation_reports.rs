@@ -21,6 +21,12 @@ fn results_report() -> Result<Value> {
     ))?)
 }
 
+fn future_batch_report() -> Result<Value> {
+    Ok(serde_json::from_str(include_str!(
+        "../data/reports/future-live-validation-batches.v0.55.2.json"
+    ))?)
+}
+
 #[test]
 fn live_validation_plan_contains_only_batch_a_rows() -> Result<()> {
     let plan = plan_report()?;
@@ -100,6 +106,48 @@ fn live_results_record_batch_a_probe_without_enablement() -> Result<()> {
         assert_eq!(row["rollback_watchdog_armed"].as_bool(), Some(true));
         assert_eq!(row["revert_verified"].as_bool(), Some(true));
     }
+
+    Ok(())
+}
+
+#[test]
+fn future_live_validation_batches_remain_plan_only() -> Result<()> {
+    let report = future_batch_report()?;
+
+    assert_eq!(report["currentBatchAResult"]["plannedRows"], 39);
+    assert_eq!(report["currentBatchAResult"]["liveProbedRows"], 39);
+    assert_eq!(report["currentBatchAResult"]["level3Passed"], 0);
+    assert_eq!(report["currentBatchAResult"]["level4Passed"], 39);
+    assert_eq!(report["currentBatchAResult"]["enabledRows"], 0);
+    assert_eq!(
+        report["currentBatchAResult"]["decision"].as_str(),
+        Some("do-not-enable-batch-a-yet")
+    );
+
+    let batches = report["futureBatches"]
+        .as_array()
+        .expect("futureBatches should be an array");
+    assert_eq!(batches.len(), 6);
+    assert!(batches.iter().any(|batch| batch["batch"] == "high-risk"));
+    assert!(batches
+        .iter()
+        .any(|batch| batch["batch"] == "batch-b-likely-safe-numerics"));
+    for batch in batches {
+        assert_eq!(batch["liveValidationAllowedNow"].as_bool(), Some(false));
+    }
+
+    assert_eq!(
+        report["invariants"]["doesNotEnableRows"].as_bool(),
+        Some(true)
+    );
+    assert_eq!(
+        report["invariants"]["doesNotChangeWriteBehavior"].as_bool(),
+        Some(true)
+    );
+    assert_eq!(
+        report["invariants"]["requiresRollbackWatchdogForFutureLiveProbe"].as_bool(),
+        Some(true)
+    );
 
     Ok(())
 }

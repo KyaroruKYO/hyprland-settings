@@ -1,0 +1,76 @@
+{
+  "artifactKind": "future-live-validation-batches",
+  "schemaVersion": 1,
+  "hyprlandVersion": "0.55.2",
+  "sourceManualReviewReport": "data/reports/manual-review-write-candidates.v0.55.2.json",
+  "sourceHighRiskReport": "data/reports/high-risk-write-candidates.v0.55.2.json",
+  "currentLiveResultReport": "data/reports/live-validation-results.v0.55.2.json",
+  "currentBatchAResult": {
+    "plannedRows": 39,
+    "liveProbedRows": 39,
+    "level1Passed": 39,
+    "level2Passed": 39,
+    "level3Passed": 0,
+    "level4Passed": 39,
+    "enabledRows": 0,
+    "decision": "do-not-enable-batch-a-yet",
+    "reason": "Hyprland runtime acceptance was not proven for any Batch A row, even though rollback verification passed for every probed row."
+  },
+  "futureBatches": [
+    {
+      "batch": "batch-b-likely-safe-numerics",
+      "rows": 33,
+      "status": "plan-only",
+      "nextAction": "define per-row documented ranges and conservative live candidate values before probing",
+      "liveValidationAllowedNow": false,
+      "notes": "Numeric rows need range/default review. Do not probe until candidate values are selected per row."
+    },
+    {
+      "batch": "batch-c-likely-safe-enums",
+      "rows": 7,
+      "status": "plan-only",
+      "nextAction": "confirm allowed values and select reversible alternate enum values before probing",
+      "liveValidationAllowedNow": false,
+      "notes": "Enum rows need allowed-value confirmation before live mutation."
+    },
+    {
+      "batch": "batch-d-input-behavior",
+      "rows": 74,
+      "status": "deferred",
+      "nextAction": "split into smaller input subgroups with explicit recovery instructions",
+      "liveValidationAllowedNow": false,
+      "notes": "Input behavior can affect keyboard, pointer, gesture, and focus behavior."
+    },
+    {
+      "batch": "batch-e-window-layout-behavior",
+      "rows": 45,
+      "status": "deferred",
+      "nextAction": "split into smaller layout subgroups with observation and recovery criteria",
+      "liveValidationAllowedNow": false,
+      "notes": "Window and layout behavior needs narrower review before runtime probing."
+    },
+    {
+      "batch": "batch-g-session-runtime-sensitive",
+      "rows": 16,
+      "status": "keep-blocked",
+      "nextAction": "dedicated safety design only",
+      "liveValidationAllowedNow": false,
+      "notes": "Session/runtime-sensitive rows remain blocked."
+    },
+    {
+      "batch": "high-risk",
+      "rows": 72,
+      "status": "keep-blocked",
+      "nextAction": "dedicated high-risk design and recovery plan only",
+      "liveValidationAllowedNow": false,
+      "notes": "High-risk rows must not be live-probed through this Batch A harness sprint."
+    }
+  ],
+  "invariants": {
+    "doesNotEnableRows": true,
+    "doesNotChangeWriteBehavior": true,
+    "doesNotModifyPersistentConfig": true,
+    "requiresRollbackWatchdogForFutureLiveProbe": true,
+    "maxRollbackDeadlineSeconds": 10
+  }
+}
