@@ -222,6 +222,38 @@ fn apply_flow_writes_vector_tuple_fixture() -> Result<()> {
 }
 
 #[test]
+fn apply_flow_writes_enum_custom_string_fixture() -> Result<()> {
+    let root = temp_root("apply-string")?;
+    let source = root.join("hyprland.conf");
+    fs::write(&source, "misc:font_family = Sans\n")?;
+    let contents = fs::read_to_string(&source)?;
+    let snapshot = snapshot_for(&source, &contents);
+    let backup_manager = BackupManager::new(root.join("backups"));
+
+    let outcome = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery_for(source.clone()),
+        &snapshot,
+        "misc.font_family",
+        "JetBrains Mono",
+        &backup_manager,
+    )
+    .map_err(|failure| anyhow::anyhow!("{failure:?}"))?;
+
+    assert_eq!(outcome.setting_id, "misc.font_family");
+    assert_eq!(outcome.target_path, source);
+    assert!(outcome.backup_path.exists());
+    assert_eq!(outcome.verified_value.as_deref(), Some("JetBrains Mono"));
+    assert_eq!(
+        fs::read_to_string(&outcome.target_path)?,
+        "misc:font_family = JetBrains Mono\n"
+    );
+
+    fs::remove_dir_all(root)?;
+    Ok(())
+}
+
+#[test]
 fn apply_flow_blocks_missing_config_target() {
     let discovery = ConfigDiscovery {
         status: ConfigDiscoveryStatus::Missing,

@@ -10,8 +10,8 @@
     "totalTargets": 51,
     "validatorNeededTargetsEnabled": 14,
     "validatorNeededTargetsBlocked": 0,
-    "parserNeededTargetsEnabled": 16,
-    "parserNeededTargetsBlocked": 21
+    "parserNeededTargetsEnabled": 20,
+    "parserNeededTargetsBlocked": 17
   },
   "groups": [
     {
@@ -597,11 +597,20 @@
       "parserStatus": "needs_enum_or_custom_string_parser",
       "riskClass": "freeform_string_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "enum_or_freeform_string_values_need_source_review",
-      "notes": "Freeform and enum-like strings need source-backed value sets or dedicated sanitization before writes."
+      "decision": "enabled-parser-backed-line-safe-string",
+      "enabled": true,
+      "tests": [
+        "sanitized_string_accepts_single_line_values",
+        "sanitized_string_rejects_config_breaking_values",
+        "enum_custom_string_rows_can_be_staged_with_line_safe_values",
+        "enum_custom_string_rows_reject_config_breaking_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_enum_custom_string_fixture",
+        "enum_custom_string_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with sanitized line-safe string parser. Blocks multiline, config comments, and command-substitution-like syntax."
     },
     {
       "rowId": "input.scroll_points",
@@ -793,11 +802,20 @@
       "parserStatus": "needs_enum_or_custom_string_parser",
       "riskClass": "freeform_string_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "enum_or_freeform_string_values_need_source_review",
-      "notes": "Freeform and enum-like strings need source-backed value sets or dedicated sanitization before writes."
+      "decision": "enabled-parser-backed-line-safe-string",
+      "enabled": true,
+      "tests": [
+        "sanitized_string_accepts_single_line_values",
+        "sanitized_string_rejects_config_breaking_values",
+        "enum_custom_string_rows_can_be_staged_with_line_safe_values",
+        "enum_custom_string_rows_reject_config_breaking_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_enum_custom_string_fixture",
+        "enum_custom_string_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with sanitized line-safe string parser. Blocks multiline, config comments, and command-substitution-like syntax."
     },
     {
       "rowId": "group.groupbar.text_color",
@@ -988,11 +1006,20 @@
       "parserStatus": "needs_enum_or_custom_string_parser",
       "riskClass": "freeform_string_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "enum_or_freeform_string_values_need_source_review",
-      "notes": "Freeform and enum-like strings need source-backed value sets or dedicated sanitization before writes."
+      "decision": "enabled-parser-backed-line-safe-string",
+      "enabled": true,
+      "tests": [
+        "sanitized_string_accepts_single_line_values",
+        "sanitized_string_rejects_config_breaking_values",
+        "enum_custom_string_rows_can_be_staged_with_line_safe_values",
+        "enum_custom_string_rows_reject_config_breaking_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_enum_custom_string_fixture",
+        "enum_custom_string_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with sanitized line-safe string parser. Blocks multiline, config comments, and command-substitution-like syntax."
     },
     {
       "rowId": "misc.splash_font_family",
@@ -1004,11 +1031,20 @@
       "parserStatus": "needs_enum_or_custom_string_parser",
       "riskClass": "freeform_string_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "enum_or_freeform_string_values_need_source_review",
-      "notes": "Freeform and enum-like strings need source-backed value sets or dedicated sanitization before writes."
+      "decision": "enabled-parser-backed-line-safe-string",
+      "enabled": true,
+      "tests": [
+        "sanitized_string_accepts_single_line_values",
+        "sanitized_string_rejects_config_breaking_values",
+        "enum_custom_string_rows_can_be_staged_with_line_safe_values",
+        "enum_custom_string_rows_reject_config_breaking_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_enum_custom_string_fixture",
+        "enum_custom_string_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with sanitized line-safe string parser. Blocks multiline, config comments, and command-substitution-like syntax."
     },
     {
       "rowId": "misc.swallow_regex",

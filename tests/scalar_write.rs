@@ -43,6 +43,9 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
     if row.value_kind == ScalarWriteValueKind::Vector2 {
         return "10,20";
     }
+    if row.value_kind == ScalarWriteValueKind::LineSafeString {
+        return "JetBrains Mono";
+    }
     match row.row_id {
         "appearance.blur.enabled"
         | "appearance.shadow.enabled"
@@ -63,6 +66,9 @@ fn existing_value_for(row: &SafeWritableRow) -> &'static str {
     }
     if row.value_kind == ScalarWriteValueKind::Vector2 {
         return "0 0";
+    }
+    if row.value_kind == ScalarWriteValueKind::LineSafeString {
+        return "Sans";
     }
     match row.row_id {
         "appearance.blur.enabled"

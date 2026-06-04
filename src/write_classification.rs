@@ -30,6 +30,7 @@ pub enum ScalarWriteValueKind {
     Percent,
     Color,
     Vector2,
+    LineSafeString,
     StringLike,
     ComplexRaw,
     Unknown,
@@ -156,6 +157,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Percent,
     },
     SafeWritableRow {
+        row_id: "input.accel_profile",
+        official_setting: "input.accel_profile",
+        value_kind: ScalarWriteValueKind::LineSafeString,
+    },
+    SafeWritableRow {
         row_id: "input.tablet.region_position",
         official_setting: "input.tablet.region_position",
         value_kind: ScalarWriteValueKind::Vector2,
@@ -206,6 +212,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Color,
     },
     SafeWritableRow {
+        row_id: "group.groupbar.font_family",
+        official_setting: "group.groupbar.font_family",
+        value_kind: ScalarWriteValueKind::LineSafeString,
+    },
+    SafeWritableRow {
         row_id: "misc.col.splash",
         official_setting: "misc.col.splash",
         value_kind: ScalarWriteValueKind::Color,
@@ -214,6 +225,16 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "misc.background_color",
         official_setting: "misc.background_color",
         value_kind: ScalarWriteValueKind::Color,
+    },
+    SafeWritableRow {
+        row_id: "misc.font_family",
+        official_setting: "misc.font_family",
+        value_kind: ScalarWriteValueKind::LineSafeString,
+    },
+    SafeWritableRow {
+        row_id: "misc.splash_font_family",
+        official_setting: "misc.splash_font_family",
+        value_kind: ScalarWriteValueKind::LineSafeString,
     },
     SafeWritableRow {
         row_id: "layout.single_window_aspect_ratio",

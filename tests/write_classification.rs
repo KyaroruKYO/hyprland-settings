@@ -77,6 +77,7 @@ fn safe_writable_rows_are_the_reviewed_toggle_subset() {
             "windows.snap.window_gap",
             "windows.snap.monitor_gap",
             "input.pointer_sensitivity",
+            "input.accel_profile",
             "input.tablet.region_position",
             "input.tablet.region_size",
             "input.tablet.active_area_size",
@@ -87,8 +88,11 @@ fn safe_writable_rows_are_the_reviewed_toggle_subset() {
             "group.groupbar.text_color_inactive",
             "group.groupbar.text_color_locked_active",
             "group.groupbar.text_color_locked_inactive",
+            "group.groupbar.font_family",
             "misc.col.splash",
             "misc.background_color",
+            "misc.font_family",
+            "misc.splash_font_family",
             "layout.single_window_aspect_ratio"
         ]
     );

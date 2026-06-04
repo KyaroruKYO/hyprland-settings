@@ -6,8 +6,8 @@
   "source": "data/reports/scalar-read-write-coverage.v0.55.2.json",
   "counts": {
     "totalRemainingParserNeededRows": 27,
-    "enabledRows": 6,
-    "blockedRows": 21
+    "enabledRows": 10,
+    "blockedRows": 17
   },
   "families": [
     {
@@ -142,12 +142,21 @@
       "parserFamily": "enum/custom string",
       "valueFamily": "mixed_freeform_string",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "enabled-parser-backed-line-safe-string",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "sanitized_string_accepts_single_line_values",
+        "sanitized_string_rejects_config_breaking_values",
+        "enum_custom_string_rows_can_be_staged_with_line_safe_values",
+        "enum_custom_string_rows_reject_config_breaking_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_enum_custom_string_fixture",
+        "enum_custom_string_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with sanitized line-safe string parser."
     },
     {
       "rowId": "input.scroll_points",
@@ -308,12 +317,21 @@
       "parserFamily": "enum/custom string",
       "valueFamily": "mixed_freeform_string",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "enabled-parser-backed-line-safe-string",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "sanitized_string_accepts_single_line_values",
+        "sanitized_string_rejects_config_breaking_values",
+        "enum_custom_string_rows_can_be_staged_with_line_safe_values",
+        "enum_custom_string_rows_reject_config_breaking_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_enum_custom_string_fixture",
+        "enum_custom_string_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with sanitized line-safe string parser."
     },
     {
       "rowId": "group.groupbar.col.active",
@@ -373,12 +391,21 @@
       "parserFamily": "enum/custom string",
       "valueFamily": "mixed_freeform_string",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "enabled-parser-backed-line-safe-string",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "sanitized_string_accepts_single_line_values",
+        "sanitized_string_rejects_config_breaking_values",
+        "enum_custom_string_rows_can_be_staged_with_line_safe_values",
+        "enum_custom_string_rows_reject_config_breaking_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_enum_custom_string_fixture",
+        "enum_custom_string_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with sanitized line-safe string parser."
     },
     {
       "rowId": "misc.splash_font_family",
@@ -386,12 +413,21 @@
       "parserFamily": "enum/custom string",
       "valueFamily": "mixed_freeform_string",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "enabled-parser-backed-line-safe-string",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "sanitized_string_accepts_single_line_values",
+        "sanitized_string_rejects_config_breaking_values",
+        "enum_custom_string_rows_can_be_staged_with_line_safe_values",
+        "enum_custom_string_rows_reject_config_breaking_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_enum_custom_string_fixture",
+        "enum_custom_string_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with sanitized line-safe string parser."
     },
     {
       "rowId": "misc.swallow_regex",

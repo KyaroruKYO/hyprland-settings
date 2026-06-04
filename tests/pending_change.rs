@@ -258,6 +258,47 @@ fn vector_tuple_rows_reject_invalid_values() {
 }
 
 #[test]
+fn enum_custom_string_rows_can_be_staged_with_line_safe_values() {
+    let cases = [
+        ("input.accel_profile", "input.accel_profile", "flat"),
+        (
+            "group.groupbar.font_family",
+            "group.groupbar.font_family",
+            "JetBrains Mono",
+        ),
+        ("misc.font_family", "misc.font_family", "Inter"),
+        ("misc.splash_font_family", "misc.splash_font_family", "Sans"),
+    ];
+
+    for (row_id, official_setting, proposed) in cases {
+        let config_key = official_setting.replace('.', ":");
+        let current = current_value_for(official_setting, &format!("{config_key} = Sans\n"));
+
+        let change = stage_pending_change(row_id, &current, proposed);
+
+        assert_eq!(
+            change.validation,
+            PendingChangeValidation::Valid,
+            "{row_id} should accept a line-safe string"
+        );
+        assert!(change.can_be_applied(), "{row_id} should be applicable");
+    }
+}
+
+#[test]
+fn enum_custom_string_rows_reject_config_breaking_values() {
+    let current = CurrentValueProjection::not_configured();
+    for proposed in ["", "value\nnext", "value # comment", "`cmd`", "$(cmd)"] {
+        let change = stage_pending_change("misc.font_family", &current, proposed);
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "misc.font_family should reject {proposed:?}"
+        );
+        assert!(!change.can_be_applied());
+    }
+}
+
+#[test]
 fn pending_change_preserves_missing_old_value_for_absent_setting() {
     let current = CurrentValueProjection::not_configured();
 
