@@ -116,6 +116,15 @@ These reports are planning metadata only. They do not make any row writable. Bat
 
 The live-validation harness is for controlled runtime probing only. It does not persistently edit `hyprland.conf`.
 
+The Level 3 debug report captures raw `hyprctl` output for a three-row Batch A subset:
+
+```sh
+jq '.counts' data/reports/live-validation-level3-diagnostics.v0.55.2.json
+jq -r '.items[] | [.rowId, .runtimeSetting, .keywordExitSuccess, .postApplyParsedValue, .valuesEquivalent, .revertVerified, .diagnosis] | @tsv' data/reports/live-validation-level3-diagnostics.v0.55.2.json
+```
+
+Current diagnosis: `hyprctl keyword` exits successfully for the sampled rows and reverts verify, but `hyprctl getoption` remains at the original parsed value after the candidate apply. Batch A is not enabled from that signal.
+
 Dry-run the Batch A plan:
 
 ```sh
