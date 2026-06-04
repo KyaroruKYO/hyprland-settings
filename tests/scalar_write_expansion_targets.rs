@@ -1,10 +1,36 @@
 use anyhow::Result;
+use std::collections::BTreeMap;
+
 use serde_json::Value;
 
 fn target_report() -> Result<Value> {
     Ok(serde_json::from_str(include_str!(
         "../data/reports/scalar-write-expansion-targets.v0.55.2.json"
     ))?)
+}
+
+#[test]
+fn parser_needed_target_research_decisions_are_recorded() -> Result<()> {
+    let report = target_report()?;
+    let targets = report["targets"]
+        .as_array()
+        .expect("target report targets should be an array");
+    let mut decisions = BTreeMap::new();
+
+    for target in targets
+        .iter()
+        .filter(|target| target["targetGroup"].as_str() == Some("parser-needed"))
+    {
+        let decision = target["decision"]
+            .as_str()
+            .expect("parser target should have a decision");
+        *decisions.entry(decision.to_string()).or_insert(0usize) += 1;
+    }
+
+    assert_eq!(decisions.get("parser-implementable-now"), Some(&10));
+    assert_eq!(decisions.get("manual-review-needed"), Some(&27));
+
+    Ok(())
 }
 
 #[test]

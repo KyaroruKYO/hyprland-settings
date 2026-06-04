@@ -384,11 +384,11 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "gradient_color_list_round_trip_parser_needed",
+      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
     },
     {
       "rowId": "general.col.active_border",
@@ -400,11 +400,11 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "gradient_color_list_round_trip_parser_needed",
+      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
     },
     {
       "rowId": "general.col.nogroup_border",
@@ -416,11 +416,11 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "gradient_color_list_round_trip_parser_needed",
+      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
     },
     {
       "rowId": "general.col.nogroup_border_active",
@@ -432,11 +432,11 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "gradient_color_list_round_trip_parser_needed",
+      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
     },
     {
       "rowId": "decoration.shadow.color",
@@ -448,11 +448,11 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "pending-audit",
+      "decision": "parser-implementable-now",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_color_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "needs_color_parser_before_write_enablement",
+      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
     },
     {
       "rowId": "decoration.shadow.color_inactive",
@@ -464,11 +464,11 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "pending-audit",
+      "decision": "parser-implementable-now",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_color_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "needs_color_parser_before_write_enablement",
+      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
     },
     {
       "rowId": "decoration.shadow.offset",
@@ -480,11 +480,11 @@
       "parserStatus": "needs_vec2_tuple_parser",
       "riskClass": "tuple_shape_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "vec2_tuple_semantics_need_dedicated_review",
+      "notes": "Tuple rows need per-setting shape and semantic review before writes; raw scalar replacement is not enabled."
     },
     {
       "rowId": "decoration.glow.color",
@@ -496,11 +496,11 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "pending-audit",
+      "decision": "parser-implementable-now",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_color_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "needs_color_parser_before_write_enablement",
+      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
     },
     {
       "rowId": "decoration.glow.color_inactive",
@@ -512,11 +512,11 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "pending-audit",
+      "decision": "parser-implementable-now",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_color_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "needs_color_parser_before_write_enablement",
+      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
     },
     {
       "rowId": "decoration.screen_shader",
@@ -528,11 +528,11 @@
       "parserStatus": "needs_sanitized_path_preview",
       "riskClass": "path_or_shader_preview_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_sanitized_path_preview",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_sanitized_path_preview",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "path_value_sanitization_and_file_semantics_needed",
+      "notes": "Path-like rows are not writable until path sanitization and non-executing preview semantics are designed."
     },
     {
       "rowId": "input.kb_file",
@@ -544,11 +544,11 @@
       "parserStatus": "needs_sanitized_path_preview",
       "riskClass": "input_file_preview_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_sanitized_path_preview",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_sanitized_path_preview",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "path_value_sanitization_and_file_semantics_needed",
+      "notes": "Path-like rows are not writable until path sanitization and non-executing preview semantics are designed."
     },
     {
       "rowId": "input.accel_profile",
@@ -560,11 +560,11 @@
       "parserStatus": "needs_enum_or_custom_string_parser",
       "riskClass": "freeform_string_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "enum_or_freeform_string_values_need_source_review",
+      "notes": "Freeform and enum-like strings need source-backed value sets or dedicated sanitization before writes."
     },
     {
       "rowId": "input.scroll_points",
@@ -576,11 +576,11 @@
       "parserStatus": "needs_numeric_list_parser",
       "riskClass": "numeric_list_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_numeric_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_numeric_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "numeric_list_parser_and_semantics_needed",
+      "notes": "Numeric-list row needs a dedicated parser and semantics before writes."
     },
     {
       "rowId": "input.tablet.region_position",
@@ -592,11 +592,11 @@
       "parserStatus": "needs_vec2_tuple_parser",
       "riskClass": "tuple_shape_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "vec2_tuple_semantics_need_dedicated_review",
+      "notes": "Tuple rows need per-setting shape and semantic review before writes; raw scalar replacement is not enabled."
     },
     {
       "rowId": "input.tablet.region_size",
@@ -608,11 +608,11 @@
       "parserStatus": "needs_vec2_tuple_parser",
       "riskClass": "tuple_shape_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "vec2_tuple_semantics_need_dedicated_review",
+      "notes": "Tuple rows need per-setting shape and semantic review before writes; raw scalar replacement is not enabled."
     },
     {
       "rowId": "input.tablet.active_area_size",
@@ -624,11 +624,11 @@
       "parserStatus": "needs_vec2_tuple_parser",
       "riskClass": "tuple_shape_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "vec2_tuple_semantics_need_dedicated_review",
+      "notes": "Tuple rows need per-setting shape and semantic review before writes; raw scalar replacement is not enabled."
     },
     {
       "rowId": "input.tablet.active_area_position",
@@ -640,11 +640,11 @@
       "parserStatus": "needs_vec2_tuple_parser",
       "riskClass": "tuple_shape_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "vec2_tuple_semantics_need_dedicated_review",
+      "notes": "Tuple rows need per-setting shape and semantic review before writes; raw scalar replacement is not enabled."
     },
     {
       "rowId": "group.col.border_active",
@@ -656,11 +656,11 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "gradient_color_list_round_trip_parser_needed",
+      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
     },
     {
       "rowId": "group.col.border_inactive",
@@ -672,11 +672,11 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "gradient_color_list_round_trip_parser_needed",
+      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
     },
     {
       "rowId": "group.col.border_locked_inactive",
@@ -688,11 +688,11 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "gradient_color_list_round_trip_parser_needed",
+      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
     },
     {
       "rowId": "group.col.border_locked_active",
@@ -704,11 +704,11 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "gradient_color_list_round_trip_parser_needed",
+      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
     },
     {
       "rowId": "group.groupbar.font_family",
@@ -720,11 +720,11 @@
       "parserStatus": "needs_enum_or_custom_string_parser",
       "riskClass": "freeform_string_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "enum_or_freeform_string_values_need_source_review",
+      "notes": "Freeform and enum-like strings need source-backed value sets or dedicated sanitization before writes."
     },
     {
       "rowId": "group.groupbar.text_color",
@@ -736,11 +736,11 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "pending-audit",
+      "decision": "parser-implementable-now",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_color_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "needs_color_parser_before_write_enablement",
+      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
     },
     {
       "rowId": "group.groupbar.text_color_inactive",
@@ -752,11 +752,11 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "pending-audit",
+      "decision": "parser-implementable-now",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_color_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "needs_color_parser_before_write_enablement",
+      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
     },
     {
       "rowId": "group.groupbar.text_color_locked_active",
@@ -768,11 +768,11 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "pending-audit",
+      "decision": "parser-implementable-now",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_color_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "needs_color_parser_before_write_enablement",
+      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
     },
     {
       "rowId": "group.groupbar.text_color_locked_inactive",
@@ -784,11 +784,11 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "pending-audit",
+      "decision": "parser-implementable-now",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_color_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "needs_color_parser_before_write_enablement",
+      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
     },
     {
       "rowId": "group.groupbar.col.active",
@@ -800,11 +800,11 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "gradient_color_list_round_trip_parser_needed",
+      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
     },
     {
       "rowId": "group.groupbar.col.inactive",
@@ -816,11 +816,11 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "gradient_color_list_round_trip_parser_needed",
+      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
     },
     {
       "rowId": "group.groupbar.col.locked_active",
@@ -832,11 +832,11 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "gradient_color_list_round_trip_parser_needed",
+      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
     },
     {
       "rowId": "group.groupbar.col.locked_inactive",
@@ -848,11 +848,11 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "gradient_color_list_round_trip_parser_needed",
+      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
     },
     {
       "rowId": "misc.col.splash",
@@ -864,11 +864,11 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "pending-audit",
+      "decision": "parser-implementable-now",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_color_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "needs_color_parser_before_write_enablement",
+      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
     },
     {
       "rowId": "misc.font_family",
@@ -880,11 +880,11 @@
       "parserStatus": "needs_enum_or_custom_string_parser",
       "riskClass": "freeform_string_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "enum_or_freeform_string_values_need_source_review",
+      "notes": "Freeform and enum-like strings need source-backed value sets or dedicated sanitization before writes."
     },
     {
       "rowId": "misc.splash_font_family",
@@ -896,11 +896,11 @@
       "parserStatus": "needs_enum_or_custom_string_parser",
       "riskClass": "freeform_string_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_enum_or_custom_string_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "enum_or_freeform_string_values_need_source_review",
+      "notes": "Freeform and enum-like strings need source-backed value sets or dedicated sanitization before writes."
     },
     {
       "rowId": "misc.swallow_regex",
@@ -912,11 +912,11 @@
       "parserStatus": "needs_sanitized_regex_preview",
       "riskClass": "regex_rule_behavior_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_sanitized_regex_preview",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_sanitized_regex_preview",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "regex_behavior_risk_needs_dedicated_review",
+      "notes": "Regex-like rows can change matching behavior broadly and need dedicated review before writes."
     },
     {
       "rowId": "misc.swallow_exception_regex",
@@ -928,11 +928,11 @@
       "parserStatus": "needs_sanitized_regex_preview",
       "riskClass": "regex_rule_behavior_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_sanitized_regex_preview",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_sanitized_regex_preview",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "regex_behavior_risk_needs_dedicated_review",
+      "notes": "Regex-like rows can change matching behavior broadly and need dedicated review before writes."
     },
     {
       "rowId": "misc.background_color",
@@ -944,11 +944,11 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "pending-audit",
+      "decision": "parser-implementable-now",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_color_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "needs_color_parser_before_write_enablement",
+      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
     },
     {
       "rowId": "layout.single_window_aspect_ratio",
@@ -960,11 +960,11 @@
       "parserStatus": "needs_vec2_tuple_parser",
       "riskClass": "tuple_shape_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "decision": "pending-audit",
+      "decision": "manual-review-needed",
       "enabled": false,
       "tests": [],
-      "blocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "notes": "Stage 0 target audit only; no write support enabled in this report revision."
+      "blocker": "vec2_tuple_semantics_need_dedicated_review",
+      "notes": "Tuple rows need per-setting shape and semantic review before writes; raw scalar replacement is not enabled."
     }
   ]
 }
