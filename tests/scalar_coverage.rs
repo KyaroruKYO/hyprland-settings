@@ -170,3 +170,33 @@ fn coverage_report_enforces_safe_writable_rows() -> Result<()> {
 
     Ok(())
 }
+
+#[test]
+fn coverage_report_has_no_remaining_parser_or_validator_needed_write_rows() -> Result<()> {
+    let report: Value = serde_json::from_str(include_str!(
+        "../data/reports/scalar-read-write-coverage.v0.55.2.json"
+    ))?;
+    let rows = report["rows"]
+        .as_array()
+        .expect("coverage report rows should be an array");
+
+    for row in rows {
+        let row_id = row["rowId"].as_str().expect("rowId should be a string");
+        let status = row["writeStatus"]
+            .as_str()
+            .expect("writeStatus should be a string");
+        assert_ne!(status, "parser-needed", "{row_id} still needs a parser");
+        assert_ne!(
+            status, "validator-needed",
+            "{row_id} still needs a validator"
+        );
+        if status == "writable" {
+            assert_eq!(row["parserSupported"].as_bool(), Some(true), "{row_id}");
+            assert_eq!(row["validatorSupported"].as_bool(), Some(true), "{row_id}");
+            assert_eq!(row["safeWriteSupported"].as_bool(), Some(true), "{row_id}");
+            assert_eq!(row["testsPresent"].as_bool(), Some(true), "{row_id}");
+        }
+    }
+
+    Ok(())
+}

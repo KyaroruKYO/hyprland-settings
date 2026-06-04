@@ -72,3 +72,38 @@ fn parser_family_report_groups_all_remaining_parser_families() -> Result<()> {
 
     Ok(())
 }
+
+#[test]
+fn parser_family_report_marks_every_target_writable_after_functionality_sprint() -> Result<()> {
+    let report = parser_family_report()?;
+    let targets = report["targets"]
+        .as_array()
+        .expect("parser-family targets should be an array");
+
+    for target in targets {
+        let row_id = target["rowId"]
+            .as_str()
+            .expect("target rowId should be a string");
+        assert_eq!(
+            target["writeStatus"].as_str(),
+            Some("writable"),
+            "{row_id} should no longer be parser-needed"
+        );
+        assert_ne!(
+            target["implementationStatus"].as_str(),
+            Some("pending"),
+            "{row_id} should no longer have pending implementation status"
+        );
+        assert_eq!(target["validationStatus"].as_str(), Some("validated"));
+        assert!(target["blocker"].is_null(), "{row_id} should clear blocker");
+        assert!(
+            !target["testNames"]
+                .as_array()
+                .expect("testNames should be an array")
+                .is_empty(),
+            "{row_id} should list proof tests"
+        );
+    }
+
+    Ok(())
+}
