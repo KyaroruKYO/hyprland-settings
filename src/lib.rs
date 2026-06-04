@@ -1,6 +1,7 @@
 pub mod config_backup;
 pub mod config_discovery;
 pub mod config_parser;
+pub mod config_persistence_validation;
 pub mod current_config;
 pub mod export;
 pub mod live_validation;

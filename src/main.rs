@@ -5,7 +5,102 @@ fn main() -> glib::ExitCode {
         eprintln!("{error:#}");
         return glib::ExitCode::FAILURE;
     }
+    if let Err(error) = maybe_run_config_persistence_cli() {
+        eprintln!("{error:#}");
+        return glib::ExitCode::FAILURE;
+    }
     hyprland_settings::ui::app::run()
+}
+
+fn maybe_run_config_persistence_cli() -> anyhow::Result<()> {
+    let args = std::env::args().collect::<Vec<_>>();
+    if args.get(1).map(String::as_str) != Some("validate-config-persistence") {
+        return Ok(());
+    }
+    let mut dry_run = false;
+    let mut verify_hyprland = false;
+    let mut row_id: Option<String> = None;
+    let mut candidates_path =
+        hyprland_settings::config_persistence_validation::default_candidates_path();
+    let mut results_path = hyprland_settings::config_persistence_validation::default_results_path();
+    let mut timeout_seconds = 10_u64;
+    let mut index = 2;
+    while index < args.len() {
+        match args[index].as_str() {
+            "--dry-run" => dry_run = true,
+            "--verify-hyprland" => verify_hyprland = true,
+            "--candidates" => {
+                index += 1;
+                candidates_path = args
+                    .get(index)
+                    .ok_or_else(|| anyhow::anyhow!("--candidates needs a path"))?
+                    .into();
+            }
+            "--results" => {
+                index += 1;
+                results_path = args
+                    .get(index)
+                    .ok_or_else(|| anyhow::anyhow!("--results needs a path"))?
+                    .into();
+            }
+            "--row" => {
+                index += 1;
+                row_id = Some(
+                    args.get(index)
+                        .ok_or_else(|| anyhow::anyhow!("--row needs a row ID"))?
+                        .to_string(),
+                );
+            }
+            "--batch" => {
+                index += 1;
+                let batch = args
+                    .get(index)
+                    .ok_or_else(|| anyhow::anyhow!("--batch needs a value"))?;
+                if batch != "batch-a-likely-safe-booleans" {
+                    anyhow::bail!("only batch-a-likely-safe-booleans is supported in this sprint");
+                }
+            }
+            "--timeout-seconds" => {
+                index += 1;
+                timeout_seconds = args
+                    .get(index)
+                    .ok_or_else(|| anyhow::anyhow!("--timeout-seconds needs a value"))?
+                    .parse::<u64>()?;
+                if timeout_seconds == 0 || timeout_seconds > 30 {
+                    anyhow::bail!("timeout must be between 1 and 30 seconds");
+                }
+            }
+            other => anyhow::bail!("unknown validate-config-persistence argument: {other}"),
+        }
+        index += 1;
+    }
+    if dry_run && verify_hyprland {
+        anyhow::bail!("choose either --dry-run or --verify-hyprland");
+    }
+    let mut report =
+        hyprland_settings::config_persistence_validation::load_candidates(&candidates_path)?;
+    if let Some(row_id) = row_id {
+        report.rows.retain(|row| row.row_id == row_id);
+        if report.rows.is_empty() {
+            anyhow::bail!("row was not found in config-persistence candidates");
+        }
+    }
+    let mut verifier = hyprland_settings::config_persistence_validation::RealHyprlandConfigVerifier;
+    let results =
+        hyprland_settings::config_persistence_validation::run_config_persistence_validation(
+            &report,
+            verify_hyprland,
+            &mut verifier,
+            std::time::Duration::from_secs(timeout_seconds),
+        );
+    hyprland_settings::config_persistence_validation::save_results(&results_path, &results)?;
+    println!(
+        "config persistence validation {} wrote {} rows to {}",
+        results.mode,
+        results.counts.rows,
+        results_path.display()
+    );
+    std::process::exit(0);
 }
 
 fn maybe_run_live_validation_cli() -> anyhow::Result<()> {
