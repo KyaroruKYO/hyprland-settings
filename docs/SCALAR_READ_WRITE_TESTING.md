@@ -99,6 +99,17 @@ These scalar rows are currently writable:
 All other scalar rows are blocked with a concrete blocker in the coverage report.
 The validator/parser expansion target report records all 14 validator-needed rows and all 37 parser-needed rows enabled with parser, validator, fixture write, and UI/model projection tests. Remaining blocked rows are manual-review or high-risk rows.
 
+## Manual Review Candidate Reports
+
+The remaining blocked rows are classified for future review without changing write behavior:
+
+```sh
+jq '.counts' data/reports/manual-review-write-candidates.v0.55.2.json
+jq '.counts' data/reports/high-risk-write-candidates.v0.55.2.json
+```
+
+These reports are planning metadata only. They do not make any row writable. Batch A is the recommended first review target; high-risk rows should remain blocked until a dedicated safety design exists.
+
 Parser-backed writable families currently include:
 
 - strict color literals: `rgb(RRGGBB)`, `rgba(RRGGBBAA)`, `0xAARRGGBB`
