@@ -43,9 +43,8 @@ fn config_persistence_design_selects_temp_config_verify_policy() -> Result<()> {
         report["recommendedApproach"]["policy"].as_str(),
         Some("strict-config-persistence-validation")
     );
-    assert_eq!(report["invariants"]["rowsEnabledThisSprint"], 0);
-    assert_eq!(report["invariants"]["writableRowsRemain"], 55);
-    assert_eq!(report["invariants"]["doesNotChangeWriteBehavior"], true);
+    assert_eq!(report["invariants"]["rowsEnabledThisSprint"], 39);
+    assert_eq!(report["invariants"]["writableRowsRemain"], 94);
     assert_eq!(report["invariants"]["doesNotRunReload"], true);
     assert_eq!(report["invariants"]["doesNotRunEval"], true);
 
@@ -72,7 +71,7 @@ fn batch_a_config_persistence_candidates_match_semantics_rows() -> Result<()> {
     assert_eq!(candidates["counts"]["acceptedUnobservable"], 3);
     assert_eq!(candidates["counts"]["unproven"], 36);
     assert_eq!(candidates["counts"]["safeToImplementNextSprint"], 39);
-    assert_eq!(candidates["counts"]["safeToEnableNow"], 0);
+    assert_eq!(candidates["counts"]["safeToEnableNow"], 39);
     assert_eq!(candidates["counts"]["highRiskRows"], 0);
 
     let candidate_ids = candidates["rows"]
@@ -95,7 +94,7 @@ fn batch_a_config_persistence_candidates_match_semantics_rows() -> Result<()> {
         .expect("candidate rows should be an array")
     {
         assert_eq!(row["safeToImplementNextSprint"].as_bool(), Some(true));
-        assert_eq!(row["safeToEnableNow"].as_bool(), Some(false));
+        assert_eq!(row["safeToEnableNow"].as_bool(), Some(true));
         assert!(row["requiredProof"]
             .as_array()
             .expect("requiredProof should be an array")
@@ -107,7 +106,7 @@ fn batch_a_config_persistence_candidates_match_semantics_rows() -> Result<()> {
 }
 
 #[test]
-fn config_persistence_design_does_not_change_scalar_write_counts() -> Result<()> {
+fn config_persistence_implementation_updates_scalar_write_counts() -> Result<()> {
     let coverage = scalar_coverage_report()?;
     let rows = coverage["rows"]
         .as_array()
@@ -125,10 +124,10 @@ fn config_persistence_design_does_not_change_scalar_write_counts() -> Result<()>
         .filter(|row| row["writeStatus"].as_str() == Some("high-risk"))
         .count();
 
-    assert_eq!(coverage["counts"]["writableRows"], 55);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 286);
-    assert_eq!(writable, 55);
-    assert_eq!(manual, 214);
+    assert_eq!(coverage["counts"]["writableRows"], 94);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 247);
+    assert_eq!(writable, 94);
+    assert_eq!(manual, 175);
     assert_eq!(high_risk, 72);
 
     Ok(())

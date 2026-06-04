@@ -10,7 +10,7 @@
     "acceptedUnobservable": 3,
     "unproven": 36,
     "safeToImplementNextSprint": 39,
-    "safeToEnableNow": 0,
+    "safeToEnableNow": 39,
     "highRiskRows": 0
   },
   "policy": {
@@ -38,8 +38,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Live keyword/configerrors signal was accepted-unobservable; strict live-observable proof failed, so temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Live keyword/configerrors signal was accepted-unobservable; strict live-observable proof failed, so temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "appearance.dim.inactive",
@@ -56,8 +56,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "appearance.border_part_of_window",
@@ -74,8 +74,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "appearance.blur.ignore_opacity",
@@ -92,8 +92,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "appearance.blur.new_optimizations",
@@ -110,8 +110,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "appearance.blur.special",
@@ -128,8 +128,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "appearance.blur.popups",
@@ -146,8 +146,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "appearance.blur.input_methods",
@@ -164,8 +164,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "appearance.shadow.sharp",
@@ -182,8 +182,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "appearance.glow.enabled",
@@ -200,8 +200,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "animations.workspace_wraparound",
@@ -218,8 +218,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "group.groupbar.enabled",
@@ -236,8 +236,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "group.groupbar.gradients",
@@ -254,8 +254,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "group.groupbar.stacked",
@@ -272,8 +272,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "group.groupbar.render_titles",
@@ -290,8 +290,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "group.groupbar.scrolling",
@@ -308,8 +308,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "group.groupbar.middle_click_close",
@@ -326,8 +326,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "group.groupbar.round_only_edges",
@@ -344,8 +344,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "group.groupbar.gradient_round_only_edges",
@@ -362,8 +362,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "group.groupbar.keep_upper_gap",
@@ -380,8 +380,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "group.groupbar.blur",
@@ -398,8 +398,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.disable_hyprland_logo",
@@ -416,8 +416,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Live keyword/configerrors signal was accepted-unobservable; strict live-observable proof failed, so temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Live keyword/configerrors signal was accepted-unobservable; strict live-observable proof failed, so temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.disable_splash_rendering",
@@ -434,8 +434,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Live keyword/configerrors signal was accepted-unobservable; strict live-observable proof failed, so temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Live keyword/configerrors signal was accepted-unobservable; strict live-observable proof failed, so temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.name_vk_after_proc",
@@ -452,8 +452,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.always_follow_on_dnd",
@@ -470,8 +470,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.layers_hog_keyboard_focus",
@@ -488,8 +488,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.animate_manual_resizes",
@@ -506,8 +506,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.animate_mouse_windowdragging",
@@ -524,8 +524,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.enable_swallow",
@@ -542,8 +542,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.mouse_move_focuses_monitor",
@@ -560,8 +560,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.close_special_on_empty",
@@ -578,8 +578,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.middle_click_paste",
@@ -596,8 +596,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.disable_xdg_env_checks",
@@ -614,8 +614,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.disable_hyprland_guiutils_check",
@@ -632,8 +632,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.disable_watchdog_warning",
@@ -650,8 +650,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.enable_anr_dialog",
@@ -668,8 +668,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.screencopy_force_8b",
@@ -686,8 +686,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.disable_scale_notification",
@@ -704,8 +704,8 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     },
     {
       "rowId": "misc.size_limits_tiled",
@@ -722,13 +722,13 @@
         "no-active-runtime-mutation"
       ],
       "safeToImplementNextSprint": true,
-      "safeToEnableNow": false,
-      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion."
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
     }
   ],
   "invariants": {
-    "rowsEnabledThisSprint": 0,
-    "writableRowsRemain": 55,
+    "rowsEnabledThisSprint": 39,
+    "writableRowsRemain": 94,
     "excludesHighRiskRows": true,
     "excludesNonBatchARows": true
   }

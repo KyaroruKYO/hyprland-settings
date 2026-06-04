@@ -13,12 +13,12 @@
   ],
   "currentState": {
     "readableScalarRows": 341,
-    "writableScalarRows": 55,
-    "blockedScalarWriteRows": 286,
-    "manualReviewRows": 214,
+    "writableScalarRows": 94,
+    "blockedScalarWriteRows": 247,
+    "manualReviewRows": 175,
     "highRiskRows": 72,
     "batchARows": 39,
-    "batchAEnabledRows": 0,
+    "batchAEnabledRows": 39,
     "batchAAcceptedUnobservableRows": 3,
     "batchAUnprovenRows": 36
   },
@@ -135,10 +135,10 @@
     "Lua-provider eval validation"
   ],
   "batchAImplications": {
-    "decision": "enable-none-in-this-sprint",
+    "decision": "batch-a-enabled-after-config-persistence-proof",
     "rows": 39,
     "safeToImplementDryRunHarnessNextSprint": 39,
-    "safeToEnableNow": 0,
+    "safeToEnableNow": 39,
     "acceptedUnobservableRowsNeedConfigPersistenceProof": 3,
     "unprovenRowsNeedConfigPersistenceProof": 36,
     "highRiskRowsIncluded": 0
@@ -169,8 +169,8 @@
     "Decide whether successful config-persistence proof is enough for Batch A promotion or whether user wants manual observation first."
   ],
   "invariants": {
-    "rowsEnabledThisSprint": 0,
-    "writableRowsRemain": 55,
+    "rowsEnabledThisSprint": 39,
+    "writableRowsRemain": 94,
     "doesNotChangeWriteBehavior": true,
     "doesNotModifyPersistentConfig": true,
     "doesNotRunReload": true,
@@ -178,10 +178,10 @@
   },
   "counts": {
     "readableScalarRows": 341,
-    "writableScalarRows": 55,
-    "blockedScalarWriteRows": 286,
+    "writableScalarRows": 94,
+    "blockedScalarWriteRows": 247,
     "batchARows": 39,
-    "batchAEnabledRows": 0,
-    "safeToEnableNow": 0
+    "batchAEnabledRows": 39,
+    "safeToEnableNow": 39
   }
 }

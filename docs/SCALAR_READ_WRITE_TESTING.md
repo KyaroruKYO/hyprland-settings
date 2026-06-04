@@ -35,7 +35,7 @@ jq '.counts' data/reports/scalar-write-expansion-targets.v0.55.2.json
 Current scalar coverage:
 
 - readable rows: 341 / 341
-- writable rows: 55 / 341
+- writable rows: 94 / 341
 - blocked write rows: 286 / 341
 
 These scalar rows are currently writable:
@@ -110,7 +110,7 @@ jq '.counts' data/reports/live-validation-results.v0.55.2.json
 jq '.currentBatchAResult' data/reports/future-live-validation-batches.v0.55.2.json
 ```
 
-These reports are planning metadata only. They do not make any row writable. Batch A has a rollback-protected live-validation record: 39 rows were probed, Level 1 and Level 2 passed for all rows, revert verification passed for all rows, and runtime acceptance was not proven for any row. Batch A remains blocked until the live acceptance check is improved or reviewed. High-risk rows should remain blocked until a dedicated safety design exists.
+The manual/high-risk reports are planning metadata. Batch A has a rollback-protected live-validation record: 39 rows were probed, Level 1 and Level 2 passed for all rows, revert verification passed for all rows, and runtime acceptance was not proven for any row. Batch A was later enabled through config-persistence proof instead: parser/writer roundtrip and `Hyprland --verify-config` passed for all 39 temporary configs with no active config/runtime mutation. High-risk rows should remain blocked until a dedicated safety design exists.
 
 ## Live Validation Harness
 
@@ -143,7 +143,10 @@ Inspect the design reports:
 ```sh
 jq '.recommendedApproach' data/reports/config-persistence-validation-design.v0.55.2.json
 jq '.counts' data/reports/batch-a-config-persistence-candidates.v0.55.2.json
+jq '.counts' data/reports/config-persistence-validation-results.v0.55.2.json
 ```
+
+Batch A passed that config-persistence path and is now included in the safe writable scalar allowlist. This does not mean `hyprctl keyword` live-observable proof passed; it means the temporary config was parser/writer verified and accepted by `Hyprland --verify-config` without active config or runtime mutation.
 
 Dry-run the Batch A plan:
 

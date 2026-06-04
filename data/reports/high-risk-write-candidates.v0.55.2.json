@@ -20,7 +20,7 @@
   "invariants": {
     "noRowsEnabledByThisReport": true,
     "sourceWriteStatus": "high-risk",
-    "writableRowsRemain": 55
+    "writableRowsRemain": 94
   },
   "items": [
     {

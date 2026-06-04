@@ -26,10 +26,10 @@ fn manual_review_and_high_risk_reports_have_expected_counts() -> Result<()> {
     let manual = manual_review_report()?;
     let high_risk = high_risk_report()?;
 
-    assert_eq!(manual["counts"]["rows"], 214);
+    assert_eq!(manual["counts"]["rows"], 175);
     assert_eq!(high_risk["counts"]["rows"], 72);
-    assert_eq!(manual["invariants"]["writableRowsRemain"], 55);
-    assert_eq!(high_risk["invariants"]["writableRowsRemain"], 55);
+    assert_eq!(manual["invariants"]["writableRowsRemain"], 94);
+    assert_eq!(high_risk["invariants"]["writableRowsRemain"], 94);
 
     Ok(())
 }
@@ -52,7 +52,7 @@ fn manual_review_and_high_risk_reports_do_not_overlap() -> Result<()> {
         .collect::<BTreeSet<_>>();
 
     assert!(manual_ids.is_disjoint(&high_risk_ids));
-    assert_eq!(manual_ids.len(), 214);
+    assert_eq!(manual_ids.len(), 175);
     assert_eq!(high_risk_ids.len(), 72);
 
     Ok(())
@@ -117,7 +117,7 @@ fn candidate_reports_match_scalar_coverage_statuses() -> Result<()> {
 }
 
 #[test]
-fn scalar_coverage_counts_remain_unchanged_by_candidate_reports() -> Result<()> {
+fn scalar_coverage_counts_reflect_batch_a_enablement() -> Result<()> {
     let coverage = coverage_report()?;
     let rows = coverage["rows"]
         .as_array()
@@ -143,10 +143,10 @@ fn scalar_coverage_counts_remain_unchanged_by_candidate_reports() -> Result<()> 
         .filter(|row| row["writeStatus"].as_str() == Some("validator-needed"))
         .count();
 
-    assert_eq!(coverage["counts"]["writableRows"], 55);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 286);
-    assert_eq!(writable, 55);
-    assert_eq!(manual, 214);
+    assert_eq!(coverage["counts"]["writableRows"], 94);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 247);
+    assert_eq!(writable, 94);
+    assert_eq!(manual, 175);
     assert_eq!(high_risk, 72);
     assert_eq!(parser_needed, 0);
     assert_eq!(validator_needed, 0);

@@ -6,11 +6,18 @@ use hyprland_settings::config_persistence_validation::{
     load_candidates, run_config_persistence_validation, ConfigPersistenceCandidateReport,
     HyprlandConfigVerifier, VerifyOutput,
 };
+use serde_json::Value;
 
 fn candidates() -> Result<ConfigPersistenceCandidateReport> {
     load_candidates(Path::new(
         "data/reports/batch-a-config-persistence-candidates.v0.55.2.json",
     ))
+}
+
+fn committed_results() -> Result<Value> {
+    Ok(serde_json::from_str(include_str!(
+        "../data/reports/config-persistence-validation-results.v0.55.2.json"
+    ))?)
 }
 
 #[derive(Debug)]
@@ -139,6 +146,38 @@ fn fake_hyprland_verify_timeout_keeps_rows_blocked() -> Result<()> {
     assert_eq!(results.counts.hyprland_verify_config_attempted, 39);
     assert_eq!(results.counts.hyprland_verify_config_passed, 0);
     assert_eq!(results.counts.safe_to_enable_by_config_persistence, 0);
+
+    Ok(())
+}
+
+#[test]
+fn committed_results_enforce_config_persistence_policy() -> Result<()> {
+    let results = committed_results()?;
+    let rows = results["rows"]
+        .as_array()
+        .expect("results rows should be an array");
+
+    assert_eq!(results["mode"].as_str(), Some("verify-hyprland"));
+    assert_eq!(results["counts"]["rows"], 39);
+    assert_eq!(results["counts"]["parserRoundtripPassed"], 39);
+    assert_eq!(results["counts"]["writerRoundtripPassed"], 39);
+    assert_eq!(results["counts"]["typedValidatorPassed"], 39);
+    assert_eq!(results["counts"]["singleMutationVerified"], 39);
+    assert_eq!(results["counts"]["hyprlandVerifyConfigAttempted"], 39);
+    assert_eq!(results["counts"]["hyprlandVerifyConfigPassed"], 39);
+    assert_eq!(results["counts"]["safeToEnableByConfigPersistence"], 39);
+
+    for row in rows {
+        assert_eq!(row["batch"].as_str(), Some("batch-a-likely-safe-booleans"));
+        assert_eq!(row["hyprlandVerifyConfigPassed"].as_bool(), Some(true));
+        assert_eq!(row["safeToEnableByConfigPersistence"].as_bool(), Some(true));
+        assert_eq!(row["activeConfigModified"].as_bool(), Some(false));
+        assert_eq!(row["activeRuntimeModified"].as_bool(), Some(false));
+        assert!(row["tempConfigPath"]
+            .as_str()
+            .expect("tempConfigPath should exist")
+            .starts_with("/tmp/"));
+    }
 
     Ok(())
 }

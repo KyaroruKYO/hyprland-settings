@@ -12,9 +12,9 @@
     "level2Passed": 39,
     "level3Passed": 0,
     "level4Passed": 39,
-    "enabledRows": 0,
-    "decision": "do-not-enable-batch-a-yet",
-    "reason": "Hyprland runtime acceptance was not proven for any Batch A row, even though rollback verification passed for every probed row."
+    "enabledRows": 39,
+    "decision": "enabled-by-config-persistence-proof",
+    "reason": "Strict live-observable Level 3 remained unavailable, but all 39 Batch A rows later passed parser/writer roundtrip and Hyprland --verify-config against temporary configs with no active config/runtime mutation."
   },
   "futureBatches": [
     {

@@ -4,7 +4,7 @@ This document defines a safe proof path for scalar settings that are valid Hyprl
 
 ## Current Problem
 
-Batch A has 39 likely safe boolean rows. The existing live-validation harness proved parser/read and fixture write/reread safety for all 39 rows, and previous rollback-protected probes restored runtime state for every row tested.
+Batch A has 39 likely safe boolean rows. The live-validation harness proved parser/read and fixture write/reread safety for all 39 rows, and previous rollback-protected probes restored runtime state for every row tested.
 
 Strict live-observable Level 3 proof still failed:
 
@@ -14,7 +14,7 @@ Strict live-observable Level 3 proof still failed:
 - Revert verification passed.
 - No Batch A rows were enabled.
 
-That evidence is not enough to promote rows to writable status. A separate config-persistence proof is needed.
+That evidence was not enough to promote rows to writable status. The config-persistence harness now provides the separate proof path.
 
 ## Official Findings
 
@@ -47,18 +47,18 @@ A future implementation may promote an accepted-unobservable scalar row only aft
 
 Parser/writer roundtrip alone is not enough for automatic enablement.
 
-## Future Harness Shape
+## Implemented Harness Shape
 
-Recommended future command:
+Dry-run command:
 
 ```sh
 cargo run --bin hyprland-settings -- validate-config-persistence --batch batch-a-likely-safe-booleans --dry-run
 ```
 
-Future optional command after command-shape verification:
+Hyprland temp-config verification command:
 
 ```sh
-cargo run --bin hyprland-settings -- validate-config-persistence --batch batch-a-likely-safe-booleans --verify-hyprland
+cargo run --bin hyprland-settings -- validate-config-persistence --batch batch-a-likely-safe-booleans --verify-hyprland --timeout-seconds 10
 ```
 
 The harness should:
@@ -73,12 +73,13 @@ The harness should:
 
 ## Batch A Impact
 
-All 39 Batch A rows remain blocked in this sprint.
+All 39 Batch A rows passed strict config-persistence validation and were enabled.
 
 - 3 rows are accepted-unobservable from prior live semantics diagnostics.
 - 36 rows are unproven by strict live-observable policy.
-- 39 rows are candidates for a future temp-config validation implementation sprint.
-- 0 rows are safe to enable now.
+- 39 rows passed temp-config validation.
+- 39 rows are safe to enable now.
+- Writable scalar rows after enablement: 94 / 341.
 
 See:
 
@@ -89,4 +90,4 @@ jq '.recommendedApproach' data/reports/config-persistence-validation-design.v0.5
 
 ## Next Implementation Sprint
 
-Implement the dry-run config-persistence harness first. Do not enable Batch A in the same step unless the harness, tests, `Hyprland --verify-config` command behavior, and generated results prove the full policy.
+Use the same config-persistence harness for the next low-risk batch, likely Batch B numerics, but require per-row candidate values/ranges before promotion.

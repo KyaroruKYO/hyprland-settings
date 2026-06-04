@@ -9,9 +9,9 @@ fn plan_report() -> Result<Value> {
     ))?)
 }
 
-fn manual_report() -> Result<Value> {
+fn batch_a_config_persistence_candidates_report() -> Result<Value> {
     Ok(serde_json::from_str(include_str!(
-        "../data/reports/manual-review-write-candidates.v0.55.2.json"
+        "../data/reports/batch-a-config-persistence-candidates.v0.55.2.json"
     ))?)
 }
 
@@ -48,15 +48,14 @@ fn batch_a_semantics_classification_report() -> Result<Value> {
 #[test]
 fn live_validation_plan_contains_only_batch_a_rows() -> Result<()> {
     let plan = plan_report()?;
-    let manual = manual_report()?;
+    let batch_a_candidates = batch_a_config_persistence_candidates_report()?;
     let rows = plan["rows"]
         .as_array()
         .expect("live validation plan rows should be an array");
-    let batch_a = manual["items"]
+    let batch_a = batch_a_candidates["rows"]
         .as_array()
-        .expect("manual report items should be an array")
+        .expect("Batch A candidate rows should be an array")
         .iter()
-        .filter(|item| item["recommendedBatch"].as_str() == Some("batch-a-likely-safe-booleans"))
         .map(|item| item["rowId"].as_str().expect("rowId should be a string"))
         .collect::<BTreeSet<_>>();
     let plan_ids = rows
@@ -136,10 +135,10 @@ fn future_live_validation_batches_remain_plan_only() -> Result<()> {
     assert_eq!(report["currentBatchAResult"]["liveProbedRows"], 39);
     assert_eq!(report["currentBatchAResult"]["level3Passed"], 0);
     assert_eq!(report["currentBatchAResult"]["level4Passed"], 39);
-    assert_eq!(report["currentBatchAResult"]["enabledRows"], 0);
+    assert_eq!(report["currentBatchAResult"]["enabledRows"], 39);
     assert_eq!(
         report["currentBatchAResult"]["decision"].as_str(),
-        Some("do-not-enable-batch-a-yet")
+        Some("enabled-by-config-persistence-proof")
     );
 
     let batches = report["futureBatches"]

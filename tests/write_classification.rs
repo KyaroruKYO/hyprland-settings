@@ -6,6 +6,7 @@ use hyprland_settings::metadata::resolve_metadata_path_with_env;
 use hyprland_settings::write_classification::{
     classify_inventory_entry, is_safe_writable_setting, ScalarWriteStatus, SAFE_WRITABLE_ROWS,
 };
+use serde_json::Value;
 
 fn load_bundle() -> Result<ExportBundle> {
     let resolution = resolve_metadata_path_with_env(None, None)?;
@@ -47,73 +48,26 @@ fn every_inventory_row_has_write_classification() -> Result<()> {
 }
 
 #[test]
-fn safe_writable_rows_are_the_reviewed_toggle_subset() {
+fn safe_writable_rows_include_config_persistence_verified_batch_a() -> Result<()> {
     let row_ids = SAFE_WRITABLE_ROWS
         .iter()
         .map(|row| row.row_id)
-        .collect::<Vec<_>>();
+        .collect::<std::collections::BTreeSet<_>>();
+    let batch_a: Value = serde_json::from_str(include_str!(
+        "../data/reports/batch-a-config-persistence-candidates.v0.55.2.json"
+    ))?;
 
-    assert_eq!(
-        row_ids,
-        vec![
-            "appearance.blur.enabled",
-            "appearance.blur.size",
-            "appearance.blur.brightness",
-            "appearance.blur.contrast",
-            "appearance.shadow.enabled",
-            "appearance.shadow.range",
-            "appearance.shadow.render_power",
-            "decoration.shadow.color",
-            "decoration.shadow.color_inactive",
-            "decoration.shadow.offset",
-            "decoration.screen_shader",
-            "appearance.gaps_in",
-            "appearance.gaps_out",
-            "appearance.border_size",
-            "appearance.rounding",
-            "appearance.active_opacity",
-            "appearance.inactive_opacity",
-            "animations.enabled",
-            "windows.snap.enabled",
-            "windows.snap.window_gap",
-            "windows.snap.monitor_gap",
-            "general.col.inactive_border",
-            "general.col.active_border",
-            "general.col.nogroup_border",
-            "general.col.nogroup_border_active",
-            "input.pointer_sensitivity",
-            "input.accel_profile",
-            "input.scroll_points",
-            "input.kb_file",
-            "input.tablet.region_position",
-            "input.tablet.region_size",
-            "input.tablet.active_area_size",
-            "input.tablet.active_area_position",
-            "decoration.glow.color",
-            "decoration.glow.color_inactive",
-            "group.groupbar.text_color",
-            "group.groupbar.text_color_inactive",
-            "group.groupbar.text_color_locked_active",
-            "group.groupbar.text_color_locked_inactive",
-            "group.groupbar.font_family",
-            "group.col.border_active",
-            "group.col.border_inactive",
-            "group.col.border_locked_inactive",
-            "group.col.border_locked_active",
-            "group.groupbar.col.active",
-            "group.groupbar.col.inactive",
-            "group.groupbar.col.locked_active",
-            "group.groupbar.col.locked_inactive",
-            "misc.col.splash",
-            "misc.background_color",
-            "misc.font_family",
-            "misc.splash_font_family",
-            "misc.swallow_regex",
-            "misc.swallow_exception_regex",
-            "layout.single_window_aspect_ratio"
-        ]
-    );
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 94);
+    for row in batch_a["rows"]
+        .as_array()
+        .expect("Batch A rows should be an array")
+    {
+        let row_id = row["rowId"].as_str().expect("rowId should exist");
+        assert!(row_ids.contains(row_id), "{row_id} should be safe writable");
+    }
     assert!(is_safe_writable_setting("animations.enabled"));
     assert!(is_safe_writable_setting("appearance.blur.size"));
+    assert!(is_safe_writable_setting("misc.disable_hyprland_logo"));
     assert!(!is_safe_writable_setting("appearance.glow.range"));
+    Ok(())
 }

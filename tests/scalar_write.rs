@@ -58,11 +58,10 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
     if row.value_kind == ScalarWriteValueKind::RegexString {
         return "^(Alacritty|kitty)$";
     }
+    if row.value_kind == ScalarWriteValueKind::Boolean {
+        return "true";
+    }
     match row.row_id {
-        "appearance.blur.enabled"
-        | "appearance.shadow.enabled"
-        | "animations.enabled"
-        | "windows.snap.enabled" => "true",
         "appearance.blur.brightness"
         | "appearance.blur.contrast"
         | "appearance.active_opacity"
@@ -94,11 +93,10 @@ fn existing_value_for(row: &SafeWritableRow) -> &'static str {
     if row.value_kind == ScalarWriteValueKind::RegexString {
         return "firefox";
     }
+    if row.value_kind == ScalarWriteValueKind::Boolean {
+        return "false";
+    }
     match row.row_id {
-        "appearance.blur.enabled"
-        | "appearance.shadow.enabled"
-        | "animations.enabled"
-        | "windows.snap.enabled" => "false",
         "appearance.blur.brightness"
         | "appearance.blur.contrast"
         | "appearance.active_opacity"

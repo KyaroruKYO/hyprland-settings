@@ -48,16 +48,146 @@ pub struct SafeWritableRow {
 }
 
 pub const SAFE_WRITABLE_TOGGLE_ROWS: &[(&str, &str)] = &[
+    ("appearance.dim.modal", "decoration.dim_modal"),
+    ("appearance.dim.inactive", "decoration.dim_inactive"),
+    (
+        "appearance.border_part_of_window",
+        "decoration.border_part_of_window",
+    ),
     ("appearance.blur.enabled", "decoration.blur.enabled"),
+    (
+        "appearance.blur.ignore_opacity",
+        "decoration.blur.ignore_opacity",
+    ),
+    (
+        "appearance.blur.new_optimizations",
+        "decoration.blur.new_optimizations",
+    ),
+    ("appearance.blur.special", "decoration.blur.special"),
+    ("appearance.blur.popups", "decoration.blur.popups"),
+    (
+        "appearance.blur.input_methods",
+        "decoration.blur.input_methods",
+    ),
     ("appearance.shadow.enabled", "decoration.shadow.enabled"),
+    ("appearance.shadow.sharp", "decoration.shadow.sharp"),
+    ("appearance.glow.enabled", "decoration.glow.enabled"),
     ("animations.enabled", "animations.enabled"),
+    (
+        "animations.workspace_wraparound",
+        "animations.workspace_wraparound",
+    ),
+    ("group.groupbar.enabled", "group.groupbar.enabled"),
+    ("group.groupbar.gradients", "group.groupbar.gradients"),
+    ("group.groupbar.stacked", "group.groupbar.stacked"),
+    (
+        "group.groupbar.render_titles",
+        "group.groupbar.render_titles",
+    ),
+    ("group.groupbar.scrolling", "group.groupbar.scrolling"),
+    (
+        "group.groupbar.middle_click_close",
+        "group.groupbar.middle_click_close",
+    ),
+    (
+        "group.groupbar.round_only_edges",
+        "group.groupbar.round_only_edges",
+    ),
+    (
+        "group.groupbar.gradient_round_only_edges",
+        "group.groupbar.gradient_round_only_edges",
+    ),
+    (
+        "group.groupbar.keep_upper_gap",
+        "group.groupbar.keep_upper_gap",
+    ),
+    ("group.groupbar.blur", "group.groupbar.blur"),
+    ("misc.disable_hyprland_logo", "misc.disable_hyprland_logo"),
+    (
+        "misc.disable_splash_rendering",
+        "misc.disable_splash_rendering",
+    ),
+    ("misc.name_vk_after_proc", "misc.name_vk_after_proc"),
+    ("misc.always_follow_on_dnd", "misc.always_follow_on_dnd"),
+    (
+        "misc.layers_hog_keyboard_focus",
+        "misc.layers_hog_keyboard_focus",
+    ),
+    ("misc.animate_manual_resizes", "misc.animate_manual_resizes"),
+    (
+        "misc.animate_mouse_windowdragging",
+        "misc.animate_mouse_windowdragging",
+    ),
+    ("misc.enable_swallow", "misc.enable_swallow"),
+    (
+        "misc.mouse_move_focuses_monitor",
+        "misc.mouse_move_focuses_monitor",
+    ),
+    ("misc.close_special_on_empty", "misc.close_special_on_empty"),
+    ("misc.middle_click_paste", "misc.middle_click_paste"),
+    ("misc.disable_xdg_env_checks", "misc.disable_xdg_env_checks"),
+    (
+        "misc.disable_hyprland_guiutils_check",
+        "misc.disable_hyprland_guiutils_check",
+    ),
+    (
+        "misc.disable_watchdog_warning",
+        "misc.disable_watchdog_warning",
+    ),
+    ("misc.enable_anr_dialog", "misc.enable_anr_dialog"),
+    ("misc.screencopy_force_8b", "misc.screencopy_force_8b"),
+    (
+        "misc.disable_scale_notification",
+        "misc.disable_scale_notification",
+    ),
+    ("misc.size_limits_tiled", "misc.size_limits_tiled"),
     ("windows.snap.enabled", "general.snap.enabled"),
 ];
 
 pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
+        row_id: "appearance.dim.modal",
+        official_setting: "decoration.dim_modal",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "appearance.dim.inactive",
+        official_setting: "decoration.dim_inactive",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "appearance.border_part_of_window",
+        official_setting: "decoration.border_part_of_window",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
         row_id: "appearance.blur.enabled",
         official_setting: "decoration.blur.enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.ignore_opacity",
+        official_setting: "decoration.blur.ignore_opacity",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.new_optimizations",
+        official_setting: "decoration.blur.new_optimizations",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.special",
+        official_setting: "decoration.blur.special",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.popups",
+        official_setting: "decoration.blur.popups",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.input_methods",
+        official_setting: "decoration.blur.input_methods",
         value_kind: ScalarWriteValueKind::Boolean,
     },
     SafeWritableRow {
@@ -78,6 +208,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "appearance.shadow.enabled",
         official_setting: "decoration.shadow.enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "appearance.shadow.sharp",
+        official_setting: "decoration.shadow.sharp",
         value_kind: ScalarWriteValueKind::Boolean,
     },
     SafeWritableRow {
@@ -143,6 +278,156 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "animations.enabled",
         official_setting: "animations.enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "animations.workspace_wraparound",
+        official_setting: "animations.workspace_wraparound",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "appearance.glow.enabled",
+        official_setting: "decoration.glow.enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.enabled",
+        official_setting: "group.groupbar.enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.gradients",
+        official_setting: "group.groupbar.gradients",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.stacked",
+        official_setting: "group.groupbar.stacked",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.render_titles",
+        official_setting: "group.groupbar.render_titles",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.scrolling",
+        official_setting: "group.groupbar.scrolling",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.middle_click_close",
+        official_setting: "group.groupbar.middle_click_close",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.round_only_edges",
+        official_setting: "group.groupbar.round_only_edges",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.gradient_round_only_edges",
+        official_setting: "group.groupbar.gradient_round_only_edges",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.keep_upper_gap",
+        official_setting: "group.groupbar.keep_upper_gap",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.blur",
+        official_setting: "group.groupbar.blur",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.disable_hyprland_logo",
+        official_setting: "misc.disable_hyprland_logo",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.disable_splash_rendering",
+        official_setting: "misc.disable_splash_rendering",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.name_vk_after_proc",
+        official_setting: "misc.name_vk_after_proc",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.always_follow_on_dnd",
+        official_setting: "misc.always_follow_on_dnd",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.layers_hog_keyboard_focus",
+        official_setting: "misc.layers_hog_keyboard_focus",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.animate_manual_resizes",
+        official_setting: "misc.animate_manual_resizes",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.animate_mouse_windowdragging",
+        official_setting: "misc.animate_mouse_windowdragging",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.enable_swallow",
+        official_setting: "misc.enable_swallow",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.mouse_move_focuses_monitor",
+        official_setting: "misc.mouse_move_focuses_monitor",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.close_special_on_empty",
+        official_setting: "misc.close_special_on_empty",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.middle_click_paste",
+        official_setting: "misc.middle_click_paste",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.disable_xdg_env_checks",
+        official_setting: "misc.disable_xdg_env_checks",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.disable_hyprland_guiutils_check",
+        official_setting: "misc.disable_hyprland_guiutils_check",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.disable_watchdog_warning",
+        official_setting: "misc.disable_watchdog_warning",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.enable_anr_dialog",
+        official_setting: "misc.enable_anr_dialog",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.screencopy_force_8b",
+        official_setting: "misc.screencopy_force_8b",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.disable_scale_notification",
+        official_setting: "misc.disable_scale_notification",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.size_limits_tiled",
+        official_setting: "misc.size_limits_tiled",
         value_kind: ScalarWriteValueKind::Boolean,
     },
     SafeWritableRow {
