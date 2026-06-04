@@ -1,0 +1,11 @@
+{
+  "artifactKind": "hyprmod-unmatched-companion-scalar-candidates",
+  "schemaVersion": "1.0",
+  "hyprlandVersion": "v0.55.2",
+  "counts": {
+    "rows": 0,
+    "mayBeMissingFromOurScalarInventory": 0,
+    "mayCorrespondToStructuredNonScalarSetting": 0
+  },
+  "rows": []
+}
