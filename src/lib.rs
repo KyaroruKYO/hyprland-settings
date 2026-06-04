@@ -9,6 +9,7 @@ pub mod scalar_write;
 pub mod search;
 pub mod ui;
 pub mod validation;
+pub mod value;
 pub mod write_classification;
 pub mod write_flow;
 pub mod write_pilot;

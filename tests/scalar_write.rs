@@ -40,6 +40,9 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
     if row.value_kind == ScalarWriteValueKind::Color {
         return "rgba(ffffffff)";
     }
+    if row.value_kind == ScalarWriteValueKind::Vector2 {
+        return "10,20";
+    }
     match row.row_id {
         "appearance.blur.enabled"
         | "appearance.shadow.enabled"
@@ -57,6 +60,9 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
 fn existing_value_for(row: &SafeWritableRow) -> &'static str {
     if row.value_kind == ScalarWriteValueKind::Color {
         return "rgba(000000ff)";
+    }
+    if row.value_kind == ScalarWriteValueKind::Vector2 {
+        return "0 0";
     }
     match row.row_id {
         "appearance.blur.enabled"

@@ -29,6 +29,7 @@ pub enum ScalarWriteValueKind {
     Number,
     Percent,
     Color,
+    Vector2,
     StringLike,
     ComplexRaw,
     Unknown,
@@ -95,6 +96,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Color,
     },
     SafeWritableRow {
+        row_id: "decoration.shadow.offset",
+        official_setting: "decoration.shadow.offset",
+        value_kind: ScalarWriteValueKind::Vector2,
+    },
+    SafeWritableRow {
         row_id: "appearance.gaps_in",
         official_setting: "general.gaps_in",
         value_kind: ScalarWriteValueKind::Number,
@@ -150,6 +156,26 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Percent,
     },
     SafeWritableRow {
+        row_id: "input.tablet.region_position",
+        official_setting: "input.tablet.region_position",
+        value_kind: ScalarWriteValueKind::Vector2,
+    },
+    SafeWritableRow {
+        row_id: "input.tablet.region_size",
+        official_setting: "input.tablet.region_size",
+        value_kind: ScalarWriteValueKind::Vector2,
+    },
+    SafeWritableRow {
+        row_id: "input.tablet.active_area_size",
+        official_setting: "input.tablet.active_area_size",
+        value_kind: ScalarWriteValueKind::Vector2,
+    },
+    SafeWritableRow {
+        row_id: "input.tablet.active_area_position",
+        official_setting: "input.tablet.active_area_position",
+        value_kind: ScalarWriteValueKind::Vector2,
+    },
+    SafeWritableRow {
         row_id: "decoration.glow.color",
         official_setting: "decoration.glow.color",
         value_kind: ScalarWriteValueKind::Color,
@@ -188,6 +214,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "misc.background_color",
         official_setting: "misc.background_color",
         value_kind: ScalarWriteValueKind::Color,
+    },
+    SafeWritableRow {
+        row_id: "layout.single_window_aspect_ratio",
+        official_setting: "layout.single_window_aspect_ratio",
+        value_kind: ScalarWriteValueKind::Vector2,
     },
 ];
 

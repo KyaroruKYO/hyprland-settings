@@ -10,8 +10,8 @@
     "totalTargets": 51,
     "validatorNeededTargetsEnabled": 14,
     "validatorNeededTargetsBlocked": 0,
-    "parserNeededTargetsEnabled": 10,
-    "parserNeededTargetsBlocked": 27
+    "parserNeededTargetsEnabled": 16,
+    "parserNeededTargetsBlocked": 21
   },
   "groups": [
     {
@@ -494,11 +494,20 @@
       "parserStatus": "needs_vec2_tuple_parser",
       "riskClass": "tuple_shape_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "vec2_tuple_semantics_need_dedicated_review",
-      "notes": "Tuple rows need per-setting shape and semantic review before writes; raw scalar replacement is not enabled."
+      "decision": "enabled-parser-backed-vector",
+      "enabled": true,
+      "tests": [
+        "vec2_parser_accepts_space_and_comma_forms",
+        "vec2_parser_rejects_invalid_values",
+        "vector_tuple_rows_can_be_staged_with_valid_values",
+        "vector_tuple_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_vector_tuple_fixture",
+        "vector_tuple_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with typed finite vec2 parser. Accepted forms: x y and x,y. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "decoration.glow.color",
@@ -620,11 +629,20 @@
       "parserStatus": "needs_vec2_tuple_parser",
       "riskClass": "tuple_shape_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "vec2_tuple_semantics_need_dedicated_review",
-      "notes": "Tuple rows need per-setting shape and semantic review before writes; raw scalar replacement is not enabled."
+      "decision": "enabled-parser-backed-vector",
+      "enabled": true,
+      "tests": [
+        "vec2_parser_accepts_space_and_comma_forms",
+        "vec2_parser_rejects_invalid_values",
+        "vector_tuple_rows_can_be_staged_with_valid_values",
+        "vector_tuple_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_vector_tuple_fixture",
+        "vector_tuple_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with typed finite vec2 parser. Accepted forms: x y and x,y. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "input.tablet.region_size",
@@ -636,11 +654,20 @@
       "parserStatus": "needs_vec2_tuple_parser",
       "riskClass": "tuple_shape_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "vec2_tuple_semantics_need_dedicated_review",
-      "notes": "Tuple rows need per-setting shape and semantic review before writes; raw scalar replacement is not enabled."
+      "decision": "enabled-parser-backed-vector",
+      "enabled": true,
+      "tests": [
+        "vec2_parser_accepts_space_and_comma_forms",
+        "vec2_parser_rejects_invalid_values",
+        "vector_tuple_rows_can_be_staged_with_valid_values",
+        "vector_tuple_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_vector_tuple_fixture",
+        "vector_tuple_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with typed finite vec2 parser. Accepted forms: x y and x,y. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "input.tablet.active_area_size",
@@ -652,11 +679,20 @@
       "parserStatus": "needs_vec2_tuple_parser",
       "riskClass": "tuple_shape_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "vec2_tuple_semantics_need_dedicated_review",
-      "notes": "Tuple rows need per-setting shape and semantic review before writes; raw scalar replacement is not enabled."
+      "decision": "enabled-parser-backed-vector",
+      "enabled": true,
+      "tests": [
+        "vec2_parser_accepts_space_and_comma_forms",
+        "vec2_parser_rejects_invalid_values",
+        "vector_tuple_rows_can_be_staged_with_valid_values",
+        "vector_tuple_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_vector_tuple_fixture",
+        "vector_tuple_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with typed finite vec2 parser. Accepted forms: x y and x,y. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "input.tablet.active_area_position",
@@ -668,11 +704,20 @@
       "parserStatus": "needs_vec2_tuple_parser",
       "riskClass": "tuple_shape_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "vec2_tuple_semantics_need_dedicated_review",
-      "notes": "Tuple rows need per-setting shape and semantic review before writes; raw scalar replacement is not enabled."
+      "decision": "enabled-parser-backed-vector",
+      "enabled": true,
+      "tests": [
+        "vec2_parser_accepts_space_and_comma_forms",
+        "vec2_parser_rejects_invalid_values",
+        "vector_tuple_rows_can_be_staged_with_valid_values",
+        "vector_tuple_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_vector_tuple_fixture",
+        "vector_tuple_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with typed finite vec2 parser. Accepted forms: x y and x,y. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "group.col.border_active",
@@ -1030,11 +1075,20 @@
       "parserStatus": "needs_vec2_tuple_parser",
       "riskClass": "tuple_shape_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "vec2_tuple_semantics_need_dedicated_review",
-      "notes": "Tuple rows need per-setting shape and semantic review before writes; raw scalar replacement is not enabled."
+      "decision": "enabled-parser-backed-vector",
+      "enabled": true,
+      "tests": [
+        "vec2_parser_accepts_space_and_comma_forms",
+        "vec2_parser_rejects_invalid_values",
+        "vector_tuple_rows_can_be_staged_with_valid_values",
+        "vector_tuple_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_vector_tuple_fixture",
+        "vector_tuple_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with typed finite vec2 parser. Accepted forms: x y and x,y. Writes remain gated by backup, allowlist, reread, and verification."
     }
   ]
 }

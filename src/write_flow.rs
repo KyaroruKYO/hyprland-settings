@@ -282,6 +282,11 @@ fn next_proposed_value(setting_id: &str, current_value: &CurrentValueProjection)
             .clone()
             .filter(|value| !value.trim().is_empty())
             .unwrap_or_else(|| "rgba(ffffffff)".to_string()),
+        Some(ScalarWriteValueKind::Vector2) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "0 0".to_string()),
         Some(ScalarWriteValueKind::StringLike)
         | Some(ScalarWriteValueKind::ComplexRaw)
         | Some(ScalarWriteValueKind::Unknown)

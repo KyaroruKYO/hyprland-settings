@@ -65,6 +65,7 @@ fn safe_writable_rows_are_the_reviewed_toggle_subset() {
             "appearance.shadow.render_power",
             "decoration.shadow.color",
             "decoration.shadow.color_inactive",
+            "decoration.shadow.offset",
             "appearance.gaps_in",
             "appearance.gaps_out",
             "appearance.border_size",
@@ -76,6 +77,10 @@ fn safe_writable_rows_are_the_reviewed_toggle_subset() {
             "windows.snap.window_gap",
             "windows.snap.monitor_gap",
             "input.pointer_sensitivity",
+            "input.tablet.region_position",
+            "input.tablet.region_size",
+            "input.tablet.active_area_size",
+            "input.tablet.active_area_position",
             "decoration.glow.color",
             "decoration.glow.color_inactive",
             "group.groupbar.text_color",
@@ -83,7 +88,8 @@ fn safe_writable_rows_are_the_reviewed_toggle_subset() {
             "group.groupbar.text_color_locked_active",
             "group.groupbar.text_color_locked_inactive",
             "misc.col.splash",
-            "misc.background_color"
+            "misc.background_color",
+            "layout.single_window_aspect_ratio"
         ]
     );
     assert!(is_safe_writable_setting("animations.enabled"));

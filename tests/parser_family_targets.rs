@@ -17,8 +17,8 @@ fn parser_family_report_has_expected_remaining_targets() -> Result<()> {
         .expect("parser-family targets should be an array");
 
     assert_eq!(report["counts"]["totalRemainingParserNeededRows"], 27);
-    assert_eq!(report["counts"]["enabledRows"], 0);
-    assert_eq!(report["counts"]["blockedRows"], 27);
+    assert_eq!(report["counts"]["enabledRows"], 6);
+    assert_eq!(report["counts"]["blockedRows"], 21);
     assert_eq!(targets.len(), 27);
 
     Ok(())
@@ -37,11 +37,27 @@ fn parser_family_report_groups_all_remaining_parser_families() -> Result<()> {
             .as_str()
             .expect("parserFamily should be a string");
         *families.entry(family.to_string()).or_insert(0usize) += 1;
-        assert!(
-            target["blocker"].as_str().is_some(),
-            "{} should keep a blocker until enabled",
-            target["rowId"]
-        );
+        if target["writeStatus"].as_str() == Some("writable") {
+            assert!(
+                target["blocker"].is_null(),
+                "{} should clear blocker when enabled",
+                target["rowId"]
+            );
+            assert!(
+                !target["testNames"]
+                    .as_array()
+                    .expect("testNames should be an array")
+                    .is_empty(),
+                "{} should list tests when enabled",
+                target["rowId"]
+            );
+        } else {
+            assert!(
+                target["blocker"].as_str().is_some(),
+                "{} should keep a blocker until enabled",
+                target["rowId"]
+            );
+        }
     }
 
     assert_eq!(families.get("gradient/color-list"), Some(&12));

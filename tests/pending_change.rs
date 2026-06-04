@@ -207,6 +207,57 @@ fn parser_backed_color_rows_reject_invalid_literals() {
 }
 
 #[test]
+fn vector_tuple_rows_can_be_staged_with_valid_values() {
+    let cases = [
+        ("decoration.shadow.offset", "decoration.shadow.offset"),
+        (
+            "input.tablet.region_position",
+            "input.tablet.region_position",
+        ),
+        ("input.tablet.region_size", "input.tablet.region_size"),
+        (
+            "input.tablet.active_area_size",
+            "input.tablet.active_area_size",
+        ),
+        (
+            "input.tablet.active_area_position",
+            "input.tablet.active_area_position",
+        ),
+        (
+            "layout.single_window_aspect_ratio",
+            "layout.single_window_aspect_ratio",
+        ),
+    ];
+
+    for (row_id, official_setting) in cases {
+        let config_key = official_setting.replace('.', ":");
+        let current = current_value_for(official_setting, &format!("{config_key} = 0 0\n"));
+
+        let change = stage_pending_change(row_id, &current, "10,20");
+
+        assert_eq!(
+            change.validation,
+            PendingChangeValidation::Valid,
+            "{row_id} should accept a finite vec2 value"
+        );
+        assert!(change.can_be_applied(), "{row_id} should be applicable");
+    }
+}
+
+#[test]
+fn vector_tuple_rows_reject_invalid_values() {
+    let current = CurrentValueProjection::not_configured();
+    for proposed in ["10", "10 20 30", "10,20,30", "nan 1"] {
+        let change = stage_pending_change("decoration.shadow.offset", &current, proposed);
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "decoration.shadow.offset should reject {proposed}"
+        );
+        assert!(!change.can_be_applied());
+    }
+}
+
+#[test]
 fn pending_change_preserves_missing_old_value_for_absent_setting() {
     let current = CurrentValueProjection::not_configured();
 

@@ -138,6 +138,20 @@ fn parser_backed_color_detail_is_editable() -> Result<()> {
 }
 
 #[test]
+fn vector_tuple_detail_is_editable() -> Result<()> {
+    let detail = detail_for("decoration.shadow.offset")?;
+
+    assert!(detail.edit.editable);
+    assert_eq!(detail.edit.proposed_value.as_deref(), Some("0 0"));
+    let pending = detail.edit.pending.expect("pending projection expected");
+    assert_eq!(pending.setting_id, "decoration.shadow.offset");
+    assert_eq!(pending.validation_label, "valid");
+    assert!(!pending.can_review);
+
+    Ok(())
+}
+
+#[test]
 fn non_allowlisted_detail_explains_disabled_edit_state() -> Result<()> {
     let detail = detail_for("appearance.glow.range")?;
 

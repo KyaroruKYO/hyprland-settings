@@ -6,8 +6,8 @@
   "source": "data/reports/scalar-read-write-coverage.v0.55.2.json",
   "counts": {
     "totalRemainingParserNeededRows": 27,
-    "enabledRows": 0,
-    "blockedRows": 27
+    "enabledRows": 6,
+    "blockedRows": 21
   },
   "families": [
     {
@@ -94,12 +94,21 @@
       "parserFamily": "vector/tuple",
       "valueFamily": "vector_tuple",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "enabled-parser-backed-vector",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "vec2_parser_accepts_space_and_comma_forms",
+        "vec2_parser_rejects_invalid_values",
+        "vector_tuple_rows_can_be_staged_with_valid_values",
+        "vector_tuple_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_vector_tuple_fixture",
+        "vector_tuple_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with typed finite vec2 parser. Accepted forms: x y and x,y."
     },
     {
       "rowId": "decoration.screen_shader",
@@ -159,12 +168,21 @@
       "parserFamily": "vector/tuple",
       "valueFamily": "vector_tuple",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "enabled-parser-backed-vector",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "vec2_parser_accepts_space_and_comma_forms",
+        "vec2_parser_rejects_invalid_values",
+        "vector_tuple_rows_can_be_staged_with_valid_values",
+        "vector_tuple_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_vector_tuple_fixture",
+        "vector_tuple_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with typed finite vec2 parser. Accepted forms: x y and x,y."
     },
     {
       "rowId": "input.tablet.region_size",
@@ -172,12 +190,21 @@
       "parserFamily": "vector/tuple",
       "valueFamily": "vector_tuple",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "enabled-parser-backed-vector",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "vec2_parser_accepts_space_and_comma_forms",
+        "vec2_parser_rejects_invalid_values",
+        "vector_tuple_rows_can_be_staged_with_valid_values",
+        "vector_tuple_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_vector_tuple_fixture",
+        "vector_tuple_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with typed finite vec2 parser. Accepted forms: x y and x,y."
     },
     {
       "rowId": "input.tablet.active_area_size",
@@ -185,12 +212,21 @@
       "parserFamily": "vector/tuple",
       "valueFamily": "vector_tuple",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "enabled-parser-backed-vector",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "vec2_parser_accepts_space_and_comma_forms",
+        "vec2_parser_rejects_invalid_values",
+        "vector_tuple_rows_can_be_staged_with_valid_values",
+        "vector_tuple_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_vector_tuple_fixture",
+        "vector_tuple_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with typed finite vec2 parser. Accepted forms: x y and x,y."
     },
     {
       "rowId": "input.tablet.active_area_position",
@@ -198,12 +234,21 @@
       "parserFamily": "vector/tuple",
       "valueFamily": "vector_tuple",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "enabled-parser-backed-vector",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "vec2_parser_accepts_space_and_comma_forms",
+        "vec2_parser_rejects_invalid_values",
+        "vector_tuple_rows_can_be_staged_with_valid_values",
+        "vector_tuple_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_vector_tuple_fixture",
+        "vector_tuple_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with typed finite vec2 parser. Accepted forms: x y and x,y."
     },
     {
       "rowId": "group.col.border_active",
@@ -380,12 +425,21 @@
       "parserFamily": "vector/tuple",
       "valueFamily": "vector_tuple",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_vec2_tuple_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "enabled-parser-backed-vector",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "vec2_parser_accepts_space_and_comma_forms",
+        "vec2_parser_rejects_invalid_values",
+        "vector_tuple_rows_can_be_staged_with_valid_values",
+        "vector_tuple_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_vector_tuple_fixture",
+        "vector_tuple_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with typed finite vec2 parser. Accepted forms: x y and x,y."
     }
   ]
 }

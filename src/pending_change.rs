@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use crate::current_config::CurrentValueProjection;
+use crate::value::vector::Vec2Value;
 use crate::write_classification::{
     is_safe_writable_setting, safe_writable_value_kind, ScalarWriteValueKind,
 };
@@ -103,6 +104,7 @@ fn validate_safe_writable_value(setting_id: &str, value: &str) -> PendingChangeV
         Some(ScalarWriteValueKind::Number) => validate_number_setting(setting_id, value),
         Some(ScalarWriteValueKind::Percent) => validate_percent_setting(setting_id, value),
         Some(ScalarWriteValueKind::Color) => validate_color_literal(value),
+        Some(ScalarWriteValueKind::Vector2) => validate_vec2_value(value),
         Some(ScalarWriteValueKind::StringLike)
         | Some(ScalarWriteValueKind::ComplexRaw)
         | Some(ScalarWriteValueKind::Unknown)
@@ -189,6 +191,13 @@ fn validate_hex_digits(value: &str, expected_len: usize, label: &str) -> Pending
         PendingChangeValidation::Valid
     } else {
         invalid(&format!("{label} contains non-hex characters"))
+    }
+}
+
+fn validate_vec2_value(value: &str) -> PendingChangeValidation {
+    match Vec2Value::parse(value) {
+        Ok(_) => PendingChangeValidation::Valid,
+        Err(error) => invalid(&error.to_string()),
     }
 }
 
