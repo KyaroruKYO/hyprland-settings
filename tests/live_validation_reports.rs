@@ -44,10 +44,7 @@ fn live_validation_plan_contains_only_batch_a_rows() -> Result<()> {
     assert_eq!(rows.len(), 39);
     assert_eq!(plan_ids, batch_a);
     for row in rows {
-        assert_eq!(
-            row["batch"].as_str(),
-            Some("batch-a-likely-safe-booleans")
-        );
+        assert_eq!(row["batch"].as_str(), Some("batch-a-likely-safe-booleans"));
         assert_eq!(row["value_kind"].as_str(), Some("boolean"));
         assert_eq!(row["high_risk"].as_bool(), Some(false));
         assert!(
@@ -69,18 +66,18 @@ fn live_validation_plan_contains_only_batch_a_rows() -> Result<()> {
 }
 
 #[test]
-fn dry_run_results_prove_batch_a_levels_one_and_two_only() -> Result<()> {
+fn live_results_record_batch_a_probe_without_enablement() -> Result<()> {
     let results = results_report()?;
     let rows = results["rows"]
         .as_array()
         .expect("live validation result rows should be an array");
 
-    assert_eq!(results["mode"].as_str(), Some("dry-run"));
+    assert_eq!(results["mode"].as_str(), Some("live"));
     assert_eq!(results["counts"]["rows"], 39);
     assert_eq!(results["counts"]["level1_passed"], 39);
     assert_eq!(results["counts"]["level2_passed"], 39);
     assert_eq!(results["counts"]["level3_passed"], 0);
-    assert_eq!(results["counts"]["level4_passed"], 0);
+    assert_eq!(results["counts"]["level4_passed"], 39);
     assert_eq!(results["counts"]["level5_manual_observation"], 39);
     assert_eq!(results["counts"]["enabled_rows"], 0);
 
@@ -92,16 +89,16 @@ fn dry_run_results_prove_batch_a_levels_one_and_two_only() -> Result<()> {
         );
         assert_eq!(
             row["level3_hyprland_accepts_value_status"].as_str(),
-            Some("not-run-dry-run")
+            Some("rejected")
         );
-        assert_eq!(row["level4_revert_status"].as_str(), Some("not-run-dry-run"));
+        assert_eq!(row["level4_revert_status"].as_str(), Some("passed"));
         assert_eq!(
             row["level5_behavior_status"].as_str(),
             Some("requires-manual-observation")
         );
         assert_eq!(row["safe_to_enable"].as_bool(), Some(false));
-        assert_eq!(row["rollback_watchdog_armed"].as_bool(), Some(false));
-        assert_eq!(row["revert_verified"].as_bool(), Some(false));
+        assert_eq!(row["rollback_watchdog_armed"].as_bool(), Some(true));
+        assert_eq!(row["revert_verified"].as_bool(), Some(true));
     }
 
     Ok(())

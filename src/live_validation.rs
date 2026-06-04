@@ -296,6 +296,7 @@ pub fn run_live_validation<R: HyprctlRunner, W: RollbackWatchdog>(
 ) -> LiveValidationResults {
     let mut rows = Vec::new();
     for row in &plan.rows {
+        eprintln!("live-validating {} ({})", row.row_id, row.official_setting);
         let level1 = level1_parse_read(row);
         let level2 = level2_fixture_write_reread(row);
         let mut result = LiveValidationResult {
@@ -367,11 +368,14 @@ pub fn run_live_validation<R: HyprctlRunner, W: RollbackWatchdog>(
         let accepted = match apply {
             Ok(output) if output.success => {
                 let after = runner.getoption(&row.official_setting).ok();
-                after
+                let observed = after
                     .as_ref()
                     .and_then(|output| parse_hyprctl_value(&output.stdout))
-                    .as_deref()
-                    == Some(candidate.as_str())
+                    .is_some_and(|value| values_equivalent(&value, &candidate));
+                if !observed {
+                    result.rejected_values.push(candidate.clone());
+                }
+                observed
             }
             Ok(output) => {
                 result.rejected_values.push(candidate.clone());
@@ -397,8 +401,7 @@ pub fn run_live_validation<R: HyprctlRunner, W: RollbackWatchdog>(
                 .getoption(&row.official_setting)
                 .ok()
                 .and_then(|output| parse_hyprctl_value(&output.stdout))
-                .as_deref()
-                == Some(original.as_str());
+                .is_some_and(|value| values_equivalent(&value, &original));
         result.revert_verified = restored;
         result.level4_revert_status = if restored { "passed" } else { "failed" }.to_string();
         result.safe_to_enable = level1 && level2 && accepted && restored;
@@ -410,8 +413,14 @@ pub fn run_live_validation<R: HyprctlRunner, W: RollbackWatchdog>(
         } else {
             result.notes
         };
-        let _ = watchdog.disarm();
+        if restored {
+            let _ = watchdog.disarm();
+        }
+        let should_stop = !restored;
         rows.push(result);
+        if should_stop {
+            break;
+        }
     }
     results_from_rows("live", rows)
 }
@@ -501,6 +510,24 @@ fn opposite_bool(value: &str) -> Option<String> {
     match value.trim().to_ascii_lowercase().as_str() {
         "1" | "true" | "yes" | "on" => Some("false".to_string()),
         "0" | "false" | "no" | "off" => Some("true".to_string()),
+        _ => None,
+    }
+}
+
+fn values_equivalent(left: &str, right: &str) -> bool {
+    if left.trim() == right.trim() {
+        return true;
+    }
+    match (bool_value(left), bool_value(right)) {
+        (Some(left), Some(right)) => left == right,
+        _ => false,
+    }
+}
+
+fn bool_value(value: &str) -> Option<bool> {
+    match value.trim().to_ascii_lowercase().as_str() {
+        "1" | "true" | "yes" | "on" => Some(true),
+        "0" | "false" | "no" | "off" => Some(false),
         _ => None,
     }
 }

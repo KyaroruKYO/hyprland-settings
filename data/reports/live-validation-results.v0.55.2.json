@@ -1,13 +1,13 @@
 {
   "artifact_kind": "live-validation-results",
   "hyprland_version": "0.55.2",
-  "mode": "dry-run",
+  "mode": "live",
   "counts": {
     "rows": 39,
     "level1_passed": 39,
     "level2_passed": 39,
     "level3_passed": 0,
-    "level4_passed": 0,
+    "level4_passed": 39,
     "level5_manual_observation": 39,
     "enabled_rows": 0
   },
@@ -19,22 +19,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "appearance.dim.inactive",
@@ -43,22 +43,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "appearance.border_part_of_window",
@@ -67,22 +67,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "appearance.blur.ignore_opacity",
@@ -91,22 +91,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "appearance.blur.new_optimizations",
@@ -115,22 +115,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "appearance.blur.special",
@@ -139,22 +139,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "appearance.blur.popups",
@@ -163,22 +163,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "appearance.blur.input_methods",
@@ -187,22 +187,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "appearance.shadow.sharp",
@@ -211,22 +211,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "appearance.glow.enabled",
@@ -235,22 +235,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "animations.workspace_wraparound",
@@ -259,22 +259,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "group.groupbar.enabled",
@@ -283,22 +283,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "group.groupbar.gradients",
@@ -307,22 +307,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "group.groupbar.stacked",
@@ -331,22 +331,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "group.groupbar.render_titles",
@@ -355,22 +355,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "group.groupbar.scrolling",
@@ -379,22 +379,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "group.groupbar.middle_click_close",
@@ -403,22 +403,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "group.groupbar.round_only_edges",
@@ -427,22 +427,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "group.groupbar.gradient_round_only_edges",
@@ -451,22 +451,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "group.groupbar.keep_upper_gap",
@@ -475,22 +475,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "group.groupbar.blur",
@@ -499,22 +499,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.disable_hyprland_logo",
@@ -523,22 +523,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "true",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.disable_splash_rendering",
@@ -547,22 +547,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.name_vk_after_proc",
@@ -571,22 +571,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.always_follow_on_dnd",
@@ -595,22 +595,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.layers_hog_keyboard_focus",
@@ -619,22 +619,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.animate_manual_resizes",
@@ -643,22 +643,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.animate_mouse_windowdragging",
@@ -667,22 +667,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.enable_swallow",
@@ -691,22 +691,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.mouse_move_focuses_monitor",
@@ -715,22 +715,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.close_special_on_empty",
@@ -739,22 +739,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.middle_click_paste",
@@ -763,22 +763,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.disable_xdg_env_checks",
@@ -787,22 +787,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.disable_hyprland_guiutils_check",
@@ -811,22 +811,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.disable_watchdog_warning",
@@ -835,22 +835,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.enable_anr_dialog",
@@ -859,22 +859,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.screencopy_force_8b",
@@ -883,22 +883,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.disable_scale_notification",
@@ -907,22 +907,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     },
     {
       "row_id": "misc.size_limits_tiled",
@@ -931,22 +931,22 @@
       "value_kind": "boolean",
       "level1_parse_read_status": "passed",
       "level2_fixture_write_reread_status": "passed",
-      "level3_hyprland_accepts_value_status": "not-run-dry-run",
-      "level4_revert_status": "not-run-dry-run",
+      "level3_hyprland_accepts_value_status": "rejected",
+      "level4_revert_status": "passed",
       "level5_behavior_status": "requires-manual-observation",
-      "original_live_value": null,
+      "original_live_value": "false",
       "candidate_values": [
         "true",
         "false"
       ],
       "accepted_values": [],
       "rejected_values": [],
-      "rollback_watchdog_armed": false,
+      "rollback_watchdog_armed": true,
       "rollback_deadline_seconds": 5,
-      "revert_verified": false,
+      "revert_verified": true,
       "safe_to_enable": false,
       "requires_manual_observation": true,
-      "notes": "Dry run proves Levels 1-2 only; no Hyprland runtime mutation attempted."
+      "notes": "Live runtime probe did not pass all gates."
     }
   ]
 }
