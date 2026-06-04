@@ -1,0 +1,187 @@
+{
+  "artifactKind": "config-persistence-validation-design",
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-04T03:26:53-07:00",
+  "hyprlandVersion": "0.55.2",
+  "sourceReports": [
+    "docs/CONFIG_PERSISTENCE_VALIDATION.md",
+    "data/reports/live-validation-semantics.v0.55.2.json",
+    "data/reports/live-validation-batch-a-semantics-classification.v0.55.2.json",
+    "data/reports/live-validation-level3-diagnostics.v0.55.2.json",
+    "data/reports/live-validation-plan.v0.55.2.json",
+    "data/reports/scalar-read-write-coverage.v0.55.2.json"
+  ],
+  "currentState": {
+    "readableScalarRows": 341,
+    "writableScalarRows": 55,
+    "blockedScalarWriteRows": 286,
+    "manualReviewRows": 214,
+    "highRiskRows": 72,
+    "batchARows": 39,
+    "batchAEnabledRows": 0,
+    "batchAAcceptedUnobservableRows": 3,
+    "batchAUnprovenRows": 36
+  },
+  "officialEvidence": [
+    {
+      "source": "official Hyprland source: src/main.cpp",
+      "finding": "Hyprland exposes --config FILE/-c FILE and --verify-config. The help text for --verify-config says it does not run Hyprland and only prints whether the config has errors.",
+      "implication": "A future harness can likely validate a generated temporary config without mutating the active user config or active compositor. Exact local command shape still needs implementation-time verification."
+    },
+    {
+      "source": "official Hyprland source: src/config/supplementary/jeremy/Jeremy.cpp",
+      "finding": "Hyprland selects an explicit config path first, then HYPRLAND_CONFIG, then normal user config locations.",
+      "implication": "A temp config file can be supplied explicitly or through HYPRLAND_CONFIG for isolated validation."
+    },
+    {
+      "source": "official Hyprland source: src/debug/HyprCtl.cpp",
+      "finding": "hyprctl eval is only supported with the Lua config manager and calls the Lua config manager eval path.",
+      "implication": "eval is not a pure key/value config validation path and is incompatible with this app safety rule forbidding Lua execution/evaluation."
+    },
+    {
+      "source": "official Hyprland source: src/config/lua/ConfigManager.cpp",
+      "finding": "CConfigManager::eval loads and executes Lua code with luaL_loadstring and guarded pcall.",
+      "implication": "eval executes Lua and may mutate runtime state; it must not be used by this app as a validation shortcut."
+    },
+    {
+      "source": "local diagnostic reports",
+      "finding": "hyprctl keyword emitted the non-legacy parser message for sampled rows: keyword cannot work with non-legacy parsers and suggests eval. configerrors stayed clean and getoption stayed unchanged.",
+      "implication": "Active-session keyword probing is not a reliable acceptance proof for the current configuration provider."
+    }
+  ],
+  "candidateApproaches": [
+    {
+      "id": "active-hyprctl-keyword",
+      "status": "not-recommended",
+      "mutatesActiveRuntime": true,
+      "persistentConfigMutation": false,
+      "evidence": "The existing harness can roll back runtime probes, but keyword is not accepted by non-legacy parser sessions and getoption remains unchanged.",
+      "conclusion": "Keep only as a rollback-protected live-observability probe, not as config-persistence proof."
+    },
+    {
+      "id": "hyprctl-eval",
+      "status": "deferred-unsafe-for-current-app",
+      "mutatesActiveRuntime": true,
+      "persistentConfigMutation": false,
+      "evidence": "Official source shows eval is Lua-manager-only and executes Lua code.",
+      "conclusion": "Do not use in this app because Lua execution/evaluation is forbidden."
+    },
+    {
+      "id": "active-hyprctl-reload-config-only",
+      "status": "unsafe-disallowed",
+      "mutatesActiveRuntime": true,
+      "persistentConfigMutation": false,
+      "evidence": "reload is explicitly disallowed for this sprint and would affect the active compositor session.",
+      "conclusion": "Do not use for validation."
+    },
+    {
+      "id": "temp-fixture-parser-writer-roundtrip",
+      "status": "required-but-insufficient-alone",
+      "mutatesActiveRuntime": false,
+      "persistentConfigMutation": false,
+      "evidence": "The app can generate temp configs and prove parser/write/reread safety without touching user config.",
+      "conclusion": "Required for every candidate, but not enough by itself to promote accepted-unobservable rows."
+    },
+    {
+      "id": "hyprland-verify-config-temp-file",
+      "status": "recommended-future-implementation",
+      "mutatesActiveRuntime": false,
+      "persistentConfigMutation": false,
+      "evidence": "Official source advertises --verify-config as not running Hyprland and only printing config errors; --config supplies an alternate config file.",
+      "conclusion": "Preferred proof path for config-valid but non-live-observable scalar rows."
+    },
+    {
+      "id": "nested-or-headless-hyprland",
+      "status": "deferred",
+      "mutatesActiveRuntime": false,
+      "persistentConfigMutation": false,
+      "evidence": "Could validate a real compositor process but may require display/session setup and more cleanup risk.",
+      "conclusion": "Use only if --verify-config is insufficient and after dedicated approval."
+    }
+  ],
+  "recommendedApproach": {
+    "id": "hyprland-verify-config-temp-file",
+    "policy": "strict-config-persistence-validation",
+    "summary": "Validate parser roundtrip and writer roundtrip against temp files, then validate the generated temp config with Hyprland --verify-config using an explicit temp config path. Do not mutate active config or active runtime.",
+    "minimumProofForFutureEnablement": [
+      "row remains readable by Rust parser",
+      "fixture scalar writer can replace and append safely",
+      "candidate value passes typed validator",
+      "generated temp config includes only the intended candidate mutation",
+      "Hyprland --verify-config against the temp config exits successfully with no config errors",
+      "no active hyprland.conf mutation occurs",
+      "no active runtime mutation occurs",
+      "coverage report and tests are updated in the later implementation sprint"
+    ],
+    "notEnoughForEnablement": [
+      "hyprctl keyword process exit success by itself",
+      "configerrors staying clean after keyword with unchanged getoption",
+      "parser and writer roundtrip without Hyprland config verification",
+      "Lua eval success",
+      "manual visual observation without machine-readable validation"
+    ]
+  },
+  "unsafeApproaches": [
+    "hyprctl reload against active session",
+    "hyprctl eval for validation because it executes Lua",
+    "ad hoc hyprctl keyword without rollback watchdog",
+    "writing directly to ~/.config/hypr/hyprland.conf during validation",
+    "starting nested compositor without a dedicated safety design"
+  ],
+  "deferredApproaches": [
+    "nested/headless Hyprland validation",
+    "high-risk row validation",
+    "Batch B/C/D/E/G live or persistence validation",
+    "Lua-provider eval validation"
+  ],
+  "batchAImplications": {
+    "decision": "enable-none-in-this-sprint",
+    "rows": 39,
+    "safeToImplementDryRunHarnessNextSprint": 39,
+    "safeToEnableNow": 0,
+    "acceptedUnobservableRowsNeedConfigPersistenceProof": 3,
+    "unprovenRowsNeedConfigPersistenceProof": 36,
+    "highRiskRowsIncluded": 0
+  },
+  "requiredImplementationStages": [
+    "Create temp directory and temp config generation module.",
+    "Apply each candidate setting to temp config only through existing parser/writer paths.",
+    "Verify parser and writer roundtrip against temp config.",
+    "Locate Hyprland binary and verify --verify-config/--config support with help output only.",
+    "Run Hyprland --verify-config with explicit temp config path under timeout and capture stdout/stderr/exit status.",
+    "Write config-persistence-validation-results.v0.55.2.json.",
+    "Only in a later sprint, promote rows that pass the full proof policy."
+  ],
+  "safetyRequirements": [
+    "No mutation of active hyprland.conf.",
+    "No active-session reload.",
+    "No hyprctl eval.",
+    "No Lua execution or evaluation.",
+    "No active runtime keyword probing for config-persistence proof.",
+    "All temp files must be outside the repo or under ignored temp paths and cleaned up unless explicitly preserving a failure fixture.",
+    "Timeout every external validation process.",
+    "Treat any config error output as a failed proof."
+  ],
+  "openQuestions": [
+    "Confirm exact local Hyprland command ordering: Hyprland --verify-config --config <temp-file> versus Hyprland --config <temp-file> --verify-config.",
+    "Confirm whether --verify-config requires compositor environment variables on this system despite official non-run semantics.",
+    "Define whether a minimal temp config needs autogenerated boilerplate beyond the candidate setting.",
+    "Decide whether successful config-persistence proof is enough for Batch A promotion or whether user wants manual observation first."
+  ],
+  "invariants": {
+    "rowsEnabledThisSprint": 0,
+    "writableRowsRemain": 55,
+    "doesNotChangeWriteBehavior": true,
+    "doesNotModifyPersistentConfig": true,
+    "doesNotRunReload": true,
+    "doesNotRunEval": true
+  },
+  "counts": {
+    "readableScalarRows": 341,
+    "writableScalarRows": 55,
+    "blockedScalarWriteRows": 286,
+    "batchARows": 39,
+    "batchAEnabledRows": 0,
+    "safeToEnableNow": 0
+  }
+}

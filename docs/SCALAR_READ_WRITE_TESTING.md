@@ -134,7 +134,16 @@ jq '.counts' data/reports/live-validation-batch-a-semantics-classification.v0.55
 
 The selected policy is strict for automatic enablement: `keyword` success, clean config errors, candidate-visible `getoption`, and verified revert. Rows that only show `keyword` success with unchanged `getoption` remain blocked as accepted-unobservable.
 
-For the next proof path, see [CONFIG_PERSISTENCE_VALIDATION.md](CONFIG_PERSISTENCE_VALIDATION.md).
+For the next proof path, see [CONFIG_PERSISTENCE_VALIDATION.md](CONFIG_PERSISTENCE_VALIDATION.md) and [CONFIG_PERSISTENCE_VALIDATION_DESIGN.md](CONFIG_PERSISTENCE_VALIDATION_DESIGN.md).
+
+The config-persistence design rejects `hyprctl eval` for this app because official source shows it executes Lua. The recommended next proof path is temporary config validation through Hyprland's `--verify-config` support, with no mutation of active `hyprland.conf` and no active runtime mutation.
+
+Inspect the design reports:
+
+```sh
+jq '.recommendedApproach' data/reports/config-persistence-validation-design.v0.55.2.json
+jq '.counts' data/reports/batch-a-config-persistence-candidates.v0.55.2.json
+```
 
 Dry-run the Batch A plan:
 

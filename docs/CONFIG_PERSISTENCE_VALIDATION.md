@@ -22,17 +22,23 @@ A future phase may validate config persistence instead of live runtime observabi
 1. Write a candidate setting only to a temporary fixture config.
 2. Keep real `~/.config/hypr/hyprland.conf` untouched.
 3. Validate parser round-trip and scalar writer round-trip.
-4. If a temporary isolated Hyprland instance is proven safe, test the temp config there.
-5. Capture config errors from the isolated environment only.
+4. Validate the generated temp config with Hyprland's official `--verify-config` path if command-shape verification confirms it is non-mutating locally.
+5. Capture config errors from the temp-config validation environment only.
 6. Do not run `hyprctl reload` against the user's active session.
 7. Do not treat active-session `keyword` success alone as proof.
 
+Official source review found that `hyprctl eval` is Lua-manager-only and executes Lua. It is not a safe validation shortcut for this app.
+
+The recommended policy is strict config-persistence validation: parser/writer roundtrip is required, but promotion also requires a successful temporary config validation with no active config or active runtime mutation.
+
 ## Deferred Work
 
-- Decide whether nested/headless Hyprland validation is safe on this machine.
-- Define how to pass an alternate config path to a test compositor without affecting the active session.
-- Define cleanup and timeout behavior for any temporary compositor process.
+- Verify exact local command shape for `Hyprland --verify-config --config <temp-file>`.
+- Implement temp config generation and timeout cleanup.
+- Keep nested/headless Hyprland validation deferred unless `--verify-config` is insufficient.
 - Keep high-risk rows out of this validation path until a dedicated high-risk design exists.
+
+Detailed design: [CONFIG_PERSISTENCE_VALIDATION_DESIGN.md](CONFIG_PERSISTENCE_VALIDATION_DESIGN.md).
 
 ## Current Reports
 
