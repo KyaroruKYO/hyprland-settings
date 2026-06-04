@@ -33,6 +33,12 @@ fn level3_diagnostics_report() -> Result<Value> {
     ))?)
 }
 
+fn semantics_report() -> Result<Value> {
+    Ok(serde_json::from_str(include_str!(
+        "../data/reports/live-validation-semantics.v0.55.2.json"
+    ))?)
+}
+
 #[test]
 fn live_validation_plan_contains_only_batch_a_rows() -> Result<()> {
     let plan = plan_report()?;
@@ -192,6 +198,51 @@ fn level3_diagnostics_record_three_row_subset_without_enablement() -> Result<()>
             item["diagnosis"].as_str(),
             Some("keyword-succeeded-but-getoption-stayed-original")
         );
+    }
+
+    Ok(())
+}
+
+#[test]
+fn live_validation_semantics_report_keeps_unobservable_rows_blocked() -> Result<()> {
+    let report = semantics_report()?;
+    let items = report["items"]
+        .as_array()
+        .expect("semantics items should be an array");
+
+    assert_eq!(report["counts"]["rows"], 5);
+    assert_eq!(report["counts"]["level3LiveObservableAccepted"], 0);
+    assert_eq!(report["counts"]["level3AcceptedUnobservable"], 5);
+    assert_eq!(report["counts"]["safeToEnable"], 0);
+    assert_eq!(
+        report["level3Policy"]["chosenPolicy"].as_str(),
+        Some("strict-live-observable-for-automatic-enablement")
+    );
+
+    let expected = [
+        "animations.enabled",
+        "appearance.dim.modal",
+        "misc.disable_hyprland_logo",
+        "misc.disable_splash_rendering",
+        "windows.snap.enabled",
+    ]
+    .into_iter()
+    .collect::<BTreeSet<_>>();
+    let actual = items
+        .iter()
+        .map(|item| item["rowId"].as_str().expect("rowId should be present"))
+        .collect::<BTreeSet<_>>();
+    assert_eq!(actual, expected);
+
+    for item in items {
+        assert_eq!(
+            item["level3Status"].as_str(),
+            Some("level3-accepted-unobservable")
+        );
+        assert_eq!(item["hyprctlKeywordSuccess"].as_bool(), Some(true));
+        assert_eq!(item["getoptionChanged"].as_bool(), Some(false));
+        assert_eq!(item["revertVerified"].as_bool(), Some(true));
+        assert_eq!(item["safeToEnable"].as_bool(), Some(false));
     }
 
     Ok(())
