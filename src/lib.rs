@@ -3,6 +3,7 @@ pub mod config_discovery;
 pub mod config_parser;
 pub mod current_config;
 pub mod export;
+pub mod live_validation;
 pub mod metadata;
 pub mod pending_change;
 pub mod scalar_write;
