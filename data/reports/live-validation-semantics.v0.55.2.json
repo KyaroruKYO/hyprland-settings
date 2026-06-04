@@ -1,0 +1,56 @@
+{
+  "artifactKind": "live-validation-semantics",
+  "schemaVersion": 1,
+  "hyprlandVersion": "0.55.2",
+  "sourcePlan": "data/reports/live-validation-plan.v0.55.2.json",
+  "sourceDiagnostics": "data/reports/live-validation-level3-diagnostics.v0.55.2.json",
+  "counts": {
+    "rows": 0,
+    "level3LiveObservableAccepted": 0,
+    "level3AcceptedUnobservable": 0,
+    "level3Rejected": 0,
+    "level3ConfigError": 0,
+    "level3RequiresReload": 0,
+    "level3NotLiveChangeable": 0,
+    "level3Unproven": 0,
+    "safeToEnable": 0
+  },
+  "officialFindings": [
+    {
+      "source": "Hyprland docs/hyprctl.1",
+      "url": "https://github.com/hyprwm/Hyprland/blob/main/docs/hyprctl.1",
+      "finding": "The hyprctl keyword command sets a config keyword dynamically and returns ok on success or an error message on failure."
+    },
+    {
+      "source": "Hyprland hyprctl/src/Strings.hpp",
+      "url": "https://github.com/hyprwm/Hyprland/blob/main/hyprctl/src/Strings.hpp",
+      "finding": "The hyprctl command list describes getoption as reading config option status and keyword as issuing a dynamic config keyword."
+    },
+    {
+      "source": "Hyprland src/debug/HyprCtl.cpp dispatchKeyword",
+      "url": "https://github.com/hyprwm/Hyprland/blob/main/src/debug/HyprCtl.cpp",
+      "finding": "dispatchKeyword calls the legacy config manager parseKeyword and returns ok only when the returned parser string is empty; it also performs selected side effects for input, blur, decoration, workspace, rules, and source commands."
+    },
+    {
+      "source": "Hyprland src/debug/HyprCtl.cpp dispatchGetOption",
+      "url": "https://github.com/hyprwm/Hyprland/blob/main/src/debug/HyprCtl.cpp",
+      "finding": "dispatchGetOption reads Config::mgr()->getConfigValue and reports typed values such as bool, int, float, str, custom type, and set status."
+    },
+    {
+      "source": "Hyprland src/debug/HyprCtl.cpp configErrorsRequest",
+      "url": "https://github.com/hyprwm/Hyprland/blob/main/src/debug/HyprCtl.cpp",
+      "finding": "configerrors reads Config::mgr()->getErrors and formats the current config parsing errors."
+    }
+  ],
+  "level3Policy": {
+    "chosenPolicy": "strict-live-observable-for-automatic-enablement",
+    "strictPass": "keyword succeeds, configerrors remains clean, getoption changes to the candidate value, and revert verification passes.",
+    "acceptedUnobservable": "keyword succeeds, configerrors remains clean, revert verification passes, but getoption does not change to the candidate. This is not enough for automatic enablement.",
+    "rejected": "keyword fails, keyword stderr is non-empty, or the command reports an error message.",
+    "configError": "configerrors reports an error after apply.",
+    "requiresReload": "official source or docs indicate the setting is not observable without reload. Reload is not run in this sprint.",
+    "notLiveChangeable": "official source or docs indicate the setting is config-only or not dynamically applicable.",
+    "unproven": "the evidence does not fit a stronger status, or revert verification is missing."
+  },
+  "items": []
+}
