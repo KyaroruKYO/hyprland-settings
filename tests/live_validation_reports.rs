@@ -39,6 +39,12 @@ fn semantics_report() -> Result<Value> {
     ))?)
 }
 
+fn batch_a_semantics_classification_report() -> Result<Value> {
+    Ok(serde_json::from_str(include_str!(
+        "../data/reports/live-validation-batch-a-semantics-classification.v0.55.2.json"
+    ))?)
+}
+
 #[test]
 fn live_validation_plan_contains_only_batch_a_rows() -> Result<()> {
     let plan = plan_report()?;
@@ -242,6 +248,27 @@ fn live_validation_semantics_report_keeps_unobservable_rows_blocked() -> Result<
         assert_eq!(item["hyprctlKeywordSuccess"].as_bool(), Some(true));
         assert_eq!(item["getoptionChanged"].as_bool(), Some(false));
         assert_eq!(item["revertVerified"].as_bool(), Some(true));
+        assert_eq!(item["safeToEnable"].as_bool(), Some(false));
+    }
+
+    Ok(())
+}
+
+#[test]
+fn batch_a_semantics_classification_enables_no_rows_without_strict_level3() -> Result<()> {
+    let report = batch_a_semantics_classification_report()?;
+    let items = report["items"]
+        .as_array()
+        .expect("Batch A classification items should be an array");
+
+    assert_eq!(report["counts"]["rows"], 39);
+    assert_eq!(report["counts"]["level3LiveObservableAccepted"], 0);
+    assert_eq!(report["counts"]["level3AcceptedUnobservable"], 3);
+    assert_eq!(report["counts"]["level3Unproven"], 36);
+    assert_eq!(report["counts"]["safeToEnable"], 0);
+    assert_eq!(report["counts"]["stillBlocked"], 39);
+    assert_eq!(report["decision"].as_str(), Some("enable-none"));
+    for item in items {
         assert_eq!(item["safeToEnable"].as_bool(), Some(false));
     }
 
