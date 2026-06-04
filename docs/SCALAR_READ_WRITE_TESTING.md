@@ -27,18 +27,50 @@ The AppStream release metadata warning is expected until real release tags exist
 jq '.counts' data/reports/scalar-read-write-coverage.v0.55.2.json
 jq '[.rows[] | .writeStatus] | group_by(.) | map({status: .[0], count: length})' data/reports/scalar-read-write-coverage.v0.55.2.json
 jq -r '.rows[] | select(.writeStatus != "writable") | [.rowId, .writeStatus, .writeBlocker] | @tsv' data/reports/scalar-read-write-coverage.v0.55.2.json
+jq '.counts' data/reports/scalar-write-expansion-targets.v0.55.2.json
 ```
 
 ## Current Safe Writable Rows
 
-Only these scalar rows are currently writable:
+Current scalar coverage:
+
+- readable rows: 341 / 341
+- writable rows: 28 / 341
+- blocked write rows: 313 / 341
+
+These scalar rows are currently writable:
 
 - `appearance.blur.enabled`
+- `appearance.blur.size`
+- `appearance.blur.brightness`
+- `appearance.blur.contrast`
 - `appearance.shadow.enabled`
+- `appearance.shadow.range`
+- `appearance.shadow.render_power`
+- `decoration.shadow.color`
+- `decoration.shadow.color_inactive`
+- `appearance.gaps_in`
+- `appearance.gaps_out`
+- `appearance.border_size`
+- `appearance.rounding`
+- `appearance.active_opacity`
+- `appearance.inactive_opacity`
 - `animations.enabled`
 - `windows.snap.enabled`
+- `windows.snap.window_gap`
+- `windows.snap.monitor_gap`
+- `input.pointer_sensitivity`
+- `decoration.glow.color`
+- `decoration.glow.color_inactive`
+- `group.groupbar.text_color`
+- `group.groupbar.text_color_inactive`
+- `group.groupbar.text_color_locked_active`
+- `group.groupbar.text_color_locked_inactive`
+- `misc.col.splash`
+- `misc.background_color`
 
 All other scalar rows are blocked with a concrete blocker in the coverage report.
+The validator/parser expansion target report records 14 validator-needed rows enabled, 10 parser-backed color rows enabled, and 27 parser-needed rows still blocked for manual review.
 
 ## Run The App Later
 
