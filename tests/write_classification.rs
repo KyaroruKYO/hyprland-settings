@@ -83,6 +83,7 @@ fn safe_writable_rows_are_the_reviewed_toggle_subset() {
             "general.col.nogroup_border_active",
             "input.pointer_sensitivity",
             "input.accel_profile",
+            "input.scroll_points",
             "input.kb_file",
             "input.tablet.region_position",
             "input.tablet.region_size",

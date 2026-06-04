@@ -443,6 +443,33 @@ fn regex_string_rows_reject_config_breaking_values() {
 }
 
 #[test]
+fn numeric_list_row_can_be_staged_with_scroll_points() {
+    let current = current_value_for("input.scroll_points", "input:scroll_points = 0.2 0.5 1\n");
+
+    let change = stage_pending_change("input.scroll_points", &current, "0.2 0.0 0.5 1 1.2 1.5");
+
+    assert_eq!(
+        change.validation,
+        PendingChangeValidation::Valid,
+        "input.scroll_points should accept a step followed by finite points"
+    );
+    assert!(change.can_be_applied());
+}
+
+#[test]
+fn numeric_list_row_rejects_invalid_scroll_points() {
+    let current = CurrentValueProjection::not_configured();
+    for proposed in ["", "0.2", "0 1", "0.2 nope", "0.2\n1", "0.2 # 1"] {
+        let change = stage_pending_change("input.scroll_points", &current, proposed);
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "input.scroll_points should reject {proposed:?}"
+        );
+        assert!(!change.can_be_applied());
+    }
+}
+
+#[test]
 fn pending_change_preserves_missing_old_value_for_absent_setting() {
     let current = CurrentValueProjection::not_configured();
 

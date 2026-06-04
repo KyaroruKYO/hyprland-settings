@@ -10,8 +10,8 @@
     "totalTargets": 51,
     "validatorNeededTargetsEnabled": 14,
     "validatorNeededTargetsBlocked": 0,
-    "parserNeededTargetsEnabled": 36,
-    "parserNeededTargetsBlocked": 1
+    "parserNeededTargetsEnabled": 37,
+    "parserNeededTargetsBlocked": 0
   },
   "groups": [
     {
@@ -684,11 +684,20 @@
       "parserStatus": "needs_numeric_list_parser",
       "riskClass": "numeric_list_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_numeric_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "numeric_list_parser_and_semantics_needed",
-      "notes": "Numeric-list row needs a dedicated parser and semantics before writes."
+      "decision": "enabled-parser-backed-numeric-list",
+      "enabled": true,
+      "tests": [
+        "numeric_list_accepts_scroll_point_shape",
+        "numeric_list_rejects_invalid_scroll_point_shape",
+        "numeric_list_row_can_be_staged_with_scroll_points",
+        "numeric_list_row_rejects_invalid_scroll_points",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "numeric_list_detail_is_editable",
+        "apply_flow_writes_numeric_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated numeric-list parser/validator/serializer for scroll points. Requires a positive step followed by at least one finite point; no expressions, commands, or multiline values."
     },
     {
       "rowId": "input.tablet.region_position",

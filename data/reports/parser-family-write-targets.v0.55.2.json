@@ -6,8 +6,8 @@
   "source": "data/reports/scalar-read-write-coverage.v0.55.2.json",
   "counts": {
     "totalRemainingParserNeededRows": 27,
-    "enabledRows": 26,
-    "blockedRows": 1
+    "enabledRows": 27,
+    "blockedRows": 0
   },
   "families": [
     {
@@ -226,12 +226,21 @@
       "parserFamily": "custom numeric list parser",
       "valueFamily": "bezierish_numeric_list",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_numeric_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "numeric_list_accepts_scroll_point_shape",
+        "numeric_list_rejects_invalid_scroll_point_shape",
+        "numeric_list_row_can_be_staged_with_scroll_points",
+        "numeric_list_row_rejects_invalid_scroll_points",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "numeric_list_detail_is_editable",
+        "apply_flow_writes_numeric_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated scroll-points numeric list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "input.tablet.region_position",

@@ -31,6 +31,7 @@ pub enum ScalarWriteValueKind {
     Color,
     Gradient,
     Vector2,
+    NumericList,
     LineSafeString,
     Path,
     RegexString,
@@ -188,6 +189,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "input.accel_profile",
         official_setting: "input.accel_profile",
         value_kind: ScalarWriteValueKind::LineSafeString,
+    },
+    SafeWritableRow {
+        row_id: "input.scroll_points",
+        official_setting: "input.scroll_points",
+        value_kind: ScalarWriteValueKind::NumericList,
     },
     SafeWritableRow {
         row_id: "input.kb_file",

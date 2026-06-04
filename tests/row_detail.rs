@@ -169,6 +169,23 @@ fn vector_tuple_detail_is_editable() -> Result<()> {
 }
 
 #[test]
+fn numeric_list_detail_is_editable() -> Result<()> {
+    let detail = detail_for("input.scroll_points")?;
+
+    assert!(detail.edit.editable);
+    assert_eq!(
+        detail.edit.proposed_value.as_deref(),
+        Some("0.2 0.0 0.5 1 1.2 1.5")
+    );
+    let pending = detail.edit.pending.expect("pending projection expected");
+    assert_eq!(pending.setting_id, "input.scroll_points");
+    assert_eq!(pending.validation_label, "valid");
+    assert!(!pending.can_review);
+
+    Ok(())
+}
+
+#[test]
 fn enum_custom_string_detail_is_editable() -> Result<()> {
     let detail = detail_for("misc.font_family")?;
 

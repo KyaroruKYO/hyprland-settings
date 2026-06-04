@@ -257,6 +257,41 @@ fn apply_flow_writes_vector_tuple_fixture() -> Result<()> {
 }
 
 #[test]
+fn apply_flow_writes_numeric_list_fixture() -> Result<()> {
+    let root = temp_root("apply-numeric-list")?;
+    let source = root.join("hyprland.conf");
+    fs::write(&source, "input:scroll_points = 0.2 0.5 1\n")?;
+    let contents = fs::read_to_string(&source)?;
+    let snapshot = snapshot_for(&source, &contents);
+    let backup_manager = BackupManager::new(root.join("backups"));
+
+    let outcome = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery_for(source.clone()),
+        &snapshot,
+        "input.scroll_points",
+        "0.2 0.0 0.5 1 1.2 1.5",
+        &backup_manager,
+    )
+    .map_err(|failure| anyhow::anyhow!("{failure:?}"))?;
+
+    assert_eq!(outcome.setting_id, "input.scroll_points");
+    assert_eq!(outcome.target_path, source);
+    assert!(outcome.backup_path.exists());
+    assert_eq!(
+        outcome.verified_value.as_deref(),
+        Some("0.2 0.0 0.5 1 1.2 1.5")
+    );
+    assert_eq!(
+        fs::read_to_string(&outcome.target_path)?,
+        "input:scroll_points = 0.2 0.0 0.5 1 1.2 1.5\n"
+    );
+
+    fs::remove_dir_all(root)?;
+    Ok(())
+}
+
+#[test]
 fn apply_flow_writes_enum_custom_string_fixture() -> Result<()> {
     let root = temp_root("apply-string")?;
     let source = root.join("hyprland.conf");

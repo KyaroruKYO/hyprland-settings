@@ -8,8 +8,8 @@
     "totalScalarRows": 341,
     "readableRows": 341,
     "blockedReadRows": 0,
-    "writableRows": 54,
-    "blockedWriteRows": 287
+    "writableRows": 55,
+    "blockedWriteRows": 286
   },
   "rows": [
     {
@@ -1493,18 +1493,18 @@
       "officialSetting": "input.scroll_points",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "parser-needed",
-      "writeBlocker": "semantic parser needed before safe write: needs_numeric_list_parser",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "bezierish_numeric_list",
       "controlKind": "dropdown",
       "parserStatus": "needs_numeric_list_parser",
       "riskClass": "numeric_list_parser_risk",
       "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Raw scalar read supported as unevaluated text by all-row parser projection test; semantic parser may still be needed before safe writing."
+      "notes": "Readable as raw scalar text; writable through dedicated scroll-points numeric list parser requiring a positive step and at least one finite point."
     },
     {
       "rowId": "input.scroll_method",
