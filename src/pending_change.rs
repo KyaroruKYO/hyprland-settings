@@ -2,8 +2,8 @@ use std::path::PathBuf;
 
 use crate::current_config::CurrentValueProjection;
 use crate::value::{
-    path_value::PathValue, regex_value::RegexValue, sanitized_string::SanitizedStringValue,
-    vector::Vec2Value,
+    color::ColorValue, gradient::GradientValue, path_value::PathValue, regex_value::RegexValue,
+    sanitized_string::SanitizedStringValue, vector::Vec2Value,
 };
 use crate::write_classification::{
     is_safe_writable_setting, safe_writable_value_kind, ScalarWriteValueKind,
@@ -107,6 +107,7 @@ fn validate_safe_writable_value(setting_id: &str, value: &str) -> PendingChangeV
         Some(ScalarWriteValueKind::Number) => validate_number_setting(setting_id, value),
         Some(ScalarWriteValueKind::Percent) => validate_percent_setting(setting_id, value),
         Some(ScalarWriteValueKind::Color) => validate_color_literal(value),
+        Some(ScalarWriteValueKind::Gradient) => validate_gradient_value(value),
         Some(ScalarWriteValueKind::Vector2) => validate_vec2_value(value),
         Some(ScalarWriteValueKind::LineSafeString) => validate_line_safe_string(value),
         Some(ScalarWriteValueKind::Path) => validate_path_value(value),
@@ -164,39 +165,16 @@ fn validate_unit_float(value: &str, min: f64, max: f64, label: &str) -> PendingC
 }
 
 fn validate_color_literal(value: &str) -> PendingChangeValidation {
-    let trimmed = value.trim();
-    if trimmed.is_empty() {
-        return invalid("color value cannot be empty");
+    match ColorValue::parse(value) {
+        Ok(_) => PendingChangeValidation::Valid,
+        Err(error) => invalid(&error.to_string()),
     }
-    if trimmed.contains(char::is_whitespace) {
-        return invalid("color value cannot contain whitespace");
-    }
-    if let Some(hex) = trimmed
-        .strip_prefix("rgb(")
-        .and_then(|value| value.strip_suffix(')'))
-    {
-        return validate_hex_digits(hex, 6, "rgb color");
-    }
-    if let Some(hex) = trimmed
-        .strip_prefix("rgba(")
-        .and_then(|value| value.strip_suffix(')'))
-    {
-        return validate_hex_digits(hex, 8, "rgba color");
-    }
-    if let Some(hex) = trimmed.strip_prefix("0x") {
-        return validate_hex_digits(hex, 8, "0xAARRGGBB color");
-    }
-    invalid("color value must be rgb(RRGGBB), rgba(RRGGBBAA), or 0xAARRGGBB")
 }
 
-fn validate_hex_digits(value: &str, expected_len: usize, label: &str) -> PendingChangeValidation {
-    if value.len() != expected_len {
-        return invalid(&format!("{label} must contain {expected_len} hex digits"));
-    }
-    if value.chars().all(|char| char.is_ascii_hexdigit()) {
-        PendingChangeValidation::Valid
-    } else {
-        invalid(&format!("{label} contains non-hex characters"))
+fn validate_gradient_value(value: &str) -> PendingChangeValidation {
+    match GradientValue::parse(value) {
+        Ok(_) => PendingChangeValidation::Valid,
+        Err(error) => invalid(&error.to_string()),
     }
 }
 

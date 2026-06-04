@@ -6,8 +6,8 @@
   "source": "data/reports/scalar-read-write-coverage.v0.55.2.json",
   "counts": {
     "totalRemainingParserNeededRows": 27,
-    "enabledRows": 14,
-    "blockedRows": 13
+    "enabledRows": 26,
+    "blockedRows": 1
   },
   "families": [
     {
@@ -42,12 +42,23 @@
       "parserFamily": "gradient/color-list",
       "valueFamily": "gradient",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated gradient/color-list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "general.col.active_border",
@@ -55,12 +66,23 @@
       "parserFamily": "gradient/color-list",
       "valueFamily": "gradient",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated gradient/color-list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "general.col.nogroup_border",
@@ -68,12 +90,23 @@
       "parserFamily": "gradient/color-list",
       "valueFamily": "gradient",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated gradient/color-list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "general.col.nogroup_border_active",
@@ -81,12 +114,23 @@
       "parserFamily": "gradient/color-list",
       "valueFamily": "gradient",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated gradient/color-list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "decoration.shadow.offset",
@@ -283,12 +327,23 @@
       "parserFamily": "gradient/color-list",
       "valueFamily": "gradient",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated gradient/color-list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "group.col.border_inactive",
@@ -296,12 +351,23 @@
       "parserFamily": "gradient/color-list",
       "valueFamily": "gradient",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated gradient/color-list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "group.col.border_locked_inactive",
@@ -309,12 +375,23 @@
       "parserFamily": "gradient/color-list",
       "valueFamily": "gradient",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated gradient/color-list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "group.col.border_locked_active",
@@ -322,12 +399,23 @@
       "parserFamily": "gradient/color-list",
       "valueFamily": "gradient",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated gradient/color-list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "group.groupbar.font_family",
@@ -357,12 +445,23 @@
       "parserFamily": "gradient/color-list",
       "valueFamily": "gradient",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated gradient/color-list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "group.groupbar.col.inactive",
@@ -370,12 +469,23 @@
       "parserFamily": "gradient/color-list",
       "valueFamily": "gradient",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated gradient/color-list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "group.groupbar.col.locked_active",
@@ -383,12 +493,23 @@
       "parserFamily": "gradient/color-list",
       "valueFamily": "gradient",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated gradient/color-list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "group.groupbar.col.locked_inactive",
@@ -396,12 +517,23 @@
       "parserFamily": "gradient/color-list",
       "valueFamily": "gradient",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated gradient/color-list parser/validator/serializer and fixture write tests."
     },
     {
       "rowId": "misc.font_family",

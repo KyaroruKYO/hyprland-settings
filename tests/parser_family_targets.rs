@@ -17,8 +17,8 @@ fn parser_family_report_has_expected_remaining_targets() -> Result<()> {
         .expect("parser-family targets should be an array");
 
     assert_eq!(report["counts"]["totalRemainingParserNeededRows"], 27);
-    assert_eq!(report["counts"]["enabledRows"], 14);
-    assert_eq!(report["counts"]["blockedRows"], 13);
+    assert_eq!(report["counts"]["enabledRows"], 26);
+    assert_eq!(report["counts"]["blockedRows"], 1);
     assert_eq!(targets.len(), 27);
 
     Ok(())

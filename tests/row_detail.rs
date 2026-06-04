@@ -138,6 +138,23 @@ fn parser_backed_color_detail_is_editable() -> Result<()> {
 }
 
 #[test]
+fn gradient_color_list_detail_is_editable() -> Result<()> {
+    let detail = detail_for("general.col.active_border")?;
+
+    assert!(detail.edit.editable);
+    assert_eq!(
+        detail.edit.proposed_value.as_deref(),
+        Some("rgba(ffffffff) rgba(000000ff) 45deg")
+    );
+    let pending = detail.edit.pending.expect("pending projection expected");
+    assert_eq!(pending.setting_id, "general.col.active_border");
+    assert_eq!(pending.validation_label, "valid");
+    assert!(!pending.can_review);
+
+    Ok(())
+}
+
+#[test]
 fn vector_tuple_detail_is_editable() -> Result<()> {
     let detail = detail_for("decoration.shadow.offset")?;
 

@@ -10,8 +10,8 @@
     "totalTargets": 51,
     "validatorNeededTargetsEnabled": 14,
     "validatorNeededTargetsBlocked": 0,
-    "parserNeededTargetsEnabled": 24,
-    "parserNeededTargetsBlocked": 13
+    "parserNeededTargetsEnabled": 36,
+    "parserNeededTargetsBlocked": 1
   },
   "groups": [
     {
@@ -384,11 +384,22 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "gradient_color_list_round_trip_parser_needed",
-      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
+      "decision": "enabled-parser-backed-gradient",
+      "enabled": true,
+      "tests": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with gradient/color-list parser/validator/serializer. Accepted tokens are supported color literals plus an optional final finite angle token ending in deg."
     },
     {
       "rowId": "general.col.active_border",
@@ -400,11 +411,22 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "gradient_color_list_round_trip_parser_needed",
-      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
+      "decision": "enabled-parser-backed-gradient",
+      "enabled": true,
+      "tests": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with gradient/color-list parser/validator/serializer. Accepted tokens are supported color literals plus an optional final finite angle token ending in deg."
     },
     {
       "rowId": "general.col.nogroup_border",
@@ -416,11 +438,22 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "gradient_color_list_round_trip_parser_needed",
-      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
+      "decision": "enabled-parser-backed-gradient",
+      "enabled": true,
+      "tests": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with gradient/color-list parser/validator/serializer. Accepted tokens are supported color literals plus an optional final finite angle token ending in deg."
     },
     {
       "rowId": "general.col.nogroup_border_active",
@@ -432,11 +465,22 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "gradient_color_list_round_trip_parser_needed",
-      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
+      "decision": "enabled-parser-backed-gradient",
+      "enabled": true,
+      "tests": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with gradient/color-list parser/validator/serializer. Accepted tokens are supported color literals plus an optional final finite angle token ending in deg."
     },
     {
       "rowId": "decoration.shadow.color",
@@ -756,11 +800,22 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "gradient_color_list_round_trip_parser_needed",
-      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
+      "decision": "enabled-parser-backed-gradient",
+      "enabled": true,
+      "tests": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with gradient/color-list parser/validator/serializer. Accepted tokens are supported color literals plus an optional final finite angle token ending in deg."
     },
     {
       "rowId": "group.col.border_inactive",
@@ -772,11 +827,22 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "gradient_color_list_round_trip_parser_needed",
-      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
+      "decision": "enabled-parser-backed-gradient",
+      "enabled": true,
+      "tests": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with gradient/color-list parser/validator/serializer. Accepted tokens are supported color literals plus an optional final finite angle token ending in deg."
     },
     {
       "rowId": "group.col.border_locked_inactive",
@@ -788,11 +854,22 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "gradient_color_list_round_trip_parser_needed",
-      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
+      "decision": "enabled-parser-backed-gradient",
+      "enabled": true,
+      "tests": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with gradient/color-list parser/validator/serializer. Accepted tokens are supported color literals plus an optional final finite angle token ending in deg."
     },
     {
       "rowId": "group.col.border_locked_active",
@@ -804,11 +881,22 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "gradient_color_list_round_trip_parser_needed",
-      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
+      "decision": "enabled-parser-backed-gradient",
+      "enabled": true,
+      "tests": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with gradient/color-list parser/validator/serializer. Accepted tokens are supported color literals plus an optional final finite angle token ending in deg."
     },
     {
       "rowId": "group.groupbar.font_family",
@@ -937,11 +1025,22 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "gradient_color_list_round_trip_parser_needed",
-      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
+      "decision": "enabled-parser-backed-gradient",
+      "enabled": true,
+      "tests": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with gradient/color-list parser/validator/serializer. Accepted tokens are supported color literals plus an optional final finite angle token ending in deg."
     },
     {
       "rowId": "group.groupbar.col.inactive",
@@ -953,11 +1052,22 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "gradient_color_list_round_trip_parser_needed",
-      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
+      "decision": "enabled-parser-backed-gradient",
+      "enabled": true,
+      "tests": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with gradient/color-list parser/validator/serializer. Accepted tokens are supported color literals plus an optional final finite angle token ending in deg."
     },
     {
       "rowId": "group.groupbar.col.locked_active",
@@ -969,11 +1079,22 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "gradient_color_list_round_trip_parser_needed",
-      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
+      "decision": "enabled-parser-backed-gradient",
+      "enabled": true,
+      "tests": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with gradient/color-list parser/validator/serializer. Accepted tokens are supported color literals plus an optional final finite angle token ending in deg."
     },
     {
       "rowId": "group.groupbar.col.locked_inactive",
@@ -985,11 +1106,22 @@
       "parserStatus": "needs_gradient_or_color_list_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_gradient_or_color_list_parser",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "gradient_color_list_round_trip_parser_needed",
-      "notes": "Gradient/color-list syntax needs a dedicated grammar and round-trip tests before writes; not enabled in this pass."
+      "decision": "enabled-parser-backed-gradient",
+      "enabled": true,
+      "tests": [
+        "color_value_accepts_supported_hyprland_color_literals",
+        "color_value_rejects_invalid_color_literals",
+        "gradient_value_accepts_color_lists_and_optional_angle",
+        "gradient_value_rejects_invalid_colors_or_angles",
+        "gradient_color_list_rows_can_be_staged_with_valid_values",
+        "gradient_color_list_rows_reject_invalid_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "gradient_color_list_detail_is_editable",
+        "apply_flow_writes_gradient_color_list_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with gradient/color-list parser/validator/serializer. Accepted tokens are supported color literals plus an optional final finite angle token ending in deg."
     },
     {
       "rowId": "misc.col.splash",

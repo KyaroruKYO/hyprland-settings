@@ -190,6 +190,41 @@ fn apply_flow_writes_parser_backed_color_fixture() -> Result<()> {
 }
 
 #[test]
+fn apply_flow_writes_gradient_color_list_fixture() -> Result<()> {
+    let root = temp_root("apply-gradient")?;
+    let source = root.join("hyprland.conf");
+    fs::write(&source, "general:col:active_border = rgba(000000ff)\n")?;
+    let contents = fs::read_to_string(&source)?;
+    let snapshot = snapshot_for(&source, &contents);
+    let backup_manager = BackupManager::new(root.join("backups"));
+
+    let outcome = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery_for(source.clone()),
+        &snapshot,
+        "general.col.active_border",
+        "rgba(ffffffff) rgba(000000ff) 45deg",
+        &backup_manager,
+    )
+    .map_err(|failure| anyhow::anyhow!("{failure:?}"))?;
+
+    assert_eq!(outcome.setting_id, "general.col.active_border");
+    assert_eq!(outcome.target_path, source);
+    assert!(outcome.backup_path.exists());
+    assert_eq!(
+        outcome.verified_value.as_deref(),
+        Some("rgba(ffffffff) rgba(000000ff) 45deg")
+    );
+    assert_eq!(
+        fs::read_to_string(&outcome.target_path)?,
+        "general:col:active_border = rgba(ffffffff) rgba(000000ff) 45deg\n"
+    );
+
+    fs::remove_dir_all(root)?;
+    Ok(())
+}
+
+#[test]
 fn apply_flow_writes_vector_tuple_fixture() -> Result<()> {
     let root = temp_root("apply-vector")?;
     let source = root.join("hyprland.conf");

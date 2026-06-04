@@ -207,6 +207,77 @@ fn parser_backed_color_rows_reject_invalid_literals() {
 }
 
 #[test]
+fn gradient_color_list_rows_can_be_staged_with_valid_values() {
+    let cases = [
+        ("general.col.inactive_border", "general.col.inactive_border"),
+        ("general.col.active_border", "general.col.active_border"),
+        ("general.col.nogroup_border", "general.col.nogroup_border"),
+        (
+            "general.col.nogroup_border_active",
+            "general.col.nogroup_border_active",
+        ),
+        ("group.col.border_active", "group.col.border_active"),
+        ("group.col.border_inactive", "group.col.border_inactive"),
+        (
+            "group.col.border_locked_inactive",
+            "group.col.border_locked_inactive",
+        ),
+        (
+            "group.col.border_locked_active",
+            "group.col.border_locked_active",
+        ),
+        ("group.groupbar.col.active", "group.groupbar.col.active"),
+        ("group.groupbar.col.inactive", "group.groupbar.col.inactive"),
+        (
+            "group.groupbar.col.locked_active",
+            "group.groupbar.col.locked_active",
+        ),
+        (
+            "group.groupbar.col.locked_inactive",
+            "group.groupbar.col.locked_inactive",
+        ),
+    ];
+
+    for (row_id, official_setting) in cases {
+        let config_key = official_setting.replace('.', ":");
+        let current = current_value_for(
+            official_setting,
+            &format!("{config_key} = rgba(000000ff)\n"),
+        );
+
+        let change = stage_pending_change(row_id, &current, "rgba(ffffffff) rgba(000000ff) 45deg");
+
+        assert_eq!(
+            change.validation,
+            PendingChangeValidation::Valid,
+            "{row_id} should accept a validated gradient/color-list value"
+        );
+        assert!(change.can_be_applied(), "{row_id} should be applicable");
+    }
+}
+
+#[test]
+fn gradient_color_list_rows_reject_invalid_values() {
+    let current = CurrentValueProjection::not_configured();
+    for proposed in [
+        "",
+        "45deg",
+        "red",
+        "rgba(ffffffff) red",
+        "rgba(ffffffff) 45turn",
+        "rgba(ffffffff) 45deg rgba(000000ff)",
+        "rgba(ffffffff) # comment",
+    ] {
+        let change = stage_pending_change("general.col.active_border", &current, proposed);
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "general.col.active_border should reject {proposed:?}"
+        );
+        assert!(!change.can_be_applied());
+    }
+}
+
+#[test]
 fn vector_tuple_rows_can_be_staged_with_valid_values() {
     let cases = [
         ("decoration.shadow.offset", "decoration.shadow.offset"),

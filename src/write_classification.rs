@@ -29,6 +29,7 @@ pub enum ScalarWriteValueKind {
     Number,
     Percent,
     Color,
+    Gradient,
     Vector2,
     LineSafeString,
     Path,
@@ -159,6 +160,26 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Number,
     },
     SafeWritableRow {
+        row_id: "general.col.inactive_border",
+        official_setting: "general.col.inactive_border",
+        value_kind: ScalarWriteValueKind::Gradient,
+    },
+    SafeWritableRow {
+        row_id: "general.col.active_border",
+        official_setting: "general.col.active_border",
+        value_kind: ScalarWriteValueKind::Gradient,
+    },
+    SafeWritableRow {
+        row_id: "general.col.nogroup_border",
+        official_setting: "general.col.nogroup_border",
+        value_kind: ScalarWriteValueKind::Gradient,
+    },
+    SafeWritableRow {
+        row_id: "general.col.nogroup_border_active",
+        official_setting: "general.col.nogroup_border_active",
+        value_kind: ScalarWriteValueKind::Gradient,
+    },
+    SafeWritableRow {
         row_id: "input.pointer_sensitivity",
         official_setting: "input.sensitivity",
         value_kind: ScalarWriteValueKind::Percent,
@@ -227,6 +248,46 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "group.groupbar.font_family",
         official_setting: "group.groupbar.font_family",
         value_kind: ScalarWriteValueKind::LineSafeString,
+    },
+    SafeWritableRow {
+        row_id: "group.col.border_active",
+        official_setting: "group.col.border_active",
+        value_kind: ScalarWriteValueKind::Gradient,
+    },
+    SafeWritableRow {
+        row_id: "group.col.border_inactive",
+        official_setting: "group.col.border_inactive",
+        value_kind: ScalarWriteValueKind::Gradient,
+    },
+    SafeWritableRow {
+        row_id: "group.col.border_locked_inactive",
+        official_setting: "group.col.border_locked_inactive",
+        value_kind: ScalarWriteValueKind::Gradient,
+    },
+    SafeWritableRow {
+        row_id: "group.col.border_locked_active",
+        official_setting: "group.col.border_locked_active",
+        value_kind: ScalarWriteValueKind::Gradient,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.col.active",
+        official_setting: "group.groupbar.col.active",
+        value_kind: ScalarWriteValueKind::Gradient,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.col.inactive",
+        official_setting: "group.groupbar.col.inactive",
+        value_kind: ScalarWriteValueKind::Gradient,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.col.locked_active",
+        official_setting: "group.groupbar.col.locked_active",
+        value_kind: ScalarWriteValueKind::Gradient,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.col.locked_inactive",
+        official_setting: "group.groupbar.col.locked_inactive",
+        value_kind: ScalarWriteValueKind::Gradient,
     },
     SafeWritableRow {
         row_id: "misc.col.splash",
