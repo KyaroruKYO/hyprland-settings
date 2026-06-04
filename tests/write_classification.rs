@@ -48,7 +48,7 @@ fn every_inventory_row_has_write_classification() -> Result<()> {
 }
 
 #[test]
-fn safe_writable_rows_include_config_persistence_verified_batch_a() -> Result<()> {
+fn safe_writable_rows_include_config_persistence_verified_rows() -> Result<()> {
     let row_ids = SAFE_WRITABLE_ROWS
         .iter()
         .map(|row| row.row_id)
@@ -56,8 +56,11 @@ fn safe_writable_rows_include_config_persistence_verified_batch_a() -> Result<()
     let batch_a: Value = serde_json::from_str(include_str!(
         "../data/reports/batch-a-config-persistence-candidates.v0.55.2.json"
     ))?;
+    let remaining_completion: Value = serde_json::from_str(include_str!(
+        "../data/reports/remaining-scalar-completion.v0.55.2.json"
+    ))?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 94);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 236);
     for row in batch_a["rows"]
         .as_array()
         .expect("Batch A rows should be an array")
@@ -65,9 +68,23 @@ fn safe_writable_rows_include_config_persistence_verified_batch_a() -> Result<()
         let row_id = row["rowId"].as_str().expect("rowId should exist");
         assert!(row_ids.contains(row_id), "{row_id} should be safe writable");
     }
+    for row in remaining_completion["rows"]
+        .as_array()
+        .expect("remaining completion rows should be an array")
+        .iter()
+        .filter(|row| row["enabled"].as_bool() == Some(true))
+    {
+        let row_id = row["rowId"].as_str().expect("rowId should exist");
+        assert!(row_ids.contains(row_id), "{row_id} should be safe writable");
+    }
     assert!(is_safe_writable_setting("animations.enabled"));
     assert!(is_safe_writable_setting("appearance.blur.size"));
+    assert!(is_safe_writable_setting("appearance.blur.passes"));
+    assert!(is_safe_writable_setting("general.no_focus_fallback"));
     assert!(is_safe_writable_setting("misc.disable_hyprland_logo"));
-    assert!(!is_safe_writable_setting("appearance.glow.range"));
+    assert!(!is_safe_writable_setting("input.follow_mouse"));
+    assert!(!is_safe_writable_setting(
+        "input.keyboard.resolve_binds_by_sym"
+    ));
     Ok(())
 }

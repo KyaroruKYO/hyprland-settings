@@ -615,6 +615,716 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         official_setting: "layout.single_window_aspect_ratio",
         value_kind: ScalarWriteValueKind::Vector2,
     },
+    SafeWritableRow {
+        row_id: "appearance.blur.passes",
+        official_setting: "decoration.blur.passes",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.noise",
+        official_setting: "decoration.blur.noise",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "appearance.shadow.scale",
+        official_setting: "decoration.shadow.scale",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.rounding_power",
+        official_setting: "decoration.rounding_power",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "appearance.dim.strength",
+        official_setting: "decoration.dim_strength",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.dim.special",
+        official_setting: "decoration.dim_special",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.dim.around",
+        official_setting: "decoration.dim_around",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.vibrancy",
+        official_setting: "decoration.blur.vibrancy",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.vibrancy_darkness",
+        official_setting: "decoration.blur.vibrancy_darkness",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.popups_ignorealpha",
+        official_setting: "decoration.blur.popups_ignorealpha",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.input_methods_ignorealpha",
+        official_setting: "decoration.blur.input_methods_ignorealpha",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.glow.range",
+        official_setting: "decoration.glow.range",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "appearance.glow.render_power",
+        official_setting: "decoration.glow.render_power",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "general.float_gaps",
+        official_setting: "general.float_gaps",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "general.gaps_workspaces",
+        official_setting: "general.gaps_workspaces",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "general.no_focus_fallback",
+        official_setting: "general.no_focus_fallback",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "general.resize_on_border",
+        official_setting: "general.resize_on_border",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "general.extend_border_grab_area",
+        official_setting: "general.extend_border_grab_area",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "general.hover_icon_on_border",
+        official_setting: "general.hover_icon_on_border",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "general.resize_corner",
+        official_setting: "general.resize_corner",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "general.snap.border_overlap",
+        official_setting: "general.snap.border_overlap",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "general.snap.respect_gaps",
+        official_setting: "general.snap.respect_gaps",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "general.modal_parent_blocking",
+        official_setting: "general.modal_parent_blocking",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.numlock_by_default",
+        official_setting: "input.numlock_by_default",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.resolve_binds_by_sym",
+        official_setting: "input.resolve_binds_by_sym",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.repeat_rate",
+        official_setting: "input.repeat_rate",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.repeat_delay",
+        official_setting: "input.repeat_delay",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.force_no_accel",
+        official_setting: "input.force_no_accel",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.rotation",
+        official_setting: "input.rotation",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.left_handed",
+        official_setting: "input.left_handed",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.scroll_button",
+        official_setting: "input.scroll_button",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.scroll_button_lock",
+        official_setting: "input.scroll_button_lock",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.scroll_factor",
+        official_setting: "input.scroll_factor",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "input.natural_scroll",
+        official_setting: "input.natural_scroll",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.follow_mouse_threshold",
+        official_setting: "input.follow_mouse_threshold",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.focus_on_close",
+        official_setting: "input.focus_on_close",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.mouse_refocus",
+        official_setting: "input.mouse_refocus",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.float_switch_override_focus",
+        official_setting: "input.float_switch_override_focus",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.special_fallthrough",
+        official_setting: "input.special_fallthrough",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.off_window_axis_events",
+        official_setting: "input.off_window_axis_events",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.emulate_discrete_scroll",
+        official_setting: "input.emulate_discrete_scroll",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.follow_mouse_shrink",
+        official_setting: "input.follow_mouse_shrink",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.touchpad.disable_while_typing",
+        official_setting: "input.touchpad.disable_while_typing",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.touchpad.natural_scroll",
+        official_setting: "input.touchpad.natural_scroll",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.touchpad.scroll_factor",
+        official_setting: "input.touchpad.scroll_factor",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "input.touchpad.middle_button_emulation",
+        official_setting: "input.touchpad.middle_button_emulation",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.touchpad.clickfinger_behavior",
+        official_setting: "input.touchpad.clickfinger_behavior",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.touchpad.tap-to-click",
+        official_setting: "input.touchpad.tap-to-click",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.touchpad.drag_lock",
+        official_setting: "input.touchpad.drag_lock",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.touchpad.tap-and-drag",
+        official_setting: "input.touchpad.tap-and-drag",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.touchpad.flip_x",
+        official_setting: "input.touchpad.flip_x",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.touchpad.flip_y",
+        official_setting: "input.touchpad.flip_y",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.touchpad.drag_3fg",
+        official_setting: "input.touchpad.drag_3fg",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.touchdevice.transform",
+        official_setting: "input.touchdevice.transform",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.touchdevice.enabled",
+        official_setting: "input.touchdevice.enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.virtualkeyboard.share_states",
+        official_setting: "input.virtualkeyboard.share_states",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.virtualkeyboard.release_pressed_on_close",
+        official_setting: "input.virtualkeyboard.release_pressed_on_close",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.tablet.transform",
+        official_setting: "input.tablet.transform",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "input.tablet.absolute_region_position",
+        official_setting: "input.tablet.absolute_region_position",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.tablet.relative_input",
+        official_setting: "input.tablet.relative_input",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.tablet.left_handed",
+        official_setting: "input.tablet.left_handed",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "gestures.workspace_swipe_distance",
+        official_setting: "gestures.workspace_swipe_distance",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "gestures.workspace_swipe_touch",
+        official_setting: "gestures.workspace_swipe_touch",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "gestures.workspace_swipe_invert",
+        official_setting: "gestures.workspace_swipe_invert",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "gestures.workspace_swipe_touch_invert",
+        official_setting: "gestures.workspace_swipe_touch_invert",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "gestures.workspace_swipe_min_speed_to_force",
+        official_setting: "gestures.workspace_swipe_min_speed_to_force",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "gestures.workspace_swipe_cancel_ratio",
+        official_setting: "gestures.workspace_swipe_cancel_ratio",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "gestures.workspace_swipe_create_new",
+        official_setting: "gestures.workspace_swipe_create_new",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "gestures.workspace_swipe_direction_lock",
+        official_setting: "gestures.workspace_swipe_direction_lock",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "gestures.workspace_swipe_direction_lock_threshold",
+        official_setting: "gestures.workspace_swipe_direction_lock_threshold",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "gestures.workspace_swipe_forever",
+        official_setting: "gestures.workspace_swipe_forever",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "gestures.workspace_swipe_use_r",
+        official_setting: "gestures.workspace_swipe_use_r",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "gestures.close_max_timeout",
+        official_setting: "gestures.close_max_timeout",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "gestures.scrolling.move_snap_to_grid",
+        official_setting: "gestures.scrolling.move_snap_to_grid",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "gestures.scrolling.move_snap_cursor",
+        official_setting: "gestures.scrolling.move_snap_cursor",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.insert_after_current",
+        official_setting: "group.insert_after_current",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.focus_removed_window",
+        official_setting: "group.focus_removed_window",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.merge_groups_on_drag",
+        official_setting: "group.merge_groups_on_drag",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.merge_groups_on_groupbar",
+        official_setting: "group.merge_groups_on_groupbar",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.auto_group",
+        official_setting: "group.auto_group",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.drag_into_group",
+        official_setting: "group.drag_into_group",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.merge_floated_into_tiled_on_groupbar",
+        official_setting: "group.merge_floated_into_tiled_on_groupbar",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.group_on_movetoworkspace",
+        official_setting: "group.group_on_movetoworkspace",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.font_weight_active",
+        official_setting: "group.groupbar.font_weight_active",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.font_weight_inactive",
+        official_setting: "group.groupbar.font_weight_inactive",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.font_size",
+        official_setting: "group.groupbar.font_size",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.height",
+        official_setting: "group.groupbar.height",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.indicator_gap",
+        official_setting: "group.groupbar.indicator_gap",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.indicator_height",
+        official_setting: "group.groupbar.indicator_height",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.priority",
+        official_setting: "group.groupbar.priority",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.rounding",
+        official_setting: "group.groupbar.rounding",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.rounding_power",
+        official_setting: "group.groupbar.rounding_power",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.gradient_rounding",
+        official_setting: "group.groupbar.gradient_rounding",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.gradient_rounding_power",
+        official_setting: "group.groupbar.gradient_rounding_power",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.gaps_out",
+        official_setting: "group.groupbar.gaps_out",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.gaps_in",
+        official_setting: "group.groupbar.gaps_in",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.text_offset",
+        official_setting: "group.groupbar.text_offset",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.text_padding",
+        official_setting: "group.groupbar.text_padding",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "misc.force_default_wallpaper",
+        official_setting: "misc.force_default_wallpaper",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "misc.initial_workspace_tracking",
+        official_setting: "misc.initial_workspace_tracking",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "misc.render_unfocused_fps",
+        official_setting: "misc.render_unfocused_fps",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "misc.lockdead_screen_delay",
+        official_setting: "misc.lockdead_screen_delay",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "misc.anr_missed_pings",
+        official_setting: "misc.anr_missed_pings",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "binds.pass_mouse_when_bound",
+        official_setting: "binds.pass_mouse_when_bound",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "binds.scroll_event_delay",
+        official_setting: "binds.scroll_event_delay",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "binds.workspace_back_and_forth",
+        official_setting: "binds.workspace_back_and_forth",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "binds.hide_special_on_workspace_change",
+        official_setting: "binds.hide_special_on_workspace_change",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "binds.allow_workspace_cycles",
+        official_setting: "binds.allow_workspace_cycles",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "binds.workspace_center_on",
+        official_setting: "binds.workspace_center_on",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "binds.focus_preferred_method",
+        official_setting: "binds.focus_preferred_method",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "binds.ignore_group_lock",
+        official_setting: "binds.ignore_group_lock",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "binds.movefocus_cycles_groupfirst",
+        official_setting: "binds.movefocus_cycles_groupfirst",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "binds.disable_keybind_grabbing",
+        official_setting: "binds.disable_keybind_grabbing",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "binds.window_direction_monitor_fallback",
+        official_setting: "binds.window_direction_monitor_fallback",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "binds.drag_threshold",
+        official_setting: "binds.drag_threshold",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "layout.single_window_aspect_ratio_tolerance",
+        official_setting: "layout.single_window_aspect_ratio_tolerance",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "dwindle.force_split",
+        official_setting: "dwindle.force_split",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "dwindle.preserve_split",
+        official_setting: "dwindle.preserve_split",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "dwindle.smart_split",
+        official_setting: "dwindle.smart_split",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "dwindle.smart_resizing",
+        official_setting: "dwindle.smart_resizing",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "dwindle.permanent_direction_override",
+        official_setting: "dwindle.permanent_direction_override",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "dwindle.special_scale_factor",
+        official_setting: "dwindle.special_scale_factor",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "dwindle.split_width_multiplier",
+        official_setting: "dwindle.split_width_multiplier",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "dwindle.use_active_for_splits",
+        official_setting: "dwindle.use_active_for_splits",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "dwindle.default_split_ratio",
+        official_setting: "dwindle.default_split_ratio",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "dwindle.split_bias",
+        official_setting: "dwindle.split_bias",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "dwindle.precise_mouse_move",
+        official_setting: "dwindle.precise_mouse_move",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "master.allow_small_split",
+        official_setting: "master.allow_small_split",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "master.special_scale_factor",
+        official_setting: "master.special_scale_factor",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "master.mfact",
+        official_setting: "master.mfact",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "master.new_on_top",
+        official_setting: "master.new_on_top",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "master.slave_count_for_center_master",
+        official_setting: "master.slave_count_for_center_master",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "master.center_ignores_reserved",
+        official_setting: "master.center_ignores_reserved",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "master.smart_resizing",
+        official_setting: "master.smart_resizing",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "master.drop_at_cursor",
+        official_setting: "master.drop_at_cursor",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "master.always_keep_position",
+        official_setting: "master.always_keep_position",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "scrolling.column_width",
+        official_setting: "scrolling.column_width",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "scrolling.focus_fit_method",
+        official_setting: "scrolling.focus_fit_method",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "scrolling.follow_focus",
+        official_setting: "scrolling.follow_focus",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "scrolling.follow_min_visible",
+        official_setting: "scrolling.follow_min_visible",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "scrolling.wrap_focus",
+        official_setting: "scrolling.wrap_focus",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "scrolling.wrap_swapcol",
+        official_setting: "scrolling.wrap_swapcol",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
 ];
 
 pub fn classify_inventory_entry(entry: &InventoryEntry) -> ScalarWriteClassification {

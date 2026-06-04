@@ -81,6 +81,20 @@ All 39 Batch A rows passed strict config-persistence validation and were enabled
 - 39 rows are safe to enable now.
 - Writable scalar rows after enablement: 94 / 341.
 
+## Remaining Scalar Completion Impact
+
+The harness was generalized for primitive scalar manual-review rows after Batch A.
+
+- Batch B numeric rows enabled: 33
+- Batch D primitive input rows enabled: 64
+- Batch E primitive window/layout rows enabled: 45
+- Additional rows enabled: 142
+- Writable scalar rows after remaining scalar completion: 236 / 341
+- Active config modified: no
+- Active runtime modified: no
+
+The remaining blocked scalar rows are dropdown/enum value proof gaps, session/runtime-sensitive settings, and high-risk rows.
+
 See:
 
 ```sh
@@ -90,4 +104,4 @@ jq '.recommendedApproach' data/reports/config-persistence-validation-design.v0.5
 
 ## Next Implementation Sprint
 
-Use the same config-persistence harness for the next low-risk batch, likely Batch B numerics, but require per-row candidate values/ranges before promotion.
+Use the same proof discipline for the remaining dropdown/enum-like rows, but first derive exact allowed values from official Hyprland docs/source or define a validated line-safe policy. Keep session/runtime-sensitive and high-risk rows blocked until dedicated approval and recovery policies exist.

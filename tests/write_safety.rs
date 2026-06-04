@@ -117,13 +117,13 @@ fn rejects_unknown_setting() {
 fn rejects_unsafe_setting() {
     let current = current_value_for(
         "/tmp/hyprland.conf",
-        "decoration.glow.range",
-        "decoration:glow:range = 8\n",
+        "input.follow_mouse",
+        "input:follow_mouse = 1\n",
     );
-    let pending = stage_pending_change("appearance.glow.range", &current, "10");
+    let pending = stage_pending_change("input.follow_mouse", &current, "2");
 
     let review = review_write_plan(WritePlanRequest {
-        known_setting_ids: known_ids(&["appearance.glow.range"]),
+        known_setting_ids: known_ids(&["input.follow_mouse"]),
         detected_config_path: PathBuf::from("/tmp/hyprland.conf"),
         current_value: current,
         pending_change: pending,

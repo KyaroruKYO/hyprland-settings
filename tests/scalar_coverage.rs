@@ -97,8 +97,8 @@ fn scalar_coverage_report_contains_all_rows_with_explicit_statuses() -> Result<(
     assert_eq!(report_ids, inventory_ids);
     assert_eq!(report["counts"]["readableRows"], 341);
     assert_eq!(report["counts"]["blockedReadRows"], 0);
-    assert_eq!(report["counts"]["writableRows"], 94);
-    assert_eq!(report["counts"]["blockedWriteRows"], 247);
+    assert_eq!(report["counts"]["writableRows"], 236);
+    assert_eq!(report["counts"]["blockedWriteRows"], 105);
     for row in rows {
         assert_eq!(row["readStatus"].as_str(), Some("readable"));
         assert_eq!(row["parserSupported"].as_bool(), Some(true));

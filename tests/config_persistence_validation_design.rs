@@ -106,7 +106,8 @@ fn batch_a_config_persistence_candidates_match_semantics_rows() -> Result<()> {
 }
 
 #[test]
-fn config_persistence_implementation_updates_scalar_write_counts() -> Result<()> {
+fn config_persistence_implementation_counts_continue_after_remaining_scalar_completion(
+) -> Result<()> {
     let coverage = scalar_coverage_report()?;
     let rows = coverage["rows"]
         .as_array()
@@ -124,10 +125,10 @@ fn config_persistence_implementation_updates_scalar_write_counts() -> Result<()>
         .filter(|row| row["writeStatus"].as_str() == Some("high-risk"))
         .count();
 
-    assert_eq!(coverage["counts"]["writableRows"], 94);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 247);
-    assert_eq!(writable, 94);
-    assert_eq!(manual, 175);
+    assert_eq!(coverage["counts"]["writableRows"], 236);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 105);
+    assert_eq!(writable, 236);
+    assert_eq!(manual, 33);
     assert_eq!(high_risk, 72);
 
     Ok(())

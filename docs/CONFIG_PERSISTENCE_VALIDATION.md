@@ -46,6 +46,21 @@ Batch A likely safe booleans passed config-persistence validation:
 
 The active `hyprland.conf` was not modified, and the active Hyprland runtime was not mutated.
 
+## Remaining Scalar Completion Result
+
+The same strict temp-config validation path was later generalized beyond Batch A and applied to the remaining primitive scalar manual-review rows.
+
+- Additional rows processed: 142
+- Parser roundtrip passed: 142
+- Writer roundtrip passed: 142
+- Typed validator passed: 142
+- Single mutation verified: 142
+- `Hyprland --verify-config` passed: 142
+- Additional rows enabled by config-persistence proof: 142
+- Writable rows after remaining scalar completion: 236 / 341
+
+The active `hyprland.conf` was not modified, and the active Hyprland runtime was not mutated. Rows still blocked after this pass are dropdown/enum proof gaps, session/runtime-sensitive settings, or high-risk rows.
+
 ## Deferred Work
 
 - Continue using exact local command shape `Hyprland --verify-config --config <temp-file>`.
@@ -60,6 +75,8 @@ Detailed design: [CONFIG_PERSISTENCE_VALIDATION_DESIGN.md](CONFIG_PERSISTENCE_VA
 ```sh
 jq '.counts' data/reports/live-validation-semantics.v0.55.2.json
 jq '.counts' data/reports/live-validation-batch-a-semantics-classification.v0.55.2.json
+jq '.counts' data/reports/config-persistence-validation-results.v0.55.2.json
+jq '.counts' data/reports/remaining-scalar-completion.v0.55.2.json
 ```
 
 Current Batch A config-persistence decision: enabled after strict temp-config proof.

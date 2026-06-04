@@ -35,69 +35,26 @@ jq '.counts' data/reports/scalar-write-expansion-targets.v0.55.2.json
 Current scalar coverage:
 
 - readable rows: 341 / 341
-- writable rows: 94 / 341
-- blocked write rows: 286 / 341
+- writable rows: 236 / 341
+- blocked write rows: 105 / 341
 
-These scalar rows are currently writable:
+The complete writable list is generated from `SAFE_WRITABLE_ROWS` and mirrored in the coverage report:
 
-- `appearance.blur.enabled`
-- `appearance.blur.size`
-- `appearance.blur.brightness`
-- `appearance.blur.contrast`
-- `appearance.shadow.enabled`
-- `appearance.shadow.range`
-- `appearance.shadow.render_power`
-- `decoration.shadow.color`
-- `decoration.shadow.color_inactive`
-- `decoration.shadow.offset`
-- `decoration.screen_shader`
-- `appearance.gaps_in`
-- `appearance.gaps_out`
-- `appearance.border_size`
-- `appearance.rounding`
-- `appearance.active_opacity`
-- `appearance.inactive_opacity`
-- `animations.enabled`
-- `windows.snap.enabled`
-- `windows.snap.window_gap`
-- `windows.snap.monitor_gap`
-- `general.col.inactive_border`
-- `general.col.active_border`
-- `general.col.nogroup_border`
-- `general.col.nogroup_border_active`
-- `input.pointer_sensitivity`
-- `input.accel_profile`
-- `input.scroll_points`
-- `input.kb_file`
-- `input.tablet.region_position`
-- `input.tablet.region_size`
-- `input.tablet.active_area_size`
-- `input.tablet.active_area_position`
-- `decoration.glow.color`
-- `decoration.glow.color_inactive`
-- `group.groupbar.text_color`
-- `group.groupbar.text_color_inactive`
-- `group.groupbar.text_color_locked_active`
-- `group.groupbar.text_color_locked_inactive`
-- `group.groupbar.font_family`
-- `group.col.border_active`
-- `group.col.border_inactive`
-- `group.col.border_locked_inactive`
-- `group.col.border_locked_active`
-- `group.groupbar.col.active`
-- `group.groupbar.col.inactive`
-- `group.groupbar.col.locked_active`
-- `group.groupbar.col.locked_inactive`
-- `misc.col.splash`
-- `misc.background_color`
-- `misc.font_family`
-- `misc.splash_font_family`
-- `misc.swallow_regex`
-- `misc.swallow_exception_regex`
-- `layout.single_window_aspect_ratio`
+```sh
+jq -r '.rows[] | select(.writeStatus == "writable") | .rowId' data/reports/scalar-read-write-coverage.v0.55.2.json
+```
 
-All other scalar rows are blocked with a concrete blocker in the coverage report.
-The validator/parser expansion target report records all 14 validator-needed rows and all 37 parser-needed rows enabled with parser, validator, fixture write, and UI/model projection tests. Remaining blocked rows are manual-review or high-risk rows.
+All remaining non-writable scalar rows have a concrete blocker in the coverage report:
+
+- 17 dropdown/enum-like rows need exact allowed-value proof or a validated line-safe policy.
+- 16 session/runtime-sensitive rows need a dedicated approval and recovery policy.
+- 72 high-risk rows remain blocked by policy.
+
+The remaining scalar completion report records the latest proof pass:
+
+```sh
+jq '.counts' data/reports/remaining-scalar-completion.v0.55.2.json
+```
 
 ## Manual Review Candidate Reports
 

@@ -61,14 +61,16 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
     if row.value_kind == ScalarWriteValueKind::Boolean {
         return "true";
     }
-    match row.row_id {
-        "appearance.blur.brightness"
-        | "appearance.blur.contrast"
-        | "appearance.active_opacity"
-        | "appearance.inactive_opacity" => "0.75",
-        "input.pointer_sensitivity" => "-0.25",
-        _ => "10",
+    if row.row_id == "input.pointer_sensitivity" {
+        return "-0.25";
     }
+    if row.value_kind == ScalarWriteValueKind::Percent {
+        return "0.75";
+    }
+    if row.value_kind == ScalarWriteValueKind::Number {
+        return "10";
+    }
+    "10"
 }
 
 fn existing_value_for(row: &SafeWritableRow) -> &'static str {
@@ -96,14 +98,16 @@ fn existing_value_for(row: &SafeWritableRow) -> &'static str {
     if row.value_kind == ScalarWriteValueKind::Boolean {
         return "false";
     }
-    match row.row_id {
-        "appearance.blur.brightness"
-        | "appearance.blur.contrast"
-        | "appearance.active_opacity"
-        | "appearance.inactive_opacity" => "0.5",
-        "input.pointer_sensitivity" => "0",
-        _ => "5",
+    if row.row_id == "input.pointer_sensitivity" {
+        return "0";
     }
+    if row.value_kind == ScalarWriteValueKind::Percent {
+        return "0.5";
+    }
+    if row.value_kind == ScalarWriteValueKind::Number {
+        return "5";
+    }
+    "5"
 }
 
 #[test]

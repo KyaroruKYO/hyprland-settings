@@ -1,6 +1,7 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::thread;
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
@@ -9,6 +10,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::config_parser::parse_hyprland_config_text;
 use crate::write_classification::config_key_from_official_setting;
+
+static TEMP_CONFIG_SEQUENCE: AtomicU64 = AtomicU64::new(0);
 
 pub const DEFAULT_CANDIDATES_PATH: &str =
     "data/reports/batch-a-config-persistence-candidates.v0.55.2.json";
@@ -37,6 +40,10 @@ pub struct ConfigPersistenceCandidateCounts {
 pub struct ConfigPersistenceCandidate {
     pub row_id: String,
     pub official_setting: String,
+    #[serde(default)]
+    pub candidate_value: Option<String>,
+    #[serde(default)]
+    pub control_kind: Option<String>,
     pub current_live_validation_status: String,
     pub proposed_config_persistence_status: String,
     pub safe_to_implement_next_sprint: bool,
@@ -178,7 +185,10 @@ fn validate_candidate(
     verifier: &mut dyn HyprlandConfigVerifier,
     timeout: Duration,
 ) -> ConfigPersistenceResult {
-    let candidate_value = "true".to_string();
+    let candidate_value = candidate
+        .candidate_value
+        .clone()
+        .unwrap_or_else(|| "true".to_string());
     let mut notes = Vec::new();
     let (temp_directory, temp_config_path) = match create_temp_config_paths(&candidate.row_id) {
         Ok(paths) => paths,
@@ -198,7 +208,10 @@ fn validate_candidate(
         notes.push("parser roundtrip failed before candidate mutation".to_string());
     }
 
-    let typed_validator_passed = is_bool_literal(&candidate_value);
+    let typed_validator_passed = validate_candidate_value(
+        candidate.control_kind.as_deref().unwrap_or("toggle"),
+        &candidate_value,
+    );
     if !typed_validator_passed {
         notes.push("typed boolean validator rejected candidate".to_string());
     }
@@ -380,12 +393,13 @@ fn results_from_rows(mode: &str, rows: Vec<ConfigPersistenceResult>) -> ConfigPe
 
 fn create_temp_config_paths(row_id: &str) -> Result<(PathBuf, PathBuf)> {
     let stamp = SystemTime::now().duration_since(UNIX_EPOCH)?.as_nanos();
+    let sequence = TEMP_CONFIG_SEQUENCE.fetch_add(1, Ordering::Relaxed);
     let safe_row = row_id
         .chars()
         .map(|ch| if ch.is_ascii_alphanumeric() { ch } else { '-' })
         .collect::<String>();
     let root = std::env::temp_dir().join(format!(
-        "hyprland-settings-config-persistence-{safe_row}-{}-{stamp}",
+        "hyprland-settings-config-persistence-{safe_row}-{}-{stamp}-{sequence}",
         std::process::id()
     ));
     fs::create_dir_all(&root)?;
@@ -428,6 +442,21 @@ fn replace_candidate_value(
     let mut updated = lines.join("\n");
     updated.push('\n');
     Ok(updated)
+}
+
+fn validate_candidate_value(control_kind: &str, value: &str) -> bool {
+    match control_kind {
+        "toggle" => is_bool_literal(value),
+        "percent-slider" => value
+            .trim()
+            .parse::<f64>()
+            .is_ok_and(|number| number.is_finite() && (0.0..=1.0).contains(&number)),
+        "slider" | "number-input" => value
+            .trim()
+            .parse::<f64>()
+            .is_ok_and(|number| number.is_finite() && number >= 0.0),
+        _ => false,
+    }
 }
 
 fn is_bool_literal(value: &str) -> bool {

@@ -44,9 +44,9 @@ fn invalid_pending_change_for_windows_snap_enabled_is_rejected() {
 
 #[test]
 fn only_safe_writable_rows_can_be_staged() {
-    let current = current_value_for("decoration.glow.range", "decoration:glow:range = 8\n");
+    let current = current_value_for("input.follow_mouse", "input:follow_mouse = 1\n");
 
-    let change = stage_pending_change("appearance.glow.range", &current, "10");
+    let change = stage_pending_change("input.follow_mouse", &current, "2");
 
     assert_eq!(
         change.validation,
