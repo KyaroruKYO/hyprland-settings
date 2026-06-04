@@ -1,0 +1,15 @@
+{
+  "artifactKind": "live-validation-level3-diagnostics",
+  "schemaVersion": 1,
+  "hyprlandVersion": "0.55.2",
+  "sourcePlan": "data/reports/live-validation-plan.v0.55.2.json",
+  "sourceResults": "data/reports/live-validation-results.v0.55.2.json",
+  "counts": {
+    "rows": 0,
+    "accepted": 0,
+    "revertVerified": 0,
+    "safeToRetest": 0
+  },
+  "diagnosisSummary": "Stage 0 scaffold only. No diagnostic live probes have been run from this report yet.",
+  "items": []
+}
