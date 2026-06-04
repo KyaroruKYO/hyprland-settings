@@ -49,6 +49,9 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
     if row.value_kind == ScalarWriteValueKind::Path {
         return "~/.config/hypr/example.conf";
     }
+    if row.value_kind == ScalarWriteValueKind::RegexString {
+        return "^(Alacritty|kitty)$";
+    }
     match row.row_id {
         "appearance.blur.enabled"
         | "appearance.shadow.enabled"
@@ -75,6 +78,9 @@ fn existing_value_for(row: &SafeWritableRow) -> &'static str {
     }
     if row.value_kind == ScalarWriteValueKind::Path {
         return "./old";
+    }
+    if row.value_kind == ScalarWriteValueKind::RegexString {
+        return "firefox";
     }
     match row.row_id {
         "appearance.blur.enabled"

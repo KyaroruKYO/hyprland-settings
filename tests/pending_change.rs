@@ -334,6 +334,44 @@ fn sanitized_path_rows_reject_command_like_values() {
 }
 
 #[test]
+fn regex_string_rows_can_be_staged_with_line_safe_patterns() {
+    let cases = [
+        ("misc.swallow_regex", "misc.swallow_regex"),
+        (
+            "misc.swallow_exception_regex",
+            "misc.swallow_exception_regex",
+        ),
+    ];
+
+    for (row_id, official_setting) in cases {
+        let config_key = official_setting.replace('.', ":");
+        let current = current_value_for(official_setting, &format!("{config_key} = firefox\n"));
+
+        let change = stage_pending_change(row_id, &current, "^(Alacritty|kitty)$");
+
+        assert_eq!(
+            change.validation,
+            PendingChangeValidation::Valid,
+            "{row_id} should accept line-safe regex-like text"
+        );
+        assert!(change.can_be_applied(), "{row_id} should be applicable");
+    }
+}
+
+#[test]
+fn regex_string_rows_reject_config_breaking_values() {
+    let current = CurrentValueProjection::not_configured();
+    for proposed in ["", "a\nb", "a # b", "`cmd`", "$(cmd)"] {
+        let change = stage_pending_change("misc.swallow_regex", &current, proposed);
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "misc.swallow_regex should reject {proposed:?}"
+        );
+        assert!(!change.can_be_applied());
+    }
+}
+
+#[test]
 fn pending_change_preserves_missing_old_value_for_absent_setting() {
     let current = CurrentValueProjection::not_configured();
 

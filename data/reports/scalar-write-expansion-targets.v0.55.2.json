@@ -10,8 +10,8 @@
     "totalTargets": 51,
     "validatorNeededTargetsEnabled": 14,
     "validatorNeededTargetsBlocked": 0,
-    "parserNeededTargetsEnabled": 22,
-    "parserNeededTargetsBlocked": 15
+    "parserNeededTargetsEnabled": 24,
+    "parserNeededTargetsBlocked": 13
   },
   "groups": [
     {
@@ -1074,11 +1074,20 @@
       "parserStatus": "needs_sanitized_regex_preview",
       "riskClass": "regex_rule_behavior_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_sanitized_regex_preview",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "regex_behavior_risk_needs_dedicated_review",
-      "notes": "Regex-like rows can change matching behavior broadly and need dedicated review before writes."
+      "decision": "enabled-parser-backed-regex-string",
+      "enabled": true,
+      "tests": [
+        "regex_value_accepts_line_safe_patterns_without_executing_them",
+        "regex_value_rejects_config_breaking_or_command_like_text",
+        "regex_string_rows_can_be_staged_with_line_safe_patterns",
+        "regex_string_rows_reject_config_breaking_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "regex_string_detail_is_editable",
+        "apply_flow_writes_regex_string_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with line-safe regex string parser/validator/serializer. The app stores and writes the value as text only; it does not compile, execute, or evaluate the regex."
     },
     {
       "rowId": "misc.swallow_exception_regex",
@@ -1090,11 +1099,20 @@
       "parserStatus": "needs_sanitized_regex_preview",
       "riskClass": "regex_rule_behavior_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_sanitized_regex_preview",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "regex_behavior_risk_needs_dedicated_review",
-      "notes": "Regex-like rows can change matching behavior broadly and need dedicated review before writes."
+      "decision": "enabled-parser-backed-regex-string",
+      "enabled": true,
+      "tests": [
+        "regex_value_accepts_line_safe_patterns_without_executing_them",
+        "regex_value_rejects_config_breaking_or_command_like_text",
+        "regex_string_rows_can_be_staged_with_line_safe_patterns",
+        "regex_string_rows_reject_config_breaking_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "regex_string_detail_is_editable",
+        "apply_flow_writes_regex_string_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with line-safe regex string parser/validator/serializer. The app stores and writes the value as text only; it does not compile, execute, or evaluate the regex."
     },
     {
       "rowId": "misc.background_color",

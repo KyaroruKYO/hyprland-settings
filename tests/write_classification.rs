@@ -95,6 +95,8 @@ fn safe_writable_rows_are_the_reviewed_toggle_subset() {
             "misc.background_color",
             "misc.font_family",
             "misc.splash_font_family",
+            "misc.swallow_regex",
+            "misc.swallow_exception_regex",
             "layout.single_window_aspect_ratio"
         ]
     );

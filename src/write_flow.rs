@@ -303,6 +303,11 @@ fn next_proposed_value(setting_id: &str, current_value: &CurrentValueProjection)
             .clone()
             .filter(|value| !value.trim().is_empty())
             .unwrap_or_else(|| "~/.config/hypr/example.conf".to_string()),
+        Some(ScalarWriteValueKind::RegexString) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "^(Alacritty|kitty)$".to_string()),
         Some(ScalarWriteValueKind::StringLike)
         | Some(ScalarWriteValueKind::ComplexRaw)
         | Some(ScalarWriteValueKind::Unknown)

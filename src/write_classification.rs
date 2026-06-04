@@ -32,6 +32,7 @@ pub enum ScalarWriteValueKind {
     Vector2,
     LineSafeString,
     Path,
+    RegexString,
     StringLike,
     ComplexRaw,
     Unknown,
@@ -246,6 +247,16 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "misc.splash_font_family",
         official_setting: "misc.splash_font_family",
         value_kind: ScalarWriteValueKind::LineSafeString,
+    },
+    SafeWritableRow {
+        row_id: "misc.swallow_regex",
+        official_setting: "misc.swallow_regex",
+        value_kind: ScalarWriteValueKind::RegexString,
+    },
+    SafeWritableRow {
+        row_id: "misc.swallow_exception_regex",
+        official_setting: "misc.swallow_exception_regex",
+        value_kind: ScalarWriteValueKind::RegexString,
     },
     SafeWritableRow {
         row_id: "layout.single_window_aspect_ratio",

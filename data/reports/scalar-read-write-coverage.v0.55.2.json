@@ -8,8 +8,8 @@
     "totalScalarRows": 341,
     "readableRows": 341,
     "blockedReadRows": 0,
-    "writableRows": 40,
-    "blockedWriteRows": 301
+    "writableRows": 42,
+    "blockedWriteRows": 299
   },
   "rows": [
     {
@@ -3581,36 +3581,36 @@
       "officialSetting": "misc.swallow_regex",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "parser-needed",
-      "writeBlocker": "semantic parser needed before safe write: needs_sanitized_regex_preview",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "regex_rule_like_string",
       "controlKind": "dropdown",
       "parserStatus": "needs_sanitized_regex_preview",
       "riskClass": "regex_rule_behavior_risk",
       "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Raw scalar read supported as unevaluated text by all-row parser projection test; semantic parser may still be needed before safe writing."
+      "notes": "Readable as raw scalar text; writable through dedicated line-safe regex string parser without regex execution, command execution, or multiline values."
     },
     {
       "rowId": "misc.swallow_exception_regex",
       "officialSetting": "misc.swallow_exception_regex",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "parser-needed",
-      "writeBlocker": "semantic parser needed before safe write: needs_sanitized_regex_preview",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "regex_rule_like_string",
       "controlKind": "dropdown",
       "parserStatus": "needs_sanitized_regex_preview",
       "riskClass": "regex_rule_behavior_risk",
       "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Raw scalar read supported as unevaluated text by all-row parser projection test; semantic parser may still be needed before safe writing."
+      "notes": "Readable as raw scalar text; writable through dedicated line-safe regex string parser without regex execution, command execution, or multiline values."
     },
     {
       "rowId": "misc.focus_on_activate",

@@ -6,8 +6,8 @@
   "source": "data/reports/scalar-read-write-coverage.v0.55.2.json",
   "counts": {
     "totalRemainingParserNeededRows": 27,
-    "enabledRows": 12,
-    "blockedRows": 15
+    "enabledRows": 14,
+    "blockedRows": 13
   },
   "families": [
     {
@@ -453,12 +453,21 @@
       "parserFamily": "regex/string requiring sanitization",
       "valueFamily": "regex_rule_like_string",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_sanitized_regex_preview",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "regex_value_accepts_line_safe_patterns_without_executing_them",
+        "regex_value_rejects_config_breaking_or_command_like_text",
+        "regex_string_rows_can_be_staged_with_line_safe_patterns",
+        "regex_string_rows_reject_config_breaking_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "regex_string_detail_is_editable",
+        "apply_flow_writes_regex_string_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated line-safe regex string parser/validator/serializer and fixture write tests; regex text is never compiled or executed."
     },
     {
       "rowId": "misc.swallow_exception_regex",
@@ -466,12 +475,21 @@
       "parserFamily": "regex/string requiring sanitization",
       "valueFamily": "regex_rule_like_string",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_sanitized_regex_preview",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "implemented",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "regex_value_accepts_line_safe_patterns_without_executing_them",
+        "regex_value_rejects_config_breaking_or_command_like_text",
+        "regex_string_rows_can_be_staged_with_line_safe_patterns",
+        "regex_string_rows_reject_config_breaking_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "regex_string_detail_is_editable",
+        "apply_flow_writes_regex_string_fixture"
+      ],
+      "blocker": null,
+      "notes": "Enabled with dedicated line-safe regex string parser/validator/serializer and fixture write tests; regex text is never compiled or executed."
     },
     {
       "rowId": "layout.single_window_aspect_ratio",
