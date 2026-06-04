@@ -10,8 +10,8 @@
     "totalTargets": 51,
     "validatorNeededTargetsEnabled": 14,
     "validatorNeededTargetsBlocked": 0,
-    "parserNeededTargetsEnabled": 0,
-    "parserNeededTargetsBlocked": 37
+    "parserNeededTargetsEnabled": 10,
+    "parserNeededTargetsBlocked": 27
   },
   "groups": [
     {
@@ -448,11 +448,18 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "parser-implementable-now",
-      "enabled": false,
-      "tests": [],
-      "blocker": "needs_color_parser_before_write_enablement",
-      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
+      "decision": "enabled-parser-backed-color",
+      "enabled": true,
+      "tests": [
+        "parser_backed_color_rows_can_be_staged_with_valid_literals",
+        "parser_backed_color_rows_reject_invalid_literals",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_parser_backed_color_fixture",
+        "parser_backed_color_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with strict color literal parser/validator. Accepted forms: rgb(RRGGBB), rgba(RRGGBBAA), and 0xAARRGGBB. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "decoration.shadow.color_inactive",
@@ -464,11 +471,18 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "parser-implementable-now",
-      "enabled": false,
-      "tests": [],
-      "blocker": "needs_color_parser_before_write_enablement",
-      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
+      "decision": "enabled-parser-backed-color",
+      "enabled": true,
+      "tests": [
+        "parser_backed_color_rows_can_be_staged_with_valid_literals",
+        "parser_backed_color_rows_reject_invalid_literals",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_parser_backed_color_fixture",
+        "parser_backed_color_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with strict color literal parser/validator. Accepted forms: rgb(RRGGBB), rgba(RRGGBBAA), and 0xAARRGGBB. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "decoration.shadow.offset",
@@ -496,11 +510,18 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "parser-implementable-now",
-      "enabled": false,
-      "tests": [],
-      "blocker": "needs_color_parser_before_write_enablement",
-      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
+      "decision": "enabled-parser-backed-color",
+      "enabled": true,
+      "tests": [
+        "parser_backed_color_rows_can_be_staged_with_valid_literals",
+        "parser_backed_color_rows_reject_invalid_literals",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_parser_backed_color_fixture",
+        "parser_backed_color_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with strict color literal parser/validator. Accepted forms: rgb(RRGGBB), rgba(RRGGBBAA), and 0xAARRGGBB. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "decoration.glow.color_inactive",
@@ -512,11 +533,18 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "parser-implementable-now",
-      "enabled": false,
-      "tests": [],
-      "blocker": "needs_color_parser_before_write_enablement",
-      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
+      "decision": "enabled-parser-backed-color",
+      "enabled": true,
+      "tests": [
+        "parser_backed_color_rows_can_be_staged_with_valid_literals",
+        "parser_backed_color_rows_reject_invalid_literals",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_parser_backed_color_fixture",
+        "parser_backed_color_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with strict color literal parser/validator. Accepted forms: rgb(RRGGBB), rgba(RRGGBBAA), and 0xAARRGGBB. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "decoration.screen_shader",
@@ -736,11 +764,18 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "parser-implementable-now",
-      "enabled": false,
-      "tests": [],
-      "blocker": "needs_color_parser_before_write_enablement",
-      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
+      "decision": "enabled-parser-backed-color",
+      "enabled": true,
+      "tests": [
+        "parser_backed_color_rows_can_be_staged_with_valid_literals",
+        "parser_backed_color_rows_reject_invalid_literals",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_parser_backed_color_fixture",
+        "parser_backed_color_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with strict color literal parser/validator. Accepted forms: rgb(RRGGBB), rgba(RRGGBBAA), and 0xAARRGGBB. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "group.groupbar.text_color_inactive",
@@ -752,11 +787,18 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "parser-implementable-now",
-      "enabled": false,
-      "tests": [],
-      "blocker": "needs_color_parser_before_write_enablement",
-      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
+      "decision": "enabled-parser-backed-color",
+      "enabled": true,
+      "tests": [
+        "parser_backed_color_rows_can_be_staged_with_valid_literals",
+        "parser_backed_color_rows_reject_invalid_literals",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_parser_backed_color_fixture",
+        "parser_backed_color_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with strict color literal parser/validator. Accepted forms: rgb(RRGGBB), rgba(RRGGBBAA), and 0xAARRGGBB. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "group.groupbar.text_color_locked_active",
@@ -768,11 +810,18 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "parser-implementable-now",
-      "enabled": false,
-      "tests": [],
-      "blocker": "needs_color_parser_before_write_enablement",
-      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
+      "decision": "enabled-parser-backed-color",
+      "enabled": true,
+      "tests": [
+        "parser_backed_color_rows_can_be_staged_with_valid_literals",
+        "parser_backed_color_rows_reject_invalid_literals",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_parser_backed_color_fixture",
+        "parser_backed_color_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with strict color literal parser/validator. Accepted forms: rgb(RRGGBB), rgba(RRGGBBAA), and 0xAARRGGBB. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "group.groupbar.text_color_locked_inactive",
@@ -784,11 +833,18 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "parser-implementable-now",
-      "enabled": false,
-      "tests": [],
-      "blocker": "needs_color_parser_before_write_enablement",
-      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
+      "decision": "enabled-parser-backed-color",
+      "enabled": true,
+      "tests": [
+        "parser_backed_color_rows_can_be_staged_with_valid_literals",
+        "parser_backed_color_rows_reject_invalid_literals",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_parser_backed_color_fixture",
+        "parser_backed_color_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with strict color literal parser/validator. Accepted forms: rgb(RRGGBB), rgba(RRGGBBAA), and 0xAARRGGBB. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "group.groupbar.col.active",
@@ -864,11 +920,18 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "parser-implementable-now",
-      "enabled": false,
-      "tests": [],
-      "blocker": "needs_color_parser_before_write_enablement",
-      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
+      "decision": "enabled-parser-backed-color",
+      "enabled": true,
+      "tests": [
+        "parser_backed_color_rows_can_be_staged_with_valid_literals",
+        "parser_backed_color_rows_reject_invalid_literals",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_parser_backed_color_fixture",
+        "parser_backed_color_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with strict color literal parser/validator. Accepted forms: rgb(RRGGBB), rgba(RRGGBBAA), and 0xAARRGGBB. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "misc.font_family",
@@ -944,11 +1007,18 @@
       "parserStatus": "needs_color_parser",
       "riskClass": "visual_color_parser_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_color_parser",
-      "decision": "parser-implementable-now",
-      "enabled": false,
-      "tests": [],
-      "blocker": "needs_color_parser_before_write_enablement",
-      "notes": "Color literals can be validated without file, command, Lua, or runtime evaluation. Candidate for parser-backed write enablement after strict color parser and per-row fixture tests."
+      "decision": "enabled-parser-backed-color",
+      "enabled": true,
+      "tests": [
+        "parser_backed_color_rows_can_be_staged_with_valid_literals",
+        "parser_backed_color_rows_reject_invalid_literals",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_parser_backed_color_fixture",
+        "parser_backed_color_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with strict color literal parser/validator. Accepted forms: rgb(RRGGBB), rgba(RRGGBBAA), and 0xAARRGGBB. Writes remain gated by backup, allowlist, reread, and verification."
     },
     {
       "rowId": "layout.single_window_aspect_ratio",

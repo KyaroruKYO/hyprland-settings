@@ -28,6 +28,7 @@ pub enum ScalarWriteValueKind {
     Boolean,
     Number,
     Percent,
+    Color,
     StringLike,
     ComplexRaw,
     Unknown,
@@ -84,6 +85,16 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Number,
     },
     SafeWritableRow {
+        row_id: "decoration.shadow.color",
+        official_setting: "decoration.shadow.color",
+        value_kind: ScalarWriteValueKind::Color,
+    },
+    SafeWritableRow {
+        row_id: "decoration.shadow.color_inactive",
+        official_setting: "decoration.shadow.color_inactive",
+        value_kind: ScalarWriteValueKind::Color,
+    },
+    SafeWritableRow {
         row_id: "appearance.gaps_in",
         official_setting: "general.gaps_in",
         value_kind: ScalarWriteValueKind::Number,
@@ -137,6 +148,46 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "input.pointer_sensitivity",
         official_setting: "input.sensitivity",
         value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "decoration.glow.color",
+        official_setting: "decoration.glow.color",
+        value_kind: ScalarWriteValueKind::Color,
+    },
+    SafeWritableRow {
+        row_id: "decoration.glow.color_inactive",
+        official_setting: "decoration.glow.color_inactive",
+        value_kind: ScalarWriteValueKind::Color,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.text_color",
+        official_setting: "group.groupbar.text_color",
+        value_kind: ScalarWriteValueKind::Color,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.text_color_inactive",
+        official_setting: "group.groupbar.text_color_inactive",
+        value_kind: ScalarWriteValueKind::Color,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.text_color_locked_active",
+        official_setting: "group.groupbar.text_color_locked_active",
+        value_kind: ScalarWriteValueKind::Color,
+    },
+    SafeWritableRow {
+        row_id: "group.groupbar.text_color_locked_inactive",
+        official_setting: "group.groupbar.text_color_locked_inactive",
+        value_kind: ScalarWriteValueKind::Color,
+    },
+    SafeWritableRow {
+        row_id: "misc.col.splash",
+        official_setting: "misc.col.splash",
+        value_kind: ScalarWriteValueKind::Color,
+    },
+    SafeWritableRow {
+        row_id: "misc.background_color",
+        official_setting: "misc.background_color",
+        value_kind: ScalarWriteValueKind::Color,
     },
 ];
 

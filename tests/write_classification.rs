@@ -63,6 +63,8 @@ fn safe_writable_rows_are_the_reviewed_toggle_subset() {
             "appearance.shadow.enabled",
             "appearance.shadow.range",
             "appearance.shadow.render_power",
+            "decoration.shadow.color",
+            "decoration.shadow.color_inactive",
             "appearance.gaps_in",
             "appearance.gaps_out",
             "appearance.border_size",
@@ -73,7 +75,15 @@ fn safe_writable_rows_are_the_reviewed_toggle_subset() {
             "windows.snap.enabled",
             "windows.snap.window_gap",
             "windows.snap.monitor_gap",
-            "input.pointer_sensitivity"
+            "input.pointer_sensitivity",
+            "decoration.glow.color",
+            "decoration.glow.color_inactive",
+            "group.groupbar.text_color",
+            "group.groupbar.text_color_inactive",
+            "group.groupbar.text_color_locked_active",
+            "group.groupbar.text_color_locked_inactive",
+            "misc.col.splash",
+            "misc.background_color"
         ]
     );
     assert!(is_safe_writable_setting("animations.enabled"));

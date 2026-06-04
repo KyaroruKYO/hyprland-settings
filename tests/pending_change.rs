@@ -146,6 +146,67 @@ fn validator_needed_rows_reject_invalid_values() {
 }
 
 #[test]
+fn parser_backed_color_rows_can_be_staged_with_valid_literals() {
+    let cases = [
+        ("decoration.shadow.color", "decoration.shadow.color"),
+        (
+            "decoration.shadow.color_inactive",
+            "decoration.shadow.color_inactive",
+        ),
+        ("decoration.glow.color", "decoration.glow.color"),
+        (
+            "decoration.glow.color_inactive",
+            "decoration.glow.color_inactive",
+        ),
+        ("group.groupbar.text_color", "group.groupbar.text_color"),
+        (
+            "group.groupbar.text_color_inactive",
+            "group.groupbar.text_color_inactive",
+        ),
+        (
+            "group.groupbar.text_color_locked_active",
+            "group.groupbar.text_color_locked_active",
+        ),
+        (
+            "group.groupbar.text_color_locked_inactive",
+            "group.groupbar.text_color_locked_inactive",
+        ),
+        ("misc.col.splash", "misc.col.splash"),
+        ("misc.background_color", "misc.background_color"),
+    ];
+
+    for (row_id, official_setting) in cases {
+        let config_key = official_setting.replace('.', ":");
+        let current = current_value_for(
+            official_setting,
+            &format!("{config_key} = rgba(000000ff)\n"),
+        );
+
+        let change = stage_pending_change(row_id, &current, "rgba(ffffffff)");
+
+        assert_eq!(
+            change.validation,
+            PendingChangeValidation::Valid,
+            "{row_id} should accept a strict rgba literal"
+        );
+        assert!(change.can_be_applied(), "{row_id} should be applicable");
+    }
+}
+
+#[test]
+fn parser_backed_color_rows_reject_invalid_literals() {
+    let current = CurrentValueProjection::not_configured();
+    for proposed in ["red", "rgb(ffff)", "rgba(fffffffff)", "0xzzzzzzzz"] {
+        let change = stage_pending_change("misc.background_color", &current, proposed);
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "misc.background_color should reject {proposed}"
+        );
+        assert!(!change.can_be_applied());
+    }
+}
+
+#[test]
 fn pending_change_preserves_missing_old_value_for_absent_setting() {
     let current = CurrentValueProjection::not_configured();
 

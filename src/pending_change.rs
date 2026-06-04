@@ -102,6 +102,7 @@ fn validate_safe_writable_value(setting_id: &str, value: &str) -> PendingChangeV
         }
         Some(ScalarWriteValueKind::Number) => validate_number_setting(setting_id, value),
         Some(ScalarWriteValueKind::Percent) => validate_percent_setting(setting_id, value),
+        Some(ScalarWriteValueKind::Color) => validate_color_literal(value),
         Some(ScalarWriteValueKind::StringLike)
         | Some(ScalarWriteValueKind::ComplexRaw)
         | Some(ScalarWriteValueKind::Unknown)
@@ -151,6 +152,43 @@ fn validate_unit_float(value: &str, min: f64, max: f64, label: &str) -> PendingC
         Ok(number) if !number.is_finite() => invalid("floating-point value must be finite"),
         Ok(_) => invalid(&format!("{label} must be between {min} and {max}")),
         Err(_) => invalid("floating-point value must be numeric"),
+    }
+}
+
+fn validate_color_literal(value: &str) -> PendingChangeValidation {
+    let trimmed = value.trim();
+    if trimmed.is_empty() {
+        return invalid("color value cannot be empty");
+    }
+    if trimmed.contains(char::is_whitespace) {
+        return invalid("color value cannot contain whitespace");
+    }
+    if let Some(hex) = trimmed
+        .strip_prefix("rgb(")
+        .and_then(|value| value.strip_suffix(')'))
+    {
+        return validate_hex_digits(hex, 6, "rgb color");
+    }
+    if let Some(hex) = trimmed
+        .strip_prefix("rgba(")
+        .and_then(|value| value.strip_suffix(')'))
+    {
+        return validate_hex_digits(hex, 8, "rgba color");
+    }
+    if let Some(hex) = trimmed.strip_prefix("0x") {
+        return validate_hex_digits(hex, 8, "0xAARRGGBB color");
+    }
+    invalid("color value must be rgb(RRGGBB), rgba(RRGGBBAA), or 0xAARRGGBB")
+}
+
+fn validate_hex_digits(value: &str, expected_len: usize, label: &str) -> PendingChangeValidation {
+    if value.len() != expected_len {
+        return invalid(&format!("{label} must contain {expected_len} hex digits"));
+    }
+    if value.chars().all(|char| char.is_ascii_hexdigit()) {
+        PendingChangeValidation::Valid
+    } else {
+        invalid(&format!("{label} contains non-hex characters"))
     }
 }
 

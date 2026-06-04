@@ -10,7 +10,7 @@ use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueProje
 use hyprland_settings::pending_change::stage_pending_change;
 use hyprland_settings::scalar_write::apply_scalar_write_plan;
 use hyprland_settings::write_classification::{
-    config_key_from_official_setting, SafeWritableRow, SAFE_WRITABLE_ROWS,
+    config_key_from_official_setting, SafeWritableRow, ScalarWriteValueKind, SAFE_WRITABLE_ROWS,
 };
 use hyprland_settings::write_safety::{review_write_plan, WritePlanRequest};
 
@@ -37,6 +37,9 @@ fn current_value_for(path: &PathBuf, setting_id: &str, contents: &str) -> Curren
 }
 
 fn valid_value_for(row: &SafeWritableRow) -> &'static str {
+    if row.value_kind == ScalarWriteValueKind::Color {
+        return "rgba(ffffffff)";
+    }
     match row.row_id {
         "appearance.blur.enabled"
         | "appearance.shadow.enabled"
@@ -52,6 +55,9 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
 }
 
 fn existing_value_for(row: &SafeWritableRow) -> &'static str {
+    if row.value_kind == ScalarWriteValueKind::Color {
+        return "rgba(000000ff)";
+    }
     match row.row_id {
         "appearance.blur.enabled"
         | "appearance.shadow.enabled"
