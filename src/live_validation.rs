@@ -78,6 +78,54 @@ pub struct LiveValidationResult {
     pub notes: String,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct LiveValidationDiagnostics {
+    pub artifact_kind: String,
+    pub schema_version: u32,
+    pub hyprland_version: String,
+    pub source_plan: String,
+    pub source_results: String,
+    pub counts: LiveValidationDiagnosticCounts,
+    pub diagnosis_summary: String,
+    pub items: Vec<LiveValidationDiagnosticItem>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct LiveValidationDiagnosticCounts {
+    pub rows: usize,
+    pub accepted: usize,
+    pub revert_verified: usize,
+    pub safe_to_retest: usize,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct LiveValidationDiagnosticItem {
+    pub row_id: String,
+    pub official_setting: String,
+    pub runtime_setting: String,
+    pub original_getoption_raw: String,
+    pub original_parsed_value: Option<String>,
+    pub candidate_value: Option<String>,
+    pub rollback_watchdog_armed: bool,
+    pub keyword_exit_success: bool,
+    pub keyword_stdout: String,
+    pub keyword_stderr: String,
+    pub post_apply_getoption_raw: String,
+    pub post_apply_parsed_value: Option<String>,
+    pub values_equivalent: bool,
+    pub config_errors_raw: String,
+    pub revert_keyword_exit_success: bool,
+    pub post_revert_getoption_raw: String,
+    pub post_revert_parsed_value: Option<String>,
+    pub revert_verified: bool,
+    pub diagnosis: String,
+    pub recommended_harness_fix: String,
+    pub safe_to_retest: bool,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct HyprctlOutput {
     pub success: bool,
@@ -214,6 +262,15 @@ pub fn save_results(path: &Path, results: &LiveValidationResults) -> Result<()> 
         .with_context(|| format!("failed to write live validation results {}", path.display()))
 }
 
+pub fn save_diagnostics(path: &Path, diagnostics: &LiveValidationDiagnostics) -> Result<()> {
+    fs::write(path, serde_json::to_string_pretty(diagnostics)? + "\n").with_context(|| {
+        format!(
+            "failed to write live validation diagnostics {}",
+            path.display()
+        )
+    })
+}
+
 pub fn build_batch_a_plan_from_manual_report(path: &Path) -> Result<LiveValidationPlan> {
     let report: serde_json::Value = serde_json::from_str(&fs::read_to_string(path)?)?;
     let items = report["items"]
@@ -297,6 +354,7 @@ pub fn run_live_validation<R: HyprctlRunner, W: RollbackWatchdog>(
     let mut rows = Vec::new();
     for row in &plan.rows {
         eprintln!("live-validating {} ({})", row.row_id, row.official_setting);
+        let runtime_setting = runtime_setting_name(&row.official_setting);
         let level1 = level1_parse_read(row);
         let level2 = level2_fixture_write_reread(row);
         let mut result = LiveValidationResult {
@@ -321,7 +379,7 @@ pub fn run_live_validation<R: HyprctlRunner, W: RollbackWatchdog>(
             notes: String::new(),
         };
 
-        let original = match runner.getoption(&row.official_setting) {
+        let original = match runner.getoption(&runtime_setting) {
             Ok(output) if output.success => match parse_hyprctl_value(&output.stdout) {
                 Some(value) => value,
                 None => {
@@ -351,11 +409,8 @@ pub fn run_live_validation<R: HyprctlRunner, W: RollbackWatchdog>(
         result.original_live_value = Some(original.clone());
         let candidate = opposite_bool(&original).unwrap_or_else(|| row.candidate_values[0].clone());
 
-        if let Err(error) = watchdog.arm(
-            &row.official_setting,
-            &original,
-            row.rollback_deadline_seconds,
-        ) {
+        if let Err(error) = watchdog.arm(&runtime_setting, &original, row.rollback_deadline_seconds)
+        {
             result.level3_hyprland_accepts_value_status = "blocked-watchdog-not-armed".to_string();
             result.level4_revert_status = "not-run".to_string();
             result.notes = error.to_string();
@@ -364,10 +419,10 @@ pub fn run_live_validation<R: HyprctlRunner, W: RollbackWatchdog>(
         }
         result.rollback_watchdog_armed = watchdog.armed();
 
-        let apply = runner.keyword(&row.official_setting, &candidate);
+        let apply = runner.keyword(&runtime_setting, &candidate);
         let accepted = match apply {
             Ok(output) if output.success => {
-                let after = runner.getoption(&row.official_setting).ok();
+                let after = runner.getoption(&runtime_setting).ok();
                 let observed = after
                     .as_ref()
                     .and_then(|output| parse_hyprctl_value(&output.stdout))
@@ -395,10 +450,10 @@ pub fn run_live_validation<R: HyprctlRunner, W: RollbackWatchdog>(
             result.level3_hyprland_accepts_value_status = "rejected".to_string();
         }
 
-        let revert = runner.keyword(&row.official_setting, &original);
+        let revert = runner.keyword(&runtime_setting, &original);
         let restored = revert.ok().is_some_and(|output| output.success)
             && runner
-                .getoption(&row.official_setting)
+                .getoption(&runtime_setting)
                 .ok()
                 .and_then(|output| parse_hyprctl_value(&output.stdout))
                 .is_some_and(|value| values_equivalent(&value, &original));
@@ -423,6 +478,185 @@ pub fn run_live_validation<R: HyprctlRunner, W: RollbackWatchdog>(
         }
     }
     results_from_rows("live", rows)
+}
+
+pub fn run_live_diagnostics<R: HyprctlRunner, W: RollbackWatchdog>(
+    plan: &LiveValidationPlan,
+    selected_row_ids: &BTreeSet<String>,
+    timeout_override: Option<u64>,
+    runner: &mut R,
+    watchdog: &mut W,
+) -> LiveValidationDiagnostics {
+    let mut items = Vec::new();
+    for row in &plan.rows {
+        if !selected_row_ids.contains(&row.row_id) {
+            continue;
+        }
+        eprintln!("live-diagnosing {} ({})", row.row_id, row.official_setting);
+        let item = diagnose_one_row(row, timeout_override, runner, watchdog);
+        let should_stop = item.rollback_watchdog_armed && !item.revert_verified;
+        items.push(item);
+        if should_stop {
+            break;
+        }
+    }
+    diagnostics_from_items(items)
+}
+
+fn diagnose_one_row<R: HyprctlRunner, W: RollbackWatchdog>(
+    row: &LiveValidationRow,
+    timeout_override: Option<u64>,
+    runner: &mut R,
+    watchdog: &mut W,
+) -> LiveValidationDiagnosticItem {
+    let runtime_setting = runtime_setting_name(&row.official_setting);
+    let timeout_seconds = timeout_override.unwrap_or(row.rollback_deadline_seconds);
+    let mut item = LiveValidationDiagnosticItem {
+        row_id: row.row_id.clone(),
+        official_setting: row.official_setting.clone(),
+        runtime_setting: runtime_setting.clone(),
+        original_getoption_raw: String::new(),
+        original_parsed_value: None,
+        candidate_value: None,
+        rollback_watchdog_armed: false,
+        keyword_exit_success: false,
+        keyword_stdout: String::new(),
+        keyword_stderr: String::new(),
+        post_apply_getoption_raw: String::new(),
+        post_apply_parsed_value: None,
+        values_equivalent: false,
+        config_errors_raw: String::new(),
+        revert_keyword_exit_success: false,
+        post_revert_getoption_raw: String::new(),
+        post_revert_parsed_value: None,
+        revert_verified: false,
+        diagnosis: String::new(),
+        recommended_harness_fix: String::new(),
+        safe_to_retest: false,
+    };
+
+    let original_output = match runner.getoption(&runtime_setting) {
+        Ok(output) if output.success => output,
+        Ok(output) => {
+            item.original_getoption_raw = output.stdout;
+            item.keyword_stderr = output.stderr;
+            item.diagnosis = "getoption-failed-before-apply".to_string();
+            item.recommended_harness_fix = "verify runtime setting name".to_string();
+            return item;
+        }
+        Err(error) => {
+            item.diagnosis = "getoption-error-before-apply".to_string();
+            item.recommended_harness_fix = error.to_string();
+            return item;
+        }
+    };
+    item.original_getoption_raw = original_output.stdout.clone();
+    let Some(original) = parse_hyprctl_value(&original_output.stdout) else {
+        item.diagnosis = "original-value-unparsed".to_string();
+        item.recommended_harness_fix = "extend hyprctl getoption parser".to_string();
+        return item;
+    };
+    item.original_parsed_value = Some(original.clone());
+    let candidate = opposite_bool(&original).unwrap_or_else(|| row.candidate_values[0].clone());
+    item.candidate_value = Some(candidate.clone());
+
+    if let Err(error) = watchdog.arm(&runtime_setting, &original, timeout_seconds) {
+        item.diagnosis = "watchdog-not-armed".to_string();
+        item.recommended_harness_fix = error.to_string();
+        return item;
+    }
+    item.rollback_watchdog_armed = watchdog.armed();
+
+    match runner.keyword(&runtime_setting, &candidate) {
+        Ok(output) => {
+            item.keyword_exit_success = output.success;
+            item.keyword_stdout = output.stdout;
+            item.keyword_stderr = output.stderr;
+        }
+        Err(error) => {
+            item.keyword_stderr = error.to_string();
+        }
+    }
+
+    if let Ok(output) = runner.getoption(&runtime_setting) {
+        item.post_apply_getoption_raw = output.stdout.clone();
+        item.post_apply_parsed_value = parse_hyprctl_value(&output.stdout);
+    }
+    item.values_equivalent = item
+        .post_apply_parsed_value
+        .as_deref()
+        .is_some_and(|value| values_equivalent(value, &candidate));
+
+    if let Ok(output) = runner.configerrors() {
+        item.config_errors_raw = if output.stdout.trim().is_empty() {
+            output.stderr
+        } else {
+            output.stdout
+        };
+    }
+
+    match runner.keyword(&runtime_setting, &original) {
+        Ok(output) => {
+            item.revert_keyword_exit_success = output.success;
+            if !output.stderr.trim().is_empty() {
+                item.keyword_stderr = join_nonempty(&item.keyword_stderr, &output.stderr);
+            }
+        }
+        Err(error) => {
+            item.keyword_stderr = join_nonempty(&item.keyword_stderr, &error.to_string());
+        }
+    }
+    if let Ok(output) = runner.getoption(&runtime_setting) {
+        item.post_revert_getoption_raw = output.stdout.clone();
+        item.post_revert_parsed_value = parse_hyprctl_value(&output.stdout);
+    }
+    item.revert_verified = item.revert_keyword_exit_success
+        && item
+            .post_revert_parsed_value
+            .as_deref()
+            .is_some_and(|value| values_equivalent(value, &original));
+
+    if item.revert_verified {
+        let _ = watchdog.disarm();
+    }
+    item.safe_to_retest = item.revert_verified;
+    item.diagnosis = if item.values_equivalent {
+        "accepted-value-detected".to_string()
+    } else if !item.keyword_exit_success {
+        "keyword-rejected-or-failed".to_string()
+    } else if item.post_apply_parsed_value == item.original_parsed_value {
+        "keyword-succeeded-but-getoption-stayed-original".to_string()
+    } else {
+        "keyword-succeeded-but-post-apply-value-did-not-match-candidate".to_string()
+    };
+    item.recommended_harness_fix = if item.values_equivalent {
+        "no-level3-parser-fix-needed-for-this-row".to_string()
+    } else if !item.keyword_exit_success {
+        "inspect-keyword-stderr-and-runtime-setting-name".to_string()
+    } else {
+        "inspect-raw-getoption-output-and-accepted-value-normalization".to_string()
+    };
+
+    item
+}
+
+fn diagnostics_from_items(items: Vec<LiveValidationDiagnosticItem>) -> LiveValidationDiagnostics {
+    LiveValidationDiagnostics {
+        artifact_kind: "live-validation-level3-diagnostics".to_string(),
+        schema_version: 1,
+        hyprland_version: "0.55.2".to_string(),
+        source_plan: "data/reports/live-validation-plan.v0.55.2.json".to_string(),
+        source_results: "data/reports/live-validation-results.v0.55.2.json".to_string(),
+        counts: LiveValidationDiagnosticCounts {
+            rows: items.len(),
+            accepted: items.iter().filter(|item| item.values_equivalent).count(),
+            revert_verified: items.iter().filter(|item| item.revert_verified).count(),
+            safe_to_retest: items.iter().filter(|item| item.safe_to_retest).count(),
+        },
+        diagnosis_summary: "Diagnostic mode captures raw hyprctl output and does not enable rows."
+            .to_string(),
+        items,
+    }
 }
 
 fn level1_parse_read(row: &LiveValidationRow) -> bool {
@@ -506,6 +740,19 @@ pub fn parse_hyprctl_value(output: &str) -> Option<String> {
     })
 }
 
+pub fn runtime_setting_name(official_setting: &str) -> String {
+    official_setting.replace('.', ":")
+}
+
+fn join_nonempty(left: &str, right: &str) -> String {
+    match (left.trim().is_empty(), right.trim().is_empty()) {
+        (true, true) => String::new(),
+        (true, false) => right.to_string(),
+        (false, true) => left.to_string(),
+        (false, false) => format!("{left}\n{right}"),
+    }
+}
+
 fn opposite_bool(value: &str) -> Option<String> {
     match value.trim().to_ascii_lowercase().as_str() {
         "1" | "true" | "yes" | "on" => Some("false".to_string()),
@@ -542,4 +789,8 @@ pub fn default_plan_path() -> PathBuf {
 
 pub fn default_results_path() -> PathBuf {
     PathBuf::from("data/reports/live-validation-results.v0.55.2.json")
+}
+
+pub fn default_diagnostics_path() -> PathBuf {
+    PathBuf::from("data/reports/live-validation-level3-diagnostics.v0.55.2.json")
 }
