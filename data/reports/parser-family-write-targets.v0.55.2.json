@@ -6,8 +6,8 @@
   "source": "data/reports/scalar-read-write-coverage.v0.55.2.json",
   "counts": {
     "totalRemainingParserNeededRows": 27,
-    "enabledRows": 10,
-    "blockedRows": 17
+    "enabledRows": 12,
+    "blockedRows": 15
   },
   "families": [
     {
@@ -116,12 +116,21 @@
       "parserFamily": "path/string requiring sanitization",
       "valueFamily": "path_shader_path",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_sanitized_path_preview",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "enabled-parser-backed-sanitized-path",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "path_value_accepts_absolute_relative_and_tilde_paths",
+        "path_value_rejects_command_like_or_multiline_values",
+        "sanitized_path_rows_can_be_staged_with_safe_paths",
+        "sanitized_path_rows_reject_command_like_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_sanitized_path_fixture",
+        "sanitized_path_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with sanitized path parser. No filesystem reads or execution."
     },
     {
       "rowId": "input.kb_file",
@@ -129,12 +138,21 @@
       "parserFamily": "path/string requiring sanitization",
       "valueFamily": "path_shader_path",
       "controlKind": "dropdown",
-      "implementationStatus": "pending",
-      "validationStatus": "pending",
-      "writeStatus": "parser-needed",
-      "testNames": [],
-      "blocker": "semantic parser needed before safe write: needs_sanitized_path_preview",
-      "notes": "Stage 0 audit target; not enabled yet."
+      "implementationStatus": "enabled-parser-backed-sanitized-path",
+      "validationStatus": "validated",
+      "writeStatus": "writable",
+      "testNames": [
+        "path_value_accepts_absolute_relative_and_tilde_paths",
+        "path_value_rejects_command_like_or_multiline_values",
+        "sanitized_path_rows_can_be_staged_with_safe_paths",
+        "sanitized_path_rows_reject_command_like_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_sanitized_path_fixture",
+        "sanitized_path_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with sanitized path parser. No filesystem reads or execution."
     },
     {
       "rowId": "input.accel_profile",

@@ -46,6 +46,9 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
     if row.value_kind == ScalarWriteValueKind::LineSafeString {
         return "JetBrains Mono";
     }
+    if row.value_kind == ScalarWriteValueKind::Path {
+        return "~/.config/hypr/example.conf";
+    }
     match row.row_id {
         "appearance.blur.enabled"
         | "appearance.shadow.enabled"
@@ -69,6 +72,9 @@ fn existing_value_for(row: &SafeWritableRow) -> &'static str {
     }
     if row.value_kind == ScalarWriteValueKind::LineSafeString {
         return "Sans";
+    }
+    if row.value_kind == ScalarWriteValueKind::Path {
+        return "./old";
     }
     match row.row_id {
         "appearance.blur.enabled"

@@ -298,6 +298,11 @@ fn next_proposed_value(setting_id: &str, current_value: &CurrentValueProjection)
                     "Sans".to_string()
                 }
             }),
+        Some(ScalarWriteValueKind::Path) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "~/.config/hypr/example.conf".to_string()),
         Some(ScalarWriteValueKind::StringLike)
         | Some(ScalarWriteValueKind::ComplexRaw)
         | Some(ScalarWriteValueKind::Unknown)

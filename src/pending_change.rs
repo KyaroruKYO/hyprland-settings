@@ -1,7 +1,9 @@
 use std::path::PathBuf;
 
 use crate::current_config::CurrentValueProjection;
-use crate::value::{sanitized_string::SanitizedStringValue, vector::Vec2Value};
+use crate::value::{
+    path_value::PathValue, sanitized_string::SanitizedStringValue, vector::Vec2Value,
+};
 use crate::write_classification::{
     is_safe_writable_setting, safe_writable_value_kind, ScalarWriteValueKind,
 };
@@ -106,6 +108,7 @@ fn validate_safe_writable_value(setting_id: &str, value: &str) -> PendingChangeV
         Some(ScalarWriteValueKind::Color) => validate_color_literal(value),
         Some(ScalarWriteValueKind::Vector2) => validate_vec2_value(value),
         Some(ScalarWriteValueKind::LineSafeString) => validate_line_safe_string(value),
+        Some(ScalarWriteValueKind::Path) => validate_path_value(value),
         Some(ScalarWriteValueKind::StringLike)
         | Some(ScalarWriteValueKind::ComplexRaw)
         | Some(ScalarWriteValueKind::Unknown)
@@ -204,6 +207,13 @@ fn validate_vec2_value(value: &str) -> PendingChangeValidation {
 
 fn validate_line_safe_string(value: &str) -> PendingChangeValidation {
     match SanitizedStringValue::parse(value) {
+        Ok(_) => PendingChangeValidation::Valid,
+        Err(error) => invalid(&error.to_string()),
+    }
+}
+
+fn validate_path_value(value: &str) -> PendingChangeValidation {
+    match PathValue::parse(value) {
         Ok(_) => PendingChangeValidation::Valid,
         Err(error) => invalid(&error.to_string()),
     }

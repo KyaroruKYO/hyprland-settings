@@ -10,8 +10,8 @@
     "totalTargets": 51,
     "validatorNeededTargetsEnabled": 14,
     "validatorNeededTargetsBlocked": 0,
-    "parserNeededTargetsEnabled": 20,
-    "parserNeededTargetsBlocked": 17
+    "parserNeededTargetsEnabled": 22,
+    "parserNeededTargetsBlocked": 15
   },
   "groups": [
     {
@@ -565,11 +565,20 @@
       "parserStatus": "needs_sanitized_path_preview",
       "riskClass": "path_or_shader_preview_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_sanitized_path_preview",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "path_value_sanitization_and_file_semantics_needed",
-      "notes": "Path-like rows are not writable until path sanitization and non-executing preview semantics are designed."
+      "decision": "enabled-parser-backed-sanitized-path",
+      "enabled": true,
+      "tests": [
+        "path_value_accepts_absolute_relative_and_tilde_paths",
+        "path_value_rejects_command_like_or_multiline_values",
+        "sanitized_path_rows_can_be_staged_with_safe_paths",
+        "sanitized_path_rows_reject_command_like_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_sanitized_path_fixture",
+        "sanitized_path_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with sanitized path parser. Does not read, execute, or expand target paths."
     },
     {
       "rowId": "input.kb_file",
@@ -581,11 +590,20 @@
       "parserStatus": "needs_sanitized_path_preview",
       "riskClass": "input_file_preview_risk",
       "currentWriteBlocker": "semantic parser needed before safe write: needs_sanitized_path_preview",
-      "decision": "manual-review-needed",
-      "enabled": false,
-      "tests": [],
-      "blocker": "path_value_sanitization_and_file_semantics_needed",
-      "notes": "Path-like rows are not writable until path sanitization and non-executing preview semantics are designed."
+      "decision": "enabled-parser-backed-sanitized-path",
+      "enabled": true,
+      "tests": [
+        "path_value_accepts_absolute_relative_and_tilde_paths",
+        "path_value_rejects_command_like_or_multiline_values",
+        "sanitized_path_rows_can_be_staged_with_safe_paths",
+        "sanitized_path_rows_reject_command_like_values",
+        "generic_scalar_writer_replaces_each_safe_writable_row",
+        "generic_scalar_writer_appends_missing_safe_writable_row",
+        "apply_flow_writes_sanitized_path_fixture",
+        "sanitized_path_detail_is_editable"
+      ],
+      "blocker": null,
+      "notes": "Enabled with sanitized path parser. Does not read, execute, or expand target paths."
     },
     {
       "rowId": "input.accel_profile",

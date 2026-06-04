@@ -31,6 +31,7 @@ pub enum ScalarWriteValueKind {
     Color,
     Vector2,
     LineSafeString,
+    Path,
     StringLike,
     ComplexRaw,
     Unknown,
@@ -102,6 +103,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Vector2,
     },
     SafeWritableRow {
+        row_id: "decoration.screen_shader",
+        official_setting: "decoration.screen_shader",
+        value_kind: ScalarWriteValueKind::Path,
+    },
+    SafeWritableRow {
         row_id: "appearance.gaps_in",
         official_setting: "general.gaps_in",
         value_kind: ScalarWriteValueKind::Number,
@@ -160,6 +166,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "input.accel_profile",
         official_setting: "input.accel_profile",
         value_kind: ScalarWriteValueKind::LineSafeString,
+    },
+    SafeWritableRow {
+        row_id: "input.kb_file",
+        official_setting: "input.kb_file",
+        value_kind: ScalarWriteValueKind::Path,
     },
     SafeWritableRow {
         row_id: "input.tablet.region_position",

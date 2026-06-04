@@ -8,8 +8,8 @@
     "totalScalarRows": 341,
     "readableRows": 341,
     "blockedReadRows": 0,
-    "writableRows": 38,
-    "blockedWriteRows": 303
+    "writableRows": 40,
+    "blockedWriteRows": 301
   },
   "rows": [
     {
@@ -1205,18 +1205,18 @@
       "officialSetting": "decoration.screen_shader",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "parser-needed",
-      "writeBlocker": "semantic parser needed before safe write: needs_sanitized_path_preview",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "path_shader_path",
       "controlKind": "dropdown",
       "parserStatus": "needs_sanitized_path_preview",
       "riskClass": "path_or_shader_preview_risk",
       "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Raw scalar read supported as unevaluated text by all-row parser projection test; semantic parser may still be needed before safe writing."
+      "notes": "Parser-backed sanitized path write enabled with typed path parser, validator, fixture write, invalid-value, and UI projection tests. No filesystem reads or execution are performed."
     },
     {
       "rowId": "animations.workspace_wraparound",
@@ -1331,18 +1331,18 @@
       "officialSetting": "input.kb_file",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "parser-needed",
-      "writeBlocker": "semantic parser needed before safe write: needs_sanitized_path_preview",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "path_shader_path",
       "controlKind": "dropdown",
       "parserStatus": "needs_sanitized_path_preview",
       "riskClass": "input_file_preview_risk",
       "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Raw scalar read supported as unevaluated text by all-row parser projection test; semantic parser may still be needed before safe writing."
+      "notes": "Parser-backed sanitized path write enabled with typed path parser, validator, fixture write, invalid-value, and UI projection tests. No filesystem reads or execution are performed."
     },
     {
       "rowId": "input.numlock_by_default",

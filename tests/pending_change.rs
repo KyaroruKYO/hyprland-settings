@@ -299,6 +299,41 @@ fn enum_custom_string_rows_reject_config_breaking_values() {
 }
 
 #[test]
+fn sanitized_path_rows_can_be_staged_with_safe_paths() {
+    let cases = [
+        ("decoration.screen_shader", "decoration.screen_shader"),
+        ("input.kb_file", "input.kb_file"),
+    ];
+
+    for (row_id, official_setting) in cases {
+        let config_key = official_setting.replace('.', ":");
+        let current = current_value_for(official_setting, &format!("{config_key} = ./old\n"));
+
+        let change = stage_pending_change(row_id, &current, "~/.config/hypr/example.conf");
+
+        assert_eq!(
+            change.validation,
+            PendingChangeValidation::Valid,
+            "{row_id} should accept a sanitized path string"
+        );
+        assert!(change.can_be_applied(), "{row_id} should be applicable");
+    }
+}
+
+#[test]
+fn sanitized_path_rows_reject_command_like_values() {
+    let current = CurrentValueProjection::not_configured();
+    for proposed in ["", "a\nb", "a # b", "`cmd`", "$(cmd)", "a;b", "a|b"] {
+        let change = stage_pending_change("decoration.screen_shader", &current, proposed);
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "decoration.screen_shader should reject {proposed:?}"
+        );
+        assert!(!change.can_be_applied());
+    }
+}
+
+#[test]
 fn pending_change_preserves_missing_old_value_for_absent_setting() {
     let current = CurrentValueProjection::not_configured();
 

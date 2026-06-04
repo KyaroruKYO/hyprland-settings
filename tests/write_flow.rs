@@ -254,6 +254,41 @@ fn apply_flow_writes_enum_custom_string_fixture() -> Result<()> {
 }
 
 #[test]
+fn apply_flow_writes_sanitized_path_fixture() -> Result<()> {
+    let root = temp_root("apply-path")?;
+    let source = root.join("hyprland.conf");
+    fs::write(&source, "decoration:screen_shader = ./old.frag\n")?;
+    let contents = fs::read_to_string(&source)?;
+    let snapshot = snapshot_for(&source, &contents);
+    let backup_manager = BackupManager::new(root.join("backups"));
+
+    let outcome = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery_for(source.clone()),
+        &snapshot,
+        "decoration.screen_shader",
+        "~/.config/hypr/example.frag",
+        &backup_manager,
+    )
+    .map_err(|failure| anyhow::anyhow!("{failure:?}"))?;
+
+    assert_eq!(outcome.setting_id, "decoration.screen_shader");
+    assert_eq!(outcome.target_path, source);
+    assert!(outcome.backup_path.exists());
+    assert_eq!(
+        outcome.verified_value.as_deref(),
+        Some("~/.config/hypr/example.frag")
+    );
+    assert_eq!(
+        fs::read_to_string(&outcome.target_path)?,
+        "decoration:screen_shader = ~/.config/hypr/example.frag\n"
+    );
+
+    fs::remove_dir_all(root)?;
+    Ok(())
+}
+
+#[test]
 fn apply_flow_blocks_missing_config_target() {
     let discovery = ConfigDiscovery {
         status: ConfigDiscoveryStatus::Missing,

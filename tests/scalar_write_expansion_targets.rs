@@ -32,8 +32,12 @@ fn parser_needed_target_research_decisions_are_recorded() -> Result<()> {
         decisions.get("enabled-parser-backed-line-safe-string"),
         Some(&4)
     );
+    assert_eq!(
+        decisions.get("enabled-parser-backed-sanitized-path"),
+        Some(&2)
+    );
     assert_eq!(decisions.get("enabled-parser-backed-vector"), Some(&6));
-    assert_eq!(decisions.get("manual-review-needed"), Some(&17));
+    assert_eq!(decisions.get("manual-review-needed"), Some(&15));
 
     Ok(())
 }
@@ -50,8 +54,8 @@ fn scalar_write_expansion_target_report_has_expected_counts() -> Result<()> {
     assert_eq!(report["counts"]["totalTargets"], 51);
     assert_eq!(report["counts"]["validatorNeededTargetsEnabled"], 14);
     assert_eq!(report["counts"]["validatorNeededTargetsBlocked"], 0);
-    assert_eq!(report["counts"]["parserNeededTargetsEnabled"], 20);
-    assert_eq!(report["counts"]["parserNeededTargetsBlocked"], 17);
+    assert_eq!(report["counts"]["parserNeededTargetsEnabled"], 22);
+    assert_eq!(report["counts"]["parserNeededTargetsBlocked"], 15);
     assert_eq!(targets.len(), 51);
 
     let validator_needed = targets
