@@ -110,6 +110,7 @@ pub struct LiveValidationDiagnosticItem {
     pub original_parsed_value: Option<String>,
     pub candidate_value: Option<String>,
     pub rollback_watchdog_armed: bool,
+    pub config_errors_before_raw: String,
     pub keyword_exit_success: bool,
     pub keyword_stdout: String,
     pub keyword_stderr: String,
@@ -117,13 +118,41 @@ pub struct LiveValidationDiagnosticItem {
     pub post_apply_parsed_value: Option<String>,
     pub values_equivalent: bool,
     pub config_errors_raw: String,
+    pub config_errors_after_raw: String,
     pub revert_keyword_exit_success: bool,
     pub post_revert_getoption_raw: String,
     pub post_revert_parsed_value: Option<String>,
+    pub config_errors_after_revert_raw: String,
     pub revert_verified: bool,
+    pub level3_proof_policy: String,
     pub diagnosis: String,
     pub recommended_harness_fix: String,
     pub safe_to_retest: bool,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Level3ProofStatus {
+    LiveObservableAccepted,
+    AcceptedUnobservable,
+    Rejected,
+    ConfigError,
+    RequiresReload,
+    NotLiveChangeable,
+    Unproven,
+}
+
+impl Level3ProofStatus {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::LiveObservableAccepted => "level3-live-observable-accepted",
+            Self::AcceptedUnobservable => "level3-accepted-unobservable",
+            Self::Rejected => "level3-rejected",
+            Self::ConfigError => "level3-config-error",
+            Self::RequiresReload => "level3-requires-reload",
+            Self::NotLiveChangeable => "level3-not-live-changeable",
+            Self::Unproven => "level3-unproven",
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -519,6 +548,7 @@ fn diagnose_one_row<R: HyprctlRunner, W: RollbackWatchdog>(
         original_parsed_value: None,
         candidate_value: None,
         rollback_watchdog_armed: false,
+        config_errors_before_raw: String::new(),
         keyword_exit_success: false,
         keyword_stdout: String::new(),
         keyword_stderr: String::new(),
@@ -526,14 +556,19 @@ fn diagnose_one_row<R: HyprctlRunner, W: RollbackWatchdog>(
         post_apply_parsed_value: None,
         values_equivalent: false,
         config_errors_raw: String::new(),
+        config_errors_after_raw: String::new(),
         revert_keyword_exit_success: false,
         post_revert_getoption_raw: String::new(),
         post_revert_parsed_value: None,
+        config_errors_after_revert_raw: String::new(),
         revert_verified: false,
+        level3_proof_policy: Level3ProofStatus::Unproven.as_str().to_string(),
         diagnosis: String::new(),
         recommended_harness_fix: String::new(),
         safe_to_retest: false,
     };
+
+    item.config_errors_before_raw = config_errors_text(runner.configerrors());
 
     let original_output = match runner.getoption(&runtime_setting) {
         Ok(output) if output.success => output,
@@ -587,13 +622,8 @@ fn diagnose_one_row<R: HyprctlRunner, W: RollbackWatchdog>(
         .as_deref()
         .is_some_and(|value| values_equivalent(value, &candidate));
 
-    if let Ok(output) = runner.configerrors() {
-        item.config_errors_raw = if output.stdout.trim().is_empty() {
-            output.stderr
-        } else {
-            output.stdout
-        };
-    }
+    item.config_errors_after_raw = config_errors_text(runner.configerrors());
+    item.config_errors_raw = item.config_errors_after_raw.clone();
 
     match runner.keyword(&runtime_setting, &original) {
         Ok(output) => {
@@ -610,6 +640,7 @@ fn diagnose_one_row<R: HyprctlRunner, W: RollbackWatchdog>(
         item.post_revert_getoption_raw = output.stdout.clone();
         item.post_revert_parsed_value = parse_hyprctl_value(&output.stdout);
     }
+    item.config_errors_after_revert_raw = config_errors_text(runner.configerrors());
     item.revert_verified = item.revert_keyword_exit_success
         && item
             .post_revert_parsed_value
@@ -620,15 +651,16 @@ fn diagnose_one_row<R: HyprctlRunner, W: RollbackWatchdog>(
         let _ = watchdog.disarm();
     }
     item.safe_to_retest = item.revert_verified;
-    item.diagnosis = if item.values_equivalent {
-        "accepted-value-detected".to_string()
-    } else if !item.keyword_exit_success {
-        "keyword-rejected-or-failed".to_string()
-    } else if item.post_apply_parsed_value == item.original_parsed_value {
-        "keyword-succeeded-but-getoption-stayed-original".to_string()
-    } else {
-        "keyword-succeeded-but-post-apply-value-did-not-match-candidate".to_string()
-    };
+    let proof_status = classify_level3_signal(
+        item.keyword_exit_success,
+        item.keyword_stderr.as_str(),
+        item.config_errors_after_raw.as_str(),
+        item.values_equivalent,
+        item.post_apply_parsed_value == item.original_parsed_value,
+        item.revert_verified,
+    );
+    item.level3_proof_policy = proof_status.as_str().to_string();
+    item.diagnosis = diagnosis_for_level3_status(proof_status).to_string();
     item.recommended_harness_fix = if item.values_equivalent {
         "no-level3-parser-fix-needed-for-this-row".to_string()
     } else if !item.keyword_exit_success {
@@ -638,6 +670,67 @@ fn diagnose_one_row<R: HyprctlRunner, W: RollbackWatchdog>(
     };
 
     item
+}
+
+pub fn classify_level3_signal(
+    keyword_success: bool,
+    keyword_stderr: &str,
+    config_errors_after: &str,
+    getoption_changed_to_candidate: bool,
+    getoption_stayed_original: bool,
+    revert_verified: bool,
+) -> Level3ProofStatus {
+    if !revert_verified {
+        return Level3ProofStatus::Unproven;
+    }
+    if has_config_errors(config_errors_after) {
+        return Level3ProofStatus::ConfigError;
+    }
+    if !keyword_success || !keyword_stderr.trim().is_empty() {
+        return Level3ProofStatus::Rejected;
+    }
+    if getoption_changed_to_candidate {
+        return Level3ProofStatus::LiveObservableAccepted;
+    }
+    if getoption_stayed_original {
+        return Level3ProofStatus::AcceptedUnobservable;
+    }
+    Level3ProofStatus::Unproven
+}
+
+fn diagnosis_for_level3_status(status: Level3ProofStatus) -> &'static str {
+    match status {
+        Level3ProofStatus::LiveObservableAccepted => "accepted-value-detected",
+        Level3ProofStatus::AcceptedUnobservable => {
+            "keyword-succeeded-without-configerrors-but-getoption-stayed-original"
+        }
+        Level3ProofStatus::Rejected => "keyword-rejected-or-failed",
+        Level3ProofStatus::ConfigError => "keyword-produced-configerrors",
+        Level3ProofStatus::RequiresReload => "setting-requires-reload",
+        Level3ProofStatus::NotLiveChangeable => "setting-not-live-changeable",
+        Level3ProofStatus::Unproven => "level3-unproven",
+    }
+}
+
+fn config_errors_text(result: Result<HyprctlOutput>) -> String {
+    match result {
+        Ok(output) => {
+            let stdout = output.stdout.trim();
+            let stderr = output.stderr.trim();
+            match (stdout.is_empty(), stderr.is_empty()) {
+                (true, true) => String::new(),
+                (false, true) => output.stdout,
+                (true, false) => output.stderr,
+                (false, false) => format!("{}\n{}", output.stdout, output.stderr),
+            }
+        }
+        Err(error) => error.to_string(),
+    }
+}
+
+fn has_config_errors(text: &str) -> bool {
+    let trimmed = text.trim();
+    !trimmed.is_empty() && trimmed != "[]"
 }
 
 fn diagnostics_from_items(items: Vec<LiveValidationDiagnosticItem>) -> LiveValidationDiagnostics {
@@ -723,13 +816,29 @@ pub fn parse_hyprctl_value(output: &str) -> Option<String> {
     let mut typed_values = BTreeMap::new();
     for line in output.lines() {
         let trimmed = line.trim();
-        for prefix in ["int:", "float:", "str:", "data:", "set:"] {
+        for prefix in [
+            "bool:",
+            "int:",
+            "float:",
+            "str:",
+            "data:",
+            "custom type:",
+            "set:",
+        ] {
             if let Some(value) = trimmed.strip_prefix(prefix) {
                 typed_values.insert(prefix, value.trim().to_string());
             }
         }
     }
-    for prefix in ["int:", "float:", "str:", "data:", "set:"] {
+    for prefix in [
+        "bool:",
+        "int:",
+        "float:",
+        "str:",
+        "data:",
+        "custom type:",
+        "set:",
+    ] {
         if let Some(value) = typed_values.get(prefix) {
             return Some(value.clone());
         }

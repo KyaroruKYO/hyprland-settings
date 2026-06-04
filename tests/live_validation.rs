@@ -1,8 +1,9 @@
 use anyhow::{anyhow, Result};
 use hyprland_settings::live_validation::{
-    known_plan_ids, parse_hyprctl_value, run_live_diagnostics, run_live_validation,
-    runtime_setting_name, DryRunRollbackWatchdog, HyprctlOutput, HyprctlRunner, LiveValidationPlan,
-    LiveValidationPlanCounts, LiveValidationRow, RollbackWatchdog,
+    classify_level3_signal, known_plan_ids, parse_hyprctl_value, run_live_diagnostics,
+    run_live_validation, runtime_setting_name, DryRunRollbackWatchdog, HyprctlOutput,
+    HyprctlRunner, Level3ProofStatus, LiveValidationPlan, LiveValidationPlanCounts,
+    LiveValidationRow, RollbackWatchdog,
 };
 
 fn one_row_plan() -> LiveValidationPlan {
@@ -203,6 +204,10 @@ fn live_validation_logs_rejected_candidate_and_still_reverts() {
 
 #[test]
 fn hyprctl_value_parser_extracts_typed_values() {
+    assert_eq!(
+        parse_hyprctl_value("bool: true\nset: true\n").as_deref(),
+        Some("true")
+    );
     assert_eq!(parse_hyprctl_value("int: 1\n").as_deref(), Some("1"));
     assert_eq!(parse_hyprctl_value("float: 1.0\n").as_deref(), Some("1.0"));
     assert_eq!(
@@ -213,6 +218,10 @@ fn hyprctl_value_parser_extracts_typed_values() {
     assert_eq!(
         parse_hyprctl_value("option type: custom type\nset: true\n").as_deref(),
         Some("true")
+    );
+    assert_eq!(
+        parse_hyprctl_value("custom type: rgb(ff00ff)\nset: true\n").as_deref(),
+        Some("rgb(ff00ff)")
     );
 }
 
@@ -309,9 +318,45 @@ fn diagnostic_mode_records_rejected_when_getoption_stays_original() {
     assert_eq!(diagnostics.counts.accepted, 0);
     assert_eq!(
         diagnostics.items[0].diagnosis,
-        "keyword-succeeded-but-getoption-stayed-original"
+        "keyword-succeeded-without-configerrors-but-getoption-stayed-original"
+    );
+    assert_eq!(
+        diagnostics.items[0].level3_proof_policy,
+        "level3-accepted-unobservable"
     );
     assert!(diagnostics.items[0].revert_verified);
+}
+
+#[test]
+fn level3_policy_classifies_runtime_signals() {
+    assert_eq!(
+        classify_level3_signal(true, "", "", true, false, true),
+        Level3ProofStatus::LiveObservableAccepted
+    );
+    assert_eq!(
+        classify_level3_signal(true, "", "", false, true, true),
+        Level3ProofStatus::AcceptedUnobservable
+    );
+    assert_eq!(
+        classify_level3_signal(false, "bad value", "", false, false, true),
+        Level3ProofStatus::Rejected
+    );
+    assert_eq!(
+        classify_level3_signal(true, "", "some config error", true, false, true),
+        Level3ProofStatus::ConfigError
+    );
+    assert_eq!(
+        classify_level3_signal(true, "", "", true, false, false),
+        Level3ProofStatus::Unproven
+    );
+    assert_eq!(
+        Level3ProofStatus::RequiresReload.as_str(),
+        "level3-requires-reload"
+    );
+    assert_eq!(
+        Level3ProofStatus::NotLiveChangeable.as_str(),
+        "level3-not-live-changeable"
+    );
 }
 
 #[test]
