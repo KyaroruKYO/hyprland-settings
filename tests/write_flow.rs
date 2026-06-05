@@ -12,8 +12,9 @@ use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueSourceStatus};
 use hyprland_settings::pending_change::ACTIVE_PENDING_CHANGE_SETTING;
 use hyprland_settings::write_classification::{
-    finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, MONITOR_OUTPUT_ROWS,
-    REMAINING_105_FINITE_CHOICE_ROWS, SAFE_WRITABLE_ROWS, SOURCE_BACKED_INPUT_ROWS,
+    finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, ECOSYSTEM_HIGH_RISK_WRITABLE_ROWS,
+    MONITOR_OUTPUT_ROWS, REMAINING_105_FINITE_CHOICE_ROWS, SAFE_WRITABLE_ROWS,
+    SOURCE_BACKED_INPUT_ROWS,
 };
 use hyprland_settings::write_flow::{
     apply_setting_change_with_backup_manager, edit_projection_for_setting,
@@ -72,6 +73,30 @@ fn edit_projection_allows_only_safe_writable_rows() {
         blocked.disabled_reason.as_deref(),
         Some("not write-allowlisted")
     );
+}
+
+#[test]
+fn ecosystem_high_risk_rows_project_dead_man_review_warning() {
+    for row_id in ECOSYSTEM_HIGH_RISK_WRITABLE_ROWS {
+        let path = PathBuf::from(format!("/tmp/{row_id}.conf"));
+        let snapshot = snapshot_for(&path, &format!("{} = false\n", row_id.replace('.', ":")));
+        let current = snapshot.value_for(row_id);
+        let projection = pending_projection_for_value(row_id, &current, "true");
+        let summary = projection.review_summary.join("\n");
+        assert!(projection.can_review);
+        assert!(
+            summary.contains("ecosystem-permission-policy"),
+            "{row_id} should show the ecosystem recovery bucket"
+        );
+        assert!(
+            summary.contains("dead-man"),
+            "{row_id} should show the dead-man approval gate"
+        );
+        assert!(
+            summary.contains("watchdog"),
+            "{row_id} should show the watchdog requirement"
+        );
+    }
 }
 
 #[test]

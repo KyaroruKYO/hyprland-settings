@@ -1,6 +1,10 @@
 use gtk4::glib;
 
 fn main() -> glib::ExitCode {
+    if let Err(error) = maybe_run_high_risk_watchdog_cli() {
+        eprintln!("{error:#}");
+        return glib::ExitCode::FAILURE;
+    }
     if let Err(error) = maybe_run_live_validation_cli() {
         eprintln!("{error:#}");
         return glib::ExitCode::FAILURE;
@@ -10,6 +14,97 @@ fn main() -> glib::ExitCode {
         return glib::ExitCode::FAILURE;
     }
     hyprland_settings::ui::app::run()
+}
+
+fn maybe_run_high_risk_watchdog_cli() -> anyhow::Result<()> {
+    let args = std::env::args().collect::<Vec<_>>();
+    if args.get(1).map(String::as_str) != Some("high-risk-watchdog") {
+        return Ok(());
+    }
+
+    let mut plan_path: Option<std::path::PathBuf> = None;
+    let mut result_path: Option<std::path::PathBuf> = None;
+    let mut action: Option<String> = None;
+    let mut token: Option<String> = None;
+    let mut backup_root: Option<std::path::PathBuf> = None;
+    let mut now = 0_u64;
+    let mut index = 2;
+    while index < args.len() {
+        match args[index].as_str() {
+            "--plan" => {
+                index += 1;
+                plan_path = Some(
+                    args.get(index)
+                        .ok_or_else(|| anyhow::anyhow!("--plan needs a path"))?
+                        .into(),
+                );
+            }
+            "--result" => {
+                index += 1;
+                result_path = Some(
+                    args.get(index)
+                        .ok_or_else(|| anyhow::anyhow!("--result needs a path"))?
+                        .into(),
+                );
+            }
+            "--backup-root" => {
+                index += 1;
+                backup_root = Some(
+                    args.get(index)
+                        .ok_or_else(|| anyhow::anyhow!("--backup-root needs a path"))?
+                        .into(),
+                );
+            }
+            "--action" => {
+                index += 1;
+                action = Some(
+                    args.get(index)
+                        .ok_or_else(|| anyhow::anyhow!("--action needs confirm or expire"))?
+                        .to_string(),
+                );
+            }
+            "--token" => {
+                index += 1;
+                token = Some(
+                    args.get(index)
+                        .ok_or_else(|| anyhow::anyhow!("--token needs a value"))?
+                        .to_string(),
+                );
+            }
+            "--now" => {
+                index += 1;
+                now = args
+                    .get(index)
+                    .ok_or_else(|| anyhow::anyhow!("--now needs a unix timestamp"))?
+                    .parse::<u64>()?;
+            }
+            other => anyhow::bail!("unknown high-risk-watchdog argument: {other}"),
+        }
+        index += 1;
+    }
+
+    let plan_path = plan_path.ok_or_else(|| anyhow::anyhow!("--plan is required"))?;
+    let result_path = result_path.ok_or_else(|| anyhow::anyhow!("--result is required"))?;
+    let backup_root = backup_root.ok_or_else(|| anyhow::anyhow!("--backup-root is required"))?;
+    let action = action.ok_or_else(|| anyhow::anyhow!("--action is required"))?;
+    let mut plan = hyprland_settings::high_risk_recovery::load_watchdog_plan(&plan_path)?;
+    plan.result_log_path = result_path;
+    let planner =
+        hyprland_settings::high_risk_recovery::HighRiskRecoveryPlanner::new(backup_root, now);
+    let result = match action.as_str() {
+        "confirm" => {
+            let token = token.ok_or_else(|| anyhow::anyhow!("--token is required for confirm"))?;
+            planner.confirm_watchdog(&plan, &token)?
+        }
+        "expire" => planner.expire_watchdog_and_restore(&plan)?,
+        other => anyhow::bail!("unsupported high-risk watchdog action: {other}"),
+    };
+    println!(
+        "high-risk watchdog {:?} wrote {}",
+        result.recovery.status,
+        result.result_log_path.display()
+    );
+    std::process::exit(0);
 }
 
 fn maybe_run_config_persistence_cli() -> anyhow::Result<()> {

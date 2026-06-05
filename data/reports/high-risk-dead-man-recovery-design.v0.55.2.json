@@ -10,10 +10,10 @@
   ],
   "counts": {
     "rows": 72,
-    "rowsEnabled": 0,
-    "finalWritableRows": 269,
-    "finalBlockedRows": 72,
-    "highRiskRowsStillBlocked": 72,
+    "rowsEnabled": 3,
+    "finalWritableRows": 272,
+    "finalBlockedRows": 69,
+    "highRiskRowsStillBlocked": 69,
     "byRiskClass": {
       "cursor_input_risk": 22,
       "debug_crash_risk": 22,
@@ -25,7 +25,8 @@
       "debug-crash-recovery": 22,
       "display-render-recovery": 25,
       "ecosystem-permission-policy": 3
-    }
+    },
+    "ecosystemPermissionRowsEnabled": 3
   },
   "deadManModel": {
     "requiredFields": [
@@ -1072,7 +1073,7 @@
     {
       "rowId": "ecosystem.no_update_news",
       "officialSetting": "ecosystem.no_update_news",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "riskClass": "ecosystem_permission_risk",
       "recoveryBucket": "ecosystem-permission-policy",
       "recoveryStrategy": "advanced policy confirmation plus backup restore; dead-man watchdog remains required for consistent high-risk handling",
@@ -1087,15 +1088,16 @@
       "mustNotDependOnMouseInput": false,
       "watchdogDryRunStatus": "passed",
       "restoreVerificationRequired": true,
-      "nextRequiredWork": "explicit advanced policy approval and restore proof required before ecosystem/permission rows can be enabled",
-      "safeWriteSupported": false,
-      "rowsEnabledByThisSprint": false,
-      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved."
+      "nextRequiredWork": "Enabled in ecosystem/permission first-bucket sprint; continue to keep display/render, cursor/input, and debug/crash rows blocked.",
+      "safeWriteSupported": true,
+      "rowsEnabledByThisSprint": true,
+      "notes": "Enabled only for ecosystem/permission bucket after production-capable watchdog primitives, temp config proof, validator proof, and fixture write/reread tests.",
+      "watchdogProductionPrimitiveStatus": "passed-temp-proof"
     },
     {
       "rowId": "ecosystem.no_donation_nag",
       "officialSetting": "ecosystem.no_donation_nag",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "riskClass": "ecosystem_permission_risk",
       "recoveryBucket": "ecosystem-permission-policy",
       "recoveryStrategy": "advanced policy confirmation plus backup restore; dead-man watchdog remains required for consistent high-risk handling",
@@ -1110,15 +1112,16 @@
       "mustNotDependOnMouseInput": false,
       "watchdogDryRunStatus": "passed",
       "restoreVerificationRequired": true,
-      "nextRequiredWork": "explicit advanced policy approval and restore proof required before ecosystem/permission rows can be enabled",
-      "safeWriteSupported": false,
-      "rowsEnabledByThisSprint": false,
-      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved."
+      "nextRequiredWork": "Enabled in ecosystem/permission first-bucket sprint; continue to keep display/render, cursor/input, and debug/crash rows blocked.",
+      "safeWriteSupported": true,
+      "rowsEnabledByThisSprint": true,
+      "notes": "Enabled only for ecosystem/permission bucket after production-capable watchdog primitives, temp config proof, validator proof, and fixture write/reread tests.",
+      "watchdogProductionPrimitiveStatus": "passed-temp-proof"
     },
     {
       "rowId": "ecosystem.enforce_permissions",
       "officialSetting": "ecosystem.enforce_permissions",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "riskClass": "ecosystem_permission_risk",
       "recoveryBucket": "ecosystem-permission-policy",
       "recoveryStrategy": "advanced policy confirmation plus backup restore; dead-man watchdog remains required for consistent high-risk handling",
@@ -1133,10 +1136,11 @@
       "mustNotDependOnMouseInput": false,
       "watchdogDryRunStatus": "passed",
       "restoreVerificationRequired": true,
-      "nextRequiredWork": "explicit advanced policy approval and restore proof required before ecosystem/permission rows can be enabled",
-      "safeWriteSupported": false,
-      "rowsEnabledByThisSprint": false,
-      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved."
+      "nextRequiredWork": "Enabled in ecosystem/permission first-bucket sprint; continue to keep display/render, cursor/input, and debug/crash rows blocked.",
+      "safeWriteSupported": true,
+      "rowsEnabledByThisSprint": true,
+      "notes": "Enabled only for ecosystem/permission bucket after production-capable watchdog primitives, temp config proof, validator proof, and fixture write/reread tests.",
+      "watchdogProductionPrimitiveStatus": "passed-temp-proof"
     },
     {
       "rowId": "debug.overlay",
@@ -1715,9 +1719,9 @@
     }
   ],
   "invariants": {
-    "noRowsEnabled": true,
-    "writeAllowlistChanged": false,
-    "productionBehaviorChanged": false,
+    "noRowsEnabled": false,
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true,
     "activeConfigModified": false,
     "activeRuntimeModified": false,
     "reloadRun": false,

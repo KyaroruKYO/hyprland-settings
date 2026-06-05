@@ -1,0 +1,112 @@
+{
+  "artifactKind": "high-risk-ecosystem-bucket-proof",
+  "schemaVersion": 1,
+  "counts": {
+    "rows": 3,
+    "parserReadPassed": 3,
+    "validatorPassed": 3,
+    "invalidRejectionPassed": 3,
+    "fixtureReplacePassed": 3,
+    "fixtureAppendPassed": 3,
+    "hyprlandVerifyConfigPassed": 3,
+    "watchdogProofPassed": 3,
+    "safeToEnable": 3,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false
+  },
+  "rows": [
+    {
+      "rowId": "ecosystem.enforce_permissions",
+      "officialSetting": "ecosystem.enforce_permissions",
+      "bucket": "ecosystem-permission-policy",
+      "validatorType": "boolean",
+      "validValues": [
+        "true",
+        "false"
+      ],
+      "invalidValuesRejected": [
+        "maybe"
+      ],
+      "parserReadPassed": true,
+      "validatorPassed": true,
+      "invalidRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigPassed": true,
+      "hyprlandVerifyConfigValuesPassed": [
+        "true",
+        "false"
+      ],
+      "watchdogPlanPersistedBeforeMutation": true,
+      "watchdogConfirmPathPassed": true,
+      "watchdogTimeoutRestorePassed": true,
+      "watchdogRestoreFailureRecorded": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "safeToEnable": true
+    },
+    {
+      "rowId": "ecosystem.no_donation_nag",
+      "officialSetting": "ecosystem.no_donation_nag",
+      "bucket": "ecosystem-permission-policy",
+      "validatorType": "boolean",
+      "validValues": [
+        "true",
+        "false"
+      ],
+      "invalidValuesRejected": [
+        "maybe"
+      ],
+      "parserReadPassed": true,
+      "validatorPassed": true,
+      "invalidRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigPassed": true,
+      "hyprlandVerifyConfigValuesPassed": [
+        "true",
+        "false"
+      ],
+      "watchdogPlanPersistedBeforeMutation": true,
+      "watchdogConfirmPathPassed": true,
+      "watchdogTimeoutRestorePassed": true,
+      "watchdogRestoreFailureRecorded": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "safeToEnable": true
+    },
+    {
+      "rowId": "ecosystem.no_update_news",
+      "officialSetting": "ecosystem.no_update_news",
+      "bucket": "ecosystem-permission-policy",
+      "validatorType": "boolean",
+      "validValues": [
+        "true",
+        "false"
+      ],
+      "invalidValuesRejected": [
+        "maybe"
+      ],
+      "parserReadPassed": true,
+      "validatorPassed": true,
+      "invalidRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigPassed": true,
+      "hyprlandVerifyConfigValuesPassed": [
+        "true",
+        "false"
+      ],
+      "watchdogPlanPersistedBeforeMutation": true,
+      "watchdogConfirmPathPassed": true,
+      "watchdogTimeoutRestorePassed": true,
+      "watchdogRestoreFailureRecorded": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "safeToEnable": true
+    }
+  ]
+}

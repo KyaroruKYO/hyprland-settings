@@ -211,7 +211,7 @@ fn session_runtime_reports_enable_only_the_16_target_rows() -> Result<()> {
         assert!(is_safe_writable_setting(row_id), "{row_id}");
     }
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 269);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 272);
     assert!(!is_safe_writable_setting("xwayland.enabled"));
 
     Ok(())

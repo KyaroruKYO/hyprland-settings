@@ -56,6 +56,29 @@ pub struct HighRiskRecoveryResult {
     pub error: Option<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum HighRiskWatchdogMode {
+    DryRunTempOnly,
+    ProductionPlannedDisabled,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct HighRiskWatchdogPlan {
+    pub mode: HighRiskWatchdogMode,
+    pub plan_path: PathBuf,
+    pub result_log_path: PathBuf,
+    pub recovery: HighRiskRecoveryPlan,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct HighRiskWatchdogResult {
+    pub mode: HighRiskWatchdogMode,
+    pub plan_path: PathBuf,
+    pub result_log_path: PathBuf,
+    pub recovery: HighRiskRecoveryResult,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct HighRiskRecoveryPlanner {
     pub backup_root: PathBuf,
@@ -112,6 +135,60 @@ impl HighRiskRecoveryPlanner {
         Ok((plan, result))
     }
 
+    pub fn arm_watchdog_for_temp_config(
+        &self,
+        target_config_path: impl AsRef<Path>,
+        proposed_contents: &str,
+        timeout_seconds: u64,
+        plan_path: impl AsRef<Path>,
+        result_log_path: impl AsRef<Path>,
+    ) -> Result<HighRiskWatchdogPlan> {
+        let target_config_path = target_config_path.as_ref();
+        ensure_dry_run_target_path(target_config_path)?;
+        let plan_path = plan_path.as_ref();
+        let result_log_path = result_log_path.as_ref();
+        ensure_dry_run_target_path(plan_path)?;
+        ensure_dry_run_target_path(result_log_path)?;
+        if timeout_seconds == 0 {
+            return Err(anyhow!("timeout_seconds must be greater than zero"));
+        }
+
+        let previous_known_good_value =
+            fs::read_to_string(target_config_path).with_context(|| {
+                format!(
+                    "failed to read dry-run target {}",
+                    target_config_path.display()
+                )
+            })?;
+        let backup_manager = BackupManager::new(&self.backup_root);
+        let backup = backup_manager.create_backup(target_config_path)?;
+        let recovery_session_id = unique_id("high-risk-watchdog")?;
+        let confirmation_token = unique_id("confirm")?;
+        let recovery = HighRiskRecoveryPlan {
+            recovery_session_id,
+            target_config_path: target_config_path.to_path_buf(),
+            backup_path: backup.backup_path,
+            proposed_mutation: proposed_contents.to_owned(),
+            previous_known_good_value,
+            timeout_seconds,
+            confirmation_token,
+            confirmation_deadline_unix_seconds: self.now_unix_seconds + timeout_seconds,
+            recovery_action: "restore-backup-file-and-reread".to_owned(),
+            cleanup_action: "retain-backup-and-result-log-for-audit".to_owned(),
+            status: RecoveryStatus::Armed,
+        };
+        let watchdog = HighRiskWatchdogPlan {
+            mode: HighRiskWatchdogMode::DryRunTempOnly,
+            plan_path: plan_path.to_path_buf(),
+            result_log_path: result_log_path.to_path_buf(),
+            recovery,
+        };
+
+        persist_watchdog_plan(plan_path, &watchdog)?;
+        atomic_write(target_config_path, proposed_contents.as_bytes())?;
+        Ok(watchdog)
+    }
+
     pub fn confirm(
         &self,
         mut plan: HighRiskRecoveryPlan,
@@ -147,6 +224,85 @@ impl HighRiskRecoveryPlanner {
                 &format!("restore verification failed; got {restored:?}"),
             ),
             Err(error) => failed_result(plan, &format!("restore reread failed: {error:#}")),
+        }
+    }
+
+    pub fn confirm_watchdog(
+        &self,
+        plan: &HighRiskWatchdogPlan,
+        confirmation_token: &str,
+    ) -> Result<HighRiskWatchdogResult> {
+        ensure_supported_watchdog_mode(plan.mode)?;
+        let recovery = self.confirm(plan.recovery.clone(), confirmation_token);
+        let result = HighRiskWatchdogResult {
+            mode: plan.mode,
+            plan_path: plan.plan_path.clone(),
+            result_log_path: plan.result_log_path.clone(),
+            recovery,
+        };
+        write_watchdog_result(&plan.result_log_path, &result)?;
+        Ok(result)
+    }
+
+    pub fn expire_watchdog_and_restore(
+        &self,
+        plan: &HighRiskWatchdogPlan,
+    ) -> Result<HighRiskWatchdogResult> {
+        ensure_supported_watchdog_mode(plan.mode)?;
+        let recovery = self.expire_and_recover(&plan.recovery);
+        let result = HighRiskWatchdogResult {
+            mode: plan.mode,
+            plan_path: plan.plan_path.clone(),
+            result_log_path: plan.result_log_path.clone(),
+            recovery,
+        };
+        write_watchdog_result(&plan.result_log_path, &result)?;
+        Ok(result)
+    }
+}
+
+pub fn persist_watchdog_plan(path: impl AsRef<Path>, plan: &HighRiskWatchdogPlan) -> Result<()> {
+    let path = path.as_ref();
+    ensure_dry_run_target_path(path)?;
+    let bytes = serde_json::to_vec_pretty(plan)?;
+    atomic_write(path, &bytes)
+}
+
+pub fn load_watchdog_plan(path: impl AsRef<Path>) -> Result<HighRiskWatchdogPlan> {
+    let path = path.as_ref();
+    ensure_dry_run_target_path(path)?;
+    let bytes =
+        fs::read(path).with_context(|| format!("failed to read plan {}", path.display()))?;
+    let plan: HighRiskWatchdogPlan = serde_json::from_slice(&bytes)
+        .with_context(|| format!("failed to parse plan {}", path.display()))?;
+    ensure_supported_watchdog_mode(plan.mode)?;
+    Ok(plan)
+}
+
+pub fn write_watchdog_result(
+    path: impl AsRef<Path>,
+    result: &HighRiskWatchdogResult,
+) -> Result<()> {
+    let path = path.as_ref();
+    ensure_dry_run_target_path(path)?;
+    let bytes = serde_json::to_vec_pretty(result)?;
+    atomic_write(path, &bytes)
+}
+
+pub fn load_watchdog_result(path: impl AsRef<Path>) -> Result<HighRiskWatchdogResult> {
+    let path = path.as_ref();
+    ensure_dry_run_target_path(path)?;
+    let bytes =
+        fs::read(path).with_context(|| format!("failed to read result {}", path.display()))?;
+    Ok(serde_json::from_slice(&bytes)
+        .with_context(|| format!("failed to parse result {}", path.display()))?)
+}
+
+fn ensure_supported_watchdog_mode(mode: HighRiskWatchdogMode) -> Result<()> {
+    match mode {
+        HighRiskWatchdogMode::DryRunTempOnly => Ok(()),
+        HighRiskWatchdogMode::ProductionPlannedDisabled => {
+            Err(anyhow!("production watchdog mode is planned but disabled"))
         }
     }
 }

@@ -113,6 +113,12 @@ pub const SESSION_RUNTIME_SENSITIVE_ROWS: &[&str] = &[
     "scrolling.fullscreen_on_one_column",
 ];
 
+pub const ECOSYSTEM_HIGH_RISK_WRITABLE_ROWS: &[&str] = &[
+    "ecosystem.no_update_news",
+    "ecosystem.no_donation_nag",
+    "ecosystem.enforce_permissions",
+];
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SessionRuntimeWritePolicy {
     pub scope: &'static str,
@@ -121,6 +127,14 @@ pub struct SessionRuntimeWritePolicy {
     pub recovery_strategy: &'static str,
     pub approval_gate: &'static str,
     pub runtime_effect: &'static str,
+    pub review_warning: &'static str,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct HighRiskWritePolicy {
+    pub recovery_bucket: &'static str,
+    pub approval_gate: &'static str,
+    pub watchdog_requirement: &'static str,
     pub review_warning: &'static str,
 }
 
@@ -1944,6 +1958,21 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         official_setting: "scrolling.fullscreen_on_one_column",
         value_kind: ScalarWriteValueKind::Boolean,
     },
+    SafeWritableRow {
+        row_id: "ecosystem.no_update_news",
+        official_setting: "ecosystem.no_update_news",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "ecosystem.no_donation_nag",
+        official_setting: "ecosystem.no_donation_nag",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "ecosystem.enforce_permissions",
+        official_setting: "ecosystem.enforce_permissions",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
 ];
 
 pub fn classify_inventory_entry(entry: &InventoryEntry) -> ScalarWriteClassification {
@@ -2080,6 +2109,18 @@ pub fn session_runtime_write_policy(row_id: &str) -> Option<SessionRuntimeWriteP
         }
         _ => None,
     }
+}
+
+pub fn high_risk_write_policy(row_id: &str) -> Option<HighRiskWritePolicy> {
+    if !ECOSYSTEM_HIGH_RISK_WRITABLE_ROWS.contains(&row_id) {
+        return None;
+    }
+    Some(HighRiskWritePolicy {
+        recovery_bucket: "ecosystem-permission-policy",
+        approval_gate: "advanced-opt-in-plus-policy-confirmation-plus-independent-dead-man-confirm-or-revert",
+        watchdog_requirement: "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+        review_warning: "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+    })
 }
 
 pub fn is_verified_finite_choice_value(row_id: &str, value: &str) -> bool {

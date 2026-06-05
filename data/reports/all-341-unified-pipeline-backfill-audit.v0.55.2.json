@@ -4,8 +4,8 @@
   "generatedAt": "2026-06-05T19:34:46.000449Z",
   "counts": {
     "totalRows": 341,
-    "writableRows": 269,
-    "blockedRows": 72,
+    "writableRows": 272,
+    "blockedRows": 69,
     "metadataGapRows": 0,
     "behaviorMismatchRows": 0,
     "rowsNeedingFutureCleanup": 0,
@@ -3352,38 +3352,41 @@
     {
       "rowId": "ecosystem.no_update_news",
       "officialSetting": "ecosystem.no_update_news",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "pipelineStatus": "complete",
       "missingMetadataFields": [],
       "behaviorPipelineMismatch": [],
-      "productionBehaviorChanged": false,
-      "writeAllowlistChanged": false,
+      "productionBehaviorChanged": true,
+      "writeAllowlistChanged": true,
       "needsFutureCleanup": false,
-      "futureCleanupReason": null
+      "futureCleanupReason": null,
+      "mismatches": []
     },
     {
       "rowId": "ecosystem.no_donation_nag",
       "officialSetting": "ecosystem.no_donation_nag",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "pipelineStatus": "complete",
       "missingMetadataFields": [],
       "behaviorPipelineMismatch": [],
-      "productionBehaviorChanged": false,
-      "writeAllowlistChanged": false,
+      "productionBehaviorChanged": true,
+      "writeAllowlistChanged": true,
       "needsFutureCleanup": false,
-      "futureCleanupReason": null
+      "futureCleanupReason": null,
+      "mismatches": []
     },
     {
       "rowId": "ecosystem.enforce_permissions",
       "officialSetting": "ecosystem.enforce_permissions",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "pipelineStatus": "complete",
       "missingMetadataFields": [],
       "behaviorPipelineMismatch": [],
-      "productionBehaviorChanged": false,
-      "writeAllowlistChanged": false,
+      "productionBehaviorChanged": true,
+      "writeAllowlistChanged": true,
       "needsFutureCleanup": false,
-      "futureCleanupReason": null
+      "futureCleanupReason": null,
+      "mismatches": []
     },
     {
       "rowId": "debug.overlay",

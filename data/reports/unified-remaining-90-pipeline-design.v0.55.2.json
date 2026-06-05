@@ -11,11 +11,11 @@
   ],
   "counts": {
     "rows": 90,
-    "writableRowsRemain": 269,
-    "blockedRowsRemain": 72,
+    "writableRowsRemain": 272,
+    "blockedRowsRemain": 69,
     "customStringSemanticRows": 0,
     "sessionRuntimeSensitiveRows": 0,
-    "highRiskRows": 72,
+    "highRiskRows": 69,
     "byScope": {
       "persistent-config-only": 16,
       "persistent-needs-reload": 4,
@@ -1595,9 +1595,14 @@
       "verifyConfigRole": "parser-proof-not-safety-proof",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "high-risk",
-      "currentBlocker": "report-only/high-risk row: ecosystem_permission_risk",
-      "nextRequiredWork": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved."
+      "currentWriteStatus": "writable",
+      "currentBlocker": null,
+      "nextRequiredWork": "Enabled in ecosystem high-risk first bucket sprint.",
+      "finalWriteStatus": "writable",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "blocker": null
     },
     {
       "rowId": "ecosystem.no_donation_nag",
@@ -1620,9 +1625,14 @@
       "verifyConfigRole": "parser-proof-not-safety-proof",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "high-risk",
-      "currentBlocker": "report-only/high-risk row: ecosystem_permission_risk",
-      "nextRequiredWork": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved."
+      "currentWriteStatus": "writable",
+      "currentBlocker": null,
+      "nextRequiredWork": "Enabled in ecosystem high-risk first bucket sprint.",
+      "finalWriteStatus": "writable",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "blocker": null
     },
     {
       "rowId": "ecosystem.enforce_permissions",
@@ -1645,9 +1655,14 @@
       "verifyConfigRole": "parser-proof-not-safety-proof",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "high-risk",
-      "currentBlocker": "report-only/high-risk row: ecosystem_permission_risk",
-      "nextRequiredWork": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved."
+      "currentWriteStatus": "writable",
+      "currentBlocker": null,
+      "nextRequiredWork": "Enabled in ecosystem high-risk first bucket sprint.",
+      "finalWriteStatus": "writable",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "blocker": null
     },
     {
       "rowId": "debug.overlay",

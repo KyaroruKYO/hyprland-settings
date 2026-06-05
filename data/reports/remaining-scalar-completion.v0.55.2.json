@@ -10,10 +10,10 @@
   ],
   "counts": {
     "startingWritableRows": 94,
-    "finalWritableRows": 269,
+    "finalWritableRows": 272,
     "startingBlockedRows": 247,
-    "finalBlockedRows": 72,
-    "enabledRows": 175,
+    "finalBlockedRows": 69,
+    "enabledRows": 178,
     "enabledByBatch": {
       "batch-b-likely-safe-numerics": 33,
       "batch-c-likely-safe-enums": 7,
@@ -22,7 +22,7 @@
       "batch-g-session-runtime-sensitive": 16
     },
     "remainingBlockedByBatch": {
-      "high-risk": 72
+      "high-risk": 69
     },
     "remainingBlockedByReason": {
       "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.": 72
@@ -6628,11 +6628,12 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "high-risk",
-      "enabled": false,
-      "blocker": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
       "nextRequiredProof": "Dedicated policy review and clear user-facing explanation before any write support.",
-      "notes": "High-risk rows remain blocked by policy."
+      "notes": "High-risk rows remain blocked by policy.",
+      "safeToEnable": true
     },
     {
       "rowId": "ecosystem.no_donation_nag",
@@ -6655,11 +6656,12 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "high-risk",
-      "enabled": false,
-      "blocker": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
       "nextRequiredProof": "Dedicated policy review and clear user-facing explanation before any write support.",
-      "notes": "High-risk rows remain blocked by policy."
+      "notes": "High-risk rows remain blocked by policy.",
+      "safeToEnable": true
     },
     {
       "rowId": "ecosystem.enforce_permissions",
@@ -6682,11 +6684,12 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "high-risk",
-      "enabled": false,
-      "blocker": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
       "nextRequiredProof": "Dedicated policy review and clear user-facing explanation before any write support.",
-      "notes": "High-risk rows remain blocked by policy."
+      "notes": "High-risk rows remain blocked by policy.",
+      "safeToEnable": true
     },
     {
       "rowId": "debug.overlay",

@@ -1,0 +1,31 @@
+{
+  "artifactKind": "production-high-risk-watchdog",
+  "schemaVersion": 1,
+  "hyprlandVersion": "0.55.2",
+  "counts": {
+    "watchdogPrimitivesImplemented": true,
+    "persistLoadPassed": true,
+    "confirmPathPassed": true,
+    "timeoutRestorePassed": true,
+    "restoreFailurePassed": true,
+    "realConfigPathsUsed": 0,
+    "activeRuntimeMutations": 0,
+    "reloadRuns": 0,
+    "evalRuns": 0,
+    "luaExecutions": 0
+  },
+  "contract": {
+    "modeImplemented": "DryRunTempOnly",
+    "productionMode": "ProductionPlannedDisabled",
+    "planCanPersistBeforeMutation": true,
+    "independentProcessCanLoadPlan": true,
+    "confirmationTokenRequired": true,
+    "timeoutRestoreVerifiesReread": true,
+    "refusesLivePathsInDryRun": true,
+    "requiresHyprlandKeybind": false,
+    "requiresAppUi": false,
+    "requiresVisibleDisplay": false,
+    "requiresMouseInput": false
+  },
+  "result": "gate-1-passed"
+}

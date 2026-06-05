@@ -6,7 +6,9 @@
     "displayRenderRecoveryRows": 25,
     "cursorInputRecoveryRows": 22,
     "debugCrashRecoveryRows": 22,
-    "ecosystemPermissionPolicyRows": 3
+    "ecosystemPermissionPolicyRows": 3,
+    "ecosystemPermissionRowsEnabled": 3,
+    "highRiskRowsStillBlocked": 69
   },
   "buckets": [
     {
@@ -46,8 +48,9 @@
       "requiredRecoveryStrategy": "advanced policy confirmation plus backup restore; dead-man watchdog remains required for consistent high-risk handling",
       "recoveryAction": "restore backup file, verify file reread, record policy decision and audit result",
       "approvalGate": "advanced-opt-in-plus-policy-confirmation-plus-independent-dead-man-confirm-or-revert",
-      "rowsRemainBlocked": true,
-      "nextRequiredWork": "explicit advanced policy approval and restore proof required before ecosystem/permission rows can be enabled"
+      "rowsRemainBlocked": false,
+      "nextRequiredWork": "Ecosystem bucket enabled; next bucket requires dedicated approval.",
+      "enabledRows": 3
     }
   ],
   "rows": [
@@ -1066,7 +1069,7 @@
     {
       "rowId": "ecosystem.no_update_news",
       "officialSetting": "ecosystem.no_update_news",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "riskClass": "ecosystem_permission_risk",
       "recoveryBucket": "ecosystem-permission-policy",
       "recoveryStrategy": "advanced policy confirmation plus backup restore; dead-man watchdog remains required for consistent high-risk handling",
@@ -1082,14 +1085,14 @@
       "watchdogDryRunStatus": "passed",
       "restoreVerificationRequired": true,
       "nextRequiredWork": "explicit advanced policy approval and restore proof required before ecosystem/permission rows can be enabled",
-      "safeWriteSupported": false,
-      "rowsEnabledByThisSprint": false,
+      "safeWriteSupported": true,
+      "rowsEnabledByThisSprint": true,
       "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved."
     },
     {
       "rowId": "ecosystem.no_donation_nag",
       "officialSetting": "ecosystem.no_donation_nag",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "riskClass": "ecosystem_permission_risk",
       "recoveryBucket": "ecosystem-permission-policy",
       "recoveryStrategy": "advanced policy confirmation plus backup restore; dead-man watchdog remains required for consistent high-risk handling",
@@ -1105,14 +1108,14 @@
       "watchdogDryRunStatus": "passed",
       "restoreVerificationRequired": true,
       "nextRequiredWork": "explicit advanced policy approval and restore proof required before ecosystem/permission rows can be enabled",
-      "safeWriteSupported": false,
-      "rowsEnabledByThisSprint": false,
+      "safeWriteSupported": true,
+      "rowsEnabledByThisSprint": true,
       "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved."
     },
     {
       "rowId": "ecosystem.enforce_permissions",
       "officialSetting": "ecosystem.enforce_permissions",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "riskClass": "ecosystem_permission_risk",
       "recoveryBucket": "ecosystem-permission-policy",
       "recoveryStrategy": "advanced policy confirmation plus backup restore; dead-man watchdog remains required for consistent high-risk handling",
@@ -1128,8 +1131,8 @@
       "watchdogDryRunStatus": "passed",
       "restoreVerificationRequired": true,
       "nextRequiredWork": "explicit advanced policy approval and restore proof required before ecosystem/permission rows can be enabled",
-      "safeWriteSupported": false,
-      "rowsEnabledByThisSprint": false,
+      "safeWriteSupported": true,
+      "rowsEnabledByThisSprint": true,
       "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved."
     },
     {
@@ -1709,9 +1712,9 @@
     }
   ],
   "invariants": {
-    "noRowsEnabled": true,
-    "writeAllowlistChanged": false,
-    "productionBehaviorChanged": false,
+    "noRowsEnabled": false,
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true,
     "activeConfigModified": false,
     "activeRuntimeModified": false,
     "reloadRun": false,

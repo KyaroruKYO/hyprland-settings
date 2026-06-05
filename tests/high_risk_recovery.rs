@@ -4,7 +4,8 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use anyhow::Result;
 use hyprland_settings::high_risk_recovery::{
-    ensure_dry_run_target_path, HighRiskRecoveryPlanner, RecoveryStatus,
+    ensure_dry_run_target_path, load_watchdog_plan, load_watchdog_result, HighRiskRecoveryPlanner,
+    RecoveryStatus,
 };
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 use serde_json::Value;
@@ -106,6 +107,76 @@ fn dry_run_watchdog_records_failed_restore_verification() -> Result<()> {
 }
 
 #[test]
+fn production_watchdog_primitives_persist_load_confirm_and_expire() -> Result<()> {
+    let dir = temp_case("production-primitives")?;
+    let config_path = dir.join("hyprland.conf");
+    let backup_root = dir.join("backups");
+    let plan_path = dir.join("watchdog-plan.json");
+    let result_path = dir.join("watchdog-result.json");
+    fs::write(&config_path, "ecosystem:no_update_news = false\n")?;
+
+    let planner = HighRiskRecoveryPlanner::new(&backup_root, 400);
+    let plan = planner.arm_watchdog_for_temp_config(
+        &config_path,
+        "ecosystem:no_update_news = true\n",
+        5,
+        &plan_path,
+        &result_path,
+    )?;
+    assert_eq!(
+        fs::read_to_string(&config_path)?,
+        "ecosystem:no_update_news = true\n"
+    );
+    assert!(
+        plan_path.exists(),
+        "plan must be persisted before independent load"
+    );
+    let loaded = load_watchdog_plan(&plan_path)?;
+    assert_eq!(
+        loaded.recovery.recovery_session_id,
+        plan.recovery.recovery_session_id
+    );
+
+    let confirmed = planner.confirm_watchdog(&loaded, &loaded.recovery.confirmation_token)?;
+    assert_eq!(confirmed.recovery.status, RecoveryStatus::Confirmed);
+    assert!(result_path.exists());
+    assert_eq!(
+        load_watchdog_result(&result_path)?.recovery.status,
+        RecoveryStatus::Confirmed
+    );
+
+    let second_config = dir.join("hyprland-second.conf");
+    let second_plan = dir.join("watchdog-plan-second.json");
+    let second_result = dir.join("watchdog-result-second.json");
+    fs::write(&second_config, "ecosystem:no_update_news = false\n")?;
+    let timeout_plan = planner.arm_watchdog_for_temp_config(
+        &second_config,
+        "ecosystem:no_update_news = true\n",
+        5,
+        &second_plan,
+        &second_result,
+    )?;
+    let loaded_timeout = load_watchdog_plan(&second_plan)?;
+    assert_eq!(
+        loaded_timeout.recovery.recovery_session_id,
+        timeout_plan.recovery.recovery_session_id
+    );
+    let reverted = planner.expire_watchdog_and_restore(&loaded_timeout)?;
+    assert_eq!(reverted.recovery.status, RecoveryStatus::Reverted);
+    assert!(reverted.recovery.restore_verified);
+    assert_eq!(
+        fs::read_to_string(&second_config)?,
+        "ecosystem:no_update_news = false\n"
+    );
+    assert_eq!(
+        load_watchdog_result(&second_result)?.recovery.status,
+        RecoveryStatus::Reverted
+    );
+
+    Ok(())
+}
+
+#[test]
 fn dry_run_recovery_refuses_live_or_non_temp_config_paths() {
     assert!(ensure_dry_run_target_path(Path::new("relative.conf")).is_err());
     assert!(ensure_dry_run_target_path(Path::new("/home/kyo/.config/hypr/hyprland.conf")).is_err());
@@ -116,39 +187,58 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     let design = read_json("data/reports/high-risk-dead-man-recovery-design.v0.55.2.json")?;
     let buckets = read_json("data/reports/high-risk-recovery-bucket-plan.v0.55.2.json")?;
     let proof = read_json("data/reports/high-risk-watchdog-dry-run-proof.v0.55.2.json")?;
+    let production = read_json("data/reports/production-high-risk-watchdog.v0.55.2.json")?;
+    let ecosystem = read_json("data/reports/high-risk-ecosystem-bucket-proof.v0.55.2.json")?;
+    let enablements = read_json("data/reports/high-risk-first-bucket-enablements.v0.55.2.json")?;
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
     let pipeline = read_json("data/reports/all-341-unified-pipeline.v0.55.2.json")?;
 
     assert_eq!(design["counts"]["rows"], 72);
-    assert_eq!(design["counts"]["rowsEnabled"], 0);
-    assert_eq!(design["counts"]["finalWritableRows"], 269);
-    assert_eq!(design["counts"]["finalBlockedRows"], 72);
+    assert_eq!(design["counts"]["rowsEnabled"], 3);
+    assert_eq!(design["counts"]["finalWritableRows"], 272);
+    assert_eq!(design["counts"]["finalBlockedRows"], 69);
     assert_eq!(buckets["counts"]["rows"], 72);
     assert_eq!(proof["counts"]["dryRunScenarios"], 3);
     assert_eq!(proof["counts"]["confirmPathPassed"], 1);
     assert_eq!(proof["counts"]["timeoutRevertPathPassed"], 1);
     assert_eq!(proof["counts"]["restoreFailurePathPassed"], 1);
+    assert_eq!(production["counts"]["watchdogPrimitivesImplemented"], true);
+    assert_eq!(production["counts"]["persistLoadPassed"], true);
+    assert_eq!(production["counts"]["confirmPathPassed"], true);
+    assert_eq!(production["counts"]["timeoutRestorePassed"], true);
+    assert_eq!(production["counts"]["restoreFailurePassed"], true);
+    assert_eq!(ecosystem["counts"]["rows"], 3);
+    assert_eq!(ecosystem["counts"]["safeToEnable"], 3);
+    assert_eq!(enablements["counts"]["enabledRows"], 3);
+    assert_eq!(enablements["counts"]["displayRenderRowsEnabled"], 0);
+    assert_eq!(enablements["counts"]["cursorInputRowsEnabled"], 0);
+    assert_eq!(enablements["counts"]["debugCrashRowsEnabled"], 0);
 
-    assert_eq!(coverage["counts"]["writableRows"], 269);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 72);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 269);
+    assert_eq!(coverage["counts"]["writableRows"], 272);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 69);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 272);
     assert_eq!(pipeline["counts"]["totalRows"], 341);
-    assert_eq!(pipeline["counts"]["writableRows"], 269);
-    assert_eq!(pipeline["counts"]["blockedRows"], 72);
+    assert_eq!(pipeline["counts"]["writableRows"], 272);
+    assert_eq!(pipeline["counts"]["blockedRows"], 69);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
 
     for row in design["rows"].as_array().unwrap() {
         let row_id = row["rowId"].as_str().unwrap();
-        assert_eq!(
-            row["writeStatus"].as_str(),
-            Some("high-risk"),
-            "{row_id} should remain blocked as high-risk"
-        );
-        assert_eq!(
-            row["safeWriteSupported"].as_bool(),
-            Some(false),
-            "{row_id} must not be marked safe writable"
-        );
+        if row["recoveryBucket"].as_str() == Some("ecosystem-permission-policy") {
+            assert_eq!(row["writeStatus"].as_str(), Some("writable"));
+            assert_eq!(row["safeWriteSupported"].as_bool(), Some(true));
+        } else {
+            assert_eq!(
+                row["writeStatus"].as_str(),
+                Some("high-risk"),
+                "{row_id} should remain blocked as high-risk"
+            );
+            assert_eq!(
+                row["safeWriteSupported"].as_bool(),
+                Some(false),
+                "{row_id} must not be marked safe writable"
+            );
+        }
         assert!(
             row["recoveryBucket"]
                 .as_str()

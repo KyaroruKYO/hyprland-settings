@@ -38,14 +38,14 @@ fn all_341_pipeline_report_matches_current_scalar_counts() -> Result<()> {
 
     assert_eq!(coverage["counts"]["totalScalarRows"], 341);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 269);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 72);
+    assert_eq!(coverage["counts"]["writableRows"], 272);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 69);
 
     assert_eq!(pipeline["counts"]["totalRows"], 341);
     assert_eq!(pipeline["counts"]["readableRows"], 341);
-    assert_eq!(pipeline["counts"]["writableRows"], 269);
-    assert_eq!(pipeline["counts"]["blockedRows"], 72);
-    assert_eq!(pipeline["counts"]["safeWritableRowsFromRustTable"], 269);
+    assert_eq!(pipeline["counts"]["writableRows"], 272);
+    assert_eq!(pipeline["counts"]["blockedRows"], 69);
+    assert_eq!(pipeline["counts"]["safeWritableRowsFromRustTable"], 272);
     assert_eq!(pipeline["counts"]["highRiskRows"], 72);
     assert_eq!(pipeline["counts"]["sessionRuntimeSensitiveRows"], 0);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
@@ -53,24 +53,24 @@ fn all_341_pipeline_report_matches_current_scalar_counts() -> Result<()> {
     assert_eq!(pipeline["counts"]["writeAllowlistChanged"], true);
     assert_eq!(pipeline["counts"]["productionBehaviorChanged"], true);
 
-    assert_eq!(writable_proof["counts"]["writableRows"], 269);
+    assert_eq!(writable_proof["counts"]["writableRows"], 272);
     assert_eq!(
         writable_proof["counts"]["safeWritableRowsFromRustTable"],
-        269
+        272
     );
     assert_eq!(writable_proof["counts"]["metadataGapRows"], 0);
     assert_eq!(writable_proof["counts"]["behaviorMismatchRows"], 0);
 
     assert_eq!(audit["counts"]["totalRows"], 341);
-    assert_eq!(audit["counts"]["writableRows"], 269);
-    assert_eq!(audit["counts"]["blockedRows"], 72);
+    assert_eq!(audit["counts"]["writableRows"], 272);
+    assert_eq!(audit["counts"]["blockedRows"], 69);
     assert_eq!(audit["counts"]["metadataGapRows"], 0);
     assert_eq!(audit["counts"]["behaviorMismatchRows"], 0);
     assert_eq!(audit["counts"]["rowsNeedingFutureCleanup"], 0);
     assert_eq!(audit["counts"]["writeAllowlistChanged"], true);
     assert_eq!(audit["counts"]["productionBehaviorChanged"], true);
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 269);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 272);
 
     Ok(())
 }
@@ -162,7 +162,25 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
         let row_id = row["rowId"].as_str().unwrap();
         assert_eq!(row["safeWritableTablePresent"].as_bool(), Some(true));
         assert_eq!(row["coverageWritable"].as_bool(), Some(true));
-        if row["scope"].as_str().is_some_and(|scope| {
+        if row["proofSource"].as_str() == Some("high-risk-ecosystem-bucket-proof.v0.55.2.json") {
+            assert_eq!(
+                row["gateStatus"].as_str(),
+                Some("passed-ecosystem-high-risk-watchdog-gate"),
+                "{row_id} should use the ecosystem high-risk watchdog gate"
+            );
+            assert_eq!(
+                row["applyPath"].as_str(),
+                Some("persistent-config-write-with-backup-reread-and-high-risk-watchdog"),
+                "{row_id} should record the high-risk watchdog apply path"
+            );
+            assert_eq!(
+                row["recoveryStrategy"].as_str(),
+                Some("backup-rollback-plus-independent-dead-man-watchdog"),
+                "{row_id} should record the watchdog recovery strategy"
+            );
+            assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
+            assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
+        } else if row["scope"].as_str().is_some_and(|scope| {
             matches!(
                 scope,
                 "persistent-config-only" | "persistent-needs-reload" | "startup-only"
@@ -179,14 +197,14 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
                 Some("passed-normal-write-gate"),
                 "{row_id} should preserve the existing writable gate"
             );
+            assert_eq!(
+                row["applyPath"].as_str(),
+                Some("persistent-config-write-with-backup-reread"),
+                "{row_id} should preserve the existing safe write path"
+            );
+            assert_eq!(row["recoveryStrategy"].as_str(), Some("backup-rollback"));
         }
-        assert_eq!(
-            row["applyPath"].as_str(),
-            Some("persistent-config-write-with-backup-reread"),
-            "{row_id} should preserve the existing safe write path"
-        );
         assert_eq!(row["rereadOracle"].as_str(), Some("file-reread"));
-        assert_eq!(row["recoveryStrategy"].as_str(), Some("backup-rollback"));
         assert!(
             row["metadataGaps"].as_array().unwrap().is_empty(),
             "{row_id} should not have writable proof metadata gaps"
@@ -195,7 +213,11 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
             row["behaviorMismatch"].as_array().unwrap().is_empty(),
             "{row_id} should not have behavior mismatches"
         );
-        if row["proofSource"].as_str() == Some("session-runtime-write-proof.v0.55.2.json") {
+        if matches!(
+            row["proofSource"].as_str(),
+            Some("session-runtime-write-proof.v0.55.2.json")
+                | Some("high-risk-ecosystem-bucket-proof.v0.55.2.json")
+        ) {
             assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
             assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
         } else {
@@ -258,8 +280,8 @@ fn blocked_pipeline_rows_remain_blocked_with_policy_metadata() -> Result<()> {
         }
     }
 
-    assert_eq!(blocked, 72);
-    assert_eq!(high_risk, 72);
+    assert_eq!(blocked, 69);
+    assert_eq!(high_risk, 69);
 
     Ok(())
 }
@@ -304,6 +326,9 @@ fn backfill_audit_records_no_behavior_or_allowlist_changes() -> Result<()> {
                 "binds.movefocus_cycles_fullscreen",
                 "binds.allow_pin_fullscreen",
                 "scrolling.fullscreen_on_one_column",
+                "ecosystem.no_update_news",
+                "ecosystem.no_donation_nag",
+                "ecosystem.enforce_permissions",
             ]
             .contains(&row_id)
         }) {

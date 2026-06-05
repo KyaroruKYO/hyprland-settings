@@ -64,8 +64,8 @@ fn hyprmod_companion_comparison_is_advisory_only() -> Result<()> {
     assert_eq!(comparison["counts"]["rowsEnabledThisSprint"], 0);
     assert_eq!(comparison["counts"]["writeBehaviorChanged"], false);
     assert_eq!(comparison["counts"]["currentWritableRowsRemain"], 236);
-    assert_eq!(coverage["counts"]["writableRows"], 269);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 269);
+    assert_eq!(coverage["counts"]["writableRows"], 272);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 272);
 
     let rows = comparison["rows"]
         .as_array()

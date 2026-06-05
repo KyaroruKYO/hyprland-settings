@@ -6,11 +6,11 @@
   ],
   "counts": {
     "rows": 90,
-    "writableRowsRemain": 269,
-    "blockedRowsRemain": 72,
+    "writableRowsRemain": 272,
+    "blockedRowsRemain": 69,
     "customStringSemanticRows": 0,
     "sessionRuntimeSensitiveRows": 0,
-    "highRiskRows": 72,
+    "highRiskRows": 69,
     "byScope": {
       "persistent-config-only": 16,
       "persistent-needs-reload": 4,
@@ -935,7 +935,7 @@
     {
       "rowId": "ecosystem.no_update_news",
       "officialSetting": "ecosystem.no_update_news",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "scope": "persistent-config-only",
       "applyPath": "blocked-until-dead-man-or-dedicated-policy",
       "rereadOracle": "file-reread",
@@ -944,12 +944,19 @@
       "recoveryStrategy": "policy confirmation and permission rollback path required",
       "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
       "canEnableInThisSprint": false,
-      "whyBlockedNow": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved."
+      "whyBlockedNow": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved.",
+      "finalWriteStatus": "writable",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "nextRequiredWork": "Enabled in ecosystem high-risk first bucket sprint.",
+      "blocker": null,
+      "currentBlocker": null
     },
     {
       "rowId": "ecosystem.no_donation_nag",
       "officialSetting": "ecosystem.no_donation_nag",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "scope": "persistent-config-only",
       "applyPath": "blocked-until-dead-man-or-dedicated-policy",
       "rereadOracle": "file-reread",
@@ -958,12 +965,19 @@
       "recoveryStrategy": "policy confirmation and permission rollback path required",
       "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
       "canEnableInThisSprint": false,
-      "whyBlockedNow": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved."
+      "whyBlockedNow": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved.",
+      "finalWriteStatus": "writable",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "nextRequiredWork": "Enabled in ecosystem high-risk first bucket sprint.",
+      "blocker": null,
+      "currentBlocker": null
     },
     {
       "rowId": "ecosystem.enforce_permissions",
       "officialSetting": "ecosystem.enforce_permissions",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "scope": "persistent-config-only",
       "applyPath": "blocked-until-dead-man-or-dedicated-policy",
       "rereadOracle": "file-reread",
@@ -972,7 +986,14 @@
       "recoveryStrategy": "policy confirmation and permission rollback path required",
       "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
       "canEnableInThisSprint": false,
-      "whyBlockedNow": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved."
+      "whyBlockedNow": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved.",
+      "finalWriteStatus": "writable",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "nextRequiredWork": "Enabled in ecosystem high-risk first bucket sprint.",
+      "blocker": null,
+      "currentBlocker": null
     },
     {
       "rowId": "debug.overlay",

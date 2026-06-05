@@ -15,8 +15,9 @@ use crate::pending_change::{
 use crate::scalar_write::apply_scalar_write_plan;
 use crate::source_values::{read_system_xkb_rules, MonitorSourceValue, XkbSourceValue};
 use crate::write_classification::{
-    finite_choice_options, is_safe_writable_setting, safe_writable_official_setting,
-    safe_writable_value_kind, session_runtime_write_policy, ScalarWriteValueKind,
+    finite_choice_options, high_risk_write_policy, is_safe_writable_setting,
+    safe_writable_official_setting, safe_writable_value_kind, session_runtime_write_policy,
+    ScalarWriteValueKind,
 };
 use crate::write_safety::{review_write_plan, WriteGateFailure, WritePlanRequest, WriteResult};
 
@@ -301,6 +302,15 @@ fn pending_projection(
         review_summary.push(format!("approval gate: {}", policy.approval_gate));
         review_summary.push(format!("warning: {}", policy.review_warning));
     }
+    if let Some(policy) = high_risk_write_policy(&pending.setting_id) {
+        review_summary.push(format!("recovery bucket: {}", policy.recovery_bucket));
+        review_summary.push(format!("approval gate: {}", policy.approval_gate));
+        review_summary.push(format!(
+            "watchdog requirement: {}",
+            policy.watchdog_requirement
+        ));
+        review_summary.push(format!("warning: {}", policy.review_warning));
+    }
 
     PendingChangeProjection {
         setting_id: pending.setting_id.clone(),
@@ -564,8 +574,12 @@ fn normalize_bool_literal(value: &str) -> Option<bool> {
 
 fn outcome_from_result(result: WriteResult) -> ApplyOutcome {
     let setting_id = result.plan.setting_id;
-    let reload_note = session_runtime_write_policy(&setting_id)
+    let reload_note = high_risk_write_policy(&setting_id)
         .map(|policy| policy.review_warning.to_string())
+        .or_else(|| {
+            session_runtime_write_policy(&setting_id)
+                .map(|policy| policy.review_warning.to_string())
+        })
         .unwrap_or_else(|| "Hyprland reload is not performed by this app yet.".to_string());
     ApplyOutcome {
         setting_id,

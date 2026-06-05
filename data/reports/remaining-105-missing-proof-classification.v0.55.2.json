@@ -32,11 +32,11 @@
     "rowsWithAtLeastOneHyprlandAcceptedCandidate": 105,
     "rowsWithAllPlannedValidCandidatesAccepted": 104,
     "rowsWithHyprlandAcceptedInvalidProbe": 13,
-    "technicallyWritableButPolicyBlocked": 72,
+    "technicallyWritableButPolicyBlocked": 69,
     "blockedOnlyByPolicy": 0,
     "sourceBackedEnumeratorNeeded": 0,
     "sessionRuntimePolicyNeeded": 0,
-    "highRiskRecoveryDesignNeeded": 72,
+    "highRiskRecoveryDesignNeeded": 69,
     "byMissingProofCategory": {
       "proof-complete-policy-blocked": 0,
       "needs-session-runtime-policy": 0,
@@ -44,14 +44,14 @@
       "needs-editor-projection": 88,
       "needs-invalid-value-tests": 88,
       "needs-finite-choice-validator": 7,
-      "proof-complete-high-risk-blocked": 72,
-      "needs-high-risk-recovery-design": 72
+      "proof-complete-high-risk-blocked": 69,
+      "needs-high-risk-recovery-design": 69
     },
     "unknownClassifications": 0,
     "activeConfigModified": false,
     "activeRuntimeModified": false,
     "enabledAfterInvestigation": 33,
-    "remainingBlockedRowsAfterEnablement": 72,
+    "remainingBlockedRowsAfterEnablement": 69,
     "currentByMissingProofCategory": {
       "proof-complete-policy-blocked": 0,
       "needs-session-runtime-policy": 0,
@@ -2754,7 +2754,7 @@
     {
       "rowId": "ecosystem.no_update_news",
       "officialSetting": "ecosystem.no_update_news",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "riskClass": "ecosystem_permission_risk",
       "batch": "high-risk",
       "controlKind": "toggle",
@@ -2779,22 +2779,23 @@
       "technicallyWritableButPolicyBlocked": true,
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "proof-complete-high-risk-blocked",
-        "needs-high-risk-recovery-design",
-        "needs-validator-implementation",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
+      "missingProofCategories": [],
       "exactNextStepToMakeWritable": "Create a dedicated high-risk recovery/rollback design, decide warning/advanced-mode policy, then add validators and rerun temp-config proof before enablement.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design.",
+      "finalWriteStatus": "writable",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "nextRequiredWork": "Enabled in ecosystem high-risk first bucket sprint.",
+      "blocker": null,
+      "currentBlocker": null
     },
     {
       "rowId": "ecosystem.no_donation_nag",
       "officialSetting": "ecosystem.no_donation_nag",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "riskClass": "ecosystem_permission_risk",
       "batch": "high-risk",
       "controlKind": "toggle",
@@ -2819,22 +2820,23 @@
       "technicallyWritableButPolicyBlocked": true,
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "proof-complete-high-risk-blocked",
-        "needs-high-risk-recovery-design",
-        "needs-validator-implementation",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
+      "missingProofCategories": [],
       "exactNextStepToMakeWritable": "Create a dedicated high-risk recovery/rollback design, decide warning/advanced-mode policy, then add validators and rerun temp-config proof before enablement.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design.",
+      "finalWriteStatus": "writable",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "nextRequiredWork": "Enabled in ecosystem high-risk first bucket sprint.",
+      "blocker": null,
+      "currentBlocker": null
     },
     {
       "rowId": "ecosystem.enforce_permissions",
       "officialSetting": "ecosystem.enforce_permissions",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "riskClass": "ecosystem_permission_risk",
       "batch": "high-risk",
       "controlKind": "toggle",
@@ -2859,17 +2861,18 @@
       "technicallyWritableButPolicyBlocked": true,
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "proof-complete-high-risk-blocked",
-        "needs-high-risk-recovery-design",
-        "needs-validator-implementation",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
+      "missingProofCategories": [],
       "exactNextStepToMakeWritable": "Create a dedicated high-risk recovery/rollback design, decide warning/advanced-mode policy, then add validators and rerun temp-config proof before enablement.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design.",
+      "finalWriteStatus": "writable",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "nextRequiredWork": "Enabled in ecosystem high-risk first bucket sprint.",
+      "blocker": null,
+      "currentBlocker": null
     },
     {
       "rowId": "debug.overlay",

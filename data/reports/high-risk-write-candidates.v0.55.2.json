@@ -4,25 +4,24 @@
   "hyprlandVersion": "0.55.2",
   "sourceCoverageReport": "data/reports/scalar-read-write-coverage.v0.55.2.json",
   "counts": {
-    "rows": 72,
+    "rows": 69,
     "byRiskClass": {
       "cursor_input_risk": 22,
       "debug_crash_risk": 22,
-      "display_render_session_risk": 25,
-      "ecosystem_permission_risk": 3
+      "display_render_session_risk": 25
     },
     "byRecommendedAction": {
       "not-recommended": 22,
-      "requires-dedicated-design": 28,
+      "requires-dedicated-design": 25,
       "requires-live-hyprland-validation": 22
     }
   },
   "invariants": {
     "noRowsEnabledByThisReport": true,
     "sourceWriteStatus": "high-risk",
-    "writableRowsRemain": 269,
-    "notes": "High-risk rows remain blocked after session/runtime write pipeline; no high-risk row was promoted.",
-    "blockedWriteRowsRemain": 72
+    "writableRowsRemain": 272,
+    "notes": "Ecosystem/permission bucket enabled after production-capable watchdog proof; remaining high-risk rows stay blocked.",
+    "blockedWriteRowsRemain": 69
   },
   "items": [
     {
@@ -726,54 +725,6 @@
       "recommendedAction": "requires-live-hyprland-validation",
       "whyNotWritableYet": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
       "whatWouldBeRequired": "Dedicated live pointer/keyboard recovery testing, escape hatch documentation, and explicit user approval.",
-      "userApprovalRequired": true,
-      "notes": "Keep blocked in the current app. This report is planning metadata only."
-    },
-    {
-      "rowId": "ecosystem.no_update_news",
-      "officialSetting": "ecosystem.no_update_news",
-      "controlKind": "toggle",
-      "valueFamily": "none",
-      "parserStatus": "blocked_by_risk_review",
-      "riskClass": "ecosystem_permission_risk",
-      "reportOnly": true,
-      "currentWriteBlocker": "report-only/high-risk row: ecosystem_permission_risk",
-      "highRiskReason": "Ecosystem/permission settings affect update/news/donation prompts or permission enforcement policy.",
-      "recommendedAction": "requires-dedicated-design",
-      "whyNotWritableYet": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
-      "whatWouldBeRequired": "Dedicated policy review and clear user-facing explanation before any write support.",
-      "userApprovalRequired": true,
-      "notes": "Keep blocked in the current app. This report is planning metadata only."
-    },
-    {
-      "rowId": "ecosystem.no_donation_nag",
-      "officialSetting": "ecosystem.no_donation_nag",
-      "controlKind": "toggle",
-      "valueFamily": "none",
-      "parserStatus": "blocked_by_risk_review",
-      "riskClass": "ecosystem_permission_risk",
-      "reportOnly": true,
-      "currentWriteBlocker": "report-only/high-risk row: ecosystem_permission_risk",
-      "highRiskReason": "Ecosystem/permission settings affect update/news/donation prompts or permission enforcement policy.",
-      "recommendedAction": "requires-dedicated-design",
-      "whyNotWritableYet": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
-      "whatWouldBeRequired": "Dedicated policy review and clear user-facing explanation before any write support.",
-      "userApprovalRequired": true,
-      "notes": "Keep blocked in the current app. This report is planning metadata only."
-    },
-    {
-      "rowId": "ecosystem.enforce_permissions",
-      "officialSetting": "ecosystem.enforce_permissions",
-      "controlKind": "toggle",
-      "valueFamily": "none",
-      "parserStatus": "blocked_by_risk_review",
-      "riskClass": "ecosystem_permission_risk",
-      "reportOnly": true,
-      "currentWriteBlocker": "report-only/high-risk row: ecosystem_permission_risk",
-      "highRiskReason": "Ecosystem/permission settings affect update/news/donation prompts or permission enforcement policy.",
-      "recommendedAction": "requires-dedicated-design",
-      "whyNotWritableYet": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
-      "whatWouldBeRequired": "Dedicated policy review and clear user-facing explanation before any write support.",
       "userApprovalRequired": true,
       "notes": "Keep blocked in the current app. This report is planning metadata only."
     },
