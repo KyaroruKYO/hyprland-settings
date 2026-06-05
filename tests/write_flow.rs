@@ -12,7 +12,8 @@ use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueSourceStatus};
 use hyprland_settings::pending_change::ACTIVE_PENDING_CHANGE_SETTING;
 use hyprland_settings::write_classification::{
-    finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, SAFE_WRITABLE_ROWS,
+    finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, REMAINING_105_FINITE_CHOICE_ROWS,
+    SAFE_WRITABLE_ROWS,
 };
 use hyprland_settings::write_flow::{
     apply_setting_change_with_backup_manager, edit_projection_for_setting,
@@ -54,7 +55,7 @@ fn snapshot_for(path: &PathBuf, contents: &str) -> CurrentConfigSnapshot {
 fn edit_projection_allows_only_safe_writable_rows() {
     let current =
         CurrentConfigSnapshot::read_unavailable("no config").value_for("general.snap.enabled");
-    let blocked = edit_projection_for_setting("input.follow_mouse", &current);
+    let blocked = edit_projection_for_setting("input.kb_layout", &current);
 
     for row in SAFE_WRITABLE_ROWS {
         let editable = edit_projection_for_setting(row.row_id, &current);
@@ -77,7 +78,10 @@ fn edit_projection_allows_only_safe_writable_rows() {
 fn conflict_rows_project_as_verified_finite_choice_dropdowns() {
     let current = CurrentConfigSnapshot::read_unavailable("no config").value_for("general.gaps_in");
 
-    for row_id in CONFLICT_FINITE_CHOICE_ROWS {
+    for row_id in CONFLICT_FINITE_CHOICE_ROWS
+        .iter()
+        .chain(REMAINING_105_FINITE_CHOICE_ROWS.iter())
+    {
         let projection = edit_projection_for_setting(row_id, &current);
         let expected = finite_choice_options(row_id).expect("conflict row should have choices");
 
@@ -486,8 +490,8 @@ fn apply_flow_blocks_non_allowlisted_setting() {
         known_ids(),
         &discovery,
         &snapshot,
-        "input.follow_mouse",
-        "false",
+        "input.kb_layout",
+        "us",
         &backup_manager,
     )
     .expect_err("non-allowlisted setting should block apply");

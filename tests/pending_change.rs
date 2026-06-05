@@ -5,7 +5,9 @@ use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueProje
 use hyprland_settings::pending_change::{
     stage_pending_change, PendingChangeValidation, ACTIVE_PENDING_CHANGE_SETTING,
 };
-use hyprland_settings::write_classification::{finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS};
+use hyprland_settings::write_classification::{
+    finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, REMAINING_105_FINITE_CHOICE_ROWS,
+};
 
 fn current_value_for(setting_id: &str, config: &str) -> CurrentValueProjection {
     let parsed = parse_hyprland_config_text("/tmp/pending-change.conf", config);
@@ -45,9 +47,9 @@ fn invalid_pending_change_for_windows_snap_enabled_is_rejected() {
 
 #[test]
 fn only_safe_writable_rows_can_be_staged() {
-    let current = current_value_for("input.follow_mouse", "input:follow_mouse = 1\n");
+    let current = current_value_for("input.kb_layout", "input:kb_layout = us\n");
 
-    let change = stage_pending_change("input.follow_mouse", &current, "2");
+    let change = stage_pending_change("input.kb_layout", &current, "us");
 
     assert_eq!(
         change.validation,
@@ -150,7 +152,10 @@ fn validator_needed_rows_reject_invalid_values() {
 fn verified_finite_choice_rows_accept_only_verified_raw_values() {
     let current = CurrentValueProjection::not_configured();
 
-    for row_id in CONFLICT_FINITE_CHOICE_ROWS {
+    for row_id in CONFLICT_FINITE_CHOICE_ROWS
+        .iter()
+        .chain(REMAINING_105_FINITE_CHOICE_ROWS.iter())
+    {
         let options = finite_choice_options(row_id).expect("conflict row should have choices");
         assert!(
             !options.is_empty(),
@@ -189,6 +194,13 @@ fn verified_finite_choice_rows_reject_unverified_semantic_and_slider_values() {
         ("scrolling.focus_fit_method", "2"),
         ("dwindle.split_bias", "99"),
         ("general.resize_corner", "-1"),
+        ("layout.selection", "__invalid_choice__"),
+        ("input.follow_mouse", "Full"),
+        ("input.touchpad.tap_button_map", "Left / Right / Middle"),
+        ("master.new_status", "__invalid_choice__"),
+        ("master.new_on_active", "__invalid_choice__"),
+        ("master.orientation", "__invalid_choice__"),
+        ("scrolling.direction", "__invalid_choice__"),
     ];
 
     for (row_id, proposed) in cases {

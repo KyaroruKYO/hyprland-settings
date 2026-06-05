@@ -117,13 +117,13 @@ fn rejects_unknown_setting() {
 fn rejects_unsafe_setting() {
     let current = current_value_for(
         "/tmp/hyprland.conf",
-        "input.follow_mouse",
-        "input:follow_mouse = 1\n",
+        "input.kb_layout",
+        "input:kb_layout = us\n",
     );
-    let pending = stage_pending_change("input.follow_mouse", &current, "2");
+    let pending = stage_pending_change("input.kb_layout", &current, "us");
 
     let review = review_write_plan(WritePlanRequest {
-        known_setting_ids: known_ids(&["input.follow_mouse"]),
+        known_setting_ids: known_ids(&["input.kb_layout"]),
         detected_config_path: PathBuf::from("/tmp/hyprland.conf"),
         current_value: current,
         pending_change: pending,

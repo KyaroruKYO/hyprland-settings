@@ -188,9 +188,9 @@ fn invalid_value_is_rejected_before_write_pilot() -> Result<()> {
 #[test]
 fn no_other_setting_gets_writable_plan() {
     let current = CurrentValueProjection::not_configured();
-    let pending = stage_pending_change("input.follow_mouse", &current, "2");
+    let pending = stage_pending_change("input.kb_layout", &current, "us");
     let review = review_write_plan(WritePlanRequest {
-        known_setting_ids: ["input.follow_mouse"]
+        known_setting_ids: ["input.kb_layout"]
             .into_iter()
             .map(str::to_string)
             .collect(),

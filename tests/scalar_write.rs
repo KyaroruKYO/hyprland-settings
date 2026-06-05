@@ -11,7 +11,7 @@ use hyprland_settings::pending_change::stage_pending_change;
 use hyprland_settings::scalar_write::apply_scalar_write_plan;
 use hyprland_settings::write_classification::{
     config_key_from_official_setting, finite_choice_options, SafeWritableRow, ScalarWriteValueKind,
-    CONFLICT_FINITE_CHOICE_ROWS, SAFE_WRITABLE_ROWS,
+    SAFE_WRITABLE_ROWS,
 };
 use hyprland_settings::write_safety::{review_write_plan, WritePlanRequest};
 
@@ -188,11 +188,11 @@ fn generic_scalar_writer_appends_missing_safe_writable_row() -> Result<()> {
 
 #[test]
 fn finite_choice_writer_roundtrips_every_verified_choice() -> Result<()> {
-    for row_id in CONFLICT_FINITE_CHOICE_ROWS {
-        let row = SAFE_WRITABLE_ROWS
-            .iter()
-            .find(|row| row.row_id == *row_id)
-            .expect("conflict row should remain write-allowlisted");
+    for row in SAFE_WRITABLE_ROWS
+        .iter()
+        .filter(|row| row.value_kind == ScalarWriteValueKind::FiniteChoice)
+    {
+        let row_id = row.row_id;
         let config_key = config_key_from_official_setting(row.official_setting);
         let options = finite_choice_options(row_id).expect("finite choices should exist");
 

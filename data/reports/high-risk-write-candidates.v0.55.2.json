@@ -20,7 +20,7 @@
   "invariants": {
     "noRowsEnabledByThisReport": true,
     "sourceWriteStatus": "high-risk",
-    "writableRowsRemain": 236,
+    "writableRowsRemain": 243,
     "notes": "High-risk rows remain blocked after remaining scalar completion; no high-risk row was promoted."
   },
   "items": [

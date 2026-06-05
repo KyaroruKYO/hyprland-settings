@@ -235,7 +235,7 @@ fn regex_string_detail_is_editable() -> Result<()> {
 
 #[test]
 fn non_allowlisted_detail_explains_disabled_edit_state() -> Result<()> {
-    let detail = detail_for("input.follow_mouse")?;
+    let detail = detail_for("input.kb_layout")?;
 
     assert!(!detail.edit.editable);
     assert_eq!(

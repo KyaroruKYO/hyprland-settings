@@ -10,23 +10,24 @@
   ],
   "counts": {
     "startingWritableRows": 94,
-    "finalWritableRows": 236,
+    "finalWritableRows": 243,
     "startingBlockedRows": 247,
-    "finalBlockedRows": 105,
-    "enabledRows": 142,
+    "finalBlockedRows": 98,
+    "enabledRows": 149,
     "enabledByBatch": {
       "batch-b-likely-safe-numerics": 33,
-      "batch-d-input-behavior": 64,
+      "batch-c-likely-safe-enums": 5,
+      "batch-d-input-behavior": 66,
       "batch-e-window-layout-behavior": 45
     },
     "remainingBlockedByBatch": {
-      "batch-c-likely-safe-enums": 7,
-      "batch-d-input-behavior": 10,
+      "batch-c-likely-safe-enums": 2,
+      "batch-d-input-behavior": 8,
       "batch-g-session-runtime-sensitive": 16,
       "high-risk": 72
     },
     "remainingBlockedByReason": {
-      "dropdown-or-enum-value-proof-needed": 17,
+      "dropdown-or-enum-value-proof-needed": 10,
       "session-runtime-sensitive-policy-needed": 16,
       "high-risk-dedicated-design-needed": 72
     },
@@ -514,11 +515,11 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled later through Remaining 105 finite-choice implementation after temp-config proof and production validator/editor/test coverage."
     },
     {
       "rowId": "input.follow_mouse",
@@ -541,11 +542,11 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled later through Remaining 105 finite-choice implementation after temp-config proof and production validator/editor/test coverage."
     },
     {
       "rowId": "general.float_gaps",
@@ -1807,11 +1808,11 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled later through Remaining 105 finite-choice implementation after temp-config proof and production validator/editor/test coverage."
     },
     {
       "rowId": "input.touchpad.clickfinger_behavior",
@@ -4789,11 +4790,11 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled later through Remaining 105 finite-choice implementation after temp-config proof and production validator/editor/test coverage."
     },
     {
       "rowId": "master.new_on_top",
@@ -4847,11 +4848,11 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled later through Remaining 105 finite-choice implementation after temp-config proof and production validator/editor/test coverage."
     },
     {
       "rowId": "master.orientation",
@@ -4874,11 +4875,11 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled later through Remaining 105 finite-choice implementation after temp-config proof and production validator/editor/test coverage."
     },
     {
       "rowId": "master.slave_count_for_center_master",
@@ -5261,11 +5262,11 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled later through Remaining 105 finite-choice implementation after temp-config proof and production validator/editor/test coverage."
     },
     {
       "rowId": "scrolling.wrap_focus",

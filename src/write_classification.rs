@@ -69,6 +69,137 @@ pub const CONFLICT_FINITE_CHOICE_ROWS: &[&str] = &[
     "scrolling.focus_fit_method",
 ];
 
+pub const REMAINING_105_FINITE_CHOICE_ROWS: &[&str] = &[
+    "layout.selection",
+    "input.follow_mouse",
+    "input.touchpad.tap_button_map",
+    "master.new_status",
+    "master.new_on_active",
+    "master.orientation",
+    "scrolling.direction",
+];
+
+const LAYOUT_SELECTION_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "dwindle",
+        label: "Dwindle",
+    },
+    FiniteChoiceOption {
+        raw_value: "master",
+        label: "Master",
+    },
+    FiniteChoiceOption {
+        raw_value: "scrolling",
+        label: "Scrolling",
+    },
+    FiniteChoiceOption {
+        raw_value: "monocle",
+        label: "Monocle",
+    },
+];
+
+const INPUT_FOLLOW_MOUSE_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "Disabled",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "Full",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "Loose",
+    },
+    FiniteChoiceOption {
+        raw_value: "3",
+        label: "Loose (no mouse focus)",
+    },
+];
+
+const INPUT_TOUCHPAD_TAP_BUTTON_MAP_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "lrm",
+        label: "Left / Right / Middle",
+    },
+    FiniteChoiceOption {
+        raw_value: "lmr",
+        label: "Left / Middle / Right",
+    },
+];
+
+const MASTER_NEW_STATUS_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "master",
+        label: "Master",
+    },
+    FiniteChoiceOption {
+        raw_value: "slave",
+        label: "Slave",
+    },
+    FiniteChoiceOption {
+        raw_value: "inherit",
+        label: "Inherit",
+    },
+];
+
+const MASTER_NEW_ON_ACTIVE_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "none",
+        label: "None",
+    },
+    FiniteChoiceOption {
+        raw_value: "before",
+        label: "Before active",
+    },
+    FiniteChoiceOption {
+        raw_value: "after",
+        label: "After active",
+    },
+];
+
+const MASTER_ORIENTATION_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "left",
+        label: "Left",
+    },
+    FiniteChoiceOption {
+        raw_value: "right",
+        label: "Right",
+    },
+    FiniteChoiceOption {
+        raw_value: "top",
+        label: "Top",
+    },
+    FiniteChoiceOption {
+        raw_value: "bottom",
+        label: "Bottom",
+    },
+    FiniteChoiceOption {
+        raw_value: "center",
+        label: "Center",
+    },
+];
+
+const SCROLLING_DIRECTION_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "right",
+        label: "Right",
+    },
+    FiniteChoiceOption {
+        raw_value: "left",
+        label: "Left",
+    },
+    FiniteChoiceOption {
+        raw_value: "down",
+        label: "Down",
+    },
+    FiniteChoiceOption {
+        raw_value: "up",
+        label: "Up",
+    },
+];
+
 const GENERAL_RESIZE_CORNER_CHOICES: &[FiniteChoiceOption] = &[
     FiniteChoiceOption {
         raw_value: "0",
@@ -897,6 +1028,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Number,
     },
     SafeWritableRow {
+        row_id: "layout.selection",
+        official_setting: "general.layout",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
         row_id: "general.no_focus_fallback",
         official_setting: "general.no_focus_fallback",
         value_kind: ScalarWriteValueKind::Boolean,
@@ -997,6 +1133,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Number,
     },
     SafeWritableRow {
+        row_id: "input.follow_mouse",
+        official_setting: "input.follow_mouse",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
         row_id: "input.focus_on_close",
         official_setting: "input.focus_on_close",
         value_kind: ScalarWriteValueKind::FiniteChoice,
@@ -1064,6 +1205,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "input.touchpad.drag_lock",
         official_setting: "input.touchpad.drag_lock",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "input.touchpad.tap_button_map",
+        official_setting: "input.touchpad.tap_button_map",
         value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
@@ -1477,6 +1623,21 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Boolean,
     },
     SafeWritableRow {
+        row_id: "master.new_status",
+        official_setting: "master.new_status",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "master.new_on_active",
+        official_setting: "master.new_on_active",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "master.orientation",
+        official_setting: "master.orientation",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
         row_id: "master.slave_count_for_center_master",
         official_setting: "master.slave_count_for_center_master",
         value_kind: ScalarWriteValueKind::Number,
@@ -1530,6 +1691,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "scrolling.wrap_swapcol",
         official_setting: "scrolling.wrap_swapcol",
         value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "scrolling.direction",
+        official_setting: "scrolling.direction",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
 ];
 
@@ -1605,6 +1771,13 @@ pub fn safe_writable_row(row_id: &str) -> Option<&'static SafeWritableRow> {
 
 pub fn finite_choice_options(row_id: &str) -> Option<&'static [FiniteChoiceOption]> {
     match row_id {
+        "layout.selection" => Some(LAYOUT_SELECTION_CHOICES),
+        "input.follow_mouse" => Some(INPUT_FOLLOW_MOUSE_CHOICES),
+        "input.touchpad.tap_button_map" => Some(INPUT_TOUCHPAD_TAP_BUTTON_MAP_CHOICES),
+        "master.new_status" => Some(MASTER_NEW_STATUS_CHOICES),
+        "master.new_on_active" => Some(MASTER_NEW_ON_ACTIVE_CHOICES),
+        "master.orientation" => Some(MASTER_ORIENTATION_CHOICES),
+        "scrolling.direction" => Some(SCROLLING_DIRECTION_CHOICES),
         "general.resize_corner" => Some(GENERAL_RESIZE_CORNER_CHOICES),
         "input.focus_on_close" => Some(INPUT_FOCUS_ON_CLOSE_CHOICES),
         "input.float_switch_override_focus" => Some(INPUT_FLOAT_SWITCH_OVERRIDE_FOCUS_CHOICES),

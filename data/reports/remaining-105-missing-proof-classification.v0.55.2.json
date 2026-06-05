@@ -51,7 +51,21 @@
     },
     "unknownClassifications": 0,
     "activeConfigModified": false,
-    "activeRuntimeModified": false
+    "activeRuntimeModified": false,
+    "enabledAfterInvestigation": 7,
+    "remainingBlockedRowsAfterEnablement": 98,
+    "currentByMissingProofCategory": {
+      "proof-complete-policy-blocked": 16,
+      "needs-session-runtime-policy": 16,
+      "needs-validator-implementation": 86,
+      "needs-editor-projection": 98,
+      "needs-invalid-value-tests": 98,
+      "needs-finite-choice-validator": 12,
+      "needs-source-backed-enumerator": 5,
+      "needs-dynamic-system-values": 5,
+      "proof-complete-high-risk-blocked": 72,
+      "needs-high-risk-recovery-design": 72
+    }
   },
   "rows": [
     {
@@ -141,14 +155,14 @@
     {
       "rowId": "layout.selection",
       "officialSetting": "general.layout",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-c-likely-safe-enums",
       "controlKind": "dropdown",
       "companionSchemaType": "choice",
       "canParseRead": true,
-      "canValidateAtLeastOneCandidateValue": false,
-      "currentProductionValidatorExists": false,
+      "canValidateAtLeastOneCandidateValue": true,
+      "currentProductionValidatorExists": true,
       "candidateValuesAcceptedByHyprland": [
         "dwindle",
         "master",
@@ -160,7 +174,7 @@
         "__invalid_choice__"
       ],
       "invalidValuesRejectedOrSkipped": 0,
-      "canRejectInvalidValuesInCurrentApp": false,
+      "canRejectInvalidValuesInCurrentApp": true,
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
@@ -169,29 +183,24 @@
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
-      "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "needs-finite-choice-validator",
-        "needs-editor-projection",
-        "needs-invalid-value-tests",
-        "needs-validator-implementation"
-      ],
-      "exactNextStepToMakeWritable": "Add finite-choice raw-value mapping, dropdown projection, accepted-value tests, invalid rejection tests, fixture writer/reread tests, and temp-config proof.",
+      "blockedByMissingValidatorEditorOrTestCoverage": false,
+      "missingProofCategories": [],
+      "exactNextStepToMakeWritable": "Already enabled by verified finite-choice implementation.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Enabled after this investigation via finite-choice validator/editor/write coverage."
     },
     {
       "rowId": "input.follow_mouse",
       "officialSetting": "input.follow_mouse",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-d-input-behavior",
       "controlKind": "dropdown",
       "companionSchemaType": "choice",
       "canParseRead": true,
-      "canValidateAtLeastOneCandidateValue": false,
-      "currentProductionValidatorExists": false,
+      "canValidateAtLeastOneCandidateValue": true,
+      "currentProductionValidatorExists": true,
       "candidateValuesAcceptedByHyprland": [
         "0",
         "1",
@@ -201,7 +210,7 @@
       "candidateValuesRejectedByHyprland": [],
       "invalidValuesAcceptedByHyprland": [],
       "invalidValuesRejectedOrSkipped": 1,
-      "canRejectInvalidValuesInCurrentApp": false,
+      "canRejectInvalidValuesInCurrentApp": true,
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
@@ -210,16 +219,12 @@
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
-      "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "needs-finite-choice-validator",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
-      "exactNextStepToMakeWritable": "Add finite-choice raw-value mapping, dropdown projection, accepted-value tests, invalid rejection tests, fixture writer/reread tests, and temp-config proof.",
+      "blockedByMissingValidatorEditorOrTestCoverage": false,
+      "missingProofCategories": [],
+      "exactNextStepToMakeWritable": "Already enabled by verified finite-choice implementation.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Enabled after this investigation via finite-choice validator/editor/write coverage."
     },
     {
       "rowId": "general.allow_tearing",
@@ -535,14 +540,14 @@
     {
       "rowId": "input.touchpad.tap_button_map",
       "officialSetting": "input.touchpad.tap_button_map",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-d-input-behavior",
       "controlKind": "dropdown",
       "companionSchemaType": "choice",
       "canParseRead": true,
-      "canValidateAtLeastOneCandidateValue": false,
-      "currentProductionValidatorExists": false,
+      "canValidateAtLeastOneCandidateValue": true,
+      "currentProductionValidatorExists": true,
       "candidateValuesAcceptedByHyprland": [
         "lrm",
         "lmr"
@@ -552,7 +557,7 @@
         "__invalid_choice__"
       ],
       "invalidValuesRejectedOrSkipped": 0,
-      "canRejectInvalidValuesInCurrentApp": false,
+      "canRejectInvalidValuesInCurrentApp": true,
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
@@ -561,17 +566,12 @@
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
-      "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "needs-finite-choice-validator",
-        "needs-editor-projection",
-        "needs-invalid-value-tests",
-        "needs-validator-implementation"
-      ],
-      "exactNextStepToMakeWritable": "Add finite-choice raw-value mapping, dropdown projection, accepted-value tests, invalid rejection tests, fixture writer/reread tests, and temp-config proof.",
+      "blockedByMissingValidatorEditorOrTestCoverage": false,
+      "missingProofCategories": [],
+      "exactNextStepToMakeWritable": "Already enabled by verified finite-choice implementation.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Enabled after this investigation via finite-choice validator/editor/write coverage."
     },
     {
       "rowId": "input.touchdevice.output",
@@ -3889,14 +3889,14 @@
     {
       "rowId": "master.new_status",
       "officialSetting": "master.new_status",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-c-likely-safe-enums",
       "controlKind": "dropdown",
       "companionSchemaType": "choice",
       "canParseRead": true,
-      "canValidateAtLeastOneCandidateValue": false,
-      "currentProductionValidatorExists": false,
+      "canValidateAtLeastOneCandidateValue": true,
+      "currentProductionValidatorExists": true,
       "candidateValuesAcceptedByHyprland": [
         "master",
         "slave",
@@ -3907,7 +3907,7 @@
         "__invalid_choice__"
       ],
       "invalidValuesRejectedOrSkipped": 0,
-      "canRejectInvalidValuesInCurrentApp": false,
+      "canRejectInvalidValuesInCurrentApp": true,
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
@@ -3916,29 +3916,24 @@
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
-      "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "needs-finite-choice-validator",
-        "needs-editor-projection",
-        "needs-invalid-value-tests",
-        "needs-validator-implementation"
-      ],
-      "exactNextStepToMakeWritable": "Add finite-choice raw-value mapping, dropdown projection, accepted-value tests, invalid rejection tests, fixture writer/reread tests, and temp-config proof.",
+      "blockedByMissingValidatorEditorOrTestCoverage": false,
+      "missingProofCategories": [],
+      "exactNextStepToMakeWritable": "Already enabled by verified finite-choice implementation.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Enabled after this investigation via finite-choice validator/editor/write coverage."
     },
     {
       "rowId": "master.new_on_active",
       "officialSetting": "master.new_on_active",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-c-likely-safe-enums",
       "controlKind": "dropdown",
       "companionSchemaType": "choice",
       "canParseRead": true,
-      "canValidateAtLeastOneCandidateValue": false,
-      "currentProductionValidatorExists": false,
+      "canValidateAtLeastOneCandidateValue": true,
+      "currentProductionValidatorExists": true,
       "candidateValuesAcceptedByHyprland": [
         "none",
         "before",
@@ -3949,7 +3944,7 @@
         "__invalid_choice__"
       ],
       "invalidValuesRejectedOrSkipped": 0,
-      "canRejectInvalidValuesInCurrentApp": false,
+      "canRejectInvalidValuesInCurrentApp": true,
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
@@ -3958,29 +3953,24 @@
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
-      "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "needs-finite-choice-validator",
-        "needs-editor-projection",
-        "needs-invalid-value-tests",
-        "needs-validator-implementation"
-      ],
-      "exactNextStepToMakeWritable": "Add finite-choice raw-value mapping, dropdown projection, accepted-value tests, invalid rejection tests, fixture writer/reread tests, and temp-config proof.",
+      "blockedByMissingValidatorEditorOrTestCoverage": false,
+      "missingProofCategories": [],
+      "exactNextStepToMakeWritable": "Already enabled by verified finite-choice implementation.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Enabled after this investigation via finite-choice validator/editor/write coverage."
     },
     {
       "rowId": "master.orientation",
       "officialSetting": "master.orientation",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-c-likely-safe-enums",
       "controlKind": "dropdown",
       "companionSchemaType": "choice",
       "canParseRead": true,
-      "canValidateAtLeastOneCandidateValue": false,
-      "currentProductionValidatorExists": false,
+      "canValidateAtLeastOneCandidateValue": true,
+      "currentProductionValidatorExists": true,
       "candidateValuesAcceptedByHyprland": [
         "left",
         "right",
@@ -3993,7 +3983,7 @@
         "__invalid_choice__"
       ],
       "invalidValuesRejectedOrSkipped": 0,
-      "canRejectInvalidValuesInCurrentApp": false,
+      "canRejectInvalidValuesInCurrentApp": true,
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
@@ -4002,17 +3992,12 @@
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
-      "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "needs-finite-choice-validator",
-        "needs-editor-projection",
-        "needs-invalid-value-tests",
-        "needs-validator-implementation"
-      ],
-      "exactNextStepToMakeWritable": "Add finite-choice raw-value mapping, dropdown projection, accepted-value tests, invalid rejection tests, fixture writer/reread tests, and temp-config proof.",
+      "blockedByMissingValidatorEditorOrTestCoverage": false,
+      "missingProofCategories": [],
+      "exactNextStepToMakeWritable": "Already enabled by verified finite-choice implementation.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Enabled after this investigation via finite-choice validator/editor/write coverage."
     },
     {
       "rowId": "master.center_master_fallback",
@@ -4131,14 +4116,14 @@
     {
       "rowId": "scrolling.direction",
       "officialSetting": "scrolling.direction",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-c-likely-safe-enums",
       "controlKind": "dropdown",
       "companionSchemaType": "string",
       "canParseRead": true,
-      "canValidateAtLeastOneCandidateValue": false,
-      "currentProductionValidatorExists": false,
+      "canValidateAtLeastOneCandidateValue": true,
+      "currentProductionValidatorExists": true,
       "candidateValuesAcceptedByHyprland": [
         "right",
         "left",
@@ -4150,7 +4135,7 @@
         "__invalid_choice__"
       ],
       "invalidValuesRejectedOrSkipped": 0,
-      "canRejectInvalidValuesInCurrentApp": false,
+      "canRejectInvalidValuesInCurrentApp": true,
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
@@ -4159,17 +4144,12 @@
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
-      "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "needs-finite-choice-validator",
-        "needs-editor-projection",
-        "needs-invalid-value-tests",
-        "needs-validator-implementation"
-      ],
-      "exactNextStepToMakeWritable": "Add finite-choice raw-value mapping, dropdown projection, accepted-value tests, invalid rejection tests, fixture writer/reread tests, and temp-config proof.",
+      "blockedByMissingValidatorEditorOrTestCoverage": false,
+      "missingProofCategories": [],
+      "exactNextStepToMakeWritable": "Already enabled by verified finite-choice implementation.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Enabled after this investigation via finite-choice validator/editor/write coverage."
     },
     {
       "rowId": "experimental.wp_cm_1_2",
