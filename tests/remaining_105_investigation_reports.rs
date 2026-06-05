@@ -39,6 +39,12 @@ fn batch_c_string_semantics() -> Result<Value> {
     ))?)
 }
 
+fn source_backed_input_values() -> Result<Value> {
+    Ok(serde_json::from_str(include_str!(
+        "../data/reports/source-backed-input-value-evidence.v0.55.2.json"
+    ))?)
+}
+
 #[test]
 fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let coverage = coverage()?;
@@ -244,6 +250,90 @@ fn batch_c_string_rows_require_official_semantic_validators() -> Result<()> {
         assert!(blockers.contains("official-source-research-needed"));
         assert!(blockers.contains("needs-validator-implementation"));
         assert!(!blockers.contains("needs-finite-choice-validator"));
+
+        let coverage_row = coverage_rows
+            .iter()
+            .find(|row| row["rowId"].as_str() == Some(row_id))
+            .unwrap_or_else(|| panic!("missing coverage row {row_id}"));
+        assert_eq!(
+            coverage_row["writeStatus"].as_str(),
+            Some("manual-review-needed")
+        );
+        assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
+    }
+
+    Ok(())
+}
+
+#[test]
+fn source_backed_input_rows_have_xkb_evidence_but_remain_blocked() -> Result<()> {
+    let source_values = source_backed_input_values()?;
+    let classifications = classifications()?;
+    let coverage = coverage()?;
+
+    assert_eq!(source_values["counts"]["rows"], 5);
+    assert_eq!(source_values["counts"]["rowsEnabled"], 0);
+    assert!(
+        source_values["counts"]["xkbModelValues"]
+            .as_u64()
+            .expect("xkbModelValues should be numeric")
+            > 10
+    );
+    assert!(
+        source_values["counts"]["xkbLayoutValues"]
+            .as_u64()
+            .expect("xkbLayoutValues should be numeric")
+            > 10
+    );
+    assert!(
+        source_values["counts"]["xkbOptionValues"]
+            .as_u64()
+            .expect("xkbOptionValues should be numeric")
+            > 10
+    );
+
+    let target_ids = [
+        "input.kb_model",
+        "input.kb_layout",
+        "input.kb_variant",
+        "input.kb_options",
+        "input.kb_rules",
+    ];
+    let source_rows = source_values["rows"].as_array().unwrap();
+    let classification_rows = classifications["rows"].as_array().unwrap();
+    let coverage_rows = coverage["rows"].as_array().unwrap();
+
+    for row_id in target_ids {
+        let source_row = source_rows
+            .iter()
+            .find(|row| row["rowId"].as_str() == Some(row_id))
+            .unwrap_or_else(|| panic!("missing source-backed evidence for {row_id}"));
+        assert_eq!(
+            source_row["enumeratorImplementedInRust"].as_bool(),
+            Some(true)
+        );
+        assert_eq!(source_row["safeToEnableNow"].as_bool(), Some(false));
+        assert!(
+            source_row["valueCount"]
+                .as_u64()
+                .expect("valueCount should be numeric")
+                >= 2
+        );
+
+        let classification_row = classification_rows
+            .iter()
+            .find(|row| row["rowId"].as_str() == Some(row_id))
+            .unwrap_or_else(|| panic!("missing classification for {row_id}"));
+        let blockers = classification_row["missingProofCategories"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|value| value.as_str().unwrap())
+            .collect::<BTreeSet<_>>();
+        assert!(blockers.contains("needs-validator-implementation"));
+        assert!(blockers.contains("needs-editor-projection"));
+        assert!(blockers.contains("needs-invalid-value-tests"));
+        assert!(!blockers.contains("needs-source-backed-enumerator"));
 
         let coverage_row = coverage_rows
             .iter()

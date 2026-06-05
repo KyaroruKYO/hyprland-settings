@@ -34,18 +34,16 @@
     "rowsWithHyprlandAcceptedInvalidProbe": 13,
     "technicallyWritableButPolicyBlocked": 88,
     "blockedOnlyByPolicy": 0,
-    "sourceBackedEnumeratorNeeded": 5,
+    "sourceBackedEnumeratorNeeded": 0,
     "sessionRuntimePolicyNeeded": 16,
     "highRiskRecoveryDesignNeeded": 72,
     "byMissingProofCategory": {
       "proof-complete-policy-blocked": 16,
       "needs-session-runtime-policy": 16,
-      "needs-validator-implementation": 88,
+      "needs-validator-implementation": 90,
       "needs-editor-projection": 98,
       "needs-invalid-value-tests": 98,
-      "needs-finite-choice-validator": 10,
-      "needs-source-backed-enumerator": 5,
-      "needs-dynamic-system-values": 5,
+      "needs-finite-choice-validator": 8,
       "proof-complete-high-risk-blocked": 72,
       "needs-high-risk-recovery-design": 72,
       "official-source-research-needed": 2
@@ -58,12 +56,10 @@
     "currentByMissingProofCategory": {
       "proof-complete-policy-blocked": 16,
       "needs-session-runtime-policy": 16,
-      "needs-validator-implementation": 88,
+      "needs-validator-implementation": 90,
       "needs-editor-projection": 98,
       "needs-invalid-value-tests": 98,
-      "needs-finite-choice-validator": 10,
-      "needs-source-backed-enumerator": 5,
-      "needs-dynamic-system-values": 5,
+      "needs-finite-choice-validator": 8,
       "proof-complete-high-risk-blocked": 72,
       "needs-high-risk-recovery-design": 72,
       "official-source-research-needed": 2
@@ -328,23 +324,21 @@
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
-      "needsSourceBackedDynamicValueEnumeration": true,
+      "needsSourceBackedDynamicValueEnumeration": false,
       "needsSessionRuntimePolicy": false,
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
       "missingProofCategories": [
-        "needs-source-backed-enumerator",
-        "needs-dynamic-system-values",
-        "needs-finite-choice-validator",
         "needs-editor-projection",
-        "needs-invalid-value-tests"
+        "needs-invalid-value-tests",
+        "needs-validator-implementation"
       ],
-      "exactNextStepToMakeWritable": "Implement non-mutating source-backed value enumeration and validation for this setting, then add invalid-value tests and rerun temp-config proof.",
+      "exactNextStepToMakeWritable": "Wire the Rust XKB/source-backed enumerator into production validators and editor projection, then add invalid-value tests and rerun fixture/temp-config proof.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Local XKB source-backed values are now enumerated from /usr/share/X11/xkb/rules/evdev.lst in data/reports/source-backed-input-value-evidence.v0.55.2.json. Production write enablement still requires validator/editor integration and proof tests."
     },
     {
       "rowId": "input.kb_layout",
@@ -367,23 +361,21 @@
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
-      "needsSourceBackedDynamicValueEnumeration": true,
+      "needsSourceBackedDynamicValueEnumeration": false,
       "needsSessionRuntimePolicy": false,
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
       "missingProofCategories": [
-        "needs-source-backed-enumerator",
-        "needs-dynamic-system-values",
         "needs-validator-implementation",
         "needs-editor-projection",
         "needs-invalid-value-tests"
       ],
-      "exactNextStepToMakeWritable": "Implement non-mutating source-backed value enumeration and validation for this setting, then add invalid-value tests and rerun temp-config proof.",
+      "exactNextStepToMakeWritable": "Wire the Rust XKB/source-backed enumerator into production validators and editor projection, then add invalid-value tests and rerun fixture/temp-config proof.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Local XKB source-backed values are now enumerated from /usr/share/X11/xkb/rules/evdev.lst in data/reports/source-backed-input-value-evidence.v0.55.2.json. Production write enablement still requires validator/editor integration and proof tests."
     },
     {
       "rowId": "input.kb_variant",
@@ -406,23 +398,21 @@
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
-      "needsSourceBackedDynamicValueEnumeration": true,
+      "needsSourceBackedDynamicValueEnumeration": false,
       "needsSessionRuntimePolicy": false,
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
       "missingProofCategories": [
-        "needs-source-backed-enumerator",
-        "needs-dynamic-system-values",
         "needs-validator-implementation",
         "needs-editor-projection",
         "needs-invalid-value-tests"
       ],
-      "exactNextStepToMakeWritable": "Implement non-mutating source-backed value enumeration and validation for this setting, then add invalid-value tests and rerun temp-config proof.",
+      "exactNextStepToMakeWritable": "Wire the Rust XKB/source-backed enumerator into production validators and editor projection, then add invalid-value tests and rerun fixture/temp-config proof.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Local XKB source-backed values are now enumerated from /usr/share/X11/xkb/rules/evdev.lst in data/reports/source-backed-input-value-evidence.v0.55.2.json. Production write enablement still requires validator/editor integration and proof tests."
     },
     {
       "rowId": "input.kb_options",
@@ -445,23 +435,21 @@
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
-      "needsSourceBackedDynamicValueEnumeration": true,
+      "needsSourceBackedDynamicValueEnumeration": false,
       "needsSessionRuntimePolicy": false,
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
       "missingProofCategories": [
-        "needs-source-backed-enumerator",
-        "needs-dynamic-system-values",
         "needs-validator-implementation",
         "needs-editor-projection",
         "needs-invalid-value-tests"
       ],
-      "exactNextStepToMakeWritable": "Implement non-mutating source-backed value enumeration and validation for this setting, then add invalid-value tests and rerun temp-config proof.",
+      "exactNextStepToMakeWritable": "Wire the Rust XKB/source-backed enumerator into production validators and editor projection, then add invalid-value tests and rerun fixture/temp-config proof.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Local XKB source-backed values are now enumerated from /usr/share/X11/xkb/rules/evdev.lst in data/reports/source-backed-input-value-evidence.v0.55.2.json. Production write enablement still requires validator/editor integration and proof tests."
     },
     {
       "rowId": "input.kb_rules",
@@ -484,23 +472,21 @@
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
-      "needsSourceBackedDynamicValueEnumeration": true,
+      "needsSourceBackedDynamicValueEnumeration": false,
       "needsSessionRuntimePolicy": false,
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
       "missingProofCategories": [
-        "needs-source-backed-enumerator",
-        "needs-dynamic-system-values",
-        "needs-finite-choice-validator",
         "needs-editor-projection",
-        "needs-invalid-value-tests"
+        "needs-invalid-value-tests",
+        "needs-validator-implementation"
       ],
-      "exactNextStepToMakeWritable": "Implement non-mutating source-backed value enumeration and validation for this setting, then add invalid-value tests and rerun temp-config proof.",
+      "exactNextStepToMakeWritable": "Wire the Rust XKB/source-backed enumerator into production validators and editor projection, then add invalid-value tests and rerun fixture/temp-config proof.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Local XKB source-backed values are now enumerated from /usr/share/X11/xkb/rules/evdev.lst in data/reports/source-backed-input-value-evidence.v0.55.2.json. Production write enablement still requires validator/editor integration and proof tests."
     },
     {
       "rowId": "input.scroll_method",

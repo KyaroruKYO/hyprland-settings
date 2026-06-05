@@ -9,6 +9,7 @@ pub mod metadata;
 pub mod pending_change;
 pub mod scalar_write;
 pub mod search;
+pub mod source_values;
 pub mod ui;
 pub mod validation;
 pub mod value;
