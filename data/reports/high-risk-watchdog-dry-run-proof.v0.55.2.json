@@ -1,0 +1,78 @@
+{
+  "artifactKind": "high-risk-watchdog-dry-run-proof",
+  "schemaVersion": 1,
+  "counts": {
+    "dryRunScenarios": 3,
+    "confirmPathPassed": 1,
+    "timeoutRevertPathPassed": 1,
+    "restoreFailurePathPassed": 1,
+    "realConfigPathsUsed": 0,
+    "activeRuntimeMutations": 0,
+    "reloadRuns": 0,
+    "evalRuns": 0,
+    "luaExecutions": 0
+  },
+  "scenarios": [
+    {
+      "scenario": "confirm-before-timeout",
+      "status": "confirmed",
+      "targetConfigPath": "/tmp/hyprland-settings-high-risk-recovery-confirm/hyprland.conf",
+      "backupCreatedBeforeMutation": true,
+      "simulatedMutationApplied": true,
+      "restoreAttempted": false,
+      "restoreVerified": false,
+      "requiresHyprlandKeybind": false,
+      "requiresAppUi": false,
+      "requiresVisibleDisplay": false,
+      "requiresMouseInput": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "activeRuntimeModified": false,
+      "activeConfigModified": false
+    },
+    {
+      "scenario": "timeout-reverts-backup",
+      "status": "reverted",
+      "targetConfigPath": "/tmp/hyprland-settings-high-risk-recovery-revert/hyprland.conf",
+      "backupCreatedBeforeMutation": true,
+      "simulatedMutationApplied": true,
+      "restoreAttempted": true,
+      "restoreVerified": true,
+      "requiresHyprlandKeybind": false,
+      "requiresAppUi": false,
+      "requiresVisibleDisplay": false,
+      "requiresMouseInput": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "activeRuntimeModified": false,
+      "activeConfigModified": false
+    },
+    {
+      "scenario": "restore-verification-failure",
+      "status": "failed",
+      "targetConfigPath": "/tmp/hyprland-settings-high-risk-recovery-failed/hyprland.conf",
+      "backupCreatedBeforeMutation": true,
+      "simulatedMutationApplied": true,
+      "restoreAttempted": true,
+      "restoreVerified": false,
+      "requiresHyprlandKeybind": false,
+      "requiresAppUi": false,
+      "requiresVisibleDisplay": false,
+      "requiresMouseInput": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "activeRuntimeModified": false,
+      "activeConfigModified": false,
+      "errorRecorded": true
+    }
+  ],
+  "moduleProof": {
+    "module": "src/high_risk_recovery.rs",
+    "testFile": "tests/high_risk_recovery.rs",
+    "dryRunTempFilesOnly": true,
+    "productionServiceImplemented": false
+  }
+}
