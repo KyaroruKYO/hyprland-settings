@@ -38,37 +38,39 @@ fn all_341_pipeline_report_matches_current_scalar_counts() -> Result<()> {
 
     assert_eq!(coverage["counts"]["totalScalarRows"], 341);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 253);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 88);
+    assert_eq!(coverage["counts"]["writableRows"], 269);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 72);
 
     assert_eq!(pipeline["counts"]["totalRows"], 341);
     assert_eq!(pipeline["counts"]["readableRows"], 341);
-    assert_eq!(pipeline["counts"]["writableRows"], 253);
-    assert_eq!(pipeline["counts"]["blockedRows"], 88);
-    assert_eq!(pipeline["counts"]["safeWritableRowsFromRustTable"], 253);
+    assert_eq!(pipeline["counts"]["writableRows"], 269);
+    assert_eq!(pipeline["counts"]["blockedRows"], 72);
+    assert_eq!(pipeline["counts"]["safeWritableRowsFromRustTable"], 269);
     assert_eq!(pipeline["counts"]["highRiskRows"], 72);
-    assert_eq!(pipeline["counts"]["sessionRuntimeSensitiveRows"], 16);
+    assert_eq!(pipeline["counts"]["sessionRuntimeSensitiveRows"], 0);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
     assert_eq!(pipeline["counts"]["behaviorMismatchRows"], 0);
-    assert_eq!(pipeline["counts"]["writeAllowlistChanged"], false);
-    assert_eq!(pipeline["counts"]["productionBehaviorChanged"], false);
+    assert_eq!(pipeline["counts"]["writeAllowlistChanged"], true);
+    assert_eq!(pipeline["counts"]["productionBehaviorChanged"], true);
 
-    assert_eq!(writable_proof["counts"]["writableRows"], 253);
+    assert_eq!(writable_proof["counts"]["writableRows"], 269);
     assert_eq!(
         writable_proof["counts"]["safeWritableRowsFromRustTable"],
-        253
+        269
     );
     assert_eq!(writable_proof["counts"]["metadataGapRows"], 0);
     assert_eq!(writable_proof["counts"]["behaviorMismatchRows"], 0);
 
     assert_eq!(audit["counts"]["totalRows"], 341);
-    assert_eq!(audit["counts"]["writableRows"], 253);
-    assert_eq!(audit["counts"]["blockedRows"], 88);
+    assert_eq!(audit["counts"]["writableRows"], 269);
+    assert_eq!(audit["counts"]["blockedRows"], 72);
     assert_eq!(audit["counts"]["metadataGapRows"], 0);
     assert_eq!(audit["counts"]["behaviorMismatchRows"], 0);
     assert_eq!(audit["counts"]["rowsNeedingFutureCleanup"], 0);
+    assert_eq!(audit["counts"]["writeAllowlistChanged"], true);
+    assert_eq!(audit["counts"]["productionBehaviorChanged"], true);
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 253);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 269);
 
     Ok(())
 }
@@ -160,11 +162,24 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
         let row_id = row["rowId"].as_str().unwrap();
         assert_eq!(row["safeWritableTablePresent"].as_bool(), Some(true));
         assert_eq!(row["coverageWritable"].as_bool(), Some(true));
-        assert_eq!(
-            row["gateStatus"].as_str(),
-            Some("passed-normal-write-gate"),
-            "{row_id} should preserve the existing writable gate"
-        );
+        if row["scope"].as_str().is_some_and(|scope| {
+            matches!(
+                scope,
+                "persistent-config-only" | "persistent-needs-reload" | "startup-only"
+            ) && row["proofSource"].as_str() == Some("session-runtime-write-proof.v0.55.2.json")
+        }) {
+            assert_eq!(
+                row["gateStatus"].as_str(),
+                Some("passed-session-runtime-write-gate"),
+                "{row_id} should use the session/runtime gate"
+            );
+        } else {
+            assert_eq!(
+                row["gateStatus"].as_str(),
+                Some("passed-normal-write-gate"),
+                "{row_id} should preserve the existing writable gate"
+            );
+        }
         assert_eq!(
             row["applyPath"].as_str(),
             Some("persistent-config-write-with-backup-reread"),
@@ -180,8 +195,13 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
             row["behaviorMismatch"].as_array().unwrap().is_empty(),
             "{row_id} should not have behavior mismatches"
         );
-        assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(false));
-        assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(false));
+        if row["proofSource"].as_str() == Some("session-runtime-write-proof.v0.55.2.json") {
+            assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
+            assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
+        } else {
+            assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(false));
+            assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(false));
+        }
     }
 
     Ok(())
@@ -200,7 +220,6 @@ fn blocked_pipeline_rows_remain_blocked_with_policy_metadata() -> Result<()> {
         .collect::<BTreeMap<_, _>>();
 
     let mut blocked = 0;
-    let mut session_runtime = 0;
     let mut high_risk = 0;
 
     for row in pipeline["rows"].as_array().unwrap() {
@@ -221,16 +240,6 @@ fn blocked_pipeline_rows_remain_blocked_with_policy_metadata() -> Result<()> {
         );
 
         match row["riskBucket"].as_str() {
-            Some("session-runtime-sensitive") => {
-                session_runtime += 1;
-                assert!(
-                    row["nextRequiredWork"]
-                        .as_str()
-                        .unwrap()
-                        .contains("session/runtime"),
-                    "{row_id} should stay blocked on session/runtime policy"
-                );
-            }
             Some("display-render-recovery")
             | Some("cursor-input-recovery")
             | Some("debug-crash-recovery")
@@ -249,8 +258,7 @@ fn blocked_pipeline_rows_remain_blocked_with_policy_metadata() -> Result<()> {
         }
     }
 
-    assert_eq!(blocked, 88);
-    assert_eq!(session_runtime, 16);
+    assert_eq!(blocked, 72);
     assert_eq!(high_risk, 72);
 
     Ok(())
@@ -278,8 +286,33 @@ fn backfill_audit_records_no_behavior_or_allowlist_changes() -> Result<()> {
                 .is_empty(),
             "{row_id} should not have behavior/pipeline mismatches"
         );
-        assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(false));
-        assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(false));
+        if row["rowId"].as_str().is_some_and(|row_id| {
+            [
+                "appearance.fullscreen_opacity",
+                "appearance.blur.xray",
+                "general.allow_tearing",
+                "general.locale",
+                "misc.vrr",
+                "misc.mouse_move_enables_dpms",
+                "misc.key_press_enables_dpms",
+                "misc.disable_autoreload",
+                "misc.focus_on_activate",
+                "misc.allow_session_lock_restore",
+                "misc.session_lock_xray",
+                "misc.on_focus_under_fullscreen",
+                "misc.exit_window_retains_fullscreen",
+                "binds.movefocus_cycles_fullscreen",
+                "binds.allow_pin_fullscreen",
+                "scrolling.fullscreen_on_one_column",
+            ]
+            .contains(&row_id)
+        }) {
+            assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
+            assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
+        } else {
+            assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(false));
+            assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(false));
+        }
         assert_eq!(row["needsFutureCleanup"].as_bool(), Some(false));
     }
 

@@ -11,10 +11,10 @@
   ],
   "counts": {
     "rows": 90,
-    "writableRowsRemain": 253,
-    "blockedRowsRemain": 88,
+    "writableRowsRemain": 269,
+    "blockedRowsRemain": 72,
     "customStringSemanticRows": 0,
-    "sessionRuntimeSensitiveRows": 16,
+    "sessionRuntimeSensitiveRows": 0,
     "highRiskRows": 72,
     "byScope": {
       "persistent-config-only": 16,
@@ -29,13 +29,14 @@
       "app-validator-authoritative": 1
     },
     "byRiskBucket": {
-      "session-runtime-sensitive": 16,
+      "session-runtime-sensitive": 0,
       "display-render-recovery": 25,
       "cursor-input-recovery": 22,
       "ecosystem-permission-policy": 3,
       "debug-crash-recovery": 22,
       "custom-semantic-string": 0,
-      "resolved-custom-semantic-string": 2
+      "resolved-custom-semantic-string": 2,
+      "resolved-session-runtime-sensitive": 16
     },
     "verifyConfigParserOnlyRows": 2,
     "resolvedCustomStringSemanticRows": 2
@@ -99,14 +100,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "appearance.blur.xray",
@@ -124,14 +126,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "general.allow_tearing",
@@ -149,14 +152,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "general.locale",
@@ -174,14 +178,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "misc.vrr",
@@ -199,14 +204,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "misc.mouse_move_enables_dpms",
@@ -224,14 +230,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "misc.key_press_enables_dpms",
@@ -249,14 +256,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "misc.disable_autoreload",
@@ -274,14 +282,15 @@
       "recoveryStrategy": "backup-rollback-plus-reload-not-run-without-explicit-approval",
       "approvalGate": "explicit-warning-and-reload-or-runtime-policy-approval",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "misc.focus_on_activate",
@@ -299,14 +308,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "misc.allow_session_lock_restore",
@@ -324,14 +334,15 @@
       "recoveryStrategy": "backup-rollback-plus-known-good-startup-recovery-required",
       "approvalGate": "explicit-warning-and-reload-or-runtime-policy-approval",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "misc.session_lock_xray",
@@ -349,14 +360,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "misc.on_focus_under_fullscreen",
@@ -374,14 +386,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "misc.exit_window_retains_fullscreen",
@@ -399,14 +412,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "binds.movefocus_cycles_fullscreen",
@@ -424,14 +438,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "binds.allow_pin_fullscreen",
@@ -449,14 +464,15 @@
       "recoveryStrategy": "backup-rollback",
       "approvalGate": "normal-safe-write-review",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "xwayland.enabled",
@@ -2224,14 +2240,15 @@
       "recoveryStrategy": "backup-rollback-plus-reload-not-run-without-explicit-approval",
       "approvalGate": "explicit-warning-and-reload-or-runtime-policy-approval",
       "preflightProofStatus": "temp-config-proof-complete-apply-policy-blocked",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "commitProofStatus": "backup-write-reread-tested",
+      "gateStatus": "passed-session-runtime-write-gate",
       "verifyConfigRole": "preflight-proof-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Design session/runtime apply policy for this scope, then add row-specific warning gate, reread oracle, rollback strategy, and tests."
+      "nextRequiredWork": "Resolved by session/runtime write pipeline; runtime effect remains pending reload/restart where noted.",
+      "enabledBySessionRuntimePipeline": true
     },
     {
       "rowId": "scrolling.explicit_column_widths",

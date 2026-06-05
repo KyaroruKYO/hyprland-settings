@@ -71,8 +71,8 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let results = proof_results()?;
     let classifications = classifications()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 253);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 88);
+    assert_eq!(coverage["counts"]["writableRows"], 269);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 72);
     assert_eq!(investigation["counts"]["rows"], 105);
     assert_eq!(plan["counts"]["rows"], 105);
     assert_eq!(results["counts"]["rows"], 105);
@@ -85,7 +85,7 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_string())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 88);
+    assert_eq!(blocked_ids.len(), 72);
 
     for report in [&investigation, &plan, &results, &classifications] {
         let ids = report["rows"]

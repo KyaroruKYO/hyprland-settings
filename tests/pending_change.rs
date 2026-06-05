@@ -49,12 +49,9 @@ fn invalid_pending_change_for_windows_snap_enabled_is_rejected() {
 
 #[test]
 fn only_safe_writable_rows_can_be_staged() {
-    let current = current_value_for(
-        "misc.disable_autoreload",
-        "misc:disable_autoreload = false\n",
-    );
+    let current = current_value_for("xwayland.enabled", "xwayland:enabled = false\n");
 
-    let change = stage_pending_change("misc.disable_autoreload", &current, "true");
+    let change = stage_pending_change("xwayland.enabled", &current, "true");
 
     assert_eq!(
         change.validation,

@@ -34,8 +34,8 @@ fn unified_remaining_90_pipeline_covers_current_blocked_rows() -> Result<()> {
     let official = official_evidence()?;
     let scope_policy = scope_policy()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 253);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 88);
+    assert_eq!(coverage["counts"]["writableRows"], 269);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 72);
     assert_eq!(pipeline["counts"]["rows"], 90);
     assert_eq!(official["counts"]["rows"], 90);
     assert_eq!(scope_policy["counts"]["rows"], 90);
@@ -47,7 +47,7 @@ fn unified_remaining_90_pipeline_covers_current_blocked_rows() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_owned())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 88);
+    assert_eq!(blocked_ids.len(), 72);
 
     for report in [&pipeline, &official, &scope_policy] {
         let ids = report["rows"]
@@ -164,11 +164,11 @@ fn custom_semantic_rows_are_parser_only_and_have_specific_validator_paths() -> R
 }
 
 #[test]
-fn session_and_high_risk_rows_remain_blocked_with_recovery_gates() -> Result<()> {
+fn session_rows_are_resolved_and_high_risk_rows_remain_blocked_with_recovery_gates() -> Result<()> {
     let coverage = coverage()?;
     let pipeline = pipeline()?;
 
-    assert_eq!(pipeline["counts"]["sessionRuntimeSensitiveRows"], 16);
+    assert_eq!(pipeline["counts"]["sessionRuntimeSensitiveRows"], 0);
     assert_eq!(pipeline["counts"]["highRiskRows"], 72);
 
     let coverage_by_id = coverage["rows"]

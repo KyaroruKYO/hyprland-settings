@@ -10,25 +10,24 @@
   ],
   "counts": {
     "startingWritableRows": 94,
-    "finalWritableRows": 253,
+    "finalWritableRows": 269,
     "startingBlockedRows": 247,
-    "finalBlockedRows": 88,
-    "enabledRows": 159,
+    "finalBlockedRows": 72,
+    "enabledRows": 175,
     "enabledByBatch": {
       "batch-b-likely-safe-numerics": 33,
       "batch-c-likely-safe-enums": 7,
       "batch-d-input-behavior": 74,
-      "batch-e-window-layout-behavior": 45
+      "batch-e-window-layout-behavior": 45,
+      "batch-g-session-runtime-sensitive": 16
     },
     "remainingBlockedByBatch": {
-      "batch-g-session-runtime-sensitive": 16,
       "high-risk": 72
     },
     "remainingBlockedByReason": {
-      "session/runtime-sensitive setting requires dedicated user approval and recovery policy before persistent writes are enabled": 16,
       "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.": 72
     },
-    "hyprlandVerifyConfigPassed": 155,
+    "hyprlandVerifyConfigPassed": 171,
     "hyprlandVerifyConfigFailed": 0,
     "activeConfigModified": false,
     "activeRuntimeModified": false

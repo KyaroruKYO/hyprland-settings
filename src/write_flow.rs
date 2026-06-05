@@ -16,7 +16,7 @@ use crate::scalar_write::apply_scalar_write_plan;
 use crate::source_values::{read_system_xkb_rules, MonitorSourceValue, XkbSourceValue};
 use crate::write_classification::{
     finite_choice_options, is_safe_writable_setting, safe_writable_official_setting,
-    safe_writable_value_kind, ScalarWriteValueKind,
+    safe_writable_value_kind, session_runtime_write_policy, ScalarWriteValueKind,
 };
 use crate::write_safety::{review_write_plan, WriteGateFailure, WritePlanRequest, WriteResult};
 
@@ -295,6 +295,12 @@ fn pending_projection(
     if let Some(reason) = review_block_reason(current_status) {
         review_summary.push(format!("blocked: {reason}"));
     }
+    if let Some(policy) = session_runtime_write_policy(&pending.setting_id) {
+        review_summary.push(format!("scope: {}", policy.scope));
+        review_summary.push(format!("runtime effect: {}", policy.runtime_effect));
+        review_summary.push(format!("approval gate: {}", policy.approval_gate));
+        review_summary.push(format!("warning: {}", policy.review_warning));
+    }
 
     PendingChangeProjection {
         setting_id: pending.setting_id.clone(),
@@ -557,14 +563,18 @@ fn normalize_bool_literal(value: &str) -> Option<bool> {
 }
 
 fn outcome_from_result(result: WriteResult) -> ApplyOutcome {
+    let setting_id = result.plan.setting_id;
+    let reload_note = session_runtime_write_policy(&setting_id)
+        .map(|policy| policy.review_warning.to_string())
+        .unwrap_or_else(|| "Hyprland reload is not performed by this app yet.".to_string());
     ApplyOutcome {
-        setting_id: result.plan.setting_id,
+        setting_id,
         target_path: result.plan.target_path,
         backup_path: result.plan.backup_path.clone(),
         rollback_source_path: result.plan.rollback.source_path,
         rollback_backup_path: result.plan.rollback.backup_path,
         verified_value: result.verified_value,
-        reload_note: "Hyprland reload is not performed by this app yet.".to_string(),
+        reload_note,
     }
 }
 

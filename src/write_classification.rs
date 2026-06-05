@@ -94,6 +94,36 @@ pub const SOURCE_BACKED_INPUT_ROWS: &[&str] = &[
 
 pub const MONITOR_OUTPUT_ROWS: &[&str] = &["input.touchdevice.output", "input.tablet.output"];
 
+pub const SESSION_RUNTIME_SENSITIVE_ROWS: &[&str] = &[
+    "appearance.fullscreen_opacity",
+    "appearance.blur.xray",
+    "general.allow_tearing",
+    "general.locale",
+    "misc.vrr",
+    "misc.mouse_move_enables_dpms",
+    "misc.key_press_enables_dpms",
+    "misc.disable_autoreload",
+    "misc.focus_on_activate",
+    "misc.allow_session_lock_restore",
+    "misc.session_lock_xray",
+    "misc.on_focus_under_fullscreen",
+    "misc.exit_window_retains_fullscreen",
+    "binds.movefocus_cycles_fullscreen",
+    "binds.allow_pin_fullscreen",
+    "scrolling.fullscreen_on_one_column",
+];
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct SessionRuntimeWritePolicy {
+    pub scope: &'static str,
+    pub apply_path: &'static str,
+    pub reread_oracle: &'static str,
+    pub recovery_strategy: &'static str,
+    pub approval_gate: &'static str,
+    pub runtime_effect: &'static str,
+    pub review_warning: &'static str,
+}
+
 const LAYOUT_SELECTION_CHOICES: &[FiniteChoiceOption] = &[
     FiniteChoiceOption {
         raw_value: "dwindle",
@@ -437,6 +467,40 @@ const SCROLLING_FOCUS_FIT_METHOD_CHOICES: &[FiniteChoiceOption] = &[
     },
 ];
 
+const MISC_VRR_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "Off",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "On",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "Fullscreen only",
+    },
+    FiniteChoiceOption {
+        raw_value: "3",
+        label: "Fullscreen game content",
+    },
+];
+
+const MISC_ON_FOCUS_UNDER_FULLSCREEN_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "ignore",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "take_over",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "exit_fullscreen",
+    },
+];
+
 pub const SAFE_WRITABLE_TOGGLE_ROWS: &[(&str, &str)] = &[
     ("appearance.dim.modal", "decoration.dim_modal"),
     ("appearance.dim.inactive", "decoration.dim_inactive"),
@@ -594,6 +658,16 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "appearance.blur.contrast",
         official_setting: "decoration.blur.contrast",
         value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.fullscreen_opacity",
+        official_setting: "decoration.fullscreen_opacity",
+        value_kind: ScalarWriteValueKind::Percent,
+    },
+    SafeWritableRow {
+        row_id: "appearance.blur.xray",
+        official_setting: "decoration.blur.xray",
+        value_kind: ScalarWriteValueKind::Boolean,
     },
     SafeWritableRow {
         row_id: "appearance.shadow.enabled",
@@ -821,9 +895,64 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Boolean,
     },
     SafeWritableRow {
+        row_id: "misc.vrr",
+        official_setting: "misc.vrr",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "misc.mouse_move_enables_dpms",
+        official_setting: "misc.mouse_move_enables_dpms",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.key_press_enables_dpms",
+        official_setting: "misc.key_press_enables_dpms",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.disable_autoreload",
+        official_setting: "misc.disable_autoreload",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.focus_on_activate",
+        official_setting: "misc.focus_on_activate",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.allow_session_lock_restore",
+        official_setting: "misc.allow_session_lock_restore",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.session_lock_xray",
+        official_setting: "misc.session_lock_xray",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "misc.on_focus_under_fullscreen",
+        official_setting: "misc.on_focus_under_fullscreen",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "misc.exit_window_retains_fullscreen",
+        official_setting: "misc.exit_window_retains_fullscreen",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
         row_id: "windows.snap.enabled",
         official_setting: "general.snap.enabled",
         value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "general.allow_tearing",
+        official_setting: "general.allow_tearing",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "general.locale",
+        official_setting: "general.locale",
+        value_kind: ScalarWriteValueKind::LineSafeString,
     },
     SafeWritableRow {
         row_id: "windows.snap.window_gap",
@@ -1621,6 +1750,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Boolean,
     },
     SafeWritableRow {
+        row_id: "binds.movefocus_cycles_fullscreen",
+        official_setting: "binds.movefocus_cycles_fullscreen",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
         row_id: "binds.disable_keybind_grabbing",
         official_setting: "binds.disable_keybind_grabbing",
         value_kind: ScalarWriteValueKind::Boolean,
@@ -1634,6 +1768,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "binds.drag_threshold",
         official_setting: "binds.drag_threshold",
         value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "binds.allow_pin_fullscreen",
+        official_setting: "binds.allow_pin_fullscreen",
+        value_kind: ScalarWriteValueKind::Boolean,
     },
     SafeWritableRow {
         row_id: "layout.single_window_aspect_ratio_tolerance",
@@ -1800,6 +1939,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         official_setting: "scrolling.direction",
         value_kind: ScalarWriteValueKind::FiniteChoice,
     },
+    SafeWritableRow {
+        row_id: "scrolling.fullscreen_on_one_column",
+        official_setting: "scrolling.fullscreen_on_one_column",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
 ];
 
 pub fn classify_inventory_entry(entry: &InventoryEntry) -> ScalarWriteClassification {
@@ -1895,6 +2039,45 @@ pub fn finite_choice_options(row_id: &str) -> Option<&'static [FiniteChoiceOptio
         "dwindle.force_split" => Some(DWINDLE_FORCE_SPLIT_CHOICES),
         "dwindle.split_bias" => Some(DWINDLE_SPLIT_BIAS_CHOICES),
         "scrolling.focus_fit_method" => Some(SCROLLING_FOCUS_FIT_METHOD_CHOICES),
+        "misc.vrr" => Some(MISC_VRR_CHOICES),
+        "misc.on_focus_under_fullscreen" => Some(MISC_ON_FOCUS_UNDER_FULLSCREEN_CHOICES),
+        _ => None,
+    }
+}
+
+pub fn session_runtime_write_policy(row_id: &str) -> Option<SessionRuntimeWritePolicy> {
+    match row_id {
+        "misc.disable_autoreload" | "scrolling.fullscreen_on_one_column" => {
+            Some(SessionRuntimeWritePolicy {
+                scope: "persistent-needs-reload",
+                apply_path: "persistent-config-write-with-backup-reread",
+                reread_oracle: "file-reread",
+                recovery_strategy: "backup-rollback",
+                approval_gate: "explicit-warning-pending-user-reload",
+                runtime_effect: "pending-user-reload",
+                review_warning: "This setting is written to config only. Hyprland reload is not run, so the runtime effect is pending user reload.",
+            })
+        }
+        "misc.allow_session_lock_restore" => Some(SessionRuntimeWritePolicy {
+            scope: "startup-only",
+            apply_path: "persistent-config-write-with-backup-reread",
+            reread_oracle: "file-reread",
+            recovery_strategy: "backup-rollback",
+            approval_gate: "explicit-warning-pending-session-restart",
+            runtime_effect: "pending-session-restart",
+            review_warning: "This setting is written to config only. Hyprland reload is not run. It is startup/session sensitive, so the effect is pending a future Hyprland session start.",
+        }),
+        row_id if SESSION_RUNTIME_SENSITIVE_ROWS.contains(&row_id) => {
+            Some(SessionRuntimeWritePolicy {
+                scope: "persistent-config-only",
+                apply_path: "persistent-config-write-with-backup-reread",
+                reread_oracle: "file-reread",
+                recovery_strategy: "backup-rollback",
+                approval_gate: "normal-safe-write-review-with-session-runtime-note",
+                runtime_effect: "file-reread-proof-only-runtime-not-mutated",
+                review_warning: "This setting may affect session/runtime behavior, but this app only writes persistent config with backup and file reread verification. Hyprland reload is not run.",
+            })
+        }
         _ => None,
     }
 }

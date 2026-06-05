@@ -159,7 +159,7 @@ fn validate_safe_writable_value(
         Some(ScalarWriteValueKind::CommaSeparatedFloatList) => {
             validate_comma_separated_float_list(value)
         }
-        Some(ScalarWriteValueKind::LineSafeString) => validate_line_safe_string(value),
+        Some(ScalarWriteValueKind::LineSafeString) => validate_line_safe_string(setting_id, value),
         Some(ScalarWriteValueKind::Path) => validate_path_value(value),
         Some(ScalarWriteValueKind::RegexString) => validate_regex_value(value),
         Some(ScalarWriteValueKind::StringLike)
@@ -322,7 +322,10 @@ fn validate_comma_separated_float_list(value: &str) -> PendingChangeValidation {
     }
 }
 
-fn validate_line_safe_string(value: &str) -> PendingChangeValidation {
+fn validate_line_safe_string(setting_id: &str, value: &str) -> PendingChangeValidation {
+    if setting_id == "general.locale" && value.trim().is_empty() {
+        return PendingChangeValidation::Valid;
+    }
     match SanitizedStringValue::parse(value) {
         Ok(_) => PendingChangeValidation::Valid,
         Err(error) => invalid(&error.to_string()),

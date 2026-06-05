@@ -32,7 +32,7 @@ fn hyprmod_full_comparison_covers_all_scalar_rows() -> Result<()> {
     assert_eq!(report["counts"]["currentWritableRowsRemain"], 236);
     assert_eq!(report["counts"]["rowsEnabledThisSprint"], 0);
     assert_eq!(report["counts"]["writeBehaviorChanged"], false);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 253);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 269);
 
     for row in rows {
         assert!(row["evidenceStrength"].as_str().is_some());
@@ -61,7 +61,7 @@ fn hyprmod_comparison_does_not_enable_rows_or_high_risk_writes() -> Result<()> {
         .as_array()
         .expect("comparison rows should be an array");
 
-    assert_eq!(coverage["counts"]["writableRows"], 253);
+    assert_eq!(coverage["counts"]["writableRows"], 269);
     assert_eq!(
         coverage_rows
             .iter()

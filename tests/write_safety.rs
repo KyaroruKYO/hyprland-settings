@@ -117,13 +117,13 @@ fn rejects_unknown_setting() {
 fn rejects_unsafe_setting() {
     let current = current_value_for(
         "/tmp/hyprland.conf",
-        "misc.disable_autoreload",
-        "misc:disable_autoreload = false\n",
+        "xwayland.enabled",
+        "xwayland:enabled = false\n",
     );
-    let pending = stage_pending_change("misc.disable_autoreload", &current, "true");
+    let pending = stage_pending_change("xwayland.enabled", &current, "true");
 
     let review = review_write_plan(WritePlanRequest {
-        known_setting_ids: known_ids(&["misc.disable_autoreload"]),
+        known_setting_ids: known_ids(&["xwayland.enabled"]),
         detected_config_path: PathBuf::from("/tmp/hyprland.conf"),
         current_value: current,
         pending_change: pending,
