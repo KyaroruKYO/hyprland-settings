@@ -254,6 +254,15 @@ impl HighRiskRecoveryPlanner {
     ) -> Result<HighRiskWatchdogResult> {
         ensure_supported_watchdog_mode(plan.mode)?;
         let recovery = self.confirm(plan.recovery.clone(), confirmation_token);
+        if recovery.status == RecoveryStatus::Failed {
+            return Err(anyhow!(
+                "{}",
+                recovery
+                    .error
+                    .as_deref()
+                    .unwrap_or("watchdog confirmation failed")
+            ));
+        }
         let result = HighRiskWatchdogResult {
             mode: plan.mode,
             plan_path: plan.plan_path.clone(),
@@ -269,7 +278,31 @@ impl HighRiskRecoveryPlanner {
         plan: &HighRiskWatchdogPlan,
     ) -> Result<HighRiskWatchdogResult> {
         ensure_supported_watchdog_mode(plan.mode)?;
+        if self.now_unix_seconds < plan.recovery.confirmation_deadline_unix_seconds {
+            return Err(anyhow!(
+                "watchdog deadline has not expired; now={} deadline={}",
+                self.now_unix_seconds,
+                plan.recovery.confirmation_deadline_unix_seconds
+            ));
+        }
         let recovery = self.expire_and_recover(&plan.recovery);
+        if recovery.status == RecoveryStatus::Failed {
+            let result = HighRiskWatchdogResult {
+                mode: plan.mode,
+                plan_path: plan.plan_path.clone(),
+                result_log_path: plan.result_log_path.clone(),
+                recovery,
+            };
+            let _ = write_watchdog_result(&plan.result_log_path, &result);
+            return Err(anyhow!(
+                "{}",
+                result
+                    .recovery
+                    .error
+                    .as_deref()
+                    .unwrap_or("watchdog restore failed")
+            ));
+        }
         let result = HighRiskWatchdogResult {
             mode: plan.mode,
             plan_path: plan.plan_path.clone(),
@@ -355,6 +388,7 @@ pub fn refuse_inert_live_config_execution(plan: &InertLiveConfigWatchdogPlan) ->
 pub fn persist_watchdog_plan(path: impl AsRef<Path>, plan: &HighRiskWatchdogPlan) -> Result<()> {
     let path = path.as_ref();
     ensure_dry_run_target_path(path)?;
+    validate_watchdog_plan(plan)?;
     let bytes = serde_json::to_vec_pretty(plan)?;
     atomic_write(path, &bytes)
 }
@@ -367,7 +401,26 @@ pub fn load_watchdog_plan(path: impl AsRef<Path>) -> Result<HighRiskWatchdogPlan
     let plan: HighRiskWatchdogPlan = serde_json::from_slice(&bytes)
         .with_context(|| format!("failed to parse plan {}", path.display()))?;
     ensure_supported_watchdog_mode(plan.mode)?;
+    validate_watchdog_plan(&plan)?;
     Ok(plan)
+}
+
+pub fn validate_watchdog_plan(plan: &HighRiskWatchdogPlan) -> Result<()> {
+    ensure_supported_watchdog_mode(plan.mode)?;
+    match plan.mode {
+        HighRiskWatchdogMode::DryRunTempOnly => {
+            ensure_dry_run_target_path(&plan.plan_path)?;
+            ensure_dry_run_target_path(&plan.result_log_path)?;
+            ensure_dry_run_target_path(&plan.recovery.target_config_path)?;
+            ensure_dry_run_target_path(&plan.recovery.backup_path)?;
+        }
+        HighRiskWatchdogMode::ProductionPlannedDisabled
+        | HighRiskWatchdogMode::LiveConfigPlannedDisabled
+        | HighRiskWatchdogMode::LiveConfigArmed
+        | HighRiskWatchdogMode::LiveConfigConfirmed
+        | HighRiskWatchdogMode::LiveConfigReverted => {}
+    }
+    Ok(())
 }
 
 pub fn write_watchdog_result(

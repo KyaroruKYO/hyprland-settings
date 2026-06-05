@@ -1,5 +1,6 @@
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::process::Command;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use anyhow::Result;
@@ -23,6 +24,37 @@ fn temp_case(name: &str) -> Result<PathBuf> {
 
 fn read_json(path: &str) -> Result<Value> {
     Ok(serde_json::from_str(&fs::read_to_string(path)?)?)
+}
+
+fn watchdog_binary() -> PathBuf {
+    PathBuf::from(env!("CARGO_BIN_EXE_hyprland-settings"))
+}
+
+fn run_watchdog_cli(
+    plan_path: &Path,
+    result_path: &Path,
+    backup_root: &Path,
+    action: &str,
+    token: Option<&str>,
+    now: u64,
+) -> Result<std::process::Output> {
+    let mut command = Command::new(watchdog_binary());
+    command
+        .arg("high-risk-watchdog")
+        .arg("--plan")
+        .arg(plan_path)
+        .arg("--result")
+        .arg(result_path)
+        .arg("--backup-root")
+        .arg(backup_root)
+        .arg("--action")
+        .arg(action)
+        .arg("--now")
+        .arg(now.to_string());
+    if let Some(token) = token {
+        command.arg("--token").arg(token);
+    }
+    Ok(command.output()?)
 }
 
 #[test]
@@ -162,7 +194,8 @@ fn production_watchdog_primitives_persist_load_confirm_and_expire() -> Result<()
         loaded_timeout.recovery.recovery_session_id,
         timeout_plan.recovery.recovery_session_id
     );
-    let reverted = planner.expire_watchdog_and_restore(&loaded_timeout)?;
+    let after_deadline = HighRiskRecoveryPlanner::new(&backup_root, 406);
+    let reverted = after_deadline.expire_watchdog_and_restore(&loaded_timeout)?;
     assert_eq!(reverted.recovery.status, RecoveryStatus::Reverted);
     assert!(reverted.recovery.restore_verified);
     assert_eq!(
@@ -181,6 +214,193 @@ fn production_watchdog_primitives_persist_load_confirm_and_expire() -> Result<()
 fn dry_run_recovery_refuses_live_or_non_temp_config_paths() {
     assert!(ensure_dry_run_target_path(Path::new("relative.conf")).is_err());
     assert!(ensure_dry_run_target_path(Path::new("/home/kyo/.config/hypr/hyprland.conf")).is_err());
+}
+
+#[test]
+fn separate_watchdog_process_confirms_with_token_and_rejects_wrong_token() -> Result<()> {
+    let dir = temp_case("separate-confirm")?;
+    let config_path = dir.join("hyprland.conf");
+    let backup_root = dir.join("backups");
+    let plan_path = dir.join("watchdog-plan.json");
+    let wrong_result_path = dir.join("wrong-token-result.json");
+    let result_path = dir.join("watchdog-result.json");
+    fs::write(&config_path, "render:direct_scanout = 0\n")?;
+
+    let planner = HighRiskRecoveryPlanner::new(&backup_root, 600);
+    let plan = planner.arm_watchdog_for_temp_config(
+        &config_path,
+        "render:direct_scanout = 1\n",
+        10,
+        &plan_path,
+        &result_path,
+    )?;
+    assert!(plan_path.exists());
+    assert_eq!(
+        fs::read_to_string(&config_path)?,
+        "render:direct_scanout = 1\n"
+    );
+
+    let wrong = run_watchdog_cli(
+        &plan_path,
+        &wrong_result_path,
+        &backup_root,
+        "confirm",
+        Some("wrong-token"),
+        605,
+    )?;
+    assert!(
+        !wrong.status.success(),
+        "wrong token must fail as a separate process"
+    );
+    assert!(!wrong_result_path.exists());
+    assert_eq!(
+        fs::read_to_string(&config_path)?,
+        "render:direct_scanout = 1\n"
+    );
+
+    let confirmed = run_watchdog_cli(
+        &plan_path,
+        &result_path,
+        &backup_root,
+        "confirm",
+        Some(&plan.recovery.confirmation_token),
+        605,
+    )?;
+    assert!(
+        confirmed.status.success(),
+        "correct token failed: {}",
+        String::from_utf8_lossy(&confirmed.stderr)
+    );
+    let result = load_watchdog_result(&result_path)?;
+    assert_eq!(result.recovery.status, RecoveryStatus::Confirmed);
+    assert_eq!(
+        fs::read_to_string(&config_path)?,
+        "render:direct_scanout = 1\n"
+    );
+    assert!(!result.recovery.requires_app_ui);
+    assert!(!result.recovery.requires_hyprland_keybind);
+    assert!(!result.recovery.requires_visible_display);
+    assert!(!result.recovery.requires_mouse_input);
+    assert!(!result.recovery.reload_run);
+    assert!(!result.recovery.eval_run);
+    assert!(!result.recovery.lua_executed);
+    assert!(!result.recovery.active_config_modified);
+    assert!(!result.recovery.active_runtime_modified);
+
+    Ok(())
+}
+
+#[test]
+fn separate_watchdog_process_expires_and_restores_backup() -> Result<()> {
+    let dir = temp_case("separate-expire")?;
+    let config_path = dir.join("hyprland.conf");
+    let backup_root = dir.join("backups");
+    let plan_path = dir.join("watchdog-plan.json");
+    let result_path = dir.join("watchdog-result.json");
+    fs::write(&config_path, "cursor:no_warps = false\n")?;
+
+    let planner = HighRiskRecoveryPlanner::new(&backup_root, 700);
+    let plan = planner.arm_watchdog_for_temp_config(
+        &config_path,
+        "cursor:no_warps = true\n",
+        10,
+        &plan_path,
+        &result_path,
+    )?;
+    assert_eq!(plan.recovery.confirmation_deadline_unix_seconds, 710);
+    assert_eq!(
+        fs::read_to_string(&config_path)?,
+        "cursor:no_warps = true\n"
+    );
+
+    let before_deadline = run_watchdog_cli(
+        &plan_path,
+        &dir.join("before-deadline-result.json"),
+        &backup_root,
+        "expire",
+        None,
+        705,
+    )?;
+    assert!(
+        !before_deadline.status.success(),
+        "expire before deadline must fail"
+    );
+    assert_eq!(
+        fs::read_to_string(&config_path)?,
+        "cursor:no_warps = true\n"
+    );
+
+    let expired = run_watchdog_cli(&plan_path, &result_path, &backup_root, "expire", None, 711)?;
+    assert!(
+        expired.status.success(),
+        "expire failed: {}",
+        String::from_utf8_lossy(&expired.stderr)
+    );
+    let result = load_watchdog_result(&result_path)?;
+    assert_eq!(result.recovery.status, RecoveryStatus::Reverted);
+    assert!(result.recovery.restore_verified);
+    assert_eq!(
+        fs::read_to_string(&config_path)?,
+        "cursor:no_warps = false\n"
+    );
+    assert!(!result.recovery.reload_run);
+    assert!(!result.recovery.eval_run);
+    assert!(!result.recovery.lua_executed);
+    assert!(!result.recovery.active_config_modified);
+    assert!(!result.recovery.active_runtime_modified);
+
+    Ok(())
+}
+
+#[test]
+fn separate_watchdog_process_reports_restore_failure_and_refuses_live_target_plan() -> Result<()> {
+    let dir = temp_case("separate-failure")?;
+    let config_path = dir.join("hyprland.conf");
+    let backup_root = dir.join("backups");
+    let plan_path = dir.join("watchdog-plan.json");
+    let result_path = dir.join("watchdog-result.json");
+    fs::write(&config_path, "debug:manual_crash = 0\n")?;
+
+    let planner = HighRiskRecoveryPlanner::new(&backup_root, 800);
+    let plan = planner.arm_watchdog_for_temp_config(
+        &config_path,
+        "debug:manual_crash = 1\n",
+        10,
+        &plan_path,
+        &result_path,
+    )?;
+    fs::write(&plan.recovery.backup_path, "corrupt backup\n")?;
+    let failed = run_watchdog_cli(&plan_path, &result_path, &backup_root, "expire", None, 811)?;
+    assert!(
+        !failed.status.success(),
+        "restore failure must exit nonzero"
+    );
+    let result = load_watchdog_result(&result_path)?;
+    assert_eq!(result.recovery.status, RecoveryStatus::Failed);
+    assert!(result.recovery.restore_attempted);
+    assert!(!result.recovery.restore_verified);
+
+    let live_plan_path = dir.join("live-target-plan.json");
+    let live_result_path = dir.join("live-target-result.json");
+    let mut malicious = load_watchdog_plan(&plan_path).unwrap_or(plan);
+    malicious.plan_path = live_plan_path.clone();
+    malicious.result_log_path = live_result_path.clone();
+    malicious.recovery.target_config_path = PathBuf::from("/home/kyo/.config/hypr/hyprland.conf");
+    fs::write(&live_plan_path, serde_json::to_vec_pretty(&malicious)?)?;
+    let refused = run_watchdog_cli(
+        &live_plan_path,
+        &live_result_path,
+        &backup_root,
+        "expire",
+        None,
+        811,
+    )?;
+    assert!(
+        !refused.status.success(),
+        "dry-run CLI must refuse plans targeting live config"
+    );
+
+    Ok(())
 }
 
 #[test]
@@ -225,6 +445,10 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     let controlled = read_json("data/reports/controlled-live-watchdog-design.v0.55.2.json")?;
     let confirmation = read_json("data/reports/out-of-band-confirmation-design.v0.55.2.json")?;
     let readiness = read_json("data/reports/next-high-risk-bucket-readiness.v0.55.2.json")?;
+    let separate = read_json("data/reports/separate-watchdog-process-proof.v0.55.2.json")?;
+    let cli_confirm = read_json("data/reports/watchdog-cli-token-confirmation-proof.v0.55.2.json")?;
+    let cli_timeout =
+        read_json("data/reports/watchdog-timeout-restore-process-proof.v0.55.2.json")?;
     let ecosystem = read_json("data/reports/high-risk-ecosystem-bucket-proof.v0.55.2.json")?;
     let enablements = read_json("data/reports/high-risk-first-bucket-enablements.v0.55.2.json")?;
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
@@ -245,6 +469,7 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     assert_eq!(production["counts"]["timeoutRestorePassed"], true);
     assert_eq!(production["counts"]["restoreFailurePassed"], true);
     assert_eq!(production["counts"]["liveExecutionEnabled"], false);
+    assert_eq!(production["counts"]["separateProcessProofPassed"], true);
     assert_eq!(controlled["counts"]["liveExecutionEnabled"], false);
     assert_eq!(controlled["counts"]["rowsEnabled"], 0);
     assert_eq!(controlled["counts"]["finalWritableRows"], 272);
@@ -255,6 +480,18 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
         readiness["counts"]["recommendedNextBucket"].as_str(),
         Some("display-render-recovery-subset")
     );
+    assert_eq!(separate["counts"]["separateProcessConfirmPassed"], true);
+    assert_eq!(separate["counts"]["wrongTokenFailed"], true);
+    assert_eq!(
+        separate["counts"]["separateProcessTimeoutRestorePassed"],
+        true
+    );
+    assert_eq!(separate["counts"]["restoreFailurePathPassed"], true);
+    assert_eq!(separate["counts"]["rowsEnabled"], 0);
+    assert_eq!(cli_confirm["counts"]["correctTokenConfirmPassed"], true);
+    assert_eq!(cli_confirm["counts"]["wrongTokenFailed"], true);
+    assert_eq!(cli_timeout["counts"]["timeoutRestorePassed"], true);
+    assert_eq!(cli_timeout["counts"]["restoreFailurePathPassed"], true);
     assert_eq!(ecosystem["counts"]["rows"], 3);
     assert_eq!(ecosystem["counts"]["safeToEnable"], 3);
     assert_eq!(enablements["counts"]["enabledRows"], 3);

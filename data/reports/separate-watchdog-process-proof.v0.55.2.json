@@ -1,0 +1,94 @@
+{
+  "artifactKind": "separate-watchdog-process-proof",
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-05T21:00:33.668978+00:00",
+  "sourceReports": [
+    "data/reports/controlled-live-watchdog-design.v0.55.2.json",
+    "data/reports/production-high-risk-watchdog.v0.55.2.json"
+  ],
+  "counts": {
+    "currentWritableRows": 272,
+    "currentBlockedRows": 69,
+    "rowsEnabled": 0,
+    "finalWritableRows": 272,
+    "finalBlockedRows": 69,
+    "displayRenderBlockedRows": 25,
+    "cursorInputBlockedRows": 22,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRuns": 0,
+    "evalRuns": 0,
+    "luaExecutions": 0,
+    "liveExecutionEnabled": false,
+    "separateProcessConfirmPassed": true,
+    "wrongTokenFailed": true,
+    "separateProcessTimeoutRestorePassed": true,
+    "restoreFailurePathPassed": true,
+    "livePathRefusalPassed": true,
+    "resultLogsWritten": 3
+  },
+  "proofs": [
+    {
+      "name": "correct-token-confirm",
+      "separateInvocation": true,
+      "action": "confirm",
+      "expectedExit": "success",
+      "planLoadedBySeparateProcess": true,
+      "confirmationTokenRequired": true,
+      "resultLogWritten": true,
+      "mutationStayedAfterConfirmation": true,
+      "realConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadEvalLuaUsed": false
+    },
+    {
+      "name": "wrong-token-confirm",
+      "separateInvocation": true,
+      "action": "confirm",
+      "expectedExit": "failure",
+      "confirmationTokenRequired": true,
+      "resultLogWritten": false,
+      "realConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadEvalLuaUsed": false
+    },
+    {
+      "name": "timeout-restore",
+      "separateInvocation": true,
+      "action": "expire",
+      "expectedExit": "success-after-deadline",
+      "planLoadedBySeparateProcess": true,
+      "backupRestored": true,
+      "restoreVerifiedByFileReread": true,
+      "resultLogWritten": true,
+      "realConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadEvalLuaUsed": false
+    },
+    {
+      "name": "restore-failure",
+      "separateInvocation": true,
+      "action": "expire",
+      "expectedExit": "failure",
+      "restoreFailureRecorded": true,
+      "resultLogWritten": true,
+      "realConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadEvalLuaUsed": false
+    },
+    {
+      "name": "live-target-refusal",
+      "separateInvocation": true,
+      "action": "expire",
+      "expectedExit": "failure",
+      "dryRunPlanWithLiveTargetRefused": true,
+      "realConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadEvalLuaUsed": false
+    }
+  ],
+  "nextBlockerBeforeDisplayRenderEnablement": "Live config execution remains disabled; next sprint must explicitly approve fixture-to-live transition policy and choose a small display/render subset."
+}

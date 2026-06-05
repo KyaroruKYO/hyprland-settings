@@ -10,9 +10,10 @@
     "rowsEnabled": 0,
     "finalWritableRows": 272,
     "finalBlockedRows": 69,
-    "recommendedNextBucket": "display-render-recovery-subset"
+    "recommendedNextBucket": "display-render-recovery-subset",
+    "separateWatchdogProcessProofPassed": true
   },
-  "recommendation": "Do not enable another bucket until live watchdog process proof exists. After that, attempt a small display/render subset first because it has the clearest no-UI recovery requirement and smallest validator uncertainty, but keep all rows blocked in this sprint.",
+  "recommendation": "Separate watchdog process proof passed with fixture/temp files. Live mode remains disabled; next sprint may request a controlled fixture-to-live transition design or a small display/render subset plan, but no rows are enabled by this proof alone.",
   "buckets": [
     {
       "bucket": "display-render-recovery",
@@ -77,5 +78,6 @@
       "exactBlockerBeforeEnablement": "requires process survivability, persisted plan ownership, and crash/failure result handling before enablement",
       "recommendedSplit": "split debug toggles from explicit crash/testing controls; keep not-recommended rows blocked until dedicated approval"
     }
-  ]
+  ],
+  "nextBlockerBeforeEnablement": "Need explicit approval for live-config execution boundary and bucket-specific display/render subset selection."
 }

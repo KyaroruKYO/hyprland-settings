@@ -1,0 +1,43 @@
+{
+  "artifactKind": "watchdog-cli-token-confirmation-proof",
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-05T21:00:33.668978+00:00",
+  "counts": {
+    "currentWritableRows": 272,
+    "currentBlockedRows": 69,
+    "rowsEnabled": 0,
+    "finalWritableRows": 272,
+    "finalBlockedRows": 69,
+    "displayRenderBlockedRows": 25,
+    "cursorInputBlockedRows": 22,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRuns": 0,
+    "evalRuns": 0,
+    "luaExecutions": 0,
+    "liveExecutionEnabled": false,
+    "correctTokenConfirmPassed": true,
+    "wrongTokenFailed": true,
+    "resultLogsWritten": 1
+  },
+  "cliCommandShape": "hyprland-settings high-risk-watchdog --plan <temp-plan> --result <temp-result> --backup-root <temp-backup-root> --action confirm --token <token> --now <fake-time>",
+  "proof": {
+    "planPersistedBeforeMutation": true,
+    "separateProcessLoadedPlan": true,
+    "confirmationTokenRequired": true,
+    "correctTokenConfirmedMutation": true,
+    "wrongTokenExitedNonzero": true,
+    "mutationStayedAfterConfirmation": true,
+    "resultLogWritten": true,
+    "requiresAppUi": false,
+    "requiresVisibleDisplay": false,
+    "requiresMouseInput": false,
+    "requiresHyprlandKeybinds": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  }
+}

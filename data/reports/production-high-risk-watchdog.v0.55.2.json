@@ -13,7 +13,13 @@
     "reloadRuns": 0,
     "evalRuns": 0,
     "luaExecutions": 0,
-    "liveExecutionEnabled": false
+    "liveExecutionEnabled": false,
+    "separateProcessProofPassed": true,
+    "cliTokenConfirmationPassed": true,
+    "wrongTokenFailed": true,
+    "cliTimeoutRestorePassed": true,
+    "separateProcessRestoreFailurePassed": true,
+    "rowsEnabledBySeparateProcessProof": 0
   },
   "contract": {
     "modeImplemented": "DryRunTempOnly",
@@ -34,5 +40,15 @@
     "liveConfigMode": "live-config-planned-disabled",
     "liveExecutionEnabled": false,
     "reason": "Live config watchdog plans can be represented for validation, but execution remains disabled until a later approved live-mode sprint."
+  },
+  "separateProcessProofStatus": {
+    "status": "passed-fixture-temp-only",
+    "binaryInvocation": "hyprland-settings high-risk-watchdog --plan <temp> --result <temp> --backup-root <temp> --action confirm|expire",
+    "correctTokenConfirm": "passed",
+    "wrongTokenFailure": "passed",
+    "timeoutRestore": "passed",
+    "restoreFailure": "passed",
+    "livePathRefusal": "passed",
+    "liveExecutionEnabled": false
   }
 }
