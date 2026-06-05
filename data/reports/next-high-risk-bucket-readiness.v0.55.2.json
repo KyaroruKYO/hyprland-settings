@@ -1,7 +1,7 @@
 {
   "artifactKind": "next-high-risk-bucket-readiness",
   "schemaVersion": 1,
-  "generatedAt": "2026-06-05T20:52:29.528265+00:00",
+  "generatedAt": "2026-06-05T21:37:08Z",
   "counts": {
     "remainingBlockedRows": 67,
     "displayRenderBlockedRows": 23,
@@ -13,11 +13,11 @@
     "recommendedNextBucket": "display-render-recovery-subset",
     "separateWatchdogProcessProofPassed": true,
     "displayRenderLiveBoundaryRepresented": true,
-    "displayRenderRowsEnabled": 0,
+    "displayRenderRowsEnabled": 2,
     "selectedDisplayRenderSubsetRows": 0,
     "xwaylandScalingRowsEnabled": 2
   },
-  "recommendation": "XWayland scaling smoke subset enabled. Next display/render subset should be selected only after reviewing remaining render-path and XWayland session-critical rows; cursor/input and debug/crash remain blocked.",
+  "recommendation": "No next display/render subset selected after smoke review; all remaining display/render rows are session/socket-critical, render-path-critical, color-management/HDR, scanout, render timing/scheduling, or could plausibly blank display.",
   "buckets": [
     {
       "bucket": "display-render-recovery",
@@ -83,6 +83,6 @@
       "recommendedSplit": "split debug toggles from explicit crash/testing controls; keep not-recommended rows blocked until dedicated approval"
     }
   ],
-  "nextBlockerBeforeEnablement": "Need a new explicit subset selection for remaining display/render rows; render-path and color-management rows remain higher risk.",
-  "recommendedNextSubset": "not-selected-after-smoke-subset"
+  "nextBlockerBeforeEnablement": "Need explicit approval for a higher-risk display/render class or additional official/source research that identifies a genuinely low-display-policy-risk row.",
+  "recommendedNextSubset": "none-selected-after-display-render-risk-review"
 }

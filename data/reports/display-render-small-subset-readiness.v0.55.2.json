@@ -1,7 +1,7 @@
 {
   "artifactKind": "display-render-small-subset-readiness",
   "schemaVersion": 1,
-  "generatedAt": "2026-06-05T21:08:09.855469+00:00",
+  "generatedAt": "2026-06-05T21:37:08Z",
   "counts": {
     "displayRenderRows": 25,
     "selectedRows": 2,
@@ -12,8 +12,8 @@
     "cursorInputBlockedRows": 22,
     "debugCrashBlockedRows": 22
   },
-  "recommendedSubsetName": "xwayland-scaling-policy-smoke-subset",
-  "recommendation": "Attempt only the two XWayland scaling policy toggles in a later sprint, and only after explicit fixture-to-live approval. They are lower display-policy risk than render scheduling, scanout, color-management, or XWayland enable/socket rows.",
+  "recommendedSubsetName": null,
+  "recommendation": "The XWayland scaling smoke subset remains the only enabled display/render subset. No additional display/render subset is selected because the remaining rows are excluded by XWayland session/socket, render scheduling/timing, color-management/HDR, scanout, or render-path risk.",
   "selectedRows": [
     {
       "rowId": "xwayland.use_nearest_neighbor",
@@ -495,6 +495,7 @@
       "remainingBlocker": "live execution disabled; display/render boundary requires explicit fixture-to-live approval and independent recovery proof against selected subset"
     }
   ],
-  "remainingBlockerBeforeEnablement": "Need explicit live execution approval, selected-subset live apply policy, and final watchdog start-before-mutation proof for real config path.",
-  "enablementStatus": "enabled-approved-two-row-smoke-subset"
+  "remainingBlockerBeforeEnablement": "Select a higher-risk display/render class only after explicit approval and a dedicated proof sprint.",
+  "enablementStatus": "enabled-approved-two-row-smoke-subset",
+  "nextSelectionStatus": "no-next-subset-selected"
 }

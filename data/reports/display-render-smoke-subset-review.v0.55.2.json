@@ -1,0 +1,84 @@
+{
+  "artifactKind": "display-render-smoke-subset-review",
+  "schemaVersion": "0.55.2",
+  "generatedAt": "2026-06-05T21:37:08Z",
+  "sourceReports": [
+    "display-render-first-subset-enablements.v0.55.2.json",
+    "xwayland-scaling-policy-smoke-subset-proof.v0.55.2.json",
+    "xwayland-scaling-policy-watchdog-proof.v0.55.2.json",
+    "scalar-read-write-coverage.v0.55.2.json"
+  ],
+  "counts": {
+    "reviewedRows": 2,
+    "enabledRows": 2,
+    "validatorPassed": 2,
+    "invalidRejectionPassed": 2,
+    "tempConfigProofPassed": 2,
+    "watchdogArmBeforeMutationPassed": 2,
+    "backupBeforeMutationPassed": 2,
+    "separateProcessConfirmPassed": 2,
+    "timeoutRestorePassed": 2,
+    "wrongTokenFailed": 2,
+    "realConfigTargetRefusedInDryRun": 2,
+    "issuesFound": 0,
+    "regressionsFound": 0,
+    "warningsFound": 0,
+    "finalWritableRows": 274,
+    "finalBlockedRows": 67,
+    "displayRenderRowsStillBlocked": 23,
+    "cursorInputRowsStillBlocked": 22,
+    "debugCrashRowsStillBlocked": 22
+  },
+  "rows": [
+    {
+      "rowId": "xwayland.use_nearest_neighbor",
+      "officialSetting": "xwayland.use_nearest_neighbor",
+      "currentWriteStatus": "writable",
+      "validatorType": "boolean",
+      "acceptedValues": [
+        "true",
+        "false"
+      ],
+      "invalidValuesRejected": [
+        "maybe",
+        "arbitrary-string"
+      ],
+      "tempConfigProof": "passed",
+      "watchdogArmBeforeMutation": "passed",
+      "separateProcessConfirm": "passed",
+      "timeoutRestore": "passed",
+      "wrongTokenFailure": "passed",
+      "realConfigTargetRefusal": "passed",
+      "issues": [],
+      "notes": "Enabled in prior smoke subset only after validator, temp-config, and independent watchdog proof."
+    },
+    {
+      "rowId": "xwayland.force_zero_scaling",
+      "officialSetting": "xwayland.force_zero_scaling",
+      "currentWriteStatus": "writable",
+      "validatorType": "boolean",
+      "acceptedValues": [
+        "true",
+        "false"
+      ],
+      "invalidValuesRejected": [
+        "maybe",
+        "arbitrary-string"
+      ],
+      "tempConfigProof": "passed",
+      "watchdogArmBeforeMutation": "passed",
+      "separateProcessConfirm": "passed",
+      "timeoutRestore": "passed",
+      "wrongTokenFailure": "passed",
+      "realConfigTargetRefusal": "passed",
+      "issues": [],
+      "notes": "Enabled in prior smoke subset only after validator, temp-config, and independent watchdog proof."
+    }
+  ],
+  "conclusion": "Smoke subset passed all preflight and watchdog gates; no regressions or warnings were found in the recorded proof reports.",
+  "realConfigModified": false,
+  "activeRuntimeModified": false,
+  "reloadRuns": 0,
+  "evalRuns": 0,
+  "luaExecutions": 0
+}

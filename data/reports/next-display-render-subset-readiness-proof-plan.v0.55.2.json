@@ -1,0 +1,43 @@
+{
+  "artifactKind": "next-display-render-subset-readiness-proof-plan",
+  "schemaVersion": "0.55.2",
+  "generatedAt": "2026-06-05T21:37:08Z",
+  "sourceReports": [
+    "next-display-render-subset-selection.v0.55.2.json"
+  ],
+  "counts": {
+    "selectedRows": 0,
+    "plannedRows": 0,
+    "rowsEnabled": 0,
+    "finalWritableRows": 274,
+    "finalBlockedRows": 67,
+    "displayRenderBlockedRows": 23,
+    "cursorInputBlockedRows": 22,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false
+  },
+  "selectedSubsetName": null,
+  "selectedRows": [],
+  "proofRequirementsForFutureSelectedSubset": [
+    "validator proof",
+    "invalid rejection proof",
+    "fixture write/reread proof",
+    "temp config proof",
+    "watchdog arm-before-mutation proof",
+    "separate process confirm proof",
+    "timeout restore proof",
+    "wrong-token failure proof",
+    "real config refusal proof in dry-run tests",
+    "UI/review projection with display/render warning",
+    "no reload/eval/Lua",
+    "no active runtime mutation during tests"
+  ],
+  "rows": [],
+  "planConclusion": "No next display/render subset selected; future proof plan is deferred until a lower-risk subset is approved or additional official/source risk research changes the classification.",
+  "realConfigModified": false,
+  "activeRuntimeModified": false,
+  "reloadRuns": 0,
+  "evalRuns": 0,
+  "luaExecutions": 0
+}
