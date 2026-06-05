@@ -26,6 +26,7 @@ pub enum ScalarWriteStatus {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ScalarWriteValueKind {
     Boolean,
+    FiniteChoice,
     Number,
     Percent,
     Color,
@@ -46,6 +47,211 @@ pub struct SafeWritableRow {
     pub official_setting: &'static str,
     pub value_kind: ScalarWriteValueKind,
 }
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct FiniteChoiceOption {
+    pub raw_value: &'static str,
+    pub label: &'static str,
+}
+
+pub const CONFLICT_FINITE_CHOICE_ROWS: &[&str] = &[
+    "general.resize_corner",
+    "input.focus_on_close",
+    "input.float_switch_override_focus",
+    "input.off_window_axis_events",
+    "input.emulate_discrete_scroll",
+    "input.touchpad.drag_lock",
+    "input.touchpad.drag_3fg",
+    "input.virtualkeyboard.share_states",
+    "group.drag_into_group",
+    "dwindle.force_split",
+    "dwindle.split_bias",
+    "scrolling.focus_fit_method",
+];
+
+const GENERAL_RESIZE_CORNER_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "disable",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "top_left",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "top_right",
+    },
+    FiniteChoiceOption {
+        raw_value: "3",
+        label: "bottom_right",
+    },
+    FiniteChoiceOption {
+        raw_value: "4",
+        label: "bottom_left",
+    },
+];
+
+const INPUT_FOCUS_ON_CLOSE_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "next",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "cursor",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "mru",
+    },
+];
+
+const INPUT_FLOAT_SWITCH_OVERRIDE_FOCUS_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "Disabled",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "Enabled",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "Enabled also unfocuses",
+    },
+];
+
+const INPUT_OFF_WINDOW_AXIS_EVENTS_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "ignore",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "send",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "clamp",
+    },
+    FiniteChoiceOption {
+        raw_value: "3",
+        label: "warp",
+    },
+];
+
+const INPUT_EMULATE_DISCRETE_SCROLL_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "disable",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "non_standard",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "force_all",
+    },
+];
+
+const INPUT_TOUCHPAD_DRAG_LOCK_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "Disabled",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "Enabled with timeout",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "Sticky",
+    },
+];
+
+const INPUT_TOUCHPAD_DRAG_3FG_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "disable",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "3_finger",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "4_finger",
+    },
+];
+
+const INPUT_VIRTUALKEYBOARD_SHARE_STATES_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "disable",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "enable",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "only_non_ime",
+    },
+];
+
+const GROUP_DRAG_INTO_GROUP_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "disabled",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "enabled",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "only when dragging into the groupbar",
+    },
+];
+
+const DWINDLE_FORCE_SPLIT_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "Follow mouse",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "Left / Top",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "Right / Bottom",
+    },
+];
+
+const DWINDLE_SPLIT_BIAS_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "directional",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "current",
+    },
+];
+
+const SCROLLING_FOCUS_FIT_METHOD_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "center",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "fit",
+    },
+];
 
 pub const SAFE_WRITABLE_TOGGLE_ROWS: &[(&str, &str)] = &[
     ("appearance.dim.modal", "decoration.dim_modal"),
@@ -713,7 +919,7 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "general.resize_corner",
         official_setting: "general.resize_corner",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
         row_id: "general.snap.border_overlap",
@@ -793,7 +999,7 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "input.focus_on_close",
         official_setting: "input.focus_on_close",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
         row_id: "input.mouse_refocus",
@@ -803,7 +1009,7 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "input.float_switch_override_focus",
         official_setting: "input.float_switch_override_focus",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
         row_id: "input.special_fallthrough",
@@ -813,12 +1019,12 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "input.off_window_axis_events",
         official_setting: "input.off_window_axis_events",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
         row_id: "input.emulate_discrete_scroll",
         official_setting: "input.emulate_discrete_scroll",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
         row_id: "input.follow_mouse_shrink",
@@ -858,7 +1064,7 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "input.touchpad.drag_lock",
         official_setting: "input.touchpad.drag_lock",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
         row_id: "input.touchpad.tap-and-drag",
@@ -878,7 +1084,7 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "input.touchpad.drag_3fg",
         official_setting: "input.touchpad.drag_3fg",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
         row_id: "input.touchdevice.transform",
@@ -893,7 +1099,7 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "input.virtualkeyboard.share_states",
         official_setting: "input.virtualkeyboard.share_states",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
         row_id: "input.virtualkeyboard.release_pressed_on_close",
@@ -1018,7 +1224,7 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "group.drag_into_group",
         official_setting: "group.drag_into_group",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
         row_id: "group.merge_floated_into_tiled_on_groupbar",
@@ -1198,7 +1404,7 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "dwindle.force_split",
         official_setting: "dwindle.force_split",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
         row_id: "dwindle.preserve_split",
@@ -1243,7 +1449,7 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "dwindle.split_bias",
         official_setting: "dwindle.split_bias",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
         row_id: "dwindle.precise_mouse_move",
@@ -1303,7 +1509,7 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "scrolling.focus_fit_method",
         official_setting: "scrolling.focus_fit_method",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
         row_id: "scrolling.follow_focus",
@@ -1397,6 +1603,41 @@ pub fn safe_writable_row(row_id: &str) -> Option<&'static SafeWritableRow> {
         .find(|candidate| candidate.row_id == row_id)
 }
 
+pub fn finite_choice_options(row_id: &str) -> Option<&'static [FiniteChoiceOption]> {
+    match row_id {
+        "general.resize_corner" => Some(GENERAL_RESIZE_CORNER_CHOICES),
+        "input.focus_on_close" => Some(INPUT_FOCUS_ON_CLOSE_CHOICES),
+        "input.float_switch_override_focus" => Some(INPUT_FLOAT_SWITCH_OVERRIDE_FOCUS_CHOICES),
+        "input.off_window_axis_events" => Some(INPUT_OFF_WINDOW_AXIS_EVENTS_CHOICES),
+        "input.emulate_discrete_scroll" => Some(INPUT_EMULATE_DISCRETE_SCROLL_CHOICES),
+        "input.touchpad.drag_lock" => Some(INPUT_TOUCHPAD_DRAG_LOCK_CHOICES),
+        "input.touchpad.drag_3fg" => Some(INPUT_TOUCHPAD_DRAG_3FG_CHOICES),
+        "input.virtualkeyboard.share_states" => Some(INPUT_VIRTUALKEYBOARD_SHARE_STATES_CHOICES),
+        "group.drag_into_group" => Some(GROUP_DRAG_INTO_GROUP_CHOICES),
+        "dwindle.force_split" => Some(DWINDLE_FORCE_SPLIT_CHOICES),
+        "dwindle.split_bias" => Some(DWINDLE_SPLIT_BIAS_CHOICES),
+        "scrolling.focus_fit_method" => Some(SCROLLING_FOCUS_FIT_METHOD_CHOICES),
+        _ => None,
+    }
+}
+
+pub fn is_verified_finite_choice_value(row_id: &str, value: &str) -> bool {
+    let trimmed = value.trim();
+    finite_choice_options(row_id)
+        .map(|options| options.iter().any(|option| option.raw_value == trimmed))
+        .unwrap_or(false)
+}
+
+pub fn finite_choice_label(row_id: &str, raw_value: &str) -> Option<&'static str> {
+    let trimmed = raw_value.trim();
+    finite_choice_options(row_id).and_then(|options| {
+        options
+            .iter()
+            .find(|option| option.raw_value == trimmed)
+            .map(|option| option.label)
+    })
+}
+
 pub fn config_key_from_official_setting(setting: &str) -> String {
     setting.replace('.', ":")
 }
@@ -1406,7 +1647,7 @@ pub fn value_kind_for_control(control_kind: &str, value_family: &str) -> ScalarW
         ("toggle", "none") => ScalarWriteValueKind::Boolean,
         ("slider" | "number-input", "none") => ScalarWriteValueKind::Number,
         ("percent-slider", "none") => ScalarWriteValueKind::Percent,
-        ("dropdown", "none") => ScalarWriteValueKind::StringLike,
+        ("dropdown", "none") => ScalarWriteValueKind::FiniteChoice,
         (_, "none") => ScalarWriteValueKind::Unknown,
         _ => ScalarWriteValueKind::ComplexRaw,
     }

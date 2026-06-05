@@ -11,8 +11,8 @@ use crate::current_config::{
 use crate::pending_change::{stage_pending_change, PendingChange, PendingChangeValidation};
 use crate::scalar_write::apply_scalar_write_plan;
 use crate::write_classification::{
-    is_safe_writable_setting, safe_writable_official_setting, safe_writable_value_kind,
-    ScalarWriteValueKind,
+    finite_choice_options, is_safe_writable_setting, safe_writable_official_setting,
+    safe_writable_value_kind, ScalarWriteValueKind,
 };
 use crate::write_safety::{review_write_plan, WriteGateFailure, WritePlanRequest, WriteResult};
 
@@ -20,9 +20,17 @@ use crate::write_safety::{review_write_plan, WriteGateFailure, WritePlanRequest,
 pub struct SettingEditProjection {
     pub setting_id: String,
     pub editable: bool,
+    pub editor_kind: String,
+    pub choices: Vec<FiniteChoiceEditOption>,
     pub disabled_reason: Option<String>,
     pub proposed_value: Option<String>,
     pub pending: Option<PendingChangeProjection>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct FiniteChoiceEditOption {
+    pub raw_value: String,
+    pub label: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -60,17 +68,22 @@ pub fn edit_projection_for_setting(
         return SettingEditProjection {
             setting_id: setting_id.to_string(),
             editable: false,
+            editor_kind: "disabled".to_string(),
+            choices: Vec::new(),
             disabled_reason: Some("not write-allowlisted".to_string()),
             proposed_value: None,
             pending: None,
         };
     }
 
+    let value_kind = safe_writable_value_kind(setting_id);
     let proposed_value = next_proposed_value(setting_id, current_value);
     let pending = stage_pending_change(setting_id, current_value, proposed_value.clone());
     SettingEditProjection {
         setting_id: setting_id.to_string(),
         editable: true,
+        editor_kind: editor_kind_for_value_kind(value_kind).to_string(),
+        choices: finite_choice_edit_options(setting_id),
         disabled_reason: None,
         proposed_value: Some(proposed_value),
         pending: Some(pending_projection(&pending, current_value.status)),
@@ -261,6 +274,9 @@ fn pending_projection(
 fn next_proposed_value(setting_id: &str, current_value: &CurrentValueProjection) -> String {
     match safe_writable_value_kind(setting_id) {
         Some(ScalarWriteValueKind::Boolean) => next_bool_value(current_value),
+        Some(ScalarWriteValueKind::FiniteChoice) => {
+            next_finite_choice_value(setting_id, current_value)
+        }
         Some(ScalarWriteValueKind::Number) => current_value
             .raw_value
             .clone()
@@ -323,6 +339,55 @@ fn next_proposed_value(setting_id: &str, current_value: &CurrentValueProjection)
         | Some(ScalarWriteValueKind::Unknown)
         | None => current_value.raw_value.clone().unwrap_or_default(),
     }
+}
+
+fn editor_kind_for_value_kind(value_kind: Option<ScalarWriteValueKind>) -> &'static str {
+    match value_kind {
+        Some(ScalarWriteValueKind::Boolean) => "toggle",
+        Some(ScalarWriteValueKind::FiniteChoice) => "dropdown",
+        Some(ScalarWriteValueKind::Number) | Some(ScalarWriteValueKind::Percent) => "number",
+        Some(ScalarWriteValueKind::Color) => "color-text",
+        Some(ScalarWriteValueKind::Gradient) => "gradient-text",
+        Some(ScalarWriteValueKind::Vector2) => "vector-text",
+        Some(ScalarWriteValueKind::NumericList) => "numeric-list-text",
+        Some(ScalarWriteValueKind::LineSafeString)
+        | Some(ScalarWriteValueKind::Path)
+        | Some(ScalarWriteValueKind::RegexString) => "text",
+        Some(ScalarWriteValueKind::StringLike)
+        | Some(ScalarWriteValueKind::ComplexRaw)
+        | Some(ScalarWriteValueKind::Unknown)
+        | None => "unknown",
+    }
+}
+
+fn finite_choice_edit_options(setting_id: &str) -> Vec<FiniteChoiceEditOption> {
+    finite_choice_options(setting_id)
+        .unwrap_or(&[])
+        .iter()
+        .map(|option| FiniteChoiceEditOption {
+            raw_value: option.raw_value.to_string(),
+            label: option.label.to_string(),
+        })
+        .collect()
+}
+
+fn next_finite_choice_value(setting_id: &str, current_value: &CurrentValueProjection) -> String {
+    let Some(options) = finite_choice_options(setting_id) else {
+        return current_value.raw_value.clone().unwrap_or_default();
+    };
+    if options.is_empty() {
+        return current_value.raw_value.clone().unwrap_or_default();
+    }
+    let current = current_value.raw_value.as_deref().map(str::trim);
+    if let Some((index, _)) = current.and_then(|value| {
+        options
+            .iter()
+            .enumerate()
+            .find(|(_, option)| option.raw_value == value)
+    }) {
+        return options[(index + 1) % options.len()].raw_value.to_string();
+    }
+    options[0].raw_value.to_string()
 }
 
 fn next_bool_value(current_value: &CurrentValueProjection) -> String {

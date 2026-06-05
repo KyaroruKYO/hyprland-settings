@@ -10,7 +10,8 @@ use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueProje
 use hyprland_settings::pending_change::stage_pending_change;
 use hyprland_settings::scalar_write::apply_scalar_write_plan;
 use hyprland_settings::write_classification::{
-    config_key_from_official_setting, SafeWritableRow, ScalarWriteValueKind, SAFE_WRITABLE_ROWS,
+    config_key_from_official_setting, finite_choice_options, SafeWritableRow, ScalarWriteValueKind,
+    CONFLICT_FINITE_CHOICE_ROWS, SAFE_WRITABLE_ROWS,
 };
 use hyprland_settings::write_safety::{review_write_plan, WritePlanRequest};
 
@@ -61,6 +62,12 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
     if row.value_kind == ScalarWriteValueKind::Boolean {
         return "true";
     }
+    if row.value_kind == ScalarWriteValueKind::FiniteChoice {
+        return finite_choice_options(row.row_id)
+            .and_then(|options| options.get(1).or_else(|| options.first()))
+            .map(|option| option.raw_value)
+            .expect("finite choice row should have verified options");
+    }
     if row.row_id == "input.pointer_sensitivity" {
         return "-0.25";
     }
@@ -97,6 +104,12 @@ fn existing_value_for(row: &SafeWritableRow) -> &'static str {
     }
     if row.value_kind == ScalarWriteValueKind::Boolean {
         return "false";
+    }
+    if row.value_kind == ScalarWriteValueKind::FiniteChoice {
+        return finite_choice_options(row.row_id)
+            .and_then(|options| options.first())
+            .map(|option| option.raw_value)
+            .expect("finite choice row should have verified options");
     }
     if row.row_id == "input.pointer_sensitivity" {
         return "0";
@@ -169,6 +182,52 @@ fn generic_scalar_writer_appends_missing_safe_writable_row() -> Result<()> {
         assert_eq!(result.verified_value.as_deref(), Some(proposed));
         assert!(fs::read_to_string(&source)?.contains(&format!("{config_key} = {proposed}")));
         fs::remove_dir_all(root)?;
+    }
+    Ok(())
+}
+
+#[test]
+fn finite_choice_writer_roundtrips_every_verified_choice() -> Result<()> {
+    for row_id in CONFLICT_FINITE_CHOICE_ROWS {
+        let row = SAFE_WRITABLE_ROWS
+            .iter()
+            .find(|row| row.row_id == *row_id)
+            .expect("conflict row should remain write-allowlisted");
+        let config_key = config_key_from_official_setting(row.official_setting);
+        let options = finite_choice_options(row_id).expect("finite choices should exist");
+
+        for option in options {
+            let root = temp_root(&format!("{row_id}-{}", option.raw_value))?;
+            let source = root.join("hyprland.conf");
+            fs::write(&source, format!("{config_key} = 0\n"))?;
+            let contents = fs::read_to_string(&source)?;
+            let backup = BackupManager::new(root.join("backups")).create_backup(&source)?;
+            let current = current_value_for(&source, row.official_setting, &contents);
+            let pending = stage_pending_change(row.row_id, &current, option.raw_value);
+            let review = review_write_plan(WritePlanRequest {
+                known_setting_ids: known_ids(),
+                detected_config_path: source.clone(),
+                current_value: current,
+                pending_change: pending,
+                backup: Some(backup),
+            });
+
+            let result = apply_scalar_write_plan(
+                &review
+                    .plan
+                    .expect("verified finite choice should pass write safety"),
+            )?;
+
+            assert_eq!(result.verified_value.as_deref(), Some(option.raw_value));
+            assert_eq!(
+                fs::read_to_string(&source)?,
+                format!("{config_key} = {}\n", option.raw_value),
+                "{row_id} should roundtrip {} ({})",
+                option.raw_value,
+                option.label
+            );
+            fs::remove_dir_all(root)?;
+        }
     }
     Ok(())
 }

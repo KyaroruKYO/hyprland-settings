@@ -5,6 +5,7 @@ use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueProje
 use hyprland_settings::pending_change::{
     stage_pending_change, PendingChangeValidation, ACTIVE_PENDING_CHANGE_SETTING,
 };
+use hyprland_settings::write_classification::{finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS};
 
 fn current_value_for(setting_id: &str, config: &str) -> CurrentValueProjection {
     let parsed = parse_hyprland_config_text("/tmp/pending-change.conf", config);
@@ -139,6 +140,62 @@ fn validator_needed_rows_reject_invalid_values() {
         assert!(
             matches!(change.validation, PendingChangeValidation::Invalid { .. }),
             "{row_id} should reject {proposed}, got {:?}",
+            change.validation
+        );
+        assert!(!change.can_be_applied(), "{row_id} should not apply");
+    }
+}
+
+#[test]
+fn verified_finite_choice_rows_accept_only_verified_raw_values() {
+    let current = CurrentValueProjection::not_configured();
+
+    for row_id in CONFLICT_FINITE_CHOICE_ROWS {
+        let options = finite_choice_options(row_id).expect("conflict row should have choices");
+        assert!(
+            !options.is_empty(),
+            "{row_id} should expose verified finite choices"
+        );
+        for option in options {
+            let change = stage_pending_change(row_id, &current, option.raw_value);
+            assert_eq!(
+                change.validation,
+                PendingChangeValidation::Valid,
+                "{row_id} should accept verified raw value {} ({})",
+                option.raw_value,
+                option.label
+            );
+            assert!(change.can_be_applied(), "{row_id} should be applicable");
+        }
+    }
+}
+
+#[test]
+fn verified_finite_choice_rows_reject_unverified_semantic_and_slider_values() {
+    let current = CurrentValueProjection::not_configured();
+    let cases = [
+        ("general.resize_corner", "top_left"),
+        ("input.focus_on_close", "cursor"),
+        ("input.float_switch_override_focus", "Enabled"),
+        ("input.off_window_axis_events", "warp"),
+        ("input.emulate_discrete_scroll", "disable"),
+        ("input.touchpad.drag_lock", "Sticky"),
+        ("input.touchpad.drag_3fg", "3_finger"),
+        ("input.virtualkeyboard.share_states", "enable"),
+        ("group.drag_into_group", "enabled"),
+        ("dwindle.force_split", "Left / Top"),
+        ("dwindle.split_bias", "current"),
+        ("scrolling.focus_fit_method", "fit"),
+        ("scrolling.focus_fit_method", "2"),
+        ("dwindle.split_bias", "99"),
+        ("general.resize_corner", "-1"),
+    ];
+
+    for (row_id, proposed) in cases {
+        let change = stage_pending_change(row_id, &current, proposed);
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "{row_id} should reject unverified value {proposed}, got {:?}",
             change.validation
         );
         assert!(!change.can_be_applied(), "{row_id} should not apply");

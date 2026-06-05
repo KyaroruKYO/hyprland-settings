@@ -7,7 +7,8 @@ use crate::value::{
     vector::Vec2Value,
 };
 use crate::write_classification::{
-    is_safe_writable_setting, safe_writable_value_kind, ScalarWriteValueKind,
+    is_safe_writable_setting, is_verified_finite_choice_value, safe_writable_value_kind,
+    ScalarWriteValueKind,
 };
 
 pub const ACTIVE_PENDING_CHANGE_SETTING: &str = "windows.snap.enabled";
@@ -105,6 +106,9 @@ fn validate_safe_writable_value(setting_id: &str, value: &str) -> PendingChangeV
                 }
             }
         }
+        Some(ScalarWriteValueKind::FiniteChoice) => {
+            validate_finite_choice_setting(setting_id, value)
+        }
         Some(ScalarWriteValueKind::Number) => validate_number_setting(setting_id, value),
         Some(ScalarWriteValueKind::Percent) => validate_percent_setting(setting_id, value),
         Some(ScalarWriteValueKind::Color) => validate_color_literal(value),
@@ -120,6 +124,14 @@ fn validate_safe_writable_value(setting_id: &str, value: &str) -> PendingChangeV
         | None => PendingChangeValidation::Invalid {
             reason: "no safe validator is available for this value family".to_string(),
         },
+    }
+}
+
+fn validate_finite_choice_setting(setting_id: &str, value: &str) -> PendingChangeValidation {
+    if is_verified_finite_choice_value(setting_id, value) {
+        PendingChangeValidation::Valid
+    } else {
+        invalid("finite-choice writes require a Hyprland-verified stored raw value")
     }
 }
 

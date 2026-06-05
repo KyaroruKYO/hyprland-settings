@@ -1027,8 +1027,8 @@
       "readBlocker": null,
       "writeStatus": "writable",
       "writeBlocker": null,
-      "valueFamily": "none",
-      "controlKind": "slider",
+      "valueFamily": "finite-choice",
+      "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
@@ -1036,7 +1036,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Scalar write enabled after remaining scalar completion proof: parser roundtrip, typed validator, fixture writer/reread, single-mutation check, UI/model projection coverage, and temporary Hyprland --verify-config passed for candidate '1'. Active config/runtime were not modified."
+      "notes": "Conflict row migrated to verified finite-choice dropdown semantics: UI shows companion schema labels, stored config values are Hyprland --verify-config accepted numeric raw IDs only, validators reject unverified semantic labels and arbitrary slider values. Write allowlist unchanged; active config/runtime were not modified."
     },
     {
       "rowId": "general.snap.border_overlap",
@@ -1621,8 +1621,8 @@
       "readBlocker": null,
       "writeStatus": "writable",
       "writeBlocker": null,
-      "valueFamily": "none",
-      "controlKind": "slider",
+      "valueFamily": "finite-choice",
+      "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
@@ -1630,7 +1630,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Scalar write enabled after remaining scalar completion proof: parser roundtrip, typed validator, fixture writer/reread, single-mutation check, UI/model projection coverage, and temporary Hyprland --verify-config passed for candidate '1'. Active config/runtime were not modified."
+      "notes": "Conflict row migrated to verified finite-choice dropdown semantics: UI shows companion schema labels, stored config values are Hyprland --verify-config accepted numeric raw IDs only, validators reject unverified semantic labels and arbitrary slider values. Write allowlist unchanged; active config/runtime were not modified."
     },
     {
       "rowId": "input.mouse_refocus",
@@ -1657,8 +1657,8 @@
       "readBlocker": null,
       "writeStatus": "writable",
       "writeBlocker": null,
-      "valueFamily": "none",
-      "controlKind": "slider",
+      "valueFamily": "finite-choice",
+      "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
@@ -1666,7 +1666,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Scalar write enabled after remaining scalar completion proof: parser roundtrip, typed validator, fixture writer/reread, single-mutation check, UI/model projection coverage, and temporary Hyprland --verify-config passed for candidate '1'. Active config/runtime were not modified."
+      "notes": "Conflict row migrated to verified finite-choice dropdown semantics: UI shows companion schema labels, stored config values are Hyprland --verify-config accepted numeric raw IDs only, validators reject unverified semantic labels and arbitrary slider values. Write allowlist unchanged; active config/runtime were not modified."
     },
     {
       "rowId": "input.special_fallthrough",
@@ -1693,8 +1693,8 @@
       "readBlocker": null,
       "writeStatus": "writable",
       "writeBlocker": null,
-      "valueFamily": "none",
-      "controlKind": "slider",
+      "valueFamily": "finite-choice",
+      "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
@@ -1702,7 +1702,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Scalar write enabled after remaining scalar completion proof: parser roundtrip, typed validator, fixture writer/reread, single-mutation check, UI/model projection coverage, and temporary Hyprland --verify-config passed for candidate '1'. Active config/runtime were not modified."
+      "notes": "Conflict row migrated to verified finite-choice dropdown semantics: UI shows companion schema labels, stored config values are Hyprland --verify-config accepted numeric raw IDs only, validators reject unverified semantic labels and arbitrary slider values. Write allowlist unchanged; active config/runtime were not modified."
     },
     {
       "rowId": "input.emulate_discrete_scroll",
@@ -1711,8 +1711,8 @@
       "readBlocker": null,
       "writeStatus": "writable",
       "writeBlocker": null,
-      "valueFamily": "none",
-      "controlKind": "slider",
+      "valueFamily": "finite-choice",
+      "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
@@ -1720,7 +1720,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Scalar write enabled after remaining scalar completion proof: parser roundtrip, typed validator, fixture writer/reread, single-mutation check, UI/model projection coverage, and temporary Hyprland --verify-config passed for candidate '1'. Active config/runtime were not modified."
+      "notes": "Conflict row migrated to verified finite-choice dropdown semantics: UI shows companion schema labels, stored config values are Hyprland --verify-config accepted numeric raw IDs only, validators reject unverified semantic labels and arbitrary slider values. Write allowlist unchanged; active config/runtime were not modified."
     },
     {
       "rowId": "input.follow_mouse_shrink",
@@ -1873,8 +1873,8 @@
       "readBlocker": null,
       "writeStatus": "writable",
       "writeBlocker": null,
-      "valueFamily": "none",
-      "controlKind": "slider",
+      "valueFamily": "finite-choice",
+      "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
@@ -1882,7 +1882,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Scalar write enabled after remaining scalar completion proof: parser roundtrip, typed validator, fixture writer/reread, single-mutation check, UI/model projection coverage, and temporary Hyprland --verify-config passed for candidate '1'. Active config/runtime were not modified."
+      "notes": "Conflict row migrated to verified finite-choice dropdown semantics: UI shows companion schema labels, stored config values are Hyprland --verify-config accepted numeric raw IDs only, validators reject unverified semantic labels and arbitrary slider values. Write allowlist unchanged; active config/runtime were not modified."
     },
     {
       "rowId": "input.touchpad.tap-and-drag",
@@ -1945,8 +1945,8 @@
       "readBlocker": null,
       "writeStatus": "writable",
       "writeBlocker": null,
-      "valueFamily": "none",
-      "controlKind": "slider",
+      "valueFamily": "finite-choice",
+      "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
@@ -1954,7 +1954,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Scalar write enabled after remaining scalar completion proof: parser roundtrip, typed validator, fixture writer/reread, single-mutation check, UI/model projection coverage, and temporary Hyprland --verify-config passed for candidate '1'. Active config/runtime were not modified."
+      "notes": "Conflict row migrated to verified finite-choice dropdown semantics: UI shows companion schema labels, stored config values are Hyprland --verify-config accepted numeric raw IDs only, validators reject unverified semantic labels and arbitrary slider values. Write allowlist unchanged; active config/runtime were not modified."
     },
     {
       "rowId": "input.touchdevice.transform",
@@ -2017,8 +2017,8 @@
       "readBlocker": null,
       "writeStatus": "writable",
       "writeBlocker": null,
-      "valueFamily": "none",
-      "controlKind": "slider",
+      "valueFamily": "finite-choice",
+      "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
@@ -2026,7 +2026,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Scalar write enabled after remaining scalar completion proof: parser roundtrip, typed validator, fixture writer/reread, single-mutation check, UI/model projection coverage, and temporary Hyprland --verify-config passed for candidate '1'. Active config/runtime were not modified."
+      "notes": "Conflict row migrated to verified finite-choice dropdown semantics: UI shows companion schema labels, stored config values are Hyprland --verify-config accepted numeric raw IDs only, validators reject unverified semantic labels and arbitrary slider values. Write allowlist unchanged; active config/runtime were not modified."
     },
     {
       "rowId": "input.virtualkeyboard.release_pressed_on_close",
@@ -2629,8 +2629,8 @@
       "readBlocker": null,
       "writeStatus": "writable",
       "writeBlocker": null,
-      "valueFamily": "none",
-      "controlKind": "slider",
+      "valueFamily": "finite-choice",
+      "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
@@ -2638,7 +2638,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Scalar write enabled after remaining scalar completion proof: parser roundtrip, typed validator, fixture writer/reread, single-mutation check, UI/model projection coverage, and temporary Hyprland --verify-config passed for candidate '1'. Active config/runtime were not modified."
+      "notes": "Conflict row migrated to verified finite-choice dropdown semantics: UI shows companion schema labels, stored config values are Hyprland --verify-config accepted numeric raw IDs only, validators reject unverified semantic labels and arbitrary slider values. Write allowlist unchanged; active config/runtime were not modified."
     },
     {
       "rowId": "group.merge_floated_into_tiled_on_groupbar",
@@ -5509,8 +5509,8 @@
       "readBlocker": null,
       "writeStatus": "writable",
       "writeBlocker": null,
-      "valueFamily": "none",
-      "controlKind": "slider",
+      "valueFamily": "finite-choice",
+      "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
@@ -5518,7 +5518,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Scalar write enabled after remaining scalar completion proof: parser roundtrip, typed validator, fixture writer/reread, single-mutation check, UI/model projection coverage, and temporary Hyprland --verify-config passed for candidate '1'. Active config/runtime were not modified."
+      "notes": "Conflict row migrated to verified finite-choice dropdown semantics: UI shows companion schema labels, stored config values are Hyprland --verify-config accepted numeric raw IDs only, validators reject unverified semantic labels and arbitrary slider values. Write allowlist unchanged; active config/runtime were not modified."
     },
     {
       "rowId": "dwindle.preserve_split",
@@ -5671,8 +5671,8 @@
       "readBlocker": null,
       "writeStatus": "writable",
       "writeBlocker": null,
-      "valueFamily": "none",
-      "controlKind": "slider",
+      "valueFamily": "finite-choice",
+      "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
@@ -5680,7 +5680,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Scalar write enabled after remaining scalar completion proof: parser roundtrip, typed validator, fixture writer/reread, single-mutation check, UI/model projection coverage, and temporary Hyprland --verify-config passed for candidate '1'. Active config/runtime were not modified."
+      "notes": "Conflict row migrated to verified finite-choice dropdown semantics: UI shows companion schema labels, stored config values are Hyprland --verify-config accepted numeric raw IDs only, validators reject unverified semantic labels and arbitrary slider values. Write allowlist unchanged; active config/runtime were not modified."
     },
     {
       "rowId": "dwindle.precise_mouse_move",
@@ -5977,8 +5977,8 @@
       "readBlocker": null,
       "writeStatus": "writable",
       "writeBlocker": null,
-      "valueFamily": "none",
-      "controlKind": "slider",
+      "valueFamily": "finite-choice",
+      "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
@@ -5986,7 +5986,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Scalar write enabled after remaining scalar completion proof: parser roundtrip, typed validator, fixture writer/reread, single-mutation check, UI/model projection coverage, and temporary Hyprland --verify-config passed for candidate '1'. Active config/runtime were not modified."
+      "notes": "Conflict row migrated to verified finite-choice dropdown semantics: UI shows companion schema labels, stored config values are Hyprland --verify-config accepted numeric raw IDs only, validators reject unverified semantic labels and arbitrary slider values. Write allowlist unchanged; active config/runtime were not modified."
     },
     {
       "rowId": "scrolling.follow_focus",

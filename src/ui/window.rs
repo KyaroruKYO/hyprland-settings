@@ -616,8 +616,8 @@ fn append_write_controls(
     let value_kind = write_flow_value_kind(&detail.row_id);
     let value_choice = if value_kind == Some(ScalarWriteValueKind::Boolean) {
         let value_choice = gtk::ComboBoxText::new();
-        value_choice.append_text("true");
-        value_choice.append_text("false");
+        value_choice.append(Some("true"), "true");
+        value_choice.append(Some("false"), "false");
         if detail.edit.proposed_value.as_deref() == Some("false") {
             value_choice.set_active(Some(1));
         } else {
@@ -625,10 +625,23 @@ fn append_write_controls(
         }
         value_row.append(&value_choice);
         Some(value_choice)
+    } else if value_kind == Some(ScalarWriteValueKind::FiniteChoice) {
+        let value_choice = gtk::ComboBoxText::new();
+        for choice in &detail.edit.choices {
+            value_choice.append(Some(&choice.raw_value), &choice.label);
+        }
+        if let Some(proposed) = detail.edit.proposed_value.as_deref() {
+            value_choice.set_active_id(Some(proposed));
+        }
+        if value_choice.active_id().is_none() && !detail.edit.choices.is_empty() {
+            value_choice.set_active(Some(0));
+        }
+        value_row.append(&value_choice);
+        Some(value_choice)
     } else {
         None
     };
-    let value_entry = if value_kind != Some(ScalarWriteValueKind::Boolean) {
+    let value_entry = if value_choice.is_none() {
         let value_entry = gtk::Entry::new();
         value_entry.set_text(detail.edit.proposed_value.as_deref().unwrap_or_default());
         value_row.append(&value_entry);
@@ -662,7 +675,7 @@ fn append_write_controls(
     apply_button.connect_clicked(move |button| {
         let proposed_value = value_choice
             .as_ref()
-            .and_then(|choice| choice.active_text())
+            .and_then(|choice| choice.active_id())
             .map(|value| value.to_string())
             .or_else(|| value_entry.as_ref().map(|entry| entry.text().to_string()))
             .unwrap_or_default();

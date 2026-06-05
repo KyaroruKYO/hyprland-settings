@@ -38,8 +38,8 @@ fn companion_schema_conflicts_are_isolated_for_manual_review() -> Result<()> {
 
     assert_eq!(conflicts["counts"]["conflictRows"], 12);
     assert_eq!(rows.len(), 12);
-    assert_eq!(conflicts["counts"]["rowsChanged"], 0);
-    assert_eq!(conflicts["counts"]["writeBehaviorChanged"], false);
+    assert_eq!(conflicts["counts"]["rowsChanged"], 12);
+    assert_eq!(conflicts["counts"]["writeBehaviorChanged"], true);
 
     for row in rows {
         let row_id = row["rowId"].as_str().unwrap();
@@ -48,11 +48,20 @@ fn companion_schema_conflicts_are_isolated_for_manual_review() -> Result<()> {
             .unwrap_or_else(|| panic!("{row_id} missing from scalar coverage"));
         assert_eq!(row["currentWriteStatus"], coverage_row["writeStatus"]);
         assert_eq!(row["currentControlKind"], coverage_row["controlKind"]);
+        assert_eq!(row["currentControlKind"].as_str(), Some("dropdown"));
+        assert_eq!(row["currentValueFamily"].as_str(), Some("finite-choice"));
         assert_eq!(
             row["recommendedProvisionalAction"].as_str(),
-            Some("needs-manual-review")
+            Some("approved-companion-model-applied")
         );
-        assert!(row["userDecision"].is_null());
+        assert_eq!(
+            row["userDecision"].as_str(),
+            Some("approved-companion-model")
+        );
+        assert_eq!(
+            row["chosenStorageMode"].as_str(),
+            Some("numeric-raw-values-with-semantic-labels")
+        );
     }
 
     Ok(())

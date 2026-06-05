@@ -140,6 +140,40 @@ Parser-backed writable families currently include:
 - line-safe regex strings, stored as text only and never compiled or executed
 - sanitized path strings, stored as text only and never opened or executed
 - scroll point numeric lists in `<step> <points...>` form with a positive finite step
+- verified finite choices for companion-schema conflict rows. These show semantic labels in the UI but write only numeric raw IDs accepted by `Hyprland --verify-config`.
+
+## Verified Finite-Choice Conflict Rows
+
+The companion schema conflict rows are dropdowns, not sliders. Semantic labels are display-only unless Hyprland also accepts them as raw config values. The app currently stores verified numeric IDs for:
+
+- `general.resize_corner`
+- `input.focus_on_close`
+- `input.float_switch_override_focus`
+- `input.off_window_axis_events`
+- `input.emulate_discrete_scroll`
+- `input.touchpad.drag_lock`
+- `input.touchpad.drag_3fg`
+- `input.virtualkeyboard.share_states`
+- `group.drag_into_group`
+- `dwindle.force_split`
+- `dwindle.split_bias`
+- `scrolling.focus_fit_method`
+
+Inspect the proof and mapping report:
+
+```sh
+jq '.counts' data/reports/companion-schema-conflict-resolution.v0.55.2.json
+jq '.rows[] | {rowId, chosenRawValues, chosenDisplayLabels, rejectedRawValues}' data/reports/companion-schema-conflict-resolution.v0.55.2.json
+```
+
+Relevant tests:
+
+```sh
+cargo test --test companion_schema_conflict_resolution
+cargo test --test pending_change verified_finite_choice
+cargo test --test write_flow conflict_rows_project_as_verified_finite_choice_dropdowns
+cargo test --test scalar_write finite_choice_writer_roundtrips_every_verified_choice
+```
 
 ## Run The App Later
 

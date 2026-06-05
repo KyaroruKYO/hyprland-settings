@@ -11,7 +11,9 @@ use hyprland_settings::config_discovery::{
 use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueSourceStatus};
 use hyprland_settings::pending_change::ACTIVE_PENDING_CHANGE_SETTING;
-use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
+use hyprland_settings::write_classification::{
+    finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, SAFE_WRITABLE_ROWS,
+};
 use hyprland_settings::write_flow::{
     apply_setting_change_with_backup_manager, edit_projection_for_setting,
     pending_projection_for_value,
@@ -69,6 +71,61 @@ fn edit_projection_allows_only_safe_writable_rows() {
         blocked.disabled_reason.as_deref(),
         Some("not write-allowlisted")
     );
+}
+
+#[test]
+fn conflict_rows_project_as_verified_finite_choice_dropdowns() {
+    let current = CurrentConfigSnapshot::read_unavailable("no config").value_for("general.gaps_in");
+
+    for row_id in CONFLICT_FINITE_CHOICE_ROWS {
+        let projection = edit_projection_for_setting(row_id, &current);
+        let expected = finite_choice_options(row_id).expect("conflict row should have choices");
+
+        assert!(projection.editable, "{row_id} should remain editable");
+        assert_eq!(projection.editor_kind, "dropdown", "{row_id}");
+        assert_eq!(projection.choices.len(), expected.len(), "{row_id}");
+        assert_eq!(
+            projection.proposed_value.as_deref(),
+            expected.first().map(|option| option.raw_value),
+            "{row_id} should propose a verified raw value when unset"
+        );
+        for (actual, expected) in projection.choices.iter().zip(expected.iter()) {
+            assert_eq!(actual.raw_value, expected.raw_value, "{row_id}");
+            assert_eq!(actual.label, expected.label, "{row_id}");
+        }
+        assert!(
+            projection
+                .pending
+                .as_ref()
+                .expect("pending projection")
+                .validation_label
+                == "valid",
+            "{row_id} should stage a verified dropdown value"
+        );
+    }
+}
+
+#[test]
+fn finite_choice_projection_advances_from_current_raw_value() {
+    let parsed = parse_hyprland_config_text(
+        "/tmp/hyprland.conf",
+        "dwindle:split_bias = 0\nscrolling:focus_fit_method = 1\n",
+    );
+    let snapshot = CurrentConfigSnapshot::from_parsed(parsed);
+
+    let split_bias = edit_projection_for_setting(
+        "dwindle.split_bias",
+        &snapshot.value_for("dwindle.split_bias"),
+    );
+    assert_eq!(split_bias.editor_kind, "dropdown");
+    assert_eq!(split_bias.proposed_value.as_deref(), Some("1"));
+
+    let focus_fit = edit_projection_for_setting(
+        "scrolling.focus_fit_method",
+        &snapshot.value_for("scrolling.focus_fit_method"),
+    );
+    assert_eq!(focus_fit.editor_kind, "dropdown");
+    assert_eq!(focus_fit.proposed_value.as_deref(), Some("0"));
 }
 
 #[test]
