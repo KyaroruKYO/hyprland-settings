@@ -1,7 +1,7 @@
 {
   "artifactKind": "remaining-105-proof-plan",
   "schemaVersion": 1,
-  "generatedAt": "2026-06-05T07:52:41.120292+00:00",
+  "generatedAt": "2026-06-05T07:54:40.522491+00:00",
   "hyprlandVersion": "0.55.2",
   "sourceReports": [
     "data/reports/remaining-105-scalar-investigation.v0.55.2.json",
@@ -21,7 +21,7 @@
       "source-backed-static-smoke-proof-plus-enumerator-needed": 3,
       "temp-config-technical-proof-plus-high-risk-policy-review": 72
     },
-    "candidateValidValuesTotal": 262,
+    "candidateValidValuesTotal": 236,
     "candidateInvalidValuesTotal": 119
   },
   "safety": {
@@ -44,6 +44,7 @@
       "companionMin": 0,
       "companionMax": 1,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "1",
@@ -61,7 +62,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "appearance.blur.xray",
@@ -77,6 +78,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -91,7 +93,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "layout.selection",
@@ -124,13 +126,30 @@
           "label": "Monocle"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "dwindle",
+          "label": "Dwindle"
+        },
+        {
+          "rawValue": "master",
+          "label": "Master"
+        },
+        {
+          "rawValue": "scrolling",
+          "label": "Scrolling"
+        },
+        {
+          "rawValue": "monocle",
+          "label": "Monocle"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': 'dwindle', 'label': 'Dwindle'}",
-        "{'id': 'master', 'label': 'Master'}",
-        "{'id': 'scrolling', 'label': 'Scrolling'}",
-        "{'id': 'monocle', 'label': 'Monocle'}",
-        "dwindle"
+        "dwindle",
+        "master",
+        "scrolling",
+        "monocle"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -141,7 +160,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": null,
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "input.follow_mouse",
@@ -174,13 +193,30 @@
           "label": "Loose (no mouse focus)"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "Disabled"
+        },
+        {
+          "rawValue": "1",
+          "label": "Full"
+        },
+        {
+          "rawValue": "2",
+          "label": "Loose"
+        },
+        {
+          "rawValue": "3",
+          "label": "Loose (no mouse focus)"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'Disabled'}",
-        "{'id': '1', 'label': 'Full'}",
-        "{'id': '2', 'label': 'Loose'}",
-        "{'id': '3', 'label': 'Loose (no mouse focus)'}",
-        "1"
+        "0",
+        "1",
+        "2",
+        "3"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -191,7 +227,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": null,
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "general.allow_tearing",
@@ -207,6 +243,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -221,7 +258,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "general.locale",
@@ -237,6 +274,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "safe-value"
@@ -250,7 +288,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "input.kb_model",
@@ -266,6 +304,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "safe-value"
@@ -279,7 +318,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "source-backed enumerator",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "input.kb_layout",
@@ -295,6 +334,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [
         {
           "source": "xkb_layouts",
@@ -307,7 +347,7 @@
         "us"
       ],
       "candidateInvalidValues": [
-        "invalid value with newline\nblocked"
+        "bad\nvalue"
       ],
       "proofStrategy": "source-backed-static-smoke-proof-plus-enumerator-needed",
       "tempConfigVerificationSafe": true,
@@ -315,7 +355,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "source-backed enumerator",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "input.kb_variant",
@@ -331,6 +371,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [
         {
           "source": "xkb_variants",
@@ -345,7 +386,7 @@
         "us"
       ],
       "candidateInvalidValues": [
-        "invalid value with newline\nblocked"
+        "bad\nvalue"
       ],
       "proofStrategy": "source-backed-static-smoke-proof-plus-enumerator-needed",
       "tempConfigVerificationSafe": true,
@@ -353,7 +394,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "source-backed enumerator",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "input.kb_options",
@@ -369,6 +410,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [
         {
           "source": "xkb_options",
@@ -381,7 +423,7 @@
         "us"
       ],
       "candidateInvalidValues": [
-        "invalid value with newline\nblocked"
+        "bad\nvalue"
       ],
       "proofStrategy": "source-backed-static-smoke-proof-plus-enumerator-needed",
       "tempConfigVerificationSafe": true,
@@ -389,7 +431,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "source-backed enumerator",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "input.kb_rules",
@@ -405,6 +447,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "safe-value"
@@ -418,7 +461,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "source-backed enumerator",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "input.scroll_method",
@@ -434,6 +477,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "safe-value"
@@ -447,7 +491,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": null,
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "input.touchpad.tap_button_map",
@@ -476,11 +520,24 @@
           "label": "Left, Middle, Right"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "",
+          "label": "Default"
+        },
+        {
+          "rawValue": "lrm",
+          "label": "Left, Right, Middle"
+        },
+        {
+          "rawValue": "lmr",
+          "label": "Left, Middle, Right"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '', 'label': 'Default'}",
-        "{'id': 'lrm', 'label': 'Left, Right, Middle'}",
-        "{'id': 'lmr', 'label': 'Left, Middle, Right'}"
+        "lrm",
+        "lmr"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -491,7 +548,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": null,
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "input.touchdevice.output",
@@ -507,6 +564,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "safe-value"
@@ -520,7 +578,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": null,
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "input.tablet.output",
@@ -536,6 +594,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "safe-value"
@@ -549,7 +608,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": null,
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "misc.vrr",
@@ -582,13 +641,30 @@
           "label": "Fullscreen (game content)"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "Off"
+        },
+        {
+          "rawValue": "1",
+          "label": "On"
+        },
+        {
+          "rawValue": "2",
+          "label": "Fullscreen only"
+        },
+        {
+          "rawValue": "3",
+          "label": "Fullscreen (game content)"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'Off'}",
-        "{'id': '1', 'label': 'On'}",
-        "{'id': '2', 'label': 'Fullscreen only'}",
-        "{'id': '3', 'label': 'Fullscreen (game content)'}",
-        "0"
+        "0",
+        "1",
+        "2",
+        "3"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -599,7 +675,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "misc.mouse_move_enables_dpms",
@@ -615,6 +691,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -629,7 +706,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "misc.key_press_enables_dpms",
@@ -645,6 +722,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -659,7 +737,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "misc.disable_autoreload",
@@ -675,6 +753,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -689,7 +768,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "misc.focus_on_activate",
@@ -705,6 +784,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -719,7 +799,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "misc.allow_session_lock_restore",
@@ -735,6 +815,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -749,7 +830,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "misc.session_lock_xray",
@@ -765,6 +846,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -779,7 +861,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "misc.on_focus_under_fullscreen",
@@ -808,11 +890,24 @@
           "label": "exit_fullscreen"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "ignore"
+        },
+        {
+          "rawValue": "1",
+          "label": "take_over"
+        },
+        {
+          "rawValue": "2",
+          "label": "exit_fullscreen"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'ignore'}",
-        "{'id': '1', 'label': 'take_over'}",
-        "{'id': '2', 'label': 'exit_fullscreen'}",
+        "0",
+        "1",
         "2"
       ],
       "candidateInvalidValues": [
@@ -824,7 +919,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "misc.exit_window_retains_fullscreen",
@@ -840,6 +935,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -854,7 +950,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "binds.movefocus_cycles_fullscreen",
@@ -870,6 +966,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -884,7 +981,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "binds.allow_pin_fullscreen",
@@ -900,6 +997,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -914,7 +1012,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "xwayland.enabled",
@@ -930,6 +1028,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -944,7 +1043,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "xwayland.use_nearest_neighbor",
@@ -960,6 +1059,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -974,7 +1074,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "xwayland.force_zero_scaling",
@@ -990,6 +1090,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1004,7 +1105,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "xwayland.create_abstract_socket",
@@ -1020,6 +1121,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1034,7 +1136,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "opengl.nvidia_anti_flicker",
@@ -1050,6 +1152,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1064,7 +1167,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.direct_scanout",
@@ -1093,12 +1196,25 @@
           "label": "auto"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "enable"
+        },
+        {
+          "rawValue": "2",
+          "label": "auto"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'enable'}",
-        "{'id': '2', 'label': 'auto'}",
-        "0"
+        "0",
+        "1",
+        "2"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -1109,7 +1225,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.expand_undersized_textures",
@@ -1125,6 +1241,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1139,7 +1256,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.xp_mode",
@@ -1155,6 +1272,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1169,7 +1287,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.ctm_animation",
@@ -1198,11 +1316,24 @@
           "label": "auto"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "enable"
+        },
+        {
+          "rawValue": "2",
+          "label": "auto"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'enable'}",
-        "{'id': '2', 'label': 'auto'}",
+        "0",
+        "1",
         "2"
       ],
       "candidateInvalidValues": [
@@ -1214,7 +1345,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.cm_enabled",
@@ -1230,6 +1361,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1244,7 +1376,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.send_content_type",
@@ -1260,6 +1392,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1274,7 +1407,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.cm_auto_hdr",
@@ -1303,12 +1436,25 @@
           "label": "hdredid"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "hdr"
+        },
+        {
+          "rawValue": "2",
+          "label": "hdredid"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'hdr'}",
-        "{'id': '2', 'label': 'hdredid'}",
-        "1"
+        "0",
+        "1",
+        "2"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -1319,7 +1465,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.new_render_scheduling",
@@ -1335,6 +1481,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1349,7 +1496,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.non_shader_cm",
@@ -1382,12 +1529,29 @@
           "label": "ignore"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "always"
+        },
+        {
+          "rawValue": "2",
+          "label": "ondemand"
+        },
+        {
+          "rawValue": "3",
+          "label": "ignore"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'always'}",
-        "{'id': '2', 'label': 'ondemand'}",
-        "{'id': '3', 'label': 'ignore'}",
+        "0",
+        "1",
+        "2",
         "3"
       ],
       "candidateInvalidValues": [
@@ -1399,7 +1563,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.cm_sdr_eotf",
@@ -1415,6 +1579,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "default"
@@ -1428,7 +1593,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.commit_timing_enabled",
@@ -1444,6 +1609,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1458,7 +1624,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.icc_vcgt_enabled",
@@ -1474,6 +1640,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1488,7 +1655,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.use_shader_blur_blend",
@@ -1504,6 +1671,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1518,7 +1686,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.use_fp16",
@@ -1547,11 +1715,24 @@
           "label": "auto"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "enable"
+        },
+        {
+          "rawValue": "2",
+          "label": "auto"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'enable'}",
-        "{'id': '2', 'label': 'auto'}",
+        "0",
+        "1",
         "2"
       ],
       "candidateInvalidValues": [
@@ -1563,7 +1744,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.keep_unmodified_copy",
@@ -1592,11 +1773,24 @@
           "label": "auto"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "enable"
+        },
+        {
+          "rawValue": "2",
+          "label": "auto"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'enable'}",
-        "{'id': '2', 'label': 'auto'}",
+        "0",
+        "1",
         "2"
       ],
       "candidateInvalidValues": [
@@ -1608,7 +1802,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.non_shader_cm_interop",
@@ -1637,11 +1831,24 @@
           "label": "auto"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "enable"
+        },
+        {
+          "rawValue": "2",
+          "label": "auto"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'enable'}",
-        "{'id': '2', 'label': 'auto'}",
+        "0",
+        "1",
         "2"
       ],
       "candidateInvalidValues": [
@@ -1653,7 +1860,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "render.fp16_sdr_tf",
@@ -1678,11 +1885,20 @@
           "label": "linear"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "monitor"
+        },
+        {
+          "rawValue": "1",
+          "label": "linear"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'monitor'}",
-        "{'id': '1', 'label': 'linear'}",
-        "0"
+        "0",
+        "1"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -1693,7 +1909,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.invisible",
@@ -1709,6 +1925,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1723,7 +1940,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.no_hardware_cursors",
@@ -1752,11 +1969,24 @@
           "label": "Auto"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "Disabled"
+        },
+        {
+          "rawValue": "1",
+          "label": "Enabled"
+        },
+        {
+          "rawValue": "2",
+          "label": "Auto"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'Disabled'}",
-        "{'id': '1', 'label': 'Enabled'}",
-        "{'id': '2', 'label': 'Auto'}",
+        "0",
+        "1",
         "2"
       ],
       "candidateInvalidValues": [
@@ -1768,7 +1998,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.no_break_fs_vrr",
@@ -1797,11 +2027,24 @@
           "label": "auto"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "enable"
+        },
+        {
+          "rawValue": "2",
+          "label": "auto"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'enable'}",
-        "{'id': '2', 'label': 'auto'}",
+        "0",
+        "1",
         "2"
       ],
       "candidateInvalidValues": [
@@ -1813,7 +2056,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.min_refresh_rate",
@@ -1829,6 +2072,7 @@
       "companionMin": 10,
       "companionMax": 500,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "24",
@@ -1847,7 +2091,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.hotspot_padding",
@@ -1863,6 +2107,7 @@
       "companionMin": 0,
       "companionMax": 20,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "0",
@@ -1880,7 +2125,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.inactive_timeout",
@@ -1896,6 +2141,7 @@
       "companionMin": 0,
       "companionMax": 20,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "0",
@@ -1913,7 +2159,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.no_warps",
@@ -1929,6 +2175,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1943,7 +2190,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.persistent_warps",
@@ -1959,6 +2206,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -1973,7 +2221,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.warp_on_change_workspace",
@@ -2002,12 +2250,25 @@
           "label": "force"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "enable"
+        },
+        {
+          "rawValue": "2",
+          "label": "force"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'enable'}",
-        "{'id': '2', 'label': 'force'}",
-        "0"
+        "0",
+        "1",
+        "2"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -2018,7 +2279,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.warp_on_toggle_special",
@@ -2047,12 +2308,25 @@
           "label": "force"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "enable"
+        },
+        {
+          "rawValue": "2",
+          "label": "force"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'enable'}",
-        "{'id': '2', 'label': 'force'}",
-        "0"
+        "0",
+        "1",
+        "2"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -2063,7 +2337,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.default_monitor",
@@ -2079,6 +2353,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "safe-value"
@@ -2092,7 +2367,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.zoom_factor",
@@ -2108,6 +2383,7 @@
       "companionMin": 1,
       "companionMax": 10,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "1",
@@ -2125,7 +2401,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.zoom_rigid",
@@ -2141,6 +2417,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2155,7 +2432,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.zoom_disable_aa",
@@ -2171,6 +2448,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2185,7 +2463,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.zoom_detached_camera",
@@ -2201,6 +2479,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2215,7 +2494,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.enable_hyprcursor",
@@ -2231,6 +2510,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2245,7 +2525,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.hide_on_key_press",
@@ -2261,6 +2541,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2275,7 +2556,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.hide_on_touch",
@@ -2291,6 +2572,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2305,7 +2587,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.hide_on_tablet",
@@ -2321,6 +2603,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2335,7 +2618,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.use_cpu_buffer",
@@ -2364,11 +2647,24 @@
           "label": "auto"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "enable"
+        },
+        {
+          "rawValue": "2",
+          "label": "auto"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'enable'}",
-        "{'id': '2', 'label': 'auto'}",
+        "0",
+        "1",
         "2"
       ],
       "candidateInvalidValues": [
@@ -2380,7 +2676,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.sync_gsettings_theme",
@@ -2396,6 +2692,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2410,7 +2707,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "cursor.warp_back_after_non_mouse_input",
@@ -2426,6 +2723,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2440,7 +2738,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "ecosystem.no_update_news",
@@ -2456,6 +2754,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2470,7 +2769,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "ecosystem.no_donation_nag",
@@ -2486,6 +2785,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2500,7 +2800,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "ecosystem.enforce_permissions",
@@ -2516,6 +2816,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2530,7 +2831,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.overlay",
@@ -2546,6 +2847,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2560,7 +2862,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.damage_blink",
@@ -2576,6 +2878,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2590,7 +2893,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.gl_debugging",
@@ -2606,6 +2909,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2620,7 +2924,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.disable_logs",
@@ -2636,6 +2940,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2650,7 +2955,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.disable_time",
@@ -2666,6 +2971,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2680,7 +2986,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.damage_tracking",
@@ -2709,11 +3015,24 @@
           "label": "full"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "monitor"
+        },
+        {
+          "rawValue": "2",
+          "label": "full"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'monitor'}",
-        "{'id': '2', 'label': 'full'}",
+        "0",
+        "1",
         "2"
       ],
       "candidateInvalidValues": [
@@ -2725,7 +3044,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.enable_stdout_logs",
@@ -2741,6 +3060,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2755,7 +3075,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.manual_crash",
@@ -2771,6 +3091,7 @@
       "companionMin": 0,
       "companionMax": 1,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "0",
@@ -2788,7 +3109,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.suppress_errors",
@@ -2804,6 +3125,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2818,7 +3140,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.disable_scale_checks",
@@ -2834,6 +3156,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2848,7 +3171,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.error_limit",
@@ -2864,6 +3187,7 @@
       "companionMin": 0,
       "companionMax": 20,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "5",
@@ -2882,7 +3206,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.error_position",
@@ -2907,11 +3231,20 @@
           "label": "bottom"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "top"
+        },
+        {
+          "rawValue": "1",
+          "label": "bottom"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'top'}",
-        "{'id': '1', 'label': 'bottom'}",
-        "0"
+        "0",
+        "1"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -2922,7 +3255,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.colored_stdout_logs",
@@ -2938,6 +3271,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2952,7 +3286,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.log_damage",
@@ -2968,6 +3302,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -2982,7 +3317,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.pass",
@@ -2998,6 +3333,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -3012,7 +3348,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.full_cm_proto",
@@ -3028,6 +3364,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -3042,7 +3379,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.ds_handle_same_buffer",
@@ -3058,6 +3395,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -3072,7 +3410,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.ds_handle_same_buffer_fifo",
@@ -3088,6 +3426,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -3102,7 +3441,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.fifo_pending_workaround",
@@ -3118,6 +3457,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -3132,7 +3472,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.render_solitary_wo_damage",
@@ -3148,6 +3488,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -3162,7 +3503,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.vfr",
@@ -3178,6 +3519,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -3192,7 +3534,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "debug.invalidate_fp16",
@@ -3221,12 +3563,25 @@
           "label": "auto"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "enable"
+        },
+        {
+          "rawValue": "2",
+          "label": "auto"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'enable'}",
-        "{'id': '2', 'label': 'auto'}",
-        "1"
+        "0",
+        "1",
+        "2"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -3237,7 +3592,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "master.new_status",
@@ -3266,12 +3621,25 @@
           "label": "Inherit"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "master",
+          "label": "Master"
+        },
+        {
+          "rawValue": "slave",
+          "label": "Slave"
+        },
+        {
+          "rawValue": "inherit",
+          "label": "Inherit"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': 'master', 'label': 'Master'}",
-        "{'id': 'slave', 'label': 'Slave'}",
-        "{'id': 'inherit', 'label': 'Inherit'}",
-        "slave"
+        "master",
+        "slave",
+        "inherit"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -3282,7 +3650,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": null,
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "master.new_on_active",
@@ -3311,12 +3679,25 @@
           "label": "After active"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "none",
+          "label": "None"
+        },
+        {
+          "rawValue": "before",
+          "label": "Before active"
+        },
+        {
+          "rawValue": "after",
+          "label": "After active"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': 'none', 'label': 'None'}",
-        "{'id': 'before', 'label': 'Before active'}",
-        "{'id': 'after', 'label': 'After active'}",
-        "none"
+        "none",
+        "before",
+        "after"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -3327,7 +3708,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": null,
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "master.orientation",
@@ -3364,14 +3745,35 @@
           "label": "Center"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "left",
+          "label": "Left"
+        },
+        {
+          "rawValue": "right",
+          "label": "Right"
+        },
+        {
+          "rawValue": "top",
+          "label": "Top"
+        },
+        {
+          "rawValue": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "rawValue": "center",
+          "label": "Center"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': 'left', 'label': 'Left'}",
-        "{'id': 'right', 'label': 'Right'}",
-        "{'id': 'top', 'label': 'Top'}",
-        "{'id': 'bottom', 'label': 'Bottom'}",
-        "{'id': 'center', 'label': 'Center'}",
-        "left"
+        "left",
+        "right",
+        "top",
+        "bottom",
+        "center"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -3382,7 +3784,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": null,
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "master.center_master_fallback",
@@ -3398,6 +3800,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "left"
@@ -3411,7 +3814,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": null,
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "scrolling.fullscreen_on_one_column",
@@ -3427,6 +3830,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -3441,7 +3845,7 @@
       "sessionRuntimePolicyNeeded": true,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": "session/runtime policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "scrolling.explicit_column_widths",
@@ -3457,6 +3861,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "0.333, 0.5, 0.667, 1.0"
@@ -3470,7 +3875,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": null,
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "scrolling.direction",
@@ -3503,13 +3908,30 @@
           "label": "Up"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "right",
+          "label": "Right"
+        },
+        {
+          "rawValue": "left",
+          "label": "Left"
+        },
+        {
+          "rawValue": "down",
+          "label": "Down"
+        },
+        {
+          "rawValue": "up",
+          "label": "Up"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': 'right', 'label': 'Right'}",
-        "{'id': 'left', 'label': 'Left'}",
-        "{'id': 'down', 'label': 'Down'}",
-        "{'id': 'up', 'label': 'Up'}",
-        "right"
+        "right",
+        "left",
+        "down",
+        "up"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -3520,7 +3942,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
       "willNotEnableInThisPlanBecause": null,
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "experimental.wp_cm_1_2",
@@ -3536,6 +3958,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -3550,7 +3973,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "quirks.prefer_hdr",
@@ -3579,12 +4002,25 @@
           "label": "gamescope_only"
         }
       ],
+      "companionEnumChoicesForUi": [
+        {
+          "rawValue": "0",
+          "label": "disable"
+        },
+        {
+          "rawValue": "1",
+          "label": "enable"
+        },
+        {
+          "rawValue": "2",
+          "label": "gamescope_only"
+        }
+      ],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
-        "{'id': '0', 'label': 'disable'}",
-        "{'id': '1', 'label': 'enable'}",
-        "{'id': '2', 'label': 'gamescope_only'}",
-        "0"
+        "0",
+        "1",
+        "2"
       ],
       "candidateInvalidValues": [
         "__invalid_choice__"
@@ -3595,7 +4031,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     },
     {
       "rowId": "quirks.skip_non_kms_dmabuf_formats",
@@ -3611,6 +4047,7 @@
       "companionMin": null,
       "companionMax": null,
       "companionEnumValues": [],
+      "companionEnumChoicesForUi": [],
       "companionSourceBackedValues": [],
       "candidateValidValues": [
         "true",
@@ -3625,7 +4062,7 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
     }
   ]
 }
