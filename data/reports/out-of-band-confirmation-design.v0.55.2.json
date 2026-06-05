@@ -1,0 +1,106 @@
+{
+  "artifactKind": "out-of-band-confirmation-design",
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-05T20:52:29.528265+00:00",
+  "counts": {
+    "confirmationOptions": 6,
+    "optionsIndependentFromAppUi": 6,
+    "optionsIndependentFromMouseInput": 6,
+    "optionsIndependentFromHyprlandKeybinds": 6,
+    "rowsEnabled": 0,
+    "liveExecutionEnabled": false
+  },
+  "recommendedChannel": "watchdog-process-polling-plan-file plus separate-cli-confirmation-command plus TTY/manual fallback",
+  "minimumForNextBucket": [
+    "independent watchdog process owns timeout",
+    "separate CLI confirmation command or token file can confirm without app UI",
+    "automatic timeout restore works without visible display, mouse, cursor, or Hyprland keybinds",
+    "manual TTY restore command is printed before apply as a fallback, but is not the only recovery path"
+  ],
+  "options": [
+    {
+      "option": "separate-cli-confirmation-command",
+      "description": "A CLI command loads a persisted plan and confirmation token, then records confirmed status before the deadline.",
+      "independentFromAppUi": true,
+      "independentFromVisibleDisplay": "partially; terminal or TTY access required",
+      "independentFromMouseInput": true,
+      "independentFromHyprlandKeybinds": true,
+      "worksIfCompositorCrashes": true,
+      "suitableForDisplayRender": true,
+      "suitableForCursorInput": true,
+      "suitableForDebugCrash": true,
+      "implementationComplexity": "low",
+      "nextRequiredProof": "spawn the watchdog CLI as a separate process against fixture paths and prove timeout restore if no confirmation command is run"
+    },
+    {
+      "option": "persisted-confirmation-token-file",
+      "description": "The watchdog polls a confirmation file containing the expected token until timeout.",
+      "independentFromAppUi": true,
+      "independentFromVisibleDisplay": "partially; can be written from shell/TTY/script",
+      "independentFromMouseInput": true,
+      "independentFromHyprlandKeybinds": true,
+      "worksIfCompositorCrashes": true,
+      "suitableForDisplayRender": true,
+      "suitableForCursorInput": true,
+      "suitableForDebugCrash": true,
+      "implementationComplexity": "medium",
+      "nextRequiredProof": "atomic token-file creation, stale-token rejection, and timeout restore in an independent process simulation"
+    },
+    {
+      "option": "watchdog-process-polling-plan-file",
+      "description": "A background watchdog process owns the timeout and polls the persisted plan/result files.",
+      "independentFromAppUi": true,
+      "independentFromVisibleDisplay": true,
+      "independentFromMouseInput": true,
+      "independentFromHyprlandKeybinds": true,
+      "worksIfCompositorCrashes": true,
+      "suitableForDisplayRender": true,
+      "suitableForCursorInput": true,
+      "suitableForDebugCrash": true,
+      "implementationComplexity": "medium",
+      "nextRequiredProof": "process lifetime, lock-file ownership, crash behavior, timeout restore, and result log handoff"
+    },
+    {
+      "option": "user-service-template-inert",
+      "description": "An inert user-level service template documents how a future watchdog could be launched without root.",
+      "independentFromAppUi": true,
+      "independentFromVisibleDisplay": true,
+      "independentFromMouseInput": true,
+      "independentFromHyprlandKeybinds": true,
+      "worksIfCompositorCrashes": true,
+      "suitableForDisplayRender": true,
+      "suitableForCursorInput": true,
+      "suitableForDebugCrash": true,
+      "implementationComplexity": "high",
+      "nextRequiredProof": "inert template only now; later sprint must prove user-service start/stop without installing or requiring root"
+    },
+    {
+      "option": "terminal-command-fallback",
+      "description": "Before applying, print a command that restores from the backup and records a recovery result.",
+      "independentFromAppUi": true,
+      "independentFromVisibleDisplay": "partially; requires terminal/TTY visibility",
+      "independentFromMouseInput": true,
+      "independentFromHyprlandKeybinds": true,
+      "worksIfCompositorCrashes": true,
+      "suitableForDisplayRender": true,
+      "suitableForCursorInput": true,
+      "suitableForDebugCrash": "partial; watchdog process still required for automatic crash recovery",
+      "implementationComplexity": "low",
+      "nextRequiredProof": "printed command correctness and backup path/token redaction policy"
+    },
+    {
+      "option": "tty-manual-recovery-instructions",
+      "description": "A final manual recovery fallback documents how to restore backup from a TTY if automated recovery fails.",
+      "independentFromAppUi": true,
+      "independentFromVisibleDisplay": true,
+      "independentFromMouseInput": true,
+      "independentFromHyprlandKeybinds": true,
+      "worksIfCompositorCrashes": true,
+      "suitableForDisplayRender": "fallback-only",
+      "suitableForCursorInput": "fallback-only",
+      "suitableForDebugCrash": "fallback-only",
+      "implementationComplexity": "low",
+      "nextRequiredProof": "documented fallback; not sufficient alone for enablement because dead-man recovery must be automatic"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "artifactKind": "next-high-risk-bucket-readiness",
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-05T20:52:29.528265+00:00",
+  "counts": {
+    "remainingBlockedRows": 69,
+    "displayRenderBlockedRows": 25,
+    "cursorInputBlockedRows": 22,
+    "debugCrashBlockedRows": 22,
+    "rowsEnabled": 0,
+    "finalWritableRows": 272,
+    "finalBlockedRows": 69,
+    "recommendedNextBucket": "display-render-recovery-subset"
+  },
+  "recommendation": "Do not enable another bucket until live watchdog process proof exists. After that, attempt a small display/render subset first because it has the clearest no-UI recovery requirement and smallest validator uncertainty, but keep all rows blocked in this sprint.",
+  "buckets": [
+    {
+      "bucket": "display-render-recovery",
+      "riskClass": "display_render_session_risk",
+      "rowCount": 25,
+      "sampleRows": [
+        "xwayland.enabled",
+        "xwayland.use_nearest_neighbor",
+        "xwayland.force_zero_scaling",
+        "xwayland.create_abstract_socket",
+        "opengl.nvidia_anti_flicker"
+      ],
+      "likelyValidatorsAvailable": true,
+      "recoveryRisk": "high",
+      "currentWatchdogEnough": false,
+      "outOfBandConfirmationEnough": false,
+      "liveModeStillRequired": true,
+      "canSplitSmaller": true,
+      "recommendedReadiness": "best-next-candidate-as-small-subset-after-live-watchdog-process-proof",
+      "exactBlockerBeforeEnablement": "needs independent watchdog process plus CLI/token confirmation; live execution remains disabled this sprint",
+      "recommendedSplit": "start with non-display-critical display/render subset that has boolean or finite-choice validators"
+    },
+    {
+      "bucket": "cursor-input-recovery",
+      "riskClass": "cursor_input_risk",
+      "rowCount": 22,
+      "sampleRows": [
+        "cursor.invisible",
+        "cursor.no_hardware_cursors",
+        "cursor.no_break_fs_vrr",
+        "cursor.min_refresh_rate",
+        "cursor.hotspot_padding"
+      ],
+      "likelyValidatorsAvailable": true,
+      "recoveryRisk": "high",
+      "currentWatchdogEnough": false,
+      "outOfBandConfirmationEnough": false,
+      "liveModeStillRequired": true,
+      "canSplitSmaller": true,
+      "recommendedReadiness": "wait-until-input-independent-confirmation-is-proven",
+      "exactBlockerBeforeEnablement": "confirmation and recovery cannot depend on mouse, cursor visibility, Hyprland keybinds, or app UI",
+      "recommendedSplit": "split pointer/cursor rows away from lower-impact input toggles after watchdog process proof"
+    },
+    {
+      "bucket": "debug-crash-recovery",
+      "riskClass": "debug_crash_risk",
+      "rowCount": 22,
+      "sampleRows": [
+        "debug.overlay",
+        "debug.damage_blink",
+        "debug.gl_debugging",
+        "debug.disable_logs",
+        "debug.disable_time"
+      ],
+      "likelyValidatorsAvailable": true,
+      "recoveryRisk": "high",
+      "currentWatchdogEnough": false,
+      "outOfBandConfirmationEnough": false,
+      "liveModeStillRequired": true,
+      "canSplitSmaller": true,
+      "recommendedReadiness": "wait-until-crash-survivable-watchdog-is-proven",
+      "exactBlockerBeforeEnablement": "requires process survivability, persisted plan ownership, and crash/failure result handling before enablement",
+      "recommendedSplit": "split debug toggles from explicit crash/testing controls; keep not-recommended rows blocked until dedicated approval"
+    }
+  ]
+}

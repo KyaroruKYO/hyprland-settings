@@ -4,8 +4,9 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 use anyhow::Result;
 use hyprland_settings::high_risk_recovery::{
-    ensure_dry_run_target_path, load_watchdog_plan, load_watchdog_result, HighRiskRecoveryPlanner,
-    RecoveryStatus,
+    ensure_dry_run_target_path, load_watchdog_plan, load_watchdog_result,
+    refuse_inert_live_config_execution, validate_inert_live_config_plan, HighRiskRecoveryPlanner,
+    HighRiskWatchdogMode, RecoveryStatus,
 };
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 use serde_json::Value;
@@ -183,11 +184,47 @@ fn dry_run_recovery_refuses_live_or_non_temp_config_paths() {
 }
 
 #[test]
+fn inert_live_config_watchdog_plan_can_be_represented_but_not_executed() -> Result<()> {
+    let dir = temp_case("inert-live-config")?;
+    let planner = HighRiskRecoveryPlanner::new(dir.join("backups"), 500);
+    let plan = planner.build_inert_live_config_plan(
+        "/home/kyo/.config/hypr/hyprland.conf",
+        dir.join("planned-live-backup.conf"),
+        dir.join("planned-live-result.json"),
+        "render:direct_scanout = 1",
+        "sha256:known-good-placeholder",
+        10,
+    )?;
+
+    assert_eq!(plan.mode, HighRiskWatchdogMode::LiveConfigPlannedDisabled);
+    assert!(!plan.live_execution_enabled);
+    assert_eq!(plan.confirmation_deadline_unix_seconds, 510);
+    assert!(plan
+        .restore_command_description
+        .contains("file reread verification"));
+    validate_inert_live_config_plan(&plan)?;
+    let execution_error = refuse_inert_live_config_execution(&plan)
+        .expect_err("live config execution must remain disabled");
+    assert!(execution_error
+        .to_string()
+        .contains("live config watchdog execution is disabled"));
+
+    let mut unsafe_plan = plan.clone();
+    unsafe_plan.live_execution_enabled = true;
+    assert!(validate_inert_live_config_plan(&unsafe_plan).is_err());
+
+    Ok(())
+}
+
+#[test]
 fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     let design = read_json("data/reports/high-risk-dead-man-recovery-design.v0.55.2.json")?;
     let buckets = read_json("data/reports/high-risk-recovery-bucket-plan.v0.55.2.json")?;
     let proof = read_json("data/reports/high-risk-watchdog-dry-run-proof.v0.55.2.json")?;
     let production = read_json("data/reports/production-high-risk-watchdog.v0.55.2.json")?;
+    let controlled = read_json("data/reports/controlled-live-watchdog-design.v0.55.2.json")?;
+    let confirmation = read_json("data/reports/out-of-band-confirmation-design.v0.55.2.json")?;
+    let readiness = read_json("data/reports/next-high-risk-bucket-readiness.v0.55.2.json")?;
     let ecosystem = read_json("data/reports/high-risk-ecosystem-bucket-proof.v0.55.2.json")?;
     let enablements = read_json("data/reports/high-risk-first-bucket-enablements.v0.55.2.json")?;
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
@@ -207,6 +244,17 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     assert_eq!(production["counts"]["confirmPathPassed"], true);
     assert_eq!(production["counts"]["timeoutRestorePassed"], true);
     assert_eq!(production["counts"]["restoreFailurePassed"], true);
+    assert_eq!(production["counts"]["liveExecutionEnabled"], false);
+    assert_eq!(controlled["counts"]["liveExecutionEnabled"], false);
+    assert_eq!(controlled["counts"]["rowsEnabled"], 0);
+    assert_eq!(controlled["counts"]["finalWritableRows"], 272);
+    assert_eq!(controlled["counts"]["finalBlockedRows"], 69);
+    assert_eq!(confirmation["counts"]["confirmationOptions"], 6);
+    assert_eq!(readiness["counts"]["remainingBlockedRows"], 69);
+    assert_eq!(
+        readiness["counts"]["recommendedNextBucket"].as_str(),
+        Some("display-render-recovery-subset")
+    );
     assert_eq!(ecosystem["counts"]["rows"], 3);
     assert_eq!(ecosystem["counts"]["safeToEnable"], 3);
     assert_eq!(enablements["counts"]["enabledRows"], 3);

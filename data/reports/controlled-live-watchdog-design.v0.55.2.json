@@ -1,0 +1,95 @@
+{
+  "artifactKind": "controlled-live-watchdog-design",
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-05T20:52:29.528265+00:00",
+  "sourceReports": [
+    "data/reports/production-high-risk-watchdog.v0.55.2.json",
+    "data/reports/high-risk-write-candidates.v0.55.2.json",
+    "data/reports/all-341-unified-pipeline.v0.55.2.json"
+  ],
+  "counts": {
+    "currentWritableRows": 272,
+    "currentBlockedRows": 69,
+    "remainingHighRiskRows": 69,
+    "rowsEnabled": 0,
+    "finalWritableRows": 272,
+    "finalBlockedRows": 69,
+    "displayRenderBlockedRows": 25,
+    "cursorInputBlockedRows": 22,
+    "debugCrashBlockedRows": 22,
+    "liveExecutionEnabled": false,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRuns": 0,
+    "evalRuns": 0,
+    "luaExecutions": 0
+  },
+  "watchdogModes": [
+    {
+      "mode": "dry-run-temp-only",
+      "executionStatus": "enabled-for-temp-files-only",
+      "liveConfigAllowed": false,
+      "purpose": "Current tested mode; refuses live config paths and uses temporary files only."
+    },
+    {
+      "mode": "live-config-planned-disabled",
+      "executionStatus": "representation-only",
+      "liveConfigAllowed": false,
+      "purpose": "Can describe future live config recovery requirements without reading, backing up, writing, or restoring live config."
+    },
+    {
+      "mode": "live-config-armed",
+      "executionStatus": "future-only-disabled",
+      "liveConfigAllowed": false,
+      "requiredBeforeUse": [
+        "explicit user approval",
+        "persisted recovery plan before mutation",
+        "backup before mutation",
+        "timeout deadline",
+        "independent confirmation/recovery channel",
+        "restore verification by file reread"
+      ]
+    },
+    {
+      "mode": "live-config-confirmed",
+      "executionStatus": "future-only-disabled",
+      "liveConfigAllowed": false,
+      "purpose": "Future terminal state after the user confirms keeping a high-risk live config write before deadline."
+    },
+    {
+      "mode": "live-config-reverted",
+      "executionStatus": "future-only-disabled",
+      "liveConfigAllowed": false,
+      "purpose": "Future terminal state after watchdog restores backup on timeout or failure."
+    }
+  ],
+  "liveConfigPlanValidation": {
+    "planIncludesLiveConfigPath": true,
+    "planIncludesBackupPath": true,
+    "planIncludesTimeout": true,
+    "planIncludesConfirmationToken": true,
+    "planIncludesRestoreCommandDescription": true,
+    "planIncludesResultLogPath": true,
+    "liveExecutionEnabled": false,
+    "executionRefusedWhileDisabled": true,
+    "testsUseTempFilesOnly": true
+  },
+  "requirementsBeforeLiveExecution": [
+    "separate watchdog process invocation must be documented and tested end-to-end without app UI",
+    "confirmation must be possible through CLI/token file from a terminal or TTY",
+    "timeout restore must not require Hyprland keybinds, visible display, cursor, mouse, or app window",
+    "live backup/restore must be tested against explicit non-user fixture paths before any real config path is allowed",
+    "the user must explicitly approve the bucket and timeout policy"
+  ],
+  "invariants": {
+    "rowsEnabledThisSprint": 0,
+    "displayRenderRowsRemainBlocked": true,
+    "cursorInputRowsRemainBlocked": true,
+    "debugCrashRowsRemainBlocked": true,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  }
+}

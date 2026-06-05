@@ -61,6 +61,10 @@ pub struct HighRiskRecoveryResult {
 pub enum HighRiskWatchdogMode {
     DryRunTempOnly,
     ProductionPlannedDisabled,
+    LiveConfigPlannedDisabled,
+    LiveConfigArmed,
+    LiveConfigConfirmed,
+    LiveConfigReverted,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -77,6 +81,22 @@ pub struct HighRiskWatchdogResult {
     pub plan_path: PathBuf,
     pub result_log_path: PathBuf,
     pub recovery: HighRiskRecoveryResult,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct InertLiveConfigWatchdogPlan {
+    pub mode: HighRiskWatchdogMode,
+    pub recovery_session_id: String,
+    pub live_config_path: PathBuf,
+    pub backup_path: PathBuf,
+    pub proposed_mutation_summary: String,
+    pub previous_known_good_hash: String,
+    pub timeout_seconds: u64,
+    pub confirmation_token: String,
+    pub confirmation_deadline_unix_seconds: u64,
+    pub restore_command_description: String,
+    pub result_log_path: PathBuf,
+    pub live_execution_enabled: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -259,6 +279,77 @@ impl HighRiskRecoveryPlanner {
         write_watchdog_result(&plan.result_log_path, &result)?;
         Ok(result)
     }
+
+    pub fn build_inert_live_config_plan(
+        &self,
+        live_config_path: impl Into<PathBuf>,
+        backup_path: impl Into<PathBuf>,
+        result_log_path: impl Into<PathBuf>,
+        proposed_mutation_summary: impl Into<String>,
+        previous_known_good_hash: impl Into<String>,
+        timeout_seconds: u64,
+    ) -> Result<InertLiveConfigWatchdogPlan> {
+        if timeout_seconds == 0 {
+            return Err(anyhow!("timeout_seconds must be greater than zero"));
+        }
+
+        let plan = InertLiveConfigWatchdogPlan {
+            mode: HighRiskWatchdogMode::LiveConfigPlannedDisabled,
+            recovery_session_id: unique_id("live-config-watchdog")?,
+            live_config_path: live_config_path.into(),
+            backup_path: backup_path.into(),
+            proposed_mutation_summary: proposed_mutation_summary.into(),
+            previous_known_good_hash: previous_known_good_hash.into(),
+            timeout_seconds,
+            confirmation_token: unique_id("confirm")?,
+            confirmation_deadline_unix_seconds: self.now_unix_seconds + timeout_seconds,
+            restore_command_description:
+                "planned restore of backup file followed by file reread verification".to_owned(),
+            result_log_path: result_log_path.into(),
+            live_execution_enabled: false,
+        };
+        validate_inert_live_config_plan(&plan)?;
+        Ok(plan)
+    }
+}
+
+pub fn validate_inert_live_config_plan(plan: &InertLiveConfigWatchdogPlan) -> Result<()> {
+    if plan.mode != HighRiskWatchdogMode::LiveConfigPlannedDisabled {
+        return Err(anyhow!(
+            "inert live config plan must use live-config-planned-disabled mode"
+        ));
+    }
+    if plan.live_execution_enabled {
+        return Err(anyhow!(
+            "inert live config plan must keep live execution disabled"
+        ));
+    }
+    if plan.live_config_path.as_os_str().is_empty() {
+        return Err(anyhow!("live config path must be present"));
+    }
+    if plan.backup_path.as_os_str().is_empty() {
+        return Err(anyhow!("backup path must be present"));
+    }
+    if plan.result_log_path.as_os_str().is_empty() {
+        return Err(anyhow!("result log path must be present"));
+    }
+    if plan.timeout_seconds == 0 {
+        return Err(anyhow!("timeout_seconds must be greater than zero"));
+    }
+    if plan.confirmation_token.is_empty() {
+        return Err(anyhow!("confirmation token must be present"));
+    }
+    if plan.restore_command_description.is_empty() {
+        return Err(anyhow!("restore command description must be present"));
+    }
+    Ok(())
+}
+
+pub fn refuse_inert_live_config_execution(plan: &InertLiveConfigWatchdogPlan) -> Result<()> {
+    validate_inert_live_config_plan(plan)?;
+    Err(anyhow!(
+        "live config watchdog execution is disabled; this plan is representation-only"
+    ))
 }
 
 pub fn persist_watchdog_plan(path: impl AsRef<Path>, plan: &HighRiskWatchdogPlan) -> Result<()> {
@@ -301,8 +392,12 @@ pub fn load_watchdog_result(path: impl AsRef<Path>) -> Result<HighRiskWatchdogRe
 fn ensure_supported_watchdog_mode(mode: HighRiskWatchdogMode) -> Result<()> {
     match mode {
         HighRiskWatchdogMode::DryRunTempOnly => Ok(()),
-        HighRiskWatchdogMode::ProductionPlannedDisabled => {
-            Err(anyhow!("production watchdog mode is planned but disabled"))
+        HighRiskWatchdogMode::ProductionPlannedDisabled
+        | HighRiskWatchdogMode::LiveConfigPlannedDisabled
+        | HighRiskWatchdogMode::LiveConfigArmed
+        | HighRiskWatchdogMode::LiveConfigConfirmed
+        | HighRiskWatchdogMode::LiveConfigReverted => {
+            Err(anyhow!("live config watchdog mode is planned but disabled"))
         }
     }
 }

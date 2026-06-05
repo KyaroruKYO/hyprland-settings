@@ -12,7 +12,8 @@
     "activeRuntimeMutations": 0,
     "reloadRuns": 0,
     "evalRuns": 0,
-    "luaExecutions": 0
+    "luaExecutions": 0,
+    "liveExecutionEnabled": false
   },
   "contract": {
     "modeImplemented": "DryRunTempOnly",
@@ -27,5 +28,11 @@
     "requiresVisibleDisplay": false,
     "requiresMouseInput": false
   },
-  "result": "gate-1-passed"
+  "result": "gate-1-passed",
+  "controlledLiveModeStatus": {
+    "currentExecutableMode": "dry-run-temp-only",
+    "liveConfigMode": "live-config-planned-disabled",
+    "liveExecutionEnabled": false,
+    "reason": "Live config watchdog plans can be represented for validation, but execution remains disabled until a later approved live-mode sprint."
+  }
 }
