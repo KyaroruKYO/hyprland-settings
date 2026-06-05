@@ -69,6 +69,18 @@ jq '.currentBatchAResult' data/reports/future-live-validation-batches.v0.55.2.js
 
 The manual/high-risk reports are planning metadata. Batch A has a rollback-protected live-validation record: 39 rows were probed, Level 1 and Level 2 passed for all rows, revert verification passed for all rows, and runtime acceptance was not proven for any row. Batch A was later enabled through config-persistence proof instead: parser/writer roundtrip and `Hyprland --verify-config` passed for all 39 temporary configs with no active config/runtime mutation. High-risk rows should remain blocked until a dedicated safety design exists.
 
+## Companion Schema Metadata Reports
+
+HyprMod and `hyprland-schema` companion evidence is tracked separately from write enablement:
+
+```sh
+jq '.counts' data/reports/hyprmod-companion-full-scalar-comparison.v0.55.2.json
+jq '.counts' data/reports/companion-schema-metadata-integration.v0.55.2.json
+jq '.counts' data/reports/companion-schema-conflict-review.v0.55.2.json
+```
+
+These reports are advisory proof inputs. They can improve defaults, bounds, enum values, editor hints, and future test values, but they do not change the write allowlist by themselves. Conflict rows are held for manual review before any production behavior changes.
+
 ## Live Validation Harness
 
 The live-validation harness is for controlled runtime probing only. It does not persistently edit `hyprland.conf`.
