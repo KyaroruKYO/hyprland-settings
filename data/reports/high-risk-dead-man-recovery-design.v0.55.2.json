@@ -10,10 +10,10 @@
   ],
   "counts": {
     "rows": 72,
-    "rowsEnabled": 3,
-    "finalWritableRows": 272,
-    "finalBlockedRows": 69,
-    "highRiskRowsStillBlocked": 69,
+    "rowsEnabled": 5,
+    "finalWritableRows": 274,
+    "finalBlockedRows": 67,
+    "highRiskRowsStillBlocked": 67,
     "byRiskClass": {
       "cursor_input_risk": 22,
       "debug_crash_risk": 22,
@@ -26,7 +26,8 @@
       "display-render-recovery": 25,
       "ecosystem-permission-policy": 3
     },
-    "ecosystemPermissionRowsEnabled": 3
+    "ecosystemPermissionRowsEnabled": 3,
+    "displayRenderRowsEnabled": 2
   },
   "deadManModel": {
     "requiredFields": [
@@ -84,7 +85,7 @@
     {
       "rowId": "xwayland.use_nearest_neighbor",
       "officialSetting": "xwayland.use_nearest_neighbor",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "riskClass": "display_render_session_risk",
       "recoveryBucket": "display-render-recovery",
       "recoveryStrategy": "independent-file-restore-watchdog-plus-out-of-band-confirmation; must not depend on visible UI or working compositor output",
@@ -100,14 +101,16 @@
       "watchdogDryRunStatus": "passed",
       "restoreVerificationRequired": true,
       "nextRequiredWork": "external watchdog process must restore backup on timeout before display/render rows can be enabled",
-      "safeWriteSupported": false,
+      "safeWriteSupported": true,
       "rowsEnabledByThisSprint": false,
-      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved."
+      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved.",
+      "highRiskEnablementStatus": "enabled-approved-xwayland-scaling-smoke-subset",
+      "productionWatchdogStatus": "separate-process-fixture-proof-passed"
     },
     {
       "rowId": "xwayland.force_zero_scaling",
       "officialSetting": "xwayland.force_zero_scaling",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "riskClass": "display_render_session_risk",
       "recoveryBucket": "display-render-recovery",
       "recoveryStrategy": "independent-file-restore-watchdog-plus-out-of-band-confirmation; must not depend on visible UI or working compositor output",
@@ -123,9 +126,11 @@
       "watchdogDryRunStatus": "passed",
       "restoreVerificationRequired": true,
       "nextRequiredWork": "external watchdog process must restore backup on timeout before display/render rows can be enabled",
-      "safeWriteSupported": false,
+      "safeWriteSupported": true,
       "rowsEnabledByThisSprint": false,
-      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved."
+      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved.",
+      "highRiskEnablementStatus": "enabled-approved-xwayland-scaling-smoke-subset",
+      "productionWatchdogStatus": "separate-process-fixture-proof-passed"
     },
     {
       "rowId": "xwayland.create_abstract_socket",

@@ -4,8 +4,8 @@
   "generatedAt": "2026-06-05T19:34:46.000449Z",
   "counts": {
     "totalRows": 341,
-    "writableRows": 272,
-    "blockedRows": 69,
+    "writableRows": 274,
+    "blockedRows": 67,
     "metadataGapRows": 0,
     "behaviorMismatchRows": 0,
     "rowsNeedingFutureCleanup": 0,
@@ -2836,26 +2836,30 @@
     {
       "rowId": "xwayland.use_nearest_neighbor",
       "officialSetting": "xwayland.use_nearest_neighbor",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "pipelineStatus": "complete",
       "missingMetadataFields": [],
       "behaviorPipelineMismatch": [],
-      "productionBehaviorChanged": false,
-      "writeAllowlistChanged": false,
+      "productionBehaviorChanged": true,
+      "writeAllowlistChanged": true,
       "needsFutureCleanup": false,
-      "futureCleanupReason": null
+      "futureCleanupReason": null,
+      "futureCleanupNeeded": false,
+      "mismatchBetweenCurrentWriteBehaviorAndPipelineMetadata": []
     },
     {
       "rowId": "xwayland.force_zero_scaling",
       "officialSetting": "xwayland.force_zero_scaling",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "pipelineStatus": "complete",
       "missingMetadataFields": [],
       "behaviorPipelineMismatch": [],
-      "productionBehaviorChanged": false,
-      "writeAllowlistChanged": false,
+      "productionBehaviorChanged": true,
+      "writeAllowlistChanged": true,
       "needsFutureCleanup": false,
-      "futureCleanupReason": null
+      "futureCleanupReason": null,
+      "futureCleanupNeeded": false,
+      "mismatchBetweenCurrentWriteBehaviorAndPipelineMetadata": []
     },
     {
       "rowId": "xwayland.create_abstract_socket",

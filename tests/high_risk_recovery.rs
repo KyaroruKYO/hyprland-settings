@@ -455,9 +455,9 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     let pipeline = read_json("data/reports/all-341-unified-pipeline.v0.55.2.json")?;
 
     assert_eq!(design["counts"]["rows"], 72);
-    assert_eq!(design["counts"]["rowsEnabled"], 3);
-    assert_eq!(design["counts"]["finalWritableRows"], 272);
-    assert_eq!(design["counts"]["finalBlockedRows"], 69);
+    assert_eq!(design["counts"]["rowsEnabled"], 5);
+    assert_eq!(design["counts"]["finalWritableRows"], 274);
+    assert_eq!(design["counts"]["finalBlockedRows"], 67);
     assert_eq!(buckets["counts"]["rows"], 72);
     assert_eq!(proof["counts"]["dryRunScenarios"], 3);
     assert_eq!(proof["counts"]["confirmPathPassed"], 1);
@@ -472,10 +472,10 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     assert_eq!(production["counts"]["separateProcessProofPassed"], true);
     assert_eq!(controlled["counts"]["liveExecutionEnabled"], false);
     assert_eq!(controlled["counts"]["rowsEnabled"], 0);
-    assert_eq!(controlled["counts"]["finalWritableRows"], 272);
-    assert_eq!(controlled["counts"]["finalBlockedRows"], 69);
+    assert_eq!(controlled["counts"]["finalWritableRows"], 274);
+    assert_eq!(controlled["counts"]["finalBlockedRows"], 67);
     assert_eq!(confirmation["counts"]["confirmationOptions"], 6);
-    assert_eq!(readiness["counts"]["remainingBlockedRows"], 69);
+    assert_eq!(readiness["counts"]["remainingBlockedRows"], 67);
     assert_eq!(
         readiness["counts"]["recommendedNextBucket"].as_str(),
         Some("display-render-recovery-subset")
@@ -487,7 +487,7 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
         true
     );
     assert_eq!(separate["counts"]["restoreFailurePathPassed"], true);
-    assert_eq!(separate["counts"]["rowsEnabled"], 0);
+    assert_eq!(separate["counts"]["rowsEnabled"], 2);
     assert_eq!(cli_confirm["counts"]["correctTokenConfirmPassed"], true);
     assert_eq!(cli_confirm["counts"]["wrongTokenFailed"], true);
     assert_eq!(cli_timeout["counts"]["timeoutRestorePassed"], true);
@@ -499,17 +499,24 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     assert_eq!(enablements["counts"]["cursorInputRowsEnabled"], 0);
     assert_eq!(enablements["counts"]["debugCrashRowsEnabled"], 0);
 
-    assert_eq!(coverage["counts"]["writableRows"], 272);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 69);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 272);
+    assert_eq!(coverage["counts"]["writableRows"], 274);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 67);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 274);
     assert_eq!(pipeline["counts"]["totalRows"], 341);
-    assert_eq!(pipeline["counts"]["writableRows"], 272);
-    assert_eq!(pipeline["counts"]["blockedRows"], 69);
+    assert_eq!(pipeline["counts"]["writableRows"], 274);
+    assert_eq!(pipeline["counts"]["blockedRows"], 67);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
 
     for row in design["rows"].as_array().unwrap() {
         let row_id = row["rowId"].as_str().unwrap();
-        if row["recoveryBucket"].as_str() == Some("ecosystem-permission-policy") {
+        if row["recoveryBucket"].as_str() == Some("ecosystem-permission-policy")
+            || row["rowId"].as_str().is_some_and(|row_id| {
+                matches!(
+                    row_id,
+                    "xwayland.use_nearest_neighbor" | "xwayland.force_zero_scaling"
+                )
+            })
+        {
             assert_eq!(row["writeStatus"].as_str(), Some("writable"));
             assert_eq!(row["safeWriteSupported"].as_bool(), Some(true));
         } else {

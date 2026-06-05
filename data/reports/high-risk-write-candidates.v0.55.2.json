@@ -4,61 +4,29 @@
   "hyprlandVersion": "0.55.2",
   "sourceCoverageReport": "data/reports/scalar-read-write-coverage.v0.55.2.json",
   "counts": {
-    "rows": 69,
+    "rows": 67,
     "byRiskClass": {
       "cursor_input_risk": 22,
       "debug_crash_risk": 22,
-      "display_render_session_risk": 25
+      "display_render_session_risk": 23
     },
     "byRecommendedAction": {
       "not-recommended": 22,
-      "requires-dedicated-design": 25,
+      "requires-dedicated-design": 23,
       "requires-live-hyprland-validation": 22
     }
   },
   "invariants": {
     "noRowsEnabledByThisReport": true,
     "sourceWriteStatus": "high-risk",
-    "writableRowsRemain": 272,
+    "writableRowsRemain": 274,
     "notes": "Ecosystem/permission bucket enabled after production-capable watchdog proof; remaining high-risk rows stay blocked.",
-    "blockedWriteRowsRemain": 69
+    "blockedWriteRowsRemain": 67
   },
   "items": [
     {
       "rowId": "xwayland.enabled",
       "officialSetting": "xwayland.enabled",
-      "controlKind": "toggle",
-      "valueFamily": "none",
-      "parserStatus": "blocked_by_risk_review",
-      "riskClass": "display_render_session_risk",
-      "reportOnly": true,
-      "currentWriteBlocker": "report-only/high-risk row: display_render_session_risk",
-      "highRiskReason": "Display/render/session settings may affect compositor output, color management, XWayland, scanout, or render scheduling.",
-      "recommendedAction": "requires-dedicated-design",
-      "whyNotWritableYet": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
-      "whatWouldBeRequired": "Dedicated display/render recovery plan, reload strategy, user-visible warnings, and manual verification on a live Hyprland session.",
-      "userApprovalRequired": true,
-      "notes": "Keep blocked in the current app. This report is planning metadata only."
-    },
-    {
-      "rowId": "xwayland.use_nearest_neighbor",
-      "officialSetting": "xwayland.use_nearest_neighbor",
-      "controlKind": "toggle",
-      "valueFamily": "none",
-      "parserStatus": "blocked_by_risk_review",
-      "riskClass": "display_render_session_risk",
-      "reportOnly": true,
-      "currentWriteBlocker": "report-only/high-risk row: display_render_session_risk",
-      "highRiskReason": "Display/render/session settings may affect compositor output, color management, XWayland, scanout, or render scheduling.",
-      "recommendedAction": "requires-dedicated-design",
-      "whyNotWritableYet": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
-      "whatWouldBeRequired": "Dedicated display/render recovery plan, reload strategy, user-visible warnings, and manual verification on a live Hyprland session.",
-      "userApprovalRequired": true,
-      "notes": "Keep blocked in the current app. This report is planning metadata only."
-    },
-    {
-      "rowId": "xwayland.force_zero_scaling",
-      "officialSetting": "xwayland.force_zero_scaling",
       "controlKind": "toggle",
       "valueFamily": "none",
       "parserStatus": "blocked_by_risk_review",

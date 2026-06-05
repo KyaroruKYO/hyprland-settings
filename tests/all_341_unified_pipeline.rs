@@ -38,14 +38,14 @@ fn all_341_pipeline_report_matches_current_scalar_counts() -> Result<()> {
 
     assert_eq!(coverage["counts"]["totalScalarRows"], 341);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 272);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 69);
+    assert_eq!(coverage["counts"]["writableRows"], 274);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 67);
 
     assert_eq!(pipeline["counts"]["totalRows"], 341);
     assert_eq!(pipeline["counts"]["readableRows"], 341);
-    assert_eq!(pipeline["counts"]["writableRows"], 272);
-    assert_eq!(pipeline["counts"]["blockedRows"], 69);
-    assert_eq!(pipeline["counts"]["safeWritableRowsFromRustTable"], 272);
+    assert_eq!(pipeline["counts"]["writableRows"], 274);
+    assert_eq!(pipeline["counts"]["blockedRows"], 67);
+    assert_eq!(pipeline["counts"]["safeWritableRowsFromRustTable"], 274);
     assert_eq!(pipeline["counts"]["highRiskRows"], 72);
     assert_eq!(pipeline["counts"]["sessionRuntimeSensitiveRows"], 0);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
@@ -53,24 +53,24 @@ fn all_341_pipeline_report_matches_current_scalar_counts() -> Result<()> {
     assert_eq!(pipeline["counts"]["writeAllowlistChanged"], true);
     assert_eq!(pipeline["counts"]["productionBehaviorChanged"], true);
 
-    assert_eq!(writable_proof["counts"]["writableRows"], 272);
+    assert_eq!(writable_proof["counts"]["writableRows"], 274);
     assert_eq!(
         writable_proof["counts"]["safeWritableRowsFromRustTable"],
-        272
+        274
     );
     assert_eq!(writable_proof["counts"]["metadataGapRows"], 0);
     assert_eq!(writable_proof["counts"]["behaviorMismatchRows"], 0);
 
     assert_eq!(audit["counts"]["totalRows"], 341);
-    assert_eq!(audit["counts"]["writableRows"], 272);
-    assert_eq!(audit["counts"]["blockedRows"], 69);
+    assert_eq!(audit["counts"]["writableRows"], 274);
+    assert_eq!(audit["counts"]["blockedRows"], 67);
     assert_eq!(audit["counts"]["metadataGapRows"], 0);
     assert_eq!(audit["counts"]["behaviorMismatchRows"], 0);
     assert_eq!(audit["counts"]["rowsNeedingFutureCleanup"], 0);
     assert_eq!(audit["counts"]["writeAllowlistChanged"], true);
     assert_eq!(audit["counts"]["productionBehaviorChanged"], true);
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 272);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 274);
 
     Ok(())
 }
@@ -180,6 +180,28 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
             );
             assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
             assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
+        } else if row["proofSource"].as_str()
+            == Some("xwayland-scaling-policy-smoke-subset-proof.v0.55.2.json")
+        {
+            assert_eq!(
+                row["gateStatus"].as_str(),
+                Some("passed-xwayland-scaling-display-render-watchdog-gate"),
+                "{row_id} should use the XWayland display/render watchdog gate"
+            );
+            assert_eq!(
+                row["applyPath"].as_str(),
+                Some("persistent-config-write-with-backup-reread-and-display-render-watchdog"),
+                "{row_id} should record the display/render watchdog apply path"
+            );
+            assert!(
+                row["recoveryStrategy"]
+                    .as_str()
+                    .unwrap()
+                    .contains("dead-man-watchdog"),
+                "{row_id} should record the watchdog recovery strategy"
+            );
+            assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
+            assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
         } else if row["scope"].as_str().is_some_and(|scope| {
             matches!(
                 scope,
@@ -217,6 +239,7 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
             row["proofSource"].as_str(),
             Some("session-runtime-write-proof.v0.55.2.json")
                 | Some("high-risk-ecosystem-bucket-proof.v0.55.2.json")
+                | Some("xwayland-scaling-policy-smoke-subset-proof.v0.55.2.json")
         ) {
             assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
             assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
@@ -280,8 +303,8 @@ fn blocked_pipeline_rows_remain_blocked_with_policy_metadata() -> Result<()> {
         }
     }
 
-    assert_eq!(blocked, 69);
-    assert_eq!(high_risk, 69);
+    assert_eq!(blocked, 67);
+    assert_eq!(high_risk, 67);
 
     Ok(())
 }
@@ -329,6 +352,8 @@ fn backfill_audit_records_no_behavior_or_allowlist_changes() -> Result<()> {
                 "ecosystem.no_update_news",
                 "ecosystem.no_donation_nag",
                 "ecosystem.enforce_permissions",
+                "xwayland.use_nearest_neighbor",
+                "xwayland.force_zero_scaling",
             ]
             .contains(&row_id)
         }) {

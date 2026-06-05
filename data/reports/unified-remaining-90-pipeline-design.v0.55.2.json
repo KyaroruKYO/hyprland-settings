@@ -520,9 +520,15 @@
       "verifyConfigRole": "parser-proof-not-safety-proof",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "high-risk",
-      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
-      "nextRequiredWork": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved."
+      "currentWriteStatus": "writable",
+      "currentBlocker": null,
+      "nextRequiredWork": "resolved by xwayland scaling smoke subset watchdog proof",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "finalWriteStatus": "writable",
+      "blocker": null,
+      "writeBlocker": null
     },
     {
       "rowId": "xwayland.force_zero_scaling",
@@ -545,9 +551,15 @@
       "verifyConfigRole": "parser-proof-not-safety-proof",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "high-risk",
-      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
-      "nextRequiredWork": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved."
+      "currentWriteStatus": "writable",
+      "currentBlocker": null,
+      "nextRequiredWork": "resolved by xwayland scaling smoke subset watchdog proof",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "finalWriteStatus": "writable",
+      "blocker": null,
+      "writeBlocker": null
     },
     {
       "rowId": "xwayland.create_abstract_socket",

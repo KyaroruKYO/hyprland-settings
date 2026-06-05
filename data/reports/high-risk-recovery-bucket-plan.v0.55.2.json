@@ -8,7 +8,9 @@
     "debugCrashRecoveryRows": 22,
     "ecosystemPermissionPolicyRows": 3,
     "ecosystemPermissionRowsEnabled": 3,
-    "highRiskRowsStillBlocked": 69
+    "highRiskRowsStillBlocked": 69,
+    "rowsEnabled": 5,
+    "rowsStillBlocked": 67
   },
   "buckets": [
     {
@@ -19,7 +21,8 @@
       "recoveryAction": "restore backup file, verify file reread, retain audit record, require later reload/restart only after explicit user action",
       "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
       "rowsRemainBlocked": true,
-      "nextRequiredWork": "external watchdog process must restore backup on timeout before display/render rows can be enabled"
+      "nextRequiredWork": "XWayland scaling smoke subset enabled; remaining display/render rows still require dedicated live execution approval.",
+      "enabledRows": 2
     },
     {
       "riskClass": "cursor_input_risk",

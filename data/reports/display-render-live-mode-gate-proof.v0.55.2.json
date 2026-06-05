@@ -14,9 +14,10 @@
     "hyprlandKeybindOnlyConfirmationRejected": true,
     "mouseOnlyConfirmationRejected": true,
     "tempFixturePathCanPassBoundaryRepresentation": true,
-    "rowsEnabled": 0,
-    "finalWritableRows": 272,
-    "finalBlockedRows": 69
+    "rowsEnabled": 2,
+    "finalWritableRows": 274,
+    "finalBlockedRows": 67,
+    "xwaylandScalingWatchdogProofPassed": true
   },
   "liveBoundaryFields": {
     "liveExecutionEnabledDefaultFalse": true,

@@ -1,0 +1,130 @@
+{
+  "artifactKind": "xwayland-scaling-policy-smoke-subset-proof",
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-05T21:19:45.868592+00:00",
+  "counts": {
+    "rows": 2,
+    "parserReadPassed": 2,
+    "validatorPassed": 2,
+    "invalidRejectionPassed": 2,
+    "fixtureWriteRereadPassed": 2,
+    "hyprlandVerifyConfigPassed": 2,
+    "safeToEnableByPreflight": 2,
+    "realConfigModified": false,
+    "activeRuntimeModified": false
+  },
+  "rows": [
+    {
+      "rowId": "xwayland.use_nearest_neighbor",
+      "officialSetting": "xwayland.use_nearest_neighbor",
+      "valueType": "bool",
+      "acceptedValues": [
+        "true",
+        "false"
+      ],
+      "invalidValues": [
+        "maybe",
+        "arbitrary-string"
+      ],
+      "invalidRejectedBeforeWritePlanning": true,
+      "parserReadProofPassed": true,
+      "validatorValidValueProofPassed": true,
+      "invalidValueRejectionProofPassed": true,
+      "fixtureReplaceProofPassed": true,
+      "fixtureAppendProofPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigPassedForAllValues": true,
+      "validCandidateResults": [
+        {
+          "value": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-xwayland-preflight-xwayland-use_nearest_neighbor-true-nc64_zzr/hyprland.conf",
+          "parserRoundtripPassed": true,
+          "typedValidatorPassed": true,
+          "singleMutationVerified": true,
+          "fixtureWriteRereadPassed": true,
+          "hyprlandVerifyConfigPassed": true,
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyStdout": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-xwayland-preflight-xwayland-use_nearest_neighbor-true-nc64_zzr/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-xwayland-preflight-xwayland-use_nearest_neighbor-true-nc64_zzr/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-xwayland-preflight-xwayland-use_nearest_neighbor-true-nc64_zzr/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-xwayland-preflight-xwayland-use_nearest_neighbor-true-nc64_zzr/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderr": "",
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "value": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-xwayland-preflight-xwayland-use_nearest_neighbor-false-47htg59g/hyprland.conf",
+          "parserRoundtripPassed": true,
+          "typedValidatorPassed": true,
+          "singleMutationVerified": true,
+          "fixtureWriteRereadPassed": true,
+          "hyprlandVerifyConfigPassed": true,
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyStdout": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-xwayland-preflight-xwayland-use_nearest_neighbor-false-47htg59g/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-xwayland-preflight-xwayland-use_nearest_neighbor-false-47htg59g/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-xwayland-preflight-xwayland-use_nearest_neighbor-false-47htg59g/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-xwayland-preflight-xwayland-use_nearest_neighbor-false-47htg59g/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderr": "",
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ],
+      "safeToEnableByPreflight": true,
+      "notes": "Boolean validator is authoritative; Hyprland --verify-config is temp-config parser/config proof."
+    },
+    {
+      "rowId": "xwayland.force_zero_scaling",
+      "officialSetting": "xwayland.force_zero_scaling",
+      "valueType": "bool",
+      "acceptedValues": [
+        "true",
+        "false"
+      ],
+      "invalidValues": [
+        "maybe",
+        "arbitrary-string"
+      ],
+      "invalidRejectedBeforeWritePlanning": true,
+      "parserReadProofPassed": true,
+      "validatorValidValueProofPassed": true,
+      "invalidValueRejectionProofPassed": true,
+      "fixtureReplaceProofPassed": true,
+      "fixtureAppendProofPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigPassedForAllValues": true,
+      "validCandidateResults": [
+        {
+          "value": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-xwayland-preflight-xwayland-force_zero_scaling-true-apl4dghs/hyprland.conf",
+          "parserRoundtripPassed": true,
+          "typedValidatorPassed": true,
+          "singleMutationVerified": true,
+          "fixtureWriteRereadPassed": true,
+          "hyprlandVerifyConfigPassed": true,
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyStdout": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-xwayland-preflight-xwayland-force_zero_scaling-true-apl4dghs/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-xwayland-preflight-xwayland-force_zero_scaling-true-apl4dghs/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-xwayland-preflight-xwayland-force_zero_scaling-true-apl4dghs/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-xwayland-preflight-xwayland-force_zero_scaling-true-apl4dghs/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderr": "",
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "value": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-xwayland-preflight-xwayland-force_zero_scaling-false-n9zgm9vk/hyprland.conf",
+          "parserRoundtripPassed": true,
+          "typedValidatorPassed": true,
+          "singleMutationVerified": true,
+          "fixtureWriteRereadPassed": true,
+          "hyprlandVerifyConfigPassed": true,
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyStdout": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-xwayland-preflight-xwayland-force_zero_scaling-false-n9zgm9vk/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-xwayland-preflight-xwayland-force_zero_scaling-false-n9zgm9vk/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-xwayland-preflight-xwayland-force_zero_scaling-false-n9zgm9vk/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-xwayland-preflight-xwayland-force_zero_scaling-false-n9zgm9vk/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderr": "",
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ],
+      "safeToEnableByPreflight": true,
+      "notes": "Boolean validator is authoritative; Hyprland --verify-config is temp-config parser/config proof."
+    }
+  ],
+  "invariants": {
+    "onlyApprovedRowsIncluded": true,
+    "reloadEvalLuaUsed": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false
+  }
+}

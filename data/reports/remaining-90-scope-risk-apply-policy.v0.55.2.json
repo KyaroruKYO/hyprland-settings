@@ -333,7 +333,7 @@
     {
       "rowId": "xwayland.use_nearest_neighbor",
       "officialSetting": "xwayland.use_nearest_neighbor",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "scope": "dual-runtime-and-persistent",
       "applyPath": "blocked-until-dead-man-or-dedicated-policy",
       "rereadOracle": "runtime-getoption-and-file-reread",
@@ -342,12 +342,20 @@
       "recoveryStrategy": "independent watchdog must restore file/runtime without relying on visible output; require out-of-band recovery plan",
       "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
       "canEnableInThisSprint": false,
-      "whyBlockedNow": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved."
+      "whyBlockedNow": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved.",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "finalWriteStatus": "writable",
+      "blocker": null,
+      "currentBlocker": null,
+      "writeBlocker": null,
+      "nextRequiredWork": "resolved by xwayland scaling smoke subset watchdog proof"
     },
     {
       "rowId": "xwayland.force_zero_scaling",
       "officialSetting": "xwayland.force_zero_scaling",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "scope": "dual-runtime-and-persistent",
       "applyPath": "blocked-until-dead-man-or-dedicated-policy",
       "rereadOracle": "runtime-getoption-and-file-reread",
@@ -356,7 +364,15 @@
       "recoveryStrategy": "independent watchdog must restore file/runtime without relying on visible output; require out-of-band recovery plan",
       "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
       "canEnableInThisSprint": false,
-      "whyBlockedNow": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved."
+      "whyBlockedNow": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved.",
+      "writeStatus": "writable",
+      "enabled": true,
+      "safeWriteSupported": true,
+      "finalWriteStatus": "writable",
+      "blocker": null,
+      "currentBlocker": null,
+      "writeBlocker": null,
+      "nextRequiredWork": "resolved by xwayland scaling smoke subset watchdog proof"
     },
     {
       "rowId": "xwayland.create_abstract_socket",

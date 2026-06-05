@@ -8,10 +8,10 @@
   ],
   "counts": {
     "displayRenderRows": 25,
-    "rowsEnabled": 0,
-    "displayRenderRowsStillBlocked": 25,
-    "currentWritableRows": 272,
-    "currentBlockedRows": 69,
+    "rowsEnabled": 2,
+    "displayRenderRowsStillBlocked": 23,
+    "currentWritableRows": 274,
+    "currentBlockedRows": 67,
     "cursorInputBlockedRows": 22,
     "debugCrashBlockedRows": 22,
     "liveExecutionEnabled": false,
@@ -60,7 +60,7 @@
     {
       "rowId": "xwayland.use_nearest_neighbor",
       "officialSetting": "xwayland.use_nearest_neighbor",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "valueType": "bool",
       "validatorType": "bool",
       "validValuesAlreadyKnown": true,
@@ -73,13 +73,14 @@
       "outOfBandConfirmationMandatory": true,
       "displayRenderRiskClass": "low-display-policy-risk",
       "firstSubsetCandidate": true,
-      "safeToEnableNow": false,
-      "remainingBlocker": "live execution disabled; display/render boundary requires explicit fixture-to-live approval and independent recovery proof against selected subset"
+      "safeToEnableNow": true,
+      "remainingBlocker": null,
+      "enabledBySprint": "xwayland-scaling-policy-smoke-subset"
     },
     {
       "rowId": "xwayland.force_zero_scaling",
       "officialSetting": "xwayland.force_zero_scaling",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "valueType": "bool",
       "validatorType": "bool",
       "validValuesAlreadyKnown": true,
@@ -92,8 +93,9 @@
       "outOfBandConfirmationMandatory": true,
       "displayRenderRiskClass": "low-display-policy-risk",
       "firstSubsetCandidate": true,
-      "safeToEnableNow": false,
-      "remainingBlocker": "live execution disabled; display/render boundary requires explicit fixture-to-live approval and independent recovery proof against selected subset"
+      "safeToEnableNow": true,
+      "remainingBlocker": null,
+      "enabledBySprint": "xwayland-scaling-policy-smoke-subset"
     },
     {
       "rowId": "xwayland.create_abstract_socket",

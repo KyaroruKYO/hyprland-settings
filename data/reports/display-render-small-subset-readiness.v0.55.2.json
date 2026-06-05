@@ -5,10 +5,10 @@
   "counts": {
     "displayRenderRows": 25,
     "selectedRows": 2,
-    "rowsEnabled": 0,
-    "finalWritableRows": 272,
-    "finalBlockedRows": 69,
-    "displayRenderBlockedRows": 25,
+    "rowsEnabled": 2,
+    "finalWritableRows": 274,
+    "finalBlockedRows": 67,
+    "displayRenderBlockedRows": 23,
     "cursorInputBlockedRows": 22,
     "debugCrashBlockedRows": 22
   },
@@ -18,7 +18,7 @@
     {
       "rowId": "xwayland.use_nearest_neighbor",
       "officialSetting": "xwayland.use_nearest_neighbor",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "valueType": "bool",
       "validatorType": "bool",
       "validValuesAlreadyKnown": true,
@@ -31,13 +31,14 @@
       "outOfBandConfirmationMandatory": true,
       "displayRenderRiskClass": "low-display-policy-risk",
       "firstSubsetCandidate": true,
-      "safeToEnableNow": false,
-      "remainingBlocker": "live execution disabled; display/render boundary requires explicit fixture-to-live approval and independent recovery proof against selected subset"
+      "safeToEnableNow": true,
+      "remainingBlocker": null,
+      "enabled": true
     },
     {
       "rowId": "xwayland.force_zero_scaling",
       "officialSetting": "xwayland.force_zero_scaling",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "valueType": "bool",
       "validatorType": "bool",
       "validValuesAlreadyKnown": true,
@@ -50,8 +51,9 @@
       "outOfBandConfirmationMandatory": true,
       "displayRenderRiskClass": "low-display-policy-risk",
       "firstSubsetCandidate": true,
-      "safeToEnableNow": false,
-      "remainingBlocker": "live execution disabled; display/render boundary requires explicit fixture-to-live approval and independent recovery proof against selected subset"
+      "safeToEnableNow": true,
+      "remainingBlocker": null,
+      "enabled": true
     }
   ],
   "deferredRows": [
@@ -493,5 +495,6 @@
       "remainingBlocker": "live execution disabled; display/render boundary requires explicit fixture-to-live approval and independent recovery proof against selected subset"
     }
   ],
-  "remainingBlockerBeforeEnablement": "Need explicit live execution approval, selected-subset live apply policy, and final watchdog start-before-mutation proof for real config path."
+  "remainingBlockerBeforeEnablement": "Need explicit live execution approval, selected-subset live apply policy, and final watchdog start-before-mutation proof for real config path.",
+  "enablementStatus": "enabled-approved-two-row-smoke-subset"
 }

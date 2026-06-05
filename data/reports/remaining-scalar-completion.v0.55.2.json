@@ -10,10 +10,10 @@
   ],
   "counts": {
     "startingWritableRows": 94,
-    "finalWritableRows": 272,
+    "finalWritableRows": 274,
     "startingBlockedRows": 247,
-    "finalBlockedRows": 69,
-    "enabledRows": 178,
+    "finalBlockedRows": 67,
+    "enabledRows": 180,
     "enabledByBatch": {
       "batch-b-likely-safe-numerics": 33,
       "batch-c-likely-safe-enums": 7,
@@ -22,10 +22,10 @@
       "batch-g-session-runtime-sensitive": 16
     },
     "remainingBlockedByBatch": {
-      "high-risk": 69
+      "high-risk": 67
     },
     "remainingBlockedByReason": {
-      "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.": 72
+      "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.": 67
     },
     "hyprlandVerifyConfigPassed": 171,
     "hyprlandVerifyConfigFailed": 0,
@@ -5467,11 +5467,17 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "high-risk",
-      "enabled": false,
-      "blocker": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
       "nextRequiredProof": "Dedicated display/render recovery plan, reload strategy, user-visible warnings, and manual verification on a live Hyprland session.",
-      "notes": "High-risk rows remain blocked by policy."
+      "notes": "High-risk rows remain blocked by policy.",
+      "writeStatus": "writable",
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "currentBlocker": null,
+      "writeBlocker": null,
+      "nextRequiredWork": "resolved by xwayland scaling smoke subset watchdog proof"
     },
     {
       "rowId": "xwayland.force_zero_scaling",
@@ -5494,11 +5500,17 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "high-risk",
-      "enabled": false,
-      "blocker": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
       "nextRequiredProof": "Dedicated display/render recovery plan, reload strategy, user-visible warnings, and manual verification on a live Hyprland session.",
-      "notes": "High-risk rows remain blocked by policy."
+      "notes": "High-risk rows remain blocked by policy.",
+      "writeStatus": "writable",
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "currentBlocker": null,
+      "writeBlocker": null,
+      "nextRequiredWork": "resolved by xwayland scaling smoke subset watchdog proof"
     },
     {
       "rowId": "xwayland.create_abstract_socket",

@@ -137,19 +137,29 @@ fn display_render_boundary_reports_keep_all_high_risk_rows_blocked() -> Result<(
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
 
     assert_eq!(boundary["counts"]["displayRenderRows"], 25);
-    assert_eq!(boundary["counts"]["rowsEnabled"], 0);
-    assert_eq!(boundary["counts"]["displayRenderRowsStillBlocked"], 25);
+    assert_eq!(boundary["counts"]["rowsEnabled"], 2);
+    assert_eq!(boundary["counts"]["displayRenderRowsStillBlocked"], 23);
     assert_eq!(gate["counts"]["liveExecutionEnabled"], false);
     assert_eq!(gate["counts"]["liveExecutionRefused"], true);
     assert_eq!(gate["counts"]["realConfigPathRefused"], true);
     assert_eq!(subset["counts"]["selectedRows"], 2);
-    assert_eq!(subset["counts"]["rowsEnabled"], 0);
-    assert_eq!(coverage["counts"]["writableRows"], 272);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 69);
+    assert_eq!(subset["counts"]["rowsEnabled"], 2);
+    assert_eq!(coverage["counts"]["writableRows"], 274);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 67);
 
     for row in boundary["rows"].as_array().unwrap() {
-        assert_eq!(row["writeStatus"].as_str(), Some("high-risk"));
-        assert_eq!(row["safeToEnableNow"].as_bool(), Some(false));
+        if row["rowId"].as_str().is_some_and(|row_id| {
+            matches!(
+                row_id,
+                "xwayland.use_nearest_neighbor" | "xwayland.force_zero_scaling"
+            )
+        }) {
+            assert_eq!(row["writeStatus"].as_str(), Some("writable"));
+            assert_eq!(row["safeToEnableNow"].as_bool(), Some(true));
+        } else {
+            assert_eq!(row["writeStatus"].as_str(), Some("high-risk"));
+            assert_eq!(row["safeToEnableNow"].as_bool(), Some(false));
+        }
     }
 
     Ok(())

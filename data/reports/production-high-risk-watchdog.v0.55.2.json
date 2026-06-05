@@ -19,9 +19,10 @@
     "wrongTokenFailed": true,
     "cliTimeoutRestorePassed": true,
     "separateProcessRestoreFailurePassed": true,
-    "rowsEnabledBySeparateProcessProof": 0,
+    "rowsEnabledBySeparateProcessProof": 2,
     "displayRenderBoundaryRepresented": true,
-    "displayRenderRowsEnabledByBoundarySprint": 0
+    "displayRenderRowsEnabledByBoundarySprint": 2,
+    "xwaylandScalingRowsEnabled": 2
   },
   "contract": {
     "modeImplemented": "DryRunTempOnly",
@@ -58,6 +59,7 @@
     "displayRenderLiveBoundaryRepresented": true,
     "liveExecutionEnabled": false,
     "displayRenderRowsEnabled": 0,
-    "recommendedNextSubset": "xwayland-scaling-policy-smoke-subset"
+    "recommendedNextSubset": "next-display-render-subset-not-selected",
+    "xwaylandScalingSmokeSubsetEnabled": true
   }
 }

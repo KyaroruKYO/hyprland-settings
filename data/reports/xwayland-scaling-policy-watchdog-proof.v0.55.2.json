@@ -1,0 +1,67 @@
+{
+  "artifactKind": "xwayland-scaling-policy-watchdog-proof",
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-05T21:19:45.868592+00:00",
+  "counts": {
+    "rows": 2,
+    "planPersistedBeforeMutation": 2,
+    "backupExistsBeforeMutation": 2,
+    "separateProcessConfirmPassed": 2,
+    "separateProcessTimeoutRestorePassed": 2,
+    "wrongTokenFailed": 2,
+    "realConfigTargetRefusedInDryRun": 2,
+    "safeToEnableByWatchdogGate": 2,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRuns": 0,
+    "evalRuns": 0,
+    "luaExecutions": 0
+  },
+  "rows": [
+    {
+      "rowId": "xwayland.use_nearest_neighbor",
+      "officialSetting": "xwayland.use_nearest_neighbor",
+      "planPersistedBeforeMutation": true,
+      "backupExistsBeforeMutation": true,
+      "separateProcessConfirmPassed": true,
+      "wrongTokenFailed": true,
+      "mutationStayedAfterConfirmation": true,
+      "separateProcessTimeoutRestorePassed": true,
+      "restoreVerifiedByFileReread": true,
+      "resultLogsWritten": true,
+      "realConfigTargetRefusedInDryRun": true,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "activeRuntimeModified": false,
+      "realConfigModified": false,
+      "safeToEnableByWatchdogGate": true
+    },
+    {
+      "rowId": "xwayland.force_zero_scaling",
+      "officialSetting": "xwayland.force_zero_scaling",
+      "planPersistedBeforeMutation": true,
+      "backupExistsBeforeMutation": true,
+      "separateProcessConfirmPassed": true,
+      "wrongTokenFailed": true,
+      "mutationStayedAfterConfirmation": true,
+      "separateProcessTimeoutRestorePassed": true,
+      "restoreVerifiedByFileReread": true,
+      "resultLogsWritten": true,
+      "realConfigTargetRefusedInDryRun": true,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "activeRuntimeModified": false,
+      "realConfigModified": false,
+      "safeToEnableByWatchdogGate": true
+    }
+  ],
+  "invariants": {
+    "fixtureTempFilesOnly": true,
+    "onlyApprovedRowsIncluded": true,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  }
+}

@@ -34,8 +34,8 @@ fn unified_remaining_90_pipeline_covers_current_blocked_rows() -> Result<()> {
     let official = official_evidence()?;
     let scope_policy = scope_policy()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 272);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 69);
+    assert_eq!(coverage["counts"]["writableRows"], 274);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 67);
     assert_eq!(pipeline["counts"]["rows"], 90);
     assert_eq!(official["counts"]["rows"], 90);
     assert_eq!(scope_policy["counts"]["rows"], 90);
@@ -47,7 +47,7 @@ fn unified_remaining_90_pipeline_covers_current_blocked_rows() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_owned())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 69);
+    assert_eq!(blocked_ids.len(), 67);
 
     for report in [&pipeline, &official, &scope_policy] {
         let ids = report["rows"]

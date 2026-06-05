@@ -8,8 +8,8 @@
     "totalScalarRows": 341,
     "readableRows": 341,
     "blockedReadRows": 0,
-    "writableRows": 272,
-    "blockedWriteRows": 69
+    "writableRows": 274,
+    "blockedWriteRows": 67
   },
   "rows": [
     {
@@ -4247,36 +4247,36 @@
       "officialSetting": "xwayland.use_nearest_neighbor",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "high-risk",
-      "writeBlocker": "report-only/high-risk row: display_render_session_risk",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "none",
       "controlKind": "toggle",
-      "parserStatus": "blocked_by_risk_review",
+      "parserStatus": "scalar-current-value-parser",
       "riskClass": "display_render_session_risk",
-      "reportOnly": true,
+      "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Raw scalar read supported as unevaluated text by all-row parser projection test; semantic parser may still be needed before safe writing."
+      "notes": "High-risk display/render XWayland scaling row enabled after boolean validator, temp-config proof, and independent watchdog arm-before-mutation proof."
     },
     {
       "rowId": "xwayland.force_zero_scaling",
       "officialSetting": "xwayland.force_zero_scaling",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "high-risk",
-      "writeBlocker": "report-only/high-risk row: display_render_session_risk",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "none",
       "controlKind": "toggle",
-      "parserStatus": "blocked_by_risk_review",
+      "parserStatus": "scalar-current-value-parser",
       "riskClass": "display_render_session_risk",
-      "reportOnly": true,
+      "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Raw scalar read supported as unevaluated text by all-row parser projection test; semantic parser may still be needed before safe writing."
+      "notes": "High-risk display/render XWayland scaling row enabled after boolean validator, temp-config proof, and independent watchdog arm-before-mutation proof."
     },
     {
       "rowId": "xwayland.create_abstract_socket",

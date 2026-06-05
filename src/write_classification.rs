@@ -119,6 +119,11 @@ pub const ECOSYSTEM_HIGH_RISK_WRITABLE_ROWS: &[&str] = &[
     "ecosystem.enforce_permissions",
 ];
 
+pub const XWAYLAND_SCALING_HIGH_RISK_WRITABLE_ROWS: &[&str] = &[
+    "xwayland.use_nearest_neighbor",
+    "xwayland.force_zero_scaling",
+];
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SessionRuntimeWritePolicy {
     pub scope: &'static str,
@@ -1973,6 +1978,16 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         official_setting: "ecosystem.enforce_permissions",
         value_kind: ScalarWriteValueKind::Boolean,
     },
+    SafeWritableRow {
+        row_id: "xwayland.use_nearest_neighbor",
+        official_setting: "xwayland.use_nearest_neighbor",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "xwayland.force_zero_scaling",
+        official_setting: "xwayland.force_zero_scaling",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
 ];
 
 pub fn classify_inventory_entry(entry: &InventoryEntry) -> ScalarWriteClassification {
@@ -2112,15 +2127,24 @@ pub fn session_runtime_write_policy(row_id: &str) -> Option<SessionRuntimeWriteP
 }
 
 pub fn high_risk_write_policy(row_id: &str) -> Option<HighRiskWritePolicy> {
-    if !ECOSYSTEM_HIGH_RISK_WRITABLE_ROWS.contains(&row_id) {
-        return None;
+    if ECOSYSTEM_HIGH_RISK_WRITABLE_ROWS.contains(&row_id) {
+        return Some(HighRiskWritePolicy {
+            recovery_bucket: "ecosystem-permission-policy",
+            approval_gate: "advanced-opt-in-plus-policy-confirmation-plus-independent-dead-man-confirm-or-revert",
+            watchdog_requirement: "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+            review_warning: "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+        });
     }
-    Some(HighRiskWritePolicy {
-        recovery_bucket: "ecosystem-permission-policy",
-        approval_gate: "advanced-opt-in-plus-policy-confirmation-plus-independent-dead-man-confirm-or-revert",
-        watchdog_requirement: "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
-        review_warning: "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
-    })
+    if XWAYLAND_SCALING_HIGH_RISK_WRITABLE_ROWS.contains(&row_id) {
+        return Some(HighRiskWritePolicy {
+            recovery_bucket: "display-render-recovery:xwayland-scaling-policy-smoke-subset",
+            approval_gate:
+                "advanced-opt-in-plus-display-render-dead-man-watchdog-confirm-or-revert",
+            watchdog_requirement: "display/render watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup",
+            review_warning: "High-risk display/render XWayland scaling setting. Only the approved scaling policy smoke subset is writable; XWayland enable/socket, render, cursor/input, and debug/crash rows remain blocked.",
+        });
+    }
+    None
 }
 
 pub fn is_verified_finite_choice_value(row_id: &str, value: &str) -> bool {
