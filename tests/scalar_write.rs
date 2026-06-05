@@ -63,6 +63,9 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
     if row.value_kind == ScalarWriteValueKind::NumericList {
         return "0.2 0.0 0.5 1 1.2 1.5";
     }
+    if row.value_kind == ScalarWriteValueKind::CommaSeparatedFloatList {
+        return "0.333, 0.5, 0.667, 1.0";
+    }
     if row.value_kind == ScalarWriteValueKind::LineSafeString {
         return "JetBrains Mono";
     }
@@ -118,6 +121,9 @@ fn existing_value_for(row: &SafeWritableRow) -> &'static str {
     }
     if row.value_kind == ScalarWriteValueKind::NumericList {
         return "0.2 0.5 1";
+    }
+    if row.value_kind == ScalarWriteValueKind::CommaSeparatedFloatList {
+        return "0.25,0.75";
     }
     if row.value_kind == ScalarWriteValueKind::LineSafeString {
         return "Sans";

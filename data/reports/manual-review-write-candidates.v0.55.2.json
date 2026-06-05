@@ -4,14 +4,12 @@
   "hyprlandVersion": "0.55.2",
   "sourceCoverageReport": "data/reports/scalar-read-write-coverage.v0.55.2.json",
   "counts": {
-    "rows": 18,
+    "rows": 16,
     "byBatch": {
-      "batch-g-session-runtime-sensitive": 16,
-      "batch-c-likely-safe-enums": 2
+      "batch-g-session-runtime-sensitive": 16
     },
     "byRecommendedAction": {
-      "keep-blocked-for-now": 16,
-      "needs-official-source-check": 2
+      "keep-blocked-for-now": 16
     }
   },
   "invariants": {
@@ -19,8 +17,8 @@
     "sourceWriteStatus": "manual-review-needed",
     "parserNeededRowsRemainingInCoverage": 0,
     "validatorNeededRowsRemainingInCoverage": 0,
-    "writableRowsRemain": 251,
-    "notes": "Remaining manual-review rows are string/list semantic proof gaps or session/runtime-sensitive settings; monitor-output rows were promoted after current-config monitor-name enumeration, app-side validation, and fixture/temp-config proof."
+    "writableRowsRemain": 253,
+    "notes": "Remaining manual-review rows are session/runtime-sensitive settings; custom semantic string rows were promoted after official-source semantic validators, app-side invalid rejection, fixture write/reread, UI projection, and temp-config parser proof."
   },
   "items": [
     {
@@ -444,35 +442,6 @@
       "notes": "Classification only. This sprint does not enable writes or change write behavior."
     },
     {
-      "rowId": "master.center_master_fallback",
-      "officialSetting": "master.center_master_fallback",
-      "controlKind": "dropdown",
-      "valueFamily": "none",
-      "parserStatus": "scalar-current-value-parser",
-      "riskClass": "advanced",
-      "reportOnly": false,
-      "currentWriteBlocker": "official-source-research-needed",
-      "recommendedBatch": "batch-c-likely-safe-enums",
-      "recommendedAction": "needs-official-source-check",
-      "riskReason": "Dropdown-like scalar; needs allowed-value review before a safe editor can be enabled.",
-      "validatorNeeded": false,
-      "parserNeeded": false,
-      "writeEngineNeeded": false,
-      "uiNeeded": true,
-      "testPlan": [
-        "classification_allows_only_master_center_master_fallback_after_approval",
-        "dropdown_allowed_values_enforced_for_master_center_master_fallback",
-        "pending_change_validates_master_center_master_fallback",
-        "fixture_write_replaces_master_center_master_fallback",
-        "fixture_write_appends_master_center_master_fallback_when_absent",
-        "ui_projection_marks_master_center_master_fallback_editable_after_approval",
-        "blocked_without_approval_master_center_master_fallback",
-        "official_source_semantics_required_before_write_enablement"
-      ],
-      "userApprovalRequired": true,
-      "notes": "Hyprland --verify-config accepted arbitrary string-like values for this row, including values that are not documented by companion schema as finite choices. Temp config acceptance is therefore not sufficient proof for finite-choice write enablement."
-    },
-    {
       "rowId": "scrolling.fullscreen_on_one_column",
       "officialSetting": "scrolling.fullscreen_on_one_column",
       "controlKind": "toggle",
@@ -499,35 +468,6 @@
       ],
       "userApprovalRequired": true,
       "notes": "Classification only. This sprint does not enable writes or change write behavior."
-    },
-    {
-      "rowId": "scrolling.explicit_column_widths",
-      "officialSetting": "scrolling.explicit_column_widths",
-      "controlKind": "dropdown",
-      "valueFamily": "none",
-      "parserStatus": "scalar-current-value-parser",
-      "riskClass": "advanced",
-      "reportOnly": false,
-      "currentWriteBlocker": "official-source-research-needed",
-      "recommendedBatch": "batch-c-likely-safe-enums",
-      "recommendedAction": "needs-official-source-check",
-      "riskReason": "Dropdown-like scalar; needs allowed-value review before a safe editor can be enabled.",
-      "validatorNeeded": false,
-      "parserNeeded": false,
-      "writeEngineNeeded": false,
-      "uiNeeded": true,
-      "testPlan": [
-        "classification_allows_only_scrolling_explicit_column_widths_after_approval",
-        "dropdown_allowed_values_enforced_for_scrolling_explicit_column_widths",
-        "pending_change_validates_scrolling_explicit_column_widths",
-        "fixture_write_replaces_scrolling_explicit_column_widths",
-        "fixture_write_appends_scrolling_explicit_column_widths_when_absent",
-        "ui_projection_marks_scrolling_explicit_column_widths_editable_after_approval",
-        "blocked_without_approval_scrolling_explicit_column_widths",
-        "official_source_semantics_required_before_write_enablement"
-      ],
-      "userApprovalRequired": true,
-      "notes": "Hyprland --verify-config accepted malformed/non-numeric-looking strings for this row. Temp config acceptance is therefore not sufficient proof for a safe list-width writer."
     }
   ]
 }

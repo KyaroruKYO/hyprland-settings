@@ -40,29 +40,27 @@
     "byMissingProofCategory": {
       "proof-complete-policy-blocked": 16,
       "needs-session-runtime-policy": 16,
-      "needs-validator-implementation": 83,
-      "needs-editor-projection": 90,
-      "needs-invalid-value-tests": 90,
+      "needs-validator-implementation": 81,
+      "needs-editor-projection": 88,
+      "needs-invalid-value-tests": 88,
       "needs-finite-choice-validator": 7,
       "proof-complete-high-risk-blocked": 72,
-      "needs-high-risk-recovery-design": 72,
-      "official-source-research-needed": 2
+      "needs-high-risk-recovery-design": 72
     },
     "unknownClassifications": 0,
     "activeConfigModified": false,
     "activeRuntimeModified": false,
-    "enabledAfterInvestigation": 15,
-    "remainingBlockedRowsAfterEnablement": 90,
+    "enabledAfterInvestigation": 17,
+    "remainingBlockedRowsAfterEnablement": 88,
     "currentByMissingProofCategory": {
       "proof-complete-policy-blocked": 16,
       "needs-session-runtime-policy": 16,
-      "needs-validator-implementation": 83,
-      "needs-editor-projection": 90,
-      "needs-invalid-value-tests": 90,
+      "needs-validator-implementation": 81,
+      "needs-editor-projection": 88,
+      "needs-invalid-value-tests": 88,
       "needs-finite-choice-validator": 7,
       "proof-complete-high-risk-blocked": 72,
-      "needs-high-risk-recovery-design": 72,
-      "official-source-research-needed": 2
+      "needs-high-risk-recovery-design": 72
     }
   },
   "rows": [
@@ -3969,21 +3967,21 @@
     {
       "rowId": "master.center_master_fallback",
       "officialSetting": "master.center_master_fallback",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-c-likely-safe-enums",
       "controlKind": "dropdown",
       "companionSchemaType": "string",
       "canParseRead": true,
-      "canValidateAtLeastOneCandidateValue": false,
-      "currentProductionValidatorExists": false,
+      "canValidateAtLeastOneCandidateValue": true,
+      "currentProductionValidatorExists": true,
       "candidateValuesAcceptedByHyprland": [
         "left"
       ],
       "candidateValuesRejectedByHyprland": [],
       "invalidValuesAcceptedByHyprland": [],
       "invalidValuesRejectedOrSkipped": 1,
-      "canRejectInvalidValuesInCurrentApp": false,
+      "canRejectInvalidValuesInCurrentApp": true,
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
@@ -3992,17 +3990,12 @@
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
-      "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "needs-editor-projection",
-        "needs-invalid-value-tests",
-        "official-source-research-needed",
-        "needs-validator-implementation"
-      ],
-      "exactNextStepToMakeWritable": "Find official Hyprland source/docs for center_master_fallback semantics, then implement a semantic validator/editor and invalid-value tests before enabling writes.",
+      "blockedByMissingValidatorEditorOrTestCoverage": false,
+      "missingProofCategories": [],
+      "exactNextStepToMakeWritable": "Already writable after semantic validator implementation.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Hyprland --verify-config accepted arbitrary string-like values for this row, including values that are not documented by companion schema as finite choices. Temp config acceptance is therefore not sufficient proof for finite-choice write enablement. No production write behavior changed."
+      "notes": "Finite semantic validator implemented from official wiki/source; Hyprland parser accepts arbitrary strings, so app validator is authoritative."
     },
     {
       "rowId": "scrolling.fullscreen_on_one_column",
@@ -4047,21 +4040,21 @@
     {
       "rowId": "scrolling.explicit_column_widths",
       "officialSetting": "scrolling.explicit_column_widths",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-c-likely-safe-enums",
       "controlKind": "dropdown",
       "companionSchemaType": "string",
       "canParseRead": true,
-      "canValidateAtLeastOneCandidateValue": false,
-      "currentProductionValidatorExists": false,
+      "canValidateAtLeastOneCandidateValue": true,
+      "currentProductionValidatorExists": true,
       "candidateValuesAcceptedByHyprland": [
         "0.333, 0.5, 0.667, 1.0"
       ],
       "candidateValuesRejectedByHyprland": [],
       "invalidValuesAcceptedByHyprland": [],
       "invalidValuesRejectedOrSkipped": 1,
-      "canRejectInvalidValuesInCurrentApp": false,
+      "canRejectInvalidValuesInCurrentApp": true,
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
@@ -4070,17 +4063,12 @@
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
-      "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "needs-editor-projection",
-        "needs-invalid-value-tests",
-        "official-source-research-needed",
-        "needs-validator-implementation"
-      ],
-      "exactNextStepToMakeWritable": "Find official Hyprland source/docs for explicit_column_widths grammar, then implement a dedicated comma-separated positive-width validator with invalid-value tests before enabling writes.",
+      "blockedByMissingValidatorEditorOrTestCoverage": false,
+      "missingProofCategories": [],
+      "exactNextStepToMakeWritable": "Already writable after semantic validator implementation.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Hyprland --verify-config accepted malformed/non-numeric-looking strings for this row. Temp config acceptance is therefore not sufficient proof for a safe list-width writer. No production write behavior changed."
+      "notes": "Comma-separated finite-float validator implemented conservatively; Hyprland parser accepts arbitrary strings, so app validator is authoritative."
     },
     {
       "rowId": "scrolling.direction",

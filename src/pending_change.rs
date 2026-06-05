@@ -156,6 +156,9 @@ fn validate_safe_writable_value(
         Some(ScalarWriteValueKind::Gradient) => validate_gradient_value(value),
         Some(ScalarWriteValueKind::Vector2) => validate_vec2_value(value),
         Some(ScalarWriteValueKind::NumericList) => validate_numeric_list_value(value),
+        Some(ScalarWriteValueKind::CommaSeparatedFloatList) => {
+            validate_comma_separated_float_list(value)
+        }
         Some(ScalarWriteValueKind::LineSafeString) => validate_line_safe_string(value),
         Some(ScalarWriteValueKind::Path) => validate_path_value(value),
         Some(ScalarWriteValueKind::RegexString) => validate_regex_value(value),
@@ -279,6 +282,43 @@ fn validate_numeric_list_value(value: &str) -> PendingChangeValidation {
     match NumericListValue::parse(value) {
         Ok(_) => PendingChangeValidation::Valid,
         Err(error) => invalid(&error.to_string()),
+    }
+}
+
+fn validate_comma_separated_float_list(value: &str) -> PendingChangeValidation {
+    let trimmed = value.trim();
+    if trimmed.is_empty() {
+        return invalid("comma-separated float list cannot be empty");
+    }
+    if trimmed.contains('\n') || trimmed.contains('\r') {
+        return invalid("comma-separated float list must stay on one config line");
+    }
+    if trimmed.starts_with(',') || trimmed.ends_with(',') {
+        return invalid("comma-separated float list cannot have empty entries");
+    }
+
+    let mut count = 0usize;
+    for entry in trimmed.split(',') {
+        let entry = entry.trim();
+        if entry.is_empty() {
+            return invalid("comma-separated float list cannot have empty entries");
+        }
+        if entry.contains(char::is_whitespace) {
+            return invalid("float entries cannot contain internal whitespace");
+        }
+        match entry.parse::<f64>() {
+            Ok(number) if number.is_finite() => {
+                count += 1;
+            }
+            Ok(_) => return invalid("float entries must be finite"),
+            Err(_) => return invalid("float entries must be numeric"),
+        }
+    }
+
+    if count == 0 {
+        invalid("comma-separated float list requires at least one value")
+    } else {
+        PendingChangeValidation::Valid
     }
 }
 

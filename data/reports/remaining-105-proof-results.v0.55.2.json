@@ -14,9 +14,9 @@
     "rowsWithAtLeastOneValidCandidatePassingVerifyConfig": 105,
     "rowsWithAllValidCandidatesPassingVerifyConfig": 104,
     "rowsWithNoValidCandidatePassingVerifyConfig": 0,
-    "validCandidateValuesAccepted": 235,
+    "validCandidateValuesAccepted": 240,
     "validCandidateValuesRejected": 1,
-    "invalidCandidateValuesAcceptedByHyprland": 16,
+    "invalidCandidateValuesAcceptedByHyprland": 26,
     "invalidCandidateValuesRejectedOrSkipped": 103,
     "highRiskRowsTechnicallyValidAtLeastOne": 72,
     "highRiskRowsFailingValidation": 0,
@@ -9772,15 +9772,22 @@
     {
       "rowId": "master.center_master_fallback",
       "officialSetting": "master.center_master_fallback",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-c-likely-safe-enums",
-      "proofStrategy": "finite-choice-temp-config-proof",
+      "proofStrategy": "official-source-semantic-validator-plus-temp-config-parser-proof",
       "candidateValidValues": [
-        "left"
+        "left",
+        "right",
+        "top",
+        "bottom"
       ],
       "candidateInvalidValues": [
-        "bad\nvalue"
+        "",
+        "center",
+        "Left",
+        "1",
+        "example"
       ],
       "acceptedValidValues": [
         "left"
@@ -9844,7 +9851,18 @@
         "example"
       ],
       "verifyConfigSemanticStrength": "weak-parser-accepts-arbitrary-string",
-      "safeToEnableFromVerifyConfigAlone": false
+      "safeToEnableFromVerifyConfigAlone": false,
+      "acceptedValues": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "rejectedValues": [],
+      "appValidatorRejectsInvalidProbe": true,
+      "safeToEnable": true,
+      "finalDecision": "enabled",
+      "notes": "Finite semantic validator implemented from official wiki/source; Hyprland parser accepts arbitrary strings, so app validator is authoritative."
     },
     {
       "rowId": "scrolling.fullscreen_on_one_column",
@@ -9941,15 +9959,26 @@
     {
       "rowId": "scrolling.explicit_column_widths",
       "officialSetting": "scrolling.explicit_column_widths",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-c-likely-safe-enums",
-      "proofStrategy": "finite-choice-temp-config-proof",
+      "proofStrategy": "official-source-semantic-validator-plus-temp-config-parser-proof",
       "candidateValidValues": [
-        "0.333, 0.5, 0.667, 1.0"
+        "1.0",
+        "0.333, 0.5, 0.667, 1.0",
+        "0.25,0.75"
       ],
       "candidateInvalidValues": [
-        "bad\nvalue"
+        "",
+        "example",
+        "0.5,",
+        "0.5,,1.0",
+        "NaN",
+        "inf",
+        "-inf",
+        "0.5, bad",
+        "0.5 0.75",
+        "0.5\n1.0"
       ],
       "acceptedValidValues": [
         "0.333, 0.5, 0.667, 1.0"
@@ -10010,7 +10039,17 @@
         "0, bad"
       ],
       "verifyConfigSemanticStrength": "weak-parser-accepts-arbitrary-string",
-      "safeToEnableFromVerifyConfigAlone": false
+      "safeToEnableFromVerifyConfigAlone": false,
+      "acceptedValues": [
+        "1.0",
+        "0.333, 0.5, 0.667, 1.0",
+        "0.25,0.75"
+      ],
+      "rejectedValues": [],
+      "appValidatorRejectsInvalidProbe": true,
+      "safeToEnable": true,
+      "finalDecision": "enabled",
+      "notes": "Comma-separated finite-float validator implemented conservatively; Hyprland parser accepts arbitrary strings, so app validator is authoritative."
     },
     {
       "rowId": "scrolling.direction",

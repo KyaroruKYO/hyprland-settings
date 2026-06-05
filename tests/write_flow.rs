@@ -55,7 +55,7 @@ fn snapshot_for(path: &PathBuf, contents: &str) -> CurrentConfigSnapshot {
 fn edit_projection_allows_only_safe_writable_rows() {
     let current =
         CurrentConfigSnapshot::read_unavailable("no config").value_for("general.snap.enabled");
-    let blocked = edit_projection_for_setting("master.center_master_fallback", &current);
+    let blocked = edit_projection_for_setting("misc.disable_autoreload", &current);
 
     for row in SAFE_WRITABLE_ROWS {
         let editable = edit_projection_for_setting(row.row_id, &current);
@@ -446,6 +446,106 @@ fn apply_flow_writes_numeric_list_fixture() -> Result<()> {
 }
 
 #[test]
+fn semantic_master_center_fallback_projects_and_writes_dropdown_fixture() -> Result<()> {
+    let source = PathBuf::from("/tmp/master-center-ui.conf");
+    let snapshot = snapshot_for(&source, "master:center_master_fallback = left\n");
+    let projection = edit_projection_for_setting(
+        "master.center_master_fallback",
+        &snapshot.value_for("master.center_master_fallback"),
+    );
+
+    assert!(projection.editable);
+    assert_eq!(projection.editor_kind, "dropdown");
+    assert_eq!(projection.choices.len(), 4);
+    assert!(projection
+        .choices
+        .iter()
+        .any(|choice| { choice.raw_value == "bottom" && choice.label == "Bottom" }));
+    assert_eq!(projection.proposed_value.as_deref(), Some("right"));
+
+    let root = temp_root("apply-master-center-fallback")?;
+    let source = root.join("hyprland.conf");
+    fs::write(&source, "master:center_master_fallback = left\n")?;
+    let contents = fs::read_to_string(&source)?;
+    let snapshot = snapshot_for(&source, &contents);
+    let backup_manager = BackupManager::new(root.join("backups"));
+
+    let outcome = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery_for(source.clone()),
+        &snapshot,
+        "master.center_master_fallback",
+        "bottom",
+        &backup_manager,
+    )
+    .map_err(|failure| anyhow::anyhow!("{failure:?}"))?;
+
+    assert_eq!(outcome.setting_id, "master.center_master_fallback");
+    assert_eq!(outcome.target_path, source);
+    assert!(outcome.backup_path.exists());
+    assert_eq!(outcome.verified_value.as_deref(), Some("bottom"));
+    assert_eq!(
+        fs::read_to_string(&outcome.target_path)?,
+        "master:center_master_fallback = bottom\n"
+    );
+
+    fs::remove_dir_all(root)?;
+    Ok(())
+}
+
+#[test]
+fn semantic_scrolling_explicit_column_widths_projects_and_writes_fixture() -> Result<()> {
+    let source = PathBuf::from("/tmp/scrolling-widths-ui.conf");
+    let snapshot = snapshot_for(
+        &source,
+        "scrolling:explicit_column_widths = 0.333, 0.5, 0.667, 1.0\n",
+    );
+    let projection = edit_projection_for_setting(
+        "scrolling.explicit_column_widths",
+        &snapshot.value_for("scrolling.explicit_column_widths"),
+    );
+
+    assert!(projection.editable);
+    assert_eq!(projection.editor_kind, "comma-float-list-text");
+    assert_eq!(
+        projection.proposed_value.as_deref(),
+        Some("0.333, 0.5, 0.667, 1.0")
+    );
+
+    let root = temp_root("apply-explicit-column-widths")?;
+    let source = root.join("hyprland.conf");
+    fs::write(
+        &source,
+        "scrolling:explicit_column_widths = 0.333, 0.5, 0.667, 1.0\n",
+    )?;
+    let contents = fs::read_to_string(&source)?;
+    let snapshot = snapshot_for(&source, &contents);
+    let backup_manager = BackupManager::new(root.join("backups"));
+
+    let outcome = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery_for(source.clone()),
+        &snapshot,
+        "scrolling.explicit_column_widths",
+        "0.25,0.75",
+        &backup_manager,
+    )
+    .map_err(|failure| anyhow::anyhow!("{failure:?}"))?;
+
+    assert_eq!(outcome.setting_id, "scrolling.explicit_column_widths");
+    assert_eq!(outcome.target_path, source);
+    assert!(outcome.backup_path.exists());
+    assert_eq!(outcome.verified_value.as_deref(), Some("0.25,0.75"));
+    assert_eq!(
+        fs::read_to_string(&outcome.target_path)?,
+        "scrolling:explicit_column_widths = 0.25,0.75\n"
+    );
+
+    fs::remove_dir_all(root)?;
+    Ok(())
+}
+
+#[test]
 fn apply_flow_writes_enum_custom_string_fixture() -> Result<()> {
     let root = temp_root("apply-string")?;
     let source = root.join("hyprland.conf");
@@ -583,8 +683,8 @@ fn apply_flow_blocks_non_allowlisted_setting() {
         known_ids(),
         &discovery,
         &snapshot,
-        "master.center_master_fallback",
-        "left",
+        "misc.disable_autoreload",
+        "true",
         &backup_manager,
     )
     .expect_err("non-allowlisted setting should block apply");

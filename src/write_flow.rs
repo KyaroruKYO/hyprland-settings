@@ -356,6 +356,11 @@ fn next_proposed_value(
             .clone()
             .filter(|value| !value.trim().is_empty())
             .unwrap_or_else(|| "0.2 0.0 0.5 1 1.2 1.5".to_string()),
+        Some(ScalarWriteValueKind::CommaSeparatedFloatList) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "0.333, 0.5, 0.667, 1.0".to_string()),
         Some(ScalarWriteValueKind::LineSafeString) => current_value
             .raw_value
             .clone()
@@ -395,6 +400,7 @@ fn editor_kind_for_value_kind(value_kind: Option<ScalarWriteValueKind>) -> &'sta
         Some(ScalarWriteValueKind::Gradient) => "gradient-text",
         Some(ScalarWriteValueKind::Vector2) => "vector-text",
         Some(ScalarWriteValueKind::NumericList) => "numeric-list-text",
+        Some(ScalarWriteValueKind::CommaSeparatedFloatList) => "comma-float-list-text",
         Some(ScalarWriteValueKind::LineSafeString)
         | Some(ScalarWriteValueKind::Path)
         | Some(ScalarWriteValueKind::RegexString) => "text",

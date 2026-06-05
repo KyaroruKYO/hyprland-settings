@@ -11,9 +11,9 @@
   ],
   "counts": {
     "rows": 90,
-    "writableRowsRemain": 251,
-    "blockedRowsRemain": 90,
-    "customStringSemanticRows": 2,
+    "writableRowsRemain": 253,
+    "blockedRowsRemain": 88,
+    "customStringSemanticRows": 0,
     "sessionRuntimeSensitiveRows": 16,
     "highRiskRows": 72,
     "byScope": {
@@ -34,9 +34,11 @@
       "cursor-input-recovery": 22,
       "ecosystem-permission-policy": 3,
       "debug-crash-recovery": 22,
-      "custom-semantic-string": 2
+      "custom-semantic-string": 0,
+      "resolved-custom-semantic-string": 2
     },
-    "verifyConfigParserOnlyRows": 2
+    "verifyConfigParserOnlyRows": 2,
+    "resolvedCustomStringSemanticRows": 2
   },
   "pipelineShape": {
     "fields": [
@@ -2191,20 +2193,20 @@
       "validatorAuthority": "official-source-authoritative",
       "scope": "persistent-needs-reload",
       "riskClass": "advanced",
-      "riskBucket": "custom-semantic-string",
+      "riskBucket": "resolved-custom-semantic-string",
       "applyPath": "persistent-config-write-with-backup-reread-reload-gate",
       "rereadOracle": "reload-then-runtime",
       "recoveryStrategy": "backup-rollback-plus-reload-not-run-without-explicit-approval",
       "approvalGate": "normal-after-official-validator-and-tests",
-      "preflightProofStatus": "partial-parser-proof-only-semantic-validator-needed",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "preflightProofStatus": "complete-app-validator-and-temp-config-parser-proof",
+      "commitProofStatus": "fixture-write-reread-tested-existing-safe-path",
+      "gateStatus": "resolved-safe-writable",
       "verifyConfigRole": "parser-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "complete",
-      "currentWriteStatus": "manual-review-needed",
-      "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Implement finite string validator for left/right/top/bottom from official wiki and MasterAlgorithm.cpp, then run fixture and temp-config tests."
+      "currentWriteStatus": "writable",
+      "currentBlocker": null,
+      "nextRequiredWork": "No remaining work for scalar write enablement; reload is still not performed by app."
     },
     {
       "rowId": "scrolling.fullscreen_on_one_column",
@@ -2237,24 +2239,24 @@
       "key": "scrolling:explicit_column_widths",
       "type": "comma-separated-float-list",
       "valueType": "comma-separated-float-list",
-      "validatorRef": "comma-separated-float-list:finite-values-clamped-source-but-app-should-reject-invalid",
+      "validatorRef": "comma-separated-finite-float-list",
       "validatorAuthority": "app-validator-authoritative",
       "scope": "persistent-needs-reload",
       "riskClass": "advanced",
-      "riskBucket": "custom-semantic-string",
+      "riskBucket": "resolved-custom-semantic-string",
       "applyPath": "persistent-config-write-with-backup-reread-reload-gate",
       "rereadOracle": "reload-then-runtime",
       "recoveryStrategy": "backup-rollback-plus-reload-not-run-without-explicit-approval",
       "approvalGate": "normal-after-official-validator-and-tests",
-      "preflightProofStatus": "partial-parser-proof-only-semantic-validator-needed",
-      "commitProofStatus": "not-implemented-for-blocked-row",
-      "gateStatus": "blocked-by-policy-or-validator",
+      "preflightProofStatus": "complete-app-validator-and-temp-config-parser-proof",
+      "commitProofStatus": "fixture-write-reread-tested-existing-safe-path",
+      "gateStatus": "resolved-safe-writable",
       "verifyConfigRole": "parser-only",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "complete",
-      "currentWriteStatus": "manual-review-needed",
-      "currentBlocker": "manual safety review required for risk class: advanced",
-      "nextRequiredWork": "Implement comma-separated finite float-list validator using official ScrollingAlgorithm.cpp parsing semantics; reject arbitrary strings before temp-config proof."
+      "currentWriteStatus": "writable",
+      "currentBlocker": null,
+      "nextRequiredWork": "No remaining work for scalar write enablement; reload is still not performed by app."
     },
     {
       "rowId": "experimental.wp_cm_1_2",

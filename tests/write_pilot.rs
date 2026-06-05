@@ -188,9 +188,9 @@ fn invalid_value_is_rejected_before_write_pilot() -> Result<()> {
 #[test]
 fn no_other_setting_gets_writable_plan() {
     let current = CurrentValueProjection::not_configured();
-    let pending = stage_pending_change("master.center_master_fallback", &current, "left");
+    let pending = stage_pending_change("misc.disable_autoreload", &current, "true");
     let review = review_write_plan(WritePlanRequest {
-        known_setting_ids: ["master.center_master_fallback"]
+        known_setting_ids: ["misc.disable_autoreload"]
             .into_iter()
             .map(str::to_string)
             .collect(),

@@ -35,6 +35,7 @@ pub enum ScalarWriteValueKind {
     Gradient,
     Vector2,
     NumericList,
+    CommaSeparatedFloatList,
     LineSafeString,
     Path,
     RegexString,
@@ -80,6 +81,7 @@ pub const REMAINING_105_FINITE_CHOICE_ROWS: &[&str] = &[
     "master.new_on_active",
     "master.orientation",
     "scrolling.direction",
+    "master.center_master_fallback",
 ];
 
 pub const SOURCE_BACKED_INPUT_ROWS: &[&str] = &[
@@ -210,6 +212,25 @@ const SCROLLING_DIRECTION_CHOICES: &[FiniteChoiceOption] = &[
     FiniteChoiceOption {
         raw_value: "up",
         label: "Up",
+    },
+];
+
+const MASTER_CENTER_MASTER_FALLBACK_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "left",
+        label: "Left",
+    },
+    FiniteChoiceOption {
+        raw_value: "right",
+        label: "Right",
+    },
+    FiniteChoiceOption {
+        raw_value: "top",
+        label: "Top",
+    },
+    FiniteChoiceOption {
+        raw_value: "bottom",
+        label: "Bottom",
     },
 ];
 
@@ -1720,6 +1741,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Boolean,
     },
     SafeWritableRow {
+        row_id: "master.center_master_fallback",
+        official_setting: "master.center_master_fallback",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
         row_id: "master.smart_resizing",
         official_setting: "master.smart_resizing",
         value_kind: ScalarWriteValueKind::Boolean,
@@ -1753,6 +1779,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "scrolling.follow_min_visible",
         official_setting: "scrolling.follow_min_visible",
         value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "scrolling.explicit_column_widths",
+        official_setting: "scrolling.explicit_column_widths",
+        value_kind: ScalarWriteValueKind::CommaSeparatedFloatList,
     },
     SafeWritableRow {
         row_id: "scrolling.wrap_focus",
@@ -1849,6 +1880,7 @@ pub fn finite_choice_options(row_id: &str) -> Option<&'static [FiniteChoiceOptio
         "master.new_status" => Some(MASTER_NEW_STATUS_CHOICES),
         "master.new_on_active" => Some(MASTER_NEW_ON_ACTIVE_CHOICES),
         "master.orientation" => Some(MASTER_ORIENTATION_CHOICES),
+        "master.center_master_fallback" => Some(MASTER_CENTER_MASTER_FALLBACK_CHOICES),
         "scrolling.direction" => Some(SCROLLING_DIRECTION_CHOICES),
         "input.scroll_method" => Some(INPUT_SCROLL_METHOD_CHOICES),
         "general.resize_corner" => Some(GENERAL_RESIZE_CORNER_CHOICES),

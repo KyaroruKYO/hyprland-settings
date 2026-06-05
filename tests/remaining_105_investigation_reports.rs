@@ -57,6 +57,12 @@ fn batch_d_remaining_input_proof() -> Result<Value> {
     ))?)
 }
 
+fn semantic_validator_implementation() -> Result<Value> {
+    Ok(serde_json::from_str(include_str!(
+        "../data/reports/semantic-validator-implementation.v0.55.2.json"
+    ))?)
+}
+
 #[test]
 fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let coverage = coverage()?;
@@ -65,8 +71,8 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let results = proof_results()?;
     let classifications = classifications()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 251);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 90);
+    assert_eq!(coverage["counts"]["writableRows"], 253);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 88);
     assert_eq!(investigation["counts"]["rows"], 105);
     assert_eq!(plan["counts"]["rows"], 105);
     assert_eq!(results["counts"]["rows"], 105);
@@ -79,7 +85,7 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_string())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 90);
+    assert_eq!(blocked_ids.len(), 88);
 
     for report in [&investigation, &plan, &results, &classifications] {
         let ids = report["rows"]
@@ -202,14 +208,27 @@ fn remaining_105_proof_results_never_reference_active_config_or_runtime_mutation
 }
 
 #[test]
-fn batch_c_string_rows_require_official_semantic_validators() -> Result<()> {
+fn batch_c_string_rows_have_semantic_validators_and_are_writable() -> Result<()> {
     let semantics = batch_c_string_semantics()?;
+    let implementation = semantic_validator_implementation()?;
     let classifications = classifications()?;
     let coverage = coverage()?;
 
     assert_eq!(semantics["counts"]["rows"], 2);
     assert_eq!(semantics["counts"]["rowsWithArbitraryStringAcceptance"], 2);
-    assert_eq!(semantics["counts"]["rowsEnabled"], 0);
+    assert_eq!(semantics["counts"]["rowsEnabled"], 2);
+    assert_eq!(implementation["counts"]["rows"], 2);
+    assert_eq!(implementation["counts"]["validatorsImplemented"], 2);
+    assert_eq!(implementation["counts"]["rowsEnabled"], 2);
+    assert_eq!(implementation["counts"]["finalWritableRows"], 253);
+    assert_eq!(implementation["counts"]["finalBlockedRows"], 88);
+    assert!(
+        implementation["counts"]["invalidValuesAcceptedByVerifyConfig"]
+            .as_u64()
+            .expect("invalid parser-only count should be numeric")
+            >= 2,
+        "report should preserve evidence that verify-config is parser-only"
+    );
     assert_eq!(
         semantics["safety"]["activeConfigModified"].as_bool(),
         Some(false)
@@ -235,11 +254,11 @@ fn batch_c_string_rows_require_official_semantic_validators() -> Result<()> {
             .unwrap_or_else(|| panic!("missing semantic investigation for {row_id}"));
         assert_eq!(
             semantic_row["verifyConfigSemanticStrength"].as_str(),
-            Some("weak-parser-accepts-arbitrary-string")
+            Some("parser-only-app-validator-authoritative")
         );
         assert_eq!(
             semantic_row["sufficientToEnableWrites"].as_bool(),
-            Some(false)
+            Some(true)
         );
         assert!(
             !semantic_row["acceptedRawValues"]
@@ -259,19 +278,17 @@ fn batch_c_string_rows_require_official_semantic_validators() -> Result<()> {
             .iter()
             .map(|value| value.as_str().unwrap())
             .collect::<BTreeSet<_>>();
-        assert!(blockers.contains("official-source-research-needed"));
-        assert!(blockers.contains("needs-validator-implementation"));
-        assert!(!blockers.contains("needs-finite-choice-validator"));
+        assert!(
+            blockers.is_empty(),
+            "{row_id} should not keep missing-proof blockers"
+        );
 
         let coverage_row = coverage_rows
             .iter()
             .find(|row| row["rowId"].as_str() == Some(row_id))
             .unwrap_or_else(|| panic!("missing coverage row {row_id}"));
-        assert_eq!(
-            coverage_row["writeStatus"].as_str(),
-            Some("manual-review-needed")
-        );
-        assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
+        assert_eq!(coverage_row["writeStatus"].as_str(), Some("writable"));
+        assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(true));
     }
 
     Ok(())

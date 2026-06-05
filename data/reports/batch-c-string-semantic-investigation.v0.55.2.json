@@ -9,7 +9,7 @@
   "counts": {
     "rows": 2,
     "rowsWithArbitraryStringAcceptance": 2,
-    "rowsEnabled": 0,
+    "rowsEnabled": 2,
     "activeConfigModified": false,
     "activeRuntimeModified": false
   },
@@ -49,18 +49,27 @@
         "example"
       ],
       "rejectedRawValues": [],
-      "verifyConfigSemanticStrength": "weak-parser-accepts-arbitrary-string",
-      "sufficientToEnableWrites": false,
-      "updatedMissingProofCategories": [
-        "official-source-research-needed",
-        "needs-validator-implementation",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
-      "semanticConclusion": "Hyprland --verify-config accepted arbitrary string-like values for this row, including values that are not documented by companion schema as finite choices. Temp config acceptance is therefore not sufficient proof for finite-choice write enablement.",
-      "exactNextStepToMakeWritable": "Find official Hyprland source/docs for center_master_fallback semantics, then implement a semantic validator/editor and invalid-value tests before enabling writes.",
+      "verifyConfigSemanticStrength": "parser-only-app-validator-authoritative",
+      "sufficientToEnableWrites": true,
+      "updatedMissingProofCategories": [],
+      "semanticConclusion": "Finite semantic validator implemented from official wiki/source; Hyprland parser accepts arbitrary strings, so app validator is authoritative.",
+      "exactNextStepToMakeWritable": "Already writable after semantic validator implementation.",
       "activeConfigModified": false,
-      "activeRuntimeModified": false
+      "activeRuntimeModified": false,
+      "implementedValidator": "enum:left|right|top|bottom",
+      "acceptedByAppValidator": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "rejectedByAppValidator": [
+        "",
+        "center",
+        "Left",
+        "1",
+        "example"
+      ]
     },
     {
       "rowId": "scrolling.explicit_column_widths",
@@ -83,18 +92,31 @@
         "0, bad"
       ],
       "rejectedRawValues": [],
-      "verifyConfigSemanticStrength": "weak-parser-accepts-arbitrary-string",
-      "sufficientToEnableWrites": false,
-      "updatedMissingProofCategories": [
-        "official-source-research-needed",
-        "needs-validator-implementation",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
-      "semanticConclusion": "Hyprland --verify-config accepted malformed/non-numeric-looking strings for this row. Temp config acceptance is therefore not sufficient proof for a safe list-width writer.",
-      "exactNextStepToMakeWritable": "Find official Hyprland source/docs for explicit_column_widths grammar, then implement a dedicated comma-separated positive-width validator with invalid-value tests before enabling writes.",
+      "verifyConfigSemanticStrength": "parser-only-app-validator-authoritative",
+      "sufficientToEnableWrites": true,
+      "updatedMissingProofCategories": [],
+      "semanticConclusion": "Comma-separated finite-float validator implemented conservatively; Hyprland parser accepts arbitrary strings, so app validator is authoritative.",
+      "exactNextStepToMakeWritable": "Already writable after semantic validator implementation.",
       "activeConfigModified": false,
-      "activeRuntimeModified": false
+      "activeRuntimeModified": false,
+      "implementedValidator": "comma-separated-finite-float-list",
+      "acceptedByAppValidator": [
+        "1.0",
+        "0.333, 0.5, 0.667, 1.0",
+        "0.25,0.75"
+      ],
+      "rejectedByAppValidator": [
+        "",
+        "example",
+        "0.5,",
+        "0.5,,1.0",
+        "NaN",
+        "inf",
+        "-inf",
+        "0.5, bad",
+        "0.5 0.75",
+        "0.5\n1.0"
+      ]
     }
   ]
 }

@@ -32,10 +32,10 @@ fn manual_review_and_high_risk_reports_have_expected_counts() -> Result<()> {
     let manual = manual_review_report()?;
     let high_risk = high_risk_report()?;
 
-    assert_eq!(manual["counts"]["rows"], 18);
+    assert_eq!(manual["counts"]["rows"], 16);
     assert_eq!(high_risk["counts"]["rows"], 72);
-    assert_eq!(manual["invariants"]["writableRowsRemain"], 251);
-    assert_eq!(high_risk["invariants"]["writableRowsRemain"], 251);
+    assert_eq!(manual["invariants"]["writableRowsRemain"], 253);
+    assert_eq!(high_risk["invariants"]["writableRowsRemain"], 253);
 
     Ok(())
 }
@@ -58,7 +58,7 @@ fn manual_review_and_high_risk_reports_do_not_overlap() -> Result<()> {
         .collect::<BTreeSet<_>>();
 
     assert!(manual_ids.is_disjoint(&high_risk_ids));
-    assert_eq!(manual_ids.len(), 18);
+    assert_eq!(manual_ids.len(), 16);
     assert_eq!(high_risk_ids.len(), 72);
 
     Ok(())
@@ -149,10 +149,10 @@ fn scalar_coverage_counts_reflect_remaining_scalar_completion() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() == Some("validator-needed"))
         .count();
 
-    assert_eq!(coverage["counts"]["writableRows"], 251);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 90);
-    assert_eq!(writable, 251);
-    assert_eq!(manual, 18);
+    assert_eq!(coverage["counts"]["writableRows"], 253);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 88);
+    assert_eq!(writable, 253);
+    assert_eq!(manual, 16);
     assert_eq!(high_risk, 72);
     assert_eq!(parser_needed, 0);
     assert_eq!(validator_needed, 0);
@@ -165,15 +165,15 @@ fn remaining_scalar_completion_report_records_enabled_and_blocked_rows() -> Resu
     let report = remaining_scalar_completion_report()?;
 
     assert_eq!(report["counts"]["startingWritableRows"], 94);
-    assert_eq!(report["counts"]["finalWritableRows"], 251);
-    assert_eq!(report["counts"]["enabledRows"], 157);
+    assert_eq!(report["counts"]["finalWritableRows"], 253);
+    assert_eq!(report["counts"]["enabledRows"], 159);
     assert_eq!(
         report["counts"]["enabledByBatch"]["batch-b-likely-safe-numerics"],
         33
     );
     assert_eq!(
         report["counts"]["enabledByBatch"]["batch-c-likely-safe-enums"],
-        5
+        7
     );
     assert_eq!(
         report["counts"]["enabledByBatch"]["batch-d-input-behavior"],
@@ -183,10 +183,9 @@ fn remaining_scalar_completion_report_records_enabled_and_blocked_rows() -> Resu
         report["counts"]["enabledByBatch"]["batch-e-window-layout-behavior"],
         45
     );
-    assert_eq!(
-        report["counts"]["remainingBlockedByBatch"]["batch-c-likely-safe-enums"],
-        2
-    );
+    assert!(report["counts"]["remainingBlockedByBatch"]
+        .get("batch-c-likely-safe-enums")
+        .is_none());
     assert!(report["counts"]["remainingBlockedByBatch"]
         .get("batch-d-input-behavior")
         .is_none());
@@ -206,13 +205,13 @@ fn remaining_scalar_completion_report_records_enabled_and_blocked_rows() -> Resu
         rows.iter()
             .filter(|row| row["enabled"].as_bool() == Some(true))
             .count(),
-        157
+        159
     );
     assert_eq!(
         rows.iter()
             .filter(|row| row["enabled"].as_bool() == Some(false))
             .count(),
-        90
+        88
     );
 
     Ok(())

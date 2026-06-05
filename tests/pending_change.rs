@@ -50,11 +50,11 @@ fn invalid_pending_change_for_windows_snap_enabled_is_rejected() {
 #[test]
 fn only_safe_writable_rows_can_be_staged() {
     let current = current_value_for(
-        "master.center_master_fallback",
-        "master:center_master_fallback = left\n",
+        "misc.disable_autoreload",
+        "misc:disable_autoreload = false\n",
     );
 
-    let change = stage_pending_change("master.center_master_fallback", &current, "left");
+    let change = stage_pending_change("misc.disable_autoreload", &current, "true");
 
     assert_eq!(
         change.validation,
@@ -66,6 +66,63 @@ fn only_safe_writable_rows_can_be_staged() {
         change.non_editable_reason.as_deref(),
         Some("setting is not in the safe scalar write allowlist")
     );
+}
+
+#[test]
+fn semantic_master_center_fallback_accepts_only_official_values() {
+    let current = current_value_for(
+        "master.center_master_fallback",
+        "master:center_master_fallback = left\n",
+    );
+
+    for value in ["left", "right", "top", "bottom"] {
+        let change = stage_pending_change("master.center_master_fallback", &current, value);
+        assert_eq!(
+            change.validation,
+            PendingChangeValidation::Valid,
+            "center_master_fallback should accept {value}"
+        );
+        assert!(change.can_be_applied());
+    }
+
+    for value in ["", "center", "Left", "1", "example"] {
+        let change = stage_pending_change("master.center_master_fallback", &current, value);
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "center_master_fallback should reject {value:?}"
+        );
+        assert!(!change.can_be_applied());
+    }
+}
+
+#[test]
+fn semantic_scrolling_explicit_column_widths_accepts_only_float_lists() {
+    let current = current_value_for(
+        "scrolling.explicit_column_widths",
+        "scrolling:explicit_column_widths = 0.333, 0.5, 0.667, 1.0\n",
+    );
+
+    for value in ["1.0", "0.333, 0.5, 0.667, 1.0", "0.25,0.75"] {
+        let change = stage_pending_change("scrolling.explicit_column_widths", &current, value);
+        assert_eq!(
+            change.validation,
+            PendingChangeValidation::Valid,
+            "explicit_column_widths should accept {value}"
+        );
+        assert!(change.can_be_applied());
+    }
+
+    for value in [
+        "", "example", "0.5,", ",0.5", "0.5,,1.0", "NaN", "inf", "-inf", "0.5, bad", "0.5 0.75",
+        "0.5\n1.0",
+    ] {
+        let change = stage_pending_change("scrolling.explicit_column_widths", &current, value);
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "explicit_column_widths should reject {value:?}"
+        );
+        assert!(!change.can_be_applied());
+    }
 }
 
 #[test]

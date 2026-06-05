@@ -6,9 +6,9 @@
   ],
   "counts": {
     "rows": 90,
-    "writableRowsRemain": 251,
-    "blockedRowsRemain": 90,
-    "customStringSemanticRows": 2,
+    "writableRowsRemain": 253,
+    "blockedRowsRemain": 88,
+    "customStringSemanticRows": 0,
     "sessionRuntimeSensitiveRows": 16,
     "highRiskRows": 72,
     "byScope": {
@@ -29,9 +29,11 @@
       "cursor-input-recovery": 22,
       "ecosystem-permission-policy": 3,
       "debug-crash-recovery": 22,
-      "custom-semantic-string": 2
+      "custom-semantic-string": 0,
+      "resolved-custom-semantic-string": 2
     },
-    "verifyConfigParserOnlyRows": 2
+    "verifyConfigParserOnlyRows": 2,
+    "resolvedCustomStringSemanticRows": 2
   },
   "safety": {
     "activeConfigModified": false,
@@ -1222,7 +1224,7 @@
     {
       "rowId": "master.center_master_fallback",
       "officialSetting": "master.center_master_fallback",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "scope": "persistent-needs-reload",
       "applyPath": "persistent-config-write-with-backup-reread-reload-gate",
       "rereadOracle": "reload-then-runtime",
@@ -1230,8 +1232,8 @@
       "riskBucket": "custom-semantic-string",
       "recoveryStrategy": "backup-rollback-plus-reload-not-run-without-explicit-approval",
       "approvalGate": "normal-after-official-validator-and-tests",
-      "canEnableInThisSprint": false,
-      "whyBlockedNow": "Implement finite string validator for left/right/top/bottom from official wiki and MasterAlgorithm.cpp, then run fixture and temp-config tests."
+      "canEnableInThisSprint": true,
+      "whyBlockedNow": "Resolved by semantic validator implementation."
     },
     {
       "rowId": "scrolling.fullscreen_on_one_column",
@@ -1250,7 +1252,7 @@
     {
       "rowId": "scrolling.explicit_column_widths",
       "officialSetting": "scrolling.explicit_column_widths",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "scope": "persistent-needs-reload",
       "applyPath": "persistent-config-write-with-backup-reread-reload-gate",
       "rereadOracle": "reload-then-runtime",
@@ -1258,8 +1260,8 @@
       "riskBucket": "custom-semantic-string",
       "recoveryStrategy": "backup-rollback-plus-reload-not-run-without-explicit-approval",
       "approvalGate": "normal-after-official-validator-and-tests",
-      "canEnableInThisSprint": false,
-      "whyBlockedNow": "Implement comma-separated finite float-list validator using official ScrollingAlgorithm.cpp parsing semantics; reject arbitrary strings before temp-config proof."
+      "canEnableInThisSprint": true,
+      "whyBlockedNow": "Resolved by semantic validator implementation."
     },
     {
       "rowId": "experimental.wp_cm_1_2",

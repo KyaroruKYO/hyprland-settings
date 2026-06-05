@@ -10,25 +10,22 @@
   ],
   "counts": {
     "startingWritableRows": 94,
-    "finalWritableRows": 251,
+    "finalWritableRows": 253,
     "startingBlockedRows": 247,
-    "finalBlockedRows": 90,
-    "enabledRows": 157,
+    "finalBlockedRows": 88,
+    "enabledRows": 159,
     "enabledByBatch": {
       "batch-b-likely-safe-numerics": 33,
-      "batch-c-likely-safe-enums": 5,
+      "batch-c-likely-safe-enums": 7,
       "batch-d-input-behavior": 74,
       "batch-e-window-layout-behavior": 45
     },
     "remainingBlockedByBatch": {
       "batch-g-session-runtime-sensitive": 16,
-      "batch-c-likely-safe-enums": 2,
       "high-risk": 72
     },
     "remainingBlockedByReason": {
-      "session/runtime-sensitive setting requires dedicated user approval and recovery policy before persistent writes are enabled": 15,
-      "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes": 1,
-      "official-source-research-needed": 2,
+      "session/runtime-sensitive setting requires dedicated user approval and recovery policy before persistent writes are enabled": 16,
       "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.": 72
     },
     "hyprlandVerifyConfigPassed": 155,
@@ -5019,11 +5016,14 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "official-source-research-needed",
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
       "nextRequiredProof": "Find official Hyprland source/docs for center_master_fallback semantics, then implement a semantic validator/editor and invalid-value tests before enabling writes.",
-      "notes": "Hyprland --verify-config accepted arbitrary string-like values for this row, including values that are not documented by companion schema as finite choices. Temp config acceptance is not sufficient proof for finite-choice write enablement. Remains blocked."
+      "notes": "Hyprland --verify-config accepted arbitrary string-like values for this row, including values that are not documented by companion schema as finite choices. Temp config acceptance is not sufficient proof for finite-choice write enablement. Remains blocked.",
+      "valueFamily": "finite-string-choice",
+      "proofSummary": "official-source semantic validator plus fixture write/reread, UI projection, app-side invalid rejection, and temp-config parser proof",
+      "nextStep": "No remaining scalar write blocker for this row."
     },
     {
       "rowId": "master.center_ignores_reserved",
@@ -5322,11 +5322,14 @@
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "official-source-research-needed",
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
       "nextRequiredProof": "Find official Hyprland source/docs for explicit_column_widths grammar, then implement a dedicated comma-separated positive-width validator with invalid-value tests before enabling writes.",
-      "notes": "Hyprland --verify-config accepted malformed/non-numeric-looking strings for this row. Temp config acceptance is not sufficient proof for a safe list-width writer. Remains blocked."
+      "notes": "Hyprland --verify-config accepted malformed/non-numeric-looking strings for this row. Temp config acceptance is not sufficient proof for a safe list-width writer. Remains blocked.",
+      "valueFamily": "comma-separated-float-list",
+      "proofSummary": "official-source semantic validator plus fixture write/reread, UI projection, app-side invalid rejection, and temp-config parser proof",
+      "nextStep": "No remaining scalar write blocker for this row."
     },
     {
       "rowId": "scrolling.direction",

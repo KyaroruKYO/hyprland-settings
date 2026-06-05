@@ -34,8 +34,8 @@ fn unified_remaining_90_pipeline_covers_current_blocked_rows() -> Result<()> {
     let official = official_evidence()?;
     let scope_policy = scope_policy()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 251);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 90);
+    assert_eq!(coverage["counts"]["writableRows"], 253);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 88);
     assert_eq!(pipeline["counts"]["rows"], 90);
     assert_eq!(official["counts"]["rows"], 90);
     assert_eq!(scope_policy["counts"]["rows"], 90);
@@ -47,7 +47,7 @@ fn unified_remaining_90_pipeline_covers_current_blocked_rows() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_owned())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 90);
+    assert_eq!(blocked_ids.len(), 88);
 
     for report in [&pipeline, &official, &scope_policy] {
         let ids = report["rows"]
@@ -56,7 +56,10 @@ fn unified_remaining_90_pipeline_covers_current_blocked_rows() -> Result<()> {
             .iter()
             .map(|row| row["rowId"].as_str().unwrap().to_owned())
             .collect::<BTreeSet<_>>();
-        assert_eq!(ids, blocked_ids);
+        assert!(
+            ids.is_superset(&blocked_ids),
+            "unified remaining-90 reports should retain the original sprint set and include all currently blocked rows"
+        );
     }
 
     Ok(())
@@ -101,7 +104,8 @@ fn custom_semantic_rows_are_parser_only_and_have_specific_validator_paths() -> R
     let pipeline = pipeline()?;
     let official = official_evidence()?;
 
-    assert_eq!(pipeline["counts"]["customStringSemanticRows"], 2);
+    assert_eq!(pipeline["counts"]["customStringSemanticRows"], 0);
+    assert_eq!(pipeline["counts"]["resolvedCustomStringSemanticRows"], 2);
     assert_eq!(pipeline["counts"]["verifyConfigParserOnlyRows"], 2);
 
     let rows = pipeline["rows"].as_array().unwrap();
@@ -109,6 +113,7 @@ fn custom_semantic_rows_are_parser_only_and_have_specific_validator_paths() -> R
         .iter()
         .find(|row| row["rowId"].as_str() == Some("master.center_master_fallback"))
         .expect("master.center_master_fallback should be classified");
+    assert_eq!(master["currentWriteStatus"].as_str(), Some("writable"));
     assert_eq!(
         master["validatorRef"].as_str(),
         Some("enum:left|right|top|bottom")
@@ -123,6 +128,7 @@ fn custom_semantic_rows_are_parser_only_and_have_specific_validator_paths() -> R
         .iter()
         .find(|row| row["rowId"].as_str() == Some("scrolling.explicit_column_widths"))
         .expect("scrolling.explicit_column_widths should be classified");
+    assert_eq!(widths["currentWriteStatus"].as_str(), Some("writable"));
     assert_eq!(
         widths["validatorAuthority"].as_str(),
         Some("app-validator-authoritative")
@@ -175,6 +181,12 @@ fn session_and_high_risk_rows_remain_blocked_with_recovery_gates() -> Result<()>
     for row in pipeline["rows"].as_array().unwrap() {
         let row_id = row["rowId"].as_str().unwrap();
         let coverage_row = coverage_by_id.get(row_id).unwrap();
+        if row["currentWriteStatus"].as_str() == Some("writable") {
+            assert_eq!(coverage_row["writeStatus"].as_str(), Some("writable"));
+            assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(true));
+            continue;
+        }
+
         assert_ne!(coverage_row["writeStatus"].as_str(), Some("writable"));
         assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
 
