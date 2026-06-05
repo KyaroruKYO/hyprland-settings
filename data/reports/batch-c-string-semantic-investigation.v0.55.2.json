@@ -1,0 +1,100 @@
+{
+  "artifactKind": "batch-c-string-semantic-investigation",
+  "schemaVersion": "0.55.2",
+  "sourceReports": [
+    "data/reports/remaining-105-proof-results.v0.55.2.json",
+    "data/reports/remaining-105-missing-proof-classification.v0.55.2.json",
+    "data/reports/hyprmod-merged-schema-evidence.v0.55.2.json"
+  ],
+  "counts": {
+    "rows": 2,
+    "rowsWithArbitraryStringAcceptance": 2,
+    "rowsEnabled": 0,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false
+  },
+  "safety": {
+    "tempConfigOnly": true,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadUsed": false,
+    "evalUsed": false,
+    "luaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "master.center_master_fallback",
+      "officialSetting": "master.center_master_fallback",
+      "originalPlannedProofStrategy": "finite-choice-temp-config-proof",
+      "extraCandidateRawValuesTested": [
+        "left",
+        "right",
+        "top",
+        "bottom",
+        "center",
+        "master",
+        "slave",
+        "inherit",
+        "example"
+      ],
+      "acceptedRawValues": [
+        "left",
+        "right",
+        "top",
+        "bottom",
+        "center",
+        "master",
+        "slave",
+        "inherit",
+        "example"
+      ],
+      "rejectedRawValues": [],
+      "verifyConfigSemanticStrength": "weak-parser-accepts-arbitrary-string",
+      "sufficientToEnableWrites": false,
+      "updatedMissingProofCategories": [
+        "official-source-research-needed",
+        "needs-validator-implementation",
+        "needs-editor-projection",
+        "needs-invalid-value-tests"
+      ],
+      "semanticConclusion": "Hyprland --verify-config accepted arbitrary string-like values for this row, including values that are not documented by companion schema as finite choices. Temp config acceptance is therefore not sufficient proof for finite-choice write enablement.",
+      "exactNextStepToMakeWritable": "Find official Hyprland source/docs for center_master_fallback semantics, then implement a semantic validator/editor and invalid-value tests before enabling writes.",
+      "activeConfigModified": false,
+      "activeRuntimeModified": false
+    },
+    {
+      "rowId": "scrolling.explicit_column_widths",
+      "officialSetting": "scrolling.explicit_column_widths",
+      "originalPlannedProofStrategy": "finite-choice-temp-config-proof",
+      "extraCandidateRawValuesTested": [
+        "0.333, 0.5, 0.667, 1.0",
+        "0.5, 1.0",
+        "1.0",
+        "0.25, 0.5, 0.75",
+        "example",
+        "0, bad"
+      ],
+      "acceptedRawValues": [
+        "0.333, 0.5, 0.667, 1.0",
+        "0.5, 1.0",
+        "1.0",
+        "0.25, 0.5, 0.75",
+        "example",
+        "0, bad"
+      ],
+      "rejectedRawValues": [],
+      "verifyConfigSemanticStrength": "weak-parser-accepts-arbitrary-string",
+      "sufficientToEnableWrites": false,
+      "updatedMissingProofCategories": [
+        "official-source-research-needed",
+        "needs-validator-implementation",
+        "needs-editor-projection",
+        "needs-invalid-value-tests"
+      ],
+      "semanticConclusion": "Hyprland --verify-config accepted malformed/non-numeric-looking strings for this row. Temp config acceptance is therefore not sufficient proof for a safe list-width writer.",
+      "exactNextStepToMakeWritable": "Find official Hyprland source/docs for explicit_column_widths grammar, then implement a dedicated comma-separated positive-width validator with invalid-value tests before enabling writes.",
+      "activeConfigModified": false,
+      "activeRuntimeModified": false
+    }
+  ]
+}

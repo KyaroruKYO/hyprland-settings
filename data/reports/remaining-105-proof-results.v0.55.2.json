@@ -9805,7 +9805,21 @@
       "sourceBackedDiscoveryNeeded": false,
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
-      "technicalTempConfigConclusion": "all-candidates-pass"
+      "technicalTempConfigConclusion": "all-candidates-pass",
+      "semanticProbeConclusion": "Hyprland --verify-config accepted arbitrary string-like values for this row, including values that are not documented by companion schema as finite choices. Temp config acceptance is therefore not sufficient proof for finite-choice write enablement.",
+      "extraAcceptedSemanticProbeValues": [
+        "left",
+        "right",
+        "top",
+        "bottom",
+        "center",
+        "master",
+        "slave",
+        "inherit",
+        "example"
+      ],
+      "verifyConfigSemanticStrength": "weak-parser-accepts-arbitrary-string",
+      "safeToEnableFromVerifyConfigAlone": false
     },
     {
       "rowId": "scrolling.fullscreen_on_one_column",
@@ -9960,7 +9974,18 @@
       "sourceBackedDiscoveryNeeded": false,
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
-      "technicalTempConfigConclusion": "all-candidates-pass"
+      "technicalTempConfigConclusion": "all-candidates-pass",
+      "semanticProbeConclusion": "Hyprland --verify-config accepted malformed/non-numeric-looking strings for this row. Temp config acceptance is therefore not sufficient proof for a safe list-width writer.",
+      "extraAcceptedSemanticProbeValues": [
+        "0.333, 0.5, 0.667, 1.0",
+        "0.5, 1.0",
+        "1.0",
+        "0.25, 0.5, 0.75",
+        "example",
+        "0, bad"
+      ],
+      "verifyConfigSemanticStrength": "weak-parser-accepts-arbitrary-string",
+      "safeToEnableFromVerifyConfigAlone": false
     },
     {
       "rowId": "scrolling.direction",

@@ -40,14 +40,15 @@
     "byMissingProofCategory": {
       "proof-complete-policy-blocked": 16,
       "needs-session-runtime-policy": 16,
-      "needs-validator-implementation": 92,
-      "needs-editor-projection": 105,
-      "needs-invalid-value-tests": 105,
-      "needs-finite-choice-validator": 19,
+      "needs-validator-implementation": 88,
+      "needs-editor-projection": 98,
+      "needs-invalid-value-tests": 98,
+      "needs-finite-choice-validator": 10,
       "needs-source-backed-enumerator": 5,
       "needs-dynamic-system-values": 5,
       "proof-complete-high-risk-blocked": 72,
-      "needs-high-risk-recovery-design": 72
+      "needs-high-risk-recovery-design": 72,
+      "official-source-research-needed": 2
     },
     "unknownClassifications": 0,
     "activeConfigModified": false,
@@ -57,14 +58,15 @@
     "currentByMissingProofCategory": {
       "proof-complete-policy-blocked": 16,
       "needs-session-runtime-policy": 16,
-      "needs-validator-implementation": 86,
+      "needs-validator-implementation": 88,
       "needs-editor-projection": 98,
       "needs-invalid-value-tests": 98,
-      "needs-finite-choice-validator": 12,
+      "needs-finite-choice-validator": 10,
       "needs-source-backed-enumerator": 5,
       "needs-dynamic-system-values": 5,
       "proof-complete-high-risk-blocked": 72,
-      "needs-high-risk-recovery-design": 72
+      "needs-high-risk-recovery-design": 72,
+      "official-source-research-needed": 2
     }
   },
   "rows": [
@@ -4027,14 +4029,15 @@
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
       "missingProofCategories": [
-        "needs-finite-choice-validator",
         "needs-editor-projection",
-        "needs-invalid-value-tests"
+        "needs-invalid-value-tests",
+        "official-source-research-needed",
+        "needs-validator-implementation"
       ],
-      "exactNextStepToMakeWritable": "Add finite-choice raw-value mapping, dropdown projection, accepted-value tests, invalid rejection tests, fixture writer/reread tests, and temp-config proof.",
+      "exactNextStepToMakeWritable": "Find official Hyprland source/docs for center_master_fallback semantics, then implement a semantic validator/editor and invalid-value tests before enabling writes.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Hyprland --verify-config accepted arbitrary string-like values for this row, including values that are not documented by companion schema as finite choices. Temp config acceptance is therefore not sufficient proof for finite-choice write enablement. No production write behavior changed."
     },
     {
       "rowId": "scrolling.fullscreen_on_one_column",
@@ -4104,14 +4107,15 @@
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
       "missingProofCategories": [
-        "needs-finite-choice-validator",
         "needs-editor-projection",
-        "needs-invalid-value-tests"
+        "needs-invalid-value-tests",
+        "official-source-research-needed",
+        "needs-validator-implementation"
       ],
-      "exactNextStepToMakeWritable": "Add finite-choice raw-value mapping, dropdown projection, accepted-value tests, invalid rejection tests, fixture writer/reread tests, and temp-config proof.",
+      "exactNextStepToMakeWritable": "Find official Hyprland source/docs for explicit_column_widths grammar, then implement a dedicated comma-separated positive-width validator with invalid-value tests before enabling writes.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Hyprland --verify-config accepted malformed/non-numeric-looking strings for this row. Temp config acceptance is therefore not sufficient proof for a safe list-width writer. No production write behavior changed."
     },
     {
       "rowId": "scrolling.direction",

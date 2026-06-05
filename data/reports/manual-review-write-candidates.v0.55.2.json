@@ -13,7 +13,7 @@
     "byRecommendedAction": {
       "keep-blocked-for-now": 16,
       "needs-user-approval": 8,
-      "candidate-after-parser-review": 2
+      "needs-official-source-check": 2
     }
   },
   "invariants": {
@@ -677,9 +677,9 @@
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
-      "currentWriteBlocker": "manual safety review required for risk class: advanced",
+      "currentWriteBlocker": "official-source-research-needed",
       "recommendedBatch": "batch-c-likely-safe-enums",
-      "recommendedAction": "candidate-after-parser-review",
+      "recommendedAction": "needs-official-source-check",
       "riskReason": "Dropdown-like scalar; needs allowed-value review before a safe editor can be enabled.",
       "validatorNeeded": false,
       "parserNeeded": false,
@@ -692,10 +692,11 @@
         "fixture_write_replaces_master_center_master_fallback",
         "fixture_write_appends_master_center_master_fallback_when_absent",
         "ui_projection_marks_master_center_master_fallback_editable_after_approval",
-        "blocked_without_approval_master_center_master_fallback"
+        "blocked_without_approval_master_center_master_fallback",
+        "official_source_semantics_required_before_write_enablement"
       ],
       "userApprovalRequired": true,
-      "notes": "Classification only. This sprint does not enable writes or change write behavior."
+      "notes": "Hyprland --verify-config accepted arbitrary string-like values for this row, including values that are not documented by companion schema as finite choices. Temp config acceptance is therefore not sufficient proof for finite-choice write enablement."
     },
     {
       "rowId": "scrolling.fullscreen_on_one_column",
@@ -733,9 +734,9 @@
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
-      "currentWriteBlocker": "manual safety review required for risk class: advanced",
+      "currentWriteBlocker": "official-source-research-needed",
       "recommendedBatch": "batch-c-likely-safe-enums",
-      "recommendedAction": "candidate-after-parser-review",
+      "recommendedAction": "needs-official-source-check",
       "riskReason": "Dropdown-like scalar; needs allowed-value review before a safe editor can be enabled.",
       "validatorNeeded": false,
       "parserNeeded": false,
@@ -748,10 +749,11 @@
         "fixture_write_replaces_scrolling_explicit_column_widths",
         "fixture_write_appends_scrolling_explicit_column_widths_when_absent",
         "ui_projection_marks_scrolling_explicit_column_widths_editable_after_approval",
-        "blocked_without_approval_scrolling_explicit_column_widths"
+        "blocked_without_approval_scrolling_explicit_column_widths",
+        "official_source_semantics_required_before_write_enablement"
       ],
       "userApprovalRequired": true,
-      "notes": "Classification only. This sprint does not enable writes or change write behavior."
+      "notes": "Hyprland --verify-config accepted malformed/non-numeric-looking strings for this row. Temp config acceptance is therefore not sufficient proof for a safe list-width writer."
     }
   ]
 }

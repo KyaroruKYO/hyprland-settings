@@ -33,6 +33,12 @@ fn classifications() -> Result<Value> {
     ))?)
 }
 
+fn batch_c_string_semantics() -> Result<Value> {
+    Ok(serde_json::from_str(include_str!(
+        "../data/reports/batch-c-string-semantic-investigation.v0.55.2.json"
+    ))?)
+}
+
 #[test]
 fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let coverage = coverage()?;
@@ -172,6 +178,82 @@ fn remaining_105_proof_results_never_reference_active_config_or_runtime_mutation
         assert_eq!(row["activeConfigModified"].as_bool(), Some(false));
         assert_eq!(row["activeRuntimeModified"].as_bool(), Some(false));
         assert_eq!(row["hyprlandVerifyConfigAttempted"].as_bool(), Some(true));
+    }
+
+    Ok(())
+}
+
+#[test]
+fn batch_c_string_rows_require_official_semantic_validators() -> Result<()> {
+    let semantics = batch_c_string_semantics()?;
+    let classifications = classifications()?;
+    let coverage = coverage()?;
+
+    assert_eq!(semantics["counts"]["rows"], 2);
+    assert_eq!(semantics["counts"]["rowsWithArbitraryStringAcceptance"], 2);
+    assert_eq!(semantics["counts"]["rowsEnabled"], 0);
+    assert_eq!(
+        semantics["safety"]["activeConfigModified"].as_bool(),
+        Some(false)
+    );
+    assert_eq!(
+        semantics["safety"]["activeRuntimeModified"].as_bool(),
+        Some(false)
+    );
+
+    let target_ids = [
+        "master.center_master_fallback",
+        "scrolling.explicit_column_widths",
+    ];
+    let classification_rows = classifications["rows"].as_array().unwrap();
+    let coverage_rows = coverage["rows"].as_array().unwrap();
+
+    for row_id in target_ids {
+        let semantic_row = semantics["rows"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|row| row["rowId"].as_str() == Some(row_id))
+            .unwrap_or_else(|| panic!("missing semantic investigation for {row_id}"));
+        assert_eq!(
+            semantic_row["verifyConfigSemanticStrength"].as_str(),
+            Some("weak-parser-accepts-arbitrary-string")
+        );
+        assert_eq!(
+            semantic_row["sufficientToEnableWrites"].as_bool(),
+            Some(false)
+        );
+        assert!(
+            !semantic_row["acceptedRawValues"]
+                .as_array()
+                .expect("acceptedRawValues should be an array")
+                .is_empty(),
+            "{row_id} should record accepted weak-parser probes"
+        );
+
+        let classification_row = classification_rows
+            .iter()
+            .find(|row| row["rowId"].as_str() == Some(row_id))
+            .unwrap_or_else(|| panic!("missing classification for {row_id}"));
+        let blockers = classification_row["missingProofCategories"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|value| value.as_str().unwrap())
+            .collect::<BTreeSet<_>>();
+        assert!(blockers.contains("official-source-research-needed"));
+        assert!(blockers.contains("needs-validator-implementation"));
+        assert!(!blockers.contains("needs-finite-choice-validator"));
+
+        let coverage_row = coverage_rows
+            .iter()
+            .find(|row| row["rowId"].as_str() == Some(row_id))
+            .unwrap_or_else(|| panic!("missing coverage row {row_id}"));
+        assert_eq!(
+            coverage_row["writeStatus"].as_str(),
+            Some("manual-review-needed")
+        );
+        assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
     }
 
     Ok(())

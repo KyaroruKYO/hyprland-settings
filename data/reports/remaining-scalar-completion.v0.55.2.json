@@ -4920,7 +4920,8 @@
       "subgroup": "dropdown",
       "researchEvidence": [
         "manual-review candidate report",
-        "not selected for primitive temp-config promotion in this sprint"
+        "not selected for primitive temp-config promotion in this sprint",
+        "batch-c string semantic investigation: data/reports/batch-c-string-semantic-investigation.v0.55.2.json"
       ],
       "testedValues": [],
       "proofResults": {
@@ -4935,9 +4936,9 @@
       },
       "finalWriteStatus": "manual-review-needed",
       "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "blocker": "official-source-research-needed",
+      "nextRequiredProof": "Find official Hyprland source/docs for center_master_fallback semantics, then implement a semantic validator/editor and invalid-value tests before enabling writes.",
+      "notes": "Hyprland --verify-config accepted arbitrary string-like values for this row, including values that are not documented by companion schema as finite choices. Temp config acceptance is not sufficient proof for finite-choice write enablement. Remains blocked."
     },
     {
       "rowId": "master.center_ignores_reserved",
@@ -5222,7 +5223,8 @@
       "subgroup": "dropdown",
       "researchEvidence": [
         "manual-review candidate report",
-        "not selected for primitive temp-config promotion in this sprint"
+        "not selected for primitive temp-config promotion in this sprint",
+        "batch-c string semantic investigation: data/reports/batch-c-string-semantic-investigation.v0.55.2.json"
       ],
       "testedValues": [],
       "proofResults": {
@@ -5237,9 +5239,9 @@
       },
       "finalWriteStatus": "manual-review-needed",
       "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "blocker": "official-source-research-needed",
+      "nextRequiredProof": "Find official Hyprland source/docs for explicit_column_widths grammar, then implement a dedicated comma-separated positive-width validator with invalid-value tests before enabling writes.",
+      "notes": "Hyprland --verify-config accepted malformed/non-numeric-looking strings for this row. Temp config acceptance is not sufficient proof for a safe list-width writer. Remains blocked."
     },
     {
       "rowId": "scrolling.direction",
