@@ -1,0 +1,3631 @@
+{
+  "artifactKind": "remaining-105-proof-plan",
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-05T07:52:41.120292+00:00",
+  "hyprlandVersion": "0.55.2",
+  "sourceReports": [
+    "data/reports/remaining-105-scalar-investigation.v0.55.2.json",
+    "data/reports/hyprmod-companion-full-scalar-comparison.v0.55.2.json",
+    "data/reports/hyprmod-merged-schema-evidence.v0.55.2.json"
+  ],
+  "counts": {
+    "rows": 105,
+    "tempConfigVerificationSafe": 105,
+    "sourceBackedDiscoveryNeeded": 5,
+    "sessionRuntimePolicyNeeded": 16,
+    "highRiskRecoveryDesignNeeded": 72,
+    "byProofStrategy": {
+      "numeric-temp-config-proof": 1,
+      "boolean-temp-config-proof": 12,
+      "finite-choice-temp-config-proof": 17,
+      "source-backed-static-smoke-proof-plus-enumerator-needed": 3,
+      "temp-config-technical-proof-plus-high-risk-policy-review": 72
+    },
+    "candidateValidValuesTotal": 262,
+    "candidateInvalidValuesTotal": 119
+  },
+  "safety": {
+    "activeConfigMutationPlanned": false,
+    "activeRuntimeMutationPlanned": false,
+    "highRiskEnablementPlanned": false
+  },
+  "rows": [
+    {
+      "rowId": "appearance.fullscreen_opacity",
+      "officialSetting": "decoration.fullscreen_opacity",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "percent-slider",
+      "valueFamily": "none",
+      "companionSchemaType": "float",
+      "companionDefault": 1.0,
+      "companionMin": 0,
+      "companionMax": 1,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "1",
+        "0",
+        "0.5"
+      ],
+      "candidateInvalidValues": [
+        "-1.0",
+        "2.0",
+        "not-a-number"
+      ],
+      "proofStrategy": "numeric-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "appearance.blur.xray",
+      "officialSetting": "decoration.blur.xray",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "boolean-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "layout.selection",
+      "officialSetting": "general.layout",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-c-likely-safe-enums",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": "dwindle",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "dwindle",
+          "label": "Dwindle"
+        },
+        {
+          "id": "master",
+          "label": "Master"
+        },
+        {
+          "id": "scrolling",
+          "label": "Scrolling"
+        },
+        {
+          "id": "monocle",
+          "label": "Monocle"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': 'dwindle', 'label': 'Dwindle'}",
+        "{'id': 'master', 'label': 'Master'}",
+        "{'id': 'scrolling', 'label': 'Scrolling'}",
+        "{'id': 'monocle', 'label': 'Monocle'}",
+        "dwindle"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": null,
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "input.follow_mouse",
+      "officialSetting": "input.follow_mouse",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-d-input-behavior",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 1,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "Disabled"
+        },
+        {
+          "id": "1",
+          "label": "Full"
+        },
+        {
+          "id": "2",
+          "label": "Loose"
+        },
+        {
+          "id": "3",
+          "label": "Loose (no mouse focus)"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'Disabled'}",
+        "{'id': '1', 'label': 'Full'}",
+        "{'id': '2', 'label': 'Loose'}",
+        "{'id': '3', 'label': 'Loose (no mouse focus)'}",
+        "1"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": null,
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "general.allow_tearing",
+      "officialSetting": "general.allow_tearing",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "boolean-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "general.locale",
+      "officialSetting": "general.locale",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "safe-value"
+      ],
+      "candidateInvalidValues": [
+        "bad\nvalue"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "input.kb_model",
+      "officialSetting": "input.kb_model",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-d-input-behavior",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "safe-value"
+      ],
+      "candidateInvalidValues": [
+        "bad\nvalue"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": true,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "source-backed enumerator",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "input.kb_layout",
+      "officialSetting": "input.kb_layout",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-d-input-behavior",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "us",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [
+        {
+          "source": "xkb_layouts",
+          "multi": false,
+          "sourceArgs": {},
+          "status": "source-backed-dynamic-values-needed"
+        }
+      ],
+      "candidateValidValues": [
+        "us"
+      ],
+      "candidateInvalidValues": [
+        "invalid value with newline\nblocked"
+      ],
+      "proofStrategy": "source-backed-static-smoke-proof-plus-enumerator-needed",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": true,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "source-backed enumerator",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "input.kb_variant",
+      "officialSetting": "input.kb_variant",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-d-input-behavior",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [
+        {
+          "source": "xkb_variants",
+          "multi": false,
+          "sourceArgs": {
+            "layout": "us"
+          },
+          "status": "source-backed-dynamic-values-needed"
+        }
+      ],
+      "candidateValidValues": [
+        "us"
+      ],
+      "candidateInvalidValues": [
+        "invalid value with newline\nblocked"
+      ],
+      "proofStrategy": "source-backed-static-smoke-proof-plus-enumerator-needed",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": true,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "source-backed enumerator",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "input.kb_options",
+      "officialSetting": "input.kb_options",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-d-input-behavior",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [
+        {
+          "source": "xkb_options",
+          "multi": true,
+          "sourceArgs": {},
+          "status": "source-backed-dynamic-values-needed"
+        }
+      ],
+      "candidateValidValues": [
+        "us"
+      ],
+      "candidateInvalidValues": [
+        "invalid value with newline\nblocked"
+      ],
+      "proofStrategy": "source-backed-static-smoke-proof-plus-enumerator-needed",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": true,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "source-backed enumerator",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "input.kb_rules",
+      "officialSetting": "input.kb_rules",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-d-input-behavior",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "safe-value"
+      ],
+      "candidateInvalidValues": [
+        "bad\nvalue"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": true,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "source-backed enumerator",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "input.scroll_method",
+      "officialSetting": "input.scroll_method",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-d-input-behavior",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "safe-value"
+      ],
+      "candidateInvalidValues": [
+        "bad\nvalue"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": null,
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "input.touchpad.tap_button_map",
+      "officialSetting": "input.touchpad.tap_button_map",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-d-input-behavior",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": "",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "",
+          "label": "Default"
+        },
+        {
+          "id": "lrm",
+          "label": "Left, Right, Middle"
+        },
+        {
+          "id": "lmr",
+          "label": "Left, Middle, Right"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '', 'label': 'Default'}",
+        "{'id': 'lrm', 'label': 'Left, Right, Middle'}",
+        "{'id': 'lmr', 'label': 'Left, Middle, Right'}"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": null,
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "input.touchdevice.output",
+      "officialSetting": "input.touchdevice.output",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-d-input-behavior",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "safe-value"
+      ],
+      "candidateInvalidValues": [
+        "bad\nvalue"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": null,
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "input.tablet.output",
+      "officialSetting": "input.tablet.output",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-d-input-behavior",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "safe-value"
+      ],
+      "candidateInvalidValues": [
+        "bad\nvalue"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": null,
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "misc.vrr",
+      "officialSetting": "misc.vrr",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 0,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "Off"
+        },
+        {
+          "id": "1",
+          "label": "On"
+        },
+        {
+          "id": "2",
+          "label": "Fullscreen only"
+        },
+        {
+          "id": "3",
+          "label": "Fullscreen (game content)"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'Off'}",
+        "{'id': '1', 'label': 'On'}",
+        "{'id': '2', 'label': 'Fullscreen only'}",
+        "{'id': '3', 'label': 'Fullscreen (game content)'}",
+        "0"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "misc.mouse_move_enables_dpms",
+      "officialSetting": "misc.mouse_move_enables_dpms",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "boolean-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "misc.key_press_enables_dpms",
+      "officialSetting": "misc.key_press_enables_dpms",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "boolean-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "misc.disable_autoreload",
+      "officialSetting": "misc.disable_autoreload",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "boolean-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "misc.focus_on_activate",
+      "officialSetting": "misc.focus_on_activate",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "boolean-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "misc.allow_session_lock_restore",
+      "officialSetting": "misc.allow_session_lock_restore",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "boolean-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "misc.session_lock_xray",
+      "officialSetting": "misc.session_lock_xray",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "boolean-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "misc.on_focus_under_fullscreen",
+      "officialSetting": "misc.on_focus_under_fullscreen",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 2,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "ignore"
+        },
+        {
+          "id": "1",
+          "label": "take_over"
+        },
+        {
+          "id": "2",
+          "label": "exit_fullscreen"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'ignore'}",
+        "{'id': '1', 'label': 'take_over'}",
+        "{'id': '2', 'label': 'exit_fullscreen'}",
+        "2"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "misc.exit_window_retains_fullscreen",
+      "officialSetting": "misc.exit_window_retains_fullscreen",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "boolean-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "binds.movefocus_cycles_fullscreen",
+      "officialSetting": "binds.movefocus_cycles_fullscreen",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "boolean-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "binds.allow_pin_fullscreen",
+      "officialSetting": "binds.allow_pin_fullscreen",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "boolean-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "xwayland.enabled",
+      "officialSetting": "xwayland.enabled",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "xwayland.use_nearest_neighbor",
+      "officialSetting": "xwayland.use_nearest_neighbor",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "xwayland.force_zero_scaling",
+      "officialSetting": "xwayland.force_zero_scaling",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "xwayland.create_abstract_socket",
+      "officialSetting": "xwayland.create_abstract_socket",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "opengl.nvidia_anti_flicker",
+      "officialSetting": "opengl.nvidia_anti_flicker",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.direct_scanout",
+      "officialSetting": "render.direct_scanout",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 0,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "enable"
+        },
+        {
+          "id": "2",
+          "label": "auto"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'enable'}",
+        "{'id': '2', 'label': 'auto'}",
+        "0"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.expand_undersized_textures",
+      "officialSetting": "render.expand_undersized_textures",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.xp_mode",
+      "officialSetting": "render.xp_mode",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.ctm_animation",
+      "officialSetting": "render.ctm_animation",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 2,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "enable"
+        },
+        {
+          "id": "2",
+          "label": "auto"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'enable'}",
+        "{'id': '2', 'label': 'auto'}",
+        "2"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.cm_enabled",
+      "officialSetting": "render.cm_enabled",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.send_content_type",
+      "officialSetting": "render.send_content_type",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.cm_auto_hdr",
+      "officialSetting": "render.cm_auto_hdr",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 1,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "hdr"
+        },
+        {
+          "id": "2",
+          "label": "hdredid"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'hdr'}",
+        "{'id': '2', 'label': 'hdredid'}",
+        "1"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.new_render_scheduling",
+      "officialSetting": "render.new_render_scheduling",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.non_shader_cm",
+      "officialSetting": "render.non_shader_cm",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 3,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "always"
+        },
+        {
+          "id": "2",
+          "label": "ondemand"
+        },
+        {
+          "id": "3",
+          "label": "ignore"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'always'}",
+        "{'id': '2', 'label': 'ondemand'}",
+        "{'id': '3', 'label': 'ignore'}",
+        "3"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.cm_sdr_eotf",
+      "officialSetting": "render.cm_sdr_eotf",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "default",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "default"
+      ],
+      "candidateInvalidValues": [
+        "bad\nvalue"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.commit_timing_enabled",
+      "officialSetting": "render.commit_timing_enabled",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.icc_vcgt_enabled",
+      "officialSetting": "render.icc_vcgt_enabled",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.use_shader_blur_blend",
+      "officialSetting": "render.use_shader_blur_blend",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.use_fp16",
+      "officialSetting": "render.use_fp16",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 2,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "enable"
+        },
+        {
+          "id": "2",
+          "label": "auto"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'enable'}",
+        "{'id': '2', 'label': 'auto'}",
+        "2"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.keep_unmodified_copy",
+      "officialSetting": "render.keep_unmodified_copy",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 2,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "enable"
+        },
+        {
+          "id": "2",
+          "label": "auto"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'enable'}",
+        "{'id': '2', 'label': 'auto'}",
+        "2"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.non_shader_cm_interop",
+      "officialSetting": "render.non_shader_cm_interop",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 2,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "enable"
+        },
+        {
+          "id": "2",
+          "label": "auto"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'enable'}",
+        "{'id': '2', 'label': 'auto'}",
+        "2"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "render.fp16_sdr_tf",
+      "officialSetting": "render.fp16_sdr_tf",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 0,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "monitor"
+        },
+        {
+          "id": "1",
+          "label": "linear"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'monitor'}",
+        "{'id': '1', 'label': 'linear'}",
+        "0"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.invisible",
+      "officialSetting": "cursor.invisible",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "officialSetting": "cursor.no_hardware_cursors",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 2,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "Disabled"
+        },
+        {
+          "id": "1",
+          "label": "Enabled"
+        },
+        {
+          "id": "2",
+          "label": "Auto"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'Disabled'}",
+        "{'id': '1', 'label': 'Enabled'}",
+        "{'id': '2', 'label': 'Auto'}",
+        "2"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "officialSetting": "cursor.no_break_fs_vrr",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 2,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "enable"
+        },
+        {
+          "id": "2",
+          "label": "auto"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'enable'}",
+        "{'id': '2', 'label': 'auto'}",
+        "2"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "officialSetting": "cursor.min_refresh_rate",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "int",
+      "companionDefault": 24,
+      "companionMin": 10,
+      "companionMax": 500,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "24",
+        "10",
+        "500",
+        "255"
+      ],
+      "candidateInvalidValues": [
+        "9.0",
+        "501.0",
+        "not-a-number"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "officialSetting": "cursor.hotspot_padding",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "int",
+      "companionDefault": 0,
+      "companionMin": 0,
+      "companionMax": 20,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "0",
+        "20",
+        "10"
+      ],
+      "candidateInvalidValues": [
+        "-1.0",
+        "21.0",
+        "not-a-number"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "officialSetting": "cursor.inactive_timeout",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "number-input",
+      "valueFamily": "none",
+      "companionSchemaType": "float",
+      "companionDefault": 0.0,
+      "companionMin": 0,
+      "companionMax": 20,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "0",
+        "20",
+        "10"
+      ],
+      "candidateInvalidValues": [
+        "-1.0",
+        "21.0",
+        "not-a-number"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "officialSetting": "cursor.no_warps",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "officialSetting": "cursor.persistent_warps",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "officialSetting": "cursor.warp_on_change_workspace",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 0,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "enable"
+        },
+        {
+          "id": "2",
+          "label": "force"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'enable'}",
+        "{'id': '2', 'label': 'force'}",
+        "0"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "officialSetting": "cursor.warp_on_toggle_special",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 0,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "enable"
+        },
+        {
+          "id": "2",
+          "label": "force"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'enable'}",
+        "{'id': '2', 'label': 'force'}",
+        "0"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "officialSetting": "cursor.default_monitor",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "safe-value"
+      ],
+      "candidateInvalidValues": [
+        "bad\nvalue"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "officialSetting": "cursor.zoom_factor",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "percent-slider",
+      "valueFamily": "none",
+      "companionSchemaType": "float",
+      "companionDefault": 1.0,
+      "companionMin": 1,
+      "companionMax": 10,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "1",
+        "10",
+        "5.5"
+      ],
+      "candidateInvalidValues": [
+        "0.0",
+        "11.0",
+        "not-a-number"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "officialSetting": "cursor.zoom_rigid",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "officialSetting": "cursor.zoom_disable_aa",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "officialSetting": "cursor.zoom_detached_camera",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "officialSetting": "cursor.enable_hyprcursor",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "officialSetting": "cursor.hide_on_key_press",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.hide_on_touch",
+      "officialSetting": "cursor.hide_on_touch",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "officialSetting": "cursor.hide_on_tablet",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "officialSetting": "cursor.use_cpu_buffer",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 2,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "enable"
+        },
+        {
+          "id": "2",
+          "label": "auto"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'enable'}",
+        "{'id': '2', 'label': 'auto'}",
+        "2"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.sync_gsettings_theme",
+      "officialSetting": "cursor.sync_gsettings_theme",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "officialSetting": "cursor.warp_back_after_non_mouse_input",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "riskClass": "cursor_input_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "ecosystem.no_update_news",
+      "officialSetting": "ecosystem.no_update_news",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: ecosystem_permission_risk",
+      "riskClass": "ecosystem_permission_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "ecosystem.no_donation_nag",
+      "officialSetting": "ecosystem.no_donation_nag",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: ecosystem_permission_risk",
+      "riskClass": "ecosystem_permission_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "ecosystem.enforce_permissions",
+      "officialSetting": "ecosystem.enforce_permissions",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: ecosystem_permission_risk",
+      "riskClass": "ecosystem_permission_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.overlay",
+      "officialSetting": "debug.overlay",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.damage_blink",
+      "officialSetting": "debug.damage_blink",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.gl_debugging",
+      "officialSetting": "debug.gl_debugging",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.disable_logs",
+      "officialSetting": "debug.disable_logs",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.disable_time",
+      "officialSetting": "debug.disable_time",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.damage_tracking",
+      "officialSetting": "debug.damage_tracking",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 2,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "monitor"
+        },
+        {
+          "id": "2",
+          "label": "full"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'monitor'}",
+        "{'id': '2', 'label': 'full'}",
+        "2"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.enable_stdout_logs",
+      "officialSetting": "debug.enable_stdout_logs",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.manual_crash",
+      "officialSetting": "debug.manual_crash",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "int",
+      "companionDefault": 0,
+      "companionMin": 0,
+      "companionMax": 1,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "0",
+        "1",
+        "0.5"
+      ],
+      "candidateInvalidValues": [
+        "-1.0",
+        "2.0",
+        "not-a-number"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.suppress_errors",
+      "officialSetting": "debug.suppress_errors",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.disable_scale_checks",
+      "officialSetting": "debug.disable_scale_checks",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.error_limit",
+      "officialSetting": "debug.error_limit",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "int",
+      "companionDefault": 5,
+      "companionMin": 0,
+      "companionMax": 20,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "5",
+        "0",
+        "20",
+        "10"
+      ],
+      "candidateInvalidValues": [
+        "-1.0",
+        "21.0",
+        "not-a-number"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.error_position",
+      "officialSetting": "debug.error_position",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 0,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "top"
+        },
+        {
+          "id": "1",
+          "label": "bottom"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'top'}",
+        "{'id': '1', 'label': 'bottom'}",
+        "0"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.colored_stdout_logs",
+      "officialSetting": "debug.colored_stdout_logs",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.log_damage",
+      "officialSetting": "debug.log_damage",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.pass",
+      "officialSetting": "debug.pass",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.full_cm_proto",
+      "officialSetting": "debug.full_cm_proto",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer",
+      "officialSetting": "debug.ds_handle_same_buffer",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer_fifo",
+      "officialSetting": "debug.ds_handle_same_buffer_fifo",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.fifo_pending_workaround",
+      "officialSetting": "debug.fifo_pending_workaround",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.render_solitary_wo_damage",
+      "officialSetting": "debug.render_solitary_wo_damage",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.vfr",
+      "officialSetting": "debug.vfr",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "debug.invalidate_fp16",
+      "officialSetting": "debug.invalidate_fp16",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: debug_crash_risk",
+      "riskClass": "debug_crash_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 1,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "enable"
+        },
+        {
+          "id": "2",
+          "label": "auto"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'enable'}",
+        "{'id': '2', 'label': 'auto'}",
+        "1"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "master.new_status",
+      "officialSetting": "master.new_status",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-c-likely-safe-enums",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": "slave",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "master",
+          "label": "Master"
+        },
+        {
+          "id": "slave",
+          "label": "Slave"
+        },
+        {
+          "id": "inherit",
+          "label": "Inherit"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': 'master', 'label': 'Master'}",
+        "{'id': 'slave', 'label': 'Slave'}",
+        "{'id': 'inherit', 'label': 'Inherit'}",
+        "slave"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": null,
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "master.new_on_active",
+      "officialSetting": "master.new_on_active",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-c-likely-safe-enums",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": "none",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "none",
+          "label": "None"
+        },
+        {
+          "id": "before",
+          "label": "Before active"
+        },
+        {
+          "id": "after",
+          "label": "After active"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': 'none', 'label': 'None'}",
+        "{'id': 'before', 'label': 'Before active'}",
+        "{'id': 'after', 'label': 'After active'}",
+        "none"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": null,
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "master.orientation",
+      "officialSetting": "master.orientation",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-c-likely-safe-enums",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": "left",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "left",
+          "label": "Left"
+        },
+        {
+          "id": "right",
+          "label": "Right"
+        },
+        {
+          "id": "top",
+          "label": "Top"
+        },
+        {
+          "id": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "id": "center",
+          "label": "Center"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': 'left', 'label': 'Left'}",
+        "{'id': 'right', 'label': 'Right'}",
+        "{'id': 'top', 'label': 'Top'}",
+        "{'id': 'bottom', 'label': 'Bottom'}",
+        "{'id': 'center', 'label': 'Center'}",
+        "left"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": null,
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "master.center_master_fallback",
+      "officialSetting": "master.center_master_fallback",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-c-likely-safe-enums",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "left",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "left"
+      ],
+      "candidateInvalidValues": [
+        "bad\nvalue"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": null,
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "scrolling.fullscreen_on_one_column",
+      "officialSetting": "scrolling.fullscreen_on_one_column",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-g-session-runtime-sensitive",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": true,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "boolean-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": true,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": "session/runtime policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "scrolling.explicit_column_widths",
+      "officialSetting": "scrolling.explicit_column_widths",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-c-likely-safe-enums",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "0.333, 0.5, 0.667, 1.0",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "0.333, 0.5, 0.667, 1.0"
+      ],
+      "candidateInvalidValues": [
+        "bad\nvalue"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": null,
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "scrolling.direction",
+      "officialSetting": "scrolling.direction",
+      "currentWriteStatus": "manual-review-needed",
+      "currentBlocker": "manual safety review required for risk class: advanced",
+      "riskClass": "advanced",
+      "batch": "batch-c-likely-safe-enums",
+      "controlKind": "dropdown",
+      "valueFamily": "none",
+      "companionSchemaType": "string",
+      "companionDefault": "right",
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "right",
+          "label": "Right"
+        },
+        {
+          "id": "left",
+          "label": "Left"
+        },
+        {
+          "id": "down",
+          "label": "Down"
+        },
+        {
+          "id": "up",
+          "label": "Up"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': 'right', 'label': 'Right'}",
+        "{'id': 'left', 'label': 'Left'}",
+        "{'id': 'down', 'label': 'Down'}",
+        "{'id': 'up', 'label': 'Up'}",
+        "right"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "finite-choice-temp-config-proof",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": false,
+      "willNotEnableInThisPlanBecause": null,
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "experimental.wp_cm_1_2",
+      "officialSetting": "experimental.wp_cm_1_2",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "quirks.prefer_hdr",
+      "officialSetting": "quirks.prefer_hdr",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "slider",
+      "valueFamily": "none",
+      "companionSchemaType": "choice",
+      "companionDefault": 0,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "enable"
+        },
+        {
+          "id": "2",
+          "label": "gamescope_only"
+        }
+      ],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "{'id': '0', 'label': 'disable'}",
+        "{'id': '1', 'label': 'enable'}",
+        "{'id': '2', 'label': 'gamescope_only'}",
+        "0"
+      ],
+      "candidateInvalidValues": [
+        "__invalid_choice__"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    },
+    {
+      "rowId": "quirks.skip_non_kms_dmabuf_formats",
+      "officialSetting": "quirks.skip_non_kms_dmabuf_formats",
+      "currentWriteStatus": "high-risk",
+      "currentBlocker": "report-only/high-risk row: display_render_session_risk",
+      "riskClass": "display_render_session_risk",
+      "batch": "high-risk",
+      "controlKind": "toggle",
+      "valueFamily": "none",
+      "companionSchemaType": "bool",
+      "companionDefault": false,
+      "companionMin": null,
+      "companionMax": null,
+      "companionEnumValues": [],
+      "companionSourceBackedValues": [],
+      "candidateValidValues": [
+        "true",
+        "false"
+      ],
+      "candidateInvalidValues": [
+        "maybe"
+      ],
+      "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
+      "tempConfigVerificationSafe": true,
+      "sourceBackedDiscoveryNeeded": false,
+      "sessionRuntimePolicyNeeded": false,
+      "highRiskRecoveryDesignNeeded": true,
+      "willNotEnableInThisPlanBecause": "high-risk policy",
+      "notes": "Plan will test temporary config validity only; active config/runtime will not be touched."
+    }
+  ]
+}
