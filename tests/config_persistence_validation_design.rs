@@ -125,10 +125,10 @@ fn config_persistence_implementation_counts_continue_after_remaining_scalar_comp
         .filter(|row| row["writeStatus"].as_str() == Some("high-risk"))
         .count();
 
-    assert_eq!(coverage["counts"]["writableRows"], 243);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 98);
-    assert_eq!(writable, 243);
-    assert_eq!(manual, 26);
+    assert_eq!(coverage["counts"]["writableRows"], 248);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 93);
+    assert_eq!(writable, 248);
+    assert_eq!(manual, 21);
     assert_eq!(high_risk, 72);
 
     Ok(())

@@ -43,6 +43,36 @@ impl XkbRulesValues {
     pub fn has_option(&self, value: &str) -> bool {
         self.options.iter().any(|item| item.raw_value == value)
     }
+
+    pub fn validates_setting_value(&self, row_id: &str, value: &str) -> bool {
+        let value = value.trim();
+        if value.contains('\n') || value.contains('\r') {
+            return false;
+        }
+
+        match row_id {
+            "input.kb_model" => !value.is_empty() && self.has_model(value),
+            "input.kb_layout" => split_source_list(value).is_some_and(|values| {
+                !values.is_empty() && values.iter().all(|item| self.has_layout(item))
+            }),
+            "input.kb_variant" => split_source_list_allowing_empty(value).is_some_and(|values| {
+                values
+                    .iter()
+                    .all(|item| item.is_empty() || self.has_variant(item))
+            }),
+            "input.kb_options" => {
+                if value.is_empty() {
+                    true
+                } else {
+                    split_source_list(value).is_some_and(|values| {
+                        !values.is_empty() && values.iter().all(|item| self.has_option(item))
+                    })
+                }
+            }
+            "input.kb_rules" => matches!(value, "evdev" | "base"),
+            _ => false,
+        }
+    }
 }
 
 pub fn read_system_xkb_rules() -> Result<XkbRulesValues> {
@@ -153,4 +183,20 @@ fn parse_variant_description(description: &str) -> (Option<String>, String) {
     }
 
     (None, description.trim().to_string())
+}
+
+fn split_source_list(value: &str) -> Option<Vec<&str>> {
+    let values = split_source_list_allowing_empty(value)?;
+    if values.iter().any(|item| item.is_empty()) {
+        return None;
+    }
+    Some(values)
+}
+
+fn split_source_list_allowing_empty(value: &str) -> Option<Vec<&str>> {
+    let trimmed = value.trim();
+    if trimmed.contains('\n') || trimmed.contains('\r') {
+        return None;
+    }
+    Some(trimmed.split(',').map(str::trim).collect())
 }

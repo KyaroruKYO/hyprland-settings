@@ -78,7 +78,7 @@ fn conflict_resolution_report_tracks_verified_numeric_dropdown_migration() -> Re
 
 #[test]
 fn conflict_rows_are_finite_choice_without_changing_write_allowlist_size() {
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 243);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 248);
     for row_id in CONFLICT_FINITE_CHOICE_ROWS {
         assert_eq!(
             safe_writable_value_kind(row_id),
@@ -91,7 +91,7 @@ fn conflict_rows_are_finite_choice_without_changing_write_allowlist_size() {
 #[test]
 fn scalar_coverage_marks_conflict_rows_as_dropdown_finite_choice() -> Result<()> {
     let coverage = coverage_report()?;
-    assert_eq!(coverage["counts"]["writableRows"], 243);
+    assert_eq!(coverage["counts"]["writableRows"], 248);
 
     let coverage_by_row: BTreeMap<_, _> = coverage["rows"]
         .as_array()

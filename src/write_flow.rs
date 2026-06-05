@@ -10,6 +10,7 @@ use crate::current_config::{
 };
 use crate::pending_change::{stage_pending_change, PendingChange, PendingChangeValidation};
 use crate::scalar_write::apply_scalar_write_plan;
+use crate::source_values::{read_system_xkb_rules, XkbSourceValue};
 use crate::write_classification::{
     finite_choice_options, is_safe_writable_setting, safe_writable_official_setting,
     safe_writable_value_kind, ScalarWriteValueKind,
@@ -277,6 +278,9 @@ fn next_proposed_value(setting_id: &str, current_value: &CurrentValueProjection)
         Some(ScalarWriteValueKind::FiniteChoice) => {
             next_finite_choice_value(setting_id, current_value)
         }
+        Some(ScalarWriteValueKind::SourceBacked) => {
+            next_source_backed_value(setting_id, current_value)
+        }
         Some(ScalarWriteValueKind::Number) => current_value
             .raw_value
             .clone()
@@ -344,7 +348,9 @@ fn next_proposed_value(setting_id: &str, current_value: &CurrentValueProjection)
 fn editor_kind_for_value_kind(value_kind: Option<ScalarWriteValueKind>) -> &'static str {
     match value_kind {
         Some(ScalarWriteValueKind::Boolean) => "toggle",
-        Some(ScalarWriteValueKind::FiniteChoice) => "dropdown",
+        Some(ScalarWriteValueKind::FiniteChoice) | Some(ScalarWriteValueKind::SourceBacked) => {
+            "dropdown"
+        }
         Some(ScalarWriteValueKind::Number) | Some(ScalarWriteValueKind::Percent) => "number",
         Some(ScalarWriteValueKind::Color) => "color-text",
         Some(ScalarWriteValueKind::Gradient) => "gradient-text",
@@ -361,12 +367,53 @@ fn editor_kind_for_value_kind(value_kind: Option<ScalarWriteValueKind>) -> &'sta
 }
 
 fn finite_choice_edit_options(setting_id: &str) -> Vec<FiniteChoiceEditOption> {
-    finite_choice_options(setting_id)
-        .unwrap_or(&[])
+    if let Some(options) = finite_choice_options(setting_id) {
+        return options
+            .iter()
+            .map(|option| FiniteChoiceEditOption {
+                raw_value: option.raw_value.to_string(),
+                label: option.label.to_string(),
+            })
+            .collect();
+    }
+
+    source_backed_edit_options(setting_id)
+}
+
+fn source_backed_edit_options(setting_id: &str) -> Vec<FiniteChoiceEditOption> {
+    let Ok(rules) = read_system_xkb_rules() else {
+        return Vec::new();
+    };
+
+    match setting_id {
+        "input.kb_model" => source_values_to_edit_options(&rules.models),
+        "input.kb_layout" => source_values_to_edit_options(&rules.layouts),
+        "input.kb_variant" => source_values_to_edit_options(&rules.variants),
+        "input.kb_options" => source_values_to_edit_options(&rules.options),
+        "input.kb_rules" => vec![
+            FiniteChoiceEditOption {
+                raw_value: "evdev".to_string(),
+                label: "evdev".to_string(),
+            },
+            FiniteChoiceEditOption {
+                raw_value: "base".to_string(),
+                label: "base".to_string(),
+            },
+        ],
+        _ => Vec::new(),
+    }
+}
+
+fn source_values_to_edit_options(values: &[XkbSourceValue]) -> Vec<FiniteChoiceEditOption> {
+    values
         .iter()
-        .map(|option| FiniteChoiceEditOption {
-            raw_value: option.raw_value.to_string(),
-            label: option.label.to_string(),
+        .map(|value| FiniteChoiceEditOption {
+            raw_value: value.raw_value.to_string(),
+            label: if value.label.is_empty() {
+                value.raw_value.to_string()
+            } else {
+                value.label.to_string()
+            },
         })
         .collect()
 }
@@ -388,6 +435,23 @@ fn next_finite_choice_value(setting_id: &str, current_value: &CurrentValueProjec
         return options[(index + 1) % options.len()].raw_value.to_string();
     }
     options[0].raw_value.to_string()
+}
+
+fn next_source_backed_value(setting_id: &str, current_value: &CurrentValueProjection) -> String {
+    let options = source_backed_edit_options(setting_id);
+    if options.is_empty() {
+        return current_value.raw_value.clone().unwrap_or_default();
+    }
+    let current = current_value.raw_value.as_deref().map(str::trim);
+    if let Some((index, _)) = current.and_then(|value| {
+        options
+            .iter()
+            .enumerate()
+            .find(|(_, option)| option.raw_value == value)
+    }) {
+        return options[(index + 1) % options.len()].raw_value.clone();
+    }
+    options[0].raw_value.clone()
 }
 
 fn next_bool_value(current_value: &CurrentValueProjection) -> String {

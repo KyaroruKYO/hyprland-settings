@@ -1,0 +1,143 @@
+{
+  "artifactKind": "source-backed-input-write-proof",
+  "schemaVersion": "0.55.2",
+  "sourceReports": [
+    "data/reports/source-backed-input-value-evidence.v0.55.2.json"
+  ],
+  "counts": {
+    "rows": 5,
+    "rowsEnabled": 5,
+    "validValuesVerified": 12,
+    "invalidValuesRejectedByApp": 5,
+    "hyprlandAcceptedInvalidProbeRows": 5,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false
+  },
+  "safety": {
+    "tempConfigOnly": true,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadUsed": false,
+    "evalUsed": false,
+    "luaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "input.kb_model",
+      "officialSetting": "input.kb_model",
+      "valueKind": "source-backed-xkb-model",
+      "validValues": [
+        "pc105",
+        "pc104"
+      ],
+      "invalidValues": [
+        "__not_a_model__"
+      ],
+      "parserRoundtripPassed": true,
+      "writerRoundtripPassed": true,
+      "typedValidatorPassed": true,
+      "invalidValuesRejectedByApp": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptedInvalidProbe": true,
+      "safeToEnable": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "notes": "Hyprland parser accepts unknown XKB identifiers, so the app validator uses XKB rules enumeration as the authoritative source-backed proof."
+    },
+    {
+      "rowId": "input.kb_layout",
+      "officialSetting": "input.kb_layout",
+      "valueKind": "source-backed-xkb-layout",
+      "validValues": [
+        "us",
+        "de",
+        "us,de"
+      ],
+      "invalidValues": [
+        "__not_a_layout__"
+      ],
+      "parserRoundtripPassed": true,
+      "writerRoundtripPassed": true,
+      "typedValidatorPassed": true,
+      "invalidValuesRejectedByApp": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptedInvalidProbe": true,
+      "safeToEnable": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "notes": "Hyprland parser accepts unknown XKB identifiers, so the app validator uses XKB rules enumeration as the authoritative source-backed proof."
+    },
+    {
+      "rowId": "input.kb_variant",
+      "officialSetting": "input.kb_variant",
+      "valueKind": "source-backed-xkb-variant",
+      "validValues": [
+        "intl",
+        ""
+      ],
+      "invalidValues": [
+        "__not_a_variant__"
+      ],
+      "parserRoundtripPassed": true,
+      "writerRoundtripPassed": true,
+      "typedValidatorPassed": true,
+      "invalidValuesRejectedByApp": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptedInvalidProbe": true,
+      "safeToEnable": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "notes": "Hyprland parser accepts unknown XKB identifiers, so the app validator uses XKB rules enumeration as the authoritative source-backed proof."
+    },
+    {
+      "rowId": "input.kb_options",
+      "officialSetting": "input.kb_options",
+      "valueKind": "source-backed-xkb-option",
+      "validValues": [
+        "grp:alt_shift_toggle",
+        "ctrl:nocaps",
+        "grp:alt_shift_toggle,ctrl:nocaps"
+      ],
+      "invalidValues": [
+        "__not_an_option__"
+      ],
+      "parserRoundtripPassed": true,
+      "writerRoundtripPassed": true,
+      "typedValidatorPassed": true,
+      "invalidValuesRejectedByApp": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptedInvalidProbe": true,
+      "safeToEnable": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "notes": "Hyprland parser accepts unknown XKB identifiers, so the app validator uses XKB rules enumeration as the authoritative source-backed proof."
+    },
+    {
+      "rowId": "input.kb_rules",
+      "officialSetting": "input.kb_rules",
+      "valueKind": "source-backed-xkb-rules",
+      "validValues": [
+        "evdev",
+        "base"
+      ],
+      "invalidValues": [
+        "__not_rules__"
+      ],
+      "parserRoundtripPassed": true,
+      "writerRoundtripPassed": true,
+      "typedValidatorPassed": true,
+      "invalidValuesRejectedByApp": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptedInvalidProbe": true,
+      "safeToEnable": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "notes": "Hyprland parser accepts unknown XKB identifiers, so the app validator uses XKB rules enumeration as the authoritative source-backed proof."
+    }
+  ]
+}

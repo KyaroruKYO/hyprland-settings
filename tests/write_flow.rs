@@ -13,7 +13,7 @@ use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueSourc
 use hyprland_settings::pending_change::ACTIVE_PENDING_CHANGE_SETTING;
 use hyprland_settings::write_classification::{
     finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, REMAINING_105_FINITE_CHOICE_ROWS,
-    SAFE_WRITABLE_ROWS,
+    SAFE_WRITABLE_ROWS, SOURCE_BACKED_INPUT_ROWS,
 };
 use hyprland_settings::write_flow::{
     apply_setting_change_with_backup_manager, edit_projection_for_setting,
@@ -55,7 +55,7 @@ fn snapshot_for(path: &PathBuf, contents: &str) -> CurrentConfigSnapshot {
 fn edit_projection_allows_only_safe_writable_rows() {
     let current =
         CurrentConfigSnapshot::read_unavailable("no config").value_for("general.snap.enabled");
-    let blocked = edit_projection_for_setting("input.kb_layout", &current);
+    let blocked = edit_projection_for_setting("master.center_master_fallback", &current);
 
     for row in SAFE_WRITABLE_ROWS {
         let editable = edit_projection_for_setting(row.row_id, &current);
@@ -72,6 +72,38 @@ fn edit_projection_allows_only_safe_writable_rows() {
         blocked.disabled_reason.as_deref(),
         Some("not write-allowlisted")
     );
+}
+
+#[test]
+fn source_backed_input_rows_project_as_dropdowns() {
+    let current = CurrentConfigSnapshot::read_unavailable("no config").value_for("input.kb_layout");
+
+    for row_id in SOURCE_BACKED_INPUT_ROWS {
+        let projection = edit_projection_for_setting(row_id, &current);
+
+        assert!(projection.editable, "{row_id} should be editable");
+        assert_eq!(projection.editor_kind, "dropdown", "{row_id}");
+        assert!(
+            !projection.choices.is_empty(),
+            "{row_id} should expose source-backed choices"
+        );
+        assert!(
+            projection
+                .proposed_value
+                .as_deref()
+                .is_some_and(|value| !value.is_empty()),
+            "{row_id} should propose a source-backed value"
+        );
+        assert_eq!(
+            projection
+                .pending
+                .as_ref()
+                .expect("pending projection")
+                .validation_label,
+            "valid",
+            "{row_id} should stage a known source-backed value"
+        );
+    }
 }
 
 #[test]
@@ -490,8 +522,8 @@ fn apply_flow_blocks_non_allowlisted_setting() {
         known_ids(),
         &discovery,
         &snapshot,
-        "input.kb_layout",
-        "us",
+        "master.center_master_fallback",
+        "left",
         &backup_manager,
     )
     .expect_err("non-allowlisted setting should block apply");

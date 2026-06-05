@@ -28,6 +28,13 @@ fn xkb_rules_lst_parser_extracts_source_backed_values() {
     assert!(rules.has_variant("intl"));
     assert!(rules.has_option("grp:alt_shift_toggle"));
     assert!(!rules.has_layout("definitely-not-a-layout"));
+    assert!(rules.validates_setting_value("input.kb_model", "pc105"));
+    assert!(rules.validates_setting_value("input.kb_layout", "us,de"));
+    assert!(rules.validates_setting_value("input.kb_variant", "intl"));
+    assert!(rules.validates_setting_value("input.kb_options", "grp:alt_shift_toggle,ctrl:nocaps"));
+    assert!(rules.validates_setting_value("input.kb_rules", "evdev"));
+    assert!(!rules.validates_setting_value("input.kb_layout", "__not_a_layout__"));
+    assert!(!rules.validates_setting_value("input.kb_options", "grp:alt_shift_toggle\nexec bad"));
 
     let intl = rules
         .variants

@@ -11,7 +11,7 @@
     "xkbLayoutValues": 99,
     "xkbVariantValues": 496,
     "xkbOptionValues": 239,
-    "rowsEnabled": 0,
+    "rowsEnabled": 5,
     "activeConfigModified": false,
     "activeRuntimeModified": false
   },
@@ -79,15 +79,22 @@
         "bad\nvalue"
       ],
       "proofStrategy": "single source-backed dropdown value",
-      "safeToEnableNow": false,
-      "missingProofCategoriesAfterEnumeration": [
-        "needs-validator-implementation",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
-      "nextStepToMakeWritable": "Wire source-backed enumerated values into production validators and editor projection, then run fixture write/reread and temp Hyprland --verify-config proof for accepted and rejected values.",
+      "safeToEnableNow": true,
+      "missingProofCategoriesAfterEnumeration": [],
+      "nextStepToMakeWritable": "Already wired into production source-backed validators and dropdown projection with fixture/temp-config proof.",
       "activeConfigModified": false,
-      "activeRuntimeModified": false
+      "activeRuntimeModified": false,
+      "enabledByCommitPending": true,
+      "representativeValidValues": [
+        "pc105",
+        "pc104"
+      ],
+      "representativeInvalidValuesRejectedByApp": [
+        "__not_a_model__"
+      ],
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptsUnknownInvalidTokens": true,
+      "notes": "Hyprland verify-config accepts unknown XKB tokens; source-backed app validation is required and implemented."
     },
     {
       "rowId": "input.kb_layout",
@@ -144,15 +151,23 @@
         "bad\nvalue"
       ],
       "proofStrategy": "single or comma-separated source-backed layout values",
-      "safeToEnableNow": false,
-      "missingProofCategoriesAfterEnumeration": [
-        "needs-validator-implementation",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
-      "nextStepToMakeWritable": "Wire source-backed enumerated values into production validators and editor projection, then run fixture write/reread and temp Hyprland --verify-config proof for accepted and rejected values.",
+      "safeToEnableNow": true,
+      "missingProofCategoriesAfterEnumeration": [],
+      "nextStepToMakeWritable": "Already wired into production source-backed validators and dropdown projection with fixture/temp-config proof.",
       "activeConfigModified": false,
-      "activeRuntimeModified": false
+      "activeRuntimeModified": false,
+      "enabledByCommitPending": true,
+      "representativeValidValues": [
+        "us",
+        "de",
+        "us,de"
+      ],
+      "representativeInvalidValuesRejectedByApp": [
+        "__not_a_layout__"
+      ],
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptsUnknownInvalidTokens": true,
+      "notes": "Hyprland verify-config accepts unknown XKB tokens; source-backed app validation is required and implemented."
     },
     {
       "rowId": "input.kb_variant",
@@ -219,15 +234,22 @@
         "bad\nvalue"
       ],
       "proofStrategy": "layout-dependent source-backed variant values",
-      "safeToEnableNow": false,
-      "missingProofCategoriesAfterEnumeration": [
-        "needs-validator-implementation",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
-      "nextStepToMakeWritable": "Wire source-backed enumerated values into production validators and editor projection, then run fixture write/reread and temp Hyprland --verify-config proof for accepted and rejected values.",
+      "safeToEnableNow": true,
+      "missingProofCategoriesAfterEnumeration": [],
+      "nextStepToMakeWritable": "Already wired into production source-backed validators and dropdown projection with fixture/temp-config proof.",
       "activeConfigModified": false,
-      "activeRuntimeModified": false
+      "activeRuntimeModified": false,
+      "enabledByCommitPending": true,
+      "representativeValidValues": [
+        "intl",
+        ""
+      ],
+      "representativeInvalidValuesRejectedByApp": [
+        "__not_a_variant__"
+      ],
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptsUnknownInvalidTokens": true,
+      "notes": "Hyprland verify-config accepts unknown XKB tokens; source-backed app validation is required and implemented."
     },
     {
       "rowId": "input.kb_options",
@@ -284,15 +306,23 @@
         "bad\nvalue"
       ],
       "proofStrategy": "single or comma-separated source-backed option values",
-      "safeToEnableNow": false,
-      "missingProofCategoriesAfterEnumeration": [
-        "needs-validator-implementation",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
-      "nextStepToMakeWritable": "Wire source-backed enumerated values into production validators and editor projection, then run fixture write/reread and temp Hyprland --verify-config proof for accepted and rejected values.",
+      "safeToEnableNow": true,
+      "missingProofCategoriesAfterEnumeration": [],
+      "nextStepToMakeWritable": "Already wired into production source-backed validators and dropdown projection with fixture/temp-config proof.",
       "activeConfigModified": false,
-      "activeRuntimeModified": false
+      "activeRuntimeModified": false,
+      "enabledByCommitPending": true,
+      "representativeValidValues": [
+        "grp:alt_shift_toggle",
+        "ctrl:nocaps",
+        "grp:alt_shift_toggle,ctrl:nocaps"
+      ],
+      "representativeInvalidValuesRejectedByApp": [
+        "__not_an_option__"
+      ],
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptsUnknownInvalidTokens": true,
+      "notes": "Hyprland verify-config accepts unknown XKB tokens; source-backed app validation is required and implemented."
     },
     {
       "rowId": "input.kb_rules",
@@ -317,15 +347,22 @@
         "bad\nvalue"
       ],
       "proofStrategy": "finite rules-file value",
-      "safeToEnableNow": false,
-      "missingProofCategoriesAfterEnumeration": [
-        "needs-validator-implementation",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
-      "nextStepToMakeWritable": "Wire source-backed enumerated values into production validators and editor projection, then run fixture write/reread and temp Hyprland --verify-config proof for accepted and rejected values.",
+      "safeToEnableNow": true,
+      "missingProofCategoriesAfterEnumeration": [],
+      "nextStepToMakeWritable": "Already wired into production source-backed validators and dropdown projection with fixture/temp-config proof.",
       "activeConfigModified": false,
-      "activeRuntimeModified": false
+      "activeRuntimeModified": false,
+      "enabledByCommitPending": true,
+      "representativeValidValues": [
+        "evdev",
+        "base"
+      ],
+      "representativeInvalidValuesRejectedByApp": [
+        "__not_rules__"
+      ],
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptsUnknownInvalidTokens": true,
+      "notes": "Hyprland verify-config accepts unknown XKB tokens; source-backed app validation is required and implemented."
     }
   ]
 }

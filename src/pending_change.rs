@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use crate::current_config::CurrentValueProjection;
+use crate::source_values::read_system_xkb_rules;
 use crate::value::{
     color::ColorValue, gradient::GradientValue, numeric_list::NumericListValue,
     path_value::PathValue, regex_value::RegexValue, sanitized_string::SanitizedStringValue,
@@ -109,6 +110,9 @@ fn validate_safe_writable_value(setting_id: &str, value: &str) -> PendingChangeV
         Some(ScalarWriteValueKind::FiniteChoice) => {
             validate_finite_choice_setting(setting_id, value)
         }
+        Some(ScalarWriteValueKind::SourceBacked) => {
+            validate_source_backed_setting(setting_id, value)
+        }
         Some(ScalarWriteValueKind::Number) => validate_number_setting(setting_id, value),
         Some(ScalarWriteValueKind::Percent) => validate_percent_setting(setting_id, value),
         Some(ScalarWriteValueKind::Color) => validate_color_literal(value),
@@ -132,6 +136,18 @@ fn validate_finite_choice_setting(setting_id: &str, value: &str) -> PendingChang
         PendingChangeValidation::Valid
     } else {
         invalid("finite-choice writes require a Hyprland-verified stored raw value")
+    }
+}
+
+fn validate_source_backed_setting(setting_id: &str, value: &str) -> PendingChangeValidation {
+    match read_system_xkb_rules() {
+        Ok(rules) if rules.validates_setting_value(setting_id, value) => {
+            PendingChangeValidation::Valid
+        }
+        Ok(_) => invalid("source-backed writes require a known XKB rules value"),
+        Err(error) => invalid(&format!(
+            "source-backed XKB values are unavailable: {error}"
+        )),
     }
 }
 

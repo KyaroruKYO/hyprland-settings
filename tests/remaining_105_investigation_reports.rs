@@ -45,6 +45,12 @@ fn source_backed_input_values() -> Result<Value> {
     ))?)
 }
 
+fn source_backed_input_write_proof() -> Result<Value> {
+    Ok(serde_json::from_str(include_str!(
+        "../data/reports/source-backed-input-write-proof.v0.55.2.json"
+    ))?)
+}
+
 #[test]
 fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let coverage = coverage()?;
@@ -53,8 +59,8 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let results = proof_results()?;
     let classifications = classifications()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 243);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 98);
+    assert_eq!(coverage["counts"]["writableRows"], 248);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 93);
     assert_eq!(investigation["counts"]["rows"], 105);
     assert_eq!(plan["counts"]["rows"], 105);
     assert_eq!(results["counts"]["rows"], 105);
@@ -67,7 +73,7 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_string())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 98);
+    assert_eq!(blocked_ids.len(), 93);
 
     for report in [&investigation, &plan, &results, &classifications] {
         let ids = report["rows"]
@@ -266,13 +272,16 @@ fn batch_c_string_rows_require_official_semantic_validators() -> Result<()> {
 }
 
 #[test]
-fn source_backed_input_rows_have_xkb_evidence_but_remain_blocked() -> Result<()> {
+fn source_backed_input_rows_have_xkb_proof_and_are_writable() -> Result<()> {
     let source_values = source_backed_input_values()?;
+    let write_proof = source_backed_input_write_proof()?;
     let classifications = classifications()?;
     let coverage = coverage()?;
 
     assert_eq!(source_values["counts"]["rows"], 5);
-    assert_eq!(source_values["counts"]["rowsEnabled"], 0);
+    assert_eq!(source_values["counts"]["rowsEnabled"], 5);
+    assert_eq!(write_proof["counts"]["rows"], 5);
+    assert_eq!(write_proof["counts"]["rowsEnabled"], 5);
     assert!(
         source_values["counts"]["xkbModelValues"]
             .as_u64()
@@ -312,7 +321,7 @@ fn source_backed_input_rows_have_xkb_evidence_but_remain_blocked() -> Result<()>
             source_row["enumeratorImplementedInRust"].as_bool(),
             Some(true)
         );
-        assert_eq!(source_row["safeToEnableNow"].as_bool(), Some(false));
+        assert_eq!(source_row["safeToEnableNow"].as_bool(), Some(true));
         assert!(
             source_row["valueCount"]
                 .as_u64()
@@ -330,20 +339,31 @@ fn source_backed_input_rows_have_xkb_evidence_but_remain_blocked() -> Result<()>
             .iter()
             .map(|value| value.as_str().unwrap())
             .collect::<BTreeSet<_>>();
-        assert!(blockers.contains("needs-validator-implementation"));
-        assert!(blockers.contains("needs-editor-projection"));
-        assert!(blockers.contains("needs-invalid-value-tests"));
+        assert!(blockers.is_empty(), "{row_id} should not keep blockers");
         assert!(!blockers.contains("needs-source-backed-enumerator"));
+        assert_eq!(
+            classification_row["currentWriteStatus"].as_str(),
+            Some("writable")
+        );
 
         let coverage_row = coverage_rows
             .iter()
             .find(|row| row["rowId"].as_str() == Some(row_id))
             .unwrap_or_else(|| panic!("missing coverage row {row_id}"));
+        assert_eq!(coverage_row["writeStatus"].as_str(), Some("writable"));
+        assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(true));
+
+        let proof_row = write_proof["rows"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|row| row["rowId"].as_str() == Some(row_id))
+            .unwrap_or_else(|| panic!("missing source-backed write proof for {row_id}"));
+        assert_eq!(proof_row["safeToEnable"].as_bool(), Some(true));
         assert_eq!(
-            coverage_row["writeStatus"].as_str(),
-            Some("manual-review-needed")
+            proof_row["invalidValuesRejectedByApp"].as_bool(),
+            Some(true)
         );
-        assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
     }
 
     Ok(())

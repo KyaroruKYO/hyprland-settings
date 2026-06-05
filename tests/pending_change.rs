@@ -7,6 +7,7 @@ use hyprland_settings::pending_change::{
 };
 use hyprland_settings::write_classification::{
     finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, REMAINING_105_FINITE_CHOICE_ROWS,
+    SOURCE_BACKED_INPUT_ROWS,
 };
 
 fn current_value_for(setting_id: &str, config: &str) -> CurrentValueProjection {
@@ -47,9 +48,12 @@ fn invalid_pending_change_for_windows_snap_enabled_is_rejected() {
 
 #[test]
 fn only_safe_writable_rows_can_be_staged() {
-    let current = current_value_for("input.kb_layout", "input:kb_layout = us\n");
+    let current = current_value_for(
+        "master.center_master_fallback",
+        "master:center_master_fallback = left\n",
+    );
 
-    let change = stage_pending_change("input.kb_layout", &current, "us");
+    let change = stage_pending_change("master.center_master_fallback", &current, "left");
 
     assert_eq!(
         change.validation,
@@ -61,6 +65,60 @@ fn only_safe_writable_rows_can_be_staged() {
         change.non_editable_reason.as_deref(),
         Some("setting is not in the safe scalar write allowlist")
     );
+}
+
+#[test]
+fn source_backed_input_rows_can_be_staged_with_known_xkb_values() {
+    let cases = [
+        ("input.kb_model", "input.kb_model", "pc105"),
+        ("input.kb_layout", "input.kb_layout", "us,de"),
+        ("input.kb_variant", "input.kb_variant", "intl"),
+        (
+            "input.kb_options",
+            "input.kb_options",
+            "grp:alt_shift_toggle,ctrl:nocaps",
+        ),
+        ("input.kb_rules", "input.kb_rules", "evdev"),
+    ];
+
+    for (row_id, official_setting, proposed) in cases {
+        let config_key = official_setting.replace('.', ":");
+        let current = current_value_for(official_setting, &format!("{config_key} = {proposed}\n"));
+
+        let change = stage_pending_change(row_id, &current, proposed);
+
+        assert_eq!(
+            change.validation,
+            PendingChangeValidation::Valid,
+            "{row_id} should accept source-backed value {proposed}"
+        );
+        assert!(change.can_be_applied(), "{row_id} should be applicable");
+    }
+
+    assert_eq!(SOURCE_BACKED_INPUT_ROWS.len(), 5);
+}
+
+#[test]
+fn source_backed_input_rows_reject_unknown_or_multiline_values() {
+    let current = CurrentValueProjection::not_configured();
+    let cases = [
+        ("input.kb_model", "__not_a_model__"),
+        ("input.kb_layout", "__not_a_layout__"),
+        ("input.kb_variant", "__not_a_variant__"),
+        ("input.kb_options", "__not_an_option__"),
+        ("input.kb_rules", "__not_rules__"),
+        ("input.kb_layout", "us\nexec bad"),
+    ];
+
+    for (row_id, proposed) in cases {
+        let change = stage_pending_change(row_id, &current, proposed);
+
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "{row_id} should reject {proposed:?}"
+        );
+        assert!(!change.can_be_applied(), "{row_id} should not apply");
+    }
 }
 
 #[test]

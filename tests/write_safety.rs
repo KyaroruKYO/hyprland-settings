@@ -117,13 +117,13 @@ fn rejects_unknown_setting() {
 fn rejects_unsafe_setting() {
     let current = current_value_for(
         "/tmp/hyprland.conf",
-        "input.kb_layout",
-        "input:kb_layout = us\n",
+        "master.center_master_fallback",
+        "master:center_master_fallback = left\n",
     );
-    let pending = stage_pending_change("input.kb_layout", &current, "us");
+    let pending = stage_pending_change("master.center_master_fallback", &current, "left");
 
     let review = review_write_plan(WritePlanRequest {
-        known_setting_ids: known_ids(&["input.kb_layout"]),
+        known_setting_ids: known_ids(&["master.center_master_fallback"]),
         detected_config_path: PathBuf::from("/tmp/hyprland.conf"),
         current_value: current,
         pending_change: pending,

@@ -38,6 +38,16 @@ fn current_value_for(path: &PathBuf, setting_id: &str, contents: &str) -> Curren
 }
 
 fn valid_value_for(row: &SafeWritableRow) -> &'static str {
+    if row.value_kind == ScalarWriteValueKind::SourceBacked {
+        return match row.row_id {
+            "input.kb_model" => "pc105",
+            "input.kb_layout" => "us,de",
+            "input.kb_variant" => "intl",
+            "input.kb_options" => "grp:alt_shift_toggle,ctrl:nocaps",
+            "input.kb_rules" => "evdev",
+            _ => "us",
+        };
+    }
     if row.value_kind == ScalarWriteValueKind::Color {
         return "rgba(ffffffff)";
     }
@@ -81,6 +91,16 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
 }
 
 fn existing_value_for(row: &SafeWritableRow) -> &'static str {
+    if row.value_kind == ScalarWriteValueKind::SourceBacked {
+        return match row.row_id {
+            "input.kb_model" => "pc104",
+            "input.kb_layout" => "us",
+            "input.kb_variant" => "",
+            "input.kb_options" => "ctrl:nocaps",
+            "input.kb_rules" => "base",
+            _ => "us",
+        };
+    }
     if row.value_kind == ScalarWriteValueKind::Color {
         return "rgba(000000ff)";
     }

@@ -5,6 +5,7 @@ use hyprland_settings::export::ExportBundle;
 use hyprland_settings::metadata::resolve_metadata_path_with_env;
 use hyprland_settings::write_classification::{
     classify_inventory_entry, is_safe_writable_setting, ScalarWriteStatus, SAFE_WRITABLE_ROWS,
+    SOURCE_BACKED_INPUT_ROWS,
 };
 use serde_json::Value;
 
@@ -60,7 +61,7 @@ fn safe_writable_rows_include_config_persistence_verified_rows() -> Result<()> {
         "../data/reports/remaining-scalar-completion.v0.55.2.json"
     ))?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 243);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 248);
     for row in batch_a["rows"]
         .as_array()
         .expect("Batch A rows should be an array")
@@ -86,6 +87,12 @@ fn safe_writable_rows_include_config_persistence_verified_rows() -> Result<()> {
     assert!(is_safe_writable_setting("layout.selection"));
     assert!(is_safe_writable_setting("master.new_status"));
     assert!(is_safe_writable_setting("scrolling.direction"));
+    for row_id in SOURCE_BACKED_INPUT_ROWS {
+        assert!(
+            is_safe_writable_setting(row_id),
+            "{row_id} should be source-backed writable"
+        );
+    }
     assert!(!is_safe_writable_setting(
         "input.keyboard.resolve_binds_by_sym"
     ));

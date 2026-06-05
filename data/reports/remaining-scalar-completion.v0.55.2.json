@@ -10,28 +10,29 @@
   ],
   "counts": {
     "startingWritableRows": 94,
-    "finalWritableRows": 243,
+    "finalWritableRows": 248,
     "startingBlockedRows": 247,
-    "finalBlockedRows": 98,
-    "enabledRows": 149,
+    "finalBlockedRows": 93,
+    "enabledRows": 154,
     "enabledByBatch": {
       "batch-b-likely-safe-numerics": 33,
       "batch-c-likely-safe-enums": 5,
-      "batch-d-input-behavior": 66,
+      "batch-d-input-behavior": 71,
       "batch-e-window-layout-behavior": 45
     },
     "remainingBlockedByBatch": {
-      "batch-c-likely-safe-enums": 2,
-      "batch-d-input-behavior": 8,
       "batch-g-session-runtime-sensitive": 16,
+      "batch-d-input-behavior": 3,
+      "batch-c-likely-safe-enums": 2,
       "high-risk": 72
     },
     "remainingBlockedByReason": {
-      "dropdown-or-enum-value-proof-needed": 10,
-      "session-runtime-sensitive-policy-needed": 16,
-      "high-risk-dedicated-design-needed": 72
+      "session/runtime-sensitive setting requires dedicated user approval and recovery policy before persistent writes are enabled": 15,
+      "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes": 4,
+      "official-source-research-needed": 2,
+      "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.": 72
     },
-    "hyprlandVerifyConfigPassed": 142,
+    "hyprlandVerifyConfigPassed": 147,
     "hyprlandVerifyConfigFailed": 0,
     "activeConfigModified": false,
     "activeRuntimeModified": false
@@ -919,25 +920,34 @@
       "batch": "batch-d-input-behavior",
       "subgroup": "dropdown",
       "researchEvidence": [
-        "manual-review candidate report",
-        "not selected for primitive temp-config promotion in this sprint"
+        "source-backed input value evidence report",
+        "Rust XKB rules parser",
+        "source-backed pending-change validator",
+        "fixture writer/reread tests",
+        "representative temp Hyprland --verify-config proof"
       ],
-      "testedValues": [],
+      "testedValues": [
+        "pc105",
+        "pc104",
+        "__not_a_model__"
+      ],
       "proofResults": {
-        "parserRoundtripPassed": null,
-        "writerRoundtripPassed": null,
-        "typedValidatorPassed": null,
-        "singleMutationVerified": null,
-        "hyprlandVerifyConfigAttempted": false,
-        "hyprlandVerifyConfigPassed": false,
+        "parserRoundtripPassed": true,
+        "writerRoundtripPassed": true,
+        "typedValidatorPassed": true,
+        "invalidValueRejectedByApp": true,
+        "singleMutationVerified": true,
+        "hyprlandVerifyConfigAttempted": true,
+        "hyprlandVerifyConfigPassed": true,
+        "hyprlandAcceptedInvalidProbe": true,
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled through source-backed XKB validators. Hyprland verify-config accepts unknown tokens for these rows, so app-side source validation is the authoritative invalid-value gate."
     },
     {
       "rowId": "input.kb_layout",
@@ -946,25 +956,35 @@
       "batch": "batch-d-input-behavior",
       "subgroup": "dropdown",
       "researchEvidence": [
-        "manual-review candidate report",
-        "not selected for primitive temp-config promotion in this sprint"
+        "source-backed input value evidence report",
+        "Rust XKB rules parser",
+        "source-backed pending-change validator",
+        "fixture writer/reread tests",
+        "representative temp Hyprland --verify-config proof"
       ],
-      "testedValues": [],
+      "testedValues": [
+        "us",
+        "de",
+        "us,de",
+        "__not_a_layout__"
+      ],
       "proofResults": {
-        "parserRoundtripPassed": null,
-        "writerRoundtripPassed": null,
-        "typedValidatorPassed": null,
-        "singleMutationVerified": null,
-        "hyprlandVerifyConfigAttempted": false,
-        "hyprlandVerifyConfigPassed": false,
+        "parserRoundtripPassed": true,
+        "writerRoundtripPassed": true,
+        "typedValidatorPassed": true,
+        "invalidValueRejectedByApp": true,
+        "singleMutationVerified": true,
+        "hyprlandVerifyConfigAttempted": true,
+        "hyprlandVerifyConfigPassed": true,
+        "hyprlandAcceptedInvalidProbe": true,
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled through source-backed XKB validators. Hyprland verify-config accepts unknown tokens for these rows, so app-side source validation is the authoritative invalid-value gate."
     },
     {
       "rowId": "input.kb_variant",
@@ -973,25 +993,34 @@
       "batch": "batch-d-input-behavior",
       "subgroup": "dropdown",
       "researchEvidence": [
-        "manual-review candidate report",
-        "not selected for primitive temp-config promotion in this sprint"
+        "source-backed input value evidence report",
+        "Rust XKB rules parser",
+        "source-backed pending-change validator",
+        "fixture writer/reread tests",
+        "representative temp Hyprland --verify-config proof"
       ],
-      "testedValues": [],
+      "testedValues": [
+        "intl",
+        "",
+        "__not_a_variant__"
+      ],
       "proofResults": {
-        "parserRoundtripPassed": null,
-        "writerRoundtripPassed": null,
-        "typedValidatorPassed": null,
-        "singleMutationVerified": null,
-        "hyprlandVerifyConfigAttempted": false,
-        "hyprlandVerifyConfigPassed": false,
+        "parserRoundtripPassed": true,
+        "writerRoundtripPassed": true,
+        "typedValidatorPassed": true,
+        "invalidValueRejectedByApp": true,
+        "singleMutationVerified": true,
+        "hyprlandVerifyConfigAttempted": true,
+        "hyprlandVerifyConfigPassed": true,
+        "hyprlandAcceptedInvalidProbe": true,
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled through source-backed XKB validators. Hyprland verify-config accepts unknown tokens for these rows, so app-side source validation is the authoritative invalid-value gate."
     },
     {
       "rowId": "input.kb_options",
@@ -1000,25 +1029,35 @@
       "batch": "batch-d-input-behavior",
       "subgroup": "dropdown",
       "researchEvidence": [
-        "manual-review candidate report",
-        "not selected for primitive temp-config promotion in this sprint"
+        "source-backed input value evidence report",
+        "Rust XKB rules parser",
+        "source-backed pending-change validator",
+        "fixture writer/reread tests",
+        "representative temp Hyprland --verify-config proof"
       ],
-      "testedValues": [],
+      "testedValues": [
+        "grp:alt_shift_toggle",
+        "ctrl:nocaps",
+        "grp:alt_shift_toggle,ctrl:nocaps",
+        "__not_an_option__"
+      ],
       "proofResults": {
-        "parserRoundtripPassed": null,
-        "writerRoundtripPassed": null,
-        "typedValidatorPassed": null,
-        "singleMutationVerified": null,
-        "hyprlandVerifyConfigAttempted": false,
-        "hyprlandVerifyConfigPassed": false,
+        "parserRoundtripPassed": true,
+        "writerRoundtripPassed": true,
+        "typedValidatorPassed": true,
+        "invalidValueRejectedByApp": true,
+        "singleMutationVerified": true,
+        "hyprlandVerifyConfigAttempted": true,
+        "hyprlandVerifyConfigPassed": true,
+        "hyprlandAcceptedInvalidProbe": true,
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled through source-backed XKB validators. Hyprland verify-config accepts unknown tokens for these rows, so app-side source validation is the authoritative invalid-value gate."
     },
     {
       "rowId": "input.kb_rules",
@@ -1027,25 +1066,34 @@
       "batch": "batch-d-input-behavior",
       "subgroup": "dropdown",
       "researchEvidence": [
-        "manual-review candidate report",
-        "not selected for primitive temp-config promotion in this sprint"
+        "source-backed input value evidence report",
+        "Rust XKB rules parser",
+        "source-backed pending-change validator",
+        "fixture writer/reread tests",
+        "representative temp Hyprland --verify-config proof"
       ],
-      "testedValues": [],
+      "testedValues": [
+        "evdev",
+        "base",
+        "__not_rules__"
+      ],
       "proofResults": {
-        "parserRoundtripPassed": null,
-        "writerRoundtripPassed": null,
-        "typedValidatorPassed": null,
-        "singleMutationVerified": null,
-        "hyprlandVerifyConfigAttempted": false,
-        "hyprlandVerifyConfigPassed": false,
+        "parserRoundtripPassed": true,
+        "writerRoundtripPassed": true,
+        "typedValidatorPassed": true,
+        "invalidValueRejectedByApp": true,
+        "singleMutationVerified": true,
+        "hyprlandVerifyConfigAttempted": true,
+        "hyprlandVerifyConfigPassed": true,
+        "hyprlandAcceptedInvalidProbe": true,
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled through source-backed XKB validators. Hyprland verify-config accepts unknown tokens for these rows, so app-side source validation is the authoritative invalid-value gate."
     },
     {
       "rowId": "input.numlock_by_default",

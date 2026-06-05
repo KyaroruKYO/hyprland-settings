@@ -27,6 +27,7 @@ pub enum ScalarWriteStatus {
 pub enum ScalarWriteValueKind {
     Boolean,
     FiniteChoice,
+    SourceBacked,
     Number,
     Percent,
     Color,
@@ -77,6 +78,14 @@ pub const REMAINING_105_FINITE_CHOICE_ROWS: &[&str] = &[
     "master.new_on_active",
     "master.orientation",
     "scrolling.direction",
+];
+
+pub const SOURCE_BACKED_INPUT_ROWS: &[&str] = &[
+    "input.kb_model",
+    "input.kb_layout",
+    "input.kb_variant",
+    "input.kb_options",
+    "input.kb_rules",
 ];
 
 const LAYOUT_SELECTION_CHOICES: &[FiniteChoiceOption] = &[
@@ -801,6 +810,31 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "general.col.nogroup_border_active",
         official_setting: "general.col.nogroup_border_active",
         value_kind: ScalarWriteValueKind::Gradient,
+    },
+    SafeWritableRow {
+        row_id: "input.kb_model",
+        official_setting: "input.kb_model",
+        value_kind: ScalarWriteValueKind::SourceBacked,
+    },
+    SafeWritableRow {
+        row_id: "input.kb_layout",
+        official_setting: "input.kb_layout",
+        value_kind: ScalarWriteValueKind::SourceBacked,
+    },
+    SafeWritableRow {
+        row_id: "input.kb_variant",
+        official_setting: "input.kb_variant",
+        value_kind: ScalarWriteValueKind::SourceBacked,
+    },
+    SafeWritableRow {
+        row_id: "input.kb_options",
+        official_setting: "input.kb_options",
+        value_kind: ScalarWriteValueKind::SourceBacked,
+    },
+    SafeWritableRow {
+        row_id: "input.kb_rules",
+        official_setting: "input.kb_rules",
+        value_kind: ScalarWriteValueKind::SourceBacked,
     },
     SafeWritableRow {
         row_id: "input.pointer_sensitivity",
