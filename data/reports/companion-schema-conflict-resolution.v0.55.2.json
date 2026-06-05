@@ -1,0 +1,1108 @@
+{
+  "artifactKind": "companion-schema-conflict-resolution",
+  "schemaVersion": "1.0",
+  "hyprlandVersion": "0.55.2",
+  "sourceConflictReport": "data/reports/companion-schema-conflict-review.v0.55.2.json",
+  "commandShape": "Hyprland --verify-config --config <temp-file>",
+  "counts": {
+    "rows": 12,
+    "migratableRows": 12,
+    "notMigratedRows": 0,
+    "rawValuesTested": 77,
+    "rawValuesAccepted": 40,
+    "rawValuesRejected": 37,
+    "numericBackedRows": 12,
+    "semanticBackedRows": 0,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false
+  },
+  "invariants": {
+    "usedTemporaryConfigsOnly": true,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadUsed": false,
+    "evalUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "general.resize_corner",
+      "officialSetting": "general.resize_corner",
+      "labels": [
+        "disable",
+        "top_left",
+        "top_right",
+        "bottom_right",
+        "bottom_left"
+      ],
+      "numericCandidates": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "semanticCandidates": [
+        "disable",
+        "top_left",
+        "top_right",
+        "bottom_right",
+        "bottom_left"
+      ],
+      "verificationResults": [
+        {
+          "rawValue": "0",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "u/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-cs2s9mhu/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-cs2s9mhu/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-cs2s9mhu/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "1",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "8/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-6a3ll5y8/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-6a3ll5y8/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-6a3ll5y8/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "2",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "l/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-fohlta_l/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-fohlta_l/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-fohlta_l/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "3",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "5/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-h62d6q85/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-h62d6q85/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-h62d6q85/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "4",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "w/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-1a_czqow/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-1a_czqow/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-1a_czqow/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "disable",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "r\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-1tno4_wj/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-1tno4_wj/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-1tno4_wj/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-1tno4_wj/hyprland.conf at line 2: cannot parse \"disable\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "top_left",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-_boag3af/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-_boag3af/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-_boag3af/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-_boag3af/hyprland.conf at line 2: cannot parse \"top_left\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "top_right",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "DEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-itrd7c8m/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-itrd7c8m/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-itrd7c8m/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-itrd7c8m/hyprland.conf at line 2: cannot parse \"top_right\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "bottom_right",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "UG ]: Using config: /tmp/hyprland-settings-conflict-resolution-o7mas8jn/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-o7mas8jn/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-o7mas8jn/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-o7mas8jn/hyprland.conf at line 2: cannot parse \"bottom_right\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "bottom_left",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "BUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-gf75n5jx/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-gf75n5jx/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-gf75n5jx/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-gf75n5jx/hyprland.conf at line 2: cannot parse \"bottom_left\" as an int.\n",
+          "stderrTail": ""
+        }
+      ],
+      "acceptedRawValues": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "rejectedRawValues": [
+        "disable",
+        "top_left",
+        "top_right",
+        "bottom_right",
+        "bottom_left"
+      ],
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "chosenDisplayLabels": [
+        "disable",
+        "top_left",
+        "top_right",
+        "bottom_right",
+        "bottom_left"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "migratable": true,
+      "verificationNotes": "Numeric IDs selected for storage when Hyprland rejects semantic labels."
+    },
+    {
+      "rowId": "input.focus_on_close",
+      "officialSetting": "input.focus_on_close",
+      "labels": [
+        "next",
+        "cursor",
+        "mru"
+      ],
+      "numericCandidates": [
+        "0",
+        "1",
+        "2"
+      ],
+      "semanticCandidates": [
+        "next",
+        "cursor",
+        "mru"
+      ],
+      "verificationResults": [
+        {
+          "rawValue": "0",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "l/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-shafj1el/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-shafj1el/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-shafj1el/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "1",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "m/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-akq_1pcm/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-akq_1pcm/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-akq_1pcm/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "2",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "u/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-75ez3m7u/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-75ez3m7u/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-75ez3m7u/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "next",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": " mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-2sqmn_05/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-2sqmn_05/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-2sqmn_05/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-2sqmn_05/hyprland.conf at line 2: cannot parse \"next\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "cursor",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "gr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-p0gz4en9/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-p0gz4en9/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-p0gz4en9/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-p0gz4en9/hyprland.conf at line 2: cannot parse \"cursor\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "mru",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "r mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-zqln8alo/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-zqln8alo/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-zqln8alo/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-zqln8alo/hyprland.conf at line 2: cannot parse \"mru\" as an int.\n",
+          "stderrTail": ""
+        }
+      ],
+      "acceptedRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "rejectedRawValues": [
+        "next",
+        "cursor",
+        "mru"
+      ],
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "next",
+        "cursor",
+        "mru"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "migratable": true,
+      "verificationNotes": "Numeric IDs selected for storage when Hyprland rejects semantic labels."
+    },
+    {
+      "rowId": "input.float_switch_override_focus",
+      "officialSetting": "input.float_switch_override_focus",
+      "labels": [
+        "Disabled",
+        "Enabled",
+        "Enabled also unfocuses"
+      ],
+      "numericCandidates": [
+        "0",
+        "1",
+        "2"
+      ],
+      "semanticCandidates": [
+        "Disabled",
+        "Enabled",
+        "Enabled also unfocuses",
+        "Enabled (also unfocuses)"
+      ],
+      "verificationResults": [
+        {
+          "rawValue": "0",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "c/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-m3vgtv4c/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-m3vgtv4c/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-m3vgtv4c/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "1",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "d/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-7bknu9wd/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-7bknu9wd/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-7bknu9wd/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "2",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "5/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-9k0lklr5/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-9k0lklr5/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-9k0lklr5/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "Disabled",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-b_o13d0d/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-b_o13d0d/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-b_o13d0d/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-b_o13d0d/hyprland.conf at line 2: cannot parse \"Disabled\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "Enabled",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "r\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-wtprv4pm/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-wtprv4pm/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-wtprv4pm/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-wtprv4pm/hyprland.conf at line 2: cannot parse \"Enabled\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "Enabled also unfocuses",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "g config: /tmp/hyprland-settings-conflict-resolution-5r7d4ga5/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5r7d4ga5/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5r7d4ga5/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-5r7d4ga5/hyprland.conf at line 2: cannot parse \"Enabled also unfocuses\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "Enabled (also unfocuses)",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "config: /tmp/hyprland-settings-conflict-resolution-iy3ik_lz/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-iy3ik_lz/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-iy3ik_lz/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-iy3ik_lz/hyprland.conf at line 2: cannot parse \"Enabled (also unfocuses)\" as an int.\n",
+          "stderrTail": ""
+        }
+      ],
+      "acceptedRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "rejectedRawValues": [
+        "Disabled",
+        "Enabled",
+        "Enabled also unfocuses",
+        "Enabled (also unfocuses)"
+      ],
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "Disabled",
+        "Enabled",
+        "Enabled also unfocuses"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "migratable": true,
+      "verificationNotes": "Numeric IDs selected for storage when Hyprland rejects semantic labels."
+    },
+    {
+      "rowId": "input.off_window_axis_events",
+      "officialSetting": "input.off_window_axis_events",
+      "labels": [
+        "ignore",
+        "send",
+        "clamp",
+        "warp"
+      ],
+      "numericCandidates": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "semanticCandidates": [
+        "ignore",
+        "send",
+        "clamp",
+        "warp"
+      ],
+      "verificationResults": [
+        {
+          "rawValue": "0",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "7/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5evngc_7/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5evngc_7/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5evngc_7/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "1",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "j/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-2von42ij/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-2von42ij/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-2von42ij/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "2",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "9/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-4bub_uo9/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-4bub_uo9/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-4bub_uo9/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "3",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "s/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-dyt564gs/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-dyt564gs/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-dyt564gs/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "ignore",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "gr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-b4yio2ai/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-b4yio2ai/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-b4yio2ai/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-b4yio2ai/hyprland.conf at line 2: cannot parse \"ignore\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "send",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": " mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-nxcnz7xx/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-nxcnz7xx/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-nxcnz7xx/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-nxcnz7xx/hyprland.conf at line 2: cannot parse \"send\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "clamp",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-xy_2r49x/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-xy_2r49x/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-xy_2r49x/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-xy_2r49x/hyprland.conf at line 2: cannot parse \"clamp\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "warp",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": " mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-0q85e9i5/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-0q85e9i5/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-0q85e9i5/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-0q85e9i5/hyprland.conf at line 2: cannot parse \"warp\" as an int.\n",
+          "stderrTail": ""
+        }
+      ],
+      "acceptedRawValues": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "rejectedRawValues": [
+        "ignore",
+        "send",
+        "clamp",
+        "warp"
+      ],
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "chosenDisplayLabels": [
+        "ignore",
+        "send",
+        "clamp",
+        "warp"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "migratable": true,
+      "verificationNotes": "Numeric IDs selected for storage when Hyprland rejects semantic labels."
+    },
+    {
+      "rowId": "input.emulate_discrete_scroll",
+      "officialSetting": "input.emulate_discrete_scroll",
+      "labels": [
+        "disable",
+        "non_standard",
+        "force_all"
+      ],
+      "numericCandidates": [
+        "0",
+        "1",
+        "2"
+      ],
+      "semanticCandidates": [
+        "disable",
+        "non_standard",
+        "force_all"
+      ],
+      "verificationResults": [
+        {
+          "rawValue": "0",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "6/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-f49p4146/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-f49p4146/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-f49p4146/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "1",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "q/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-nmx4fjpq/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-nmx4fjpq/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-nmx4fjpq/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "2",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "_/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-l8fnccm_/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-l8fnccm_/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-l8fnccm_/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "disable",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "r\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-tynyu2uk/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-tynyu2uk/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-tynyu2uk/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-tynyu2uk/hyprland.conf at line 2: cannot parse \"disable\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "non_standard",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "4/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-60orc6h4/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-60orc6h4/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-60orc6h4/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "force_all",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "DEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-ysijelc0/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-ysijelc0/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-ysijelc0/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-ysijelc0/hyprland.conf at line 2: cannot parse \"force_all\" as an int.\n",
+          "stderrTail": ""
+        }
+      ],
+      "acceptedRawValues": [
+        "0",
+        "1",
+        "2",
+        "non_standard"
+      ],
+      "rejectedRawValues": [
+        "disable",
+        "force_all"
+      ],
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "disable",
+        "non_standard",
+        "force_all"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "migratable": true,
+      "verificationNotes": "Numeric IDs selected for storage when Hyprland rejects semantic labels."
+    },
+    {
+      "rowId": "input.touchpad.drag_lock",
+      "officialSetting": "input.touchpad.drag_lock",
+      "labels": [
+        "Disabled",
+        "Enabled with timeout",
+        "Sticky"
+      ],
+      "numericCandidates": [
+        "0",
+        "1",
+        "2"
+      ],
+      "semanticCandidates": [
+        "Disabled",
+        "Enabled with timeout",
+        "Sticky"
+      ],
+      "verificationResults": [
+        {
+          "rawValue": "0",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "m/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-lilnst5m/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-lilnst5m/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-lilnst5m/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "1",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "q/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-odlg0g1q/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-odlg0g1q/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-odlg0g1q/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "2",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "0/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-b7m80ic0/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-b7m80ic0/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-b7m80ic0/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "Disabled",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-1lctteht/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-1lctteht/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-1lctteht/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-1lctteht/hyprland.conf at line 2: cannot parse \"Disabled\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "Enabled with timeout",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "ing config: /tmp/hyprland-settings-conflict-resolution-73xls0aa/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-73xls0aa/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-73xls0aa/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-73xls0aa/hyprland.conf at line 2: cannot parse \"Enabled with timeout\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "Sticky",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "gr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-g_0vjezb/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-g_0vjezb/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-g_0vjezb/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-g_0vjezb/hyprland.conf at line 2: cannot parse \"Sticky\" as an int.\n",
+          "stderrTail": ""
+        }
+      ],
+      "acceptedRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "rejectedRawValues": [
+        "Disabled",
+        "Enabled with timeout",
+        "Sticky"
+      ],
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "Disabled",
+        "Enabled with timeout",
+        "Sticky"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "migratable": true,
+      "verificationNotes": "Numeric IDs selected for storage when Hyprland rejects semantic labels."
+    },
+    {
+      "rowId": "input.touchpad.drag_3fg",
+      "officialSetting": "input.touchpad.drag_3fg",
+      "labels": [
+        "disable",
+        "3_finger",
+        "4_finger"
+      ],
+      "numericCandidates": [
+        "0",
+        "1",
+        "2"
+      ],
+      "semanticCandidates": [
+        "disable",
+        "3_finger",
+        "4_finger"
+      ],
+      "verificationResults": [
+        {
+          "rawValue": "0",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "u/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-lbnwcmzu/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-lbnwcmzu/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-lbnwcmzu/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "1",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "g/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5_px9hfg/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5_px9hfg/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5_px9hfg/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "2",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "v/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-o_tc2dkv/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-o_tc2dkv/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-o_tc2dkv/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "disable",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "r\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-gq07v3xl/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-gq07v3xl/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-gq07v3xl/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-gq07v3xl/hyprland.conf at line 2: cannot parse \"disable\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "3_finger",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-_ijia1rl/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-_ijia1rl/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-_ijia1rl/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-_ijia1rl/hyprland.conf at line 2: cannot parse \"3_finger\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "4_finger",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-a7rll4c7/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-a7rll4c7/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-a7rll4c7/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-a7rll4c7/hyprland.conf at line 2: cannot parse \"4_finger\" as an int.\n",
+          "stderrTail": ""
+        }
+      ],
+      "acceptedRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "rejectedRawValues": [
+        "disable",
+        "3_finger",
+        "4_finger"
+      ],
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "disable",
+        "3_finger",
+        "4_finger"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "migratable": true,
+      "verificationNotes": "Numeric IDs selected for storage when Hyprland rejects semantic labels."
+    },
+    {
+      "rowId": "input.virtualkeyboard.share_states",
+      "officialSetting": "input.virtualkeyboard.share_states",
+      "labels": [
+        "disable",
+        "enable",
+        "only_non_ime"
+      ],
+      "numericCandidates": [
+        "0",
+        "1",
+        "2"
+      ],
+      "semanticCandidates": [
+        "disable",
+        "enable",
+        "only_non_ime"
+      ],
+      "verificationResults": [
+        {
+          "rawValue": "0",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "w/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-7i8wmeww/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-7i8wmeww/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-7i8wmeww/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "1",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "j/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-g7tlncjj/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-g7tlncjj/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-g7tlncjj/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "2",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "z/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-ka5u1itz/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-ka5u1itz/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-ka5u1itz/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "disable",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "r\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-0_z9weqd/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-0_z9weqd/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-0_z9weqd/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-0_z9weqd/hyprland.conf at line 2: cannot parse \"disable\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "enable",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "gr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-o52rglgg/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-o52rglgg/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-o52rglgg/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-o52rglgg/hyprland.conf at line 2: cannot parse \"enable\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "only_non_ime",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "z/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-92zqiw1z/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-92zqiw1z/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-92zqiw1z/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        }
+      ],
+      "acceptedRawValues": [
+        "0",
+        "1",
+        "2",
+        "only_non_ime"
+      ],
+      "rejectedRawValues": [
+        "disable",
+        "enable"
+      ],
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "disable",
+        "enable",
+        "only_non_ime"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "migratable": true,
+      "verificationNotes": "Numeric IDs selected for storage when Hyprland rejects semantic labels."
+    },
+    {
+      "rowId": "group.drag_into_group",
+      "officialSetting": "group.drag_into_group",
+      "labels": [
+        "disabled",
+        "enabled",
+        "only when dragging into the groupbar"
+      ],
+      "numericCandidates": [
+        "0",
+        "1",
+        "2"
+      ],
+      "semanticCandidates": [
+        "disabled",
+        "enabled",
+        "only when dragging into the groupbar"
+      ],
+      "verificationResults": [
+        {
+          "rawValue": "0",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "z/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-cynubrtz/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-cynubrtz/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-cynubrtz/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "1",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "f/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-_z4qgrgf/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-_z4qgrgf/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-_z4qgrgf/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "2",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "j/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-st9crcpj/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-st9crcpj/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-st9crcpj/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "disabled",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5t1zy1yg/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5t1zy1yg/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5t1zy1yg/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-5t1zy1yg/hyprland.conf at line 2: cannot parse \"disabled\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "enabled",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "r\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-eb19dhzx/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-eb19dhzx/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-eb19dhzx/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-eb19dhzx/hyprland.conf at line 2: cannot parse \"enabled\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "only when dragging into the groupbar",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "_/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-hp27bea_/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-hp27bea_/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-hp27bea_/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        }
+      ],
+      "acceptedRawValues": [
+        "0",
+        "1",
+        "2",
+        "only when dragging into the groupbar"
+      ],
+      "rejectedRawValues": [
+        "disabled",
+        "enabled"
+      ],
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "disabled",
+        "enabled",
+        "only when dragging into the groupbar"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "migratable": true,
+      "verificationNotes": "Numeric IDs selected for storage when Hyprland rejects semantic labels."
+    },
+    {
+      "rowId": "dwindle.force_split",
+      "officialSetting": "dwindle.force_split",
+      "labels": [
+        "Follow mouse",
+        "Left / Top",
+        "Right / Bottom"
+      ],
+      "numericCandidates": [
+        "0",
+        "1",
+        "2"
+      ],
+      "semanticCandidates": [
+        "Follow mouse",
+        "Left / Top",
+        "Right / Bottom"
+      ],
+      "verificationResults": [
+        {
+          "rawValue": "0",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "5/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-hhmnlh75/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-hhmnlh75/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-hhmnlh75/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "1",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "e/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-lcsru1be/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-lcsru1be/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-lcsru1be/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "2",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "c/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-2wtbm9nc/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-2wtbm9nc/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-2wtbm9nc/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "Follow mouse",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "UG ]: Using config: /tmp/hyprland-settings-conflict-resolution-fu754asn/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-fu754asn/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-fu754asn/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-fu754asn/hyprland.conf at line 2: cannot parse \"Follow mouse\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "Left / Top",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "EBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-dpp0i8oh/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-dpp0i8oh/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-dpp0i8oh/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-dpp0i8oh/hyprland.conf at line 2: cannot parse \"Left / Top\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "Right / Bottom",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": " ]: Using config: /tmp/hyprland-settings-conflict-resolution-g71b8xnr/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-g71b8xnr/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-g71b8xnr/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-g71b8xnr/hyprland.conf at line 2: cannot parse \"Right / Bottom\" as an int.\n",
+          "stderrTail": ""
+        }
+      ],
+      "acceptedRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "rejectedRawValues": [
+        "Follow mouse",
+        "Left / Top",
+        "Right / Bottom"
+      ],
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "Follow mouse",
+        "Left / Top",
+        "Right / Bottom"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "migratable": true,
+      "verificationNotes": "Numeric IDs selected for storage when Hyprland rejects semantic labels."
+    },
+    {
+      "rowId": "dwindle.split_bias",
+      "officialSetting": "dwindle.split_bias",
+      "labels": [
+        "directional",
+        "current"
+      ],
+      "numericCandidates": [
+        "0",
+        "1"
+      ],
+      "semanticCandidates": [
+        "directional",
+        "current"
+      ],
+      "verificationResults": [
+        {
+          "rawValue": "0",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "w/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-sw3raypw/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-sw3raypw/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-sw3raypw/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "1",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "r/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-nyf5g4yr/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-nyf5g4yr/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-nyf5g4yr/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "directional",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "BUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-zp1w1kuw/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-zp1w1kuw/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-zp1w1kuw/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-zp1w1kuw/hyprland.conf at line 2: cannot parse \"directional\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "current",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "r\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5y0ukeng/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5y0ukeng/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-5y0ukeng/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-5y0ukeng/hyprland.conf at line 2: cannot parse \"current\" as an int.\n",
+          "stderrTail": ""
+        }
+      ],
+      "acceptedRawValues": [
+        "0",
+        "1"
+      ],
+      "rejectedRawValues": [
+        "directional",
+        "current"
+      ],
+      "chosenRawValues": [
+        "0",
+        "1"
+      ],
+      "chosenDisplayLabels": [
+        "directional",
+        "current"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "migratable": true,
+      "verificationNotes": "Numeric IDs selected for storage when Hyprland rejects semantic labels."
+    },
+    {
+      "rowId": "scrolling.focus_fit_method",
+      "officialSetting": "scrolling.focus_fit_method",
+      "labels": [
+        "center",
+        "fit"
+      ],
+      "numericCandidates": [
+        "0",
+        "1"
+      ],
+      "semanticCandidates": [
+        "center",
+        "fit",
+        "Center",
+        "Fit"
+      ],
+      "verificationResults": [
+        {
+          "rawValue": "0",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "v/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-t6uux62v/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-t6uux62v/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-t6uux62v/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "1",
+          "passed": true,
+          "exitStatus": 0,
+          "stdoutTail": "1/hyprland.conf'\nDEBUG ]: [cfg] Config is either explicit or special.\nDEBUG ]: [cfg] Config is NOT lua, loading regular mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-f526h7i1/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-f526h7i1/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-f526h7i1/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "center",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "gr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-wimzs0_6/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-wimzs0_6/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-wimzs0_6/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-wimzs0_6/hyprland.conf at line 2: cannot parse \"center\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "fit",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "r mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-w0klks4b/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-w0klks4b/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-w0klks4b/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-w0klks4b/hyprland.conf at line 2: cannot parse \"fit\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "Center",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "gr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-d4hpbub6/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-d4hpbub6/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-d4hpbub6/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-d4hpbub6/hyprland.conf at line 2: cannot parse \"Center\" as an int.\n",
+          "stderrTail": ""
+        },
+        {
+          "rawValue": "Fit",
+          "passed": false,
+          "exitStatus": 1,
+          "stdoutTail": "r mgr\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-k1gio08z/hyprland.conf\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-k1gio08z/hyprland.conf\nDEBUG ]: Disabling stdout logs! Check the log for further logs.\nDEBUG ]: Using config: /tmp/hyprland-settings-conflict-resolution-k1gio08z/hyprland.conf\n\n\n======== Config parsing result:\n\nConfig error in file /tmp/hyprland-settings-conflict-resolution-k1gio08z/hyprland.conf at line 2: cannot parse \"Fit\" as an int.\n",
+          "stderrTail": ""
+        }
+      ],
+      "acceptedRawValues": [
+        "0",
+        "1"
+      ],
+      "rejectedRawValues": [
+        "center",
+        "fit",
+        "Center",
+        "Fit"
+      ],
+      "chosenRawValues": [
+        "0",
+        "1"
+      ],
+      "chosenDisplayLabels": [
+        "center",
+        "fit"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "migratable": true,
+      "verificationNotes": "Numeric IDs selected for storage when Hyprland rejects semantic labels."
+    }
+  ]
+}
