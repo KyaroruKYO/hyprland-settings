@@ -1,7 +1,10 @@
+use std::collections::BTreeMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 
 use anyhow::{Context, Result};
+
+use crate::config_parser::ParsedConfigLine;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum XkbRulesSection {
@@ -16,6 +19,13 @@ pub struct XkbSourceValue {
     pub raw_value: String,
     pub label: String,
     pub parent_layout: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct MonitorSourceValue {
+    pub raw_value: String,
+    pub label: String,
+    pub source_line: Option<usize>,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
@@ -87,6 +97,43 @@ pub fn read_system_xkb_rules() -> Result<XkbRulesValues> {
     }
 
     anyhow::bail!("no supported XKB rules .lst file found")
+}
+
+pub fn monitor_source_values_from_records(records: &[ParsedConfigLine]) -> Vec<MonitorSourceValue> {
+    let mut values = BTreeMap::<String, MonitorSourceValue>::new();
+    for record in records {
+        if record.normalized_setting_id.as_deref() != Some("hl.monitor") {
+            continue;
+        }
+        let Some(raw_value) = &record.raw_value else {
+            continue;
+        };
+        let Some(name) = parse_monitor_name(raw_value) else {
+            continue;
+        };
+        values
+            .entry(name.to_string())
+            .or_insert(MonitorSourceValue {
+                raw_value: name.to_string(),
+                label: name.to_string(),
+                source_line: Some(record.line_number),
+            });
+    }
+    values.into_values().collect()
+}
+
+fn parse_monitor_name(raw_value: &str) -> Option<&str> {
+    let name = raw_value.split(',').next()?.trim();
+    if name.is_empty()
+        || name.contains('\n')
+        || name.contains('\r')
+        || name.contains('$')
+        || name.contains('`')
+        || name.contains(';')
+    {
+        return None;
+    }
+    Some(name)
 }
 
 pub fn system_xkb_rules_candidates() -> Vec<PathBuf> {

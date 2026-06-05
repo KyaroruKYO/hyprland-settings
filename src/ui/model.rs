@@ -8,7 +8,7 @@ use crate::current_config::{
 use crate::export::{ExportBundle, InventoryEntry, TabEntry};
 use crate::validation::ValidationSummary;
 use crate::write_flow::{
-    edit_projection_for_setting, review_block_reason, write_flow_config_setting,
+    edit_projection_for_setting_with_config, review_block_reason, write_flow_config_setting,
     SettingEditProjection,
 };
 
@@ -231,7 +231,11 @@ impl UiSetting {
                 &entry.default_config_presence,
                 &current_value,
             ),
-            edit: edit_projection_for_setting(&entry.row_id, &edit_current_value),
+            edit: edit_projection_for_setting_with_config(
+                &entry.row_id,
+                &edit_current_value,
+                current_config,
+            ),
         }
     }
 

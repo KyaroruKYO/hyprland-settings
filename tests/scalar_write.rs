@@ -48,6 +48,9 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
             _ => "us",
         };
     }
+    if row.value_kind == ScalarWriteValueKind::MonitorName {
+        return "";
+    }
     if row.value_kind == ScalarWriteValueKind::Color {
         return "rgba(ffffffff)";
     }
@@ -100,6 +103,9 @@ fn existing_value_for(row: &SafeWritableRow) -> &'static str {
             "input.kb_rules" => "base",
             _ => "us",
         };
+    }
+    if row.value_kind == ScalarWriteValueKind::MonitorName {
+        return "";
     }
     if row.value_kind == ScalarWriteValueKind::Color {
         return "rgba(000000ff)";

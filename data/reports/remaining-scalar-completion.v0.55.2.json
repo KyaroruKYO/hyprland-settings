@@ -10,29 +10,28 @@
   ],
   "counts": {
     "startingWritableRows": 94,
-    "finalWritableRows": 249,
+    "finalWritableRows": 251,
     "startingBlockedRows": 247,
-    "finalBlockedRows": 92,
-    "enabledRows": 155,
+    "finalBlockedRows": 90,
+    "enabledRows": 157,
     "enabledByBatch": {
       "batch-b-likely-safe-numerics": 33,
       "batch-c-likely-safe-enums": 5,
-      "batch-d-input-behavior": 72,
+      "batch-d-input-behavior": 74,
       "batch-e-window-layout-behavior": 45
     },
     "remainingBlockedByBatch": {
       "batch-g-session-runtime-sensitive": 16,
-      "batch-d-input-behavior": 2,
       "batch-c-likely-safe-enums": 2,
       "high-risk": 72
     },
     "remainingBlockedByReason": {
       "session/runtime-sensitive setting requires dedicated user approval and recovery policy before persistent writes are enabled": 15,
-      "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes": 3,
+      "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes": 1,
       "official-source-research-needed": 2,
       "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.": 72
     },
-    "hyprlandVerifyConfigPassed": 151,
+    "hyprlandVerifyConfigPassed": 155,
     "hyprlandVerifyConfigFailed": 0,
     "activeConfigModified": false,
     "activeRuntimeModified": false
@@ -2131,25 +2130,37 @@
       "batch": "batch-d-input-behavior",
       "subgroup": "dropdown",
       "researchEvidence": [
-        "manual-review candidate report",
-        "not selected for primitive temp-config promotion in this sprint"
+        "official Hyprland Variables documentation: output fields bind touch/tablet devices to monitor names",
+        "current-config monitor declarations provide non-mutating monitor-name source values",
+        "temp Hyprland --verify-config accepted empty/default and DP-1 values",
+        "Hyprland --verify-config also accepts arbitrary monitor strings, so app-side monitor-name validation is required"
       ],
-      "testedValues": [],
+      "testedValues": [
+        "",
+        "DP-1",
+        "__invalid_monitor__"
+      ],
       "proofResults": {
-        "parserRoundtripPassed": null,
-        "writerRoundtripPassed": null,
-        "typedValidatorPassed": null,
-        "singleMutationVerified": null,
-        "hyprlandVerifyConfigAttempted": false,
-        "hyprlandVerifyConfigPassed": false,
+        "parserRoundtripPassed": true,
+        "writerRoundtripPassed": true,
+        "typedValidatorPassed": true,
+        "singleMutationVerified": true,
+        "hyprlandVerifyConfigAttempted": true,
+        "hyprlandVerifyConfigPassed": true,
+        "hyprlandVerifyConfigPassedValues": [
+          "",
+          "DP-1"
+        ],
+        "invalidRejectedBeforeHyprlandVerify": true,
+        "hyprlandVerifyConfigAlsoAcceptedInvalidProbe": true,
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "monitor output setting requires a non-mutating monitor-name enumerator and app-side validator; Hyprland --verify-config accepts arbitrary strings so temp-config proof alone is not enough",
-      "nextRequiredProof": "Implement a monitor-name value source, expose default/auto plus known monitor names, reject unknown monitor names in the app, then rerun fixture writer/reread and temp-config proof.",
-      "notes": "Remains blocked; official docs define this as a monitor binding string, not a finite enum."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled as a context-aware monitor-name dropdown. The app rejects unknown monitor names even though Hyprland verify-config accepts arbitrary strings."
     },
     {
       "rowId": "input.touchdevice.enabled",
@@ -2282,25 +2293,37 @@
       "batch": "batch-d-input-behavior",
       "subgroup": "dropdown",
       "researchEvidence": [
-        "manual-review candidate report",
-        "not selected for primitive temp-config promotion in this sprint"
+        "official Hyprland Variables documentation: output fields bind touch/tablet devices to monitor names",
+        "current-config monitor declarations provide non-mutating monitor-name source values",
+        "temp Hyprland --verify-config accepted empty/default and DP-1 values",
+        "Hyprland --verify-config also accepts arbitrary monitor strings, so app-side monitor-name validation is required"
       ],
-      "testedValues": [],
+      "testedValues": [
+        "",
+        "DP-1",
+        "__invalid_monitor__"
+      ],
       "proofResults": {
-        "parserRoundtripPassed": null,
-        "writerRoundtripPassed": null,
-        "typedValidatorPassed": null,
-        "singleMutationVerified": null,
-        "hyprlandVerifyConfigAttempted": false,
-        "hyprlandVerifyConfigPassed": false,
+        "parserRoundtripPassed": true,
+        "writerRoundtripPassed": true,
+        "typedValidatorPassed": true,
+        "singleMutationVerified": true,
+        "hyprlandVerifyConfigAttempted": true,
+        "hyprlandVerifyConfigPassed": true,
+        "hyprlandVerifyConfigPassedValues": [
+          "",
+          "DP-1"
+        ],
+        "invalidRejectedBeforeHyprlandVerify": true,
+        "hyprlandVerifyConfigAlsoAcceptedInvalidProbe": true,
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "monitor output setting requires a non-mutating monitor-name enumerator and app-side validator; Hyprland --verify-config accepts arbitrary strings so temp-config proof alone is not enough",
-      "nextRequiredProof": "Implement a monitor-name value source, expose default/auto plus known monitor names, reject unknown monitor names in the app, then rerun fixture writer/reread and temp-config proof.",
-      "notes": "Remains blocked; official docs define this as a monitor binding string, not a finite enum."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled as a context-aware monitor-name dropdown. The app rejects unknown monitor names even though Hyprland verify-config accepts arbitrary strings."
     },
     {
       "rowId": "input.tablet.absolute_region_position",

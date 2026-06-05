@@ -1,5 +1,6 @@
 use std::path::PathBuf;
 
+use crate::current_config::CurrentConfigSnapshot;
 use crate::current_config::CurrentValueProjection;
 use crate::source_values::read_system_xkb_rules;
 use crate::value::{
@@ -44,10 +45,41 @@ pub struct SourceLineRef {
     pub raw_line: String,
 }
 
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct PendingChangeValueSources {
+    pub monitor_names: Vec<String>,
+}
+
+impl PendingChangeValueSources {
+    pub fn from_current_config(current_config: &CurrentConfigSnapshot) -> Self {
+        Self {
+            monitor_names: current_config
+                .monitor_source_values()
+                .into_iter()
+                .map(|value| value.raw_value)
+                .collect(),
+        }
+    }
+}
+
 pub fn stage_pending_change(
     setting_id: &str,
     current_value: &CurrentValueProjection,
     proposed_value: impl Into<String>,
+) -> PendingChange {
+    stage_pending_change_with_sources(
+        setting_id,
+        current_value,
+        proposed_value,
+        &PendingChangeValueSources::default(),
+    )
+}
+
+pub fn stage_pending_change_with_sources(
+    setting_id: &str,
+    current_value: &CurrentValueProjection,
+    proposed_value: impl Into<String>,
+    sources: &PendingChangeValueSources,
 ) -> PendingChange {
     let proposed_value = proposed_value.into();
     let source = current_value
@@ -75,7 +107,7 @@ pub fn stage_pending_change(
         };
     }
 
-    let validation = validate_safe_writable_value(setting_id, &proposed_value);
+    let validation = validate_safe_writable_value(setting_id, &proposed_value, sources);
     let non_editable_reason = (validation != PendingChangeValidation::Valid)
         .then(|| "proposed value failed validation".to_string());
 
@@ -96,7 +128,11 @@ fn is_bool_literal(value: &str) -> bool {
     )
 }
 
-fn validate_safe_writable_value(setting_id: &str, value: &str) -> PendingChangeValidation {
+fn validate_safe_writable_value(
+    setting_id: &str,
+    value: &str,
+    sources: &PendingChangeValueSources,
+) -> PendingChangeValidation {
     match safe_writable_value_kind(setting_id) {
         Some(ScalarWriteValueKind::Boolean) => {
             if is_bool_literal(value) {
@@ -113,6 +149,7 @@ fn validate_safe_writable_value(setting_id: &str, value: &str) -> PendingChangeV
         Some(ScalarWriteValueKind::SourceBacked) => {
             validate_source_backed_setting(setting_id, value)
         }
+        Some(ScalarWriteValueKind::MonitorName) => validate_monitor_name_setting(value, sources),
         Some(ScalarWriteValueKind::Number) => validate_number_setting(setting_id, value),
         Some(ScalarWriteValueKind::Percent) => validate_percent_setting(setting_id, value),
         Some(ScalarWriteValueKind::Color) => validate_color_literal(value),
@@ -148,6 +185,29 @@ fn validate_source_backed_setting(setting_id: &str, value: &str) -> PendingChang
         Err(error) => invalid(&format!(
             "source-backed XKB values are unavailable: {error}"
         )),
+    }
+}
+
+fn validate_monitor_name_setting(
+    value: &str,
+    sources: &PendingChangeValueSources,
+) -> PendingChangeValidation {
+    let trimmed = value.trim();
+    if trimmed.contains('\n')
+        || trimmed.contains('\r')
+        || trimmed.contains('$')
+        || trimmed.contains('`')
+        || trimmed.contains(';')
+    {
+        return invalid("monitor output writes require a line-safe monitor name");
+    }
+    if trimmed.is_empty() {
+        return PendingChangeValidation::Valid;
+    }
+    if sources.monitor_names.iter().any(|name| name == trimmed) {
+        PendingChangeValidation::Valid
+    } else {
+        invalid("monitor output writes require a monitor declared in the current config")
     }
 }
 

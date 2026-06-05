@@ -8,8 +8,8 @@
     "totalScalarRows": 341,
     "readableRows": 341,
     "blockedReadRows": 0,
-    "writableRows": 249,
-    "blockedWriteRows": 92
+    "writableRows": 251,
+    "blockedWriteRows": 90
   },
   "rows": [
     {
@@ -1979,18 +1979,18 @@
       "officialSetting": "input.touchdevice.output",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "manual-review-needed",
-      "writeBlocker": "manual safety review required for risk class: advanced",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "none",
       "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Readable scalar; write remains blocked because valid values are monitor names. Hyprland --verify-config accepts arbitrary strings, so a non-mutating monitor-name enumerator and app-side validator are required before safe writes."
+      "notes": "Monitor output writes are enabled through a context-aware monitor-name validator. Empty/default is accepted; non-empty values must match monitor names parsed from current config monitor declarations. Hyprland verify-config accepts arbitrary monitor strings, so app-side source validation is required."
     },
     {
       "rowId": "input.touchdevice.enabled",
@@ -2069,18 +2069,18 @@
       "officialSetting": "input.tablet.output",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "manual-review-needed",
-      "writeBlocker": "manual safety review required for risk class: advanced",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "none",
       "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Readable scalar; write remains blocked because valid values are monitor names. Hyprland --verify-config accepts arbitrary strings, so a non-mutating monitor-name enumerator and app-side validator are required before safe writes."
+      "notes": "Monitor output writes are enabled through a context-aware monitor-name validator. Empty/default is accepted; non-empty values must match monitor names parsed from current config monitor declarations. Hyprland verify-config accepts arbitrary monitor strings, so app-side source validation is required."
     },
     {
       "rowId": "input.tablet.region_position",

@@ -1185,10 +1185,10 @@
     {
       "rowId": "input.touchdevice.output",
       "officialSetting": "input.touchdevice.output",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-d-input-behavior",
-      "proofStrategy": "monitor-name-dynamic-source-needed",
+      "proofStrategy": "current-config-monitor-name-source-plus-temp-config-proof",
       "candidateValidValues": [
         "",
         "DP-1"
@@ -1198,8 +1198,7 @@
       ],
       "acceptedValidValues": [
         "",
-        "DP-1",
-        "__invalid_monitor__"
+        "DP-1"
       ],
       "rejectedValidValues": [],
       "invalidValuesRejectedOrSkipped": 1,
@@ -1245,18 +1244,21 @@
       ],
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "sourceBackedDiscoveryNeeded": true,
+      "sourceBackedDiscoveryNeeded": false,
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
-      "technicalTempConfigConclusion": "hyprland-accepts-arbitrary-monitor-name-strings-app-enumerator-needed"
+      "technicalTempConfigConclusion": "configured-monitor-source-values-pass-invalid-must-be-app-rejected",
+      "invalidValuesRejectedByApp": [
+        "__invalid_monitor__"
+      ]
     },
     {
       "rowId": "input.tablet.output",
       "officialSetting": "input.tablet.output",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-d-input-behavior",
-      "proofStrategy": "monitor-name-dynamic-source-needed",
+      "proofStrategy": "current-config-monitor-name-source-plus-temp-config-proof",
       "candidateValidValues": [
         "",
         "DP-1"
@@ -1266,8 +1268,7 @@
       ],
       "acceptedValidValues": [
         "",
-        "DP-1",
-        "__invalid_monitor__"
+        "DP-1"
       ],
       "rejectedValidValues": [],
       "invalidValuesRejectedOrSkipped": 1,
@@ -1313,10 +1314,13 @@
       ],
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "sourceBackedDiscoveryNeeded": true,
+      "sourceBackedDiscoveryNeeded": false,
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
-      "technicalTempConfigConclusion": "hyprland-accepts-arbitrary-monitor-name-strings-app-enumerator-needed"
+      "technicalTempConfigConclusion": "configured-monitor-source-values-pass-invalid-must-be-app-rejected",
+      "invalidValuesRejectedByApp": [
+        "__invalid_monitor__"
+      ]
     },
     {
       "rowId": "misc.vrr",

@@ -3,11 +3,12 @@ use std::path::Path;
 use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueProjection};
 use hyprland_settings::pending_change::{
-    stage_pending_change, PendingChangeValidation, ACTIVE_PENDING_CHANGE_SETTING,
+    stage_pending_change, stage_pending_change_with_sources, PendingChangeValidation,
+    PendingChangeValueSources, ACTIVE_PENDING_CHANGE_SETTING,
 };
 use hyprland_settings::write_classification::{
-    finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, REMAINING_105_FINITE_CHOICE_ROWS,
-    SOURCE_BACKED_INPUT_ROWS,
+    finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, MONITOR_OUTPUT_ROWS,
+    REMAINING_105_FINITE_CHOICE_ROWS, SOURCE_BACKED_INPUT_ROWS,
 };
 
 fn current_value_for(setting_id: &str, config: &str) -> CurrentValueProjection {
@@ -118,6 +119,48 @@ fn source_backed_input_rows_reject_unknown_or_multiline_values() {
             "{row_id} should reject {proposed:?}"
         );
         assert!(!change.can_be_applied(), "{row_id} should not apply");
+    }
+}
+
+#[test]
+fn monitor_output_rows_accept_empty_or_config_declared_monitor_names_only() {
+    let current = CurrentValueProjection::not_configured();
+    let sources = PendingChangeValueSources {
+        monitor_names: vec!["DP-1".to_string(), "HDMI-A-1".to_string()],
+    };
+
+    for row_id in MONITOR_OUTPUT_ROWS {
+        let empty = stage_pending_change(row_id, &current, "");
+        assert_eq!(empty.validation, PendingChangeValidation::Valid);
+
+        let known = stage_pending_change_with_sources(row_id, &current, "DP-1", &sources);
+        assert_eq!(
+            known.validation,
+            PendingChangeValidation::Valid,
+            "{row_id} should accept a monitor from current config"
+        );
+
+        let unknown =
+            stage_pending_change_with_sources(row_id, &current, "__invalid_monitor__", &sources);
+        assert!(
+            matches!(unknown.validation, PendingChangeValidation::Invalid { .. }),
+            "{row_id} should reject unknown monitor names"
+        );
+
+        let no_context = stage_pending_change(row_id, &current, "DP-1");
+        assert!(
+            matches!(
+                no_context.validation,
+                PendingChangeValidation::Invalid { .. }
+            ),
+            "{row_id} should not accept non-empty monitor names without source context"
+        );
+
+        let multiline = stage_pending_change_with_sources(row_id, &current, "DP-1\nexec", &sources);
+        assert!(matches!(
+            multiline.validation,
+            PendingChangeValidation::Invalid { .. }
+        ));
     }
 }
 

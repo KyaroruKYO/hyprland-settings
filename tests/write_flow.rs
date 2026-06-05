@@ -12,12 +12,12 @@ use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueSourceStatus};
 use hyprland_settings::pending_change::ACTIVE_PENDING_CHANGE_SETTING;
 use hyprland_settings::write_classification::{
-    finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, REMAINING_105_FINITE_CHOICE_ROWS,
-    SAFE_WRITABLE_ROWS, SOURCE_BACKED_INPUT_ROWS,
+    finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, MONITOR_OUTPUT_ROWS,
+    REMAINING_105_FINITE_CHOICE_ROWS, SAFE_WRITABLE_ROWS, SOURCE_BACKED_INPUT_ROWS,
 };
 use hyprland_settings::write_flow::{
     apply_setting_change_with_backup_manager, edit_projection_for_setting,
-    pending_projection_for_value,
+    edit_projection_for_setting_with_config, pending_projection_for_value,
 };
 
 fn temp_root(name: &str) -> Result<PathBuf> {
@@ -102,6 +102,34 @@ fn source_backed_input_rows_project_as_dropdowns() {
                 .validation_label,
             "valid",
             "{row_id} should stage a known source-backed value"
+        );
+    }
+}
+
+#[test]
+fn monitor_output_rows_project_configured_monitors_as_dropdowns() {
+    let source = PathBuf::from("/tmp/monitor-output-ui.conf");
+    let snapshot = snapshot_for(
+        &source,
+        "monitor = DP-1, preferred, auto, 1\nmonitor = HDMI-A-1, preferred, auto, 1\n",
+    );
+    let current = snapshot.value_for("input.touchdevice.output");
+
+    for row_id in MONITOR_OUTPUT_ROWS {
+        let projection = edit_projection_for_setting_with_config(row_id, &current, &snapshot);
+
+        assert!(projection.editable, "{row_id} should be editable");
+        assert_eq!(projection.editor_kind, "dropdown");
+        assert_eq!(projection.choices[0].raw_value, "");
+        assert_eq!(projection.choices[0].label, "Default / auto");
+        assert!(projection
+            .choices
+            .iter()
+            .any(|choice| choice.raw_value == "DP-1"));
+        assert_eq!(projection.proposed_value.as_deref(), Some("DP-1"));
+        assert_eq!(
+            projection.pending.as_ref().unwrap().validation_label,
+            "valid"
         );
     }
 }
@@ -212,6 +240,39 @@ fn apply_flow_writes_fixture_and_reports_backup_and_rollback() -> Result<()> {
     assert_eq!(
         fs::read_to_string(&outcome.target_path)?,
         "general:snap:enabled = true\n"
+    );
+
+    fs::remove_dir_all(root)?;
+    Ok(())
+}
+
+#[test]
+fn apply_flow_writes_monitor_output_from_declared_monitor_fixture() -> Result<()> {
+    let root = temp_root("monitor-output")?;
+    let source = root.join("hyprland.conf");
+    fs::write(
+        &source,
+        "monitor = DP-1, preferred, auto, 1\ninput:touchdevice:output = \n",
+    )?;
+    let contents = fs::read_to_string(&source)?;
+    let snapshot = snapshot_for(&source, &contents);
+    let backup_manager = BackupManager::new(root.join("backups"));
+
+    let outcome = apply_setting_change_with_backup_manager(
+        known_ids(),
+        &discovery_for(source.clone()),
+        &snapshot,
+        "input.touchdevice.output",
+        "DP-1",
+        &backup_manager,
+    )
+    .map_err(|failure| anyhow::anyhow!("{failure:?}"))?;
+
+    assert_eq!(outcome.setting_id, "input.touchdevice.output");
+    assert_eq!(outcome.verified_value.as_deref(), Some("DP-1"));
+    assert_eq!(
+        fs::read_to_string(&outcome.target_path)?,
+        "monitor = DP-1, preferred, auto, 1\ninput:touchdevice:output = DP-1\n"
     );
 
     fs::remove_dir_all(root)?;

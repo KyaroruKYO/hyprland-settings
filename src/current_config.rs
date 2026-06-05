@@ -5,6 +5,7 @@ use crate::config_discovery::{ConfigDiscovery, ConfigDiscoveryStatus};
 use crate::config_parser::{
     parse_hyprland_config_file, ParseStatus, ParsedConfig, ParsedConfigLine,
 };
+use crate::source_values::{monitor_source_values_from_records, MonitorSourceValue};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CurrentConfigSnapshot {
@@ -166,6 +167,10 @@ impl CurrentConfigSnapshot {
             }
         }
         counts
+    }
+
+    pub fn monitor_source_values(&self) -> Vec<MonitorSourceValue> {
+        monitor_source_values_from_records(&self.structured_records)
     }
 
     pub fn structured_summary(&self) -> String {

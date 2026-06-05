@@ -1,5 +1,9 @@
 use anyhow::Result;
-use hyprland_settings::source_values::{parse_xkb_rules_lst, read_system_xkb_rules};
+use hyprland_settings::config_parser::parse_hyprland_config_text;
+use hyprland_settings::current_config::CurrentConfigSnapshot;
+use hyprland_settings::source_values::{
+    monitor_source_values_from_records, parse_xkb_rules_lst, read_system_xkb_rules,
+};
 
 #[test]
 fn xkb_rules_lst_parser_extracts_source_backed_values() {
@@ -63,4 +67,25 @@ fn system_xkb_rules_are_read_without_mutation() -> Result<()> {
     assert!(rules.has_option("grp:alt_shift_toggle"));
 
     Ok(())
+}
+
+#[test]
+fn monitor_source_values_are_parsed_from_structured_monitor_lines() {
+    let parsed = parse_hyprland_config_text(
+        "/tmp/monitor-source.conf",
+        r#"
+monitor = DP-1, preferred, auto, 1
+monitor = HDMI-A-1, 1920x1080@60, 0x0, 1
+monitor = , preferred, auto, 1
+monitor = DP-1, preferred, auto, 1
+"#,
+    );
+    let snapshot = CurrentConfigSnapshot::from_parsed(parsed.clone());
+    let values = monitor_source_values_from_records(&parsed.records);
+    let snapshot_values = snapshot.monitor_source_values();
+
+    assert_eq!(values.len(), 2);
+    assert_eq!(values[0].raw_value, "DP-1");
+    assert_eq!(values[1].raw_value, "HDMI-A-1");
+    assert_eq!(snapshot_values, values);
 }

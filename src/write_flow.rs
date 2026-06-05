@@ -8,9 +8,12 @@ use crate::config_discovery::{ConfigDiscovery, ConfigDiscoveryStatus};
 use crate::current_config::{
     CurrentConfigSnapshot, CurrentValueProjection, CurrentValueSourceStatus,
 };
-use crate::pending_change::{stage_pending_change, PendingChange, PendingChangeValidation};
+use crate::pending_change::{
+    stage_pending_change, stage_pending_change_with_sources, PendingChange,
+    PendingChangeValidation, PendingChangeValueSources,
+};
 use crate::scalar_write::apply_scalar_write_plan;
-use crate::source_values::{read_system_xkb_rules, XkbSourceValue};
+use crate::source_values::{read_system_xkb_rules, MonitorSourceValue, XkbSourceValue};
 use crate::write_classification::{
     finite_choice_options, is_safe_writable_setting, safe_writable_official_setting,
     safe_writable_value_kind, ScalarWriteValueKind,
@@ -65,6 +68,30 @@ pub fn edit_projection_for_setting(
     setting_id: &str,
     current_value: &CurrentValueProjection,
 ) -> SettingEditProjection {
+    edit_projection_for_setting_with_sources(
+        setting_id,
+        current_value,
+        &PendingChangeValueSources::default(),
+        &[],
+    )
+}
+
+pub fn edit_projection_for_setting_with_config(
+    setting_id: &str,
+    current_value: &CurrentValueProjection,
+    current_config: &CurrentConfigSnapshot,
+) -> SettingEditProjection {
+    let sources = PendingChangeValueSources::from_current_config(current_config);
+    let monitors = current_config.monitor_source_values();
+    edit_projection_for_setting_with_sources(setting_id, current_value, &sources, &monitors)
+}
+
+fn edit_projection_for_setting_with_sources(
+    setting_id: &str,
+    current_value: &CurrentValueProjection,
+    sources: &PendingChangeValueSources,
+    monitors: &[MonitorSourceValue],
+) -> SettingEditProjection {
     if !is_safe_writable_setting(setting_id) {
         return SettingEditProjection {
             setting_id: setting_id.to_string(),
@@ -78,13 +105,18 @@ pub fn edit_projection_for_setting(
     }
 
     let value_kind = safe_writable_value_kind(setting_id);
-    let proposed_value = next_proposed_value(setting_id, current_value);
-    let pending = stage_pending_change(setting_id, current_value, proposed_value.clone());
+    let proposed_value = next_proposed_value(setting_id, current_value, monitors);
+    let pending = stage_pending_change_with_sources(
+        setting_id,
+        current_value,
+        proposed_value.clone(),
+        sources,
+    );
     SettingEditProjection {
         setting_id: setting_id.to_string(),
         editable: true,
         editor_kind: editor_kind_for_value_kind(value_kind).to_string(),
-        choices: finite_choice_edit_options(setting_id),
+        choices: edit_options(setting_id, monitors),
         disabled_reason: None,
         proposed_value: Some(proposed_value),
         pending: Some(pending_projection(&pending, current_value.status)),
@@ -152,7 +184,9 @@ pub fn apply_setting_change_with_backup_manager(
             failures: vec!["NotAllowlisted".to_string()],
         })?;
     let current_value = current_config.value_for(official_setting);
-    let pending_change = stage_pending_change(setting_id, &current_value, proposed_value);
+    let sources = PendingChangeValueSources::from_current_config(current_config);
+    let pending_change =
+        stage_pending_change_with_sources(setting_id, &current_value, proposed_value, &sources);
     match &pending_change.validation {
         PendingChangeValidation::Valid => {}
         PendingChangeValidation::Invalid { reason }
@@ -272,7 +306,11 @@ fn pending_projection(
     }
 }
 
-fn next_proposed_value(setting_id: &str, current_value: &CurrentValueProjection) -> String {
+fn next_proposed_value(
+    setting_id: &str,
+    current_value: &CurrentValueProjection,
+    monitors: &[MonitorSourceValue],
+) -> String {
     match safe_writable_value_kind(setting_id) {
         Some(ScalarWriteValueKind::Boolean) => next_bool_value(current_value),
         Some(ScalarWriteValueKind::FiniteChoice) => {
@@ -281,6 +319,7 @@ fn next_proposed_value(setting_id: &str, current_value: &CurrentValueProjection)
         Some(ScalarWriteValueKind::SourceBacked) => {
             next_source_backed_value(setting_id, current_value)
         }
+        Some(ScalarWriteValueKind::MonitorName) => next_monitor_name_value(current_value, monitors),
         Some(ScalarWriteValueKind::Number) => current_value
             .raw_value
             .clone()
@@ -348,9 +387,9 @@ fn next_proposed_value(setting_id: &str, current_value: &CurrentValueProjection)
 fn editor_kind_for_value_kind(value_kind: Option<ScalarWriteValueKind>) -> &'static str {
     match value_kind {
         Some(ScalarWriteValueKind::Boolean) => "toggle",
-        Some(ScalarWriteValueKind::FiniteChoice) | Some(ScalarWriteValueKind::SourceBacked) => {
-            "dropdown"
-        }
+        Some(ScalarWriteValueKind::FiniteChoice)
+        | Some(ScalarWriteValueKind::SourceBacked)
+        | Some(ScalarWriteValueKind::MonitorName) => "dropdown",
         Some(ScalarWriteValueKind::Number) | Some(ScalarWriteValueKind::Percent) => "number",
         Some(ScalarWriteValueKind::Color) => "color-text",
         Some(ScalarWriteValueKind::Gradient) => "gradient-text",
@@ -366,7 +405,10 @@ fn editor_kind_for_value_kind(value_kind: Option<ScalarWriteValueKind>) -> &'sta
     }
 }
 
-fn finite_choice_edit_options(setting_id: &str) -> Vec<FiniteChoiceEditOption> {
+fn edit_options(setting_id: &str, monitors: &[MonitorSourceValue]) -> Vec<FiniteChoiceEditOption> {
+    if safe_writable_value_kind(setting_id) == Some(ScalarWriteValueKind::MonitorName) {
+        return monitor_name_edit_options(monitors);
+    }
     if let Some(options) = finite_choice_options(setting_id) {
         return options
             .iter()
@@ -378,6 +420,18 @@ fn finite_choice_edit_options(setting_id: &str) -> Vec<FiniteChoiceEditOption> {
     }
 
     source_backed_edit_options(setting_id)
+}
+
+fn monitor_name_edit_options(monitors: &[MonitorSourceValue]) -> Vec<FiniteChoiceEditOption> {
+    let mut options = vec![FiniteChoiceEditOption {
+        raw_value: String::new(),
+        label: "Default / auto".to_string(),
+    }];
+    options.extend(monitors.iter().map(|value| FiniteChoiceEditOption {
+        raw_value: value.raw_value.clone(),
+        label: value.label.clone(),
+    }));
+    options
 }
 
 fn source_backed_edit_options(setting_id: &str) -> Vec<FiniteChoiceEditOption> {
@@ -452,6 +506,28 @@ fn next_source_backed_value(setting_id: &str, current_value: &CurrentValueProjec
         return options[(index + 1) % options.len()].raw_value.clone();
     }
     options[0].raw_value.clone()
+}
+
+fn next_monitor_name_value(
+    current_value: &CurrentValueProjection,
+    monitors: &[MonitorSourceValue],
+) -> String {
+    let current = current_value
+        .raw_value
+        .as_deref()
+        .map(str::trim)
+        .unwrap_or("");
+    if current.is_empty() {
+        return monitors
+            .first()
+            .map(|value| value.raw_value.clone())
+            .unwrap_or_default();
+    }
+    monitors
+        .iter()
+        .find(|value| value.raw_value != current)
+        .map(|value| value.raw_value.clone())
+        .unwrap_or_default()
 }
 
 fn next_bool_value(current_value: &CurrentValueProjection) -> String {

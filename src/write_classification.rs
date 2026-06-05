@@ -28,6 +28,7 @@ pub enum ScalarWriteValueKind {
     Boolean,
     FiniteChoice,
     SourceBacked,
+    MonitorName,
     Number,
     Percent,
     Color,
@@ -88,6 +89,8 @@ pub const SOURCE_BACKED_INPUT_ROWS: &[&str] = &[
     "input.kb_options",
     "input.kb_rules",
 ];
+
+pub const MONITOR_OUTPUT_ROWS: &[&str] = &["input.touchdevice.output", "input.tablet.output"];
 
 const LAYOUT_SELECTION_CHOICES: &[FiniteChoiceOption] = &[
     FiniteChoiceOption {
@@ -1302,6 +1305,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Boolean,
     },
     SafeWritableRow {
+        row_id: "input.touchdevice.output",
+        official_setting: "input.touchdevice.output",
+        value_kind: ScalarWriteValueKind::MonitorName,
+    },
+    SafeWritableRow {
         row_id: "input.virtualkeyboard.share_states",
         official_setting: "input.virtualkeyboard.share_states",
         value_kind: ScalarWriteValueKind::FiniteChoice,
@@ -1325,6 +1333,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         row_id: "input.tablet.relative_input",
         official_setting: "input.tablet.relative_input",
         value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "input.tablet.output",
+        official_setting: "input.tablet.output",
+        value_kind: ScalarWriteValueKind::MonitorName,
     },
     SafeWritableRow {
         row_id: "input.tablet.left_handed",

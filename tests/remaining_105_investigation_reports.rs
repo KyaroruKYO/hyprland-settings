@@ -65,8 +65,8 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let results = proof_results()?;
     let classifications = classifications()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 249);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 92);
+    assert_eq!(coverage["counts"]["writableRows"], 251);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 90);
     assert_eq!(investigation["counts"]["rows"], 105);
     assert_eq!(plan["counts"]["rows"], 105);
     assert_eq!(results["counts"]["rows"], 105);
@@ -79,7 +79,7 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_string())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 92);
+    assert_eq!(blocked_ids.len(), 90);
 
     for report in [&investigation, &plan, &results, &classifications] {
         let ids = report["rows"]
@@ -376,14 +376,14 @@ fn source_backed_input_rows_have_xkb_proof_and_are_writable() -> Result<()> {
 }
 
 #[test]
-fn batch_d_scroll_method_is_finite_choice_and_monitor_outputs_stay_blocked() -> Result<()> {
+fn batch_d_scroll_and_monitor_outputs_are_source_validated_writes() -> Result<()> {
     let proof = batch_d_remaining_input_proof()?;
     let classifications = classifications()?;
     let coverage = coverage()?;
 
     assert_eq!(proof["counts"]["rows"], 3);
-    assert_eq!(proof["counts"]["rowsEnabled"], 1);
-    assert_eq!(proof["counts"]["rowsStillBlocked"], 2);
+    assert_eq!(proof["counts"]["rowsEnabled"], 3);
+    assert_eq!(proof["counts"]["rowsStillBlocked"], 0);
     assert_eq!(
         proof["counts"]["activeConfigModified"].as_bool(),
         Some(false)
@@ -422,10 +422,14 @@ fn batch_d_scroll_method_is_finite_choice_and_monitor_outputs_stay_blocked() -> 
             .iter()
             .find(|row| row["rowId"].as_str() == Some(row_id))
             .unwrap_or_else(|| panic!("missing proof row {row_id}"));
-        assert_eq!(proof_row["status"].as_str(), Some("blocked"));
-        assert_eq!(proof_row["safeToEnable"].as_bool(), Some(false));
+        assert_eq!(proof_row["status"].as_str(), Some("enabled"));
+        assert_eq!(proof_row["safeToEnable"].as_bool(), Some(true));
         assert_eq!(
             proof_row["hyprlandVerifyConfigAlsoAcceptedInvalidProbe"].as_bool(),
+            Some(true)
+        );
+        assert_eq!(
+            proof_row["appValidatorRejectsInvalidProbe"].as_bool(),
             Some(true)
         );
 
@@ -439,18 +443,14 @@ fn batch_d_scroll_method_is_finite_choice_and_monitor_outputs_stay_blocked() -> 
             .iter()
             .map(|value| value.as_str().unwrap())
             .collect::<BTreeSet<_>>();
-        assert!(blockers.contains("needs-dynamic-system-values"));
-        assert!(blockers.contains("needs-validator-implementation"));
+        assert!(blockers.is_empty(), "{row_id} should not keep blockers");
 
         let coverage_row = coverage_rows
             .iter()
             .find(|row| row["rowId"].as_str() == Some(row_id))
             .unwrap_or_else(|| panic!("missing coverage row {row_id}"));
-        assert_eq!(
-            coverage_row["writeStatus"].as_str(),
-            Some("manual-review-needed")
-        );
-        assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
+        assert_eq!(coverage_row["writeStatus"].as_str(), Some("writable"));
+        assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(true));
     }
 
     Ok(())
