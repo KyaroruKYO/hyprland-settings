@@ -19,7 +19,9 @@
     "wrongTokenFailed": true,
     "cliTimeoutRestorePassed": true,
     "separateProcessRestoreFailurePassed": true,
-    "rowsEnabledBySeparateProcessProof": 0
+    "rowsEnabledBySeparateProcessProof": 0,
+    "displayRenderBoundaryRepresented": true,
+    "displayRenderRowsEnabledByBoundarySprint": 0
   },
   "contract": {
     "modeImplemented": "DryRunTempOnly",
@@ -50,5 +52,12 @@
     "restoreFailure": "passed",
     "livePathRefusal": "passed",
     "liveExecutionEnabled": false
+  },
+  "displayRenderBoundaryStatus": {
+    "separateWatchdogProcessProofPassed": true,
+    "displayRenderLiveBoundaryRepresented": true,
+    "liveExecutionEnabled": false,
+    "displayRenderRowsEnabled": 0,
+    "recommendedNextSubset": "xwayland-scaling-policy-smoke-subset"
   }
 }

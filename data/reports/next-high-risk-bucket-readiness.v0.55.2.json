@@ -11,9 +11,12 @@
     "finalWritableRows": 272,
     "finalBlockedRows": 69,
     "recommendedNextBucket": "display-render-recovery-subset",
-    "separateWatchdogProcessProofPassed": true
+    "separateWatchdogProcessProofPassed": true,
+    "displayRenderLiveBoundaryRepresented": true,
+    "displayRenderRowsEnabled": 0,
+    "selectedDisplayRenderSubsetRows": 2
   },
-  "recommendation": "Separate watchdog process proof passed with fixture/temp files. Live mode remains disabled; next sprint may request a controlled fixture-to-live transition design or a small display/render subset plan, but no rows are enabled by this proof alone.",
+  "recommendation": "Display/render boundary is represented and fixture-only gates are proven. Next sprint may request explicit live execution approval for the xwayland-scaling-policy-smoke-subset only; all display/render rows remain blocked now.",
   "buckets": [
     {
       "bucket": "display-render-recovery",
@@ -79,5 +82,6 @@
       "recommendedSplit": "split debug toggles from explicit crash/testing controls; keep not-recommended rows blocked until dedicated approval"
     }
   ],
-  "nextBlockerBeforeEnablement": "Need explicit approval for live-config execution boundary and bucket-specific display/render subset selection."
+  "nextBlockerBeforeEnablement": "Explicit live execution approval and final real-config watchdog arm-before-mutation policy are still required.",
+  "recommendedNextSubset": "xwayland-scaling-policy-smoke-subset"
 }
