@@ -51,6 +51,12 @@ fn source_backed_input_write_proof() -> Result<Value> {
     ))?)
 }
 
+fn batch_d_remaining_input_proof() -> Result<Value> {
+    Ok(serde_json::from_str(include_str!(
+        "../data/reports/batch-d-remaining-input-proof.v0.55.2.json"
+    ))?)
+}
+
 #[test]
 fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let coverage = coverage()?;
@@ -59,8 +65,8 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let results = proof_results()?;
     let classifications = classifications()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 248);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 93);
+    assert_eq!(coverage["counts"]["writableRows"], 249);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 92);
     assert_eq!(investigation["counts"]["rows"], 105);
     assert_eq!(plan["counts"]["rows"], 105);
     assert_eq!(results["counts"]["rows"], 105);
@@ -73,7 +79,7 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_string())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 93);
+    assert_eq!(blocked_ids.len(), 92);
 
     for report in [&investigation, &plan, &results, &classifications] {
         let ids = report["rows"]
@@ -364,6 +370,87 @@ fn source_backed_input_rows_have_xkb_proof_and_are_writable() -> Result<()> {
             proof_row["invalidValuesRejectedByApp"].as_bool(),
             Some(true)
         );
+    }
+
+    Ok(())
+}
+
+#[test]
+fn batch_d_scroll_method_is_finite_choice_and_monitor_outputs_stay_blocked() -> Result<()> {
+    let proof = batch_d_remaining_input_proof()?;
+    let classifications = classifications()?;
+    let coverage = coverage()?;
+
+    assert_eq!(proof["counts"]["rows"], 3);
+    assert_eq!(proof["counts"]["rowsEnabled"], 1);
+    assert_eq!(proof["counts"]["rowsStillBlocked"], 2);
+    assert_eq!(
+        proof["counts"]["activeConfigModified"].as_bool(),
+        Some(false)
+    );
+    assert_eq!(
+        proof["counts"]["activeRuntimeModified"].as_bool(),
+        Some(false)
+    );
+
+    let proof_rows = proof["rows"].as_array().unwrap();
+    let coverage_rows = coverage["rows"].as_array().unwrap();
+    let classification_rows = classifications["rows"].as_array().unwrap();
+
+    let scroll_proof = proof_rows
+        .iter()
+        .find(|row| row["rowId"].as_str() == Some("input.scroll_method"))
+        .expect("scroll method proof should exist");
+    assert_eq!(scroll_proof["status"].as_str(), Some("enabled"));
+    assert_eq!(scroll_proof["valueKind"].as_str(), Some("finite-choice"));
+    assert_eq!(scroll_proof["safeToEnable"].as_bool(), Some(true));
+    assert_eq!(
+        scroll_proof["appValidatorRejectsInvalidProbe"].as_bool(),
+        Some(true)
+    );
+    assert_eq!(scroll_proof["candidateValues"].as_array().unwrap().len(), 4);
+
+    let scroll_coverage = coverage_rows
+        .iter()
+        .find(|row| row["rowId"].as_str() == Some("input.scroll_method"))
+        .expect("scroll method coverage should exist");
+    assert_eq!(scroll_coverage["writeStatus"].as_str(), Some("writable"));
+    assert_eq!(scroll_coverage["safeWriteSupported"].as_bool(), Some(true));
+
+    for row_id in ["input.touchdevice.output", "input.tablet.output"] {
+        let proof_row = proof_rows
+            .iter()
+            .find(|row| row["rowId"].as_str() == Some(row_id))
+            .unwrap_or_else(|| panic!("missing proof row {row_id}"));
+        assert_eq!(proof_row["status"].as_str(), Some("blocked"));
+        assert_eq!(proof_row["safeToEnable"].as_bool(), Some(false));
+        assert_eq!(
+            proof_row["hyprlandVerifyConfigAlsoAcceptedInvalidProbe"].as_bool(),
+            Some(true)
+        );
+
+        let classification_row = classification_rows
+            .iter()
+            .find(|row| row["rowId"].as_str() == Some(row_id))
+            .unwrap_or_else(|| panic!("missing classification row {row_id}"));
+        let blockers = classification_row["missingProofCategories"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|value| value.as_str().unwrap())
+            .collect::<BTreeSet<_>>();
+        assert!(blockers.contains("needs-dynamic-system-values"));
+        assert!(blockers.contains("needs-validator-implementation"));
+
+        let coverage_row = coverage_rows
+            .iter()
+            .find(|row| row["rowId"].as_str() == Some(row_id))
+            .unwrap_or_else(|| panic!("missing coverage row {row_id}"));
+        assert_eq!(
+            coverage_row["writeStatus"].as_str(),
+            Some("manual-review-needed")
+        );
+        assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
     }
 
     Ok(())

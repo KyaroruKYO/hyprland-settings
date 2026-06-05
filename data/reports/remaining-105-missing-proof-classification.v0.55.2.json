@@ -41,9 +41,9 @@
       "proof-complete-policy-blocked": 16,
       "needs-session-runtime-policy": 16,
       "needs-validator-implementation": 85,
-      "needs-editor-projection": 93,
-      "needs-invalid-value-tests": 93,
-      "needs-finite-choice-validator": 8,
+      "needs-editor-projection": 92,
+      "needs-invalid-value-tests": 92,
+      "needs-finite-choice-validator": 7,
       "proof-complete-high-risk-blocked": 72,
       "needs-high-risk-recovery-design": 72,
       "official-source-research-needed": 2
@@ -51,15 +51,15 @@
     "unknownClassifications": 0,
     "activeConfigModified": false,
     "activeRuntimeModified": false,
-    "enabledAfterInvestigation": 12,
-    "remainingBlockedRowsAfterEnablement": 93,
+    "enabledAfterInvestigation": 13,
+    "remainingBlockedRowsAfterEnablement": 92,
     "currentByMissingProofCategory": {
       "proof-complete-policy-blocked": 16,
       "needs-session-runtime-policy": 16,
       "needs-validator-implementation": 85,
-      "needs-editor-projection": 93,
-      "needs-invalid-value-tests": 93,
-      "needs-finite-choice-validator": 8,
+      "needs-editor-projection": 92,
+      "needs-invalid-value-tests": 92,
+      "needs-finite-choice-validator": 7,
       "proof-complete-high-risk-blocked": 72,
       "needs-high-risk-recovery-design": 72,
       "official-source-research-needed": 2
@@ -471,21 +471,26 @@
     {
       "rowId": "input.scroll_method",
       "officialSetting": "input.scroll_method",
-      "currentWriteStatus": "manual-review-needed",
+      "currentWriteStatus": "writable",
       "riskClass": "advanced",
       "batch": "batch-d-input-behavior",
       "controlKind": "dropdown",
       "companionSchemaType": "string",
       "canParseRead": true,
-      "canValidateAtLeastOneCandidateValue": false,
-      "currentProductionValidatorExists": false,
+      "canValidateAtLeastOneCandidateValue": true,
+      "currentProductionValidatorExists": true,
       "candidateValuesAcceptedByHyprland": [
-        "safe-value"
+        "2fg",
+        "edge",
+        "on_button_down",
+        "no_scroll"
       ],
       "candidateValuesRejectedByHyprland": [],
-      "invalidValuesAcceptedByHyprland": [],
+      "invalidValuesAcceptedByHyprland": [
+        "__invalid_scroll__"
+      ],
       "invalidValuesRejectedOrSkipped": 1,
-      "canRejectInvalidValuesInCurrentApp": false,
+      "canRejectInvalidValuesInCurrentApp": true,
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
@@ -494,16 +499,12 @@
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
-      "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "needs-finite-choice-validator",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
-      "exactNextStepToMakeWritable": "Add finite-choice raw-value mapping, dropdown projection, accepted-value tests, invalid rejection tests, fixture writer/reread tests, and temp-config proof.",
+      "blockedByMissingValidatorEditorOrTestCoverage": false,
+      "missingProofCategories": [],
+      "exactNextStepToMakeWritable": "Complete: production finite-choice validator, dropdown projection, invalid rejection tests, fixture writer/reread tests, and temp-config proof are in place.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Enabled. Hyprland parser is permissive for arbitrary strings, so app validation is intentionally stricter than --verify-config."
     },
     {
       "rowId": "input.touchpad.tap_button_map",
@@ -562,21 +563,22 @@
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
-      "needsSourceBackedDynamicValueEnumeration": false,
+      "needsSourceBackedDynamicValueEnumeration": true,
       "needsSessionRuntimePolicy": false,
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
       "missingProofCategories": [
-        "needs-finite-choice-validator",
+        "needs-dynamic-system-values",
+        "needs-validator-implementation",
         "needs-editor-projection",
         "needs-invalid-value-tests"
       ],
-      "exactNextStepToMakeWritable": "Add finite-choice raw-value mapping, dropdown projection, accepted-value tests, invalid rejection tests, fixture writer/reread tests, and temp-config proof.",
+      "exactNextStepToMakeWritable": "Implement non-mutating monitor-name enumeration and app-side monitor output validation, then rerun fixture writer/reread and temp-config proof.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Official docs define this as a monitor binding string. Hyprland verify-config accepts arbitrary names, so writes need monitor-name source validation rather than freeform text."
     },
     {
       "rowId": "input.tablet.output",
@@ -599,21 +601,22 @@
       "canWriteTempFixtureAndReread": true,
       "canPassHyprlandVerifyConfig": true,
       "allPlannedValidCandidatesPassHyprlandVerifyConfig": true,
-      "needsSourceBackedDynamicValueEnumeration": false,
+      "needsSourceBackedDynamicValueEnumeration": true,
       "needsSessionRuntimePolicy": false,
       "needsHighRiskRecoveryDesign": false,
       "technicallyWritableButPolicyBlocked": false,
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
       "missingProofCategories": [
-        "needs-finite-choice-validator",
+        "needs-dynamic-system-values",
+        "needs-validator-implementation",
         "needs-editor-projection",
         "needs-invalid-value-tests"
       ],
-      "exactNextStepToMakeWritable": "Add finite-choice raw-value mapping, dropdown projection, accepted-value tests, invalid rejection tests, fixture writer/reread tests, and temp-config proof.",
+      "exactNextStepToMakeWritable": "Implement non-mutating monitor-name enumeration and app-side monitor output validation, then rerun fixture writer/reread and temp-config proof.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Official docs define this as a monitor binding string. Hyprland verify-config accepts arbitrary names, so writes need monitor-name source validation rather than freeform text."
     },
     {
       "rowId": "misc.vrr",

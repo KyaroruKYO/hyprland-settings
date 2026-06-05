@@ -73,6 +73,7 @@ pub const CONFLICT_FINITE_CHOICE_ROWS: &[&str] = &[
 pub const REMAINING_105_FINITE_CHOICE_ROWS: &[&str] = &[
     "layout.selection",
     "input.follow_mouse",
+    "input.scroll_method",
     "input.touchpad.tap_button_map",
     "master.new_status",
     "master.new_on_active",
@@ -206,6 +207,25 @@ const SCROLLING_DIRECTION_CHOICES: &[FiniteChoiceOption] = &[
     FiniteChoiceOption {
         raw_value: "up",
         label: "Up",
+    },
+];
+
+const INPUT_SCROLL_METHOD_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "2fg",
+        label: "Two-finger",
+    },
+    FiniteChoiceOption {
+        raw_value: "edge",
+        label: "Edge",
+    },
+    FiniteChoiceOption {
+        raw_value: "on_button_down",
+        label: "On button down",
+    },
+    FiniteChoiceOption {
+        raw_value: "no_scroll",
+        label: "No scroll",
     },
 ];
 
@@ -1157,6 +1177,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::Percent,
     },
     SafeWritableRow {
+        row_id: "input.scroll_method",
+        official_setting: "input.scroll_method",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
         row_id: "input.natural_scroll",
         official_setting: "input.natural_scroll",
         value_kind: ScalarWriteValueKind::Boolean,
@@ -1812,6 +1837,7 @@ pub fn finite_choice_options(row_id: &str) -> Option<&'static [FiniteChoiceOptio
         "master.new_on_active" => Some(MASTER_NEW_ON_ACTIVE_CHOICES),
         "master.orientation" => Some(MASTER_ORIENTATION_CHOICES),
         "scrolling.direction" => Some(SCROLLING_DIRECTION_CHOICES),
+        "input.scroll_method" => Some(INPUT_SCROLL_METHOD_CHOICES),
         "general.resize_corner" => Some(GENERAL_RESIZE_CORNER_CHOICES),
         "input.focus_on_close" => Some(INPUT_FOCUS_ON_CLOSE_CHOICES),
         "input.float_switch_override_focus" => Some(INPUT_FLOAT_SWITCH_OVERRIDE_FOCUS_CHOICES),

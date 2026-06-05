@@ -10,29 +10,29 @@
   ],
   "counts": {
     "startingWritableRows": 94,
-    "finalWritableRows": 248,
+    "finalWritableRows": 249,
     "startingBlockedRows": 247,
-    "finalBlockedRows": 93,
-    "enabledRows": 154,
+    "finalBlockedRows": 92,
+    "enabledRows": 155,
     "enabledByBatch": {
       "batch-b-likely-safe-numerics": 33,
       "batch-c-likely-safe-enums": 5,
-      "batch-d-input-behavior": 71,
+      "batch-d-input-behavior": 72,
       "batch-e-window-layout-behavior": 45
     },
     "remainingBlockedByBatch": {
       "batch-g-session-runtime-sensitive": 16,
-      "batch-d-input-behavior": 3,
+      "batch-d-input-behavior": 2,
       "batch-c-likely-safe-enums": 2,
       "high-risk": 72
     },
     "remainingBlockedByReason": {
       "session/runtime-sensitive setting requires dedicated user approval and recovery policy before persistent writes are enabled": 15,
-      "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes": 4,
+      "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes": 3,
       "official-source-research-needed": 2,
       "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.": 72
     },
-    "hyprlandVerifyConfigPassed": 147,
+    "hyprlandVerifyConfigPassed": 151,
     "hyprlandVerifyConfigFailed": 0,
     "activeConfigModified": false,
     "activeRuntimeModified": false
@@ -1319,25 +1319,39 @@
       "batch": "batch-d-input-behavior",
       "subgroup": "dropdown",
       "researchEvidence": [
-        "manual-review candidate report",
-        "not selected for primitive temp-config promotion in this sprint"
+        "official Hyprland Variables documentation: input:scroll_method supports 2fg, edge, on_button_down, and no_scroll",
+        "temp Hyprland --verify-config accepted every documented value",
+        "Hyprland --verify-config also accepts arbitrary strings for this parser, so app-side finite validation is required"
       ],
-      "testedValues": [],
+      "testedValues": [
+        "2fg",
+        "edge",
+        "on_button_down",
+        "no_scroll",
+        "__invalid_scroll__"
+      ],
       "proofResults": {
-        "parserRoundtripPassed": null,
-        "writerRoundtripPassed": null,
-        "typedValidatorPassed": null,
-        "singleMutationVerified": null,
-        "hyprlandVerifyConfigAttempted": false,
-        "hyprlandVerifyConfigPassed": false,
+        "parserRoundtripPassed": true,
+        "writerRoundtripPassed": true,
+        "typedValidatorPassed": true,
+        "singleMutationVerified": true,
+        "hyprlandVerifyConfigAttempted": true,
+        "hyprlandVerifyConfigPassed": true,
+        "hyprlandVerifyConfigPassedValues": [
+          "2fg",
+          "edge",
+          "on_button_down",
+          "no_scroll"
+        ],
+        "invalidRejectedBeforeHyprlandVerify": true,
         "activeConfigModified": false,
         "activeRuntimeModified": false
       },
-      "finalWriteStatus": "manual-review-needed",
-      "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "finalWriteStatus": "writable",
+      "enabled": true,
+      "blocker": null,
+      "nextRequiredProof": null,
+      "notes": "Enabled as a dropdown backed by strict finite raw-value validation. The app rejects unlisted values even though Hyprland verify-config accepts arbitrary strings."
     },
     {
       "rowId": "input.scroll_button",
@@ -2133,9 +2147,9 @@
       },
       "finalWriteStatus": "manual-review-needed",
       "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "blocker": "monitor output setting requires a non-mutating monitor-name enumerator and app-side validator; Hyprland --verify-config accepts arbitrary strings so temp-config proof alone is not enough",
+      "nextRequiredProof": "Implement a monitor-name value source, expose default/auto plus known monitor names, reject unknown monitor names in the app, then rerun fixture writer/reread and temp-config proof.",
+      "notes": "Remains blocked; official docs define this as a monitor binding string, not a finite enum."
     },
     {
       "rowId": "input.touchdevice.enabled",
@@ -2284,9 +2298,9 @@
       },
       "finalWriteStatus": "manual-review-needed",
       "enabled": false,
-      "blocker": "dropdown/enum value set not fully proven; needs official finite allowed values or a validated line-safe freeform policy before enabling writes",
-      "nextRequiredProof": "derive exact allowed values from official Hyprland docs/source, test every allowed value plus invalid values, then run temp Hyprland --verify-config proof",
-      "notes": "Remains blocked with explicit proof gap."
+      "blocker": "monitor output setting requires a non-mutating monitor-name enumerator and app-side validator; Hyprland --verify-config accepts arbitrary strings so temp-config proof alone is not enough",
+      "nextRequiredProof": "Implement a monitor-name value source, expose default/auto plus known monitor names, reject unknown monitor names in the app, then rerun fixture writer/reread and temp-config proof.",
+      "notes": "Remains blocked; official docs define this as a monitor binding string, not a finite enum."
     },
     {
       "rowId": "input.tablet.absolute_region_position",

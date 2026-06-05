@@ -1020,19 +1020,27 @@
       "currentWriteStatus": "manual-review-needed",
       "riskClass": "advanced",
       "batch": "batch-d-input-behavior",
-      "proofStrategy": "finite-choice-temp-config-proof",
+      "proofStrategy": "official-finite-choice-temp-config-proof-plus-app-validator",
       "candidateValidValues": [
-        "safe-value"
+        "2fg",
+        "edge",
+        "on_button_down",
+        "no_scroll"
       ],
       "candidateInvalidValues": [
-        "bad\nvalue"
+        "__invalid_scroll__"
       ],
       "acceptedValidValues": [
-        "safe-value"
+        "2fg",
+        "edge",
+        "on_button_down",
+        "no_scroll"
       ],
       "rejectedValidValues": [],
       "invalidValuesRejectedOrSkipped": 1,
-      "invalidValuesAcceptedByHyprland": [],
+      "invalidValuesAcceptedByHyprland": [
+        "__invalid_scroll__"
+      ],
       "parserRoundtripPassed": true,
       "writerRoundtripPassed": true,
       "singleMutationVerified": true,
@@ -1075,7 +1083,10 @@
       "sourceBackedDiscoveryNeeded": false,
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
-      "technicalTempConfigConclusion": "all-candidates-pass"
+      "technicalTempConfigConclusion": "documented-values-pass-invalid-must-be-app-rejected",
+      "invalidValuesRejectedByApp": [
+        "__invalid_scroll__"
+      ]
     },
     {
       "rowId": "input.touchpad.tap_button_map",
@@ -1177,19 +1188,24 @@
       "currentWriteStatus": "manual-review-needed",
       "riskClass": "advanced",
       "batch": "batch-d-input-behavior",
-      "proofStrategy": "finite-choice-temp-config-proof",
+      "proofStrategy": "monitor-name-dynamic-source-needed",
       "candidateValidValues": [
-        "safe-value"
+        "",
+        "DP-1"
       ],
       "candidateInvalidValues": [
-        "bad\nvalue"
+        "__invalid_monitor__"
       ],
       "acceptedValidValues": [
-        "safe-value"
+        "",
+        "DP-1",
+        "__invalid_monitor__"
       ],
       "rejectedValidValues": [],
       "invalidValuesRejectedOrSkipped": 1,
-      "invalidValuesAcceptedByHyprland": [],
+      "invalidValuesAcceptedByHyprland": [
+        "__invalid_monitor__"
+      ],
       "parserRoundtripPassed": true,
       "writerRoundtripPassed": true,
       "singleMutationVerified": true,
@@ -1229,10 +1245,10 @@
       ],
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "sourceBackedDiscoveryNeeded": false,
+      "sourceBackedDiscoveryNeeded": true,
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
-      "technicalTempConfigConclusion": "all-candidates-pass"
+      "technicalTempConfigConclusion": "hyprland-accepts-arbitrary-monitor-name-strings-app-enumerator-needed"
     },
     {
       "rowId": "input.tablet.output",
@@ -1240,19 +1256,24 @@
       "currentWriteStatus": "manual-review-needed",
       "riskClass": "advanced",
       "batch": "batch-d-input-behavior",
-      "proofStrategy": "finite-choice-temp-config-proof",
+      "proofStrategy": "monitor-name-dynamic-source-needed",
       "candidateValidValues": [
-        "safe-value"
+        "",
+        "DP-1"
       ],
       "candidateInvalidValues": [
-        "bad\nvalue"
+        "__invalid_monitor__"
       ],
       "acceptedValidValues": [
-        "safe-value"
+        "",
+        "DP-1",
+        "__invalid_monitor__"
       ],
       "rejectedValidValues": [],
       "invalidValuesRejectedOrSkipped": 1,
-      "invalidValuesAcceptedByHyprland": [],
+      "invalidValuesAcceptedByHyprland": [
+        "__invalid_monitor__"
+      ],
       "parserRoundtripPassed": true,
       "writerRoundtripPassed": true,
       "singleMutationVerified": true,
@@ -1292,10 +1313,10 @@
       ],
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "sourceBackedDiscoveryNeeded": false,
+      "sourceBackedDiscoveryNeeded": true,
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": false,
-      "technicalTempConfigConclusion": "all-candidates-pass"
+      "technicalTempConfigConclusion": "hyprland-accepts-arbitrary-monitor-name-strings-app-enumerator-needed"
     },
     {
       "rowId": "misc.vrr",

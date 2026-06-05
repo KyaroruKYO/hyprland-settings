@@ -78,8 +78,8 @@ fn companion_schema_metadata_integration_is_advisory_only() -> Result<()> {
     assert_eq!(integration["counts"]["rowsEnabled"], 0);
     assert_eq!(integration["counts"]["startingWritableRows"], 236);
     assert_eq!(integration["counts"]["finalWritableRows"], 236);
-    assert_eq!(coverage["counts"]["writableRows"], 248);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 248);
+    assert_eq!(coverage["counts"]["writableRows"], 249);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 249);
     assert_eq!(integration["invariants"]["writeBehaviorChanged"], false);
     assert_eq!(integration["invariants"]["writeAllowlistChanged"], false);
     assert_eq!(integration["invariants"]["rowsEnabledByMetadataAlone"], 0);

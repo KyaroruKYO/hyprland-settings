@@ -254,6 +254,7 @@ fn verified_finite_choice_rows_reject_unverified_semantic_and_slider_values() {
         ("general.resize_corner", "-1"),
         ("layout.selection", "__invalid_choice__"),
         ("input.follow_mouse", "Full"),
+        ("input.scroll_method", "__invalid_scroll__"),
         ("input.touchpad.tap_button_map", "Left / Right / Middle"),
         ("master.new_status", "__invalid_choice__"),
         ("master.new_on_active", "__invalid_choice__"),

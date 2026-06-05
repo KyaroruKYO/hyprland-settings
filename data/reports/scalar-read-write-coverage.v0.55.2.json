@@ -8,8 +8,8 @@
     "totalScalarRows": 341,
     "readableRows": 341,
     "blockedReadRows": 0,
-    "writableRows": 248,
-    "blockedWriteRows": 93
+    "writableRows": 249,
+    "blockedWriteRows": 92
   },
   "rows": [
     {
@@ -1511,18 +1511,18 @@
       "officialSetting": "input.scroll_method",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "manual-review-needed",
-      "writeBlocker": "manual safety review required for risk class: advanced",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "none",
       "controlKind": "dropdown",
       "parserStatus": "scalar-current-value-parser",
       "riskClass": "advanced",
       "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Raw scalar read supported by previous allowlist and verified by all-row parser projection test; write requires validator/classification."
+      "notes": "Finite-choice scroll method writes are enabled after official docs identified 2fg/edge/on_button_down/no_scroll, every allowed value passed temp Hyprland --verify-config, invalid values are rejected by the app validator, and fixture writer/reread/UI projection tests cover the row."
     },
     {
       "rowId": "input.scroll_button",
@@ -1990,7 +1990,7 @@
       "validatorSupported": false,
       "safeWriteSupported": false,
       "testsPresent": true,
-      "notes": "Raw scalar read supported by previous allowlist and verified by all-row parser projection test; write requires validator/classification."
+      "notes": "Readable scalar; write remains blocked because valid values are monitor names. Hyprland --verify-config accepts arbitrary strings, so a non-mutating monitor-name enumerator and app-side validator are required before safe writes."
     },
     {
       "rowId": "input.touchdevice.enabled",
@@ -2080,7 +2080,7 @@
       "validatorSupported": false,
       "safeWriteSupported": false,
       "testsPresent": true,
-      "notes": "Raw scalar read supported by previous allowlist and verified by all-row parser projection test; write requires validator/classification."
+      "notes": "Readable scalar; write remains blocked because valid values are monitor names. Hyprland --verify-config accepts arbitrary strings, so a non-mutating monitor-name enumerator and app-side validator are required before safe writes."
     },
     {
       "rowId": "input.tablet.region_position",
