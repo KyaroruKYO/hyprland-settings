@@ -129,6 +129,9 @@ pub const CURSOR_THEME_SYNC_HIGH_RISK_WRITABLE_ROWS: &[&str] = &["cursor.sync_gs
 pub const CURSOR_VISIBILITY_CONDITIONAL_HIGH_RISK_WRITABLE_ROWS: &[&str] =
     &["cursor.hide_on_touch", "cursor.hide_on_tablet"];
 
+pub const CURSOR_HIDE_ON_KEY_PRESS_HIGH_RISK_WRITABLE_ROWS: &[&str] =
+    &["cursor.hide_on_key_press"];
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SessionRuntimeWritePolicy {
     pub scope: &'static str,
@@ -2008,6 +2011,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         official_setting: "cursor.hide_on_tablet",
         value_kind: ScalarWriteValueKind::Boolean,
     },
+    SafeWritableRow {
+        row_id: "cursor.hide_on_key_press",
+        official_setting: "cursor.hide_on_key_press",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
 ];
 
 pub fn classify_inventory_entry(entry: &InventoryEntry) -> ScalarWriteClassification {
@@ -2181,6 +2189,16 @@ pub fn high_risk_write_policy(row_id: &str) -> Option<HighRiskWritePolicy> {
                 "advanced-opt-in-plus-cursor-visibility-dead-man-watchdog-confirm-or-revert",
             watchdog_requirement: "cursor visibility watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
             review_warning: "High-risk cursor visibility policy setting. Cursor may disappear after touch or tablet input. Requires cursor-visibility warning and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, cursor.hide_on_key_press, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+        });
+    }
+    if CURSOR_HIDE_ON_KEY_PRESS_HIGH_RISK_WRITABLE_ROWS.contains(&row_id) {
+        return Some(HighRiskWritePolicy {
+            recovery_bucket:
+                "cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset",
+            approval_gate:
+                "advanced-opt-in-plus-cursor-visibility-keyboard-trigger-dead-man-watchdog-confirm-or-revert",
+            watchdog_requirement: "cursor visibility keyboard-trigger watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup, wrong token fails, and real config is refused in dry-run tests; confirmation is represented as CLI token text input; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+            review_warning: "High-risk cursor visibility keyboard-trigger policy setting. Cursor may disappear while typing. Requires CLI token confirmation and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
         });
     }
     None
