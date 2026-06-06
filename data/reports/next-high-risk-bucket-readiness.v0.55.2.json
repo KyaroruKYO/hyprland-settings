@@ -1,7 +1,7 @@
 {
   "artifactKind": "next-high-risk-bucket-readiness",
   "schemaVersion": 1,
-  "generatedAt": "2026-06-05T21:37:08Z",
+  "generatedAt": "2026-06-06T06:11:32Z",
   "counts": {
     "remainingBlockedRows": 67,
     "displayRenderBlockedRows": 23,
@@ -15,9 +15,11 @@
     "displayRenderLiveBoundaryRepresented": true,
     "displayRenderRowsEnabled": 2,
     "selectedDisplayRenderSubsetRows": 0,
-    "xwaylandScalingRowsEnabled": 2
+    "xwaylandScalingRowsEnabled": 2,
+    "selectedCursorInputSubsetRows": 1,
+    "cursorInputRowsEnabled": 0
   },
-  "recommendation": "No next display/render subset selected after smoke review; all remaining display/render rows are session/socket-critical, render-path-critical, color-management/HDR, scanout, render timing/scheduling, or could plausibly blank display.",
+  "recommendation": "Cursor/input boundary design selected cursor.sync_gsettings_theme as a future one-row cursor-theme-sync-policy smoke subset. No rows were enabled; display/render and debug/crash remain blocked.",
   "buckets": [
     {
       "bucket": "display-render-recovery",
@@ -83,6 +85,7 @@
       "recommendedSplit": "split debug toggles from explicit crash/testing controls; keep not-recommended rows blocked until dedicated approval"
     }
   ],
-  "nextBlockerBeforeEnablement": "Need explicit approval for a higher-risk display/render class or additional official/source research that identifies a genuinely low-display-policy-risk row.",
-  "recommendedNextSubset": "none-selected-after-display-render-risk-review"
+  "nextBlockerBeforeEnablement": "Run a dedicated cursor/input enablement sprint proving validator, fixture/temp config, independent watchdog, and recovery independence from mouse/cursor/keybind/app UI before enabling cursor.sync_gsettings_theme.",
+  "recommendedNextSubset": "cursor-theme-sync-policy-smoke-subset",
+  "recommendedNextBucket": "cursor-input-recovery-subset"
 }

@@ -3,6 +3,7 @@ pub mod config_discovery;
 pub mod config_parser;
 pub mod config_persistence_validation;
 pub mod current_config;
+pub mod cursor_input_boundary;
 pub mod display_render_boundary;
 pub mod export;
 pub mod high_risk_recovery;

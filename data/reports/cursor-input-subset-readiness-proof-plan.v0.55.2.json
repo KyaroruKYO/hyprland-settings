@@ -1,0 +1,65 @@
+{
+  "artifactKind": "cursor-input-subset-readiness-proof-plan",
+  "schemaVersion": "0.55.2",
+  "generatedAt": "2026-06-06T06:11:32Z",
+  "sourceReports": [
+    "cursor-input-small-subset-selection.v0.55.2.json"
+  ],
+  "counts": {
+    "selectedRows": 1,
+    "plannedRows": 1,
+    "rowsEnabled": 0,
+    "finalWritableRows": 274,
+    "finalBlockedRows": 67,
+    "cursorInputBlockedRows": 22,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false
+  },
+  "selectedSubsetName": "cursor-theme-sync-policy-smoke-subset",
+  "rows": [
+    {
+      "rowId": "cursor.sync_gsettings_theme",
+      "officialSetting": "cursor.sync_gsettings_theme",
+      "subsetName": "cursor-theme-sync-policy-smoke-subset",
+      "valueType": "bool",
+      "expectedValidatorType": "boolean",
+      "requiredProof": [
+        "validator proof for true and false",
+        "invalid rejection proof for maybe and arbitrary string",
+        "fixture write/reread proof",
+        "temp config Hyprland --verify-config proof",
+        "watchdog arm-before-mutation proof",
+        "separate process confirm proof",
+        "timeout restore proof",
+        "wrong-token failure proof",
+        "dry-run real config refusal proof",
+        "UI/review projection with cursor/input warning",
+        "independence proof: no mouse, visible cursor, app UI, Hyprland keybind, pointer focus, or workspace focus dependency"
+      ],
+      "enablementStatus": "future-proof-required-not-enabled"
+    }
+  ],
+  "proofRequirementsForFutureSelectedSubset": [
+    "validator proof",
+    "invalid rejection proof",
+    "fixture write/reread proof",
+    "temp config proof",
+    "watchdog arm-before-mutation proof",
+    "separate process confirm proof",
+    "timeout restore proof",
+    "wrong-token failure proof",
+    "real config refusal proof in dry-run tests",
+    "UI/review projection with cursor/input warning",
+    "proof that recovery does not depend on mouse/cursor/keybind/app UI/pointer focus/workspace focus",
+    "no reload/eval/Lua",
+    "no active runtime mutation during tests"
+  ],
+  "planConclusion": "A one-row future subset is selected for proof only: cursor.sync_gsettings_theme. It remains blocked until a later enablement sprint proves every required gate.",
+  "realConfigModified": false,
+  "activeRuntimeModified": false,
+  "reloadRuns": 0,
+  "evalRuns": 0,
+  "luaExecutions": 0
+}
