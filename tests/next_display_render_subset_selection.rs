@@ -16,9 +16,9 @@ fn next_display_render_selection_reports_exist_and_keep_counts_unchanged() -> Re
     let proof_plan =
         read_json("data/reports/next-display-render-subset-readiness-proof-plan.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 275);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 66);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 275);
+    assert_eq!(coverage["counts"]["writableRows"], 277);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 277);
 
     assert_eq!(smoke["counts"]["reviewedRows"], 2);
     assert_eq!(smoke["counts"]["enabledRows"], 2);

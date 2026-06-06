@@ -14,9 +14,9 @@ fn hyprmod_cursor_input_comparison_covers_remaining_blocked_rows() -> Result<()>
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
     let comparison = read_json("data/reports/hyprmod-cursor-input-risk-comparison.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 275);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 66);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 275);
+    assert_eq!(coverage["counts"]["writableRows"], 277);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 277);
 
     assert_eq!(comparison["counts"]["cursorInputRowsCompared"], 21);
     assert_eq!(comparison["counts"]["hyprmodOverlayMatches"], 10);
@@ -139,9 +139,9 @@ fn hyprmod_cursor_input_metadata_adoption_is_report_only() -> Result<()> {
         read_json("data/reports/cursor-input-metadata-after-hyprmod-adoption.v0.55.2.json")?;
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 275);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 66);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 275);
+    assert_eq!(coverage["counts"]["writableRows"], 277);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 277);
 
     assert_eq!(adoption["counts"]["rowsConsidered"], 21);
     assert_eq!(adoption["counts"]["rowsWithAdoptedMetadata"], 21);

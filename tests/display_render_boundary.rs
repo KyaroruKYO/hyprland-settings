@@ -144,8 +144,8 @@ fn display_render_boundary_reports_keep_all_high_risk_rows_blocked() -> Result<(
     assert_eq!(gate["counts"]["realConfigPathRefused"], true);
     assert_eq!(subset["counts"]["selectedRows"], 2);
     assert_eq!(subset["counts"]["rowsEnabled"], 2);
-    assert_eq!(coverage["counts"]["writableRows"], 275);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 66);
+    assert_eq!(coverage["counts"]["writableRows"], 277);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
 
     for row in boundary["rows"].as_array().unwrap() {
         if row["rowId"].as_str().is_some_and(|row_id| {

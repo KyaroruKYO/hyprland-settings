@@ -13,8 +13,9 @@ use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueSourc
 use hyprland_settings::pending_change::ACTIVE_PENDING_CHANGE_SETTING;
 use hyprland_settings::write_classification::{
     finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, CURSOR_THEME_SYNC_HIGH_RISK_WRITABLE_ROWS,
-    ECOSYSTEM_HIGH_RISK_WRITABLE_ROWS, MONITOR_OUTPUT_ROWS, REMAINING_105_FINITE_CHOICE_ROWS,
-    SAFE_WRITABLE_ROWS, SOURCE_BACKED_INPUT_ROWS, XWAYLAND_SCALING_HIGH_RISK_WRITABLE_ROWS,
+    CURSOR_VISIBILITY_CONDITIONAL_HIGH_RISK_WRITABLE_ROWS, ECOSYSTEM_HIGH_RISK_WRITABLE_ROWS,
+    MONITOR_OUTPUT_ROWS, REMAINING_105_FINITE_CHOICE_ROWS, SAFE_WRITABLE_ROWS,
+    SOURCE_BACKED_INPUT_ROWS, XWAYLAND_SCALING_HIGH_RISK_WRITABLE_ROWS,
 };
 use hyprland_settings::write_flow::{
     apply_setting_change_with_backup_manager, edit_projection_for_setting,
@@ -143,6 +144,44 @@ fn cursor_theme_sync_row_projects_cursor_input_watchdog_warning() {
         assert!(
             summary.contains("watchdog"),
             "{row_id} should show the watchdog requirement"
+        );
+        assert!(
+            summary.contains("mouse input"),
+            "{row_id} should show mouse-independent recovery requirements"
+        );
+    }
+}
+
+#[test]
+fn cursor_visibility_conditional_rows_project_stronger_watchdog_warning() {
+    for row_id in CURSOR_VISIBILITY_CONDITIONAL_HIGH_RISK_WRITABLE_ROWS {
+        let path = PathBuf::from(format!("/tmp/{row_id}.conf"));
+        let snapshot = snapshot_for(&path, &format!("{} = false\n", row_id.replace('.', ":")));
+        let current = snapshot.value_for(row_id);
+        let projection = pending_projection_for_value(row_id, &current, "true");
+        let summary = projection.review_summary.join("\n");
+        assert!(projection.can_review);
+        assert!(
+            summary.contains(
+                "cursor-input-recovery:cursor-visibility-conditional-touch-tablet-subset"
+            ),
+            "{row_id} should show the cursor visibility recovery bucket"
+        );
+        assert!(
+            summary.contains("dead-man"),
+            "{row_id} should show the dead-man approval gate"
+        );
+        assert!(
+            summary.contains("watchdog"),
+            "{row_id} should show the watchdog requirement"
+        );
+        assert!(
+            summary.contains("Cursor may disappear"),
+            "{row_id} should show the stronger cursor visibility warning"
+        );
+        assert!(
+            summary.contains("visible cursor"),
+            "{row_id} should show visible-cursor-independent recovery requirements"
         );
         assert!(
             summary.contains("mouse input"),

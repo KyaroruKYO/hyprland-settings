@@ -186,9 +186,9 @@ fn conditional_policy_reports_keep_counts_and_allowlist_unchanged() -> Result<()
     let readiness =
         read_json("data/reports/cursor-visibility-conditional-policy-readiness.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 275);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 66);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 275);
+    assert_eq!(coverage["counts"]["writableRows"], 277);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 277);
 
     for report in [&proof, &watchdog] {
         assert_eq!(report["counts"]["rows"], 2);

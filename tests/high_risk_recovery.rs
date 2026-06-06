@@ -455,9 +455,9 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     let pipeline = read_json("data/reports/all-341-unified-pipeline.v0.55.2.json")?;
 
     assert_eq!(design["counts"]["rows"], 72);
-    assert_eq!(design["counts"]["rowsEnabled"], 6);
-    assert_eq!(design["counts"]["finalWritableRows"], 275);
-    assert_eq!(design["counts"]["finalBlockedRows"], 66);
+    assert_eq!(design["counts"]["rowsEnabled"], 8);
+    assert_eq!(design["counts"]["finalWritableRows"], 277);
+    assert_eq!(design["counts"]["finalBlockedRows"], 64);
     assert_eq!(buckets["counts"]["rows"], 72);
     assert_eq!(proof["counts"]["dryRunScenarios"], 3);
     assert_eq!(proof["counts"]["confirmPathPassed"], 1);
@@ -475,7 +475,7 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     assert_eq!(controlled["counts"]["finalWritableRows"], 275);
     assert_eq!(controlled["counts"]["finalBlockedRows"], 66);
     assert_eq!(confirmation["counts"]["confirmationOptions"], 6);
-    assert_eq!(readiness["counts"]["remainingBlockedRows"], 66);
+    assert_eq!(readiness["counts"]["remainingBlockedRows"], 64);
     assert_eq!(
         readiness["counts"]["recommendedNextBucket"].as_str(),
         Some("none-selected-after-cursor-theme-sync-smoke-subset")
@@ -499,12 +499,12 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     assert_eq!(enablements["counts"]["cursorInputRowsEnabled"], 0);
     assert_eq!(enablements["counts"]["debugCrashRowsEnabled"], 0);
 
-    assert_eq!(coverage["counts"]["writableRows"], 275);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 66);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 275);
+    assert_eq!(coverage["counts"]["writableRows"], 277);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 277);
     assert_eq!(pipeline["counts"]["totalRows"], 341);
-    assert_eq!(pipeline["counts"]["writableRows"], 275);
-    assert_eq!(pipeline["counts"]["blockedRows"], 66);
+    assert_eq!(pipeline["counts"]["writableRows"], 277);
+    assert_eq!(pipeline["counts"]["blockedRows"], 64);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
 
     for row in design["rows"].as_array().unwrap() {
@@ -516,6 +516,8 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
                     "xwayland.use_nearest_neighbor"
                         | "xwayland.force_zero_scaling"
                         | "cursor.sync_gsettings_theme"
+                        | "cursor.hide_on_touch"
+                        | "cursor.hide_on_tablet"
                 )
             })
         {

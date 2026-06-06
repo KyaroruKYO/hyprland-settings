@@ -71,8 +71,8 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let results = proof_results()?;
     let classifications = classifications()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 275);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 66);
+    assert_eq!(coverage["counts"]["writableRows"], 277);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
     assert_eq!(investigation["counts"]["rows"], 105);
     assert_eq!(plan["counts"]["rows"], 105);
     assert_eq!(results["counts"]["rows"], 105);
@@ -85,7 +85,7 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_string())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 66);
+    assert_eq!(blocked_ids.len(), 64);
 
     for report in [&investigation, &plan, &results, &classifications] {
         let ids = report["rows"]
@@ -170,11 +170,20 @@ fn remaining_105_high_risk_rows_remain_blocked() -> Result<()> {
         .iter()
         .map(|row| (row["rowId"].as_str().unwrap(), row))
         .collect::<BTreeMap<_, _>>();
+    let enabled_after_classification = BTreeSet::from([
+        "cursor.hide_on_touch".to_owned(),
+        "cursor.hide_on_tablet".to_owned(),
+    ]);
 
     for row_id in high_risk_ids {
         let coverage_row = coverage_by_id.get(row_id.as_str()).unwrap();
-        assert_eq!(coverage_row["writeStatus"].as_str(), Some("high-risk"));
-        assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
+        if enabled_after_classification.contains(&row_id) {
+            assert_eq!(coverage_row["writeStatus"].as_str(), Some("writable"));
+            assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(true));
+        } else {
+            assert_eq!(coverage_row["writeStatus"].as_str(), Some("high-risk"));
+            assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
+        }
     }
 
     Ok(())

@@ -17,9 +17,9 @@ fn cursor_visibility_reports_cover_exact_target_rows_without_enablement() -> Res
     let recommendation =
         read_json("data/reports/cursor-visibility-next-subset-recommendation.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 275);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 66);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 275);
+    assert_eq!(coverage["counts"]["writableRows"], 277);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 277);
 
     for report in [&analysis, &proof] {
         assert_eq!(report["counts"]["cursorVisibilityRowsAnalyzed"], 5);
