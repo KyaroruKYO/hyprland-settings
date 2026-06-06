@@ -7,13 +7,13 @@
     "selectedRows": 2,
     "rejectedRows": 3,
     "rowsEnabled": 0,
-    "finalWritableRows": 275,
-    "finalBlockedRows": 66,
-    "cursorInputBlockedRows": 21,
+    "finalWritableRows": 278,
+    "finalBlockedRows": 63,
+    "cursorInputBlockedRows": 18,
     "displayRenderBlockedRows": 23,
     "debugCrashBlockedRows": 22,
-    "writeAllowlistChanged": false,
-    "productionBehaviorChanged": false,
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true,
     "recoveryGateWeakenedRows": 0
   },
   "recommendation": "two-row-future-proof-subset-selected",
@@ -39,7 +39,20 @@
     },
     {
       "rowId": "cursor.hide_on_key_press",
-      "reason": "Rejected for first visibility subset because it can hide cursor during keyboard confirmation; needs dedicated CLI-token usability proof."
+      "reason": "Rejected for first visibility subset because it can hide cursor during keyboard confirmation; needs dedicated CLI-token usability proof.",
+      "writeStatus": "writable",
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorSupported": true,
+      "watchdogProofNeeded": false,
+      "enabledByCursorHideOnKeyPressKeyboardTokenSubset": true,
+      "selectionDecision": "enabled-by-explicit-cursor-hide-on-key-press-enable-sprint",
+      "selectionReason": "Enabled after dedicated keyboard-token usability proof and independent watchdog proof.",
+      "recoveryBucket": "cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset",
+      "approvalGate": "advanced-opt-in-plus-cursor-visibility-keyboard-trigger-dead-man-watchdog-confirm-or-revert",
+      "highRiskEnablementStatus": "enabled-approved-cursor-hide-on-key-press-keyboard-token-subset",
+      "proofSource": "cursor-hide-on-key-press-usability-proof.v0.55.2.json",
+      "watchdogProofSource": "cursor-hide-on-key-press-watchdog-proof.v0.55.2.json"
     }
   ],
   "selectionRules": [

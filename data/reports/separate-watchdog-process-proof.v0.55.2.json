@@ -7,16 +7,16 @@
     "data/reports/production-high-risk-watchdog.v0.55.2.json"
   ],
   "counts": {
-    "currentWritableRows": 277,
-    "currentBlockedRows": 64,
+    "currentWritableRows": 278,
+    "currentBlockedRows": 63,
     "rowsEnabled": 2,
-    "finalWritableRows": 277,
-    "finalBlockedRows": 64,
+    "finalWritableRows": 278,
+    "finalBlockedRows": 63,
     "displayRenderBlockedRows": 23,
-    "cursorInputBlockedRows": 19,
+    "cursorInputBlockedRows": 18,
     "debugCrashBlockedRows": 22,
-    "writeAllowlistChanged": false,
-    "productionBehaviorChanged": false,
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true,
     "realConfigModified": false,
     "activeRuntimeModified": false,
     "reloadRuns": 0,
@@ -30,7 +30,7 @@
     "livePathRefusalPassed": true,
     "resultLogsWritten": 3,
     "cursorThemeSyncRowsEnabled": 1,
-    "cursorInputRowsEnabled": 3,
+    "cursorInputRowsEnabled": 4,
     "cursorVisibilityConditionalRowsEnabled": 2
   },
   "proofs": [

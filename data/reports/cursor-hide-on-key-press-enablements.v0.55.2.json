@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "cursor-hide-on-key-press-enablements",
+  "generatedAt": "2026-06-06",
+  "sourceReports": [
+    "data/reports/cursor-hide-on-key-press-enable-proof.v0.55.2.json",
+    "data/reports/cursor-hide-on-key-press-readiness.v0.55.2.json",
+    "data/reports/scalar-read-write-coverage.v0.55.2.json",
+    "data/reports/all-341-unified-pipeline.v0.55.2.json"
+  ],
+  "counts": {
+    "attemptedRows": 1,
+    "enabledRows": 1,
+    "notEnabledRows": 0,
+    "rowsEnabled": 1,
+    "finalWritableRows": 278,
+    "finalBlockedRows": 63,
+    "cursorInputRowsStillBlocked": 18,
+    "displayRenderRowsStillBlocked": 23,
+    "debugCrashRowsStillBlocked": 22,
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true,
+    "recoveryGateWeakenedRows": 0,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "metadataGapRows": 0,
+    "totalRows": 341
+  },
+  "rows": [
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "officialSetting": "cursor.hide_on_key_press",
+      "enabled": true,
+      "notEnabledReason": null,
+      "valueType": "bool",
+      "acceptedValues": [
+        "true",
+        "false"
+      ],
+      "rejectedValues": [
+        "maybe",
+        "arbitrary-string"
+      ],
+      "validatorProofPassed": true,
+      "invalidRejectionProofPassed": true,
+      "fixtureTempConfigProofReferenced": true,
+      "watchdogProofReferenced": true,
+      "keyboardTokenUsabilityProofReferenced": true,
+      "recoveryIndependenceProofReferenced": true,
+      "cursorVisibilityKeyboardTriggerWarningRequired": true,
+      "watchdogGatePreserved": true,
+      "recoveryBucket": "cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset",
+      "approvalGate": "advanced-opt-in-plus-cursor-visibility-keyboard-trigger-dead-man-watchdog-confirm-or-revert",
+      "blockedRowsKeptBlocked": [
+        "cursor.invisible",
+        "cursor.inactive_timeout",
+        "hardware cursor rows",
+        "cursor warping rows",
+        "cursor zoom rows",
+        "cursor monitor targeting rows",
+        "display/render rows",
+        "debug/crash rows"
+      ]
+    }
+  ],
+  "safety": {
+    "onlyApprovedRowEnabled": true,
+    "realConfigModifiedDuringTests": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "recoveryGatePreserved": true,
+    "noRowsOutsideCursorHideOnKeyPressBecameWritable": true
+  }
+}

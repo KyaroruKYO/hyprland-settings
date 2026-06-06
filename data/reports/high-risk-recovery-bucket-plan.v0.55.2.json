@@ -8,12 +8,14 @@
     "debugCrashRecoveryRows": 22,
     "ecosystemPermissionPolicyRows": 3,
     "ecosystemPermissionRowsEnabled": 3,
-    "highRiskRowsStillBlocked": 64,
-    "rowsEnabled": 8,
+    "highRiskRowsStillBlocked": 63,
+    "rowsEnabled": 9,
     "rowsStillBlocked": 66,
-    "finalWritableRows": 277,
-    "finalBlockedRows": 64,
-    "cursorInputBlockedRows": 19
+    "finalWritableRows": 278,
+    "finalBlockedRows": 63,
+    "cursorInputBlockedRows": 18,
+    "cursorInputRowsEnabled": 4,
+    "cursorHideOnKeyPressRowsEnabled": 1
   },
   "buckets": [
     {
@@ -937,9 +939,9 @@
     {
       "rowId": "cursor.hide_on_key_press",
       "officialSetting": "cursor.hide_on_key_press",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "riskClass": "cursor_input_risk",
-      "recoveryBucket": "cursor-input-recovery",
+      "recoveryBucket": "cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset",
       "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
       "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
       "currentWriteBlocker": "report-only/high-risk row: cursor_input_risk",
@@ -953,9 +955,14 @@
       "watchdogDryRunStatus": "passed",
       "restoreVerificationRequired": true,
       "nextRequiredWork": "input-independent watchdog/confirmation channel must exist before cursor/input rows can be enabled",
-      "safeWriteSupported": false,
+      "safeWriteSupported": true,
       "rowsEnabledByThisSprint": false,
-      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved."
+      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved.",
+      "currentWriteStatus": "writable",
+      "watchdogProofNeeded": false,
+      "enabledByCursorHideOnKeyPressKeyboardTokenSubset": true,
+      "selectionDecision": "enabled-by-explicit-cursor-hide-on-key-press-enable-sprint",
+      "highRiskEnablementStatus": "enabled-approved-cursor-hide-on-key-press-keyboard-token-subset"
     },
     {
       "rowId": "cursor.hide_on_touch",

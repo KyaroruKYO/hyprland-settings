@@ -16,13 +16,13 @@
     "futureProofCandidateRows": 2,
     "selectedFutureSubsetRows": 2,
     "rowsEnabled": 0,
-    "finalWritableRows": 275,
-    "finalBlockedRows": 66,
-    "cursorInputBlockedRows": 21,
+    "finalWritableRows": 278,
+    "finalBlockedRows": 63,
+    "cursorInputBlockedRows": 18,
     "displayRenderBlockedRows": 23,
     "debugCrashBlockedRows": 22,
-    "writeAllowlistChanged": false,
-    "productionBehaviorChanged": false,
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true,
     "recoveryGateWeakenedRows": 0,
     "hyprmodRecoveryEvidenceRows": 0
   },
@@ -180,8 +180,8 @@
     {
       "rowId": "cursor.hide_on_key_press",
       "officialSetting": "cursor.hide_on_key_press",
-      "writeStatus": "high-risk",
-      "safeWriteSupported": false,
+      "writeStatus": "writable",
+      "safeWriteSupported": true,
       "valueType": "bool",
       "controlKind": "toggle",
       "validatorReadiness": "known-bool",
@@ -220,8 +220,8 @@
       "watchdogRestoreEnough": "fixture watchdog enough for future proof only; live proof must model key-triggered cursor disappearance during confirmation",
       "strongerWarningRequired": true,
       "futureProofCandidate": false,
-      "selectionDecision": "reject",
-      "selectionReason": "Rejected for first visibility subset because it can hide cursor during keyboard confirmation; needs dedicated CLI-token usability proof.",
+      "selectionDecision": "enabled-by-explicit-cursor-hide-on-key-press-enable-sprint",
+      "selectionReason": "Enabled after dedicated keyboard-token usability proof and independent watchdog proof.",
       "proofRequirements": [
         "validator proof",
         "invalid rejection proof",
@@ -250,7 +250,16 @@
         "result log must record whether confirmation or automatic restore occurred"
       ],
       "hyprmodSafetyInterpretation": "HyprMod metadata improves label/default/description/bounds evidence but provides no cursor visibility recovery proof.",
-      "hyprmodRecoveryEvidenceFound": false
+      "hyprmodRecoveryEvidenceFound": false,
+      "currentWriteStatus": "writable",
+      "validatorSupported": true,
+      "watchdogProofNeeded": false,
+      "enabledByCursorHideOnKeyPressKeyboardTokenSubset": true,
+      "recoveryBucket": "cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset",
+      "approvalGate": "advanced-opt-in-plus-cursor-visibility-keyboard-trigger-dead-man-watchdog-confirm-or-revert",
+      "highRiskEnablementStatus": "enabled-approved-cursor-hide-on-key-press-keyboard-token-subset",
+      "proofSource": "cursor-hide-on-key-press-usability-proof.v0.55.2.json",
+      "watchdogProofSource": "cursor-hide-on-key-press-watchdog-proof.v0.55.2.json"
     },
     {
       "rowId": "cursor.hide_on_touch",

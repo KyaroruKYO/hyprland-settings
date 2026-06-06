@@ -10,17 +10,17 @@
   ],
   "counts": {
     "cursorInputRowsAudited": 22,
-    "currentWritableRows": 277,
-    "currentBlockedRows": 64,
-    "cursorInputBlockedRows": 19,
+    "currentWritableRows": 278,
+    "currentBlockedRows": 63,
+    "cursorInputBlockedRows": 18,
     "displayRenderBlockedRows": 23,
     "debugCrashBlockedRows": 22,
     "selectedFutureSubsetRows": 1,
-    "rowsEnabled": 3,
+    "rowsEnabled": 4,
     "writeAllowlistChanged": true,
     "productionBehaviorChanged": true,
     "byCursorInputRiskClass": {
-      "cursor-visibility-critical": 3,
+      "cursor-visibility-critical": 2,
       "hardware-cursor-critical": 5,
       "cursor-monitor-targeting-critical": 2,
       "cursor-warping-critical": 5,
@@ -28,7 +28,8 @@
       "cursor-theme-sync-policy": 1
     },
     "liveExecutionEnabled": false,
-    "separateWatchdogProcessProofPassed": true
+    "separateWatchdogProcessProofPassed": true,
+    "cursorHideOnKeyPressRowsEnabled": 1
   },
   "boundaryRequirements": [
     "live execution defaults to disabled",
@@ -668,12 +669,12 @@
     {
       "rowId": "cursor.hide_on_key_press",
       "officialSetting": "cursor.hide_on_key_press",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "valueType": "bool",
       "controlKind": "toggle",
       "validatorReadiness": "known-bool",
       "existingTempConfigProof": true,
-      "watchdogProofNeeded": true,
+      "watchdogProofNeeded": false,
       "canHideOrRemoveCursorVisibility": true,
       "canBreakCursorRendering": false,
       "canBreakPointerMovement": false,
@@ -701,7 +702,13 @@
         "UI/review projection with cursor/input warning",
         "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
       ],
-      "notes": "Kept blocked in this boundary sprint."
+      "notes": "Kept blocked in this boundary sprint.",
+      "writeStatus": "writable",
+      "safeWriteSupported": true,
+      "enabledByCursorHideOnKeyPressKeyboardTokenSubset": true,
+      "selectionDecision": "enabled-by-explicit-cursor-hide-on-key-press-enable-sprint",
+      "recoveryBucket": "cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset",
+      "highRiskEnablementStatus": "enabled-approved-cursor-hide-on-key-press-keyboard-token-subset"
     },
     {
       "rowId": "cursor.hide_on_touch",

@@ -8,8 +8,8 @@
     "totalScalarRows": 341,
     "readableRows": 341,
     "blockedReadRows": 0,
-    "writableRows": 277,
-    "blockedWriteRows": 64
+    "writableRows": 278,
+    "blockedWriteRows": 63
   },
   "rows": [
     {
@@ -4913,18 +4913,18 @@
       "officialSetting": "cursor.hide_on_key_press",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "high-risk",
-      "writeBlocker": "report-only/high-risk row: cursor_input_risk",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "none",
       "controlKind": "toggle",
-      "parserStatus": "blocked_by_risk_review",
+      "parserStatus": "scalar-current-value-parser",
       "riskClass": "cursor_input_risk",
-      "reportOnly": true,
+      "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Raw scalar read supported as unevaluated text by all-row parser projection test; semantic parser may still be needed before safe writing."
+      "notes": "Writable after cursor hide-on-key-press keyboard-token usability proof, independent watchdog confirm/timeout restore proof, and high-risk cursor visibility gate."
     },
     {
       "rowId": "cursor.hide_on_touch",
