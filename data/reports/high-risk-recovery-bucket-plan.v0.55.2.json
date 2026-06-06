@@ -8,9 +8,12 @@
     "debugCrashRecoveryRows": 22,
     "ecosystemPermissionPolicyRows": 3,
     "ecosystemPermissionRowsEnabled": 3,
-    "highRiskRowsStillBlocked": 66,
-    "rowsEnabled": 6,
-    "rowsStillBlocked": 66
+    "highRiskRowsStillBlocked": 64,
+    "rowsEnabled": 8,
+    "rowsStillBlocked": 66,
+    "finalWritableRows": 277,
+    "finalBlockedRows": 64,
+    "cursorInputBlockedRows": 19
   },
   "buckets": [
     {
@@ -957,9 +960,9 @@
     {
       "rowId": "cursor.hide_on_touch",
       "officialSetting": "cursor.hide_on_touch",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "riskClass": "cursor_input_risk",
-      "recoveryBucket": "cursor-input-recovery",
+      "recoveryBucket": "cursor-input-recovery:cursor-visibility-conditional-touch-tablet-subset",
       "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
       "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
       "currentWriteBlocker": "report-only/high-risk row: cursor_input_risk",
@@ -973,16 +976,17 @@
       "watchdogDryRunStatus": "passed",
       "restoreVerificationRequired": true,
       "nextRequiredWork": "input-independent watchdog/confirmation channel must exist before cursor/input rows can be enabled",
-      "safeWriteSupported": false,
+      "safeWriteSupported": true,
       "rowsEnabledByThisSprint": false,
-      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved."
+      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved.",
+      "enablementStatus": "enabled-approved-cursor-visibility-conditional-touch-tablet-subset"
     },
     {
       "rowId": "cursor.hide_on_tablet",
       "officialSetting": "cursor.hide_on_tablet",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "riskClass": "cursor_input_risk",
-      "recoveryBucket": "cursor-input-recovery",
+      "recoveryBucket": "cursor-input-recovery:cursor-visibility-conditional-touch-tablet-subset",
       "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
       "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
       "currentWriteBlocker": "report-only/high-risk row: cursor_input_risk",
@@ -996,9 +1000,10 @@
       "watchdogDryRunStatus": "passed",
       "restoreVerificationRequired": true,
       "nextRequiredWork": "input-independent watchdog/confirmation channel must exist before cursor/input rows can be enabled",
-      "safeWriteSupported": false,
+      "safeWriteSupported": true,
       "rowsEnabledByThisSprint": false,
-      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved."
+      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved.",
+      "enablementStatus": "enabled-approved-cursor-visibility-conditional-touch-tablet-subset"
     },
     {
       "rowId": "cursor.use_cpu_buffer",

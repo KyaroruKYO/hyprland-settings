@@ -10,17 +10,17 @@
   ],
   "counts": {
     "cursorInputRowsAudited": 22,
-    "currentWritableRows": 275,
-    "currentBlockedRows": 66,
-    "cursorInputBlockedRows": 21,
+    "currentWritableRows": 277,
+    "currentBlockedRows": 64,
+    "cursorInputBlockedRows": 19,
     "displayRenderBlockedRows": 23,
     "debugCrashBlockedRows": 22,
     "selectedFutureSubsetRows": 1,
-    "rowsEnabled": 1,
+    "rowsEnabled": 3,
     "writeAllowlistChanged": true,
     "productionBehaviorChanged": true,
     "byCursorInputRiskClass": {
-      "cursor-visibility-critical": 5,
+      "cursor-visibility-critical": 3,
       "hardware-cursor-critical": 5,
       "cursor-monitor-targeting-critical": 2,
       "cursor-warping-critical": 5,
@@ -706,12 +706,12 @@
     {
       "rowId": "cursor.hide_on_touch",
       "officialSetting": "cursor.hide_on_touch",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "valueType": "bool",
       "controlKind": "toggle",
       "validatorReadiness": "known-bool",
       "existingTempConfigProof": true,
-      "watchdogProofNeeded": true,
+      "watchdogProofNeeded": false,
       "canHideOrRemoveCursorVisibility": true,
       "canBreakCursorRendering": false,
       "canBreakPointerMovement": false,
@@ -722,8 +722,8 @@
       "recoveryCouldDependOnMouseOrCursor": true,
       "keyboardIndependentRecoveryRequired": true,
       "cursorInputRiskClass": "cursor-visibility-critical",
-      "excludedByRiskClass": true,
-      "excludedReason": "excluded-cursor-visibility-critical",
+      "excludedByRiskClass": false,
+      "excludedReason": null,
       "candidateForFirstCursorInputSubset": false,
       "selectedForFutureSubset": false,
       "exactProofRequiredBeforeEnablement": [
@@ -739,17 +739,18 @@
         "UI/review projection with cursor/input warning",
         "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
       ],
-      "notes": "Kept blocked in this boundary sprint."
+      "notes": "Enabled by cursor visibility conditional policy subset after fixture/temp watchdog and recovery-independence proof.",
+      "enabledByCursorVisibilityConditionalPolicySubset": true
     },
     {
       "rowId": "cursor.hide_on_tablet",
       "officialSetting": "cursor.hide_on_tablet",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "valueType": "bool",
       "controlKind": "toggle",
       "validatorReadiness": "known-bool",
       "existingTempConfigProof": true,
-      "watchdogProofNeeded": true,
+      "watchdogProofNeeded": false,
       "canHideOrRemoveCursorVisibility": true,
       "canBreakCursorRendering": false,
       "canBreakPointerMovement": false,
@@ -760,8 +761,8 @@
       "recoveryCouldDependOnMouseOrCursor": true,
       "keyboardIndependentRecoveryRequired": true,
       "cursorInputRiskClass": "cursor-visibility-critical",
-      "excludedByRiskClass": true,
-      "excludedReason": "excluded-cursor-visibility-critical",
+      "excludedByRiskClass": false,
+      "excludedReason": null,
       "candidateForFirstCursorInputSubset": false,
       "selectedForFutureSubset": false,
       "exactProofRequiredBeforeEnablement": [
@@ -777,7 +778,8 @@
         "UI/review projection with cursor/input warning",
         "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
       ],
-      "notes": "Kept blocked in this boundary sprint."
+      "notes": "Enabled by cursor visibility conditional policy subset after fixture/temp watchdog and recovery-independence proof.",
+      "enabledByCursorVisibilityConditionalPolicySubset": true
     },
     {
       "rowId": "cursor.use_cpu_buffer",
@@ -900,5 +902,5 @@
   "reloadRuns": 0,
   "evalRuns": 0,
   "luaExecutions": 0,
-  "conclusion": "cursor.sync_gsettings_theme passed the cursor/input smoke enablement proof and is now writable behind the high-risk watchdog gate; all other cursor/input high-risk rows remain blocked."
+  "conclusion": "cursor.sync_gsettings_theme plus cursor.hide_on_touch and cursor.hide_on_tablet are writable behind high-risk cursor/input watchdog gates; all other cursor/input high-risk rows remain blocked."
 }

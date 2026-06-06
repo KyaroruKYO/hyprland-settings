@@ -8,8 +8,8 @@
     "totalScalarRows": 341,
     "readableRows": 341,
     "blockedReadRows": 0,
-    "writableRows": 275,
-    "blockedWriteRows": 66
+    "writableRows": 277,
+    "blockedWriteRows": 64
   },
   "rows": [
     {
@@ -4931,36 +4931,36 @@
       "officialSetting": "cursor.hide_on_touch",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "high-risk",
-      "writeBlocker": "report-only/high-risk row: cursor_input_risk",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "none",
       "controlKind": "toggle",
-      "parserStatus": "blocked_by_risk_review",
+      "parserStatus": "scalar-current-value-parser",
       "riskClass": "cursor_input_risk",
-      "reportOnly": true,
+      "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Raw scalar read supported as unevaluated text by all-row parser projection test; semantic parser may still be needed before safe writing."
+      "notes": "Enabled by cursor visibility conditional policy enablement after boolean validator, temp-config, separate watchdog, timeout restore, wrong-token, dry-run refusal, and recovery-independence proof."
     },
     {
       "rowId": "cursor.hide_on_tablet",
       "officialSetting": "cursor.hide_on_tablet",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "high-risk",
-      "writeBlocker": "report-only/high-risk row: cursor_input_risk",
+      "writeStatus": "writable",
+      "writeBlocker": null,
       "valueFamily": "none",
       "controlKind": "toggle",
-      "parserStatus": "blocked_by_risk_review",
+      "parserStatus": "scalar-current-value-parser",
       "riskClass": "cursor_input_risk",
-      "reportOnly": true,
+      "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Raw scalar read supported as unevaluated text by all-row parser projection test; semantic parser may still be needed before safe writing."
+      "notes": "Enabled by cursor visibility conditional policy enablement after boolean validator, temp-config, separate watchdog, timeout restore, wrong-token, dry-run refusal, and recovery-independence proof."
     },
     {
       "rowId": "cursor.use_cpu_buffer",

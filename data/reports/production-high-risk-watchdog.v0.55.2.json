@@ -24,7 +24,8 @@
     "displayRenderRowsEnabledByBoundarySprint": 2,
     "xwaylandScalingRowsEnabled": 2,
     "cursorThemeSyncRowsEnabled": 1,
-    "cursorInputRowsEnabled": 1
+    "cursorInputRowsEnabled": 3,
+    "cursorVisibilityConditionalRowsEnabled": 2
   },
   "contract": {
     "modeImplemented": "DryRunTempOnly",

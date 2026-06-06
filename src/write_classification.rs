@@ -126,6 +126,9 @@ pub const XWAYLAND_SCALING_HIGH_RISK_WRITABLE_ROWS: &[&str] = &[
 
 pub const CURSOR_THEME_SYNC_HIGH_RISK_WRITABLE_ROWS: &[&str] = &["cursor.sync_gsettings_theme"];
 
+pub const CURSOR_VISIBILITY_CONDITIONAL_HIGH_RISK_WRITABLE_ROWS: &[&str] =
+    &["cursor.hide_on_touch", "cursor.hide_on_tablet"];
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SessionRuntimeWritePolicy {
     pub scope: &'static str,
@@ -1995,6 +1998,16 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         official_setting: "cursor.sync_gsettings_theme",
         value_kind: ScalarWriteValueKind::Boolean,
     },
+    SafeWritableRow {
+        row_id: "cursor.hide_on_touch",
+        official_setting: "cursor.hide_on_touch",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "cursor.hide_on_tablet",
+        official_setting: "cursor.hide_on_tablet",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
 ];
 
 pub fn classify_inventory_entry(entry: &InventoryEntry) -> ScalarWriteClassification {
@@ -2158,6 +2171,16 @@ pub fn high_risk_write_policy(row_id: &str) -> Option<HighRiskWritePolicy> {
                 "advanced-opt-in-plus-cursor-input-dead-man-watchdog-confirm-or-revert",
             watchdog_requirement: "cursor/input watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on mouse input, visible cursor, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
             review_warning: "High-risk cursor/input theme sync policy setting. Only the approved cursor theme sync smoke subset is writable; cursor visibility, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+        });
+    }
+    if CURSOR_VISIBILITY_CONDITIONAL_HIGH_RISK_WRITABLE_ROWS.contains(&row_id) {
+        return Some(HighRiskWritePolicy {
+            recovery_bucket:
+                "cursor-input-recovery:cursor-visibility-conditional-touch-tablet-subset",
+            approval_gate:
+                "advanced-opt-in-plus-cursor-visibility-dead-man-watchdog-confirm-or-revert",
+            watchdog_requirement: "cursor visibility watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+            review_warning: "High-risk cursor visibility policy setting. Cursor may disappear after touch or tablet input. Requires cursor-visibility warning and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, cursor.hide_on_key_press, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
         });
     }
     None
