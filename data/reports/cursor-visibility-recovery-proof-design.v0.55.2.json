@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "cursor-visibility-recovery-proof-design",
+  "generatedAtUnixSeconds": 1780735376,
+  "counts": {
+    "cursorVisibilityRowsAnalyzed": 5,
+    "rowsRepresented": 5,
+    "highRiskBlockedRows": 5,
+    "safeWriteSupportedFalseRows": 5,
+    "futureProofCandidateRows": 2,
+    "selectedFutureSubsetRows": 2,
+    "rowsEnabled": 0,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakenedRows": 0,
+    "hyprmodRecoveryEvidenceRows": 0
+  },
+  "targetRiskClass": "cursor-visibility-critical",
+  "rows": [
+    "cursor.invisible",
+    "cursor.inactive_timeout",
+    "cursor.hide_on_key_press",
+    "cursor.hide_on_touch",
+    "cursor.hide_on_tablet"
+  ],
+  "sharedRecoveryProblem": "Rows in this class may hide or remove visible cursor feedback. Recovery must not depend on seeing the cursor, clicking app UI, mouse position, pointer focus, workspace focus, Hyprland keybinds, or normal pointer behavior.",
+  "proofRequirements": [
+    "validator proof",
+    "invalid rejection proof",
+    "fixture write/reread proof",
+    "temp config proof",
+    "watchdog arm-before-mutation proof",
+    "backup-before-mutation proof",
+    "separate process confirm proof",
+    "wrong-token failure proof",
+    "timeout restore proof",
+    "dry-run real config refusal proof",
+    "UI/review projection with cursor visibility warning",
+    "visible-cursor-independent recovery proof",
+    "mouse-independent recovery proof",
+    "app-UI-independent recovery proof",
+    "Hyprland-keybind-independent recovery proof",
+    "pointer-focus-independent recovery proof",
+    "workspace-focus-independent recovery proof",
+    "normal-pointer-behavior-independent recovery proof",
+    "no reload/eval/Lua",
+    "no active runtime mutation during tests"
+  ],
+  "visibilitySpecificRequirements": [
+    "restore command must be shown before applying",
+    "warning must explain cursor may disappear or become hard to use",
+    "confirmation path must not require clicking keep with a visible cursor",
+    "timeout restore must be automatic if user cannot interact",
+    "result log must record whether confirmation or automatic restore occurred"
+  ],
+  "futureLiveBoundaryRequirements": [
+    "live execution remains disabled until a later explicit enablement sprint",
+    "persisted recovery plan and backup must exist before mutation",
+    "independent watchdog process must be armed before mutation",
+    "restore command and confirmation token must be presented before mutation",
+    "timeout restore must be automatic and file-reread verified",
+    "confirmation must be possible through a non-pointer path",
+    "UI review must use stronger cursor visibility warning than cursor.sync_gsettings_theme"
+  ],
+  "invalidRecoveryDependencies": [
+    "visible cursor",
+    "mouse click",
+    "app UI only",
+    "Hyprland keybind only",
+    "pointer focus",
+    "workspace focus",
+    "normal pointer behavior"
+  ],
+  "hyprmodMetadataUse": "labels/descriptions/defaults/bounds only; not safety proof",
+  "safety": {
+    "rowsEnabled": 0,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakened": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "anythingPushed": false,
+    "mainTouched": false
+  }
+}

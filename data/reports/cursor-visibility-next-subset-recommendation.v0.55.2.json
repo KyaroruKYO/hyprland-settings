@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "cursor-visibility-next-subset-recommendation",
+  "generatedAtUnixSeconds": 1780735376,
+  "counts": {
+    "rowsEvaluated": 5,
+    "selectedRows": 2,
+    "rejectedRows": 3,
+    "rowsEnabled": 0,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakenedRows": 0
+  },
+  "recommendation": "two-row-future-proof-subset-selected",
+  "selectedSubsetName": "cursor-visibility-conditional-touch-tablet-proof-subset",
+  "selectedRows": [
+    {
+      "rowId": "cursor.hide_on_touch",
+      "reason": "Selected as a future proof candidate because it is conditional on touch input and does not directly remove cursor visibility at apply time."
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "reason": "Selected as a future proof candidate because it is conditional on tablet input and does not directly remove cursor visibility at apply time."
+    }
+  ],
+  "rejectedRows": [
+    {
+      "rowId": "cursor.invisible",
+      "reason": "Excluded first because it can remove cursor visibility immediately and globally; requires explicit later approval."
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "reason": "Rejected for first subset because numeric timing can hide cursor quickly; needs bound-specific proof and warning design first."
+    },
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "reason": "Rejected for first visibility subset because it can hide cursor during keyboard confirmation; needs dedicated CLI-token usability proof."
+    }
+  ],
+  "selectionRules": [
+    "select 0-2 rows only",
+    "prefer conditional visibility policy over always-invisible policy",
+    "prefer boolean rows over numeric timing rows",
+    "prefer rows that do not instantly remove cursor visibility",
+    "avoid cursor.invisible first unless explicitly approved later",
+    "avoid rows where current value could make cursor immediately disappear without delay",
+    "require full recovery independence from cursor/mouse/UI/keybinds/pointer focus/workspace focus"
+  ],
+  "futureProofRequired": [
+    "validator proof",
+    "invalid rejection proof",
+    "fixture write/reread proof",
+    "temp config proof",
+    "watchdog arm-before-mutation proof",
+    "backup-before-mutation proof",
+    "separate process confirm proof",
+    "wrong-token failure proof",
+    "timeout restore proof",
+    "dry-run real config refusal proof",
+    "UI/review projection with cursor visibility warning",
+    "visible-cursor-independent recovery proof",
+    "mouse-independent recovery proof",
+    "app-UI-independent recovery proof",
+    "Hyprland-keybind-independent recovery proof",
+    "pointer-focus-independent recovery proof",
+    "workspace-focus-independent recovery proof",
+    "normal-pointer-behavior-independent recovery proof",
+    "no reload/eval/Lua",
+    "no active runtime mutation during tests",
+    "restore command must be shown before applying",
+    "warning must explain cursor may disappear or become hard to use",
+    "confirmation path must not require clicking keep with a visible cursor",
+    "timeout restore must be automatic if user cannot interact",
+    "result log must record whether confirmation or automatic restore occurred"
+  ],
+  "noEnablementNotice": "Selected rows are for future proof planning only. They remain high-risk blocked.",
+  "safety": {
+    "rowsEnabled": 0,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakened": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "anythingPushed": false,
+    "mainTouched": false
+  }
+}
