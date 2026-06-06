@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "hyprmod-cursor-input-next-subset-recommendation",
+  "generatedAtUnixSeconds": 1780731638,
+  "sourceReports": [
+    "hyprmod-cursor-input-risk-comparison.v0.55.2.json",
+    "hyprmod-cursor-input-risk-deltas.v0.55.2.json",
+    "next-cursor-input-subset-selection.v0.55.2.json"
+  ],
+  "counts": {
+    "rowsReviewed": 21,
+    "selectedRows": 0,
+    "rowsEnabled": 0,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false
+  },
+  "recommendation": "no-next-subset-selected",
+  "selectedSubsetName": null,
+  "selectedRows": [],
+  "reason": "HyprMod exposes or schema-backs many remaining cursor/input rows, but does not provide cursor-input-specific recovery, rollback, confirmation, or dead-man proof. Since the remaining rows are visibility, hardware cursor, warping, zoom, or monitor-targeting critical, HyprMod evidence does not make any row safe enough for a future subset under the current recovery-independence rule.",
+  "candidateRowsRejected": [
+    {
+      "rowId": "cursor.invisible",
+      "riskClass": "cursor-visibility-critical",
+      "reason": "blocked: can hide or remove cursor visibility; recovery must not depend on visible cursor or pointer behavior"
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "riskClass": "hardware-cursor-critical",
+      "reason": "blocked: can alter cursor rendering or hardware/software cursor path; recovery must stay independent of cursor rendering"
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "riskClass": "hardware-cursor-critical",
+      "reason": "blocked: can alter cursor rendering or hardware/software cursor path; recovery must stay independent of cursor rendering"
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "riskClass": "hardware-cursor-critical",
+      "reason": "blocked: can alter cursor rendering or hardware/software cursor path; recovery must stay independent of cursor rendering"
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "riskClass": "cursor-monitor-targeting-critical",
+      "reason": "blocked: can affect monitor targeting or hotspot behavior; needs monitor/pointer independent recovery proof"
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "riskClass": "cursor-visibility-critical",
+      "reason": "blocked: can hide or remove cursor visibility; recovery must not depend on visible cursor or pointer behavior"
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "riskClass": "cursor-warping-critical",
+      "reason": "blocked: can alter pointer warping/workspace pointer behavior; recovery must not depend on pointer position/focus"
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "riskClass": "cursor-warping-critical",
+      "reason": "blocked: can alter pointer warping/workspace pointer behavior; recovery must not depend on pointer position/focus"
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "riskClass": "cursor-warping-critical",
+      "reason": "blocked: can alter pointer warping/workspace pointer behavior; recovery must not depend on pointer position/focus"
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "riskClass": "cursor-warping-critical",
+      "reason": "blocked: can alter pointer warping/workspace pointer behavior; recovery must not depend on pointer position/focus"
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "riskClass": "cursor-monitor-targeting-critical",
+      "reason": "blocked: can affect monitor targeting or hotspot behavior; needs monitor/pointer independent recovery proof"
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "riskClass": "cursor-zoom-critical",
+      "reason": "blocked: can alter cursor zoom/camera rendering; recovery must not depend on visible cursor or accurate pointer feedback"
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "riskClass": "cursor-zoom-critical",
+      "reason": "blocked: can alter cursor zoom/camera rendering; recovery must not depend on visible cursor or accurate pointer feedback"
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "riskClass": "cursor-zoom-critical",
+      "reason": "blocked: can alter cursor zoom/camera rendering; recovery must not depend on visible cursor or accurate pointer feedback"
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "riskClass": "cursor-zoom-critical",
+      "reason": "blocked: can alter cursor zoom/camera rendering; recovery must not depend on visible cursor or accurate pointer feedback"
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "riskClass": "hardware-cursor-critical",
+      "reason": "blocked: can alter cursor rendering or hardware/software cursor path; recovery must stay independent of cursor rendering"
+    },
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "riskClass": "cursor-visibility-critical",
+      "reason": "blocked: can hide or remove cursor visibility; recovery must not depend on visible cursor or pointer behavior"
+    },
+    {
+      "rowId": "cursor.hide_on_touch",
+      "riskClass": "cursor-visibility-critical",
+      "reason": "blocked: can hide or remove cursor visibility; recovery must not depend on visible cursor or pointer behavior"
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "riskClass": "cursor-visibility-critical",
+      "reason": "blocked: can hide or remove cursor visibility; recovery must not depend on visible cursor or pointer behavior"
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "riskClass": "hardware-cursor-critical",
+      "reason": "blocked: can alter cursor rendering or hardware/software cursor path; recovery must stay independent of cursor rendering"
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "riskClass": "cursor-warping-critical",
+      "reason": "blocked: can alter pointer warping/workspace pointer behavior; recovery must not depend on pointer position/focus"
+    }
+  ],
+  "metadataAdoptionCandidates": [
+    "cursor.default_monitor",
+    "cursor.enable_hyprcursor",
+    "cursor.hide_on_key_press",
+    "cursor.hide_on_tablet",
+    "cursor.hide_on_touch",
+    "cursor.hotspot_padding",
+    "cursor.inactive_timeout",
+    "cursor.invisible",
+    "cursor.min_refresh_rate",
+    "cursor.no_break_fs_vrr",
+    "cursor.no_hardware_cursors",
+    "cursor.no_warps",
+    "cursor.persistent_warps",
+    "cursor.use_cpu_buffer",
+    "cursor.warp_back_after_non_mouse_input",
+    "cursor.warp_on_change_workspace",
+    "cursor.warp_on_toggle_special",
+    "cursor.zoom_detached_camera",
+    "cursor.zoom_disable_aa",
+    "cursor.zoom_factor",
+    "cursor.zoom_rigid"
+  ],
+  "requiredBeforeFutureSubset": [
+    "risk-class-specific cursor/input recovery proof independent of mouse input",
+    "recovery proof independent of visible cursor and cursor rendering",
+    "recovery proof independent of app UI, Hyprland keybinds, pointer focus, workspace focus, and normal pointer behavior",
+    "validator/invalid rejection/fixture/temp-config proof for the chosen row",
+    "UI review warning and dead-man approval gate"
+  ],
+  "safety": {
+    "rowsEnabled": 0,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "anythingPushed": false,
+    "mainTouched": false
+  }
+}
