@@ -78,8 +78,8 @@ fn companion_schema_metadata_integration_is_advisory_only() -> Result<()> {
     assert_eq!(integration["counts"]["rowsEnabled"], 0);
     assert_eq!(integration["counts"]["startingWritableRows"], 236);
     assert_eq!(integration["counts"]["finalWritableRows"], 236);
-    assert_eq!(coverage["counts"]["writableRows"], 277);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 277);
+    assert_eq!(coverage["counts"]["writableRows"], 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
     assert_eq!(integration["invariants"]["writeBehaviorChanged"], false);
     assert_eq!(integration["invariants"]["writeAllowlistChanged"], false);
     assert_eq!(integration["invariants"]["rowsEnabledByMetadataAlone"], 0);
@@ -151,7 +151,7 @@ fn high_risk_rows_remain_blocked_after_metadata_integration() -> Result<()> {
         .iter()
         .filter(|row| row["writeStatus"].as_str() == Some("high-risk"))
         .count();
-    assert_eq!(high_risk_rows, 64);
+    assert_eq!(high_risk_rows, 63);
 
     let integration = integration_report()?;
     assert_eq!(integration["counts"]["highRiskRowsStillBlocked"], 72);

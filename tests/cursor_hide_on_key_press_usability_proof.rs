@@ -185,17 +185,17 @@ fn prove_watchdog_process_for_hide_on_key_press() -> Result<()> {
 }
 
 #[test]
-fn cursor_hide_on_key_press_reports_are_proof_only_and_keep_counts() -> Result<()> {
+fn cursor_hide_on_key_press_proof_reports_remain_historical_after_enablement() -> Result<()> {
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
     let usability =
         read_json("data/reports/cursor-hide-on-key-press-usability-proof.v0.55.2.json")?;
     let watchdog = read_json("data/reports/cursor-hide-on-key-press-watchdog-proof.v0.55.2.json")?;
     let readiness = read_json("data/reports/cursor-hide-on-key-press-readiness.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 277);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 277);
-    assert!(!is_safe_writable_setting("cursor.hide_on_key_press"));
+    assert_eq!(coverage["counts"]["writableRows"], 278);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert!(is_safe_writable_setting("cursor.hide_on_key_press"));
 
     for report in [&usability, &watchdog] {
         assert_eq!(report["counts"]["rows"], 1);

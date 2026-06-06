@@ -71,8 +71,8 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let results = proof_results()?;
     let classifications = classifications()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 277);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
+    assert_eq!(coverage["counts"]["writableRows"], 278);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
     assert_eq!(investigation["counts"]["rows"], 105);
     assert_eq!(plan["counts"]["rows"], 105);
     assert_eq!(results["counts"]["rows"], 105);
@@ -85,7 +85,7 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_string())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 64);
+    assert_eq!(blocked_ids.len(), 63);
 
     for report in [&investigation, &plan, &results, &classifications] {
         let ids = report["rows"]
@@ -173,6 +173,7 @@ fn remaining_105_high_risk_rows_remain_blocked() -> Result<()> {
     let enabled_after_classification = BTreeSet::from([
         "cursor.hide_on_touch".to_owned(),
         "cursor.hide_on_tablet".to_owned(),
+        "cursor.hide_on_key_press".to_owned(),
     ]);
 
     for row_id in high_risk_ids {

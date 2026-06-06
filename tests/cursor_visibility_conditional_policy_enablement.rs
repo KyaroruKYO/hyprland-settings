@@ -24,8 +24,8 @@ fn cursor_visibility_conditional_enablement_report_enables_only_touch_and_tablet
     assert_eq!(proof["counts"]["rows"], 2);
     assert_eq!(proof["counts"]["rowsEnabled"], 2);
     assert_eq!(proof["counts"]["readyForEnablementRows"], 2);
-    assert_eq!(coverage["counts"]["writableRows"], 277);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
+    assert_eq!(coverage["counts"]["writableRows"], 278);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
     assert_eq!(pipeline["counts"]["totalRows"], 341);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
 
@@ -114,7 +114,6 @@ fn cursor_visibility_conditional_enablement_keeps_other_high_risk_rows_blocked()
     for row_id in [
         "cursor.invisible",
         "cursor.inactive_timeout",
-        "cursor.hide_on_key_press",
         "cursor.no_hardware_cursors",
         "cursor.no_break_fs_vrr",
         "cursor.min_refresh_rate",

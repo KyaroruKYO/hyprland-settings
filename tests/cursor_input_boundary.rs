@@ -144,11 +144,11 @@ fn cursor_input_reports_select_only_theme_sync_future_subset() -> Result<()> {
     let proof_plan =
         read_json("data/reports/cursor-input-subset-readiness-proof-plan.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 277);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 277);
+    assert_eq!(coverage["counts"]["writableRows"], 278);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
     assert_eq!(boundary["counts"]["cursorInputRowsAudited"], 22);
-    assert_eq!(boundary["counts"]["rowsEnabled"], 3);
+    assert_eq!(boundary["counts"]["rowsEnabled"], 4);
     assert_eq!(selection["counts"]["selectedRows"], 1);
     assert_eq!(selection["counts"]["rowsEnabled"], 1);
     assert_eq!(selection["counts"]["cursorInputBlockedRows"], 21);
@@ -278,9 +278,9 @@ fn next_cursor_input_subset_selection_keeps_remaining_rows_blocked() -> Result<(
     let proof_plan =
         read_json("data/reports/next-cursor-input-subset-readiness-proof-plan.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 277);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 277);
+    assert_eq!(coverage["counts"]["writableRows"], 278);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
 
     assert_eq!(smoke_review["counts"]["reviewedRows"], 1);
     assert_eq!(smoke_review["counts"]["enabledRows"], 1);

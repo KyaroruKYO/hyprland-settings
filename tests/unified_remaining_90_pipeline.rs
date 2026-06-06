@@ -34,8 +34,8 @@ fn unified_remaining_90_pipeline_covers_current_blocked_rows() -> Result<()> {
     let official = official_evidence()?;
     let scope_policy = scope_policy()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 277);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
+    assert_eq!(coverage["counts"]["writableRows"], 278);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
     assert_eq!(pipeline["counts"]["rows"], 90);
     assert_eq!(official["counts"]["rows"], 90);
     assert_eq!(scope_policy["counts"]["rows"], 90);
@@ -47,7 +47,7 @@ fn unified_remaining_90_pipeline_covers_current_blocked_rows() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_owned())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 64);
+    assert_eq!(blocked_ids.len(), 63);
 
     for report in [&pipeline, &official, &scope_policy] {
         let ids = report["rows"]
@@ -177,7 +177,11 @@ fn session_rows_are_resolved_and_high_risk_rows_remain_blocked_with_recovery_gat
         .iter()
         .map(|row| (row["rowId"].as_str().unwrap(), row))
         .collect::<std::collections::BTreeMap<_, _>>();
-    let enabled_after_pipeline = ["cursor.hide_on_touch", "cursor.hide_on_tablet"];
+    let enabled_after_pipeline = [
+        "cursor.hide_on_touch",
+        "cursor.hide_on_tablet",
+        "cursor.hide_on_key_press",
+    ];
 
     for row in pipeline["rows"].as_array().unwrap() {
         let row_id = row["rowId"].as_str().unwrap();

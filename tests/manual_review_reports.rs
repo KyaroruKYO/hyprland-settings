@@ -33,9 +33,9 @@ fn manual_review_and_high_risk_reports_have_expected_counts() -> Result<()> {
     let high_risk = high_risk_report()?;
 
     assert_eq!(manual["counts"]["rows"], 0);
-    assert_eq!(high_risk["counts"]["rows"], 64);
+    assert_eq!(high_risk["counts"]["rows"], 63);
     assert_eq!(manual["invariants"]["writableRowsRemain"], 275);
-    assert_eq!(high_risk["invariants"]["writableRowsRemain"], 277);
+    assert_eq!(high_risk["invariants"]["writableRowsRemain"], 278);
 
     Ok(())
 }
@@ -59,7 +59,7 @@ fn manual_review_and_high_risk_reports_do_not_overlap() -> Result<()> {
 
     assert!(manual_ids.is_disjoint(&high_risk_ids));
     assert_eq!(manual_ids.len(), 0);
-    assert_eq!(high_risk_ids.len(), 64);
+    assert_eq!(high_risk_ids.len(), 63);
 
     Ok(())
 }
@@ -149,11 +149,11 @@ fn scalar_coverage_counts_reflect_remaining_scalar_completion() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() == Some("validator-needed"))
         .count();
 
-    assert_eq!(coverage["counts"]["writableRows"], 277);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
-    assert_eq!(writable, 277);
+    assert_eq!(coverage["counts"]["writableRows"], 278);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(writable, 278);
     assert_eq!(manual, 0);
-    assert_eq!(high_risk, 64);
+    assert_eq!(high_risk, 63);
     assert_eq!(parser_needed, 0);
     assert_eq!(validator_needed, 0);
 

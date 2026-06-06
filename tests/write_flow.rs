@@ -12,7 +12,8 @@ use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::{CurrentConfigSnapshot, CurrentValueSourceStatus};
 use hyprland_settings::pending_change::ACTIVE_PENDING_CHANGE_SETTING;
 use hyprland_settings::write_classification::{
-    finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS, CURSOR_THEME_SYNC_HIGH_RISK_WRITABLE_ROWS,
+    finite_choice_options, CONFLICT_FINITE_CHOICE_ROWS,
+    CURSOR_HIDE_ON_KEY_PRESS_HIGH_RISK_WRITABLE_ROWS, CURSOR_THEME_SYNC_HIGH_RISK_WRITABLE_ROWS,
     CURSOR_VISIBILITY_CONDITIONAL_HIGH_RISK_WRITABLE_ROWS, ECOSYSTEM_HIGH_RISK_WRITABLE_ROWS,
     MONITOR_OUTPUT_ROWS, REMAINING_105_FINITE_CHOICE_ROWS, SAFE_WRITABLE_ROWS,
     SOURCE_BACKED_INPUT_ROWS, XWAYLAND_SCALING_HIGH_RISK_WRITABLE_ROWS,
@@ -187,6 +188,50 @@ fn cursor_visibility_conditional_rows_project_stronger_watchdog_warning() {
             summary.contains("mouse input"),
             "{row_id} should show mouse-independent recovery requirements"
         );
+    }
+}
+
+#[test]
+fn cursor_hide_on_key_press_projects_keyboard_token_watchdog_warning() {
+    for row_id in CURSOR_HIDE_ON_KEY_PRESS_HIGH_RISK_WRITABLE_ROWS {
+        let path = PathBuf::from(format!("/tmp/{row_id}.conf"));
+        let snapshot = snapshot_for(&path, &format!("{} = false\n", row_id.replace('.', ":")));
+        let current = snapshot.value_for(row_id);
+        let projection = pending_projection_for_value(row_id, &current, "true");
+        let summary = projection.review_summary.join("\n");
+        assert!(projection.can_review);
+        assert!(
+            summary.contains("cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset"),
+            "{row_id} should show the keyboard-token recovery bucket"
+        );
+        assert!(
+            summary.contains("dead-man"),
+            "{row_id} should show the dead-man approval gate"
+        );
+        assert!(
+            summary.contains("watchdog"),
+            "{row_id} should show the watchdog requirement"
+        );
+        assert!(
+            summary.contains("Cursor may disappear while typing"),
+            "{row_id} should show the keyboard-trigger cursor warning"
+        );
+        assert!(
+            summary.contains("CLI token"),
+            "{row_id} should show CLI-token confirmation"
+        );
+        for required in [
+            "visible cursor",
+            "mouse input",
+            "Hyprland keybinds",
+            "pointer focus",
+            "workspace focus",
+        ] {
+            assert!(
+                summary.contains(required),
+                "{row_id} should show recovery independence from {required}"
+            );
+        }
     }
 }
 

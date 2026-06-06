@@ -17,23 +17,23 @@ fn cursor_visibility_reports_cover_exact_target_rows_without_enablement() -> Res
     let recommendation =
         read_json("data/reports/cursor-visibility-next-subset-recommendation.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 277);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 277);
+    assert_eq!(coverage["counts"]["writableRows"], 278);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
 
     for report in [&analysis, &proof] {
         assert_eq!(report["counts"]["cursorVisibilityRowsAnalyzed"], 5);
         assert_eq!(report["counts"]["rowsRepresented"], 5);
-        assert_eq!(report["counts"]["highRiskBlockedRows"], 5);
-        assert_eq!(report["counts"]["safeWriteSupportedFalseRows"], 5);
-        assert_eq!(report["counts"]["rowsEnabled"], 0);
-        assert_eq!(report["counts"]["finalWritableRows"], 275);
-        assert_eq!(report["counts"]["finalBlockedRows"], 66);
-        assert_eq!(report["counts"]["cursorInputBlockedRows"], 21);
+        assert_eq!(report["counts"]["highRiskBlockedRows"], 2);
+        assert_eq!(report["counts"]["safeWriteSupportedFalseRows"], 2);
+        assert_eq!(report["counts"]["rowsEnabled"], 3);
+        assert_eq!(report["counts"]["finalWritableRows"], 278);
+        assert_eq!(report["counts"]["finalBlockedRows"], 63);
+        assert_eq!(report["counts"]["cursorInputBlockedRows"], 18);
         assert_eq!(report["counts"]["displayRenderBlockedRows"], 23);
         assert_eq!(report["counts"]["debugCrashBlockedRows"], 22);
-        assert_eq!(report["counts"]["writeAllowlistChanged"], false);
-        assert_eq!(report["counts"]["productionBehaviorChanged"], false);
+        assert_eq!(report["counts"]["writeAllowlistChanged"], true);
+        assert_eq!(report["counts"]["productionBehaviorChanged"], true);
         assert_eq!(report["counts"]["recoveryGateWeakenedRows"], 0);
         assert_eq!(report["counts"]["hyprmodRecoveryEvidenceRows"], 0);
     }
@@ -42,13 +42,13 @@ fn cursor_visibility_reports_cover_exact_target_rows_without_enablement() -> Res
     assert_eq!(recommendation["counts"]["selectedRows"], 2);
     assert_eq!(recommendation["counts"]["rejectedRows"], 3);
     assert_eq!(recommendation["counts"]["rowsEnabled"], 0);
-    assert_eq!(recommendation["counts"]["finalWritableRows"], 275);
-    assert_eq!(recommendation["counts"]["finalBlockedRows"], 66);
-    assert_eq!(recommendation["counts"]["cursorInputBlockedRows"], 21);
+    assert_eq!(recommendation["counts"]["finalWritableRows"], 278);
+    assert_eq!(recommendation["counts"]["finalBlockedRows"], 63);
+    assert_eq!(recommendation["counts"]["cursorInputBlockedRows"], 18);
     assert_eq!(recommendation["counts"]["displayRenderBlockedRows"], 23);
     assert_eq!(recommendation["counts"]["debugCrashBlockedRows"], 22);
-    assert_eq!(recommendation["counts"]["writeAllowlistChanged"], false);
-    assert_eq!(recommendation["counts"]["productionBehaviorChanged"], false);
+    assert_eq!(recommendation["counts"]["writeAllowlistChanged"], true);
+    assert_eq!(recommendation["counts"]["productionBehaviorChanged"], true);
     assert_eq!(recommendation["counts"]["recoveryGateWeakenedRows"], 0);
 
     let expected = [
@@ -100,8 +100,20 @@ fn cursor_visibility_rows_keep_high_risk_recovery_requirements() -> Result<()> {
     ];
 
     for row in analysis["rows"].as_array().expect("analysis rows") {
-        assert_eq!(row["writeStatus"].as_str(), Some("high-risk"));
-        assert_eq!(row["safeWriteSupported"].as_bool(), Some(false));
+        let row_id = row["rowId"].as_str().unwrap();
+        if [
+            "cursor.hide_on_touch",
+            "cursor.hide_on_tablet",
+            "cursor.hide_on_key_press",
+        ]
+        .contains(&row_id)
+        {
+            assert_eq!(row["writeStatus"].as_str(), Some("writable"));
+            assert_eq!(row["safeWriteSupported"].as_bool(), Some(true));
+        } else {
+            assert_eq!(row["writeStatus"].as_str(), Some("high-risk"));
+            assert_eq!(row["safeWriteSupported"].as_bool(), Some(false));
+        }
         assert_eq!(row["strongerWarningRequired"].as_bool(), Some(true));
         assert_eq!(row["hyprmodRecoveryEvidenceFound"].as_bool(), Some(false));
         assert!(row["hyprmodMetadataAdopted"]["label"].as_str().is_some());

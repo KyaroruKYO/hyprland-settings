@@ -38,14 +38,14 @@ fn all_341_pipeline_report_matches_current_scalar_counts() -> Result<()> {
 
     assert_eq!(coverage["counts"]["totalScalarRows"], 341);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 277);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 64);
+    assert_eq!(coverage["counts"]["writableRows"], 278);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
 
     assert_eq!(pipeline["counts"]["totalRows"], 341);
     assert_eq!(pipeline["counts"]["readableRows"], 341);
-    assert_eq!(pipeline["counts"]["writableRows"], 277);
-    assert_eq!(pipeline["counts"]["blockedRows"], 64);
-    assert_eq!(pipeline["counts"]["safeWritableRowsFromRustTable"], 277);
+    assert_eq!(pipeline["counts"]["writableRows"], 278);
+    assert_eq!(pipeline["counts"]["blockedRows"], 63);
+    assert_eq!(pipeline["counts"]["safeWritableRowsFromRustTable"], 278);
     assert_eq!(pipeline["counts"]["highRiskRows"], 72);
     assert_eq!(pipeline["counts"]["sessionRuntimeSensitiveRows"], 0);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
@@ -53,24 +53,24 @@ fn all_341_pipeline_report_matches_current_scalar_counts() -> Result<()> {
     assert_eq!(pipeline["counts"]["writeAllowlistChanged"], true);
     assert_eq!(pipeline["counts"]["productionBehaviorChanged"], true);
 
-    assert_eq!(writable_proof["counts"]["writableRows"], 277);
+    assert_eq!(writable_proof["counts"]["writableRows"], 278);
     assert_eq!(
         writable_proof["counts"]["safeWritableRowsFromRustTable"],
-        277
+        278
     );
     assert_eq!(writable_proof["counts"]["metadataGapRows"], 0);
     assert_eq!(writable_proof["counts"]["behaviorMismatchRows"], 0);
 
     assert_eq!(audit["counts"]["totalRows"], 341);
-    assert_eq!(audit["counts"]["writableRows"], 277);
-    assert_eq!(audit["counts"]["blockedRows"], 64);
+    assert_eq!(audit["counts"]["writableRows"], 278);
+    assert_eq!(audit["counts"]["blockedRows"], 63);
     assert_eq!(audit["counts"]["metadataGapRows"], 0);
     assert_eq!(audit["counts"]["behaviorMismatchRows"], 0);
     assert_eq!(audit["counts"]["rowsNeedingFutureCleanup"], 0);
     assert_eq!(audit["counts"]["writeAllowlistChanged"], true);
     assert_eq!(audit["counts"]["productionBehaviorChanged"], true);
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 277);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
 
     Ok(())
 }
@@ -246,6 +246,28 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
             );
             assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
             assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
+        } else if row["proofSource"].as_str()
+            == Some("cursor-hide-on-key-press-usability-proof.v0.55.2.json")
+        {
+            assert_eq!(
+                row["gateStatus"].as_str(),
+                Some("passed-cursor-hide-on-key-press-keyboard-token-watchdog-gate"),
+                "{row_id} should use the cursor visibility keyboard-token watchdog gate"
+            );
+            assert_eq!(
+                row["applyPath"].as_str(),
+                Some("persistent-config-write-with-backup-reread-and-cursor-visibility-keyboard-token-watchdog"),
+                "{row_id} should record the keyboard-token watchdog apply path"
+            );
+            assert!(
+                row["recoveryStrategy"]
+                    .as_str()
+                    .unwrap()
+                    .contains("keyboard-token-confirmation"),
+                "{row_id} should record keyboard-token watchdog recovery"
+            );
+            assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
+            assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
         } else if row["scope"].as_str().is_some_and(|scope| {
             matches!(
                 scope,
@@ -286,6 +308,7 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
                 | Some("xwayland-scaling-policy-smoke-subset-proof.v0.55.2.json")
                 | Some("cursor-theme-sync-policy-smoke-subset-proof.v0.55.2.json")
                 | Some("cursor-visibility-conditional-policy-proof.v0.55.2.json")
+                | Some("cursor-hide-on-key-press-usability-proof.v0.55.2.json")
         ) {
             assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
             assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
@@ -349,8 +372,8 @@ fn blocked_pipeline_rows_remain_blocked_with_policy_metadata() -> Result<()> {
         }
     }
 
-    assert_eq!(blocked, 64);
-    assert_eq!(high_risk, 64);
+    assert_eq!(blocked, 63);
+    assert_eq!(high_risk, 63);
 
     Ok(())
 }
@@ -403,6 +426,7 @@ fn backfill_audit_records_no_behavior_or_allowlist_changes() -> Result<()> {
                 "cursor.sync_gsettings_theme",
                 "cursor.hide_on_touch",
                 "cursor.hide_on_tablet",
+                "cursor.hide_on_key_press",
             ]
             .contains(&row_id)
         }) {

@@ -6390,6 +6390,32 @@
       "testsPresent": true,
       "productionBehaviorChanged": true,
       "writeAllowlistChanged": true
+    },
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "officialSetting": "cursor.hide_on_key_press",
+      "currentWriteStatus": "writable",
+      "validatorRef": "boolean",
+      "validatorAuthority": "app-validator-authoritative-plus-cursor-visibility-keyboard-token-watchdog-policy",
+      "scope": "dual-runtime-and-persistent",
+      "applyPath": "persistent-config-write-with-backup-reread-and-cursor-visibility-keyboard-token-watchdog",
+      "rereadOracle": "file-reread",
+      "recoveryStrategy": "backup-rollback-plus-independent-dead-man-watchdog-plus-keyboard-token-confirmation",
+      "approvalGate": "advanced-opt-in-plus-cursor-visibility-keyboard-trigger-dead-man-watchdog-confirm-or-revert",
+      "preflightProofStatus": "cursor-hide-on-key-press-preflight-proof-passed",
+      "commitProofStatus": "cursor-hide-on-key-press-keyboard-token-watchdog-fixture-proof-passed",
+      "gateStatus": "passed-cursor-hide-on-key-press-keyboard-token-watchdog-gate",
+      "pipelineMetadataComplete": true,
+      "metadataGaps": [],
+      "behaviorMismatch": [],
+      "proofSource": "cursor-hide-on-key-press-usability-proof.v0.55.2.json",
+      "watchdogProofSource": "cursor-hide-on-key-press-watchdog-proof.v0.55.2.json",
+      "productionValueKind": "Boolean",
+      "safeWritableTablePresent": true,
+      "coverageWritable": true,
+      "testsPresent": true,
+      "productionBehaviorChanged": true,
+      "writeAllowlistChanged": true
     }
   ]
 }
