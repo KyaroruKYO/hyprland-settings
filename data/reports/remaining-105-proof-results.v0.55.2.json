@@ -6725,7 +6725,7 @@
     {
       "rowId": "cursor.sync_gsettings_theme",
       "officialSetting": "cursor.sync_gsettings_theme",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "riskClass": "cursor_input_risk",
       "batch": "high-risk",
       "proofStrategy": "temp-config-technical-proof-plus-high-risk-policy-review",
@@ -6812,7 +6812,8 @@
       "sourceBackedDiscoveryNeeded": false,
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
-      "technicalTempConfigConclusion": "all-candidates-pass"
+      "technicalTempConfigConclusion": "all-candidates-pass",
+      "enabledByCursorThemeSyncSmokeSubset": true
     },
     {
       "rowId": "cursor.warp_back_after_non_mouse_input",

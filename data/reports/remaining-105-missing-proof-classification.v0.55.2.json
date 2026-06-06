@@ -61,7 +61,8 @@
       "needs-finite-choice-validator": 7,
       "proof-complete-high-risk-blocked": 67,
       "needs-high-risk-recovery-design": 67
-    }
+    },
+    "finalWritableRows": 275
   },
   "rows": [
     {
@@ -2680,7 +2681,7 @@
     {
       "rowId": "cursor.sync_gsettings_theme",
       "officialSetting": "cursor.sync_gsettings_theme",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "riskClass": "cursor_input_risk",
       "batch": "high-risk",
       "controlKind": "toggle",
@@ -2705,17 +2706,12 @@
       "technicallyWritableButPolicyBlocked": true,
       "blockedOnlyByPolicy": false,
       "blockedByMissingValidatorEditorOrTestCoverage": true,
-      "missingProofCategories": [
-        "proof-complete-high-risk-blocked",
-        "needs-high-risk-recovery-design",
-        "needs-validator-implementation",
-        "needs-editor-projection",
-        "needs-invalid-value-tests"
-      ],
+      "missingProofCategories": [],
       "exactNextStepToMakeWritable": "Create a dedicated high-risk recovery/rollback design, decide warning/advanced-mode policy, then add validators and rerun temp-config proof before enablement.",
       "activeConfigModified": false,
       "activeRuntimeModified": false,
-      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design."
+      "notes": "Temp-config proof is evidence of config validity only. Production write enablement still requires validator/editor/tests and any applicable policy/recovery design.",
+      "enabledByCursorThemeSyncSmokeSubset": true
     },
     {
       "rowId": "cursor.warp_back_after_non_mouse_input",

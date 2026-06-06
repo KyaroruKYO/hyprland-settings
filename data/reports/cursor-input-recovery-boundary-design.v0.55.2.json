@@ -10,15 +10,15 @@
   ],
   "counts": {
     "cursorInputRowsAudited": 22,
-    "currentWritableRows": 274,
-    "currentBlockedRows": 67,
-    "cursorInputBlockedRows": 22,
+    "currentWritableRows": 275,
+    "currentBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
     "displayRenderBlockedRows": 23,
     "debugCrashBlockedRows": 22,
     "selectedFutureSubsetRows": 1,
-    "rowsEnabled": 0,
-    "writeAllowlistChanged": false,
-    "productionBehaviorChanged": false,
+    "rowsEnabled": 1,
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true,
     "byCursorInputRiskClass": {
       "cursor-visibility-critical": 5,
       "hardware-cursor-critical": 5,
@@ -820,12 +820,12 @@
     {
       "rowId": "cursor.sync_gsettings_theme",
       "officialSetting": "cursor.sync_gsettings_theme",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "valueType": "bool",
       "controlKind": "toggle",
       "validatorReadiness": "known-bool",
       "existingTempConfigProof": true,
-      "watchdogProofNeeded": true,
+      "watchdogProofNeeded": false,
       "canHideOrRemoveCursorVisibility": false,
       "canBreakCursorRendering": false,
       "canBreakPointerMovement": false,
@@ -839,7 +839,7 @@
       "excludedByRiskClass": false,
       "excludedReason": null,
       "candidateForFirstCursorInputSubset": true,
-      "selectedForFutureSubset": true,
+      "selectedForFutureSubset": false,
       "exactProofRequiredBeforeEnablement": [
         "validator proof",
         "invalid rejection proof",
@@ -853,7 +853,8 @@
         "UI/review projection with cursor/input warning",
         "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
       ],
-      "notes": "Selected for a future proof sprint."
+      "notes": "Enabled by cursor theme sync policy smoke subset.",
+      "enabledBySmokeSubset": true
     },
     {
       "rowId": "cursor.warp_back_after_non_mouse_input",
@@ -899,5 +900,5 @@
   "reloadRuns": 0,
   "evalRuns": 0,
   "luaExecutions": 0,
-  "conclusion": "Cursor/input recovery boundary can be represented in fixture mode, but live execution remains disabled. Recovery must not depend on mouse input, visible cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI."
+  "conclusion": "cursor.sync_gsettings_theme passed the cursor/input smoke enablement proof and is now writable behind the high-risk watchdog gate; all other cursor/input high-risk rows remain blocked."
 }

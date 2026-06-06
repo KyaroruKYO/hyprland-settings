@@ -8,14 +8,14 @@
   "counts": {
     "selectedRows": 1,
     "plannedRows": 1,
-    "rowsEnabled": 0,
-    "finalWritableRows": 274,
-    "finalBlockedRows": 67,
-    "cursorInputBlockedRows": 22,
+    "rowsEnabled": 1,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
     "displayRenderBlockedRows": 23,
     "debugCrashBlockedRows": 22,
-    "writeAllowlistChanged": false,
-    "productionBehaviorChanged": false
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true
   },
   "selectedSubsetName": "cursor-theme-sync-policy-smoke-subset",
   "rows": [
@@ -38,7 +38,12 @@
         "UI/review projection with cursor/input warning",
         "independence proof: no mouse, visible cursor, app UI, Hyprland keybind, pointer focus, or workspace focus dependency"
       ],
-      "enablementStatus": "future-proof-required-not-enabled"
+      "enablementStatus": "future-proof-required-not-enabled",
+      "currentWriteStatus": "writable",
+      "watchdogProofNeeded": false,
+      "selectedForFutureSubset": false,
+      "enabledBySmokeSubset": true,
+      "notes": "Enabled by cursor theme sync policy smoke subset."
     }
   ],
   "proofRequirementsForFutureSelectedSubset": [
@@ -56,7 +61,7 @@
     "no reload/eval/Lua",
     "no active runtime mutation during tests"
   ],
-  "planConclusion": "A one-row future subset is selected for proof only: cursor.sync_gsettings_theme. It remains blocked until a later enablement sprint proves every required gate.",
+  "planConclusion": "cursor.sync_gsettings_theme completed the future proof plan and is enabled behind the cursor/input watchdog gate; no other cursor/input rows are enabled.",
   "realConfigModified": false,
   "activeRuntimeModified": false,
   "reloadRuns": 0,

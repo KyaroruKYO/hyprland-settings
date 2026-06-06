@@ -9,10 +9,10 @@
     "selectedRows": 0,
     "plannedRows": 0,
     "rowsEnabled": 0,
-    "finalWritableRows": 274,
-    "finalBlockedRows": 67,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
     "displayRenderBlockedRows": 23,
-    "cursorInputBlockedRows": 22,
+    "cursorInputBlockedRows": 21,
     "debugCrashBlockedRows": 22,
     "writeAllowlistChanged": false,
     "productionBehaviorChanged": false

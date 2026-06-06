@@ -10,9 +10,9 @@
     "displayRenderRows": 25,
     "rowsEnabled": 2,
     "displayRenderRowsStillBlocked": 23,
-    "currentWritableRows": 274,
-    "currentBlockedRows": 67,
-    "cursorInputBlockedRows": 22,
+    "currentWritableRows": 275,
+    "currentBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
     "debugCrashBlockedRows": 22,
     "liveExecutionEnabled": false,
     "byDisplayRenderRiskClass": {

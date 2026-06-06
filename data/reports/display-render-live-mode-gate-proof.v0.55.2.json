@@ -15,8 +15,8 @@
     "mouseOnlyConfirmationRejected": true,
     "tempFixturePathCanPassBoundaryRepresentation": true,
     "rowsEnabled": 2,
-    "finalWritableRows": 274,
-    "finalBlockedRows": 67,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
     "xwaylandScalingWatchdogProofPassed": true
   },
   "liveBoundaryFields": {

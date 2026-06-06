@@ -71,8 +71,8 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let results = proof_results()?;
     let classifications = classifications()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 274);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 67);
+    assert_eq!(coverage["counts"]["writableRows"], 275);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 66);
     assert_eq!(investigation["counts"]["rows"], 105);
     assert_eq!(plan["counts"]["rows"], 105);
     assert_eq!(results["counts"]["rows"], 105);
@@ -85,7 +85,7 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_string())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 67);
+    assert_eq!(blocked_ids.len(), 66);
 
     for report in [&investigation, &plan, &results, &classifications] {
         let ids = report["rows"]
@@ -162,7 +162,7 @@ fn remaining_105_high_risk_rows_remain_blocked() -> Result<()> {
         .filter(|row| row["currentWriteStatus"].as_str() == Some("high-risk"))
         .map(|row| row["rowId"].as_str().unwrap().to_string())
         .collect::<BTreeSet<_>>();
-    assert_eq!(high_risk_ids.len(), 67);
+    assert_eq!(high_risk_ids.len(), 66);
 
     let coverage_by_id = coverage["rows"]
         .as_array()

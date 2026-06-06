@@ -16,9 +16,9 @@ fn next_display_render_selection_reports_exist_and_keep_counts_unchanged() -> Re
     let proof_plan =
         read_json("data/reports/next-display-render-subset-readiness-proof-plan.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 274);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 67);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 274);
+    assert_eq!(coverage["counts"]["writableRows"], 275);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 66);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 275);
 
     assert_eq!(smoke["counts"]["reviewedRows"], 2);
     assert_eq!(smoke["counts"]["enabledRows"], 2);
@@ -32,10 +32,10 @@ fn next_display_render_selection_reports_exist_and_keep_counts_unchanged() -> Re
     );
     assert_eq!(selection["counts"]["selectedRows"], 0);
     assert_eq!(selection["counts"]["rowsEnabled"], 0);
-    assert_eq!(selection["counts"]["finalWritableRows"], 274);
-    assert_eq!(selection["counts"]["finalBlockedRows"], 67);
+    assert_eq!(selection["counts"]["finalWritableRows"], 275);
+    assert_eq!(selection["counts"]["finalBlockedRows"], 66);
     assert_eq!(selection["counts"]["displayRenderBlockedRows"], 23);
-    assert_eq!(selection["counts"]["cursorInputBlockedRows"], 22);
+    assert_eq!(selection["counts"]["cursorInputBlockedRows"], 21);
     assert_eq!(selection["counts"]["debugCrashBlockedRows"], 22);
     assert_eq!(selection["counts"]["writeAllowlistChanged"], false);
     assert_eq!(selection["counts"]["productionBehaviorChanged"], false);

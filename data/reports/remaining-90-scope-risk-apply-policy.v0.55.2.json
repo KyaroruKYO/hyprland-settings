@@ -923,7 +923,7 @@
     {
       "rowId": "cursor.sync_gsettings_theme",
       "officialSetting": "cursor.sync_gsettings_theme",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "scope": "dual-runtime-and-persistent",
       "applyPath": "blocked-until-dead-man-or-dedicated-policy",
       "rereadOracle": "runtime-getoption-and-file-reread",
@@ -932,7 +932,8 @@
       "recoveryStrategy": "independent watchdog must restore without mouse/cursor/keybind dependency",
       "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
       "canEnableInThisSprint": false,
-      "whyBlockedNow": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved."
+      "whyBlockedNow": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved.",
+      "enabledByCursorThemeSyncSmokeSubset": true
     },
     {
       "rowId": "cursor.warp_back_after_non_mouse_input",

@@ -4,14 +4,14 @@
   "hyprlandVersion": "0.55.2",
   "sourceCoverageReport": "data/reports/scalar-read-write-coverage.v0.55.2.json",
   "counts": {
-    "rows": 67,
+    "rows": 66,
     "byRiskClass": {
-      "cursor_input_risk": 22,
+      "cursor_input_risk": 21,
       "debug_crash_risk": 22,
       "display_render_session_risk": 23
     },
     "byRecommendedAction": {
-      "not-recommended": 22,
+      "not-recommended": 21,
       "requires-dedicated-design": 23,
       "requires-live-hyprland-validation": 22
     }
@@ -19,9 +19,9 @@
   "invariants": {
     "noRowsEnabledByThisReport": true,
     "sourceWriteStatus": "high-risk",
-    "writableRowsRemain": 274,
+    "writableRowsRemain": 275,
     "notes": "Ecosystem/permission bucket enabled after production-capable watchdog proof; remaining high-risk rows stay blocked.",
-    "blockedWriteRowsRemain": 67
+    "blockedWriteRowsRemain": 66
   },
   "items": [
     {
@@ -652,22 +652,6 @@
       "rowId": "cursor.use_cpu_buffer",
       "officialSetting": "cursor.use_cpu_buffer",
       "controlKind": "slider",
-      "valueFamily": "none",
-      "parserStatus": "blocked_by_risk_review",
-      "riskClass": "cursor_input_risk",
-      "reportOnly": true,
-      "currentWriteBlocker": "report-only/high-risk row: cursor_input_risk",
-      "highRiskReason": "Cursor/input settings can affect pointer visibility, warping, zoom, touch/tablet visibility, or hardware cursor behavior.",
-      "recommendedAction": "requires-live-hyprland-validation",
-      "whyNotWritableYet": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
-      "whatWouldBeRequired": "Dedicated live pointer/keyboard recovery testing, escape hatch documentation, and explicit user approval.",
-      "userApprovalRequired": true,
-      "notes": "Keep blocked in the current app. This report is planning metadata only."
-    },
-    {
-      "rowId": "cursor.sync_gsettings_theme",
-      "officialSetting": "cursor.sync_gsettings_theme",
-      "controlKind": "toggle",
       "valueFamily": "none",
       "parserStatus": "blocked_by_risk_review",
       "riskClass": "cursor_input_risk",

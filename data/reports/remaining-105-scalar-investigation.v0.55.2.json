@@ -35,7 +35,7 @@
     "byRiskClass": {
       "advanced": 33,
       "display_render_session_risk": 25,
-      "cursor_input_risk": 22,
+      "cursor_input_risk": 21,
       "ecosystem_permission_risk": 3,
       "debug_crash_risk": 22
     },
@@ -2648,7 +2648,7 @@
       "officialSetting": "cursor.sync_gsettings_theme",
       "readStatus": "readable",
       "canParseRead": true,
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "currentWriteBlocker": "report-only/high-risk row: cursor_input_risk",
       "riskClass": "cursor_input_risk",
       "reportOnly": true,
@@ -2657,8 +2657,8 @@
       "valueFamily": "none",
       "parserStatus": "blocked_by_risk_review",
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
       "companionSchemaType": "bool",
       "companionDefault": true,
@@ -2675,7 +2675,8 @@
       "previousNextRequiredProof": "Dedicated live pointer/keyboard recovery testing, escape hatch documentation, and explicit user approval.",
       "sourceReportRecommendedAction": "requires-live-hyprland-validation",
       "sourceRiskReason": "Cursor/input settings can affect pointer visibility, warping, zoom, touch/tablet visibility, or hardware cursor behavior.",
-      "initialInvestigationStatus": "pending-temp-config-proof"
+      "initialInvestigationStatus": "pending-temp-config-proof",
+      "enabledByCursorThemeSyncSmokeSubset": true
     },
     {
       "rowId": "cursor.warp_back_after_non_mouse_input",

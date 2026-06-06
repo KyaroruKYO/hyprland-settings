@@ -10,10 +10,10 @@
   ],
   "counts": {
     "startingWritableRows": 94,
-    "finalWritableRows": 274,
+    "finalWritableRows": 275,
     "startingBlockedRows": 247,
-    "finalBlockedRows": 67,
-    "enabledRows": 180,
+    "finalBlockedRows": 66,
+    "enabledRows": 181,
     "enabledByBatch": {
       "batch-b-likely-safe-numerics": 33,
       "batch-c-likely-safe-enums": 7,
@@ -22,10 +22,10 @@
       "batch-g-session-runtime-sensitive": 16
     },
     "remainingBlockedByBatch": {
-      "high-risk": 67
+      "high-risk": 66
     },
     "remainingBlockedByReason": {
-      "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.": 67
+      "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.": 66
     },
     "hyprlandVerifyConfigPassed": 171,
     "hyprlandVerifyConfigFailed": 0,
@@ -6587,10 +6587,11 @@
         "activeRuntimeModified": false
       },
       "finalWriteStatus": "high-risk",
-      "enabled": false,
+      "enabled": true,
       "blocker": "Report-only/high-risk classification remains in force; enabling this row could affect recovery, rendering, input, debug behavior, or user policy.",
       "nextRequiredProof": "Dedicated live pointer/keyboard recovery testing, escape hatch documentation, and explicit user approval.",
-      "notes": "High-risk rows remain blocked by policy."
+      "notes": "High-risk rows remain blocked by policy.",
+      "enabledByCursorThemeSyncSmokeSubset": true
     },
     {
       "rowId": "cursor.warp_back_after_non_mouse_input",

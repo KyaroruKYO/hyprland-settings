@@ -3,23 +3,23 @@
   "schemaVersion": 1,
   "generatedAt": "2026-06-06T06:11:32Z",
   "counts": {
-    "remainingBlockedRows": 67,
+    "remainingBlockedRows": 66,
     "displayRenderBlockedRows": 23,
-    "cursorInputBlockedRows": 22,
+    "cursorInputBlockedRows": 21,
     "debugCrashBlockedRows": 22,
-    "rowsEnabled": 2,
-    "finalWritableRows": 274,
-    "finalBlockedRows": 67,
-    "recommendedNextBucket": "display-render-recovery-subset",
+    "rowsEnabled": 3,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "recommendedNextBucket": "none-selected-after-cursor-theme-sync-smoke-subset",
     "separateWatchdogProcessProofPassed": true,
     "displayRenderLiveBoundaryRepresented": true,
     "displayRenderRowsEnabled": 2,
     "selectedDisplayRenderSubsetRows": 0,
     "xwaylandScalingRowsEnabled": 2,
-    "selectedCursorInputSubsetRows": 1,
-    "cursorInputRowsEnabled": 0
+    "selectedCursorInputSubsetRows": 0,
+    "cursorInputRowsEnabled": 1
   },
-  "recommendation": "Cursor/input boundary design selected cursor.sync_gsettings_theme as a future one-row cursor-theme-sync-policy smoke subset. No rows were enabled; display/render and debug/crash remain blocked.",
+  "recommendation": "cursor.sync_gsettings_theme is now enabled as the first cursor/input smoke subset. Remaining display/render, cursor/input, and debug/crash rows stay blocked pending later dedicated proof.",
   "buckets": [
     {
       "bucket": "display-render-recovery",
@@ -61,7 +61,10 @@
       "canSplitSmaller": true,
       "recommendedReadiness": "wait-until-input-independent-confirmation-is-proven",
       "exactBlockerBeforeEnablement": "confirmation and recovery cannot depend on mouse, cursor visibility, Hyprland keybinds, or app UI",
-      "recommendedSplit": "split pointer/cursor rows away from lower-impact input toggles after watchdog process proof"
+      "recommendedSplit": "split pointer/cursor rows away from lower-impact input toggles after watchdog process proof",
+      "blockedRows": 21,
+      "rowsEnabled": 1,
+      "readiness": "first-theme-sync-smoke-row-enabled; remaining rows require dedicated recovery proof"
     },
     {
       "bucket": "debug-crash-recovery",
@@ -85,7 +88,7 @@
       "recommendedSplit": "split debug toggles from explicit crash/testing controls; keep not-recommended rows blocked until dedicated approval"
     }
   ],
-  "nextBlockerBeforeEnablement": "Run a dedicated cursor/input enablement sprint proving validator, fixture/temp config, independent watchdog, and recovery independence from mouse/cursor/keybind/app UI before enabling cursor.sync_gsettings_theme.",
-  "recommendedNextSubset": "cursor-theme-sync-policy-smoke-subset",
-  "recommendedNextBucket": "cursor-input-recovery-subset"
+  "nextBlockerBeforeEnablement": "Select and prove a new small high-risk subset; visibility, hardware cursor, warping, zoom, monitor targeting, display/render, and debug/crash rows remain blocked.",
+  "recommendedNextSubset": "none-yet",
+  "recommendedNextBucket": "none-selected-after-cursor-theme-sync-smoke-subset"
 }

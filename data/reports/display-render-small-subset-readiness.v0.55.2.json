@@ -6,10 +6,10 @@
     "displayRenderRows": 25,
     "selectedRows": 2,
     "rowsEnabled": 2,
-    "finalWritableRows": 274,
-    "finalBlockedRows": 67,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
     "displayRenderBlockedRows": 23,
-    "cursorInputBlockedRows": 22,
+    "cursorInputBlockedRows": 21,
     "debugCrashBlockedRows": 22
   },
   "recommendedSubsetName": null,

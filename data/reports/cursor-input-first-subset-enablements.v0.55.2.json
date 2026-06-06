@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "0.55.2",
+  "generatedAtUnixSeconds": 1780728794,
+  "subsetName": "cursor-theme-sync-policy-smoke-subset",
+  "counts": {
+    "attemptedRows": 1,
+    "enabledRows": 1,
+    "notEnabledRows": 0,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "cursorInputRowsStillBlocked": 21,
+    "displayRenderRowsStillBlocked": 23,
+    "debugCrashRowsStillBlocked": 22,
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true,
+    "realConfigModifiedDuringTests": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "cursor.sync_gsettings_theme",
+      "officialSetting": "cursor.sync_gsettings_theme",
+      "attempted": true,
+      "enabled": true,
+      "notEnabledReason": null,
+      "validatorProofPassed": true,
+      "invalidRejectionProofPassed": true,
+      "fixtureWriteRereadProofPassed": true,
+      "tempConfigProofPassed": true,
+      "watchdogArmBeforeMutationProofPassed": true,
+      "separateProcessConfirmProofPassed": true,
+      "separateProcessTimeoutRestoreProofPassed": true,
+      "wrongTokenFailureProofPassed": true,
+      "recoveryIndependenceProofPassed": true,
+      "approvalGate": "advanced-opt-in-plus-cursor-input-dead-man-watchdog-confirm-or-revert",
+      "recoveryBucket": "cursor-input-recovery:cursor-theme-sync-policy-smoke-subset"
+    }
+  ],
+  "safety": {
+    "realConfigModifiedDuringTests": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "anythingPushed": false,
+    "mainTouched": false
+  }
+}

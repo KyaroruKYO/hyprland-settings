@@ -10,24 +10,25 @@
   ],
   "counts": {
     "rows": 72,
-    "rowsEnabled": 5,
-    "finalWritableRows": 274,
-    "finalBlockedRows": 67,
-    "highRiskRowsStillBlocked": 67,
+    "rowsEnabled": 6,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "highRiskRowsStillBlocked": 66,
     "byRiskClass": {
-      "cursor_input_risk": 22,
+      "cursor_input_risk": 21,
       "debug_crash_risk": 22,
       "display_render_session_risk": 25,
       "ecosystem_permission_risk": 3
     },
     "byRecoveryBucket": {
-      "cursor-input-recovery": 22,
+      "cursor-input-recovery": 21,
       "debug-crash-recovery": 22,
       "display-render-recovery": 25,
       "ecosystem-permission-policy": 3
     },
     "ecosystemPermissionRowsEnabled": 3,
-    "displayRenderRowsEnabled": 2
+    "displayRenderRowsEnabled": 2,
+    "cursorInputRowsEnabled": 1
   },
   "deadManModel": {
     "requiredFields": [
@@ -1032,12 +1033,12 @@
     {
       "rowId": "cursor.sync_gsettings_theme",
       "officialSetting": "cursor.sync_gsettings_theme",
-      "writeStatus": "high-risk",
+      "writeStatus": "writable",
       "riskClass": "cursor_input_risk",
       "recoveryBucket": "cursor-input-recovery",
       "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
-      "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
-      "currentWriteBlocker": "report-only/high-risk row: cursor_input_risk",
+      "approvalGate": "advanced-opt-in-plus-cursor-input-dead-man-watchdog-confirm-or-revert",
+      "currentWriteBlocker": null,
       "highRiskReason": "Cursor/input settings can affect pointer visibility, warping, zoom, touch/tablet visibility, or hardware cursor behavior.",
       "deadManRequired": true,
       "independentRecoveryRequired": true,
@@ -1047,10 +1048,15 @@
       "mustNotDependOnMouseInput": true,
       "watchdogDryRunStatus": "passed",
       "restoreVerificationRequired": true,
-      "nextRequiredWork": "input-independent watchdog/confirmation channel must exist before cursor/input rows can be enabled",
-      "safeWriteSupported": false,
-      "rowsEnabledByThisSprint": false,
-      "notes": "Design and dry-run proof only; row remains blocked until independent production watchdog is implemented and approved."
+      "nextRequiredWork": "resolved by cursor theme sync policy smoke subset; remaining cursor/input rows still require dedicated proof",
+      "safeWriteSupported": true,
+      "rowsEnabledByThisSprint": true,
+      "notes": "Enabled by cursor theme sync policy smoke subset after independent watchdog and recovery-independence proof.",
+      "currentWriteStatus": "writable",
+      "enabledBySmokeSubset": true,
+      "recoveryDesignStatus": "enabled-with-independent-watchdog-proof",
+      "productionWatchdogStatus": "separate-process-fixture-proof-passed",
+      "highRiskEnablementStatus": "enabled-approved-cursor-theme-sync-policy-smoke-subset"
     },
     {
       "rowId": "cursor.warp_back_after_non_mouse_input",

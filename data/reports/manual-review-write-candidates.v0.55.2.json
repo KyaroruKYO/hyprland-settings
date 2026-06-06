@@ -13,9 +13,9 @@
     "sourceWriteStatus": "manual-review-needed",
     "parserNeededRowsRemainingInCoverage": 0,
     "validatorNeededRowsRemainingInCoverage": 0,
-    "writableRowsRemain": 274,
+    "writableRowsRemain": 275,
     "notes": "Session/runtime-sensitive rows were promoted through the dedicated session/runtime write pipeline; no manual-review rows remain.",
-    "blockedWriteRowsRemain": 67,
+    "blockedWriteRowsRemain": 66,
     "manualReviewRows": 0
   },
   "items": []

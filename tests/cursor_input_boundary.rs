@@ -144,21 +144,21 @@ fn cursor_input_reports_select_only_theme_sync_future_subset() -> Result<()> {
     let proof_plan =
         read_json("data/reports/cursor-input-subset-readiness-proof-plan.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 274);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 67);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 274);
+    assert_eq!(coverage["counts"]["writableRows"], 275);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 66);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 275);
     assert_eq!(boundary["counts"]["cursorInputRowsAudited"], 22);
-    assert_eq!(boundary["counts"]["rowsEnabled"], 0);
+    assert_eq!(boundary["counts"]["rowsEnabled"], 1);
     assert_eq!(selection["counts"]["selectedRows"], 1);
-    assert_eq!(selection["counts"]["rowsEnabled"], 0);
-    assert_eq!(selection["counts"]["cursorInputBlockedRows"], 22);
+    assert_eq!(selection["counts"]["rowsEnabled"], 1);
+    assert_eq!(selection["counts"]["cursorInputBlockedRows"], 21);
     assert_eq!(selection["counts"]["displayRenderBlockedRows"], 23);
     assert_eq!(selection["counts"]["debugCrashBlockedRows"], 22);
-    assert_eq!(selection["counts"]["writeAllowlistChanged"], false);
-    assert_eq!(selection["counts"]["productionBehaviorChanged"], false);
+    assert_eq!(selection["counts"]["writeAllowlistChanged"], true);
+    assert_eq!(selection["counts"]["productionBehaviorChanged"], true);
     assert_eq!(proof_plan["counts"]["selectedRows"], 1);
     assert_eq!(proof_plan["counts"]["plannedRows"], 1);
-    assert_eq!(proof_plan["counts"]["rowsEnabled"], 0);
+    assert_eq!(proof_plan["counts"]["rowsEnabled"], 1);
 
     let selected = selection["selectedRows"].as_array().unwrap();
     assert_eq!(selected.len(), 1);
@@ -200,13 +200,72 @@ fn cursor_input_selection_does_not_enable_any_blocked_bucket() -> Result<()> {
         .map(|row| row["rowId"].as_str().unwrap())
         .collect::<BTreeSet<_>>();
 
-    assert!(!writable_ids.contains("cursor.sync_gsettings_theme"));
+    assert!(writable_ids.contains("cursor.sync_gsettings_theme"));
     assert!(!writable_ids.contains("cursor.invisible"));
     assert!(!writable_ids.contains("cursor.no_hardware_cursors"));
     assert!(!writable_ids.contains("cursor.no_warps"));
     assert!(!writable_ids.contains("cursor.zoom_factor"));
     assert!(!writable_ids.contains("xwayland.enabled"));
     assert!(!writable_ids.contains("debug.disable_logs"));
+
+    Ok(())
+}
+
+#[test]
+fn cursor_theme_sync_smoke_subset_reports_complete_proof() -> Result<()> {
+    let preflight =
+        read_json("data/reports/cursor-theme-sync-policy-smoke-subset-proof.v0.55.2.json")?;
+    let watchdog = read_json("data/reports/cursor-theme-sync-policy-watchdog-proof.v0.55.2.json")?;
+    let enablements = read_json("data/reports/cursor-input-first-subset-enablements.v0.55.2.json")?;
+
+    assert_eq!(preflight["counts"]["rows"], 1);
+    assert_eq!(preflight["counts"]["validatorPassedRows"], 1);
+    assert_eq!(preflight["counts"]["invalidRejectionPassedRows"], 1);
+    assert_eq!(preflight["counts"]["hyprlandVerifyConfigPassedRows"], 1);
+    assert_eq!(preflight["counts"]["safeToEnableByPreflightRows"], 1);
+    assert_eq!(watchdog["counts"]["planPersistedBeforeMutationRows"], 1);
+    assert_eq!(watchdog["counts"]["backupExistsBeforeMutationRows"], 1);
+    assert_eq!(watchdog["counts"]["separateProcessConfirmPassedRows"], 1);
+    assert_eq!(
+        watchdog["counts"]["separateProcessTimeoutRestorePassedRows"],
+        1
+    );
+    assert_eq!(watchdog["counts"]["wrongTokenFailedRows"], 1);
+    assert_eq!(watchdog["counts"]["realConfigTargetRefusedInDryRunRows"], 1);
+    assert_eq!(watchdog["counts"]["recoveryIndependencePassedRows"], 1);
+    assert_eq!(watchdog["counts"]["safeToEnableByWatchdogGateRows"], 1);
+    assert_eq!(enablements["counts"]["attemptedRows"], 1);
+    assert_eq!(enablements["counts"]["enabledRows"], 1);
+    assert_eq!(enablements["counts"]["finalWritableRows"], 275);
+    assert_eq!(enablements["counts"]["finalBlockedRows"], 66);
+    assert_eq!(enablements["counts"]["cursorInputRowsStillBlocked"], 21);
+    assert_eq!(enablements["counts"]["displayRenderRowsStillBlocked"], 23);
+    assert_eq!(enablements["counts"]["debugCrashRowsStillBlocked"], 22);
+
+    let rows = enablements["rows"].as_array().expect("enablement rows");
+    assert_eq!(rows.len(), 1);
+    assert_eq!(
+        rows[0]["rowId"].as_str(),
+        Some("cursor.sync_gsettings_theme")
+    );
+    assert_eq!(rows[0]["enabled"].as_bool(), Some(true));
+    assert_eq!(
+        watchdog["rows"][0]["recoveryIndependenceProof"]["requiresMouseInput"].as_bool(),
+        Some(false)
+    );
+    assert_eq!(
+        watchdog["rows"][0]["recoveryIndependenceProof"]["requiresVisibleCursor"].as_bool(),
+        Some(false)
+    );
+    assert_eq!(
+        watchdog["rows"][0]["recoveryIndependenceProof"]["requiresHyprlandKeybind"].as_bool(),
+        Some(false)
+    );
+    assert_eq!(watchdog["safety"]["realConfigModified"], false);
+    assert_eq!(watchdog["safety"]["activeRuntimeModified"], false);
+    assert_eq!(watchdog["safety"]["reloadRun"], false);
+    assert_eq!(watchdog["safety"]["evalRun"], false);
+    assert_eq!(watchdog["safety"]["luaExecuted"], false);
 
     Ok(())
 }

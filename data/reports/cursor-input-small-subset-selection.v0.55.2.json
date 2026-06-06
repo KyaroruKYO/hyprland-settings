@@ -8,14 +8,14 @@
   "counts": {
     "cursorInputRowsReviewed": 22,
     "selectedRows": 1,
-    "rowsEnabled": 0,
-    "finalWritableRows": 274,
-    "finalBlockedRows": 67,
-    "cursorInputBlockedRows": 22,
+    "rowsEnabled": 1,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
     "displayRenderBlockedRows": 23,
     "debugCrashBlockedRows": 22,
-    "writeAllowlistChanged": false,
-    "productionBehaviorChanged": false,
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true,
     "selectedRowsByRiskClass": {
       "cursor-theme-sync-policy": 1
     }
@@ -36,12 +36,12 @@
     {
       "rowId": "cursor.sync_gsettings_theme",
       "officialSetting": "cursor.sync_gsettings_theme",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "valueType": "bool",
       "controlKind": "toggle",
       "validatorReadiness": "known-bool",
       "existingTempConfigProof": true,
-      "watchdogProofNeeded": true,
+      "watchdogProofNeeded": false,
       "canHideOrRemoveCursorVisibility": false,
       "canBreakCursorRendering": false,
       "canBreakPointerMovement": false,
@@ -69,7 +69,8 @@
         "UI/review projection with cursor/input warning",
         "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
       ],
-      "notes": "Selected for a future proof sprint."
+      "notes": "Enabled by cursor theme sync policy smoke subset.",
+      "enabled": true
     }
   ],
   "deferredRows": [

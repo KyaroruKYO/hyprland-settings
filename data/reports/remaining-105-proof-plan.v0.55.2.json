@@ -2681,8 +2681,8 @@
     {
       "rowId": "cursor.sync_gsettings_theme",
       "officialSetting": "cursor.sync_gsettings_theme",
-      "currentWriteStatus": "high-risk",
-      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
+      "currentWriteStatus": "writable",
+      "currentBlocker": null,
       "riskClass": "cursor_input_risk",
       "batch": "high-risk",
       "controlKind": "toggle",
@@ -2707,7 +2707,8 @@
       "sessionRuntimePolicyNeeded": false,
       "highRiskRecoveryDesignNeeded": true,
       "willNotEnableInThisPlanBecause": "high-risk policy",
-      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched."
+      "notes": "Plan tests raw config values, not UI labels. Active config/runtime are not touched.",
+      "enabledByCursorThemeSyncSmokeSubset": true
     },
     {
       "rowId": "cursor.warp_back_after_non_mouse_input",

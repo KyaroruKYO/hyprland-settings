@@ -19,10 +19,12 @@
     "wrongTokenFailed": true,
     "cliTimeoutRestorePassed": true,
     "separateProcessRestoreFailurePassed": true,
-    "rowsEnabledBySeparateProcessProof": 2,
+    "rowsEnabledBySeparateProcessProof": 3,
     "displayRenderBoundaryRepresented": true,
     "displayRenderRowsEnabledByBoundarySprint": 2,
-    "xwaylandScalingRowsEnabled": 2
+    "xwaylandScalingRowsEnabled": 2,
+    "cursorThemeSyncRowsEnabled": 1,
+    "cursorInputRowsEnabled": 1
   },
   "contract": {
     "modeImplemented": "DryRunTempOnly",

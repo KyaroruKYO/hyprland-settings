@@ -1557,9 +1557,10 @@
       "verifyConfigRole": "parser-proof-not-safety-proof",
       "officialEvidenceStatus": "complete",
       "officialDocsStatus": "partial",
-      "currentWriteStatus": "high-risk",
-      "currentBlocker": "report-only/high-risk row: cursor_input_risk",
-      "nextRequiredWork": "Keep blocked until high-risk recovery policy and independent dead-man confirm-or-revert infrastructure are implemented and approved."
+      "currentWriteStatus": "writable",
+      "currentBlocker": null,
+      "nextRequiredWork": "resolved by cursor theme sync policy smoke subset",
+      "enabledByCursorThemeSyncSmokeSubset": true
     },
     {
       "rowId": "cursor.warp_back_after_non_mouse_input",

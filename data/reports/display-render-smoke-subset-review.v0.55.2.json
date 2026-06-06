@@ -23,8 +23,8 @@
     "issuesFound": 0,
     "regressionsFound": 0,
     "warningsFound": 0,
-    "finalWritableRows": 274,
-    "finalBlockedRows": 67,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
     "displayRenderRowsStillBlocked": 23,
     "cursorInputRowsStillBlocked": 22,
     "debugCrashRowsStillBlocked": 22
