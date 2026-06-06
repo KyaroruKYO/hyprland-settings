@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "cursor-visibility-conditional-policy-watchdog-proof",
+  "generatedAtUnixSeconds": 1780735907,
+  "subsetName": "cursor-visibility-conditional-touch-tablet-proof-subset",
+  "sourceReports": [
+    "separate-watchdog-process-proof.v0.55.2.json",
+    "production-high-risk-watchdog.v0.55.2.json",
+    "cursor-visibility-recovery-proof-design.v0.55.2.json"
+  ],
+  "counts": {
+    "rows": 2,
+    "planPersistedBeforeMutationRows": 2,
+    "backupExistsBeforeMutationRows": 2,
+    "watchdogArmBeforeMutationPassedRows": 2,
+    "separateProcessConfirmPassedRows": 2,
+    "separateProcessTimeoutRestorePassedRows": 2,
+    "wrongTokenFailedRows": 2,
+    "realConfigTargetRefusedInDryRunRows": 2,
+    "recoveryIndependencePassedRows": 2,
+    "resultLogsWritten": 4,
+    "safeForLaterEnablementByWatchdogGateRows": 2,
+    "rowsEnabled": 0,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakenedRows": 0,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "cursor.hide_on_touch",
+      "officialSetting": "cursor.hide_on_touch",
+      "currentWriteStatus": "high-risk",
+      "enabled": false,
+      "watchdogArmBeforeMutationProof": {
+        "passed": true,
+        "planPersistedBeforeMutation": true,
+        "backupExistsBeforeMutation": true,
+        "mutationAppliedOnlyToTempConfig": true
+      },
+      "separateProcessConfirmProof": {
+        "passed": true,
+        "resultStatus": "confirmed",
+        "resultLogWritten": true,
+        "mutationStayedAfterConfirmation": true
+      },
+      "separateProcessTimeoutRestoreProof": {
+        "passed": true,
+        "resultStatus": "reverted",
+        "resultLogWritten": true,
+        "restoreVerifiedByFileReread": true
+      },
+      "wrongTokenFailureProof": {
+        "passed": true,
+        "resultLogWritten": false,
+        "failureReason": "confirmation token did not match"
+      },
+      "dryRunRealConfigRefusalProof": {
+        "passed": true,
+        "refusalReason": "dry-run watchdog refused the real Hyprland config target before execution"
+      },
+      "recoveryIndependenceProof": {
+        "passed": true,
+        "requiresVisibleCursor": false,
+        "requiresMouseInput": false,
+        "requiresAppUi": false,
+        "requiresHyprlandKeybind": false,
+        "requiresPointerFocus": false,
+        "requiresWorkspaceFocus": false,
+        "requiresNormalPointerBehavior": false
+      },
+      "safeForLaterEnablementByWatchdogGate": true
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "officialSetting": "cursor.hide_on_tablet",
+      "currentWriteStatus": "high-risk",
+      "enabled": false,
+      "watchdogArmBeforeMutationProof": {
+        "passed": true,
+        "planPersistedBeforeMutation": true,
+        "backupExistsBeforeMutation": true,
+        "mutationAppliedOnlyToTempConfig": true
+      },
+      "separateProcessConfirmProof": {
+        "passed": true,
+        "resultStatus": "confirmed",
+        "resultLogWritten": true,
+        "mutationStayedAfterConfirmation": true
+      },
+      "separateProcessTimeoutRestoreProof": {
+        "passed": true,
+        "resultStatus": "reverted",
+        "resultLogWritten": true,
+        "restoreVerifiedByFileReread": true
+      },
+      "wrongTokenFailureProof": {
+        "passed": true,
+        "resultLogWritten": false,
+        "failureReason": "confirmation token did not match"
+      },
+      "dryRunRealConfigRefusalProof": {
+        "passed": true,
+        "refusalReason": "dry-run watchdog refused the real Hyprland config target before execution"
+      },
+      "recoveryIndependenceProof": {
+        "passed": true,
+        "requiresVisibleCursor": false,
+        "requiresMouseInput": false,
+        "requiresAppUi": false,
+        "requiresHyprlandKeybind": false,
+        "requiresPointerFocus": false,
+        "requiresWorkspaceFocus": false,
+        "requiresNormalPointerBehavior": false
+      },
+      "safeForLaterEnablementByWatchdogGate": true
+    }
+  ],
+  "safety": {
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "anythingPushed": false,
+    "mainTouched": false
+  }
+}
