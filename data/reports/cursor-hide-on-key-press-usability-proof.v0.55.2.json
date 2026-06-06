@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "cursor-hide-on-key-press-usability-proof",
+  "generatedAtUnixSeconds": 1780737934,
+  "subsetName": "cursor-hide-on-key-press-keyboard-token-usability-proof",
+  "sourceReports": [
+    "cursor-visibility-conditional-policy-enablements.v0.55.2.json",
+    "cursor-visibility-recovery-proof-design.v0.55.2.json",
+    "cursor-visibility-risk-class-analysis.v0.55.2.json",
+    "separate-watchdog-process-proof.v0.55.2.json",
+    "production-high-risk-watchdog.v0.55.2.json"
+  ],
+  "counts": {
+    "rows": 1,
+    "acceptedValues": 2,
+    "rejectedInvalidValues": 2,
+    "parserReadPassedRows": 1,
+    "validatorPassedRows": 1,
+    "invalidRejectionPassedRows": 1,
+    "fixtureReplacePassedRows": 1,
+    "fixtureAppendPassedRows": 1,
+    "singleMutationVerifiedRows": 1,
+    "hyprlandVerifyConfigPassedRows": 1,
+    "keyboardTokenUsabilityAnalyzedRows": 1,
+    "safeForLaterEnablementByPreflightRows": 1,
+    "rowsEnabled": 0,
+    "finalWritableRows": 277,
+    "finalBlockedRows": 64,
+    "cursorInputBlockedRows": 19,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakenedRows": 0,
+    "hyprmodRecoveryEvidenceRows": 0,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "officialSetting": "cursor.hide_on_key_press",
+      "currentWriteStatus": "high-risk",
+      "safeWriteSupported": false,
+      "enabled": false,
+      "valueType": "bool",
+      "validatorRef": "bool",
+      "validatorAuthority": "app-validator-authoritative-plus-official-bool-evidence",
+      "hyprmodMetadataUse": {
+        "usedFor": [
+          "label",
+          "default",
+          "description"
+        ],
+        "notUsedFor": [
+          "safety proof",
+          "recovery proof",
+          "write allowlist proof"
+        ],
+        "default": false,
+        "description": "Hides the cursor when you press any key until the mouse is moved.",
+        "hyprmodRecoveryEvidenceFound": false
+      },
+      "keyboardTokenUsabilityRisk": {
+        "canHideCursorImmediatelyOnEnable": false,
+        "hideTrigger": "first key press after enablement",
+        "intersectsWithConfirmationFlow": true,
+        "riskSummary": "typing a CLI confirmation token may hide the cursor, so the confirmation path must not require cursor visibility, mouse input, app UI, pointer focus, workspace focus, or normal pointer behavior"
+      },
+      "acceptedValues": [
+        "true",
+        "false"
+      ],
+      "rejectedInvalidValues": [
+        "maybe",
+        "arbitrary-string"
+      ],
+      "parserReadProof": {
+        "passed": true,
+        "fixtureValue": "true"
+      },
+      "validatorProof": {
+        "passed": true,
+        "accepted": [
+          "true",
+          "false"
+        ],
+        "validatorType": "boolean"
+      },
+      "invalidRejectionProof": {
+        "passed": true,
+        "rejected": [
+          "maybe",
+          "arbitrary-string"
+        ],
+        "rejectedBeforeWritePlanning": true
+      },
+      "fixtureWriteRereadProof": {
+        "replacePassed": true,
+        "appendPassed": true,
+        "singleMutationVerified": true,
+        "usesTempFixturesOnly": true
+      },
+      "tempConfigProof": {
+        "passed": true,
+        "verifyConfigRole": "parser-proof-not-recovery-proof",
+        "valuesVerified": [
+          "true",
+          "false"
+        ],
+        "command": "Hyprland --verify-config --config <temp-file>",
+        "result": "config ok for true and false"
+      },
+      "keyboardTokenUsabilityProof": {
+        "passed": true,
+        "confirmationCanBeTypedAsCliToken": true,
+        "requiresVisibleCursor": false,
+        "requiresMouseInput": false,
+        "requiresAppUi": false,
+        "requiresHyprlandKeybind": false,
+        "requiresPointerFocus": false,
+        "requiresWorkspaceFocus": false,
+        "requiresNormalPointerBehavior": false,
+        "timeoutRestoreCoversNoConfirmation": true
+      },
+      "uiProjection": {
+        "controlKind": "toggle",
+        "reviewWarningRequired": "cursor visibility keyboard-trigger high-risk watchdog/dead-man warning",
+        "mustWarnCursorMayDisappearWhileTyping": true,
+        "mustShowRestoreCommandBeforeApply": true,
+        "mustExplainTimeoutRestoreIfConfirmationCannotBeCompleted": true
+      },
+      "safeForLaterEnablementByPreflight": true
+    }
+  ],
+  "safety": {
+    "fixtureTempFilesOnly": true,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakened": false
+  }
+}
