@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "next-cursor-input-subset-readiness-proof-plan",
+  "generatedAtUnixSeconds": 1780730643,
+  "sourceReports": [
+    "next-cursor-input-subset-selection.v0.55.2.json",
+    "cursor-input-smoke-subset-review.v0.55.2.json",
+    "separate-watchdog-process-proof.v0.55.2.json",
+    "production-high-risk-watchdog.v0.55.2.json"
+  ],
+  "counts": {
+    "selectedRows": 0,
+    "plannedRows": 0,
+    "emptyPlan": true,
+    "rowsEnabled": 0,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false
+  },
+  "selectedSubsetName": null,
+  "proofPlans": [],
+  "emptyPlanReason": "After enabling cursor.sync_gsettings_theme, the remaining 21 cursor/input rows are all cursor visibility, hardware cursor, warping, zoom, or monitor-targeting critical. No remaining row is a low cursor policy row, and selecting any of them now would violate the requirement that recovery remain fully independent of cursor, mouse, pointer focus, workspace focus, and normal pointer behavior.",
+  "requiredBeforeAnyFutureCursorInputEnablement": [
+    "validator proof",
+    "invalid rejection proof",
+    "fixture write/reread proof",
+    "temp config proof",
+    "watchdog arm-before-mutation proof",
+    "backup-before-mutation proof",
+    "separate process confirm proof",
+    "timeout restore proof",
+    "wrong-token failure proof",
+    "dry-run real config refusal proof",
+    "UI/review projection with cursor/input warning",
+    "proof that recovery does not depend on mouse input",
+    "proof that recovery does not depend on visible cursor",
+    "proof that recovery does not depend on app UI",
+    "proof that recovery does not depend on Hyprland keybinds",
+    "proof that recovery does not depend on pointer focus",
+    "proof that recovery does not depend on workspace focus",
+    "proof that recovery does not depend on normal pointer behavior",
+    "no reload/eval/Lua",
+    "no active runtime mutation during tests"
+  ],
+  "blockedRiskClasses": [
+    "cursor-monitor-targeting-critical",
+    "cursor-visibility-critical",
+    "cursor-warping-critical",
+    "cursor-zoom-critical",
+    "hardware-cursor-critical"
+  ],
+  "nextRecommendedSprint": "Cursor/Input Strong Recovery Boundary Proof Sprint for a single risk class, starting only if recovery can be proven independent of cursor visibility, mouse input, pointer focus, workspace focus, Hyprland keybinds, and normal pointer behavior.",
+  "safety": {
+    "rowsEnabled": 0,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "anythingPushed": false,
+    "mainTouched": false
+  }
+}

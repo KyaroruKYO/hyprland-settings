@@ -269,3 +269,81 @@ fn cursor_theme_sync_smoke_subset_reports_complete_proof() -> Result<()> {
 
     Ok(())
 }
+
+#[test]
+fn next_cursor_input_subset_selection_keeps_remaining_rows_blocked() -> Result<()> {
+    let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
+    let smoke_review = read_json("data/reports/cursor-input-smoke-subset-review.v0.55.2.json")?;
+    let selection = read_json("data/reports/next-cursor-input-subset-selection.v0.55.2.json")?;
+    let proof_plan =
+        read_json("data/reports/next-cursor-input-subset-readiness-proof-plan.v0.55.2.json")?;
+
+    assert_eq!(coverage["counts"]["writableRows"], 275);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 66);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 275);
+
+    assert_eq!(smoke_review["counts"]["reviewedRows"], 1);
+    assert_eq!(smoke_review["counts"]["enabledRows"], 1);
+    assert_eq!(smoke_review["counts"]["issuesFound"], 0);
+    assert_eq!(
+        smoke_review["counts"]["writeAllowlistChangedInThisSelectionSprint"],
+        false
+    );
+    assert_eq!(
+        smoke_review["rows"][0]["rowId"].as_str(),
+        Some("cursor.sync_gsettings_theme")
+    );
+    assert_eq!(
+        smoke_review["rows"][0]["recoveryIndependenceResult"].as_bool(),
+        Some(true)
+    );
+
+    assert_eq!(selection["counts"]["cursorInputRowsReviewed"], 21);
+    assert_eq!(selection["counts"]["selectedRows"], 0);
+    assert_eq!(selection["counts"]["excludedRows"], 21);
+    assert_eq!(selection["counts"]["rowsEnabled"], 0);
+    assert_eq!(selection["counts"]["finalWritableRows"], 275);
+    assert_eq!(selection["counts"]["finalBlockedRows"], 66);
+    assert_eq!(selection["counts"]["cursorInputBlockedRows"], 21);
+    assert_eq!(selection["counts"]["displayRenderBlockedRows"], 23);
+    assert_eq!(selection["counts"]["debugCrashBlockedRows"], 22);
+    assert_eq!(selection["counts"]["writeAllowlistChanged"], false);
+    assert_eq!(selection["counts"]["productionBehaviorChanged"], false);
+    assert_eq!(selection["selectedSubsetName"], Value::Null);
+    assert_eq!(selection["selectionDecision"].as_str(), Some("select-none"));
+    assert!(selection["selectedRows"].as_array().unwrap().is_empty());
+    assert_eq!(selection["rows"].as_array().unwrap().len(), 21);
+
+    let excluded_classes = [
+        "cursor-visibility-critical",
+        "hardware-cursor-critical",
+        "cursor-warping-critical",
+        "cursor-zoom-critical",
+        "cursor-monitor-targeting-critical",
+    ]
+    .into_iter()
+    .collect::<BTreeSet<_>>();
+
+    for row in selection["rows"].as_array().unwrap() {
+        let risk_class = row["cursorInputRiskClass"]
+            .as_str()
+            .expect("remaining cursor row should have a risk class");
+        assert!(excluded_classes.contains(risk_class));
+        assert_eq!(row["excludedByRiskClass"], true);
+        assert_eq!(row["candidateForNextSubset"], false);
+        assert_eq!(row["selectedForNextSubset"], false);
+    }
+
+    assert_eq!(proof_plan["counts"]["selectedRows"], 0);
+    assert_eq!(proof_plan["counts"]["plannedRows"], 0);
+    assert_eq!(proof_plan["counts"]["emptyPlan"], true);
+    assert_eq!(proof_plan["counts"]["rowsEnabled"], 0);
+    assert!(proof_plan["proofPlans"].as_array().unwrap().is_empty());
+    assert_eq!(proof_plan["safety"]["realConfigModified"], false);
+    assert_eq!(proof_plan["safety"]["activeRuntimeModified"], false);
+    assert_eq!(proof_plan["safety"]["reloadRun"], false);
+    assert_eq!(proof_plan["safety"]["evalRun"], false);
+    assert_eq!(proof_plan["safety"]["luaExecuted"], false);
+
+    Ok(())
+}
