@@ -201,7 +201,8 @@ fn cursor_hide_on_key_press_projects_keyboard_token_watchdog_warning() {
         let summary = projection.review_summary.join("\n");
         assert!(projection.can_review);
         assert!(
-            summary.contains("cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset"),
+            summary
+                .contains("cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset"),
             "{row_id} should show the keyboard-token recovery bucket"
         );
         assert!(

@@ -11,8 +11,7 @@ fn read_json(path: &str) -> Result<Value> {
 
 #[test]
 fn cursor_hide_on_key_press_enablement_enables_only_target_row() -> Result<()> {
-    let enablements =
-        read_json("data/reports/cursor-hide-on-key-press-enablements.v0.55.2.json")?;
+    let enablements = read_json("data/reports/cursor-hide-on-key-press-enablements.v0.55.2.json")?;
     let proof = read_json("data/reports/cursor-hide-on-key-press-enable-proof.v0.55.2.json")?;
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
     let pipeline = read_json("data/reports/all-341-unified-pipeline.v0.55.2.json")?;
@@ -55,7 +54,9 @@ fn cursor_hide_on_key_press_enablement_enables_only_target_row() -> Result<()> {
         "cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset"
     );
     assert!(policy.approval_gate.contains("dead-man"));
-    assert!(policy.watchdog_requirement.contains("plan must be persisted"));
+    assert!(policy
+        .watchdog_requirement
+        .contains("plan must be persisted"));
     assert!(policy
         .watchdog_requirement
         .contains("backup must exist before mutation"));
@@ -69,7 +70,9 @@ fn cursor_hide_on_key_press_enablement_enables_only_target_row() -> Result<()> {
     assert!(policy.watchdog_requirement.contains("Hyprland keybinds"));
     assert!(policy.watchdog_requirement.contains("pointer focus"));
     assert!(policy.watchdog_requirement.contains("workspace focus"));
-    assert!(policy.review_warning.contains("Cursor may disappear while typing"));
+    assert!(policy
+        .review_warning
+        .contains("Cursor may disappear while typing"));
     assert!(policy.review_warning.contains("CLI token confirmation"));
 
     Ok(())
@@ -78,8 +81,7 @@ fn cursor_hide_on_key_press_enablement_enables_only_target_row() -> Result<()> {
 #[test]
 fn cursor_hide_on_key_press_enablement_keeps_other_high_risk_rows_blocked() -> Result<()> {
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
-    let enablements =
-        read_json("data/reports/cursor-hide-on-key-press-enablements.v0.55.2.json")?;
+    let enablements = read_json("data/reports/cursor-hide-on-key-press-enablements.v0.55.2.json")?;
     let coverage_by_id = coverage["rows"]
         .as_array()
         .unwrap()
@@ -119,8 +121,7 @@ fn cursor_hide_on_key_press_enablement_keeps_other_high_risk_rows_blocked() -> R
 
 #[test]
 fn cursor_hide_on_key_press_enablement_preserves_safety_flags() -> Result<()> {
-    let enablements =
-        read_json("data/reports/cursor-hide-on-key-press-enablements.v0.55.2.json")?;
+    let enablements = read_json("data/reports/cursor-hide-on-key-press-enablements.v0.55.2.json")?;
     let proof = read_json("data/reports/cursor-hide-on-key-press-enable-proof.v0.55.2.json")?;
 
     for report in [&enablements, &proof] {

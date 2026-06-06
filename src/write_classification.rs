@@ -129,8 +129,7 @@ pub const CURSOR_THEME_SYNC_HIGH_RISK_WRITABLE_ROWS: &[&str] = &["cursor.sync_gs
 pub const CURSOR_VISIBILITY_CONDITIONAL_HIGH_RISK_WRITABLE_ROWS: &[&str] =
     &["cursor.hide_on_touch", "cursor.hide_on_tablet"];
 
-pub const CURSOR_HIDE_ON_KEY_PRESS_HIGH_RISK_WRITABLE_ROWS: &[&str] =
-    &["cursor.hide_on_key_press"];
+pub const CURSOR_HIDE_ON_KEY_PRESS_HIGH_RISK_WRITABLE_ROWS: &[&str] = &["cursor.hide_on_key_press"];
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SessionRuntimeWritePolicy {
