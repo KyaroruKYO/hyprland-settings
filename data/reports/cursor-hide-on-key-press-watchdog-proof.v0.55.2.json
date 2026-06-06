@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "cursor-hide-on-key-press-watchdog-proof",
+  "generatedAtUnixSeconds": 1780737934,
+  "subsetName": "cursor-hide-on-key-press-keyboard-token-usability-proof",
+  "sourceReports": [
+    "cursor-hide-on-key-press-usability-proof.v0.55.2.json",
+    "separate-watchdog-process-proof.v0.55.2.json",
+    "production-high-risk-watchdog.v0.55.2.json"
+  ],
+  "counts": {
+    "rows": 1,
+    "planPersistedBeforeMutationRows": 1,
+    "backupExistsBeforeMutationRows": 1,
+    "watchdogArmBeforeMutationPassedRows": 1,
+    "separateProcessConfirmPassedRows": 1,
+    "separateProcessTimeoutRestorePassedRows": 1,
+    "wrongTokenFailedRows": 1,
+    "realConfigTargetRefusedInDryRunRows": 1,
+    "keyboardTokenUsabilityPassedRows": 1,
+    "recoveryIndependencePassedRows": 1,
+    "resultLogsWritten": 2,
+    "safeForLaterEnablementByWatchdogGateRows": 1,
+    "rowsEnabled": 0,
+    "finalWritableRows": 277,
+    "finalBlockedRows": 64,
+    "cursorInputBlockedRows": 19,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakenedRows": 0,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "officialSetting": "cursor.hide_on_key_press",
+      "currentWriteStatus": "high-risk",
+      "enabled": false,
+      "watchdogArmBeforeMutationProof": {
+        "passed": true,
+        "planPersistedBeforeMutation": true,
+        "backupExistsBeforeMutation": true,
+        "mutationAppliedOnlyToTempConfig": true
+      },
+      "separateProcessConfirmProof": {
+        "passed": true,
+        "resultStatus": "confirmed",
+        "resultLogWritten": true,
+        "mutationStayedAfterConfirmation": true,
+        "confirmationShape": "CLI token argument typed as text"
+      },
+      "separateProcessTimeoutRestoreProof": {
+        "passed": true,
+        "resultStatus": "reverted",
+        "resultLogWritten": true,
+        "restoreVerifiedByFileReread": true,
+        "coversNoConfirmation": true
+      },
+      "wrongTokenFailureProof": {
+        "passed": true,
+        "resultLogWritten": false,
+        "failureReason": "confirmation token did not match"
+      },
+      "dryRunRealConfigRefusalProof": {
+        "passed": true,
+        "refusalReason": "dry-run watchdog refused the real Hyprland config target before execution"
+      },
+      "keyboardTokenUsabilityProof": {
+        "passed": true,
+        "usesKeyboardTextOnly": true,
+        "requiresVisibleCursor": false,
+        "requiresMouseInput": false,
+        "requiresAppUi": false,
+        "requiresHyprlandKeybind": false,
+        "requiresPointerFocus": false,
+        "requiresWorkspaceFocus": false,
+        "requiresNormalPointerBehavior": false,
+        "notes": "The proof represents the confirmation token as CLI text input and does not require selecting a visible pointer target. If confirmation is not completed, timeout restore reverts automatically."
+      },
+      "recoveryIndependenceProof": {
+        "passed": true,
+        "requiresVisibleCursor": false,
+        "requiresMouseInput": false,
+        "requiresAppUi": false,
+        "requiresHyprlandKeybind": false,
+        "requiresPointerFocus": false,
+        "requiresWorkspaceFocus": false,
+        "requiresNormalPointerBehavior": false
+      },
+      "safeForLaterEnablementByWatchdogGate": true
+    }
+  ],
+  "safety": {
+    "fixtureTempFilesOnly": true,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakened": false
+  }
+}
