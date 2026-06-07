@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "screen-shader-validation-boundary",
+  "generatedAt": "2026-06-07T02:00:17-07:00",
+  "counts": {
+    "rowsReviewed": 1,
+    "allowedNowItems": 4,
+    "deferredItems": 7,
+    "futureProofRequirements": 9,
+    "rowsEnabledThisSprint": 0,
+    "writeAllowlistChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "liveShaderCompileUsed": false,
+    "safeWritableRowsChanged": false,
+    "productionBehaviorChanged": false,
+    "liveDisplayRuntimeProofUsed": false,
+    "writableRows": 278,
+    "blockedRows": 63
+  },
+  "allowedNow": [
+    "line-safe path validation",
+    "optional empty value metadata",
+    "config-relative path metadata",
+    "report/UI warning metadata"
+  ],
+  "deferredUnlessApprovedLater": [
+    "file existence as hard write blocker",
+    "readability as hard write blocker",
+    "shader compile validation",
+    "GPU/render validation",
+    "live display/runtime proof",
+    "reload or runtime apply",
+    "real config mutation"
+  ],
+  "futureCompileAwareValidationProof": [
+    "temp shader fixture files",
+    "harmless valid shader samples",
+    "invalid shader samples",
+    "no live compositor compile",
+    "standalone compiler feasibility research",
+    "clear boundary if Hyprland/OpenGL compile path requires runtime",
+    "display/render watchdog implications",
+    "backup-before-mutation proof if write behavior changes",
+    "timeout restore proof if moved behind high-risk gate"
+  ],
+  "row": {
+    "rowId": "decoration.screen_shader",
+    "officialSetting": "decoration.screen_shader",
+    "currentValidatorBoundary": "path-shape only",
+    "compileAwareValidationBoundary": "deferred",
+    "pathValidationIsSafetyProof": false
+  }
+}
