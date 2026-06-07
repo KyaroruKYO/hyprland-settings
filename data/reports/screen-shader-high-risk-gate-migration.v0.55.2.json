@@ -52,18 +52,13 @@
     "templateMappingReport": true,
     "liveRuntimeProof": false,
     "compileAwareValidationProof": false,
-    "screenShaderWatchdogProof": false
+    "screenShaderWatchdogProof": true
   },
   "proofStillMissing": [
-    "dedicated display/render watchdog migration proof for decoration.screen_shader",
-    "backup-before-mutation proof scoped to screen shader high-risk gate",
-    "separate process confirm proof scoped to screen shader high-risk gate",
-    "timeout restore proof scoped to screen shader high-risk gate",
-    "result log proof scoped to screen shader high-risk gate",
-    "visible-display-independent recovery proof",
-    "live-render-state-independent recovery proof",
-    "decision whether production writes must be blocked until gate enforcement exists",
-    "compile-aware validation design using fixture/temp files only"
+    "production high-risk gate enforcement decision",
+    "production write flow migration into the screen-shader display/render gate",
+    "compile-aware shader validation design",
+    "standalone non-live shader compiler feasibility proof"
   ],
   "forbiddenInThisSprint": [
     "real config mutation",
@@ -80,7 +75,7 @@
     "highRiskEnabledRowsAuditedRemain": 9,
     "screenShaderIncludedInEnabledHighRiskAudit": false,
     "reasonNotIncludedInEnabledHighRiskAudit": "The row is already writable from earlier normal-path support and has not completed high-risk watchdog proof. This sprint records migration-required metadata instead of claiming completed gated enablement.",
-    "recommendedRepresentation": "Represent as a writable display/render high-risk migration candidate with required gate metadata and missing watchdog proof until a later migration sprint completes or proposes blocking/removal with user approval."
+    "recommendedRepresentation": "Represent as a writable display/render high-risk migration candidate with completed fixture/temp watchdog migration proof, but do not count it as an enabled high-risk row until production gate enforcement is explicitly implemented in a later sprint."
   },
   "safety": {
     "realConfigTouched": false,
@@ -90,5 +85,6 @@
     "pushed": false,
     "mainTouched": false
   },
-  "nextRecommendedSprint": "Screen shader display/render watchdog migration proof sprint: use fixture/temp files only to prove backup-before-mutation, separate process confirm, timeout restore, result logging, visible-display-independent recovery, and live-render-state-independent recovery; do not run live shader compile or reload Hyprland."
+  "nextRecommendedSprint": "Screen shader production gate enforcement decision sprint: decide whether to migrate decoration.screen_shader production writes into the proven display/render watchdog gate, keep temporary writable candidate status, or propose block/removal with explicit user approval. Do not add compile-aware validation in that sprint unless separately approved.",
+  "watchdogMigrationProofReport": "data/reports/screen-shader-watchdog-migration-proof.v0.55.2.json"
 }

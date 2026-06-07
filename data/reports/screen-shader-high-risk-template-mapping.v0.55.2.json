@@ -21,7 +21,7 @@
     "blockedRows": 63,
     "selectedMigrationOptionCount": 1,
     "gateMetadataRepresentedThisSprint": true,
-    "watchdogProofCompletedThisSprint": false
+    "watchdogProofCompletedThisSprint": true
   },
   "template": {
     "templateId": "display-render-screen-shader-watchdog-template",
@@ -38,7 +38,8 @@
     "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
     "approvalGate": "advanced-opt-in-plus-display-render-dead-man-watchdog-required-before-full-migration",
     "watchdogRequirement": "screen shader display/render watchdog proof is required before full gated enforcement; future gate must persist a plan and backup before mutation, use separate process confirm, timeout restore, result logging, and recovery independent of visible display or live render state",
-    "proofStatus": "watchdog-proof-missing"
+    "proofStatus": "watchdog-migration-proof-complete-production-enforcement-unchanged",
+    "watchdogProofSource": "screen-shader-watchdog-migration-proof.v0.55.2.json"
   },
   "rows": [
     {
@@ -50,9 +51,12 @@
       "warningMetadataAppliedThisSprint": true,
       "selectedMigrationOption": "Option A",
       "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
-      "gateStatus": "migration-required-watchdog-proof-missing",
-      "watchdogProofSource": "missing-screen-shader-watchdog-proof; see screen-shader-high-risk-gate-migration.v0.55.2.json",
-      "gateMetadataRepresentedThisSprint": true
+      "gateStatus": "watchdog-migration-proof-complete-production-enforcement-unchanged",
+      "watchdogProofSource": "screen-shader-watchdog-migration-proof.v0.55.2.json",
+      "gateMetadataRepresentedThisSprint": true,
+      "watchdogMigrationProofComplete": true,
+      "productionGateEnforcedThisSprint": false,
+      "countedAsEnabledHighRiskRow": false
     }
   ],
   "selectedMigrationOption": "Option A"

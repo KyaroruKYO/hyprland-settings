@@ -18,20 +18,20 @@
     "blockedRows": 63,
     "selectedMigrationOptionCount": 1,
     "gateMetadataRepresentedThisSprint": true,
-    "watchdogProofCompletedThisSprint": false
+    "watchdogProofCompletedThisSprint": true
   },
-  "stoppingPoint": "Stop after high-risk gate migration design and metadata representation. Do not continue into compile-aware validation, live shader compile, or runtime gate enforcement in this sprint.",
+  "stoppingPoint": "Stop after fixture/temp-only screen shader watchdog migration proof. Do not continue into production gate enforcement, compile-aware validation, live shader compile, or runtime mutation in this sprint.",
   "recommendedNextSprint": {
-    "type": "screen shader display/render watchdog migration proof",
+    "type": "screen shader production gate enforcement decision",
     "rowId": "decoration.screen_shader",
-    "objective": "Use fixture/temp files only to prove backup-before-mutation, separate process confirm, timeout restore, result logging, visible-display-independent recovery, and live-render-state-independent recovery before any stronger enforcement.",
+    "objective": "Decide whether to migrate production writes into the proven display/render watchdog gate, keep temporary writable migration-candidate status, or propose block/removal with explicit user approval.",
     "mustNotDo": [
       "do not run live shader compile",
       "do not reload Hyprland",
       "do not mutate real config",
       "do not use active render state",
       "do not enable rows",
-      "do not remove current writable behavior without explicit approval"
+      "do not add compile-aware validation unless separately approved"
     ]
   },
   "laterOptionalSprint": {
@@ -39,5 +39,6 @@
     "precondition": "Only after display/render watchdog migration proof is completed or an explicit block/removal proposal is approved.",
     "allowedDirection": "standalone/temp shader fixture validation only if a non-live compiler path is proven safe"
   },
-  "selectedMigrationOption": "Option A"
+  "selectedMigrationOption": "Option A",
+  "watchdogMigrationProofReport": "data/reports/screen-shader-watchdog-migration-proof.v0.55.2.json"
 }

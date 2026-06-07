@@ -3327,7 +3327,7 @@
       "approvalGate": "advanced-opt-in-plus-display-render-dead-man-watchdog-required-before-full-migration",
       "preflightProofStatus": "parser-validator-fixture-temp-config-proof-complete",
       "commitProofStatus": "backup-write-reread-tested",
-      "gateStatus": "migration-required-watchdog-proof-missing",
+      "gateStatus": "watchdog-migration-proof-complete-production-enforcement-unchanged",
       "verifyConfigRole": "preflight-parser-and-syntax-proof",
       "currentWriteStatus": "writable",
       "currentBlocker": null,
@@ -3335,7 +3335,7 @@
       "testsPresent": true,
       "productionValueKind": "Path",
       "proofSource": "screen-shader-display-render-review.v0.55.2.json",
-      "nextRequiredWork": "Screen shader display/render watchdog migration proof sprint; do not run live shader compile or reload Hyprland.",
+      "nextRequiredWork": "Screen shader production gate enforcement decision sprint; do not run live shader compile or reload Hyprland.",
       "companionSchemaType": "string",
       "companionSchemaDefault": "",
       "companionSuggestedValidTestValues": [
@@ -3356,13 +3356,15 @@
       "pipelineMetadataGaps": [],
       "productionBehaviorChanged": false,
       "writeAllowlistChanged": false,
-      "watchdogProofSource": "missing-screen-shader-watchdog-proof; see screen-shader-high-risk-gate-migration.v0.55.2.json",
+      "watchdogProofSource": "screen-shader-watchdog-migration-proof.v0.55.2.json",
       "pipelineTemplate": "display-render-screen-shader-watchdog-template",
       "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
       "watchdogRequirement": "screen shader display/render watchdog proof is required before full gated enforcement; future gate must persist a plan and backup before mutation, use separate process confirm, timeout restore, result logging, and recovery independent of visible display or live render state",
       "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; keep writable only with screen-shader high-risk warning until a future display/render watchdog migration proof is completed.",
       "templateNormalizationStatus": "screen-shader-migration-required",
-      "recoveryGateWeakened": false
+      "recoveryGateWeakened": false,
+      "productionGateEnforcedThisSprint": false,
+      "countedAsEnabledHighRiskRow": false
     },
     {
       "rowId": "animations.workspace_wraparound",
@@ -17321,11 +17323,16 @@
     "validationBoundaryReport": "data/reports/screen-shader-validation-boundary.v0.55.2.json",
     "templateMappingReport": "data/reports/screen-shader-high-risk-template-mapping.v0.55.2.json",
     "nextStepReport": "data/reports/screen-shader-next-step-plan.v0.55.2.json",
-    "recommendedNextSprint": "Screen shader display/render watchdog migration proof sprint; fixture/temp files only, no live shader compile, no reload, no real config mutation.",
+    "recommendedNextSprint": "Screen shader production gate enforcement decision sprint; decide whether to migrate production writes into the proven watchdog gate, keep temporary writable candidate status, or propose block/removal with explicit user approval.",
     "selectedMigrationOption": "Option A",
     "gateMigrationReport": "data/reports/screen-shader-high-risk-gate-migration.v0.55.2.json",
     "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
-    "gateStatus": "migration-required-watchdog-proof-missing",
-    "watchdogProofSource": "missing-screen-shader-watchdog-proof; see screen-shader-high-risk-gate-migration.v0.55.2.json"
+    "gateStatus": "watchdog-migration-proof-complete-production-enforcement-unchanged",
+    "watchdogProofSource": "screen-shader-watchdog-migration-proof.v0.55.2.json",
+    "watchdogMigrationProofStatus": "complete",
+    "productionEnforcementChanged": false,
+    "productionGateEnforcedThisSprint": false,
+    "countedAsEnabledHighRiskRow": false,
+    "compileAwareValidationStatus": "deferred"
   }
 }

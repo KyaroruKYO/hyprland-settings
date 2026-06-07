@@ -70,7 +70,7 @@ fn screen_shader_review_reports_exist_and_preserve_current_state() -> Result<()>
         migration["requiredHighRiskGateMetadata"]["recoveryBucket"],
         "display-render-recovery:screen-shader-gate-migration-design"
     );
-    assert_eq!(migration["proofExists"]["screenShaderWatchdogProof"], false);
+    assert_eq!(migration["proofExists"]["screenShaderWatchdogProof"], true);
     assert!(migration["proofStillMissing"]
         .as_array()
         .unwrap()
@@ -78,7 +78,7 @@ fn screen_shader_review_reports_exist_and_preserve_current_state() -> Result<()>
         .any(|item| item
             .as_str()
             .unwrap()
-            .contains("display/render watchdog migration proof")));
+            .contains("production high-risk gate enforcement decision")));
     assert!(next_step["stoppingPoint"]
         .as_str()
         .unwrap()
@@ -172,14 +172,28 @@ fn screen_shader_policy_followup_is_projected_in_aggregate_reports() -> Result<(
         assert_eq!(follow_up["writeAllowlistChanged"], false, "{path}");
         assert_eq!(follow_up["rowsEnabledThisSprint"], 0, "{path}");
         assert_eq!(follow_up["liveShaderCompileUsed"], false, "{path}");
-        assert!(follow_up["watchdogProofSource"]
-            .as_str()
-            .unwrap()
-            .contains("missing-screen-shader-watchdog-proof"));
+        assert_eq!(
+            follow_up["watchdogProofSource"], "screen-shader-watchdog-migration-proof.v0.55.2.json",
+            "{path}"
+        );
+        assert_eq!(
+            follow_up["watchdogMigrationProofStatus"], "complete",
+            "{path}"
+        );
+        assert_eq!(follow_up["productionEnforcementChanged"], false, "{path}");
+        assert_eq!(
+            follow_up["productionGateEnforcedThisSprint"], false,
+            "{path}"
+        );
+        assert_eq!(follow_up["countedAsEnabledHighRiskRow"], false, "{path}");
+        assert_eq!(
+            follow_up["compileAwareValidationStatus"], "deferred",
+            "{path}"
+        );
         assert!(follow_up["recommendedNextSprint"]
             .as_str()
             .unwrap()
-            .contains("watchdog migration proof"));
+            .contains("production gate enforcement decision"));
     }
 
     Ok(())
@@ -211,12 +225,14 @@ fn screen_shader_unified_pipeline_row_records_gate_required_not_proven() -> Resu
     );
     assert_eq!(
         row["gateStatus"],
-        "migration-required-watchdog-proof-missing"
+        "watchdog-migration-proof-complete-production-enforcement-unchanged"
     );
-    assert!(row["watchdogProofSource"]
-        .as_str()
-        .unwrap()
-        .contains("missing-screen-shader-watchdog-proof"));
+    assert_eq!(
+        row["watchdogProofSource"],
+        "screen-shader-watchdog-migration-proof.v0.55.2.json"
+    );
+    assert_eq!(row["productionGateEnforcedThisSprint"], false);
+    assert_eq!(row["countedAsEnabledHighRiskRow"], false);
     assert!(row["uiReviewWarning"]
         .as_str()
         .unwrap()
