@@ -101,6 +101,8 @@ fn source_backed_repair_reports_exist_and_preserve_counts() -> Result<()> {
     assert_eq!(summary["afterGapCounts"]["appValidatorTooBroadRows"], 0);
     assert_eq!(summary["afterGapCounts"]["parserOnlyRows"], 0);
     assert_eq!(summary["afterGapCounts"]["sourceResearchNeededRows"], 10);
+    assert_eq!(summary["counts"]["validatorChangedRows"], 101);
+    assert_eq!(summary["counts"]["validatorUnchangedRows"], 177);
 
     Ok(())
 }
