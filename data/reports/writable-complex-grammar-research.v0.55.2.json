@@ -1,0 +1,2436 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "writable-complex-grammar-research",
+  "generatedAt": "2026-06-07T06:06:37.404974Z",
+  "researchMode": "audit-only-no-validator-changes",
+  "sourceReports": [
+    "writable-value-type-exhaustiveness-audit.v0.55.2.json",
+    "writable-value-type-evidence-matrix.v0.55.2.json",
+    "hyprmod-companion-full-scalar-comparison.v0.55.2.json",
+    "companion-schema-conflict-resolution.v0.55.2.json"
+  ],
+  "counts": {
+    "complexGrammarRowsResearched": 38,
+    "colorRows": 10,
+    "gradientRows": 12,
+    "vector2Rows": 6,
+    "lineSafeStringRows": 5,
+    "pathRows": 2,
+    "regexStringRows": 2,
+    "numericListRows": 1,
+    "rowsNeedingOfficialSourceGrammarResearch": 38,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "rowsEnabledThisSprint": 0
+  },
+  "globalFindings": {
+    "semanticConclusion": "current app complex grammar validators are useful guardrails, but complete official grammar coverage is not proven for color, gradient, vector, string, path, regex, or numeric-list families.",
+    "hyprmodCompanionRole": "useful metadata comparison only; not authoritative for semantic completeness",
+    "recommendedPolicy": "Prompt 3 should inspect official source grammar by family and only then repair validator breadth or documentation."
+  },
+  "families": [
+    {
+      "grammarFamily": "Color",
+      "rows": [
+        "decoration.shadow.color",
+        "decoration.shadow.color_inactive",
+        "decoration.glow.color",
+        "decoration.glow.color_inactive",
+        "group.groupbar.text_color",
+        "group.groupbar.text_color_inactive",
+        "group.groupbar.text_color_locked_active",
+        "group.groupbar.text_color_locked_inactive",
+        "misc.col.splash",
+        "misc.background_color"
+      ],
+      "rowCount": 10,
+      "currentAppShapeSummary": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow."
+    },
+    {
+      "grammarFamily": "Gradient",
+      "rows": [
+        "general.col.inactive_border",
+        "general.col.active_border",
+        "general.col.nogroup_border",
+        "general.col.nogroup_border_active",
+        "group.col.border_active",
+        "group.col.border_inactive",
+        "group.col.border_locked_inactive",
+        "group.col.border_locked_active",
+        "group.groupbar.col.active",
+        "group.groupbar.col.inactive",
+        "group.groupbar.col.locked_active",
+        "group.groupbar.col.locked_inactive"
+      ],
+      "rowCount": 12,
+      "currentAppShapeSummary": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "grammarFamily": "Vector2",
+      "rows": [
+        "decoration.shadow.offset",
+        "input.tablet.region_position",
+        "input.tablet.region_size",
+        "input.tablet.active_area_size",
+        "input.tablet.active_area_position",
+        "layout.single_window_aspect_ratio"
+      ],
+      "rowCount": 6,
+      "currentAppShapeSummary": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds."
+    },
+    {
+      "grammarFamily": "LineSafeString",
+      "rows": [
+        "general.locale",
+        "input.accel_profile",
+        "group.groupbar.font_family",
+        "misc.font_family",
+        "misc.splash_font_family"
+      ],
+      "rowCount": 5,
+      "currentAppShapeSummary": "app validator accepts line-safe strings with row-specific policy where implemented",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect row-specific string consumers; retain line-safety but determine whether empty strings, spaces, and enum-like values need tighter policies."
+    },
+    {
+      "grammarFamily": "Path",
+      "rows": [
+        "decoration.screen_shader",
+        "input.kb_file"
+      ],
+      "rowCount": 2,
+      "currentAppShapeSummary": "app path validator accepts absolute, relative, and tilde paths while rejecting command-like or multiline values",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect source behavior for path expansion, relative paths, shader/file existence expectations, and shell-like character treatment."
+    },
+    {
+      "grammarFamily": "RegexString",
+      "rows": [
+        "misc.swallow_regex",
+        "misc.swallow_exception_regex"
+      ],
+      "rowCount": 2,
+      "currentAppShapeSummary": "app regex validator accepts line-safe regex text while rejecting config-breaking or command-like text",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect regex consumer semantics and determine whether app only needs config line-safety or should also compile/validate regex."
+    },
+    {
+      "grammarFamily": "NumericList",
+      "rows": [
+        "input.scroll_points"
+      ],
+      "rowCount": 1,
+      "currentAppShapeSummary": "app numeric-list parser accepts scroll point numeric-list shape",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect list grammar and bounds for numeric-list rows; parser acceptance alone is not enough for semantic completeness."
+    }
+  ],
+  "rows": [
+    {
+      "rowId": "decoration.shadow.color",
+      "officialSetting": "decoration.shadow.color",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "appAcceptedValuesOrExamples": [
+        "rgb(ffffff)",
+        "rgba(ffffffff)",
+        "0xffffffff"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex)"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "partial",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:partial",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "color-parser-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Color",
+      "currentGrammarPolicy": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow."
+    },
+    {
+      "rowId": "decoration.shadow.color_inactive",
+      "officialSetting": "decoration.shadow.color_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "appAcceptedValuesOrExamples": [
+        "rgb(ffffff)",
+        "rgba(ffffffff)",
+        "0xffffffff"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex)"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "partial",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:partial",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "color-parser-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Color",
+      "currentGrammarPolicy": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow."
+    },
+    {
+      "rowId": "decoration.shadow.offset",
+      "officialSetting": "decoration.shadow.offset",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Vector2",
+      "appValueType": "vector2",
+      "appValidatorKind": "vector2-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "appAcceptedValuesOrExamples": [
+        "1 1",
+        "1,1"
+      ],
+      "appRejectedInvalidExamples": [
+        "1, nope"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "partial",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:partial",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "vector2-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Vector2",
+      "currentGrammarPolicy": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds."
+    },
+    {
+      "rowId": "decoration.screen_shader",
+      "officialSetting": "decoration.screen_shader",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Path",
+      "appValueType": "path",
+      "appValidatorKind": "sanitized-path-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app path validator accepts absolute, relative, and tilde paths while rejecting command-like or multiline values",
+      "appAcceptedValuesOrExamples": [
+        "",
+        "example"
+      ],
+      "appRejectedInvalidExamples": [
+        "line\nbreak"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "sanitized-path-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Path",
+      "currentGrammarPolicy": "app path validator accepts absolute, relative, and tilde paths while rejecting command-like or multiline values",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect source behavior for path expansion, relative paths, shader/file existence expectations, and shell-like character treatment."
+    },
+    {
+      "rowId": "general.locale",
+      "officialSetting": "general.locale",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "LineSafeString",
+      "appValueType": "line-safe-string",
+      "appValidatorKind": "optional-line-safe-string",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app validator accepts line-safe strings with row-specific policy where implemented",
+      "appAcceptedValuesOrExamples": [
+        "",
+        "example"
+      ],
+      "appRejectedInvalidExamples": [
+        "line\nbreak"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "officialSourceEvidence:complete",
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "optional-line-safe-string",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "LineSafeString",
+      "currentGrammarPolicy": "app validator accepts line-safe strings with row-specific policy where implemented",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect row-specific string consumers; retain line-safety but determine whether empty strings, spaces, and enum-like values need tighter policies."
+    },
+    {
+      "rowId": "general.col.inactive_border",
+      "officialSetting": "general.col.inactive_border",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "appAcceptedValuesOrExamples": [
+        "0xffffffff",
+        "rgb(ffffff) rgb(000000) 45deg"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex) 45deg"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "partial",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:partial",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "gradient-color-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Gradient",
+      "currentGrammarPolicy": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "rowId": "general.col.active_border",
+      "officialSetting": "general.col.active_border",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "appAcceptedValuesOrExamples": [
+        "0xffffffff",
+        "rgb(ffffff) rgb(000000) 45deg"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex) 45deg"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "partial",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:partial",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "gradient-color-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Gradient",
+      "currentGrammarPolicy": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "rowId": "general.col.nogroup_border",
+      "officialSetting": "general.col.nogroup_border",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "appAcceptedValuesOrExamples": [
+        "0xffffffff",
+        "rgb(ffffff) rgb(000000) 45deg"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex) 45deg"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "gradient-color-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Gradient",
+      "currentGrammarPolicy": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "rowId": "general.col.nogroup_border_active",
+      "officialSetting": "general.col.nogroup_border_active",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "appAcceptedValuesOrExamples": [
+        "0xffffffff",
+        "rgb(ffffff) rgb(000000) 45deg"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex) 45deg"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "gradient-color-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Gradient",
+      "currentGrammarPolicy": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "rowId": "input.accel_profile",
+      "officialSetting": "input.accel_profile",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "LineSafeString",
+      "appValueType": "line-safe-string",
+      "appValidatorKind": "line-safe-string-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app validator accepts line-safe strings with row-specific policy where implemented",
+      "appAcceptedValuesOrExamples": [
+        "",
+        "flat",
+        "adaptive"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-valid-choice"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "partial",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:partial",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "line-safe-string-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "LineSafeString",
+      "currentGrammarPolicy": "app validator accepts line-safe strings with row-specific policy where implemented",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect row-specific string consumers; retain line-safety but determine whether empty strings, spaces, and enum-like values need tighter policies."
+    },
+    {
+      "rowId": "input.scroll_points",
+      "officialSetting": "input.scroll_points",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "NumericList",
+      "appValueType": "numeric-list",
+      "appValidatorKind": "numeric-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app numeric-list parser accepts scroll point numeric-list shape",
+      "appAcceptedValuesOrExamples": [
+        "",
+        "example"
+      ],
+      "appRejectedInvalidExamples": [
+        "line\nbreak"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "numeric-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "NumericList",
+      "currentGrammarPolicy": "app numeric-list parser accepts scroll point numeric-list shape",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect list grammar and bounds for numeric-list rows; parser acceptance alone is not enough for semantic completeness."
+    },
+    {
+      "rowId": "input.kb_file",
+      "officialSetting": "input.kb_file",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Path",
+      "appValueType": "path",
+      "appValidatorKind": "sanitized-path-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app path validator accepts absolute, relative, and tilde paths while rejecting command-like or multiline values",
+      "appAcceptedValuesOrExamples": [
+        "",
+        "example"
+      ],
+      "appRejectedInvalidExamples": [
+        "line\nbreak"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "sanitized-path-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Path",
+      "currentGrammarPolicy": "app path validator accepts absolute, relative, and tilde paths while rejecting command-like or multiline values",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect source behavior for path expansion, relative paths, shader/file existence expectations, and shell-like character treatment."
+    },
+    {
+      "rowId": "input.tablet.region_position",
+      "officialSetting": "input.tablet.region_position",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Vector2",
+      "appValueType": "vector2",
+      "appValidatorKind": "vector2-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "appAcceptedValuesOrExamples": [
+        "1 1",
+        "1,1"
+      ],
+      "appRejectedInvalidExamples": [
+        "1, nope"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "vector2-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Vector2",
+      "currentGrammarPolicy": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds."
+    },
+    {
+      "rowId": "input.tablet.region_size",
+      "officialSetting": "input.tablet.region_size",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Vector2",
+      "appValueType": "vector2",
+      "appValidatorKind": "vector2-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "appAcceptedValuesOrExamples": [
+        "1 1",
+        "1,1"
+      ],
+      "appRejectedInvalidExamples": [
+        "1, nope"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "vector2-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Vector2",
+      "currentGrammarPolicy": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds."
+    },
+    {
+      "rowId": "input.tablet.active_area_size",
+      "officialSetting": "input.tablet.active_area_size",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Vector2",
+      "appValueType": "vector2",
+      "appValidatorKind": "vector2-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "appAcceptedValuesOrExamples": [
+        "1 1",
+        "1,1"
+      ],
+      "appRejectedInvalidExamples": [
+        "1, nope"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "vector2-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Vector2",
+      "currentGrammarPolicy": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds."
+    },
+    {
+      "rowId": "input.tablet.active_area_position",
+      "officialSetting": "input.tablet.active_area_position",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Vector2",
+      "appValueType": "vector2",
+      "appValidatorKind": "vector2-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "appAcceptedValuesOrExamples": [
+        "1 1",
+        "1,1"
+      ],
+      "appRejectedInvalidExamples": [
+        "1, nope"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "vector2-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Vector2",
+      "currentGrammarPolicy": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds."
+    },
+    {
+      "rowId": "decoration.glow.color",
+      "officialSetting": "decoration.glow.color",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "appAcceptedValuesOrExamples": [
+        "rgb(ffffff)",
+        "rgba(ffffffff)",
+        "0xffffffff"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex)"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "color-parser-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Color",
+      "currentGrammarPolicy": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow."
+    },
+    {
+      "rowId": "decoration.glow.color_inactive",
+      "officialSetting": "decoration.glow.color_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "appAcceptedValuesOrExamples": [
+        "rgb(ffffff)",
+        "rgba(ffffffff)",
+        "0xffffffff"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex)"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "color-parser-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Color",
+      "currentGrammarPolicy": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow."
+    },
+    {
+      "rowId": "group.groupbar.text_color",
+      "officialSetting": "group.groupbar.text_color",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "appAcceptedValuesOrExamples": [
+        "rgb(ffffff)",
+        "rgba(ffffffff)",
+        "0xffffffff"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex)"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "color-parser-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Color",
+      "currentGrammarPolicy": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow."
+    },
+    {
+      "rowId": "group.groupbar.text_color_inactive",
+      "officialSetting": "group.groupbar.text_color_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "appAcceptedValuesOrExamples": [
+        "rgb(ffffff)",
+        "rgba(ffffffff)",
+        "0xffffffff"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex)"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "color-parser-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Color",
+      "currentGrammarPolicy": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow."
+    },
+    {
+      "rowId": "group.groupbar.text_color_locked_active",
+      "officialSetting": "group.groupbar.text_color_locked_active",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "appAcceptedValuesOrExamples": [
+        "rgb(ffffff)",
+        "rgba(ffffffff)",
+        "0xffffffff"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex)"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "color-parser-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Color",
+      "currentGrammarPolicy": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow."
+    },
+    {
+      "rowId": "group.groupbar.text_color_locked_inactive",
+      "officialSetting": "group.groupbar.text_color_locked_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "appAcceptedValuesOrExamples": [
+        "rgb(ffffff)",
+        "rgba(ffffffff)",
+        "0xffffffff"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex)"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "color-parser-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Color",
+      "currentGrammarPolicy": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow."
+    },
+    {
+      "rowId": "group.groupbar.font_family",
+      "officialSetting": "group.groupbar.font_family",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "LineSafeString",
+      "appValueType": "line-safe-string",
+      "appValidatorKind": "line-safe-string-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app validator accepts line-safe strings with row-specific policy where implemented",
+      "appAcceptedValuesOrExamples": [
+        "",
+        "example"
+      ],
+      "appRejectedInvalidExamples": [
+        "line\nbreak"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "line-safe-string-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "LineSafeString",
+      "currentGrammarPolicy": "app validator accepts line-safe strings with row-specific policy where implemented",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect row-specific string consumers; retain line-safety but determine whether empty strings, spaces, and enum-like values need tighter policies."
+    },
+    {
+      "rowId": "group.col.border_active",
+      "officialSetting": "group.col.border_active",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "appAcceptedValuesOrExamples": [
+        "0xffffffff",
+        "rgb(ffffff) rgb(000000) 45deg"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex) 45deg"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "gradient-color-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Gradient",
+      "currentGrammarPolicy": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "rowId": "group.col.border_inactive",
+      "officialSetting": "group.col.border_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "appAcceptedValuesOrExamples": [
+        "0xffffffff",
+        "rgb(ffffff) rgb(000000) 45deg"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex) 45deg"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "gradient-color-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Gradient",
+      "currentGrammarPolicy": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "rowId": "group.col.border_locked_inactive",
+      "officialSetting": "group.col.border_locked_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "appAcceptedValuesOrExamples": [
+        "0xffffffff",
+        "rgb(ffffff) rgb(000000) 45deg"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex) 45deg"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "gradient-color-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Gradient",
+      "currentGrammarPolicy": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "rowId": "group.col.border_locked_active",
+      "officialSetting": "group.col.border_locked_active",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "appAcceptedValuesOrExamples": [
+        "0xffffffff",
+        "rgb(ffffff) rgb(000000) 45deg"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex) 45deg"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "gradient-color-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Gradient",
+      "currentGrammarPolicy": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "rowId": "group.groupbar.col.active",
+      "officialSetting": "group.groupbar.col.active",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "appAcceptedValuesOrExamples": [
+        "0xffffffff",
+        "rgb(ffffff) rgb(000000) 45deg"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex) 45deg"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "gradient-color-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Gradient",
+      "currentGrammarPolicy": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "rowId": "group.groupbar.col.inactive",
+      "officialSetting": "group.groupbar.col.inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "appAcceptedValuesOrExamples": [
+        "0xffffffff",
+        "rgb(ffffff) rgb(000000) 45deg"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex) 45deg"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "gradient-color-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Gradient",
+      "currentGrammarPolicy": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "rowId": "group.groupbar.col.locked_active",
+      "officialSetting": "group.groupbar.col.locked_active",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "appAcceptedValuesOrExamples": [
+        "0xffffffff",
+        "rgb(ffffff) rgb(000000) 45deg"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex) 45deg"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "gradient-color-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Gradient",
+      "currentGrammarPolicy": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "rowId": "group.groupbar.col.locked_inactive",
+      "officialSetting": "group.groupbar.col.locked_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "appAcceptedValuesOrExamples": [
+        "0xffffffff",
+        "rgb(ffffff) rgb(000000) 45deg"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex) 45deg"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "gradient-color-list-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Gradient",
+      "currentGrammarPolicy": "app gradient parser accepts color lists plus optional angle covered by value_gradient tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance."
+    },
+    {
+      "rowId": "misc.col.splash",
+      "officialSetting": "misc.col.splash",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "appAcceptedValuesOrExamples": [
+        "rgb(ffffff)",
+        "rgba(ffffffff)",
+        "0xffffffff"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex)"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "color-parser-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Color",
+      "currentGrammarPolicy": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow."
+    },
+    {
+      "rowId": "misc.background_color",
+      "officialSetting": "misc.background_color",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "appAcceptedValuesOrExamples": [
+        "rgb(ffffff)",
+        "rgba(ffffffff)",
+        "0xffffffff"
+      ],
+      "appRejectedInvalidExamples": [
+        "rgb(nothex)"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "color-parser-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Color",
+      "currentGrammarPolicy": "app color parser accepts supported Hyprland color literals covered by value_color tests",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow."
+    },
+    {
+      "rowId": "misc.font_family",
+      "officialSetting": "misc.font_family",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "LineSafeString",
+      "appValueType": "line-safe-string",
+      "appValidatorKind": "line-safe-string-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app validator accepts line-safe strings with row-specific policy where implemented",
+      "appAcceptedValuesOrExamples": [
+        "Sans",
+        "example"
+      ],
+      "appRejectedInvalidExamples": [
+        "line\nbreak"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "line-safe-string-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "LineSafeString",
+      "currentGrammarPolicy": "app validator accepts line-safe strings with row-specific policy where implemented",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect row-specific string consumers; retain line-safety but determine whether empty strings, spaces, and enum-like values need tighter policies."
+    },
+    {
+      "rowId": "misc.splash_font_family",
+      "officialSetting": "misc.splash_font_family",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "LineSafeString",
+      "appValueType": "line-safe-string",
+      "appValidatorKind": "line-safe-string-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app validator accepts line-safe strings with row-specific policy where implemented",
+      "appAcceptedValuesOrExamples": [
+        "",
+        "example"
+      ],
+      "appRejectedInvalidExamples": [
+        "line\nbreak"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "line-safe-string-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "LineSafeString",
+      "currentGrammarPolicy": "app validator accepts line-safe strings with row-specific policy where implemented",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect row-specific string consumers; retain line-safety but determine whether empty strings, spaces, and enum-like values need tighter policies."
+    },
+    {
+      "rowId": "misc.swallow_regex",
+      "officialSetting": "misc.swallow_regex",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "RegexString",
+      "appValueType": "regex-string",
+      "appValidatorKind": "regex-line-safe-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app regex validator accepts line-safe regex text while rejecting config-breaking or command-like text",
+      "appAcceptedValuesOrExamples": [
+        "",
+        "example"
+      ],
+      "appRejectedInvalidExamples": [
+        "line\nbreak"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "regex-line-safe-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "RegexString",
+      "currentGrammarPolicy": "app regex validator accepts line-safe regex text while rejecting config-breaking or command-like text",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect regex consumer semantics and determine whether app only needs config line-safety or should also compile/validate regex."
+    },
+    {
+      "rowId": "misc.swallow_exception_regex",
+      "officialSetting": "misc.swallow_exception_regex",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "RegexString",
+      "appValueType": "regex-string",
+      "appValidatorKind": "regex-line-safe-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app regex validator accepts line-safe regex text while rejecting config-breaking or command-like text",
+      "appAcceptedValuesOrExamples": [
+        "",
+        "example"
+      ],
+      "appRejectedInvalidExamples": [
+        "line\nbreak"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "regex-line-safe-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "RegexString",
+      "currentGrammarPolicy": "app regex validator accepts line-safe regex text while rejecting config-breaking or command-like text",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect regex consumer semantics and determine whether app only needs config line-safety or should also compile/validate regex."
+    },
+    {
+      "rowId": "layout.single_window_aspect_ratio",
+      "officialSetting": "layout.single_window_aspect_ratio",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Vector2",
+      "appValueType": "vector2",
+      "appValidatorKind": "vector2-validator",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "appAcceptedValuesOrExamples": [
+        "1 1",
+        "1,1"
+      ],
+      "appRejectedInvalidExamples": [
+        "1, nope"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "partial",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "source-research-needed",
+      "classificationReason": "App parser/validator and fixture tests exist, but current reports do not prove every officially accepted value form for this value family.",
+      "strongestSupportingEvidence": [
+        "tempConfigEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "officialSourceEvidence:partial",
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "inspect official source/docs for full accepted value grammar before changing validator",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "vector2-validator",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "grammarFamily": "Vector2",
+      "currentGrammarPolicy": "app vector parser accepts finite vec2 components in supported space/comma forms",
+      "semanticCompletenessStatus": "source-research-needed",
+      "recommendedFutureAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds."
+    }
+  ],
+  "safety": {
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "recoveryGatesChanged": false
+  }
+}
