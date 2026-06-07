@@ -19,7 +19,10 @@ use crate::write_classification::{
     safe_writable_official_setting, safe_writable_value_kind, session_runtime_write_policy,
     ScalarWriteValueKind,
 };
-use crate::write_safety::{review_write_plan, WriteGateFailure, WritePlanRequest, WriteResult};
+use crate::write_safety::{
+    review_screen_shader_gated_write_plan, review_write_plan, GatedWriteFailure, HighRiskGateProof,
+    WriteGateFailure, WritePlanRequest, WriteResult,
+};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SettingEditProjection {
@@ -162,6 +165,26 @@ pub fn apply_setting_change_with_backup_manager(
     proposed_value: &str,
     backup_manager: &BackupManager,
 ) -> Result<ApplyOutcome, ApplyFailure> {
+    apply_setting_change_with_backup_manager_and_high_risk_gate(
+        known_setting_ids,
+        discovery,
+        current_config,
+        setting_id,
+        proposed_value,
+        backup_manager,
+        None,
+    )
+}
+
+pub fn apply_setting_change_with_backup_manager_and_high_risk_gate(
+    known_setting_ids: BTreeSet<String>,
+    discovery: &ConfigDiscovery,
+    current_config: &CurrentConfigSnapshot,
+    setting_id: &str,
+    proposed_value: &str,
+    backup_manager: &BackupManager,
+    high_risk_gate_proof: Option<HighRiskGateProof>,
+) -> Result<ApplyOutcome, ApplyFailure> {
     if !is_safe_writable_setting(setting_id) {
         return Err(ApplyFailure {
             reason: "setting is not write-allowlisted".to_string(),
@@ -232,9 +255,21 @@ pub fn apply_setting_change_with_backup_manager(
             failures: review.failures.iter().map(format_gate_failure).collect(),
         });
     }
+    let gated_review = review_screen_shader_gated_write_plan(review, high_risk_gate_proof);
+    if !gated_review.is_approved() {
+        return Err(ApplyFailure {
+            reason: "write plan rejected by high-risk gate".to_string(),
+            failures: gated_review
+                .failures
+                .iter()
+                .map(format_gated_write_failure)
+                .collect(),
+        });
+    }
 
     let result = apply_scalar_write_plan(
-        &review
+        &gated_review
+            .base_review
             .plan
             .clone()
             .expect("approved review should include a plan"),
@@ -616,6 +651,23 @@ fn format_gate_failure(failure: &WriteGateFailure) -> String {
         WriteGateFailure::BackupTargetMismatch => "BackupTargetMismatch".to_string(),
         WriteGateFailure::TargetMismatch => "TargetMismatch".to_string(),
         WriteGateFailure::StructuredFamilyRejected => "StructuredFamilyRejected".to_string(),
+    }
+}
+
+fn format_gated_write_failure(failure: &GatedWriteFailure) -> String {
+    match failure {
+        GatedWriteFailure::BaseWriteRejected => "BaseWriteRejected".to_string(),
+        GatedWriteFailure::MissingScreenShaderGateProof => {
+            "MissingScreenShaderGateProof".to_string()
+        }
+        GatedWriteFailure::GateProofForWrongSetting => "GateProofForWrongSetting".to_string(),
+        GatedWriteFailure::GateProofForWrongRecoveryBucket => {
+            "GateProofForWrongRecoveryBucket".to_string()
+        }
+        GatedWriteFailure::GateProofTargetMismatch => "GateProofTargetMismatch".to_string(),
+        GatedWriteFailure::InvalidWatchdogPlan(reason) => {
+            format!("InvalidWatchdogPlan: {reason}")
+        }
     }
 }
 

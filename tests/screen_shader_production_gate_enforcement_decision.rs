@@ -108,14 +108,14 @@ fn screen_shader_remains_migration_candidate_not_enabled_high_risk_row() -> Resu
     assert_eq!(row["currentWriteStatus"], "writable");
     assert_eq!(
         row["gateStatus"],
-        "watchdog-migration-proof-complete-production-enforcement-unchanged"
+        "production-screen-shader-gate-enforced-compile-aware-validation-deferred"
     );
-    assert_eq!(row["productionGateEnforcedThisSprint"], false);
+    assert_eq!(row["productionGateEnforcedThisSprint"], true);
     assert_eq!(row["countedAsEnabledHighRiskRow"], false);
     assert!(row["uiReviewWarning"]
         .as_str()
         .unwrap()
-        .contains("Path validation is not display/render safety proof"));
+        .contains("production apply requires the screen-shader high-risk watchdog gate"));
 
     assert_eq!(decision["writableMigrationCandidate"], true);
     assert_eq!(decision["countedAsEnabledHighRiskRow"], false);

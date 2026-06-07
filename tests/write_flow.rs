@@ -743,7 +743,7 @@ fn apply_flow_writes_enum_custom_string_fixture() -> Result<()> {
 fn apply_flow_writes_sanitized_path_fixture() -> Result<()> {
     let root = temp_root("apply-path")?;
     let source = root.join("hyprland.conf");
-    fs::write(&source, "decoration:screen_shader = ./old.frag\n")?;
+    fs::write(&source, "input:kb_file = ./old.xkb\n")?;
     let contents = fs::read_to_string(&source)?;
     let snapshot = snapshot_for(&source, &contents);
     let backup_manager = BackupManager::new(root.join("backups"));
@@ -752,22 +752,22 @@ fn apply_flow_writes_sanitized_path_fixture() -> Result<()> {
         known_ids(),
         &discovery_for(source.clone()),
         &snapshot,
-        "decoration.screen_shader",
-        "~/.config/hypr/example.frag",
+        "input.kb_file",
+        "~/.config/hypr/example.xkb",
         &backup_manager,
     )
     .map_err(|failure| anyhow::anyhow!("{failure:?}"))?;
 
-    assert_eq!(outcome.setting_id, "decoration.screen_shader");
+    assert_eq!(outcome.setting_id, "input.kb_file");
     assert_eq!(outcome.target_path, source);
     assert!(outcome.backup_path.exists());
     assert_eq!(
         outcome.verified_value.as_deref(),
-        Some("~/.config/hypr/example.frag")
+        Some("~/.config/hypr/example.xkb")
     );
     assert_eq!(
         fs::read_to_string(&outcome.target_path)?,
-        "decoration:screen_shader = ~/.config/hypr/example.frag\n"
+        "input:kb_file = ~/.config/hypr/example.xkb\n"
     );
 
     fs::remove_dir_all(root)?;

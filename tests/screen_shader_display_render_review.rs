@@ -200,7 +200,7 @@ fn screen_shader_policy_followup_is_projected_in_aggregate_reports() -> Result<(
 }
 
 #[test]
-fn screen_shader_unified_pipeline_row_records_gate_required_not_proven() -> Result<()> {
+fn screen_shader_unified_pipeline_row_records_production_gate_enforced() -> Result<()> {
     let pipeline = read_json("data/reports/all-341-unified-pipeline.v0.55.2.json")?;
     let row = pipeline["rows"]
         .as_array()
@@ -225,20 +225,20 @@ fn screen_shader_unified_pipeline_row_records_gate_required_not_proven() -> Resu
     );
     assert_eq!(
         row["gateStatus"],
-        "watchdog-migration-proof-complete-production-enforcement-unchanged"
+        "production-screen-shader-gate-enforced-compile-aware-validation-deferred"
     );
     assert_eq!(
         row["watchdogProofSource"],
         "screen-shader-watchdog-migration-proof.v0.55.2.json"
     );
-    assert_eq!(row["productionGateEnforcedThisSprint"], false);
+    assert_eq!(row["productionGateEnforcedThisSprint"], true);
     assert_eq!(row["countedAsEnabledHighRiskRow"], false);
     assert!(row["uiReviewWarning"]
         .as_str()
         .unwrap()
-        .contains("Path validation is not display/render safety proof"));
+        .contains("production apply requires the screen-shader high-risk watchdog gate"));
     assert_eq!(row["writeAllowlistChanged"], false);
-    assert_eq!(row["productionBehaviorChanged"], false);
+    assert_eq!(row["productionBehaviorChanged"], true);
 
     Ok(())
 }
