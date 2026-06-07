@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactKind": "screen-shader-production-gate-enforcement-decision",
+  "generatedAt": "2026-06-07T03:12:28-07:00",
+  "rowId": "decoration.screen_shader",
+  "officialSetting": "decoration.screen_shader",
+  "startingCommit": "4662b86",
+  "decisionOption": "Option A",
+  "decisionSummary": "Keep temporary writable migration-candidate status. The fixture/temp-only watchdog migration proof is complete, but production high-risk gate enforcement is not changed because current write planning still uses the normal safe-write review path and live/production watchdog execution remains planned-disabled in source.",
+  "currentWritableStatus": "writable",
+  "writableMigrationCandidate": true,
+  "watchdogMigrationProofStatus": "complete",
+  "countedAsEnabledHighRiskRow": false,
+  "readableRows": 341,
+  "writableRows": 278,
+  "blockedRows": 63,
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0,
+  "realConfigTouched": false,
+  "runtimeTouched": false,
+  "reloadEvalLuaUsed": false,
+  "liveShaderCompileUsed": false,
+  "liveDisplayRuntimeProofUsed": false,
+  "compileAwareValidationChanged": false,
+  "compileAwareValidationStatus": "deferred",
+  "productionEnforcementChanged": false,
+  "productionGateEnforcedThisSprint": false,
+  "productionWriteFlowChanged": false,
+  "normalPathOnlyApprovalStillAccepted": true,
+  "highRiskGateRequiredForProduction": false,
+  "proofUsed": [
+    {
+      "source": "src/write_safety.rs",
+      "finding": "review_write_plan approves allowlisted valid writes with backup and current-source checks; it has no high-risk watchdog requirement."
+    },
+    {
+      "source": "src/write_flow.rs",
+      "finding": "apply_setting_change_with_backup_manager creates a backup, calls review_write_plan, then applies the scalar write plan; no production screen-shader watchdog routing is present."
+    },
+    {
+      "source": "src/high_risk_recovery.rs",
+      "finding": "DryRunTempOnly watchdog execution is supported; ProductionPlannedDisabled, LiveConfigPlannedDisabled, and live config modes are planned but disabled by ensure_supported_watchdog_mode."
+    },
+    {
+      "source": "data/reports/screen-shader-watchdog-migration-proof.v0.55.2.json",
+      "finding": "Fixture/temp-only screen-shader watchdog migration proof is complete, with plan-before-mutation, backup-before-mutation, separate-process confirm, timeout restore, result log, and display/render-independent recovery represented."
+    },
+    {
+      "source": "tests/screen_shader_watchdog_migration_proof.rs",
+      "finding": "Tests prove the screen-shader watchdog migration flow against fixture/temp files only and record production enforcement unchanged."
+    },
+    {
+      "source": "tests/screen_shader_production_gate_enforcement_decision.rs",
+      "finding": "Decision tests prove Option A fields, unchanged counts, unchanged allowlist, unchanged production enforcement, and continued normal write-plan approval in fixture review."
+    }
+  ],
+  "proofStillMissing": [
+    "production write-flow primitive that requires a high-risk watchdog plan before applying decoration.screen_shader",
+    "test-backed production gate enforcement path that rejects normal path-only approval for decoration.screen_shader",
+    "explicit user-approved decision to change production enforcement behavior",
+    "compile-aware shader validation design",
+    "standalone non-live shader compiler feasibility proof"
+  ],
+  "userApprovalRequiredBeforeRemoval": true,
+  "nextRecommendedSprint": "Screen shader production high-risk gate enforcement architecture sprint: design the production write-flow primitive that can require a watchdog plan before applying decoration.screen_shader, prove it with fixture/temp files only, keep compile-aware validation deferred, and do not run live shader compile or live display/render proof."
+}

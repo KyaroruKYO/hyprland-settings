@@ -2,15 +2,23 @@
 
 This file is the starting context for a new ChatGPT conversation. It is written for ChatGPT and the user, not for Codex internals. Assume the new conversation has no other history.
 
-State reviewed after the screen shader watchdog migration proof sprint on branch `completion-sprint`.
+State reviewed after the screen shader production gate enforcement decision sprint on branch `completion-sprint`.
 
-Latest completed baseline before this proof sprint:
+Latest completed baseline before this decision sprint:
 
-- `e9c665c Design screen shader high risk gate migration`
+- `4662b86 Prove screen shader watchdog migration flow`
 
 Latest sprint commit:
 
-- `Prove screen shader watchdog migration flow` (the commit containing this handoff update; run `git log -1 --oneline` for the exact hash)
+- `Decide screen shader production gate enforcement` (the commit containing this handoff update; run `git log -1 --oneline` for the exact hash)
+
+Latest restore point and backups:
+
+- Restore tag: `pre-screen-shader-production-gate-decision-20260607-031136`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-screen-shader-production-gate-decision-backup_20260607_031136/`
+- AGS backup: `/home/kyo/Documents/ags-pre-screen-shader-production-gate-decision-backup_20260607_031136`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-production-gate-decision-20260607_031136`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-production-gate-decision-backup_20260607_031136`
 
 ## 1. Primary Project Goal
 
@@ -65,13 +73,13 @@ Every sprint should preserve safety boundaries and end with clear final counts:
 
 Current branch: `completion-sprint`
 
-Latest reviewed implementation baseline before the screen shader watchdog proof sprint:
+Latest reviewed implementation baseline before the screen shader production gate enforcement decision sprint:
 
-- `e9c665c Design screen shader high risk gate migration`
+- `4662b86 Prove screen shader watchdog migration flow`
 
 Latest sprint commit message:
 
-- `Prove screen shader watchdog migration flow`
+- `Decide screen shader production gate enforcement`
 
 Current scalar row counts:
 
@@ -96,18 +104,33 @@ Screen shader state:
 - It remains a writable migration candidate.
 - Selected policy from the review sprint: `Policy D`.
 - Selected migration option from the gate design sprint: `Option A`.
+- Selected production gate enforcement decision: `Option A`.
 - Watchdog migration proof status: complete.
 - It is not counted as a completed enabled high-risk row.
 - Production enforcement changed: no.
 - Production gate enforced this sprint: no.
+- Production write flow changed: no.
+- Normal path-only approval still accepted: yes, as a fixture proof of unchanged production enforcement.
+- High-risk gate required for production this sprint: no.
 - Compile-aware validation remains deferred.
-- No row was enabled during the screen shader watchdog proof sprint.
+- No row was enabled during the screen shader production gate enforcement decision sprint.
 - Write allowlist unchanged.
 - Recovery gates unchanged.
 - Real config untouched.
 - Runtime untouched.
 - Reload/eval/Lua unused.
 - Live shader compile unused.
+- Live display/render proof unused.
+
+Decision report:
+
+- `data/reports/screen-shader-production-gate-enforcement-decision.v0.55.2.json`
+
+Decision summary:
+
+- Option A was selected because current Rust source proves the write path still uses normal `review_write_plan` approval and does not route `decoration.screen_shader` through an enforced production watchdog gate.
+- The dry-run/temp-only watchdog migration proof is complete, but production enforcement is a separate missing primitive.
+- Live/production watchdog execution remains planned-disabled in `src/high_risk_recovery.rs`.
 
 Validation state from the most recent sprint:
 
@@ -451,8 +474,9 @@ Relevant reports:
 
 Near-term work:
 
-- Screen shader production gate enforcement decision sprint.
-- Decide whether to migrate production writes into the proven display/render watchdog gate, keep temporary writable migration-candidate status, or propose block/removal with explicit user approval.
+- Screen shader production high-risk gate enforcement architecture sprint.
+- Design the production write-flow primitive that can require a watchdog plan before applying `decoration.screen_shader`.
+- Prove the primitive with fixture/temp files only before production enforcement can change.
 - Do not add compile-aware validation unless separately approved.
 
 Remaining deferred validators:
@@ -469,7 +493,9 @@ Remaining deferred validators:
 
 - `decoration.screen_shader`
   - Display/render watchdog migration proof complete.
-  - Production gate enforcement pending.
+  - Production gate enforcement decision selected Option A.
+  - Production enforcement remains unchanged.
+  - Production gate enforcement primitive still missing.
   - Compile-aware validation deferred.
 
 Remaining high-risk blocked settings:
@@ -524,17 +550,19 @@ Do not remove current writable behavior without explicit user approval.
 
 Recommended next sprint title:
 
-Screen shader production gate enforcement decision sprint.
+Screen shader production high-risk gate enforcement architecture sprint.
 
 The sprint should:
 
-- Decide whether to migrate production writes into the proven display/render watchdog gate, keep temporary writable migration-candidate status, or propose block/removal with explicit user approval.
+- Design the production write-flow primitive that can require a watchdog plan before applying `decoration.screen_shader`.
+- Prove normal path-only approval is rejected only after the new primitive exists and is explicitly approved.
+- Keep `decoration.screen_shader` writable as a migration candidate unless the user approves a behavior-change sprint.
 - Not run live shader compile.
 - Not reload Hyprland.
 - Not touch real config.
 - Not enable rows.
 - Not add compile-aware validation unless separately approved.
-- Preserve the current writable migration-candidate status unless the user explicitly approves a behavior-change sprint.
+- Preserve current counts unless an explicit, approved behavior-change sprint records otherwise.
 
 ## 13. Validation Commands
 
@@ -564,6 +592,7 @@ Current AppStream warnings are expected and non-blocking under `|| true`:
 
 Latest important commits:
 
+- `4662b86 Prove screen shader watchdog migration flow`
 - `e9c665c Design screen shader high risk gate migration`
 - `32a7bc0 Add ChatGPT project handoff`
 - `1958cc9 Enforce screen shader display render review`
@@ -577,16 +606,16 @@ Latest important commits:
 - `96b73be Enforce deferred consumer source validator research`
 - `6c785cc Enforce official writable validator source research`
 
-Latest restore tag created before the screen shader watchdog proof sprint:
+Latest restore tag created before the screen shader production gate enforcement decision sprint:
 
-- `pre-screen-shader-watchdog-proof-20260607-025742`
+- `pre-screen-shader-production-gate-decision-20260607-031136`
 
-Backup paths created before the screen shader watchdog proof sprint:
+Backup paths created before the screen shader production gate enforcement decision sprint:
 
-- `/home/kyo/Documents/hyprland-settings-pre-screen-shader-watchdog-proof-backup_20260607_025742`
-- `/home/kyo/Documents/ags-pre-screen-shader-watchdog-proof-backup_20260607_025742`
-- `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-watchdog-proof-20260607_025742`
-- `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-watchdog-proof-backup_20260607_025742`
+- `/home/kyo/Documents/hyprland-settings-pre-screen-shader-production-gate-decision-backup_20260607_031136/`
+- `/home/kyo/Documents/ags-pre-screen-shader-production-gate-decision-backup_20260607_031136`
+- `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-production-gate-decision-20260607_031136`
+- `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-production-gate-decision-backup_20260607_031136`
 
 Important report filenames:
 
@@ -606,6 +635,7 @@ Important report filenames:
 - `data/reports/screen-shader-next-step-plan.v0.55.2.json`
 - `data/reports/screen-shader-high-risk-gate-migration.v0.55.2.json`
 - `data/reports/screen-shader-watchdog-migration-proof.v0.55.2.json`
+- `data/reports/screen-shader-production-gate-enforcement-decision.v0.55.2.json`
 
 Important docs filenames:
 
@@ -615,6 +645,7 @@ Important docs filenames:
 - `/home/kyo/.config/hypr/docs/SCREEN-SHADER-VALIDATION-BOUNDARY.md`
 - `/home/kyo/.config/hypr/docs/SCREEN-SHADER-HIGH-RISK-GATE-MIGRATION.md`
 - `/home/kyo/.config/hypr/docs/SCREEN-SHADER-WATCHDOG-MIGRATION-PROOF.md`
+- `/home/kyo/.config/hypr/docs/SCREEN-SHADER-PRODUCTION-GATE-ENFORCEMENT-DECISION.md`
 - `/home/kyo/.config/hypr/docs/NEXT-HIGH-RISK-BUCKET-READINESS.md`
 - `/home/kyo/.config/hypr/docs/RUST-DEFERRED-SOURCE-BACKED-VALIDATOR-REPAIR-REPORT.md`
 - `/home/kyo/.config/hypr/docs/SOURCE-BACKED-VALIDATOR-DEFERRED-ITEMS.md`
@@ -639,4 +670,4 @@ Remaining deferred row list:
 
 Next recommended prompt title:
 
-Screen shader production gate enforcement decision sprint.
+Screen shader production high-risk gate enforcement architecture sprint.
