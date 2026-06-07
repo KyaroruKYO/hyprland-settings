@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-validator-remaining-items",
+  "generatedAt": "2026-06-07T01:41:40-07:00",
+  "counts": {
+    "remainingDeferredRows": 4,
+    "regexRows": 2,
+    "pathContextRows": 1,
+    "displayRenderHighRiskReviewRows": 1,
+    "validatorChangedRows": 0,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "input.kb_file",
+      "officialSetting": "input.kb_file",
+      "remainingReason": "config-relative path existence/readability checks are UI policy, not mandatory writer validation",
+      "nextAction": "metadata-only UI path hint or optional non-blocking file probe"
+    },
+    {
+      "rowId": "misc.swallow_regex",
+      "officialSetting": "misc.swallow_regex",
+      "remainingReason": "RE2-compatible Rust validation not implemented",
+      "nextAction": "add RE2-compatible syntax validation only if dependency/support is approved"
+    },
+    {
+      "rowId": "misc.swallow_exception_regex",
+      "officialSetting": "misc.swallow_exception_regex",
+      "remainingReason": "RE2-compatible Rust validation not implemented",
+      "nextAction": "add RE2-compatible syntax validation only if dependency/support is approved"
+    },
+    {
+      "rowId": "decoration.screen_shader",
+      "officialSetting": "decoration.screen_shader",
+      "remainingReason": "display/render compile-sensitive path requires high-risk review before compile-aware validation",
+      "nextAction": "run display/render high-risk screen shader review sprint"
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false
+  }
+}
