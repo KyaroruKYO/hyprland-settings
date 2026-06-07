@@ -35,6 +35,8 @@ pub enum ScalarWriteValueKind {
     Gradient,
     Vector2,
     NumericList,
+    CssGap,
+    AccelProfile,
     CommaSeparatedFloatList,
     LineSafeString,
     Path,
@@ -751,12 +753,12 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "appearance.gaps_in",
         official_setting: "general.gaps_in",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::CssGap,
     },
     SafeWritableRow {
         row_id: "appearance.gaps_out",
         official_setting: "general.gaps_out",
-        value_kind: ScalarWriteValueKind::Number,
+        value_kind: ScalarWriteValueKind::CssGap,
     },
     SafeWritableRow {
         row_id: "appearance.border_size",
@@ -1056,7 +1058,7 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
     SafeWritableRow {
         row_id: "input.accel_profile",
         official_setting: "input.accel_profile",
-        value_kind: ScalarWriteValueKind::LineSafeString,
+        value_kind: ScalarWriteValueKind::AccelProfile,
     },
     SafeWritableRow {
         row_id: "input.scroll_points",

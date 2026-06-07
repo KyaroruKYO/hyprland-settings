@@ -156,6 +156,8 @@ fn validate_safe_writable_value(
         Some(ScalarWriteValueKind::Gradient) => validate_gradient_value(value),
         Some(ScalarWriteValueKind::Vector2) => validate_vec2_value(value),
         Some(ScalarWriteValueKind::NumericList) => validate_numeric_list_value(value),
+        Some(ScalarWriteValueKind::CssGap) => validate_css_gap_value(value),
+        Some(ScalarWriteValueKind::AccelProfile) => validate_accel_profile_value(value),
         Some(ScalarWriteValueKind::CommaSeparatedFloatList) => {
             validate_comma_separated_float_list(value)
         }
@@ -302,6 +304,68 @@ fn validate_numeric_list_value(value: &str) -> PendingChangeValidation {
         Ok(_) => PendingChangeValidation::Valid,
         Err(error) => invalid(&error.to_string()),
     }
+}
+
+fn validate_css_gap_value(value: &str) -> PendingChangeValidation {
+    let trimmed = value.trim();
+    if trimmed.is_empty() {
+        return invalid("CssGap value cannot be empty");
+    }
+    if trimmed.contains('\n') || trimmed.contains('\r') {
+        return invalid("CssGap value cannot span multiple lines");
+    }
+    if trimmed.contains('#') || trimmed.contains("`") || trimmed.contains("$(") {
+        return invalid("CssGap value cannot contain config-breaking syntax");
+    }
+
+    let components = trimmed.split_whitespace().collect::<Vec<_>>();
+    if components.len() > 4 {
+        return invalid("CssGap value supports at most four components");
+    }
+
+    for component in components {
+        match component.parse::<i64>() {
+            Ok(number) if number >= 0 => {}
+            Ok(_) => {
+                return invalid("CssGap negative values are blocked by conservative app policy")
+            }
+            Err(_) => return invalid("CssGap components must be integers"),
+        }
+    }
+
+    PendingChangeValidation::Valid
+}
+
+fn validate_accel_profile_value(value: &str) -> PendingChangeValidation {
+    let trimmed = value.trim();
+    if trimmed.contains('\n') || trimmed.contains('\r') {
+        return invalid("accel profile cannot span multiple lines");
+    }
+    if trimmed.contains('#') || trimmed.contains("`") || trimmed.contains("$(") {
+        return invalid("accel profile cannot contain config-breaking syntax");
+    }
+
+    if trimmed.is_empty() || matches!(trimmed, "adaptive" | "flat") {
+        return PendingChangeValidation::Valid;
+    }
+
+    let parts = trimmed.split_whitespace().collect::<Vec<_>>();
+    if parts.first() != Some(&"custom") {
+        return invalid("accel profile must be empty, adaptive, flat, or custom numeric points");
+    }
+    if parts.len() < 3 {
+        return invalid("custom accel profile requires a step and at least one point");
+    }
+
+    for token in &parts[1..] {
+        match token.parse::<f64>() {
+            Ok(number) if number.is_finite() => {}
+            Ok(_) => return invalid("custom accel profile values must be finite"),
+            Err(_) => return invalid("custom accel profile values must be numeric"),
+        }
+    }
+
+    PendingChangeValidation::Valid
 }
 
 fn validate_comma_separated_float_list(value: &str) -> PendingChangeValidation {

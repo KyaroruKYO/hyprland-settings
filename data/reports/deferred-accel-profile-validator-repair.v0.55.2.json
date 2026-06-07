@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-accel-profile-validator-repair",
+  "generatedAt": "2026-06-07T01:41:40-07:00",
+  "counts": {
+    "rowsRepaired": 1,
+    "validatorChangedRows": 1,
+    "metadataUpdatedRows": 1,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "input.accel_profile",
+      "officialSetting": "input.accel_profile",
+      "acceptedForms": ["", "adaptive", "flat", "custom <finite step> <finite point...>"],
+      "rejectedForms": ["unknown freeform string", "custom without step", "custom without at least one point", "non-finite custom numbers", "unsafe config text"],
+      "sourceBacked": true,
+      "conservativePolicy": "custom profile requires at least one point after step",
+      "editorHint": "choice-plus-advanced-custom-accel-profile"
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false
+  }
+}

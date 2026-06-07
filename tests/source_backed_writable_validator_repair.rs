@@ -156,8 +156,10 @@ fn numeric_bounds_are_source_backed_and_enforced() -> Result<()> {
     assert!(source_backed_numeric_bounds("appearance.gaps_out").is_none());
     assert_valid("appearance.gaps_in", "8");
     assert_valid("appearance.gaps_out", "12");
-    assert_invalid("appearance.gaps_in", "5 10");
-    assert_invalid("appearance.gaps_out", "5 10 15 20");
+    assert_valid("appearance.gaps_in", "5 10");
+    assert_valid("appearance.gaps_out", "5 10 15 20");
+    assert_invalid("appearance.gaps_in", "5 10 15 20 25");
+    assert_invalid("appearance.gaps_out", "-5");
 
     Ok(())
 }

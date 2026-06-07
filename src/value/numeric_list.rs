@@ -15,6 +15,9 @@ impl NumericListValue {
         if trimmed.contains('\n') || trimmed.contains('\r') {
             return Err(anyhow!("numeric list cannot span multiple lines"));
         }
+        if trimmed.contains(',') {
+            return Err(anyhow!("numeric list must use spaces, not commas"));
+        }
         if trimmed.contains('#') {
             return Err(anyhow!("numeric list cannot contain config comment marker"));
         }

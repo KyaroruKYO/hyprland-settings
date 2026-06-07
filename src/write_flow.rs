@@ -372,6 +372,15 @@ fn next_proposed_value(
             .clone()
             .filter(|value| !value.trim().is_empty())
             .unwrap_or_else(|| "0.2 0.0 0.5 1 1.2 1.5".to_string()),
+        Some(ScalarWriteValueKind::CssGap) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "5".to_string()),
+        Some(ScalarWriteValueKind::AccelProfile) => current_value
+            .raw_value
+            .clone()
+            .unwrap_or_else(|| "flat".to_string()),
         Some(ScalarWriteValueKind::CommaSeparatedFloatList) => current_value
             .raw_value
             .clone()
@@ -415,6 +424,8 @@ fn editor_kind_for_value_kind(value_kind: Option<ScalarWriteValueKind>) -> &'sta
         Some(ScalarWriteValueKind::Color) => "color-text",
         Some(ScalarWriteValueKind::Gradient) => "gradient-text",
         Some(ScalarWriteValueKind::Vector2) => "vector-text",
+        Some(ScalarWriteValueKind::CssGap) => "css-gap-text",
+        Some(ScalarWriteValueKind::AccelProfile) => "accel-profile-text",
         Some(ScalarWriteValueKind::NumericList) => "numeric-list-text",
         Some(ScalarWriteValueKind::CommaSeparatedFloatList) => "comma-float-list-text",
         Some(ScalarWriteValueKind::LineSafeString)

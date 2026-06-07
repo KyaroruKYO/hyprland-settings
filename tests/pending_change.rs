@@ -316,6 +316,49 @@ fn validator_needed_rows_reject_invalid_values() {
 }
 
 #[test]
+fn cssgap_rows_accept_one_to_four_non_negative_integer_components() {
+    let current = CurrentValueProjection::not_configured();
+
+    for row_id in ["appearance.gaps_in", "appearance.gaps_out"] {
+        for proposed in ["0", "5", "5 10", "5 10 15", "5 10 15 20"] {
+            let change = stage_pending_change(row_id, &current, proposed);
+            assert_eq!(
+                change.validation,
+                PendingChangeValidation::Valid,
+                "{row_id} should accept CssGap value {proposed:?}"
+            );
+            assert!(change.can_be_applied());
+        }
+    }
+}
+
+#[test]
+fn cssgap_rows_reject_unsafe_or_unsupported_components() {
+    let current = CurrentValueProjection::not_configured();
+
+    for row_id in ["appearance.gaps_in", "appearance.gaps_out"] {
+        for proposed in [
+            "",
+            "-1",
+            "5.5",
+            "5 10 15 20 25",
+            "5,10",
+            "5 # comment",
+            "5\n10",
+            "`cmd`",
+            "$(cmd)",
+        ] {
+            let change = stage_pending_change(row_id, &current, proposed);
+            assert!(
+                matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+                "{row_id} should reject CssGap value {proposed:?}"
+            );
+            assert!(!change.can_be_applied());
+        }
+    }
+}
+
+#[test]
 fn verified_finite_choice_rows_accept_only_verified_raw_values() {
     let current = CurrentValueProjection::not_configured();
 
@@ -594,6 +637,45 @@ fn enum_custom_string_rows_can_be_staged_with_line_safe_values() {
 }
 
 #[test]
+fn accel_profile_accepts_source_backed_profiles() {
+    let current = CurrentValueProjection::not_configured();
+
+    for proposed in ["", "adaptive", "flat", "custom 0.2 0.0 0.5 1"] {
+        let change = stage_pending_change("input.accel_profile", &current, proposed);
+        assert_eq!(
+            change.validation,
+            PendingChangeValidation::Valid,
+            "input.accel_profile should accept {proposed:?}"
+        );
+        assert!(change.can_be_applied());
+    }
+}
+
+#[test]
+fn accel_profile_rejects_unknown_or_invalid_custom_values() {
+    let current = CurrentValueProjection::not_configured();
+
+    for proposed in [
+        "linear",
+        "custom",
+        "custom 0.2",
+        "custom 0.2 nope",
+        "custom NaN 0.5",
+        "custom inf 0.5",
+        "custom 0.2,0.5",
+        "flat # comment",
+        "flat\nadaptive",
+    ] {
+        let change = stage_pending_change("input.accel_profile", &current, proposed);
+        assert!(
+            matches!(change.validation, PendingChangeValidation::Invalid { .. }),
+            "input.accel_profile should reject {proposed:?}"
+        );
+        assert!(!change.can_be_applied());
+    }
+}
+
+#[test]
 fn enum_custom_string_rows_reject_config_breaking_values() {
     let current = CurrentValueProjection::not_configured();
     for proposed in ["", "value\nnext", "value # comment", "`cmd`", "$(cmd)"] {
@@ -696,7 +778,9 @@ fn numeric_list_row_can_be_staged_with_scroll_points() {
 #[test]
 fn numeric_list_row_rejects_invalid_scroll_points() {
     let current = CurrentValueProjection::not_configured();
-    for proposed in ["", "0.2", "0 1", "0.2 nope", "0.2\n1", "0.2 # 1"] {
+    for proposed in [
+        "", "0.2", "0 1", "0.2 nope", "0.2\n1", "0.2 # 1", "0.2, 0.5", "NaN 1", "inf 1",
+    ] {
         let change = stage_pending_change("input.scroll_points", &current, proposed);
         assert!(
             matches!(change.validation, PendingChangeValidation::Invalid { .. }),
