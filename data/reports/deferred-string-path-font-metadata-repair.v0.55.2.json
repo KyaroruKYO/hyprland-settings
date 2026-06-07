@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-string-path-font-metadata-repair",
+  "generatedAt": "2026-06-07T01:41:40-07:00",
+  "counts": {
+    "metadataOnlyRows": 5,
+    "validatorChangedRows": 0,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "general.locale",
+      "officialSetting": "general.locale",
+      "validatorChanged": false,
+      "metadata": "empty value means system locale fallback",
+      "editorHint": "optional-locale-string"
+    },
+    {
+      "rowId": "input.kb_file",
+      "officialSetting": "input.kb_file",
+      "validatorChanged": false,
+      "metadata": "optional config-relative XKB keymap path; consumer logs/falls back on failure",
+      "editorHint": "config-relative-path"
+    },
+    {
+      "rowId": "group.groupbar.font_family",
+      "officialSetting": "group.groupbar.font_family",
+      "validatorChanged": false,
+      "metadata": "freeform font-family string; [[EMPTY]] falls back to misc.font_family",
+      "editorHint": "font-family-string"
+    },
+    {
+      "rowId": "misc.font_family",
+      "officialSetting": "misc.font_family",
+      "validatorChanged": false,
+      "metadata": "freeform font-family string; no installed-font enforcement",
+      "editorHint": "font-family-string"
+    },
+    {
+      "rowId": "misc.splash_font_family",
+      "officialSetting": "misc.splash_font_family",
+      "validatorChanged": false,
+      "metadata": "freeform font-family string; [[EMPTY]] falls back to misc.font_family",
+      "editorHint": "font-family-string"
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false
+  }
+}
