@@ -1,0 +1,5002 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "official-bool-parser-policy-research",
+  "generatedAt": "2026-06-07T07:12:35.122223Z",
+  "researchMode": "official-source-research-only-no-validator-changes",
+  "sourceInputs": [
+    "writable-boolean-alias-research.v0.55.2.json"
+  ],
+  "officialSources": {
+    "hyprlandBoolRegistration": {
+      "localPath": "/tmp/Hyprland-v0.55.2-full/src/config/legacy/ConfigManager.cpp",
+      "officialUrl": "https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/legacy/ConfigManager.cpp",
+      "finding": "Hyprland registers CBoolValue as Hyprlang::INT with default 1 or 0."
+    },
+    "hyprlangIntParser": {
+      "localPath": "/tmp/hyprlang-source-research/src/config.cpp",
+      "officialUrl": "https://github.com/hyprwm/hyprlang/blob/main/src/config.cpp",
+      "finding": "Hyprlang CONFIGDATATYPE_INT uses configStringToInt; it accepts 0x hex, rgb/rgba color-style ints, prefixes true/on/yes as 1, prefixes false/off/no as 0, and numeric integers."
+    }
+  },
+  "counts": {
+    "booleanRowsResearched": 130,
+    "sourceBackedAliasRows": 130,
+    "parserOnlyAliasRows": 0,
+    "appAcceptedAliasesWithInsufficientOfficialEvidenceRows": 0,
+    "rowsRecommendedForNormalizationPolicy": 130,
+    "rowsRecommendedForUiTrueFalseOnly": 130,
+    "rowsRecommendedNotToBroadenToArbitraryIntegers": 130,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "rowsEnabledThisSprint": 0
+  },
+  "policyFinding": {
+    "sourceBackedAcceptedBooleanSpellingsForAppExactAliases": [
+      "true",
+      "false",
+      "1",
+      "0",
+      "yes",
+      "no",
+      "on",
+      "off"
+    ],
+    "sourceBackedParserBehaviorBeyondApp": "Because bool rows are integer-backed, the official parser also accepts other integer forms; this is not recommended as UI policy for boolean rows.",
+    "prefixCaveat": "Hyprlang source uses prefix checks for true/on/yes and false/off/no. The app should not mirror prefix looseness without an explicit repair sprint.",
+    "recommendedFutureUiPolicy": "Offer only true/false in UI controls.",
+    "recommendedFutureValidatorPolicy": "Keep exact typed aliases or normalize exact aliases to true/false; do not broaden to arbitrary integers or prefix aliases just because Hyprland parser accepts them.",
+    "parserAcceptanceIsSemanticCompleteness": false
+  },
+  "rows": [
+    {
+      "rowId": "appearance.dim.modal",
+      "officialSetting": "decoration.dim_modal",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "appearance.dim.inactive",
+      "officialSetting": "decoration.dim_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "appearance.border_part_of_window",
+      "officialSetting": "decoration.border_part_of_window",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "appearance.blur.enabled",
+      "officialSetting": "decoration.blur.enabled",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "appearance.blur.ignore_opacity",
+      "officialSetting": "decoration.blur.ignore_opacity",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "appearance.blur.new_optimizations",
+      "officialSetting": "decoration.blur.new_optimizations",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "appearance.blur.special",
+      "officialSetting": "decoration.blur.special",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "appearance.blur.popups",
+      "officialSetting": "decoration.blur.popups",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "appearance.blur.input_methods",
+      "officialSetting": "decoration.blur.input_methods",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "appearance.blur.xray",
+      "officialSetting": "decoration.blur.xray",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "appearance.shadow.enabled",
+      "officialSetting": "decoration.shadow.enabled",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "appearance.shadow.sharp",
+      "officialSetting": "decoration.shadow.sharp",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "animations.enabled",
+      "officialSetting": "animations.enabled",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "animations.workspace_wraparound",
+      "officialSetting": "animations.workspace_wraparound",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "appearance.glow.enabled",
+      "officialSetting": "decoration.glow.enabled",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.enabled",
+      "officialSetting": "group.groupbar.enabled",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.gradients",
+      "officialSetting": "group.groupbar.gradients",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.stacked",
+      "officialSetting": "group.groupbar.stacked",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.render_titles",
+      "officialSetting": "group.groupbar.render_titles",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.scrolling",
+      "officialSetting": "group.groupbar.scrolling",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.middle_click_close",
+      "officialSetting": "group.groupbar.middle_click_close",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.round_only_edges",
+      "officialSetting": "group.groupbar.round_only_edges",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.gradient_round_only_edges",
+      "officialSetting": "group.groupbar.gradient_round_only_edges",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.keep_upper_gap",
+      "officialSetting": "group.groupbar.keep_upper_gap",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.blur",
+      "officialSetting": "group.groupbar.blur",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.disable_hyprland_logo",
+      "officialSetting": "misc.disable_hyprland_logo",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.disable_splash_rendering",
+      "officialSetting": "misc.disable_splash_rendering",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.name_vk_after_proc",
+      "officialSetting": "misc.name_vk_after_proc",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.always_follow_on_dnd",
+      "officialSetting": "misc.always_follow_on_dnd",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.layers_hog_keyboard_focus",
+      "officialSetting": "misc.layers_hog_keyboard_focus",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.animate_manual_resizes",
+      "officialSetting": "misc.animate_manual_resizes",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.animate_mouse_windowdragging",
+      "officialSetting": "misc.animate_mouse_windowdragging",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.enable_swallow",
+      "officialSetting": "misc.enable_swallow",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.mouse_move_focuses_monitor",
+      "officialSetting": "misc.mouse_move_focuses_monitor",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.close_special_on_empty",
+      "officialSetting": "misc.close_special_on_empty",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.middle_click_paste",
+      "officialSetting": "misc.middle_click_paste",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.disable_xdg_env_checks",
+      "officialSetting": "misc.disable_xdg_env_checks",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.disable_hyprland_guiutils_check",
+      "officialSetting": "misc.disable_hyprland_guiutils_check",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.disable_watchdog_warning",
+      "officialSetting": "misc.disable_watchdog_warning",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.enable_anr_dialog",
+      "officialSetting": "misc.enable_anr_dialog",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.screencopy_force_8b",
+      "officialSetting": "misc.screencopy_force_8b",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.disable_scale_notification",
+      "officialSetting": "misc.disable_scale_notification",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.size_limits_tiled",
+      "officialSetting": "misc.size_limits_tiled",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.mouse_move_enables_dpms",
+      "officialSetting": "misc.mouse_move_enables_dpms",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.key_press_enables_dpms",
+      "officialSetting": "misc.key_press_enables_dpms",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.disable_autoreload",
+      "officialSetting": "misc.disable_autoreload",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.focus_on_activate",
+      "officialSetting": "misc.focus_on_activate",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.allow_session_lock_restore",
+      "officialSetting": "misc.allow_session_lock_restore",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.session_lock_xray",
+      "officialSetting": "misc.session_lock_xray",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "misc.exit_window_retains_fullscreen",
+      "officialSetting": "misc.exit_window_retains_fullscreen",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "windows.snap.enabled",
+      "officialSetting": "general.snap.enabled",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "general.allow_tearing",
+      "officialSetting": "general.allow_tearing",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "general.no_focus_fallback",
+      "officialSetting": "general.no_focus_fallback",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "general.resize_on_border",
+      "officialSetting": "general.resize_on_border",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "general.hover_icon_on_border",
+      "officialSetting": "general.hover_icon_on_border",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "general.snap.border_overlap",
+      "officialSetting": "general.snap.border_overlap",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "general.snap.respect_gaps",
+      "officialSetting": "general.snap.respect_gaps",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "general.modal_parent_blocking",
+      "officialSetting": "general.modal_parent_blocking",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.numlock_by_default",
+      "officialSetting": "input.numlock_by_default",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.resolve_binds_by_sym",
+      "officialSetting": "input.resolve_binds_by_sym",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.force_no_accel",
+      "officialSetting": "input.force_no_accel",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.left_handed",
+      "officialSetting": "input.left_handed",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.scroll_button_lock",
+      "officialSetting": "input.scroll_button_lock",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.natural_scroll",
+      "officialSetting": "input.natural_scroll",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.mouse_refocus",
+      "officialSetting": "input.mouse_refocus",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.special_fallthrough",
+      "officialSetting": "input.special_fallthrough",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.touchpad.disable_while_typing",
+      "officialSetting": "input.touchpad.disable_while_typing",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.touchpad.natural_scroll",
+      "officialSetting": "input.touchpad.natural_scroll",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.touchpad.middle_button_emulation",
+      "officialSetting": "input.touchpad.middle_button_emulation",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.touchpad.clickfinger_behavior",
+      "officialSetting": "input.touchpad.clickfinger_behavior",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.touchpad.tap-to-click",
+      "officialSetting": "input.touchpad.tap-to-click",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.touchpad.tap-and-drag",
+      "officialSetting": "input.touchpad.tap-and-drag",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.touchpad.flip_x",
+      "officialSetting": "input.touchpad.flip_x",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.touchpad.flip_y",
+      "officialSetting": "input.touchpad.flip_y",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.touchdevice.enabled",
+      "officialSetting": "input.touchdevice.enabled",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.virtualkeyboard.release_pressed_on_close",
+      "officialSetting": "input.virtualkeyboard.release_pressed_on_close",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.tablet.absolute_region_position",
+      "officialSetting": "input.tablet.absolute_region_position",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.tablet.relative_input",
+      "officialSetting": "input.tablet.relative_input",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "input.tablet.left_handed",
+      "officialSetting": "input.tablet.left_handed",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "gestures.workspace_swipe_touch",
+      "officialSetting": "gestures.workspace_swipe_touch",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "gestures.workspace_swipe_invert",
+      "officialSetting": "gestures.workspace_swipe_invert",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "gestures.workspace_swipe_touch_invert",
+      "officialSetting": "gestures.workspace_swipe_touch_invert",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "gestures.workspace_swipe_create_new",
+      "officialSetting": "gestures.workspace_swipe_create_new",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "gestures.workspace_swipe_direction_lock",
+      "officialSetting": "gestures.workspace_swipe_direction_lock",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "gestures.workspace_swipe_forever",
+      "officialSetting": "gestures.workspace_swipe_forever",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "gestures.workspace_swipe_use_r",
+      "officialSetting": "gestures.workspace_swipe_use_r",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "gestures.scrolling.move_snap_to_grid",
+      "officialSetting": "gestures.scrolling.move_snap_to_grid",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "gestures.scrolling.move_snap_cursor",
+      "officialSetting": "gestures.scrolling.move_snap_cursor",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.insert_after_current",
+      "officialSetting": "group.insert_after_current",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.focus_removed_window",
+      "officialSetting": "group.focus_removed_window",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.merge_groups_on_drag",
+      "officialSetting": "group.merge_groups_on_drag",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.merge_groups_on_groupbar",
+      "officialSetting": "group.merge_groups_on_groupbar",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.auto_group",
+      "officialSetting": "group.auto_group",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.merge_floated_into_tiled_on_groupbar",
+      "officialSetting": "group.merge_floated_into_tiled_on_groupbar",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "group.group_on_movetoworkspace",
+      "officialSetting": "group.group_on_movetoworkspace",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "binds.pass_mouse_when_bound",
+      "officialSetting": "binds.pass_mouse_when_bound",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "binds.workspace_back_and_forth",
+      "officialSetting": "binds.workspace_back_and_forth",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "binds.hide_special_on_workspace_change",
+      "officialSetting": "binds.hide_special_on_workspace_change",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "binds.allow_workspace_cycles",
+      "officialSetting": "binds.allow_workspace_cycles",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "binds.ignore_group_lock",
+      "officialSetting": "binds.ignore_group_lock",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "binds.movefocus_cycles_groupfirst",
+      "officialSetting": "binds.movefocus_cycles_groupfirst",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "binds.movefocus_cycles_fullscreen",
+      "officialSetting": "binds.movefocus_cycles_fullscreen",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "binds.disable_keybind_grabbing",
+      "officialSetting": "binds.disable_keybind_grabbing",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "binds.window_direction_monitor_fallback",
+      "officialSetting": "binds.window_direction_monitor_fallback",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "binds.allow_pin_fullscreen",
+      "officialSetting": "binds.allow_pin_fullscreen",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "dwindle.preserve_split",
+      "officialSetting": "dwindle.preserve_split",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "dwindle.smart_split",
+      "officialSetting": "dwindle.smart_split",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "dwindle.smart_resizing",
+      "officialSetting": "dwindle.smart_resizing",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "dwindle.permanent_direction_override",
+      "officialSetting": "dwindle.permanent_direction_override",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "dwindle.use_active_for_splits",
+      "officialSetting": "dwindle.use_active_for_splits",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "dwindle.precise_mouse_move",
+      "officialSetting": "dwindle.precise_mouse_move",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "master.allow_small_split",
+      "officialSetting": "master.allow_small_split",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "master.new_on_top",
+      "officialSetting": "master.new_on_top",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "master.center_ignores_reserved",
+      "officialSetting": "master.center_ignores_reserved",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "master.smart_resizing",
+      "officialSetting": "master.smart_resizing",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "master.drop_at_cursor",
+      "officialSetting": "master.drop_at_cursor",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "master.always_keep_position",
+      "officialSetting": "master.always_keep_position",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "scrolling.follow_focus",
+      "officialSetting": "scrolling.follow_focus",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "scrolling.wrap_focus",
+      "officialSetting": "scrolling.wrap_focus",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "scrolling.wrap_swapcol",
+      "officialSetting": "scrolling.wrap_swapcol",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "boolean",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "scrolling.fullscreen_on_one_column",
+      "officialSetting": "scrolling.fullscreen_on_one_column",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "boolean",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "ecosystem.no_update_news",
+      "officialSetting": "ecosystem.no_update_news",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "bool",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "ecosystem.no_donation_nag",
+      "officialSetting": "ecosystem.no_donation_nag",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "bool",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "ecosystem.enforce_permissions",
+      "officialSetting": "ecosystem.enforce_permissions",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "bool",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "xwayland.use_nearest_neighbor",
+      "officialSetting": "xwayland.use_nearest_neighbor",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "bool",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "xwayland.force_zero_scaling",
+      "officialSetting": "xwayland.force_zero_scaling",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "bool",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "cursor.sync_gsettings_theme",
+      "officialSetting": "cursor.sync_gsettings_theme",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "bool",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "cursor.hide_on_touch",
+      "officialSetting": "cursor.hide_on_touch",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "bool",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "officialSetting": "cursor.hide_on_tablet",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "bool",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    },
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "officialSetting": "cursor.hide_on_key_press",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Boolean",
+      "appValueType": "bool",
+      "appValidatorKind": "bool",
+      "classificationFromWritableAudit": "app-validator-too-broad",
+      "recommendedPreviousAction": "Prompt 3 should inspect official Hyprland bool parsing source and then choose one policy: keep aliases with normalization, restrict UI/write values to true/false, or keep parser-compatible aliases but never offer them in UI.",
+      "sourceSupportedExactAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "appAcceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "recommendedFutureUiPolicy": "offer-true-false-only",
+      "recommendedFutureValidatorPolicy": "normalize-or-keep-exact-aliases-only; avoid arbitrary integer broadening",
+      "validatorChangeNeeded": "policy-decision-later",
+      "sourceRefs": [
+        "hyprland_legacy_config_manager: CBoolValue registered as Hyprlang::INT",
+        "hyprlang_config: configStringToInt boolean word and integer parsing"
+      ]
+    }
+  ],
+  "safety": {
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "recoveryGatesChanged": false
+  }
+}
