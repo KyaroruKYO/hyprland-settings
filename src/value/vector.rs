@@ -4,13 +4,6 @@ use anyhow::{anyhow, Result};
 pub struct Vec2Value {
     pub x: f64,
     pub y: f64,
-    separator: Vec2Separator,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum Vec2Separator {
-    Space,
-    Comma,
 }
 
 impl Vec2Value {
@@ -22,32 +15,27 @@ impl Vec2Value {
         if trimmed.contains('\n') || trimmed.contains('\r') {
             return Err(anyhow!("vector value cannot span multiple lines"));
         }
-        if trimmed.matches(',').count() == 1 {
-            let parts = trimmed.split(',').map(str::trim).collect::<Vec<_>>();
-            return parse_parts(&parts, Vec2Separator::Comma);
-        }
         if trimmed.contains(',') {
-            return Err(anyhow!("vector value must contain exactly one comma"));
+            return Err(anyhow!(
+                "vector value must use exactly two space-separated numbers"
+            ));
         }
         let parts = trimmed.split_whitespace().collect::<Vec<_>>();
-        parse_parts(&parts, Vec2Separator::Space)
+        parse_parts(&parts)
     }
 
     pub fn serialize(&self) -> String {
-        match self.separator {
-            Vec2Separator::Space => format!("{} {}", format_number(self.x), format_number(self.y)),
-            Vec2Separator::Comma => format!("{},{}", format_number(self.x), format_number(self.y)),
-        }
+        format!("{} {}", format_number(self.x), format_number(self.y))
     }
 }
 
-fn parse_parts(parts: &[&str], separator: Vec2Separator) -> Result<Vec2Value> {
+fn parse_parts(parts: &[&str]) -> Result<Vec2Value> {
     if parts.len() != 2 {
         return Err(anyhow!("vector value must contain exactly two numbers"));
     }
     let x = parse_finite(parts[0])?;
     let y = parse_finite(parts[1])?;
-    Ok(Vec2Value { x, y, separator })
+    Ok(Vec2Value { x, y })
 }
 
 fn parse_finite(raw: &str) -> Result<f64> {

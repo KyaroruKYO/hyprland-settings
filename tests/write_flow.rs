@@ -554,7 +554,7 @@ fn apply_flow_writes_vector_tuple_fixture() -> Result<()> {
         &discovery_for(source.clone()),
         &snapshot,
         "decoration.shadow.offset",
-        "10,20",
+        "10 20",
         &backup_manager,
     )
     .map_err(|failure| anyhow::anyhow!("{failure:?}"))?;
@@ -562,10 +562,10 @@ fn apply_flow_writes_vector_tuple_fixture() -> Result<()> {
     assert_eq!(outcome.setting_id, "decoration.shadow.offset");
     assert_eq!(outcome.target_path, source);
     assert!(outcome.backup_path.exists());
-    assert_eq!(outcome.verified_value.as_deref(), Some("10,20"));
+    assert_eq!(outcome.verified_value.as_deref(), Some("10 20"));
     assert_eq!(
         fs::read_to_string(&outcome.target_path)?,
-        "decoration:shadow:offset = 10,20\n"
+        "decoration:shadow:offset = 10 20\n"
     );
 
     fs::remove_dir_all(root)?;

@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "source-backed-validator-deferred-items",
+  "generatedAt": "2026-06-07T07:36:49.556814Z",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "deferredRows": 12,
+    "cssGapDeferredRows": 2,
+    "stringPathRegexListDeferredRows": 10
+  },
+  "rows": [
+    {
+      "rowId": "appearance.gaps_in",
+      "officialSetting": "general.gaps_in",
+      "deferredCategory": "cssgap-custom-grammar",
+      "reason": "Official CssGap supports 1-4 integer components, but this sprint keeps the existing scalar-only UI and does not claim full CssGap support.",
+      "missingEvidenceOrDecision": "future UI/editor policy for CSS-like gap components",
+      "validatorChanged": false
+    },
+    {
+      "rowId": "appearance.gaps_out",
+      "officialSetting": "general.gaps_out",
+      "deferredCategory": "cssgap-custom-grammar",
+      "reason": "Official CssGap supports 1-4 integer components, but this sprint keeps the existing scalar-only UI and does not claim full CssGap support.",
+      "missingEvidenceOrDecision": "future UI/editor policy for CSS-like gap components",
+      "validatorChanged": false
+    },
+    {
+      "rowId": "decoration.screen_shader",
+      "officialSetting": "decoration.screen_shader",
+      "deferredCategory": "Path",
+      "reason": "keep sanitized path guardrail; inspect each consumer before adding existence or expansion semantics",
+      "missingEvidenceOrDecision": "consumer-level official source semantics",
+      "validatorChanged": false
+    },
+    {
+      "rowId": "general.locale",
+      "officialSetting": "general.locale",
+      "deferredCategory": "LineSafeString",
+      "reason": "keep line-safe guardrails unless row-specific source consumer requires broader semantics",
+      "missingEvidenceOrDecision": "consumer-level official source semantics",
+      "validatorChanged": false
+    },
+    {
+      "rowId": "input.accel_profile",
+      "officialSetting": "input.accel_profile",
+      "deferredCategory": "LineSafeString",
+      "reason": "keep line-safe guardrails unless row-specific source consumer requires broader semantics",
+      "missingEvidenceOrDecision": "consumer-level official source semantics",
+      "validatorChanged": false
+    },
+    {
+      "rowId": "input.scroll_points",
+      "officialSetting": "input.scroll_points",
+      "deferredCategory": "NumericList",
+      "reason": "inspect input scroll_points consumer before changing grammar or bounds",
+      "missingEvidenceOrDecision": "consumer-level official source semantics",
+      "validatorChanged": false
+    },
+    {
+      "rowId": "input.kb_file",
+      "officialSetting": "input.kb_file",
+      "deferredCategory": "Path",
+      "reason": "keep sanitized path guardrail; inspect each consumer before adding existence or expansion semantics",
+      "missingEvidenceOrDecision": "consumer-level official source semantics",
+      "validatorChanged": false
+    },
+    {
+      "rowId": "group.groupbar.font_family",
+      "officialSetting": "group.groupbar.font_family",
+      "deferredCategory": "LineSafeString",
+      "reason": "keep line-safe guardrails unless row-specific source consumer requires broader semantics",
+      "missingEvidenceOrDecision": "consumer-level official source semantics",
+      "validatorChanged": false
+    },
+    {
+      "rowId": "misc.font_family",
+      "officialSetting": "misc.font_family",
+      "deferredCategory": "LineSafeString",
+      "reason": "keep line-safe guardrails unless row-specific source consumer requires broader semantics",
+      "missingEvidenceOrDecision": "consumer-level official source semantics",
+      "validatorChanged": false
+    },
+    {
+      "rowId": "misc.splash_font_family",
+      "officialSetting": "misc.splash_font_family",
+      "deferredCategory": "LineSafeString",
+      "reason": "keep line-safe guardrails unless row-specific source consumer requires broader semantics",
+      "missingEvidenceOrDecision": "consumer-level official source semantics",
+      "validatorChanged": false
+    },
+    {
+      "rowId": "misc.swallow_regex",
+      "officialSetting": "misc.swallow_regex",
+      "deferredCategory": "RegexString",
+      "reason": "inspect consumer compile path before deciding whether to validate regex syntax",
+      "missingEvidenceOrDecision": "consumer-level official source semantics",
+      "validatorChanged": false
+    },
+    {
+      "rowId": "misc.swallow_exception_regex",
+      "officialSetting": "misc.swallow_exception_regex",
+      "deferredCategory": "RegexString",
+      "reason": "inspect consumer compile path before deciding whether to validate regex syntax",
+      "missingEvidenceOrDecision": "consumer-level official source semantics",
+      "validatorChanged": false
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "pushed": false,
+    "mainTouched": false,
+    "validatorsChanged": false,
+    "productionBehaviorChanged": false
+  }
+}

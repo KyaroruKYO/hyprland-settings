@@ -16,11 +16,6 @@ impl GradientValue {
         if trimmed.contains('\n') || trimmed.contains('\r') {
             return Err(anyhow!("gradient value cannot span multiple lines"));
         }
-        if trimmed.contains('#') {
-            return Err(anyhow!(
-                "gradient value cannot contain config comment marker"
-            ));
-        }
         if trimmed.contains("`") || trimmed.contains("$(") {
             return Err(anyhow!(
                 "gradient value cannot contain command-substitution syntax"
@@ -43,6 +38,9 @@ impl GradientValue {
             } else {
                 ColorValue::parse(token)?;
                 color_count += 1;
+                if color_count > 10 {
+                    return Err(anyhow!("gradient value cannot contain more than 10 colors"));
+                }
             }
         }
         if color_count == 0 {
@@ -63,9 +61,8 @@ fn validate_angle(value: &str) -> Result<()> {
     if value.is_empty() {
         return Err(anyhow!("gradient angle cannot be empty"));
     }
-    match value.parse::<f64>() {
-        Ok(angle) if angle.is_finite() => Ok(()),
-        Ok(_) => Err(anyhow!("gradient angle must be finite")),
-        Err(_) => Err(anyhow!("gradient angle must be numeric")),
+    match value.parse::<i64>() {
+        Ok(_) => Ok(()),
+        Err(_) => Err(anyhow!("gradient angle must be an integer degree value")),
     }
 }
