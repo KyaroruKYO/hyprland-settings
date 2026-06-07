@@ -31,7 +31,10 @@
     "recoveryGateWeakenedRows": 0,
     "realConfigModified": false,
     "activeRuntimeModified": false,
-    "reloadEvalLuaUsed": false
+    "reloadEvalLuaUsed": false,
+    "driftFoundRows": 9,
+    "driftFixedRows": 9,
+    "staleReportsFixed": 3
   },
   "currentState": {
     "readableRows": "341 / 341",
@@ -74,5 +77,22 @@
     "realConfigModified": false,
     "activeRuntimeModified": false,
     "reloadEvalLuaUsed": false
-  }
+  },
+  "reportDriftFixed": [
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "issue": "missing explicit high-risk template/proof/watchdog/ui metadata",
+      "correction": "normalized enabled high-risk row metadata; no write behavior changed"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "issue": "missing explicit high-risk template/proof/watchdog/ui metadata",
+      "correction": "normalized enabled high-risk row metadata; no write behavior changed"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "issue": "missing explicit high-risk template/proof/watchdog/ui metadata",
+      "correction": "normalized enabled high-risk row metadata; no write behavior changed"
+    }
+  ]
 }

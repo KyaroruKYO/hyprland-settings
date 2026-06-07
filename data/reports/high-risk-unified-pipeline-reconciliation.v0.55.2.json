@@ -1,0 +1,2173 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "high-risk-unified-pipeline-reconciliation",
+  "generatedAt": "2026-06-06T21:37:13-07:00",
+  "counts": {
+    "currentWritableRows": 278,
+    "currentBlockedRows": 63,
+    "enabledHighRiskRowsAudited": 9,
+    "highRiskTemplatesCreated": 4,
+    "driftFoundRows": 9,
+    "driftFixedRows": 9,
+    "driftFixes": 260,
+    "staleReportsFixed": 3,
+    "staleTestsFixed": 0,
+    "rowsFailingUnifiedPipelineConformance": 0,
+    "rowsMissingProofMetadata": 0,
+    "rowsMissingWatchdogMetadata": 0,
+    "rowsStillIncorrectlyListedAsHighRiskCandidates": 0,
+    "rowsEnabledThisSprint": 0,
+    "writeAllowlistChangedThisSprint": false,
+    "productionBehaviorChangedThisSprint": false,
+    "recoveryGateWeakenedRows": 0,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "displayRenderBlockedRows": 23,
+    "cursorInputBlockedRows": 18,
+    "debugCrashBlockedRows": 22
+  },
+  "enabledHighRiskRows": [
+    "ecosystem.no_update_news",
+    "ecosystem.no_donation_nag",
+    "ecosystem.enforce_permissions",
+    "xwayland.use_nearest_neighbor",
+    "xwayland.force_zero_scaling",
+    "cursor.sync_gsettings_theme",
+    "cursor.hide_on_touch",
+    "cursor.hide_on_tablet",
+    "cursor.hide_on_key_press"
+  ],
+  "templates": {
+    "high-risk-policy-watchdog-template": [
+      "ecosystem.no_update_news",
+      "ecosystem.no_donation_nag",
+      "ecosystem.enforce_permissions"
+    ],
+    "display-render-watchdog-template": [
+      "xwayland.use_nearest_neighbor",
+      "xwayland.force_zero_scaling"
+    ],
+    "cursor-input-theme-sync-watchdog-template": [
+      "cursor.sync_gsettings_theme"
+    ],
+    "cursor-visibility-conditional-watchdog-template": [
+      "cursor.hide_on_touch",
+      "cursor.hide_on_tablet",
+      "cursor.hide_on_key_press"
+    ]
+  },
+  "driftFound": [
+    {
+      "issue": "enabled high-risk row missing explicit unified watchdog/proof/UI/template metadata",
+      "rowsAffected": [
+        "ecosystem.no_update_news",
+        "ecosystem.no_donation_nag",
+        "ecosystem.enforce_permissions",
+        "xwayland.use_nearest_neighbor",
+        "xwayland.force_zero_scaling",
+        "cursor.sync_gsettings_theme",
+        "cursor.hide_on_touch",
+        "cursor.hide_on_tablet",
+        "cursor.hide_on_key_press"
+      ],
+      "instances": 260
+    }
+  ],
+  "fixes": [
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "display-render-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "recoveryBucket",
+      "previous": "display-render-recovery",
+      "new": "display-render-recovery:xwayland-scaling-policy-smoke-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "display/render watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk display/render XWayland scaling setting. Only the approved scaling policy smoke subset is writable; XWayland enable/socket, render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "proofSource",
+      "previous": null,
+      "new": "xwayland-scaling-policy-smoke-subset-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "xwayland-scaling-policy-watchdog-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "display-render-first-subset-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "display-render-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "recoveryBucket",
+      "previous": "display-render-recovery",
+      "new": "display-render-recovery:xwayland-scaling-policy-smoke-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "display/render watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk display/render XWayland scaling setting. Only the approved scaling policy smoke subset is writable; XWayland enable/socket, render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "proofSource",
+      "previous": null,
+      "new": "xwayland-scaling-policy-smoke-subset-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "xwayland-scaling-policy-watchdog-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "display-render-first-subset-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "cursor-visibility-conditional-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "cursor visibility keyboard-trigger watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup, wrong token fails, and real config is refused in dry-run tests; confirmation is represented as CLI token text input; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk cursor visibility keyboard-trigger policy setting. Cursor may disappear while typing. Requires CLI token confirmation and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "cursor-hide-on-key-press-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "cursor-visibility-conditional-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "cursor visibility watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk cursor visibility policy setting. Cursor may disappear after touch, tablet, or keyboard-triggered input. Requires cursor-visibility warning and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "cursor-visibility-conditional-policy-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "cursor-visibility-conditional-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "cursor visibility watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk cursor visibility policy setting. Cursor may disappear after touch, tablet, or keyboard-triggered input. Requires cursor-visibility warning and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "cursor-visibility-conditional-policy-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "cursor-input-theme-sync-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "cursor/input watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on mouse input, visible cursor, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk cursor/input theme sync policy setting. Only the approved cursor theme sync smoke subset is writable; cursor visibility, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "cursor-input-first-subset-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "high-risk-policy-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "proofSource",
+      "previous": null,
+      "new": "high-risk-ecosystem-bucket-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "high-risk-watchdog-dry-run-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "high-risk-first-bucket-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "high-risk-policy-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "proofSource",
+      "previous": null,
+      "new": "high-risk-ecosystem-bucket-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "high-risk-watchdog-dry-run-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "high-risk-first-bucket-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "high-risk-policy-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "proofSource",
+      "previous": null,
+      "new": "high-risk-ecosystem-bucket-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "high-risk-watchdog-dry-run-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "high-risk-first-bucket-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "high-risk-policy-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "ecosystem-permission-policy",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "high-risk-watchdog-dry-run-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "high-risk-first-bucket-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "valueType",
+      "previous": null,
+      "new": "bool",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "riskClass",
+      "previous": null,
+      "new": "ecosystem_permission_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "currentWriteStatus",
+      "previous": null,
+      "new": "writable",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "high-risk-policy-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "ecosystem-permission-policy",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "high-risk-watchdog-dry-run-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "high-risk-first-bucket-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "valueType",
+      "previous": null,
+      "new": "bool",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "riskClass",
+      "previous": null,
+      "new": "ecosystem_permission_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "currentWriteStatus",
+      "previous": null,
+      "new": "writable",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "high-risk-policy-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "ecosystem-permission-policy",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "high-risk-watchdog-dry-run-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "high-risk-first-bucket-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "valueType",
+      "previous": null,
+      "new": "bool",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "riskClass",
+      "previous": null,
+      "new": "ecosystem_permission_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "currentWriteStatus",
+      "previous": null,
+      "new": "writable",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "display-render-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "display-render-recovery:xwayland-scaling-policy-smoke-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "display/render watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk display/render XWayland scaling setting. Only the approved scaling policy smoke subset is writable; XWayland enable/socket, render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "xwayland-scaling-policy-watchdog-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "display-render-first-subset-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "riskClass",
+      "previous": null,
+      "new": "display_render_session_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "currentWriteStatus",
+      "previous": null,
+      "new": "writable",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "display-render-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "display-render-recovery:xwayland-scaling-policy-smoke-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "display/render watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk display/render XWayland scaling setting. Only the approved scaling policy smoke subset is writable; XWayland enable/socket, render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "xwayland-scaling-policy-watchdog-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "display-render-first-subset-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "riskClass",
+      "previous": null,
+      "new": "display_render_session_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "currentWriteStatus",
+      "previous": null,
+      "new": "writable",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "cursor-input-theme-sync-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "cursor-input-recovery:cursor-theme-sync-policy-smoke-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "cursor/input watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on mouse input, visible cursor, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk cursor/input theme sync policy setting. Only the approved cursor theme sync smoke subset is writable; cursor visibility, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "cursor-theme-sync-policy-watchdog-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "cursor-input-first-subset-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "valueType",
+      "previous": null,
+      "new": "bool",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "riskClass",
+      "previous": null,
+      "new": "cursor_input_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "cursor-visibility-conditional-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "cursor-input-recovery:cursor-visibility-conditional-touch-tablet-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "cursor visibility watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk cursor visibility policy setting. Cursor may disappear after touch, tablet, or keyboard-triggered input. Requires cursor-visibility warning and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "cursor-visibility-conditional-policy-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "valueType",
+      "previous": null,
+      "new": "bool",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "riskClass",
+      "previous": null,
+      "new": "cursor_input_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "cursor-visibility-conditional-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "cursor-input-recovery:cursor-visibility-conditional-touch-tablet-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "cursor visibility watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk cursor visibility policy setting. Cursor may disappear after touch, tablet, or keyboard-triggered input. Requires cursor-visibility warning and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "cursor-visibility-conditional-policy-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "valueType",
+      "previous": null,
+      "new": "bool",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "riskClass",
+      "previous": null,
+      "new": "cursor_input_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "cursor-visibility-conditional-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "cursor visibility keyboard-trigger watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup, wrong token fails, and real config is refused in dry-run tests; confirmation is represented as CLI token text input; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk cursor visibility keyboard-trigger policy setting. Cursor may disappear while typing. Requires CLI token confirmation and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "cursor-hide-on-key-press-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "valueType",
+      "previous": null,
+      "new": "bool",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "riskClass",
+      "previous": null,
+      "new": "cursor_input_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "display-render-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "display-render-recovery:xwayland-scaling-policy-smoke-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "display/render watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk display/render XWayland scaling setting. Only the approved scaling policy smoke subset is writable; XWayland enable/socket, render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "proofSource",
+      "previous": null,
+      "new": "xwayland-scaling-policy-smoke-subset-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "xwayland-scaling-policy-watchdog-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "display-render-first-subset-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "riskClass",
+      "previous": null,
+      "new": "display_render_session_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.use_nearest_neighbor",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "display-render-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "display-render-recovery:xwayland-scaling-policy-smoke-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "display/render watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk display/render XWayland scaling setting. Only the approved scaling policy smoke subset is writable; XWayland enable/socket, render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "proofSource",
+      "previous": null,
+      "new": "xwayland-scaling-policy-smoke-subset-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "xwayland-scaling-policy-watchdog-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "display-render-first-subset-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "riskClass",
+      "previous": null,
+      "new": "display_render_session_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "xwayland.force_zero_scaling",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "cursor-visibility-conditional-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "cursor visibility keyboard-trigger watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup, wrong token fails, and real config is refused in dry-run tests; confirmation is represented as CLI token text input; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk cursor visibility keyboard-trigger policy setting. Cursor may disappear while typing. Requires CLI token confirmation and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "cursor-hide-on-key-press-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_key_press",
+      "field": "riskClass",
+      "previous": null,
+      "new": "cursor_input_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "cursor-visibility-conditional-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "cursor-input-recovery:cursor-visibility-conditional-touch-tablet-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "cursor visibility watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk cursor visibility policy setting. Cursor may disappear after touch, tablet, or keyboard-triggered input. Requires cursor-visibility warning and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "proofSource",
+      "previous": null,
+      "new": "cursor-visibility-conditional-policy-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "cursor-visibility-conditional-policy-watchdog-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "cursor-visibility-conditional-policy-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "riskClass",
+      "previous": null,
+      "new": "cursor_input_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_touch",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "cursor-visibility-conditional-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "cursor-input-recovery:cursor-visibility-conditional-touch-tablet-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "cursor visibility watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk cursor visibility policy setting. Cursor may disappear after touch, tablet, or keyboard-triggered input. Requires cursor-visibility warning and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "proofSource",
+      "previous": null,
+      "new": "cursor-visibility-conditional-policy-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "cursor-visibility-conditional-policy-watchdog-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "cursor-visibility-conditional-policy-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "riskClass",
+      "previous": null,
+      "new": "cursor_input_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.hide_on_tablet",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "cursor-input-theme-sync-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "cursor-input-recovery:cursor-theme-sync-policy-smoke-subset",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "cursor/input watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on mouse input, visible cursor, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk cursor/input theme sync policy setting. Only the approved cursor theme sync smoke subset is writable; cursor visibility, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "proofSource",
+      "previous": null,
+      "new": "cursor-theme-sync-policy-smoke-subset-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "cursor-theme-sync-policy-watchdog-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "cursor-input-first-subset-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "riskClass",
+      "previous": null,
+      "new": "cursor_input_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "cursor.sync_gsettings_theme",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "high-risk-policy-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "ecosystem-permission-policy",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "proofSource",
+      "previous": null,
+      "new": "high-risk-ecosystem-bucket-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "high-risk-watchdog-dry-run-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "high-risk-first-bucket-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "riskClass",
+      "previous": null,
+      "new": "ecosystem_permission_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_update_news",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "high-risk-policy-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "ecosystem-permission-policy",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "proofSource",
+      "previous": null,
+      "new": "high-risk-ecosystem-bucket-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "high-risk-watchdog-dry-run-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "high-risk-first-bucket-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "riskClass",
+      "previous": null,
+      "new": "ecosystem_permission_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.no_donation_nag",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "pipelineTemplate",
+      "previous": null,
+      "new": "high-risk-policy-watchdog-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "recoveryBucket",
+      "previous": null,
+      "new": "ecosystem-permission-policy",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "watchdogRequirement",
+      "previous": null,
+      "new": "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "uiReviewWarning",
+      "previous": null,
+      "new": "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "proofSource",
+      "previous": null,
+      "new": "high-risk-ecosystem-bucket-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "watchdogProofSource",
+      "previous": null,
+      "new": "high-risk-watchdog-dry-run-proof.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "enablementReport",
+      "previous": null,
+      "new": "high-risk-first-bucket-enablements.v0.55.2.json",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "templateNormalizationStatus",
+      "previous": null,
+      "new": "normalized-high-risk-template",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "recoveryGateWeakened",
+      "previous": null,
+      "new": false,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "riskClass",
+      "previous": null,
+      "new": "ecosystem_permission_risk",
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "rowId": "ecosystem.enforce_permissions",
+      "field": "safeWriteSupported",
+      "previous": null,
+      "new": true,
+      "reason": "normalize enabled high-risk row to reusable unified pipeline template"
+    }
+  ],
+  "staleReportsFixed": [
+    "all-341-unified-pipeline.v0.55.2.json",
+    "writable-253-unified-pipeline-proof.v0.55.2.json",
+    "all-341-unified-pipeline-backfill-audit.v0.55.2.json"
+  ],
+  "safety": {
+    "noRowsEnabled": true,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakened": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  }
+}
