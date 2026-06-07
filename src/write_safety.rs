@@ -1,8 +1,9 @@
 use std::collections::BTreeSet;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use crate::config_backup::ConfigBackup;
 use crate::current_config::{CurrentValueProjection, CurrentValueSourceStatus};
+use crate::high_risk_recovery::{validate_watchdog_plan, HighRiskWatchdogPlan};
 use crate::pending_change::{PendingChange, PendingChangeValidation};
 use crate::write_classification::is_safe_writable_setting;
 
@@ -67,6 +68,41 @@ pub enum WriteGateFailure {
     BackupTargetMismatch,
     TargetMismatch,
     StructuredFamilyRejected,
+}
+
+pub const SCREEN_SHADER_PRODUCTION_GATE_PRIMITIVE_NAME: &str =
+    "screen-shader-dry-run-gated-write-review";
+pub const SCREEN_SHADER_GATED_SETTING_ID: &str = "decoration.screen_shader";
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct HighRiskGateProof {
+    pub setting_id: String,
+    pub recovery_bucket: String,
+    pub watchdog_plan: HighRiskWatchdogPlan,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct GatedWriteReview {
+    pub base_review: WriteReview,
+    pub gate_required: bool,
+    pub gate_proof_accepted: bool,
+    pub failures: Vec<GatedWriteFailure>,
+}
+
+impl GatedWriteReview {
+    pub fn is_approved(&self) -> bool {
+        self.base_review.is_approved() && self.failures.is_empty()
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum GatedWriteFailure {
+    BaseWriteRejected,
+    MissingScreenShaderGateProof,
+    GateProofForWrongSetting,
+    GateProofForWrongRecoveryBucket,
+    GateProofTargetMismatch,
+    InvalidWatchdogPlan(String),
 }
 
 pub fn review_write_plan(request: WritePlanRequest) -> WriteReview {
@@ -155,5 +191,74 @@ pub fn review_write_plan(request: WritePlanRequest) -> WriteReview {
     WriteReview {
         plan: Some(plan),
         failures,
+    }
+}
+
+pub fn screen_shader_requires_high_risk_gate(setting_id: &str) -> bool {
+    setting_id == SCREEN_SHADER_GATED_SETTING_ID
+}
+
+pub fn review_screen_shader_gated_write_plan(
+    base_review: WriteReview,
+    gate_proof: Option<HighRiskGateProof>,
+) -> GatedWriteReview {
+    let gate_required = base_review
+        .plan
+        .as_ref()
+        .is_some_and(|plan| screen_shader_requires_high_risk_gate(&plan.setting_id));
+    let mut failures = Vec::new();
+    let mut gate_proof_accepted = false;
+
+    if !base_review.is_approved() {
+        failures.push(GatedWriteFailure::BaseWriteRejected);
+    }
+
+    if gate_required {
+        match (&base_review.plan, gate_proof) {
+            (Some(plan), Some(proof)) => match validate_screen_shader_gate_proof(plan, &proof) {
+                Ok(()) => gate_proof_accepted = true,
+                Err(failure) => failures.push(failure),
+            },
+            (Some(_), None) => failures.push(GatedWriteFailure::MissingScreenShaderGateProof),
+            (None, _) => {}
+        }
+    }
+
+    GatedWriteReview {
+        base_review,
+        gate_required,
+        gate_proof_accepted,
+        failures,
+    }
+}
+
+fn validate_screen_shader_gate_proof(
+    plan: &WritePlan,
+    proof: &HighRiskGateProof,
+) -> Result<(), GatedWriteFailure> {
+    if proof.setting_id != SCREEN_SHADER_GATED_SETTING_ID {
+        return Err(GatedWriteFailure::GateProofForWrongSetting);
+    }
+    if proof.recovery_bucket != "display-render-recovery:screen-shader-gate-migration-design" {
+        return Err(GatedWriteFailure::GateProofForWrongRecoveryBucket);
+    }
+    if proof.watchdog_plan.recovery.target_config_path != plan.target_path {
+        return Err(GatedWriteFailure::GateProofTargetMismatch);
+    }
+    validate_watchdog_plan(&proof.watchdog_plan)
+        .map_err(|error| GatedWriteFailure::InvalidWatchdogPlan(error.to_string()))?;
+    require_existing_fixture_file(&proof.watchdog_plan.plan_path)?;
+    require_existing_fixture_file(&proof.watchdog_plan.recovery.backup_path)?;
+    Ok(())
+}
+
+fn require_existing_fixture_file(path: &Path) -> Result<(), GatedWriteFailure> {
+    if path.exists() {
+        Ok(())
+    } else {
+        Err(GatedWriteFailure::InvalidWatchdogPlan(format!(
+            "required fixture watchdog artifact does not exist: {}",
+            path.display()
+        )))
     }
 }
