@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-cssgap-consumer-research",
+  "generatedAt": "2026-06-07T00:49:01-07:00",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "rowsResearched": 2,
+    "supportsOneValueRows": 2,
+    "supportsTwoValueRows": 2,
+    "supportsThreeValueRows": 2,
+    "supportsFourValueRows": 2,
+    "integerGrammarRows": 2,
+    "boundsFoundRows": 0,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "safety": {
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "recoveryGatesChanged": false
+  },
+  "officialGrammar": {
+    "componentCounts": [1, 2, 3, 4],
+    "componentParser": "std::stoi",
+    "componentType": "signed integer stored as int64_t",
+    "bounds": "no explicit min/max found in CssGap parser",
+    "overFourValues": "source logs a warning and uses the first four values; future app policy should reject rather than silently truncate"
+  },
+  "rows": [
+    {
+      "rowId": "appearance.gaps_in",
+      "officialSetting": "general.gaps_in",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/shared/complex/ComplexDataTypes.hpp",
+        "/tmp/Hyprland-v0.55.2-full/src/config/legacy/ConfigManager.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/layout/LayoutManager.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "The layout consumer reads parsed inner gap side values directly.",
+      "recommendedValidatorPolicy": "Support one-to-four integer components in a future repair; reject more than four components.",
+      "recommendedUiEditorPolicy": "Structured all/vertical-horizontal/top-right-bottom-left editor with raw preview.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "appearance.gaps_out",
+      "officialSetting": "general.gaps_out",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/shared/complex/ComplexDataTypes.hpp",
+        "/tmp/Hyprland-v0.55.2-full/src/config/legacy/ConfigManager.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/layout/LayoutManager.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/layout/space/Space.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "The layout and space consumers use parsed outer gap side values directly for monitor reserved areas and floating space.",
+      "recommendedValidatorPolicy": "Support one-to-four integer components in a future repair with a conservative negative-value policy decision.",
+      "recommendedUiEditorPolicy": "Structured edge-gap editor; warn that extreme or negative outer gaps affect usable monitor space.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    }
+  ]
+}
