@@ -17290,5 +17290,30 @@
     "writeAllowlistChanged": false,
     "recoveryGatesChanged": false,
     "rowsEnabledThisSprint": 0
+  },
+  "screenShaderDisplayRenderReviewFollowUp": {
+    "rowId": "decoration.screen_shader",
+    "officialSetting": "decoration.screen_shader",
+    "currentWriteStatus": "writable",
+    "currentWritableCount": 278,
+    "currentBlockedCount": 63,
+    "selectedPolicy": "Policy D",
+    "policyDecision": "Keep current writable behavior temporarily, but require a later dedicated migration sprint to move decoration.screen_shader behind a display/render high-risk gate or otherwise resolve the mismatch.",
+    "riskFinding": "Non-empty values are config-relative shader files that Hyprland reads and compiles as the final screen fragment shader; path validation alone is not display/render safety proof.",
+    "metadataUpdate": "Write review projection now shows a display/render-sensitive warning for decoration.screen_shader.",
+    "behaviorChanged": false,
+    "writeAllowlistChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "liveShaderCompileUsed": false,
+    "reviewReport": "data/reports/screen-shader-display-render-review.v0.55.2.json",
+    "policyReport": "data/reports/screen-shader-write-policy-decision.v0.55.2.json",
+    "validationBoundaryReport": "data/reports/screen-shader-validation-boundary.v0.55.2.json",
+    "templateMappingReport": "data/reports/screen-shader-high-risk-template-mapping.v0.55.2.json",
+    "nextStepReport": "data/reports/screen-shader-next-step-plan.v0.55.2.json",
+    "recommendedNextSprint": "Display/render high-risk gate migration design for decoration.screen_shader; do not continue into compile-aware validation yet."
   }
 }

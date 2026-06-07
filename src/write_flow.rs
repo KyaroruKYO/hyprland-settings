@@ -311,6 +311,9 @@ fn pending_projection(
         ));
         review_summary.push(format!("warning: {}", policy.review_warning));
     }
+    if let Some(warning) = screen_shader_review_warning(&pending.setting_id) {
+        review_summary.push(format!("warning: {warning}"));
+    }
 
     PendingChangeProjection {
         setting_id: pending.setting_id.clone(),
@@ -320,6 +323,12 @@ fn pending_projection(
         can_review: pending.can_be_applied() && status_allows_review(current_status),
         review_summary,
     }
+}
+
+fn screen_shader_review_warning(setting_id: &str) -> Option<&'static str> {
+    (setting_id == "decoration.screen_shader").then_some(
+        "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader; compile-aware validation and watchdog migration require a later display/render high-risk sprint.",
+    )
 }
 
 fn next_proposed_value(
