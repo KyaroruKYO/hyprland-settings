@@ -53,7 +53,10 @@ fn writable_value_type_audit_reports_cover_every_safe_writable_row() -> Result<(
         .collect::<BTreeSet<_>>();
     let actual = audit_rows.keys().copied().collect::<BTreeSet<_>>();
     assert_eq!(actual, expected);
-    assert_eq!(matrix_rows.keys().copied().collect::<BTreeSet<_>>(), expected);
+    assert_eq!(
+        matrix_rows.keys().copied().collect::<BTreeSet<_>>(),
+        expected
+    );
 
     Ok(())
 }
@@ -86,7 +89,10 @@ fn every_writable_value_type_row_has_classification_and_evidence_status() -> Res
         let row_id = row["rowId"].as_str().unwrap();
         assert!(!row_id.is_empty());
         assert!(
-            !row["officialSetting"].as_str().unwrap_or_default().is_empty(),
+            !row["officialSetting"]
+                .as_str()
+                .unwrap_or_default()
+                .is_empty(),
             "{row_id}"
         );
         assert!(
@@ -131,8 +137,14 @@ fn classification_counts_and_gap_buckets_are_consistent() -> Result<()> {
             .count()
     };
 
-    assert_eq!(count("complete"), audit["counts"]["completeRows"].as_u64().unwrap() as usize);
-    assert_eq!(count("partial"), audit["counts"]["partialRows"].as_u64().unwrap() as usize);
+    assert_eq!(
+        count("complete"),
+        audit["counts"]["completeRows"].as_u64().unwrap() as usize
+    );
+    assert_eq!(
+        count("partial"),
+        audit["counts"]["partialRows"].as_u64().unwrap() as usize
+    );
     assert_eq!(
         count("parser-only"),
         audit["counts"]["parserOnlyRows"].as_u64().unwrap() as usize
@@ -141,18 +153,27 @@ fn classification_counts_and_gap_buckets_are_consistent() -> Result<()> {
         count("conflicting"),
         audit["counts"]["conflictingRows"].as_u64().unwrap() as usize
     );
-    assert_eq!(count("unknown"), audit["counts"]["unknownRows"].as_u64().unwrap() as usize);
+    assert_eq!(
+        count("unknown"),
+        audit["counts"]["unknownRows"].as_u64().unwrap() as usize
+    );
     assert_eq!(
         count("app-validator-too-narrow"),
-        audit["counts"]["appValidatorTooNarrowRows"].as_u64().unwrap() as usize
+        audit["counts"]["appValidatorTooNarrowRows"]
+            .as_u64()
+            .unwrap() as usize
     );
     assert_eq!(
         count("app-validator-too-broad"),
-        audit["counts"]["appValidatorTooBroadRows"].as_u64().unwrap() as usize
+        audit["counts"]["appValidatorTooBroadRows"]
+            .as_u64()
+            .unwrap() as usize
     );
     assert_eq!(
         count("source-research-needed"),
-        audit["counts"]["sourceResearchNeededRows"].as_u64().unwrap() as usize
+        audit["counts"]["sourceResearchNeededRows"]
+            .as_u64()
+            .unwrap() as usize
     );
 
     for (classification, bucket_name) in [
@@ -181,7 +202,10 @@ fn classification_counts_and_gap_buckets_are_consistent() -> Result<()> {
         risk["counts"]["appValidatorTooBroadRows"],
         audit["counts"]["appValidatorTooBroadRows"]
     );
-    assert_eq!(risk["counts"]["conflictingRows"], audit["counts"]["conflictingRows"]);
+    assert_eq!(
+        risk["counts"]["conflictingRows"],
+        audit["counts"]["conflictingRows"]
+    );
 
     Ok(())
 }
