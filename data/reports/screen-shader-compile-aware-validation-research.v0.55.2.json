@@ -1,0 +1,207 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "screen-shader-compile-aware-validation-research",
+  "generatedAt": "2026-06-07T03:42:57-07:00",
+  "rowId": "decoration.screen_shader",
+  "officialSetting": "decoration.screen_shader",
+  "startingCommit": "1791924",
+  "selectedResearchOption": "Option C",
+  "decisionSummary": "Non-live compile-aware validation is designable only as an advisory or research-only syntax/link-shape check. Official Hyprland source compiles the configured fragment shader through the live OpenGL shader path, using Hyprland's tex300.vert or tex320.vert vertex shader and the raw user fragment source. Standalone validation cannot prove exact runtime driver, context, uniform, damage-tracking, or display/render safety, so compile-aware validation remains deferred and must not become required preflight from this research alone.",
+  "currentWritableStatus": "writable",
+  "productionGateEnforced": true,
+  "productionGateProofSource": "screen-shader-production-gate-approval.v0.55.2.json",
+  "watchdogMigrationProofStatus": "complete",
+  "compileAwareValidationCurrentStatus": "deferred",
+  "compileAwareValidationChanged": false,
+  "compileAwareValidationImplemented": false,
+  "shaderCompilationRun": false,
+  "liveShaderCompileUsed": false,
+  "liveDisplayRuntimeProofUsed": false,
+  "realConfigTouched": false,
+  "runtimeTouched": false,
+  "reloadEvalLuaUsed": false,
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0,
+  "readableRows": 341,
+  "writableRows": 278,
+  "blockedRows": 63,
+  "officialHyprlandSourcesInspected": [
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+      "symbols": [
+        "MS<String>(\"decoration:screen_shader\", ... Supplementary::REFRESH_SCREEN_SHADER)"
+      ],
+      "finding": "The setting is declared as a string path with refresh behavior for the screen shader."
+    },
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/src/render/OpenGL.cpp",
+      "symbols": [
+        "CHyprOpenGLImpl::applyScreenShader",
+        "CHyprOpenGLImpl::initShaders",
+        "m_shaders->TEXVERTSRC",
+        "m_shaders->TEXVERTSRC320"
+      ],
+      "finding": "The OpenGL renderer destroys the previous final screen shader, treats empty or STRVAL_EMPTY as disabled, resolves non-empty paths relative to the main config, checks regular-file/readability, reads the whole file as fragment source, chooses tex320.vert only when the fragment starts with '#version 320 es', otherwise chooses tex300.vert, then calls CShader::createProgram with dynamic shader compile."
+    },
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/src/render/Shader.cpp",
+      "symbols": [
+        "CShader::compileShader",
+        "CShader::createProgram",
+        "glShaderSource",
+        "glCompileShader",
+        "glLinkProgram"
+      ],
+      "finding": "Runtime compile/link happens through OpenGL shader and program APIs. Dynamic compile failures return false and log/queue shader parser errors."
+    },
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/src/render/ShaderLoader.cpp",
+      "symbols": [
+        "CShaderLoader::processSource",
+        "glslang_shader_preprocess"
+      ],
+      "finding": "Hyprland uses glslang preprocessing for built-in shader sources, but applyScreenShader does not preprocess the configured screen shader fragment through CShaderLoader."
+    },
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/src/render/shaders/glsl/tex300.vert",
+      "symbols": [
+        "#version 300 es",
+        "in vec2 pos",
+        "in vec2 texcoord",
+        "out vec2 v_texcoord"
+      ],
+      "finding": "Default screen-shader vertex pair is GLSL ES 300 with texcoord outputs."
+    },
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/src/render/shaders/glsl/tex320.vert",
+      "symbols": [
+        "#version 320 es",
+        "in vec2 pos",
+        "in vec2 texcoord",
+        "out vec2 v_texcoord"
+      ],
+      "finding": "Version-320 screen-shader vertex pair is GLSL ES 320 with the same texcoord shape."
+    },
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/src/debug/HyprCtl.cpp",
+      "symbols": [
+        "COMMAND.contains(\"decoration:screen_shader\")",
+        "g_pHyprRenderer->m_reloadScreenShader = true"
+      ],
+      "finding": "Changing the screen_shader setting or sourcing config marks the renderer to reload the screen shader."
+    },
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/example/screenShader.frag",
+      "symbols": [
+        "#version 300 es",
+        "uniform sampler2D tex",
+        "in vec2 v_texcoord",
+        "layout(location = 0) out vec4 fragColor"
+      ],
+      "finding": "The example shader demonstrates the expected user fragment shape for GLSL ES 300."
+    }
+  ],
+  "hyprlandConsumerPathSummary": {
+    "configDeclaration": "decoration:screen_shader is a string with refresh type REFRESH_SCREEN_SHADER.",
+    "pathResolution": "Non-empty values are resolved with absolutePath(path, Config::mgr()->getMainConfigPath()).",
+    "fileChecks": "Hyprland checks std::filesystem::is_regular_file and then opens the file with std::ifstream.",
+    "sourceRead": "The entire file is read into a fragmentShader string.",
+    "compileTrigger": "HyprCtl marks g_pHyprRenderer->m_reloadScreenShader for decoration:screen_shader changes; CHyprOpenGLImpl::begin calls applyScreenShader on reload.",
+    "disableBehavior": "Empty path or STRVAL_EMPTY destroys the existing shader and returns without compiling.",
+    "failureBehavior": "Missing/unreadable path or dynamic compile/link failure queues/logs screen shader parser errors and returns without installing a final shader program."
+  },
+  "shaderLanguageOrProfileEvidence": {
+    "sourceBackedFinding": "Hyprland pairs user fragment source with a GLSL ES 300 vertex shader by default, or GLSL ES 320 when the fragment source starts exactly with '#version 320 es'.",
+    "exampleShaderProfile": "#version 300 es",
+    "notProven": [
+      "No official source comment was found that exhaustively documents every accepted GLSL version/profile for user screen shaders.",
+      "Exact acceptance still depends on OpenGL runtime compile/link behavior."
+    ]
+  },
+  "hyprlandGeneratedWrapperOrPreludeEvidence": {
+    "fragmentWrapperFound": false,
+    "fragmentPreludeFound": false,
+    "finding": "No wrapper, generated fragment prelude, macro injection, or include preprocessing was found in applyScreenShader. Hyprland passes the raw user fragment string to CShader::createProgram.",
+    "vertexPairing": "Hyprland pairs the raw fragment with preprocessed internal tex300.vert or tex320.vert vertex source."
+  },
+  "runtimeCompilePathEvidence": {
+    "backendPath": "OpenGL renderer path in CHyprOpenGLImpl::applyScreenShader",
+    "shaderProgramPath": "CShader::createProgram -> CShader::compileShader -> glShaderSource/glCompileShader -> glAttachShader/glLinkProgram",
+    "dynamicCompile": true,
+    "otherBackendCompilePathProven": false,
+    "notes": "No pixman/aquamarine/wlroots-era standalone compile path for decoration.screen_shader was found in the inspected v0.55.2 source. The inspected consumer path is OpenGL."
+  },
+  "standaloneCompilerCandidates": [
+    {
+      "name": "glslangValidator",
+      "pathFound": "/usr/bin/glslangValidator",
+      "usedThisSprint": false,
+      "candidateUse": "Future advisory syntax/profile check for fixture/temp shader sources, possibly paired with Hyprland's tex300.vert or tex320.vert source.",
+      "authority": "available local tool; not Hyprland's runtime OpenGL compiler"
+    },
+    {
+      "name": "glslc",
+      "pathFound": "/usr/bin/glslc",
+      "usedThisSprint": false,
+      "candidateUse": "Future research candidate only; not proven equivalent to Hyprland's OpenGL ES runtime compile/link path.",
+      "authority": "available local tool; not Hyprland's runtime OpenGL compiler"
+    },
+    {
+      "name": "Hyprland glslang C API usage",
+      "pathFound": "/tmp/Hyprland-v0.55.2-full/src/render/ShaderLoader.cpp",
+      "usedThisSprint": false,
+      "candidateUse": "Future embedded parser/preprocessor research candidate, but official source shows it is used for built-in shader preprocessing and not for user screen_shader runtime compile.",
+      "authority": "official Hyprland source, but not the screen_shader compile path"
+    }
+  ],
+  "standaloneCompilerCompatibilityGaps": [
+    "Standalone tools do not use the same live OpenGL context, driver, extensions, precision behavior, and link implementation as CShader::createProgram.",
+    "A standalone syntax pass cannot prove that Hyprland's chosen tex300.vert or tex320.vert plus the user fragment will link on the target runtime driver.",
+    "A standalone pass cannot prove visual/display safety or that a successful shader will not blank, distort, or degrade output.",
+    "A standalone pass cannot prove damage-tracking policy safety for uniforms such as time or pointer-related uniforms; Hyprland checks these after runtime program creation through glGetUniformLocation.",
+    "Reading real user shader files during write planning would violate this project's current safety boundary unless a later sprint explicitly designs a fixture/temp-only path or user-approved file-read boundary."
+  ],
+  "nonLiveValidationDesignable": true,
+  "recommendedValidationPolicy": {
+    "policy": "advisory-or-research-only",
+    "notRequiredPreflight": true,
+    "rationale": "A non-live validator can likely check GLSL ES syntax/link shape for fixture/temp shader files, but it cannot prove Hyprland runtime compile/link/display safety. The existing production screen-shader watchdog gate remains the safety boundary.",
+    "futurePolicyOptions": [
+      "optional advanced advisory check on fixture/temp shader files only",
+      "report-only compatibility research comparing glslangValidator or embedded glslang behavior against Hyprland's source-level expectations",
+      "required preflight only if a future sprint proves an official or source-equivalent non-live validation interface with acceptable compatibility limits"
+    ]
+  },
+  "futureImplementationAllowedThisSprint": false,
+  "proofUsed": [
+    {
+      "source": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+      "finding": "Official config declaration and refresh behavior for decoration:screen_shader."
+    },
+    {
+      "source": "/tmp/Hyprland-v0.55.2-full/src/render/OpenGL.cpp",
+      "finding": "Official consumer path, path/file handling, vertex-version selection, and call into createProgram."
+    },
+    {
+      "source": "/tmp/Hyprland-v0.55.2-full/src/render/Shader.cpp",
+      "finding": "Official OpenGL compile/link path through glShaderSource/glCompileShader/glLinkProgram."
+    },
+    {
+      "source": "/tmp/Hyprland-v0.55.2-full/src/render/ShaderLoader.cpp",
+      "finding": "Official glslang preprocessing exists for built-in shaders but is not used by applyScreenShader for the user fragment."
+    },
+    {
+      "source": "data/reports/screen-shader-production-gate-approval.v0.55.2.json",
+      "finding": "Production gate remains enforced and compile-aware validation remains deferred."
+    }
+  ],
+  "proofStillMissing": [
+    "No future implementation proof exists for invoking a standalone compiler safely from this Rust app.",
+    "No compatibility proof exists between glslangValidator/glslc and Hyprland's actual OpenGL runtime compile/link path.",
+    "No official Hyprland non-live validation interface for decoration.screen_shader was found in the inspected source.",
+    "No policy proof exists for reading real user shader files during write planning.",
+    "No live shader compile or live display/render proof was run or allowed."
+  ],
+  "nextRecommendedSprint": "Screen shader non-live advisory compiler feasibility proof sprint: use fixture/temp shader files only to compare candidate standalone validation commands against Hyprland's source-backed vertex pairing expectations. Do not implement production compile-aware validation, do not read user shader files, do not run live shader compile or display/render proof, and do not change the production gate."
+}
