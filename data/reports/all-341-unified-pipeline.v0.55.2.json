@@ -29,7 +29,13 @@
     "approvalGate",
     "preflightProofStatus",
     "commitProofStatus",
-    "gateStatus"
+    "gateStatus",
+    "pipelineTemplate",
+    "recoveryBucket",
+    "watchdogRequirement",
+    "proofSource",
+    "watchdogProofSource",
+    "uiReviewWarning"
   ],
   "counts": {
     "totalRows": 341,
@@ -11502,7 +11508,15 @@
       "watchdogDryRunStatus": "passed",
       "productionWatchdogStatus": "separate-process-fixture-proof-passed",
       "highRiskEnablementStatus": "enabled-approved-xwayland-scaling-smoke-subset",
-      "recoveryBucket": "display-render-recovery"
+      "recoveryBucket": "display-render-recovery:xwayland-scaling-policy-smoke-subset",
+      "pipelineTemplate": "display-render-watchdog-template",
+      "watchdogRequirement": "display/render watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup",
+      "uiReviewWarning": "High-risk display/render XWayland scaling setting. Only the approved scaling policy smoke subset is writable; XWayland enable/socket, render, cursor/input, and debug/crash rows remain blocked.",
+      "proofSource": "xwayland-scaling-policy-smoke-subset-proof.v0.55.2.json",
+      "watchdogProofSource": "xwayland-scaling-policy-watchdog-proof.v0.55.2.json",
+      "enablementReport": "display-render-first-subset-enablements.v0.55.2.json",
+      "templateNormalizationStatus": "normalized-high-risk-template",
+      "recoveryGateWeakened": false
     },
     {
       "rowId": "xwayland.force_zero_scaling",
@@ -11554,7 +11568,15 @@
       "watchdogDryRunStatus": "passed",
       "productionWatchdogStatus": "separate-process-fixture-proof-passed",
       "highRiskEnablementStatus": "enabled-approved-xwayland-scaling-smoke-subset",
-      "recoveryBucket": "display-render-recovery"
+      "recoveryBucket": "display-render-recovery:xwayland-scaling-policy-smoke-subset",
+      "pipelineTemplate": "display-render-watchdog-template",
+      "watchdogRequirement": "display/render watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup",
+      "uiReviewWarning": "High-risk display/render XWayland scaling setting. Only the approved scaling policy smoke subset is writable; XWayland enable/socket, render, cursor/input, and debug/crash rows remain blocked.",
+      "proofSource": "xwayland-scaling-policy-smoke-subset-proof.v0.55.2.json",
+      "watchdogProofSource": "xwayland-scaling-policy-watchdog-proof.v0.55.2.json",
+      "enablementReport": "display-render-first-subset-enablements.v0.55.2.json",
+      "templateNormalizationStatus": "normalized-high-risk-template",
+      "recoveryGateWeakened": false
     },
     {
       "rowId": "xwayland.create_abstract_socket",
@@ -13455,7 +13477,13 @@
       "highRiskEnablementStatus": "enabled-approved-cursor-hide-on-key-press-keyboard-token-subset",
       "recoveryBucket": "cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset",
       "proofSource": "cursor-hide-on-key-press-usability-proof.v0.55.2.json",
-      "watchdogProofSource": "cursor-hide-on-key-press-watchdog-proof.v0.55.2.json"
+      "watchdogProofSource": "cursor-hide-on-key-press-watchdog-proof.v0.55.2.json",
+      "pipelineTemplate": "cursor-visibility-conditional-watchdog-template",
+      "watchdogRequirement": "cursor visibility keyboard-trigger watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup, wrong token fails, and real config is refused in dry-run tests; confirmation is represented as CLI token text input; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "uiReviewWarning": "High-risk cursor visibility keyboard-trigger policy setting. Cursor may disappear while typing. Requires CLI token confirmation and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "enablementReport": "cursor-hide-on-key-press-enablements.v0.55.2.json",
+      "templateNormalizationStatus": "normalized-high-risk-template",
+      "recoveryGateWeakened": false
     },
     {
       "rowId": "cursor.hide_on_touch",
@@ -13509,7 +13537,13 @@
       "highRiskEnablementStatus": "enabled-approved-cursor-visibility-conditional-touch-tablet-subset",
       "recoveryBucket": "cursor-input-recovery:cursor-visibility-conditional-touch-tablet-subset",
       "proofSource": "cursor-visibility-conditional-policy-proof.v0.55.2.json",
-      "watchdogProofSource": "cursor-visibility-conditional-policy-watchdog-proof.v0.55.2.json"
+      "watchdogProofSource": "cursor-visibility-conditional-policy-watchdog-proof.v0.55.2.json",
+      "pipelineTemplate": "cursor-visibility-conditional-watchdog-template",
+      "watchdogRequirement": "cursor visibility watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "uiReviewWarning": "High-risk cursor visibility policy setting. Cursor may disappear after touch, tablet, or keyboard-triggered input. Requires cursor-visibility warning and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "enablementReport": "cursor-visibility-conditional-policy-enablements.v0.55.2.json",
+      "templateNormalizationStatus": "normalized-high-risk-template",
+      "recoveryGateWeakened": false
     },
     {
       "rowId": "cursor.hide_on_tablet",
@@ -13563,7 +13597,13 @@
       "highRiskEnablementStatus": "enabled-approved-cursor-visibility-conditional-touch-tablet-subset",
       "recoveryBucket": "cursor-input-recovery:cursor-visibility-conditional-touch-tablet-subset",
       "proofSource": "cursor-visibility-conditional-policy-proof.v0.55.2.json",
-      "watchdogProofSource": "cursor-visibility-conditional-policy-watchdog-proof.v0.55.2.json"
+      "watchdogProofSource": "cursor-visibility-conditional-policy-watchdog-proof.v0.55.2.json",
+      "pipelineTemplate": "cursor-visibility-conditional-watchdog-template",
+      "watchdogRequirement": "cursor visibility watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "uiReviewWarning": "High-risk cursor visibility policy setting. Cursor may disappear after touch, tablet, or keyboard-triggered input. Requires cursor-visibility warning and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "enablementReport": "cursor-visibility-conditional-policy-enablements.v0.55.2.json",
+      "templateNormalizationStatus": "normalized-high-risk-template",
+      "recoveryGateWeakened": false
     },
     {
       "rowId": "cursor.use_cpu_buffer",
@@ -13670,7 +13710,13 @@
       "highRiskEnablementStatus": "enabled-approved-cursor-theme-sync-policy-smoke-subset",
       "recoveryBucket": "cursor-input-recovery:cursor-theme-sync-policy-smoke-subset",
       "proofSource": "cursor-theme-sync-policy-smoke-subset-proof.v0.55.2.json",
-      "watchdogProofSource": "cursor-theme-sync-policy-watchdog-proof.v0.55.2.json"
+      "watchdogProofSource": "cursor-theme-sync-policy-watchdog-proof.v0.55.2.json",
+      "pipelineTemplate": "cursor-input-theme-sync-watchdog-template",
+      "watchdogRequirement": "cursor/input watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup; recovery must not depend on mouse input, visible cursor, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+      "uiReviewWarning": "High-risk cursor/input theme sync policy setting. Only the approved cursor theme sync smoke subset is writable; cursor visibility, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+      "enablementReport": "cursor-input-first-subset-enablements.v0.55.2.json",
+      "templateNormalizationStatus": "normalized-high-risk-template",
+      "recoveryGateWeakened": false
     },
     {
       "rowId": "cursor.warp_back_after_non_mouse_input",
@@ -13774,7 +13820,15 @@
       "watchdogDryRunStatus": "passed",
       "productionWatchdogStatus": "production-capable-primitives-proven-temp-only",
       "highRiskEnablementStatus": "enabled-ecosystem-bucket-after-watchdog-proof",
-      "recoveryBucket": "ecosystem-permission-policy"
+      "recoveryBucket": "ecosystem-permission-policy",
+      "pipelineTemplate": "high-risk-policy-watchdog-template",
+      "watchdogRequirement": "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+      "uiReviewWarning": "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+      "proofSource": "high-risk-ecosystem-bucket-proof.v0.55.2.json",
+      "watchdogProofSource": "high-risk-watchdog-dry-run-proof.v0.55.2.json",
+      "enablementReport": "high-risk-first-bucket-enablements.v0.55.2.json",
+      "templateNormalizationStatus": "normalized-high-risk-template",
+      "recoveryGateWeakened": false
     },
     {
       "rowId": "ecosystem.no_donation_nag",
@@ -13826,7 +13880,15 @@
       "watchdogDryRunStatus": "passed",
       "productionWatchdogStatus": "production-capable-primitives-proven-temp-only",
       "highRiskEnablementStatus": "enabled-ecosystem-bucket-after-watchdog-proof",
-      "recoveryBucket": "ecosystem-permission-policy"
+      "recoveryBucket": "ecosystem-permission-policy",
+      "pipelineTemplate": "high-risk-policy-watchdog-template",
+      "watchdogRequirement": "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+      "uiReviewWarning": "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+      "proofSource": "high-risk-ecosystem-bucket-proof.v0.55.2.json",
+      "watchdogProofSource": "high-risk-watchdog-dry-run-proof.v0.55.2.json",
+      "enablementReport": "high-risk-first-bucket-enablements.v0.55.2.json",
+      "templateNormalizationStatus": "normalized-high-risk-template",
+      "recoveryGateWeakened": false
     },
     {
       "rowId": "ecosystem.enforce_permissions",
@@ -13878,7 +13940,15 @@
       "watchdogDryRunStatus": "passed",
       "productionWatchdogStatus": "production-capable-primitives-proven-temp-only",
       "highRiskEnablementStatus": "enabled-ecosystem-bucket-after-watchdog-proof",
-      "recoveryBucket": "ecosystem-permission-policy"
+      "recoveryBucket": "ecosystem-permission-policy",
+      "pipelineTemplate": "high-risk-policy-watchdog-template",
+      "watchdogRequirement": "production-capable watchdog plan must be armed before mutation; timeout restores the backup unless the user confirms the change",
+      "uiReviewWarning": "High-risk ecosystem/policy setting. Requires advanced opt-in and dead-man confirm-or-revert recovery; display/render, cursor/input, and debug/crash rows remain blocked.",
+      "proofSource": "high-risk-ecosystem-bucket-proof.v0.55.2.json",
+      "watchdogProofSource": "high-risk-watchdog-dry-run-proof.v0.55.2.json",
+      "enablementReport": "high-risk-first-bucket-enablements.v0.55.2.json",
+      "templateNormalizationStatus": "normalized-high-risk-template",
+      "recoveryGateWeakened": false
     },
     {
       "rowId": "debug.overlay",
