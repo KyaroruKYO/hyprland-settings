@@ -6859,5 +6859,16 @@
     "writeAllowlistChanged": false,
     "recoveryGatesChanged": false,
     "rowsEnabledThisSprint": 0
+  },
+  "deferredSourceBackedValidatorRepairFollowUp": {
+    "report": "data/reports/deferred-source-backed-validator-repair.v0.55.2.json",
+    "validatorsChangedRows": 5,
+    "metadataOnlyRows": 6,
+    "remainingDeferredRows": 4,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "writeAllowlistChanged": false,
+    "recoveryGatesChanged": false,
+    "rowsEnabledThisSprint": 0
   }
 }
