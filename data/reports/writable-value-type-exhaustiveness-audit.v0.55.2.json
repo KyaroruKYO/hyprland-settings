@@ -1,0 +1,1474 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "writable-value-type-exhaustiveness-audit",
+  "generatedAt": "2026-06-06T22:15:40-07:00",
+  "auditMode": "source-of-truth-established-before-classification",
+  "sourceReports": [
+    "scalar-read-write-coverage.v0.55.2.json",
+    "all-341-unified-pipeline.v0.55.2.json",
+    "writable-253-unified-pipeline-proof.v0.55.2.json",
+    "high-risk-unified-pipeline-reconciliation.v0.55.2.json"
+  ],
+  "counts": {
+    "rustSafeWritableRows": 278,
+    "coverageWritableRows": 278,
+    "pipelineWritableRows": 278,
+    "writableProofRows": 278,
+    "blockedRows": 63,
+    "rowsRepresented": 278,
+    "rowsClassified": 0,
+    "completeRows": 0,
+    "partialRows": 0,
+    "parserOnlyRows": 0,
+    "conflictingRows": 0,
+    "unknownRows": 0,
+    "appValidatorTooNarrowRows": 0,
+    "appValidatorTooBroadRows": 0,
+    "sourceResearchNeededRows": 0,
+    "safeWritableRowsMissingCoverage": 0,
+    "safeWritableRowsMissingPipeline": 0,
+    "writableCoverageRowsMissingRustTable": 0,
+    "writablePipelineRowsMissingRustTable": 0,
+    "sourceOfTruthMismatches": 0,
+    "highRiskConformanceFailures": 0,
+    "rowsEnabledThisSprint": 0,
+    "writeAllowlistChangedThisSprint": false,
+    "productionBehaviorChangedThisSprint": false,
+    "recoveryGatesChangedThisSprint": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rustValueKindCounts": {
+    "Boolean": 130,
+    "Number": 58,
+    "Percent": 21,
+    "Color": 10,
+    "Vector2": 6,
+    "Path": 2,
+    "FiniteChoice": 23,
+    "LineSafeString": 5,
+    "Gradient": 12,
+    "SourceBacked": 5,
+    "NumericList": 1,
+    "RegexString": 2,
+    "MonitorName": 2,
+    "CommaSeparatedFloatList": 1
+  },
+  "sourceOfTruth": {
+    "rustTable": "src/write_classification.rs::SAFE_WRITABLE_ROWS",
+    "coverageReport": "data/reports/scalar-read-write-coverage.v0.55.2.json",
+    "pipelineReport": "data/reports/all-341-unified-pipeline.v0.55.2.json",
+    "writableProofReport": "data/reports/writable-253-unified-pipeline-proof.v0.55.2.json"
+  },
+  "sourceOfTruthChecks": {
+    "missingCoverageRows": [],
+    "missingPipelineRows": [],
+    "extraCoverageWritableRowsNotInRustTable": [],
+    "extraPipelineWritableRowsNotInRustTable": [],
+    "statusMismatches": [],
+    "blockedRowsInSafeWritableRows": []
+  },
+  "rows": [
+    {
+      "rowId": "appearance.dim.modal",
+      "officialSetting": "decoration.dim_modal",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.dim.inactive",
+      "officialSetting": "decoration.dim_inactive",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.border_part_of_window",
+      "officialSetting": "decoration.border_part_of_window",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.blur.enabled",
+      "officialSetting": "decoration.blur.enabled",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.blur.ignore_opacity",
+      "officialSetting": "decoration.blur.ignore_opacity",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.blur.new_optimizations",
+      "officialSetting": "decoration.blur.new_optimizations",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.blur.special",
+      "officialSetting": "decoration.blur.special",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.blur.popups",
+      "officialSetting": "decoration.blur.popups",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.blur.input_methods",
+      "officialSetting": "decoration.blur.input_methods",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.blur.size",
+      "officialSetting": "decoration.blur.size",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "appearance.blur.brightness",
+      "officialSetting": "decoration.blur.brightness",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "appearance.blur.contrast",
+      "officialSetting": "decoration.blur.contrast",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "appearance.fullscreen_opacity",
+      "officialSetting": "decoration.fullscreen_opacity",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "appearance.blur.xray",
+      "officialSetting": "decoration.blur.xray",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.shadow.enabled",
+      "officialSetting": "decoration.shadow.enabled",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.shadow.sharp",
+      "officialSetting": "decoration.shadow.sharp",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.shadow.range",
+      "officialSetting": "decoration.shadow.range",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "appearance.shadow.render_power",
+      "officialSetting": "decoration.shadow.render_power",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "decoration.shadow.color",
+      "officialSetting": "decoration.shadow.color",
+      "rustValueKind": "Color"
+    },
+    {
+      "rowId": "decoration.shadow.color_inactive",
+      "officialSetting": "decoration.shadow.color_inactive",
+      "rustValueKind": "Color"
+    },
+    {
+      "rowId": "decoration.shadow.offset",
+      "officialSetting": "decoration.shadow.offset",
+      "rustValueKind": "Vector2"
+    },
+    {
+      "rowId": "decoration.screen_shader",
+      "officialSetting": "decoration.screen_shader",
+      "rustValueKind": "Path"
+    },
+    {
+      "rowId": "appearance.gaps_in",
+      "officialSetting": "general.gaps_in",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "appearance.gaps_out",
+      "officialSetting": "general.gaps_out",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "appearance.border_size",
+      "officialSetting": "general.border_size",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "appearance.rounding",
+      "officialSetting": "decoration.rounding",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "appearance.active_opacity",
+      "officialSetting": "decoration.active_opacity",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "appearance.inactive_opacity",
+      "officialSetting": "decoration.inactive_opacity",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "animations.enabled",
+      "officialSetting": "animations.enabled",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "animations.workspace_wraparound",
+      "officialSetting": "animations.workspace_wraparound",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "appearance.glow.enabled",
+      "officialSetting": "decoration.glow.enabled",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.groupbar.enabled",
+      "officialSetting": "group.groupbar.enabled",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.groupbar.gradients",
+      "officialSetting": "group.groupbar.gradients",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.groupbar.stacked",
+      "officialSetting": "group.groupbar.stacked",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.groupbar.render_titles",
+      "officialSetting": "group.groupbar.render_titles",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.groupbar.scrolling",
+      "officialSetting": "group.groupbar.scrolling",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.groupbar.middle_click_close",
+      "officialSetting": "group.groupbar.middle_click_close",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.groupbar.round_only_edges",
+      "officialSetting": "group.groupbar.round_only_edges",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.groupbar.gradient_round_only_edges",
+      "officialSetting": "group.groupbar.gradient_round_only_edges",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.groupbar.keep_upper_gap",
+      "officialSetting": "group.groupbar.keep_upper_gap",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.groupbar.blur",
+      "officialSetting": "group.groupbar.blur",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.disable_hyprland_logo",
+      "officialSetting": "misc.disable_hyprland_logo",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.disable_splash_rendering",
+      "officialSetting": "misc.disable_splash_rendering",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.name_vk_after_proc",
+      "officialSetting": "misc.name_vk_after_proc",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.always_follow_on_dnd",
+      "officialSetting": "misc.always_follow_on_dnd",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.layers_hog_keyboard_focus",
+      "officialSetting": "misc.layers_hog_keyboard_focus",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.animate_manual_resizes",
+      "officialSetting": "misc.animate_manual_resizes",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.animate_mouse_windowdragging",
+      "officialSetting": "misc.animate_mouse_windowdragging",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.enable_swallow",
+      "officialSetting": "misc.enable_swallow",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.mouse_move_focuses_monitor",
+      "officialSetting": "misc.mouse_move_focuses_monitor",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.close_special_on_empty",
+      "officialSetting": "misc.close_special_on_empty",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.middle_click_paste",
+      "officialSetting": "misc.middle_click_paste",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.disable_xdg_env_checks",
+      "officialSetting": "misc.disable_xdg_env_checks",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.disable_hyprland_guiutils_check",
+      "officialSetting": "misc.disable_hyprland_guiutils_check",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.disable_watchdog_warning",
+      "officialSetting": "misc.disable_watchdog_warning",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.enable_anr_dialog",
+      "officialSetting": "misc.enable_anr_dialog",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.screencopy_force_8b",
+      "officialSetting": "misc.screencopy_force_8b",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.disable_scale_notification",
+      "officialSetting": "misc.disable_scale_notification",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.size_limits_tiled",
+      "officialSetting": "misc.size_limits_tiled",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.vrr",
+      "officialSetting": "misc.vrr",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "misc.mouse_move_enables_dpms",
+      "officialSetting": "misc.mouse_move_enables_dpms",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.key_press_enables_dpms",
+      "officialSetting": "misc.key_press_enables_dpms",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.disable_autoreload",
+      "officialSetting": "misc.disable_autoreload",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.focus_on_activate",
+      "officialSetting": "misc.focus_on_activate",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.allow_session_lock_restore",
+      "officialSetting": "misc.allow_session_lock_restore",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.session_lock_xray",
+      "officialSetting": "misc.session_lock_xray",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "misc.on_focus_under_fullscreen",
+      "officialSetting": "misc.on_focus_under_fullscreen",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "misc.exit_window_retains_fullscreen",
+      "officialSetting": "misc.exit_window_retains_fullscreen",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "windows.snap.enabled",
+      "officialSetting": "general.snap.enabled",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "general.allow_tearing",
+      "officialSetting": "general.allow_tearing",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "general.locale",
+      "officialSetting": "general.locale",
+      "rustValueKind": "LineSafeString"
+    },
+    {
+      "rowId": "windows.snap.window_gap",
+      "officialSetting": "general.snap.window_gap",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "windows.snap.monitor_gap",
+      "officialSetting": "general.snap.monitor_gap",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "general.col.inactive_border",
+      "officialSetting": "general.col.inactive_border",
+      "rustValueKind": "Gradient"
+    },
+    {
+      "rowId": "general.col.active_border",
+      "officialSetting": "general.col.active_border",
+      "rustValueKind": "Gradient"
+    },
+    {
+      "rowId": "general.col.nogroup_border",
+      "officialSetting": "general.col.nogroup_border",
+      "rustValueKind": "Gradient"
+    },
+    {
+      "rowId": "general.col.nogroup_border_active",
+      "officialSetting": "general.col.nogroup_border_active",
+      "rustValueKind": "Gradient"
+    },
+    {
+      "rowId": "input.kb_model",
+      "officialSetting": "input.kb_model",
+      "rustValueKind": "SourceBacked"
+    },
+    {
+      "rowId": "input.kb_layout",
+      "officialSetting": "input.kb_layout",
+      "rustValueKind": "SourceBacked"
+    },
+    {
+      "rowId": "input.kb_variant",
+      "officialSetting": "input.kb_variant",
+      "rustValueKind": "SourceBacked"
+    },
+    {
+      "rowId": "input.kb_options",
+      "officialSetting": "input.kb_options",
+      "rustValueKind": "SourceBacked"
+    },
+    {
+      "rowId": "input.kb_rules",
+      "officialSetting": "input.kb_rules",
+      "rustValueKind": "SourceBacked"
+    },
+    {
+      "rowId": "input.pointer_sensitivity",
+      "officialSetting": "input.sensitivity",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "input.accel_profile",
+      "officialSetting": "input.accel_profile",
+      "rustValueKind": "LineSafeString"
+    },
+    {
+      "rowId": "input.scroll_points",
+      "officialSetting": "input.scroll_points",
+      "rustValueKind": "NumericList"
+    },
+    {
+      "rowId": "input.kb_file",
+      "officialSetting": "input.kb_file",
+      "rustValueKind": "Path"
+    },
+    {
+      "rowId": "input.tablet.region_position",
+      "officialSetting": "input.tablet.region_position",
+      "rustValueKind": "Vector2"
+    },
+    {
+      "rowId": "input.tablet.region_size",
+      "officialSetting": "input.tablet.region_size",
+      "rustValueKind": "Vector2"
+    },
+    {
+      "rowId": "input.tablet.active_area_size",
+      "officialSetting": "input.tablet.active_area_size",
+      "rustValueKind": "Vector2"
+    },
+    {
+      "rowId": "input.tablet.active_area_position",
+      "officialSetting": "input.tablet.active_area_position",
+      "rustValueKind": "Vector2"
+    },
+    {
+      "rowId": "decoration.glow.color",
+      "officialSetting": "decoration.glow.color",
+      "rustValueKind": "Color"
+    },
+    {
+      "rowId": "decoration.glow.color_inactive",
+      "officialSetting": "decoration.glow.color_inactive",
+      "rustValueKind": "Color"
+    },
+    {
+      "rowId": "group.groupbar.text_color",
+      "officialSetting": "group.groupbar.text_color",
+      "rustValueKind": "Color"
+    },
+    {
+      "rowId": "group.groupbar.text_color_inactive",
+      "officialSetting": "group.groupbar.text_color_inactive",
+      "rustValueKind": "Color"
+    },
+    {
+      "rowId": "group.groupbar.text_color_locked_active",
+      "officialSetting": "group.groupbar.text_color_locked_active",
+      "rustValueKind": "Color"
+    },
+    {
+      "rowId": "group.groupbar.text_color_locked_inactive",
+      "officialSetting": "group.groupbar.text_color_locked_inactive",
+      "rustValueKind": "Color"
+    },
+    {
+      "rowId": "group.groupbar.font_family",
+      "officialSetting": "group.groupbar.font_family",
+      "rustValueKind": "LineSafeString"
+    },
+    {
+      "rowId": "group.col.border_active",
+      "officialSetting": "group.col.border_active",
+      "rustValueKind": "Gradient"
+    },
+    {
+      "rowId": "group.col.border_inactive",
+      "officialSetting": "group.col.border_inactive",
+      "rustValueKind": "Gradient"
+    },
+    {
+      "rowId": "group.col.border_locked_inactive",
+      "officialSetting": "group.col.border_locked_inactive",
+      "rustValueKind": "Gradient"
+    },
+    {
+      "rowId": "group.col.border_locked_active",
+      "officialSetting": "group.col.border_locked_active",
+      "rustValueKind": "Gradient"
+    },
+    {
+      "rowId": "group.groupbar.col.active",
+      "officialSetting": "group.groupbar.col.active",
+      "rustValueKind": "Gradient"
+    },
+    {
+      "rowId": "group.groupbar.col.inactive",
+      "officialSetting": "group.groupbar.col.inactive",
+      "rustValueKind": "Gradient"
+    },
+    {
+      "rowId": "group.groupbar.col.locked_active",
+      "officialSetting": "group.groupbar.col.locked_active",
+      "rustValueKind": "Gradient"
+    },
+    {
+      "rowId": "group.groupbar.col.locked_inactive",
+      "officialSetting": "group.groupbar.col.locked_inactive",
+      "rustValueKind": "Gradient"
+    },
+    {
+      "rowId": "misc.col.splash",
+      "officialSetting": "misc.col.splash",
+      "rustValueKind": "Color"
+    },
+    {
+      "rowId": "misc.background_color",
+      "officialSetting": "misc.background_color",
+      "rustValueKind": "Color"
+    },
+    {
+      "rowId": "misc.font_family",
+      "officialSetting": "misc.font_family",
+      "rustValueKind": "LineSafeString"
+    },
+    {
+      "rowId": "misc.splash_font_family",
+      "officialSetting": "misc.splash_font_family",
+      "rustValueKind": "LineSafeString"
+    },
+    {
+      "rowId": "misc.swallow_regex",
+      "officialSetting": "misc.swallow_regex",
+      "rustValueKind": "RegexString"
+    },
+    {
+      "rowId": "misc.swallow_exception_regex",
+      "officialSetting": "misc.swallow_exception_regex",
+      "rustValueKind": "RegexString"
+    },
+    {
+      "rowId": "layout.single_window_aspect_ratio",
+      "officialSetting": "layout.single_window_aspect_ratio",
+      "rustValueKind": "Vector2"
+    },
+    {
+      "rowId": "appearance.blur.passes",
+      "officialSetting": "decoration.blur.passes",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "appearance.blur.noise",
+      "officialSetting": "decoration.blur.noise",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "appearance.shadow.scale",
+      "officialSetting": "decoration.shadow.scale",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "appearance.rounding_power",
+      "officialSetting": "decoration.rounding_power",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "appearance.dim.strength",
+      "officialSetting": "decoration.dim_strength",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "appearance.dim.special",
+      "officialSetting": "decoration.dim_special",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "appearance.dim.around",
+      "officialSetting": "decoration.dim_around",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "appearance.blur.vibrancy",
+      "officialSetting": "decoration.blur.vibrancy",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "appearance.blur.vibrancy_darkness",
+      "officialSetting": "decoration.blur.vibrancy_darkness",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "appearance.blur.popups_ignorealpha",
+      "officialSetting": "decoration.blur.popups_ignorealpha",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "appearance.blur.input_methods_ignorealpha",
+      "officialSetting": "decoration.blur.input_methods_ignorealpha",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "appearance.glow.range",
+      "officialSetting": "decoration.glow.range",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "appearance.glow.render_power",
+      "officialSetting": "decoration.glow.render_power",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "general.float_gaps",
+      "officialSetting": "general.float_gaps",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "general.gaps_workspaces",
+      "officialSetting": "general.gaps_workspaces",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "layout.selection",
+      "officialSetting": "general.layout",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "general.no_focus_fallback",
+      "officialSetting": "general.no_focus_fallback",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "general.resize_on_border",
+      "officialSetting": "general.resize_on_border",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "general.extend_border_grab_area",
+      "officialSetting": "general.extend_border_grab_area",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "general.hover_icon_on_border",
+      "officialSetting": "general.hover_icon_on_border",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "general.resize_corner",
+      "officialSetting": "general.resize_corner",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "general.snap.border_overlap",
+      "officialSetting": "general.snap.border_overlap",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "general.snap.respect_gaps",
+      "officialSetting": "general.snap.respect_gaps",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "general.modal_parent_blocking",
+      "officialSetting": "general.modal_parent_blocking",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.numlock_by_default",
+      "officialSetting": "input.numlock_by_default",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.resolve_binds_by_sym",
+      "officialSetting": "input.resolve_binds_by_sym",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.repeat_rate",
+      "officialSetting": "input.repeat_rate",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "input.repeat_delay",
+      "officialSetting": "input.repeat_delay",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "input.force_no_accel",
+      "officialSetting": "input.force_no_accel",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.rotation",
+      "officialSetting": "input.rotation",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "input.left_handed",
+      "officialSetting": "input.left_handed",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.scroll_button",
+      "officialSetting": "input.scroll_button",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "input.scroll_button_lock",
+      "officialSetting": "input.scroll_button_lock",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.scroll_factor",
+      "officialSetting": "input.scroll_factor",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "input.scroll_method",
+      "officialSetting": "input.scroll_method",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "input.natural_scroll",
+      "officialSetting": "input.natural_scroll",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.follow_mouse_threshold",
+      "officialSetting": "input.follow_mouse_threshold",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "input.follow_mouse",
+      "officialSetting": "input.follow_mouse",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "input.focus_on_close",
+      "officialSetting": "input.focus_on_close",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "input.mouse_refocus",
+      "officialSetting": "input.mouse_refocus",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.float_switch_override_focus",
+      "officialSetting": "input.float_switch_override_focus",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "input.special_fallthrough",
+      "officialSetting": "input.special_fallthrough",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.off_window_axis_events",
+      "officialSetting": "input.off_window_axis_events",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "input.emulate_discrete_scroll",
+      "officialSetting": "input.emulate_discrete_scroll",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "input.follow_mouse_shrink",
+      "officialSetting": "input.follow_mouse_shrink",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "input.touchpad.disable_while_typing",
+      "officialSetting": "input.touchpad.disable_while_typing",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.touchpad.natural_scroll",
+      "officialSetting": "input.touchpad.natural_scroll",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.touchpad.scroll_factor",
+      "officialSetting": "input.touchpad.scroll_factor",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "input.touchpad.middle_button_emulation",
+      "officialSetting": "input.touchpad.middle_button_emulation",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.touchpad.clickfinger_behavior",
+      "officialSetting": "input.touchpad.clickfinger_behavior",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.touchpad.tap-to-click",
+      "officialSetting": "input.touchpad.tap-to-click",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.touchpad.drag_lock",
+      "officialSetting": "input.touchpad.drag_lock",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "input.touchpad.tap_button_map",
+      "officialSetting": "input.touchpad.tap_button_map",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "input.touchpad.tap-and-drag",
+      "officialSetting": "input.touchpad.tap-and-drag",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.touchpad.flip_x",
+      "officialSetting": "input.touchpad.flip_x",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.touchpad.flip_y",
+      "officialSetting": "input.touchpad.flip_y",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.touchpad.drag_3fg",
+      "officialSetting": "input.touchpad.drag_3fg",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "input.touchdevice.transform",
+      "officialSetting": "input.touchdevice.transform",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "input.touchdevice.enabled",
+      "officialSetting": "input.touchdevice.enabled",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.touchdevice.output",
+      "officialSetting": "input.touchdevice.output",
+      "rustValueKind": "MonitorName"
+    },
+    {
+      "rowId": "input.virtualkeyboard.share_states",
+      "officialSetting": "input.virtualkeyboard.share_states",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "input.virtualkeyboard.release_pressed_on_close",
+      "officialSetting": "input.virtualkeyboard.release_pressed_on_close",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.tablet.transform",
+      "officialSetting": "input.tablet.transform",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "input.tablet.absolute_region_position",
+      "officialSetting": "input.tablet.absolute_region_position",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.tablet.relative_input",
+      "officialSetting": "input.tablet.relative_input",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "input.tablet.output",
+      "officialSetting": "input.tablet.output",
+      "rustValueKind": "MonitorName"
+    },
+    {
+      "rowId": "input.tablet.left_handed",
+      "officialSetting": "input.tablet.left_handed",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_distance",
+      "officialSetting": "gestures.workspace_swipe_distance",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_touch",
+      "officialSetting": "gestures.workspace_swipe_touch",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_invert",
+      "officialSetting": "gestures.workspace_swipe_invert",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_touch_invert",
+      "officialSetting": "gestures.workspace_swipe_touch_invert",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_min_speed_to_force",
+      "officialSetting": "gestures.workspace_swipe_min_speed_to_force",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_cancel_ratio",
+      "officialSetting": "gestures.workspace_swipe_cancel_ratio",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_create_new",
+      "officialSetting": "gestures.workspace_swipe_create_new",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_direction_lock",
+      "officialSetting": "gestures.workspace_swipe_direction_lock",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_direction_lock_threshold",
+      "officialSetting": "gestures.workspace_swipe_direction_lock_threshold",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_forever",
+      "officialSetting": "gestures.workspace_swipe_forever",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_use_r",
+      "officialSetting": "gestures.workspace_swipe_use_r",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "gestures.close_max_timeout",
+      "officialSetting": "gestures.close_max_timeout",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "gestures.scrolling.move_snap_to_grid",
+      "officialSetting": "gestures.scrolling.move_snap_to_grid",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "gestures.scrolling.move_snap_cursor",
+      "officialSetting": "gestures.scrolling.move_snap_cursor",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.insert_after_current",
+      "officialSetting": "group.insert_after_current",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.focus_removed_window",
+      "officialSetting": "group.focus_removed_window",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.merge_groups_on_drag",
+      "officialSetting": "group.merge_groups_on_drag",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.merge_groups_on_groupbar",
+      "officialSetting": "group.merge_groups_on_groupbar",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.auto_group",
+      "officialSetting": "group.auto_group",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.drag_into_group",
+      "officialSetting": "group.drag_into_group",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "group.merge_floated_into_tiled_on_groupbar",
+      "officialSetting": "group.merge_floated_into_tiled_on_groupbar",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.group_on_movetoworkspace",
+      "officialSetting": "group.group_on_movetoworkspace",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "group.groupbar.font_weight_active",
+      "officialSetting": "group.groupbar.font_weight_active",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.font_weight_inactive",
+      "officialSetting": "group.groupbar.font_weight_inactive",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.font_size",
+      "officialSetting": "group.groupbar.font_size",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.height",
+      "officialSetting": "group.groupbar.height",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.indicator_gap",
+      "officialSetting": "group.groupbar.indicator_gap",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.indicator_height",
+      "officialSetting": "group.groupbar.indicator_height",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.priority",
+      "officialSetting": "group.groupbar.priority",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.rounding",
+      "officialSetting": "group.groupbar.rounding",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.rounding_power",
+      "officialSetting": "group.groupbar.rounding_power",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.gradient_rounding",
+      "officialSetting": "group.groupbar.gradient_rounding",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.gradient_rounding_power",
+      "officialSetting": "group.groupbar.gradient_rounding_power",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.gaps_out",
+      "officialSetting": "group.groupbar.gaps_out",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.gaps_in",
+      "officialSetting": "group.groupbar.gaps_in",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.text_offset",
+      "officialSetting": "group.groupbar.text_offset",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "group.groupbar.text_padding",
+      "officialSetting": "group.groupbar.text_padding",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "misc.force_default_wallpaper",
+      "officialSetting": "misc.force_default_wallpaper",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "misc.initial_workspace_tracking",
+      "officialSetting": "misc.initial_workspace_tracking",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "misc.render_unfocused_fps",
+      "officialSetting": "misc.render_unfocused_fps",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "misc.lockdead_screen_delay",
+      "officialSetting": "misc.lockdead_screen_delay",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "misc.anr_missed_pings",
+      "officialSetting": "misc.anr_missed_pings",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "binds.pass_mouse_when_bound",
+      "officialSetting": "binds.pass_mouse_when_bound",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "binds.scroll_event_delay",
+      "officialSetting": "binds.scroll_event_delay",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "binds.workspace_back_and_forth",
+      "officialSetting": "binds.workspace_back_and_forth",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "binds.hide_special_on_workspace_change",
+      "officialSetting": "binds.hide_special_on_workspace_change",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "binds.allow_workspace_cycles",
+      "officialSetting": "binds.allow_workspace_cycles",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "binds.workspace_center_on",
+      "officialSetting": "binds.workspace_center_on",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "binds.focus_preferred_method",
+      "officialSetting": "binds.focus_preferred_method",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "binds.ignore_group_lock",
+      "officialSetting": "binds.ignore_group_lock",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "binds.movefocus_cycles_groupfirst",
+      "officialSetting": "binds.movefocus_cycles_groupfirst",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "binds.movefocus_cycles_fullscreen",
+      "officialSetting": "binds.movefocus_cycles_fullscreen",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "binds.disable_keybind_grabbing",
+      "officialSetting": "binds.disable_keybind_grabbing",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "binds.window_direction_monitor_fallback",
+      "officialSetting": "binds.window_direction_monitor_fallback",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "binds.drag_threshold",
+      "officialSetting": "binds.drag_threshold",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "binds.allow_pin_fullscreen",
+      "officialSetting": "binds.allow_pin_fullscreen",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "layout.single_window_aspect_ratio_tolerance",
+      "officialSetting": "layout.single_window_aspect_ratio_tolerance",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "dwindle.force_split",
+      "officialSetting": "dwindle.force_split",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "dwindle.preserve_split",
+      "officialSetting": "dwindle.preserve_split",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "dwindle.smart_split",
+      "officialSetting": "dwindle.smart_split",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "dwindle.smart_resizing",
+      "officialSetting": "dwindle.smart_resizing",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "dwindle.permanent_direction_override",
+      "officialSetting": "dwindle.permanent_direction_override",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "dwindle.special_scale_factor",
+      "officialSetting": "dwindle.special_scale_factor",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "dwindle.split_width_multiplier",
+      "officialSetting": "dwindle.split_width_multiplier",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "dwindle.use_active_for_splits",
+      "officialSetting": "dwindle.use_active_for_splits",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "dwindle.default_split_ratio",
+      "officialSetting": "dwindle.default_split_ratio",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "dwindle.split_bias",
+      "officialSetting": "dwindle.split_bias",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "dwindle.precise_mouse_move",
+      "officialSetting": "dwindle.precise_mouse_move",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "master.allow_small_split",
+      "officialSetting": "master.allow_small_split",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "master.special_scale_factor",
+      "officialSetting": "master.special_scale_factor",
+      "rustValueKind": "Percent"
+    },
+    {
+      "rowId": "master.mfact",
+      "officialSetting": "master.mfact",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "master.new_on_top",
+      "officialSetting": "master.new_on_top",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "master.new_status",
+      "officialSetting": "master.new_status",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "master.new_on_active",
+      "officialSetting": "master.new_on_active",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "master.orientation",
+      "officialSetting": "master.orientation",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "master.slave_count_for_center_master",
+      "officialSetting": "master.slave_count_for_center_master",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "master.center_ignores_reserved",
+      "officialSetting": "master.center_ignores_reserved",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "master.center_master_fallback",
+      "officialSetting": "master.center_master_fallback",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "master.smart_resizing",
+      "officialSetting": "master.smart_resizing",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "master.drop_at_cursor",
+      "officialSetting": "master.drop_at_cursor",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "master.always_keep_position",
+      "officialSetting": "master.always_keep_position",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "scrolling.column_width",
+      "officialSetting": "scrolling.column_width",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "scrolling.focus_fit_method",
+      "officialSetting": "scrolling.focus_fit_method",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "scrolling.follow_focus",
+      "officialSetting": "scrolling.follow_focus",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "scrolling.follow_min_visible",
+      "officialSetting": "scrolling.follow_min_visible",
+      "rustValueKind": "Number"
+    },
+    {
+      "rowId": "scrolling.explicit_column_widths",
+      "officialSetting": "scrolling.explicit_column_widths",
+      "rustValueKind": "CommaSeparatedFloatList"
+    },
+    {
+      "rowId": "scrolling.wrap_focus",
+      "officialSetting": "scrolling.wrap_focus",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "scrolling.wrap_swapcol",
+      "officialSetting": "scrolling.wrap_swapcol",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "scrolling.direction",
+      "officialSetting": "scrolling.direction",
+      "rustValueKind": "FiniteChoice"
+    },
+    {
+      "rowId": "scrolling.fullscreen_on_one_column",
+      "officialSetting": "scrolling.fullscreen_on_one_column",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "ecosystem.no_update_news",
+      "officialSetting": "ecosystem.no_update_news",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "ecosystem.no_donation_nag",
+      "officialSetting": "ecosystem.no_donation_nag",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "ecosystem.enforce_permissions",
+      "officialSetting": "ecosystem.enforce_permissions",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "xwayland.use_nearest_neighbor",
+      "officialSetting": "xwayland.use_nearest_neighbor",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "xwayland.force_zero_scaling",
+      "officialSetting": "xwayland.force_zero_scaling",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "cursor.sync_gsettings_theme",
+      "officialSetting": "cursor.sync_gsettings_theme",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "cursor.hide_on_touch",
+      "officialSetting": "cursor.hide_on_touch",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "officialSetting": "cursor.hide_on_tablet",
+      "rustValueKind": "Boolean"
+    },
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "officialSetting": "cursor.hide_on_key_press",
+      "rustValueKind": "Boolean"
+    }
+  ],
+  "safety": {
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "rowsEnabled": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  }
+}
