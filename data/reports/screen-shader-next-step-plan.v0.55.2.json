@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "screen-shader-next-step-plan",
+  "generatedAt": "2026-06-07T02:00:17-07:00",
+  "counts": {
+    "recommendedNextSprints": 1,
+    "rowsEnabledThisSprint": 0,
+    "writeAllowlistChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "liveShaderCompileUsed": false,
+    "safeWritableRowsChanged": false,
+    "productionBehaviorChanged": false,
+    "liveDisplayRuntimeProofUsed": false,
+    "writableRows": 278,
+    "blockedRows": 63
+  },
+  "stoppingPoint": "Stop after policy review and metadata warning. Do not continue into compile-aware validation or gate migration in this sprint.",
+  "recommendedNextSprint": {
+    "type": "display-render high-risk gate migration design",
+    "rowId": "decoration.screen_shader",
+    "objective": "Decide whether to migrate screen_shader from normal writable path treatment into a display/render watchdog gate, or propose explicit block/removal with user approval.",
+    "mustNotDo": [
+      "do not run live shader compile",
+      "do not reload Hyprland",
+      "do not mutate real config",
+      "do not use active render state"
+    ]
+  },
+  "laterOptionalSprint": {
+    "type": "compile-aware validation design",
+    "precondition": "Only after display/render high-risk gate policy is decided.",
+    "allowedDirection": "standalone/temp shader fixture validation only if a non-live compiler path is proven safe"
+  }
+}
