@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-screen-shader-consumer-research",
+  "generatedAt": "2026-06-07T00:49:01-07:00",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "rowsResearched": 1,
+    "pathRows": 1,
+    "compileSensitiveRows": 1,
+    "shouldBecomeHighRiskRows": 1,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "safety": {
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "recoveryGatesChanged": false
+  },
+  "rows": [
+    {
+      "rowId": "decoration.screen_shader",
+      "officialSetting": "decoration.screen_shader",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/render/OpenGL.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/helpers/MiscFunctions.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "Empty or [[EMPTY]] disables the shader. Non-empty values are resolved relative to the main config path, must be regular readable files, are loaded as fragment shader source, and are compiled into the final screen shader program.",
+      "recommendedValidatorPolicy": "Defer repair until display/render high-risk review decides whether file existence/readability and shader compile checks are required before write planning.",
+      "recommendedUiEditorPolicy": "Optional shader path picker with warning that bad shaders can affect final screen rendering.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "shouldBecomeHighRisk": true,
+      "highRiskReason": "Consumer is display/render compile-sensitive rather than a plain path string."
+    }
+  ]
+}
