@@ -93,7 +93,11 @@ fn enabled_high_risk_rows_conform_to_unified_pipeline() -> Result<()> {
         assert!(!candidate_ids.contains(row_id), "{row_id}");
 
         let coverage_row = coverage_by_id[row_id];
-        assert_eq!(coverage_row["writeStatus"].as_str(), Some("writable"), "{row_id}");
+        assert_eq!(
+            coverage_row["writeStatus"].as_str(),
+            Some("writable"),
+            "{row_id}"
+        );
         assert_eq!(
             coverage_row["safeWriteSupported"].as_bool(),
             Some(true),
@@ -139,7 +143,11 @@ fn enabled_high_risk_rows_conform_to_unified_pipeline() -> Result<()> {
 
     for row_id in candidate_ids {
         let coverage_row = coverage_by_id[row_id];
-        assert_ne!(coverage_row["writeStatus"].as_str(), Some("writable"), "{row_id}");
+        assert_ne!(
+            coverage_row["writeStatus"].as_str(),
+            Some("writable"),
+            "{row_id}"
+        );
         assert_eq!(
             coverage_row["safeWriteSupported"].as_bool(),
             Some(false),
@@ -174,10 +182,7 @@ fn enabled_high_risk_rows_map_to_reusable_templates() -> Result<()> {
             )
         })
         .collect::<BTreeMap<_, _>>();
-    assert_eq!(
-        template_rows["high-risk-policy-watchdog-template"],
-        3
-    );
+    assert_eq!(template_rows["high-risk-policy-watchdog-template"], 3);
     assert_eq!(template_rows["display-render-watchdog-template"], 2);
     assert_eq!(
         template_rows["cursor-input-theme-sync-watchdog-template"],
@@ -222,7 +227,10 @@ fn high_risk_candidate_counts_match_current_blocked_state() -> Result<()> {
     let consistency = read_json("data/reports/high-risk-report-consistency-audit.v0.55.2.json")?;
 
     assert_eq!(coverage["counts"]["writableRows"], SAFE_WRITABLE_ROWS.len());
-    assert_eq!(coverage["counts"]["blockedWriteRows"], candidates["counts"]["rows"]);
+    assert_eq!(
+        coverage["counts"]["blockedWriteRows"],
+        candidates["counts"]["rows"]
+    );
     assert_eq!(candidates["counts"]["byRiskClass"]["cursor_input_risk"], 18);
     assert_eq!(
         candidates["counts"]["byRiskClass"]["display_render_session_risk"],
