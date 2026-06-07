@@ -57,6 +57,19 @@ pub struct FiniteChoiceOption {
     pub label: &'static str,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct SourceBackedNumericBounds {
+    pub value_type: SourceBackedNumericType,
+    pub min: f64,
+    pub max: f64,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SourceBackedNumericType {
+    Integer,
+    Float,
+}
+
 pub const CONFLICT_FINITE_CHOICE_ROWS: &[&str] = &[
     "general.resize_corner",
     "input.focus_on_close",
@@ -2114,6 +2127,92 @@ pub fn finite_choice_options(row_id: &str) -> Option<&'static [FiniteChoiceOptio
         "misc.on_focus_under_fullscreen" => Some(MISC_ON_FOCUS_UNDER_FULLSCREEN_CHOICES),
         _ => None,
     }
+}
+
+pub fn source_backed_numeric_bounds(row_id: &str) -> Option<SourceBackedNumericBounds> {
+    use SourceBackedNumericType::{Float, Integer};
+
+    let (value_type, min, max) = match row_id {
+        "appearance.blur.size" => (Integer, 0.0, 100.0),
+        "appearance.blur.brightness" => (Float, 0.0, 2.0),
+        "appearance.blur.contrast" => (Float, 0.0, 2.0),
+        "appearance.shadow.range" => (Integer, 0.0, 100.0),
+        "appearance.shadow.render_power" => (Integer, 1.0, 4.0),
+        "appearance.border_size" => (Integer, 0.0, 20.0),
+        "appearance.rounding" => (Integer, 0.0, 20.0),
+        "appearance.active_opacity" => (Float, 0.0, 1.0),
+        "appearance.inactive_opacity" => (Float, 0.0, 1.0),
+        "windows.snap.window_gap" => (Integer, 0.0, 100.0),
+        "windows.snap.monitor_gap" => (Integer, 0.0, 100.0),
+        "input.pointer_sensitivity" => (Float, -1.0, 1.0),
+        "appearance.blur.passes" => (Integer, 0.0, 10.0),
+        "appearance.blur.noise" => (Float, 0.0, 1.0),
+        "appearance.shadow.scale" => (Float, 0.0, 1.0),
+        "appearance.rounding_power" => (Float, 2.0, 10.0),
+        "appearance.dim.strength" => (Float, 0.0, 1.0),
+        "appearance.dim.special" => (Float, 0.0, 1.0),
+        "appearance.dim.around" => (Float, 0.0, 1.0),
+        "appearance.blur.vibrancy" => (Float, 0.0, 1.0),
+        "appearance.blur.vibrancy_darkness" => (Float, 0.0, 1.0),
+        "appearance.blur.popups_ignorealpha" => (Float, 0.0, 1.0),
+        "appearance.blur.input_methods_ignorealpha" => (Float, 0.0, 1.0),
+        "appearance.glow.range" => (Integer, 0.0, 100.0),
+        "appearance.glow.render_power" => (Integer, 1.0, 4.0),
+        "general.gaps_workspaces" => (Integer, 0.0, 100.0),
+        "general.extend_border_grab_area" => (Integer, 0.0, 100.0),
+        "input.repeat_rate" => (Integer, 0.0, 200.0),
+        "input.repeat_delay" => (Integer, 0.0, 2000.0),
+        "input.rotation" => (Integer, 0.0, 359.0),
+        "input.scroll_button" => (Integer, 0.0, 300.0),
+        "input.scroll_factor" => (Float, 0.0, 2.0),
+        "input.follow_mouse_shrink" => (Integer, 0.0, 300.0),
+        "input.touchpad.scroll_factor" => (Float, 0.0, 2.0),
+        "input.touchdevice.transform" => (Integer, 0.0, 6.0),
+        "input.tablet.transform" => (Integer, 0.0, 6.0),
+        "gestures.workspace_swipe_distance" => (Integer, 0.0, 2000.0),
+        "gestures.workspace_swipe_min_speed_to_force" => (Integer, 0.0, 200.0),
+        "gestures.workspace_swipe_cancel_ratio" => (Float, 0.0, 1.0),
+        "gestures.workspace_swipe_direction_lock_threshold" => (Integer, 0.0, 200.0),
+        "gestures.close_max_timeout" => (Integer, 10.0, 2000.0),
+        "group.groupbar.font_size" => (Integer, 2.0, 64.0),
+        "group.groupbar.height" => (Integer, 1.0, 64.0),
+        "group.groupbar.indicator_gap" => (Integer, 0.0, 64.0),
+        "group.groupbar.indicator_height" => (Integer, 1.0, 64.0),
+        "group.groupbar.priority" => (Integer, 0.0, 6.0),
+        "group.groupbar.rounding" => (Integer, 0.0, 20.0),
+        "group.groupbar.rounding_power" => (Float, 2.0, 10.0),
+        "group.groupbar.gradient_rounding" => (Integer, 0.0, 20.0),
+        "group.groupbar.gradient_rounding_power" => (Float, 2.0, 10.0),
+        "group.groupbar.gaps_out" => (Integer, 0.0, 20.0),
+        "group.groupbar.gaps_in" => (Integer, 0.0, 20.0),
+        "group.groupbar.text_offset" => (Integer, -20.0, 20.0),
+        "group.groupbar.text_padding" => (Integer, 0.0, 22.0),
+        "misc.force_default_wallpaper" => (Integer, -1.0, 2.0),
+        "misc.initial_workspace_tracking" => (Integer, 0.0, 2.0),
+        "misc.render_unfocused_fps" => (Integer, 1.0, 120.0),
+        "misc.lockdead_screen_delay" => (Integer, 0.0, 5000.0),
+        "misc.anr_missed_pings" => (Integer, 1.0, 20.0),
+        "binds.scroll_event_delay" => (Integer, 0.0, 2000.0),
+        "binds.workspace_center_on" => (Integer, 0.0, 1.0),
+        "binds.focus_preferred_method" => (Integer, 0.0, 1.0),
+        "binds.drag_threshold" => (Integer, 0.0, 2147483647.0),
+        "layout.single_window_aspect_ratio_tolerance" => (Float, 0.0, 1.0),
+        "dwindle.special_scale_factor" => (Float, 0.0, 1.0),
+        "dwindle.split_width_multiplier" => (Float, 0.1, 3.0),
+        "dwindle.default_split_ratio" => (Float, 0.1, 1.9),
+        "master.special_scale_factor" => (Float, 0.0, 1.0),
+        "master.mfact" => (Float, 0.0, 1.0),
+        "master.slave_count_for_center_master" => (Integer, 0.0, 10.0),
+        "scrolling.column_width" => (Float, 0.1, 1.0),
+        "scrolling.follow_min_visible" => (Float, 0.0, 1.0),
+        _ => return None,
+    };
+
+    Some(SourceBackedNumericBounds {
+        value_type,
+        min,
+        max,
+    })
 }
 
 pub fn session_runtime_write_policy(row_id: &str) -> Option<SessionRuntimeWritePolicy> {

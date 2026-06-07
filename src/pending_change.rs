@@ -10,7 +10,7 @@ use crate::value::{
 };
 use crate::write_classification::{
     is_safe_writable_setting, is_verified_finite_choice_value, safe_writable_value_kind,
-    ScalarWriteValueKind,
+    source_backed_numeric_bounds, ScalarWriteValueKind, SourceBackedNumericType,
 };
 
 pub const ACTIVE_PENDING_CHANGE_SETTING: &str = "windows.snap.enabled";
@@ -216,14 +216,8 @@ fn validate_monitor_name_setting(
 
 fn validate_number_setting(setting_id: &str, value: &str) -> PendingChangeValidation {
     let trimmed = value.trim();
-    if trimmed.is_empty() {
-        return invalid("numeric value cannot be empty");
-    }
-    if trimmed.contains(char::is_whitespace) {
-        return invalid("numeric value cannot contain whitespace");
-    }
-    if setting_id == "input.pointer_sensitivity" {
-        return validate_unit_float(trimmed, -1.0, 1.0, "pointer sensitivity");
+    if let Some(bounds) = source_backed_numeric_bounds(setting_id) {
+        return validate_source_backed_numeric(trimmed, bounds.value_type, bounds.min, bounds.max);
     }
     match trimmed.parse::<i64>() {
         Ok(number) if number >= 0 => PendingChangeValidation::Valid,
@@ -234,10 +228,35 @@ fn validate_number_setting(setting_id: &str, value: &str) -> PendingChangeValida
 
 fn validate_percent_setting(setting_id: &str, value: &str) -> PendingChangeValidation {
     let trimmed = value.trim();
-    if setting_id == "input.pointer_sensitivity" {
-        return validate_unit_float(trimmed, -1.0, 1.0, "pointer sensitivity");
+    if let Some(bounds) = source_backed_numeric_bounds(setting_id) {
+        return validate_source_backed_numeric(trimmed, bounds.value_type, bounds.min, bounds.max);
     }
     validate_unit_float(trimmed, 0.0, 1.0, "percent-like value")
+}
+
+fn validate_source_backed_numeric(
+    value: &str,
+    value_type: SourceBackedNumericType,
+    min: f64,
+    max: f64,
+) -> PendingChangeValidation {
+    if value.is_empty() {
+        return invalid("numeric value cannot be empty");
+    }
+    if value.contains(char::is_whitespace) {
+        return invalid("numeric value cannot contain whitespace");
+    }
+
+    match value_type {
+        SourceBackedNumericType::Integer => match value.parse::<i64>() {
+            Ok(number) if (number as f64) >= min && (number as f64) <= max => {
+                PendingChangeValidation::Valid
+            }
+            Ok(_) => invalid(&format!("integer value must be between {min} and {max}")),
+            Err(_) => invalid("numeric value must be an integer"),
+        },
+        SourceBackedNumericType::Float => validate_unit_float(value, min, max, "numeric value"),
+    }
 }
 
 fn validate_unit_float(value: &str, min: f64, max: f64, label: &str) -> PendingChangeValidation {
@@ -307,10 +326,11 @@ fn validate_comma_separated_float_list(value: &str) -> PendingChangeValidation {
             return invalid("float entries cannot contain internal whitespace");
         }
         match entry.parse::<f64>() {
-            Ok(number) if number.is_finite() => {
-                count += 1;
+            Ok(number) if !number.is_finite() => return invalid("float entries must be finite"),
+            Ok(number) if !(0.05..=1.0).contains(&number) => {
+                return invalid("column width entries must be between 0.05 and 1");
             }
-            Ok(_) => return invalid("float entries must be finite"),
+            Ok(_) => count += 1,
             Err(_) => return invalid("float entries must be numeric"),
         }
     }

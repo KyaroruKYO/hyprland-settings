@@ -1,0 +1,786 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "source-backed-numeric-bounds-repair",
+  "generatedAt": "2026-06-07T07:36:49.556814Z",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "validatorsChanged": true,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": true,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "numericRowsReviewed": 74,
+    "sourceBackedBoundsRows": 72,
+    "validatorChangedRows": 72,
+    "cssGapDeferredRows": 2,
+    "integerRowsRepaired": 44,
+    "floatRowsRepaired": 28
+  },
+  "repairPolicy": {
+    "integerRows": "parse as integer and enforce official min/max",
+    "floatRows": "parse as finite float and enforce official min/max",
+    "percentRows": "use source-backed float min/max instead of generic 0..1 where official source differs",
+    "cssGapDecision": "deferred; keep scalar-only UI and do not claim full CssGap grammar support"
+  },
+  "rows": [
+    {
+      "rowId": "appearance.blur.size",
+      "officialSetting": "decoration.blur.size",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 100,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.blur.brightness",
+      "officialSetting": "decoration.blur.brightness",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 2,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.blur.contrast",
+      "officialSetting": "decoration.blur.contrast",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 2,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.shadow.range",
+      "officialSetting": "decoration.shadow.range",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 100,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.shadow.render_power",
+      "officialSetting": "decoration.shadow.render_power",
+      "officialSchemaType": "int",
+      "officialMin": 1,
+      "officialMax": 4,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.gaps_in",
+      "officialSetting": "general.gaps_in",
+      "officialSchemaType": "cssgap",
+      "officialMin": null,
+      "officialMax": null,
+      "validatorChanged": false,
+      "repairDecision": "deferred-cssgap-full-grammar",
+      "sourceEvidenceStatus": "source-backed-custom-cssgap-no-minmax"
+    },
+    {
+      "rowId": "appearance.gaps_out",
+      "officialSetting": "general.gaps_out",
+      "officialSchemaType": "cssgap",
+      "officialMin": null,
+      "officialMax": null,
+      "validatorChanged": false,
+      "repairDecision": "deferred-cssgap-full-grammar",
+      "sourceEvidenceStatus": "source-backed-custom-cssgap-no-minmax"
+    },
+    {
+      "rowId": "appearance.border_size",
+      "officialSetting": "general.border_size",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 20,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.rounding",
+      "officialSetting": "decoration.rounding",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 20,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.active_opacity",
+      "officialSetting": "decoration.active_opacity",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.inactive_opacity",
+      "officialSetting": "decoration.inactive_opacity",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "windows.snap.window_gap",
+      "officialSetting": "general.snap.window_gap",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 100,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "windows.snap.monitor_gap",
+      "officialSetting": "general.snap.monitor_gap",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 100,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "input.pointer_sensitivity",
+      "officialSetting": "input.sensitivity",
+      "officialSchemaType": "float",
+      "officialMin": -1,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.blur.passes",
+      "officialSetting": "decoration.blur.passes",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 10,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.blur.noise",
+      "officialSetting": "decoration.blur.noise",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.shadow.scale",
+      "officialSetting": "decoration.shadow.scale",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.rounding_power",
+      "officialSetting": "decoration.rounding_power",
+      "officialSchemaType": "float",
+      "officialMin": 2,
+      "officialMax": 10,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.dim.strength",
+      "officialSetting": "decoration.dim_strength",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.dim.special",
+      "officialSetting": "decoration.dim_special",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.dim.around",
+      "officialSetting": "decoration.dim_around",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.blur.vibrancy",
+      "officialSetting": "decoration.blur.vibrancy",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.blur.vibrancy_darkness",
+      "officialSetting": "decoration.blur.vibrancy_darkness",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.blur.popups_ignorealpha",
+      "officialSetting": "decoration.blur.popups_ignorealpha",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.blur.input_methods_ignorealpha",
+      "officialSetting": "decoration.blur.input_methods_ignorealpha",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.glow.range",
+      "officialSetting": "decoration.glow.range",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 100,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "appearance.glow.render_power",
+      "officialSetting": "decoration.glow.render_power",
+      "officialSchemaType": "int",
+      "officialMin": 1,
+      "officialMax": 4,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "general.gaps_workspaces",
+      "officialSetting": "general.gaps_workspaces",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 100,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "general.extend_border_grab_area",
+      "officialSetting": "general.extend_border_grab_area",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 100,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "input.repeat_rate",
+      "officialSetting": "input.repeat_rate",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 200,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "input.repeat_delay",
+      "officialSetting": "input.repeat_delay",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 2000,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "input.rotation",
+      "officialSetting": "input.rotation",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 359,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "input.scroll_button",
+      "officialSetting": "input.scroll_button",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 300,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "input.scroll_factor",
+      "officialSetting": "input.scroll_factor",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 2,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "input.follow_mouse_shrink",
+      "officialSetting": "input.follow_mouse_shrink",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 300,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "input.touchpad.scroll_factor",
+      "officialSetting": "input.touchpad.scroll_factor",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 2,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "input.touchdevice.transform",
+      "officialSetting": "input.touchdevice.transform",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 6,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "input.tablet.transform",
+      "officialSetting": "input.tablet.transform",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 6,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_distance",
+      "officialSetting": "gestures.workspace_swipe_distance",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 2000,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_min_speed_to_force",
+      "officialSetting": "gestures.workspace_swipe_min_speed_to_force",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 200,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_cancel_ratio",
+      "officialSetting": "gestures.workspace_swipe_cancel_ratio",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_direction_lock_threshold",
+      "officialSetting": "gestures.workspace_swipe_direction_lock_threshold",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 200,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "gestures.close_max_timeout",
+      "officialSetting": "gestures.close_max_timeout",
+      "officialSchemaType": "int",
+      "officialMin": 10,
+      "officialMax": 2000,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.font_size",
+      "officialSetting": "group.groupbar.font_size",
+      "officialSchemaType": "int",
+      "officialMin": 2,
+      "officialMax": 64,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.height",
+      "officialSetting": "group.groupbar.height",
+      "officialSchemaType": "int",
+      "officialMin": 1,
+      "officialMax": 64,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.indicator_gap",
+      "officialSetting": "group.groupbar.indicator_gap",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 64,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.indicator_height",
+      "officialSetting": "group.groupbar.indicator_height",
+      "officialSchemaType": "int",
+      "officialMin": 1,
+      "officialMax": 64,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.priority",
+      "officialSetting": "group.groupbar.priority",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 6,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.rounding",
+      "officialSetting": "group.groupbar.rounding",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 20,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.rounding_power",
+      "officialSetting": "group.groupbar.rounding_power",
+      "officialSchemaType": "float",
+      "officialMin": 2,
+      "officialMax": 10,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.gradient_rounding",
+      "officialSetting": "group.groupbar.gradient_rounding",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 20,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.gradient_rounding_power",
+      "officialSetting": "group.groupbar.gradient_rounding_power",
+      "officialSchemaType": "float",
+      "officialMin": 2,
+      "officialMax": 10,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.gaps_out",
+      "officialSetting": "group.groupbar.gaps_out",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 20,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.gaps_in",
+      "officialSetting": "group.groupbar.gaps_in",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 20,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.text_offset",
+      "officialSetting": "group.groupbar.text_offset",
+      "officialSchemaType": "int",
+      "officialMin": -20,
+      "officialMax": 20,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "group.groupbar.text_padding",
+      "officialSetting": "group.groupbar.text_padding",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 22,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "misc.force_default_wallpaper",
+      "officialSetting": "misc.force_default_wallpaper",
+      "officialSchemaType": "int",
+      "officialMin": -1,
+      "officialMax": 2,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "misc.initial_workspace_tracking",
+      "officialSetting": "misc.initial_workspace_tracking",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 2,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "misc.render_unfocused_fps",
+      "officialSetting": "misc.render_unfocused_fps",
+      "officialSchemaType": "int",
+      "officialMin": 1,
+      "officialMax": 120,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "misc.lockdead_screen_delay",
+      "officialSetting": "misc.lockdead_screen_delay",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 5000,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "misc.anr_missed_pings",
+      "officialSetting": "misc.anr_missed_pings",
+      "officialSchemaType": "int",
+      "officialMin": 1,
+      "officialMax": 20,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "binds.scroll_event_delay",
+      "officialSetting": "binds.scroll_event_delay",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 2000,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "binds.workspace_center_on",
+      "officialSetting": "binds.workspace_center_on",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "binds.focus_preferred_method",
+      "officialSetting": "binds.focus_preferred_method",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "binds.drag_threshold",
+      "officialSetting": "binds.drag_threshold",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 2147483647,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "layout.single_window_aspect_ratio_tolerance",
+      "officialSetting": "layout.single_window_aspect_ratio_tolerance",
+      "officialSchemaType": "float",
+      "officialMin": 0.0,
+      "officialMax": 1.0,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "dwindle.special_scale_factor",
+      "officialSetting": "dwindle.special_scale_factor",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "dwindle.split_width_multiplier",
+      "officialSetting": "dwindle.split_width_multiplier",
+      "officialSchemaType": "float",
+      "officialMin": 0.1,
+      "officialMax": 3,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "dwindle.default_split_ratio",
+      "officialSetting": "dwindle.default_split_ratio",
+      "officialSchemaType": "float",
+      "officialMin": 0.1,
+      "officialMax": 1.9,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "master.special_scale_factor",
+      "officialSetting": "master.special_scale_factor",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "master.mfact",
+      "officialSetting": "master.mfact",
+      "officialSchemaType": "float",
+      "officialMin": 0,
+      "officialMax": 1,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "master.slave_count_for_center_master",
+      "officialSetting": "master.slave_count_for_center_master",
+      "officialSchemaType": "int",
+      "officialMin": 0,
+      "officialMax": 10,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "scrolling.column_width",
+      "officialSetting": "scrolling.column_width",
+      "officialSchemaType": "float",
+      "officialMin": 0.1,
+      "officialMax": 1.0,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    },
+    {
+      "rowId": "scrolling.follow_min_visible",
+      "officialSetting": "scrolling.follow_min_visible",
+      "officialSchemaType": "float",
+      "officialMin": 0.0,
+      "officialMax": 1.0,
+      "validatorChanged": true,
+      "repairDecision": "source-bounds-enforced",
+      "sourceEvidenceStatus": "source-backed-bounds"
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "pushed": false,
+    "mainTouched": false,
+    "validatorsChanged": true,
+    "productionBehaviorChanged": true
+  }
+}

@@ -110,8 +110,20 @@ fn semantic_scrolling_explicit_column_widths_accepts_only_float_lists() {
     }
 
     for value in [
-        "", "example", "0.5,", ",0.5", "0.5,,1.0", "NaN", "inf", "-inf", "0.5, bad", "0.5 0.75",
+        "",
+        "example",
+        "0.5,",
+        ",0.5",
+        "0.5,,1.0",
+        "NaN",
+        "inf",
+        "-inf",
+        "0.5, bad",
+        "0.5 0.75",
         "0.5\n1.0",
+        "0.01",
+        "1.5",
+        "0.05,1.01",
     ] {
         let change = stage_pending_change("scrolling.explicit_column_widths", &current, value);
         assert!(
@@ -276,7 +288,7 @@ fn validator_needed_rows_can_be_staged_with_valid_values() {
 fn validator_needed_rows_reject_invalid_values() {
     let cases = [
         ("appearance.blur.size", "-1"),
-        ("appearance.blur.brightness", "1.5"),
+        ("appearance.blur.brightness", "2.5"),
         ("appearance.blur.contrast", "not-a-number"),
         ("appearance.shadow.range", "-2"),
         ("appearance.shadow.render_power", "2.5"),
@@ -529,12 +541,12 @@ fn vector_tuple_rows_can_be_staged_with_valid_values() {
         let config_key = official_setting.replace('.', ":");
         let current = current_value_for(official_setting, &format!("{config_key} = 0 0\n"));
 
-        let change = stage_pending_change(row_id, &current, "10,20");
+        let change = stage_pending_change(row_id, &current, "10 20");
 
         assert_eq!(
             change.validation,
             PendingChangeValidation::Valid,
-            "{row_id} should accept a finite vec2 value"
+            "{row_id} should accept a source-backed finite vec2 value"
         );
         assert!(change.can_be_applied(), "{row_id} should be applicable");
     }
@@ -543,7 +555,7 @@ fn vector_tuple_rows_can_be_staged_with_valid_values() {
 #[test]
 fn vector_tuple_rows_reject_invalid_values() {
     let current = CurrentValueProjection::not_configured();
-    for proposed in ["10", "10 20 30", "10,20,30", "nan 1"] {
+    for proposed in ["10", "10 20 30", "10,20", "10,20,30", "nan 1"] {
         let change = stage_pending_change("decoration.shadow.offset", &current, proposed);
         assert!(
             matches!(change.validation, PendingChangeValidation::Invalid { .. }),

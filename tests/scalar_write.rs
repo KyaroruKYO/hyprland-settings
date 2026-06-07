@@ -58,7 +58,7 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
         return "rgba(ffffffff) rgba(000000ff) 45deg";
     }
     if row.value_kind == ScalarWriteValueKind::Vector2 {
-        return "10,20";
+        return "10 20";
     }
     if row.value_kind == ScalarWriteValueKind::NumericList {
         return "0.2 0.0 0.5 1 1.2 1.5";
@@ -86,6 +86,43 @@ fn valid_value_for(row: &SafeWritableRow) -> &'static str {
     }
     if row.row_id == "input.pointer_sensitivity" {
         return "-0.25";
+    }
+    if matches!(
+        row.row_id,
+        "appearance.shadow.render_power"
+            | "appearance.glow.render_power"
+            | "group.groupbar.priority"
+            | "misc.force_default_wallpaper"
+            | "misc.initial_workspace_tracking"
+            | "binds.workspace_center_on"
+            | "binds.focus_preferred_method"
+    ) {
+        return "1";
+    }
+    if matches!(
+        row.row_id,
+        "input.touchdevice.transform" | "input.tablet.transform" | "misc.anr_missed_pings"
+    ) {
+        return "2";
+    }
+    if matches!(
+        row.row_id,
+        "appearance.rounding_power"
+            | "group.groupbar.rounding_power"
+            | "group.groupbar.gradient_rounding_power"
+    ) {
+        return "2.5";
+    }
+    if matches!(
+        row.row_id,
+        "appearance.blur.noise"
+            | "dwindle.split_width_multiplier"
+            | "dwindle.default_split_ratio"
+            | "master.mfact"
+            | "scrolling.column_width"
+            | "scrolling.follow_min_visible"
+    ) {
+        return "0.5";
     }
     if row.value_kind == ScalarWriteValueKind::Percent {
         return "0.75";
