@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "official-parser-only-semantic-research",
+  "generatedAt": "2026-06-07T07:12:35.122223Z",
+  "researchMode": "official-source-research-only-no-validator-changes",
+  "sourceInputs": [
+    "writable-parser-only-row-research.v0.55.2.json"
+  ],
+  "officialSources": {
+    "configValues": {
+      "localPath": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+      "officialUrl": "https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp"
+    },
+    "masterConsumer": {
+      "localPath": "/tmp/Hyprland-v0.55.2-full/src/layout/algorithm/tiled/master/MasterAlgorithm.cpp",
+      "officialUrl": "https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/layout/algorithm/tiled/master/MasterAlgorithm.cpp"
+    },
+    "scrollingConsumer": {
+      "localPath": "/tmp/Hyprland-v0.55.2-full/src/layout/algorithm/tiled/scrolling/ScrollingAlgorithm.cpp",
+      "officialUrl": "https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/layout/algorithm/tiled/scrolling/ScrollingAlgorithm.cpp"
+    }
+  },
+  "counts": {
+    "parserOnlyRowsResearched": 2,
+    "sourceSemanticsFoundRows": 2,
+    "futureValidatorNoChangeCandidates": 1,
+    "futureValidatorRepairCandidates": 1,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "rowsEnabledThisSprint": 0
+  },
+  "rows": [
+    {
+      "rowId": "master.center_master_fallback",
+      "officialSetting": "master.center_master_fallback",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "FiniteChoice",
+      "appValueType": "finite-string-choice",
+      "appValidatorKind": "enum:left|right|top|bottom",
+      "classificationFromWritableAudit": "parser-only",
+      "recommendedPreviousAction": "Keep current enum-like validator until a later source inspection confirms whether left/right/top/bottom are exhaustive; parser acceptance alone is insufficient.",
+      "officialSourceType": "String",
+      "officialParserConstraint": "none at config parse time",
+      "officialConsumerSemantics": "Master layout checks left/right/top/bottom; any other string falls back to left.",
+      "officialAcceptedSemanticValues": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "unknownValueBehavior": "accepted by parser; consumed as left fallback",
+      "recommendedFutureValidatorPolicy": "keep current conservative finite choice left/right/top/bottom; do not broaden to arbitrary strings",
+      "validatorChangeCandidate": "safe-no-change-or-report-reclassify",
+      "sourceRefs": [
+        "ConfigValues.cpp: master:center_master_fallback declared as String without strChoice",
+        "MasterAlgorithm.cpp: consumer maps four strings and else falls back to left"
+      ]
+    },
+    {
+      "rowId": "scrolling.explicit_column_widths",
+      "officialSetting": "scrolling.explicit_column_widths",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "CommaSeparatedFloatList",
+      "appValueType": "comma-separated-float-list",
+      "appValidatorKind": "comma-separated-finite-float-list",
+      "classificationFromWritableAudit": "parser-only",
+      "recommendedPreviousAction": "Treat as source-research-needed; later validator repair should inspect list grammar, bounds, empty-list behavior, and normalization before changing acceptance.",
+      "officialSourceType": "String",
+      "officialParserConstraint": "none at config parse time",
+      "officialConsumerSemantics": "Scrolling layout splits the string by comma, parses each item with stof, clamps each width to 0.05..1.0, logs invalid items, and uses defaults if no valid width remains.",
+      "officialGrammar": "comma-separated float list; invalid tokens skipped by consumer; final values clamped",
+      "officialBounds": {
+        "minColumnWidth": 0.05,
+        "maxColumnWidth": 1.0
+      },
+      "recommendedFutureValidatorPolicy": "use comma-separated finite float list with future decision whether to reject out-of-range values or accept and normalize/clamp explicitly",
+      "validatorChangeCandidate": "narrowing-and-normalization-policy",
+      "sourceRefs": [
+        "ConfigValues.cpp: scrolling:explicit_column_widths declared as String",
+        "ScrollingAlgorithm.cpp: parseColumnWidths consumer and MIN/MAX column constants"
+      ]
+    }
+  ],
+  "safety": {
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "recoveryGatesChanged": false
+  }
+}
