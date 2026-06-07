@@ -1,0 +1,276 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-consumer-source-validator-research",
+  "generatedAt": "2026-06-07T00:49:01-07:00",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "deferredRows": 12,
+    "cssGapRows": 2,
+    "stringPathFontRows": 5,
+    "accelProfileRows": 1,
+    "scrollPointsRows": 1,
+    "regexRows": 2,
+    "screenShaderRows": 1,
+    "sourceFilesLocatedRows": 12,
+    "sourceMissingRows": 0,
+    "readyForValidatorRepairRows": 7,
+    "readyForUiEditorMetadataRepairRows": 10,
+    "shouldRemainConservativeRows": 4,
+    "shouldRemainDeferredRows": 4,
+    "shouldBecomeHighRiskRows": 1,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "safety": {
+    "researchOnly": true,
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "pushed": false,
+    "mainTouched": false
+  },
+  "officialSourceRoots": [
+    "/tmp/Hyprland-v0.55.2-full",
+    "/tmp/hyprlang-source-research"
+  ],
+  "familyReports": [
+    "data/reports/deferred-cssgap-consumer-research.v0.55.2.json",
+    "data/reports/deferred-string-path-font-consumer-research.v0.55.2.json",
+    "data/reports/deferred-accel-profile-consumer-research.v0.55.2.json",
+    "data/reports/deferred-scroll-points-consumer-research.v0.55.2.json",
+    "data/reports/deferred-regex-consumer-research.v0.55.2.json",
+    "data/reports/deferred-screen-shader-consumer-research.v0.55.2.json",
+    "data/reports/deferred-validator-repair-plan.v0.55.2.json"
+  ],
+  "rows": [
+    {
+      "rowId": "appearance.gaps_in",
+      "officialSetting": "general.gaps_in",
+      "family": "cssgap",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/shared/complex/ComplexDataTypes.hpp",
+        "/tmp/Hyprland-v0.55.2-full/src/config/legacy/ConfigManager.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/layout/LayoutManager.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "CssGap parser accepts one to four integer components and the layout consumer reads top, right, bottom, and left components directly.",
+      "recommendedValidatorPolicy": "Future repair may support source-backed one-to-four integer CssGap forms; decide whether to reject negative gap components even though the source stores signed integers.",
+      "recommendedUiEditorPolicy": "Prefer a structured one/four-side gap editor with optional advanced raw CssGap input.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "repairReadiness": "ready-for-validator-repair"
+    },
+    {
+      "rowId": "appearance.gaps_out",
+      "officialSetting": "general.gaps_out",
+      "family": "cssgap",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/shared/complex/ComplexDataTypes.hpp",
+        "/tmp/Hyprland-v0.55.2-full/src/config/legacy/ConfigManager.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/layout/LayoutManager.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/layout/space/Space.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "CssGap parser accepts one to four integer components and monitor/workspace layout consumers use the parsed components directly for reserved edge areas.",
+      "recommendedValidatorPolicy": "Future repair may support source-backed one-to-four integer CssGap forms; use conservative policy for negative values until layout-risk review approves them.",
+      "recommendedUiEditorPolicy": "Prefer a structured edge-gap editor with top/right/bottom/left fields and optional raw CssGap preview.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "repairReadiness": "ready-for-validator-repair"
+    },
+    {
+      "rowId": "general.locale",
+      "officialSetting": "general.locale",
+      "family": "string-path-font",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/i18n/Engine.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "The consumer treats an empty value as system-locale fallback and otherwise passes the configured string to the localization engine.",
+      "recommendedValidatorPolicy": "Keep line-safe string validation; do not require locale existence in the writer.",
+      "recommendedUiEditorPolicy": "Document empty value as system-locale fallback and preserve spaces only if line-safe input already allows them.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "repairReadiness": "ready-for-ui-editor-metadata-repair"
+    },
+    {
+      "rowId": "input.accel_profile",
+      "officialSetting": "input.accel_profile",
+      "family": "accel-profile",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/managers/input/InputManager.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "The consumer handles empty/default, adaptive, flat, and custom space-separated numeric point profiles; unknown non-empty values log a warning and fall back to default.",
+      "recommendedValidatorPolicy": "Future repair should replace freeform line-safe validation with finite choices plus an advanced custom grammar: custom <step> <point...>.",
+      "recommendedUiEditorPolicy": "Offer default/adaptive/flat choices and an advanced custom profile editor.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "repairReadiness": "ready-for-validator-repair"
+    },
+    {
+      "rowId": "input.scroll_points",
+      "officialSetting": "input.scroll_points",
+      "family": "scroll-points",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/managers/input/InputManager.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "The consumer only applies scroll_points inside a custom acceleration profile branch, splits on spaces, parses a step value followed by zero or more point doubles, and logs invalid tokens.",
+      "recommendedValidatorPolicy": "Future repair should validate a finite space-separated double list with a leading step and require custom accel-profile context in UI guidance.",
+      "recommendedUiEditorPolicy": "Expose only with custom acceleration profile context and label the first number as step.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "repairReadiness": "ready-for-validator-repair"
+    },
+    {
+      "rowId": "input.kb_file",
+      "officialSetting": "input.kb_file",
+      "family": "string-path-font",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/managers/input/InputManager.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/devices/IKeyboard.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/helpers/MiscFunctions.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "Non-empty values are resolved relative to the current config path, opened as an XKB keymap file, and fall back to named XKB rules if opening or compiling fails.",
+      "recommendedValidatorPolicy": "Keep path-like line-safe validation; defer existence/readability checks to optional UI validation because relative paths depend on config context.",
+      "recommendedUiEditorPolicy": "Present as optional XKB keymap file path with config-relative path note.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "repairReadiness": "should-remain-conservative"
+    },
+    {
+      "rowId": "group.groupbar.font_family",
+      "officialSetting": "group.groupbar.font_family",
+      "family": "string-path-font",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/render/decorations/CHyprGroupBarDecoration.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "The renderer uses the configured font family string unless it is the [[EMPTY]] sentinel, in which case it falls back to misc:font_family.",
+      "recommendedValidatorPolicy": "Keep line-safe font-family validation and preserve the [[EMPTY]] fallback sentinel if typed input supports raw values.",
+      "recommendedUiEditorPolicy": "Document fallback to misc.font_family and allow font names with spaces.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "repairReadiness": "ready-for-ui-editor-metadata-repair"
+    },
+    {
+      "rowId": "misc.font_family",
+      "officialSetting": "misc.font_family",
+      "family": "string-path-font",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/errorOverlay/Overlay.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/debug/Overlay.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/notification/NotificationOverlay.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "Multiple overlay/rendering consumers pass the configured string as a Pango/Cairo font-family name.",
+      "recommendedValidatorPolicy": "Keep line-safe font-family validation; do not perform font installation/existence checks in the writer.",
+      "recommendedUiEditorPolicy": "Present as a freeform font family name and keep spaces valid.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "repairReadiness": "ready-for-ui-editor-metadata-repair"
+    },
+    {
+      "rowId": "misc.splash_font_family",
+      "officialSetting": "misc.splash_font_family",
+      "family": "string-path-font",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/render/Renderer.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "Splash rendering uses the configured font family unless it is the [[EMPTY]] sentinel, in which case it falls back to misc:font_family.",
+      "recommendedValidatorPolicy": "Keep line-safe font-family validation and preserve fallback sentinel semantics.",
+      "recommendedUiEditorPolicy": "Document fallback to misc.font_family and allow font names with spaces.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "repairReadiness": "ready-for-ui-editor-metadata-repair"
+    },
+    {
+      "rowId": "misc.swallow_regex",
+      "officialSetting": "misc.swallow_regex",
+      "family": "regex",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/desktop/view/Window.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "The swallower skips empty or [[EMPTY]] values, then uses RE2::FullMatch against window class.",
+      "recommendedValidatorPolicy": "Future repair may add RE2 syntax validation if a compatible Rust-side checker is available; line safety alone is source-backed but does not prove regex syntax.",
+      "recommendedUiEditorPolicy": "Expose as RE2 full-match regex with empty value disabling swallow matching.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "repairReadiness": "ready-for-validator-repair"
+    },
+    {
+      "rowId": "misc.swallow_exception_regex",
+      "officialSetting": "misc.swallow_exception_regex",
+      "family": "regex",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/desktop/view/Window.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "The swallower uses RE2::FullMatch against window title to remove exception matches from candidates.",
+      "recommendedValidatorPolicy": "Future repair may add RE2 syntax validation if a compatible Rust-side checker is available; keep line-safety guardrails.",
+      "recommendedUiEditorPolicy": "Expose as optional RE2 full-match title regex.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "repairReadiness": "ready-for-validator-repair"
+    },
+    {
+      "rowId": "decoration.screen_shader",
+      "officialSetting": "decoration.screen_shader",
+      "family": "screen-shader",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/render/OpenGL.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/helpers/MiscFunctions.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "Empty or [[EMPTY]] disables the shader; non-empty values are resolved relative to the main config, must be regular readable files, and are compiled as final screen fragment shaders.",
+      "recommendedValidatorPolicy": "Defer validator repair until a shader-path and compile-risk policy is approved; file existence/readability and optional compile proof are source-backed candidates.",
+      "recommendedUiEditorPolicy": "Treat as an optional shader file path with warning that invalid shaders surface render errors.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "highRiskRecommendation": "review-as-display-render-high-risk-before-any-compile-aware-repair",
+      "repairReadiness": "should-remain-deferred"
+    }
+  ]
+}
