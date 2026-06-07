@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-source-backed-validator-repair",
+  "generatedAt": "2026-06-07T01:41:40-07:00",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "deferredRowsBefore": 12,
+    "validatorChangedRows": 5,
+    "validatorsIntentionallyUnchangedRows": 7,
+    "metadataOnlyRows": 6,
+    "remainingDeferredRows": 4,
+    "rowsEnabledThisSprint": 0,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "productionBehaviorChanged": true,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "safety": {
+    "validatorsChanged": true,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": true,
+    "writeAllowlistChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "pushed": false,
+    "mainTouched": false
+  },
+  "beforeDeferredGapCounts": {
+    "sourceResearchNeededRows": 10,
+    "deferredRows": 12
+  },
+  "afterDeferredGapCounts": {
+    "sourceResearchNeededRows": 4,
+    "deferredRows": 4
+  },
+  "validatorsChanged": [
+    "appearance.gaps_in",
+    "appearance.gaps_out",
+    "input.accel_profile",
+    "input.scroll_points",
+    "source value kind metadata for CssGap/accel profile"
+  ],
+  "validatorsIntentionallyUnchanged": [
+    "general.locale",
+    "input.kb_file",
+    "group.groupbar.font_family",
+    "misc.font_family",
+    "misc.splash_font_family",
+    "misc.swallow_regex",
+    "misc.swallow_exception_regex",
+    "decoration.screen_shader"
+  ],
+  "metadataOnlyRows": [
+    "general.locale",
+    "input.kb_file",
+    "group.groupbar.font_family",
+    "misc.font_family",
+    "misc.splash_font_family",
+    "decoration.screen_shader"
+  ],
+  "remainingDeferredRows": [
+    "input.kb_file",
+    "misc.swallow_regex",
+    "misc.swallow_exception_regex",
+    "decoration.screen_shader"
+  ],
+  "reports": [
+    "data/reports/deferred-cssgap-validator-repair.v0.55.2.json",
+    "data/reports/deferred-accel-profile-validator-repair.v0.55.2.json",
+    "data/reports/deferred-scroll-points-validator-repair.v0.55.2.json",
+    "data/reports/deferred-string-path-font-metadata-repair.v0.55.2.json",
+    "data/reports/deferred-regex-validator-repair-decision.v0.55.2.json",
+    "data/reports/deferred-screen-shader-high-risk-review-candidate.v0.55.2.json",
+    "data/reports/deferred-validator-remaining-items.v0.55.2.json"
+  ],
+  "rows": [
+    {
+      "rowId": "appearance.gaps_in",
+      "officialSetting": "general.gaps_in",
+      "repairType": "validator-and-metadata",
+      "validatorChanged": true,
+      "sourceEvidence": "CssGap supports one to four integer components.",
+      "repairPolicy": "Accept one to four non-negative integer components; reject empty, non-integer, more than four components, and config-breaking text.",
+      "conservativePolicy": "Negative values are rejected by app policy even though source stores signed integer components.",
+      "remainingDeferred": false
+    },
+    {
+      "rowId": "appearance.gaps_out",
+      "officialSetting": "general.gaps_out",
+      "repairType": "validator-and-metadata",
+      "validatorChanged": true,
+      "sourceEvidence": "CssGap supports one to four integer components and layout consumers use side values directly.",
+      "repairPolicy": "Accept one to four non-negative integer components; reject empty, non-integer, more than four components, and config-breaking text.",
+      "conservativePolicy": "Negative values are rejected by app policy pending layout-risk approval.",
+      "remainingDeferred": false
+    },
+    {
+      "rowId": "input.accel_profile",
+      "officialSetting": "input.accel_profile",
+      "repairType": "validator-and-metadata",
+      "validatorChanged": true,
+      "sourceEvidence": "Consumer supports empty/default, adaptive, flat, and custom numeric point profiles.",
+      "repairPolicy": "Accept empty, adaptive, flat, and custom <finite step> <finite point...>; reject unknown freeform values.",
+      "conservativePolicy": "Custom profiles require at least one point after step.",
+      "remainingDeferred": false
+    },
+    {
+      "rowId": "input.scroll_points",
+      "officialSetting": "input.scroll_points",
+      "repairType": "validator-and-metadata",
+      "validatorChanged": true,
+      "sourceEvidence": "Consumer splits on spaces and parses finite doubles inside custom acceleration profile branch.",
+      "repairPolicy": "Accept finite space-separated doubles with positive step and at least one point; reject comma values, NaN/inf, invalid tokens, and unsafe text.",
+      "conservativePolicy": "Context metadata explains the row is meaningful only with custom accel profile.",
+      "remainingDeferred": false
+    }
+  ]
+}
