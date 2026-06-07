@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "screen-shader-high-risk-template-mapping",
+  "generatedAt": "2026-06-07T02:00:17-07:00",
+  "counts": {
+    "rowsMapped": 1,
+    "templatesCreated": 1,
+    "gateRequiredInFuture": true,
+    "gateAppliedThisSprint": false,
+    "rowsEnabledThisSprint": 0,
+    "writeAllowlistChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "liveShaderCompileUsed": false,
+    "safeWritableRowsChanged": false,
+    "productionBehaviorChanged": false,
+    "liveDisplayRuntimeProofUsed": false,
+    "writableRows": 278,
+    "blockedRows": 63
+  },
+  "template": {
+    "templateId": "display-render-screen-shader-watchdog-template",
+    "riskClass": "display-render-screen-shader-compile-sensitive",
+    "requiredFutureGate": [
+      "display/render warning",
+      "independent watchdog/dead-man confirmation",
+      "no visible display dependency",
+      "backup before mutation",
+      "timeout restore",
+      "result log",
+      "no reload/live runtime proof unless explicitly approved"
+    ]
+  },
+  "rows": [
+    {
+      "rowId": "decoration.screen_shader",
+      "officialSetting": "decoration.screen_shader",
+      "currentStatus": "writable",
+      "mappedTemplate": "display-render-screen-shader-watchdog-template",
+      "gateAppliedThisSprint": false,
+      "warningMetadataAppliedThisSprint": true
+    }
+  ]
+}
