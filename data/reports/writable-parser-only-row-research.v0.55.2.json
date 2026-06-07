@@ -1,0 +1,168 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "writable-parser-only-row-research",
+  "generatedAt": "2026-06-07T06:06:37.404974Z",
+  "researchMode": "audit-only-no-validator-changes",
+  "sourceReports": [
+    "writable-value-type-exhaustiveness-audit.v0.55.2.json",
+    "writable-value-type-evidence-matrix.v0.55.2.json",
+    "hyprmod-companion-full-scalar-comparison.v0.55.2.json",
+    "hyprmod-full-scalar-model-comparison.v0.55.2.json"
+  ],
+  "counts": {
+    "parserOnlyRowsResearched": 2,
+    "expectedParserOnlyRows": 2,
+    "sourceResearchNeededRows": 2,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "rowsEnabledThisSprint": 0
+  },
+  "globalFindings": {
+    "semanticConclusion": "both parser-only rows have app-side shape support, but parser acceptance does not prove semantic exhaustiveness or row-level runtime constraints.",
+    "recommendedPolicy": "keep current behavior unchanged until official source inspection and row-specific temp proof are performed in a repair sprint"
+  },
+  "rows": [
+    {
+      "rowId": "master.center_master_fallback",
+      "officialSetting": "master.center_master_fallback",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "FiniteChoice",
+      "appValueType": "finite-string-choice",
+      "appValidatorKind": "enum:left|right|top|bottom",
+      "validatorAuthority": "official-source-authoritative",
+      "appAcceptedValueShape": "app validator accepts only raw values listed in finite_choice_options for the row",
+      "appAcceptedValuesOrExamples": [
+        "left",
+        "example"
+      ],
+      "appRejectedInvalidExamples": [
+        "line\nbreak"
+      ],
+      "uiEditorType": "dropdown",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "absent",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "parser-only",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "parser-only",
+      "classificationReason": "Hyprland temp-config proof is parser-only for this row; semantic exhaustiveness is not proven.",
+      "strongestSupportingEvidence": [
+        "officialSourceEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "companionEvidence:partial",
+        "hyprmodEvidence:absent",
+        "appValidatorEvidence:partial",
+        "tempConfigEvidence:parser-only"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "design semantic proof beyond Hyprland parser acceptance",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "enum:left|right|top|bottom",
+      "pipelineValidatorAuthority": "official-source-authoritative",
+      "futureValidatorPolicyOptions": [
+        "finite choice",
+        "enum-like string",
+        "conservative app-side semantic validator",
+        "source-research-needed"
+      ],
+      "recommendation": "Keep current enum-like validator until a later source inspection confirms whether left/right/top/bottom are exhaustive; parser acceptance alone is insufficient.",
+      "semanticQuestion": "whether Hyprland source accepts only left/right/top/bottom and how unknown values are handled at runtime",
+      "parserAcceptanceIsSemanticCompleteness": false,
+      "recommendedFutureAction": "Keep current enum-like validator until a later source inspection confirms whether left/right/top/bottom are exhaustive; parser acceptance alone is insufficient."
+    },
+    {
+      "rowId": "scrolling.explicit_column_widths",
+      "officialSetting": "scrolling.explicit_column_widths",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "CommaSeparatedFloatList",
+      "appValueType": "comma-separated-float-list",
+      "appValidatorKind": "comma-separated-finite-float-list",
+      "validatorAuthority": "app-validator-authoritative",
+      "appAcceptedValueShape": "app validator accepts comma-separated finite floats",
+      "appAcceptedValuesOrExamples": [
+        "0.333, 0.5, 0.667, 1.0",
+        "example"
+      ],
+      "appRejectedInvalidExamples": [
+        "line\nbreak"
+      ],
+      "uiEditorType": "text",
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "partial",
+        "hyprmodEvidence": "partial",
+        "appValidatorEvidence": "partial",
+        "tempConfigEvidence": "parser-only",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "not-required"
+      },
+      "classification": "parser-only",
+      "classificationReason": "Hyprland temp-config proof is parser-only for this row; semantic exhaustiveness is not proven.",
+      "strongestSupportingEvidence": [
+        "officialSourceEvidence:complete",
+        "invalidRejectionEvidence:complete",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:not-required"
+      ],
+      "weakestOrMissingEvidence": [
+        "companionEvidence:partial",
+        "hyprmodEvidence:partial",
+        "appValidatorEvidence:partial",
+        "tempConfigEvidence:parser-only"
+      ],
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "recommendedNextAction": "design semantic proof beyond Hyprland parser acceptance",
+      "companionSchemaType": null,
+      "companionSuggestedValidExamples": null,
+      "companionSuggestedInvalidExamples": null,
+      "hyprmodMatchStatus": null,
+      "pipelineValidatorRef": "comma-separated-finite-float-list",
+      "pipelineValidatorAuthority": "app-validator-authoritative",
+      "futureValidatorPolicyOptions": [
+        "comma-separated finite float list",
+        "bounded list",
+        "normalized list",
+        "parser-only with warning",
+        "source-research-needed"
+      ],
+      "recommendation": "Treat as source-research-needed; later validator repair should inspect list grammar, bounds, empty-list behavior, and normalization before changing acceptance.",
+      "semanticQuestion": "exact list delimiter grammar, allowed count, finite numeric constraints, and whether widths have lower/upper bounds",
+      "parserAcceptanceIsSemanticCompleteness": false,
+      "recommendedFutureAction": "Treat as source-research-needed; later validator repair should inspect list grammar, bounds, empty-list behavior, and normalization before changing acceptance."
+    }
+  ],
+  "safety": {
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "recoveryGatesChanged": false
+  }
+}
