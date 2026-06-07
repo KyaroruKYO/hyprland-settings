@@ -4,7 +4,8 @@ use anyhow::Result;
 use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::write_classification::{
-    is_safe_writable_setting, safe_writable_value_kind, ScalarWriteValueKind, SAFE_WRITABLE_ROWS,
+    high_risk_write_policy, is_safe_writable_setting, safe_writable_value_kind,
+    ScalarWriteValueKind, SAFE_WRITABLE_ROWS,
 };
 use hyprland_settings::write_flow::pending_projection_for_value;
 use serde_json::Value;
@@ -36,6 +37,7 @@ fn screen_shader_review_reports_exist_and_preserve_current_state() -> Result<()>
     let boundary = read_json("data/reports/screen-shader-validation-boundary.v0.55.2.json")?;
     let mapping = read_json("data/reports/screen-shader-high-risk-template-mapping.v0.55.2.json")?;
     let next_step = read_json("data/reports/screen-shader-next-step-plan.v0.55.2.json")?;
+    let migration = read_json("data/reports/screen-shader-high-risk-gate-migration.v0.55.2.json")?;
 
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
     assert_eq!(coverage["counts"]["writableRows"], 278);
@@ -46,7 +48,9 @@ fn screen_shader_review_reports_exist_and_preserve_current_state() -> Result<()>
         Some(ScalarWriteValueKind::Path)
     );
 
-    for report in [&review, &policy, &boundary, &mapping, &next_step] {
+    for report in [
+        &review, &policy, &boundary, &mapping, &next_step, &migration,
+    ] {
         assert_review_safety(report);
     }
 
@@ -59,12 +63,50 @@ fn screen_shader_review_reports_exist_and_preserve_current_state() -> Result<()>
     assert_eq!(policy["counts"]["blockedRows"], 63);
     assert_eq!(mapping["counts"]["rowsMapped"], 1);
     assert_eq!(mapping["counts"]["gateAppliedThisSprint"], false);
+    assert_eq!(migration["selectedMigrationOption"], "Option A");
+    assert_eq!(migration["row"]["currentWritableStatus"], "writable");
+    assert_eq!(migration["row"]["writeAllowlistChanged"], false);
+    assert_eq!(
+        migration["requiredHighRiskGateMetadata"]["recoveryBucket"],
+        "display-render-recovery:screen-shader-gate-migration-design"
+    );
+    assert_eq!(migration["proofExists"]["screenShaderWatchdogProof"], false);
+    assert!(migration["proofStillMissing"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|item| item
+            .as_str()
+            .unwrap()
+            .contains("display/render watchdog migration proof")));
     assert!(next_step["stoppingPoint"]
         .as_str()
         .unwrap()
         .contains("Do not continue"));
 
     Ok(())
+}
+
+#[test]
+fn screen_shader_policy_metadata_marks_future_display_render_gate_requirement() {
+    let policy = high_risk_write_policy("decoration.screen_shader")
+        .expect("screen shader should have migration policy metadata");
+
+    assert_eq!(
+        policy.recovery_bucket,
+        "display-render-recovery:screen-shader-gate-migration-design"
+    );
+    assert!(policy.approval_gate.contains("display-render"));
+    assert!(policy.approval_gate.contains("watchdog-required"));
+    assert!(policy.watchdog_requirement.contains("proof is required"));
+    assert!(policy
+        .watchdog_requirement
+        .contains("separate process confirm"));
+    assert!(policy.watchdog_requirement.contains("timeout restore"));
+    assert!(policy.review_warning.contains("Display/render sensitive"));
+    assert!(policy
+        .review_warning
+        .contains("Path validation is not display/render safety proof"));
 }
 
 #[test]
@@ -121,14 +163,66 @@ fn screen_shader_policy_followup_is_projected_in_aggregate_reports() -> Result<(
         assert_eq!(follow_up["rowId"], "decoration.screen_shader", "{path}");
         assert_eq!(follow_up["currentWriteStatus"], "writable", "{path}");
         assert_eq!(follow_up["selectedPolicy"], "Policy D", "{path}");
+        assert_eq!(follow_up["selectedMigrationOption"], "Option A", "{path}");
+        assert_eq!(
+            follow_up["recoveryBucket"],
+            "display-render-recovery:screen-shader-gate-migration-design",
+            "{path}"
+        );
         assert_eq!(follow_up["writeAllowlistChanged"], false, "{path}");
         assert_eq!(follow_up["rowsEnabledThisSprint"], 0, "{path}");
         assert_eq!(follow_up["liveShaderCompileUsed"], false, "{path}");
+        assert!(follow_up["watchdogProofSource"]
+            .as_str()
+            .unwrap()
+            .contains("missing-screen-shader-watchdog-proof"));
         assert!(follow_up["recommendedNextSprint"]
             .as_str()
             .unwrap()
-            .contains("Display/render high-risk gate migration"));
+            .contains("watchdog migration proof"));
     }
+
+    Ok(())
+}
+
+#[test]
+fn screen_shader_unified_pipeline_row_records_gate_required_not_proven() -> Result<()> {
+    let pipeline = read_json("data/reports/all-341-unified-pipeline.v0.55.2.json")?;
+    let row = pipeline["rows"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|row| row["rowId"] == "decoration.screen_shader")
+        .expect("screen shader row should exist");
+
+    assert_eq!(row["currentWriteStatus"], "writable");
+    assert_eq!(row["safeWriteSupported"], true);
+    assert_eq!(
+        row["riskClass"],
+        "display_render_screen_shader_compile_sensitive"
+    );
+    assert_eq!(
+        row["pipelineTemplate"],
+        "display-render-screen-shader-watchdog-template"
+    );
+    assert_eq!(
+        row["recoveryBucket"],
+        "display-render-recovery:screen-shader-gate-migration-design"
+    );
+    assert_eq!(
+        row["gateStatus"],
+        "migration-required-watchdog-proof-missing"
+    );
+    assert!(row["watchdogProofSource"]
+        .as_str()
+        .unwrap()
+        .contains("missing-screen-shader-watchdog-proof"));
+    assert!(row["uiReviewWarning"]
+        .as_str()
+        .unwrap()
+        .contains("Path validation is not display/render safety proof"));
+    assert_eq!(row["writeAllowlistChanged"], false);
+    assert_eq!(row["productionBehaviorChanged"], false);
 
     Ok(())
 }
@@ -147,7 +241,9 @@ fn screen_shader_write_review_projects_display_render_warning() {
 
     assert!(projection.can_review);
     assert!(summary.contains("Display/render sensitive"));
+    assert!(summary.contains("display-render-recovery:screen-shader-gate-migration-design"));
+    assert!(summary.contains("watchdog proof is required"));
     assert!(summary.contains("config-relative shader files"));
     assert!(summary.contains("final screen fragment shader"));
-    assert!(summary.contains("display/render high-risk sprint"));
+    assert!(summary.contains("future display/render watchdog migration proof"));
 }

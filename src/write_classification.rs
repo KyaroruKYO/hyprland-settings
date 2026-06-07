@@ -146,6 +146,9 @@ pub const CURSOR_VISIBILITY_CONDITIONAL_HIGH_RISK_WRITABLE_ROWS: &[&str] =
 
 pub const CURSOR_HIDE_ON_KEY_PRESS_HIGH_RISK_WRITABLE_ROWS: &[&str] = &["cursor.hide_on_key_press"];
 
+pub const SCREEN_SHADER_DISPLAY_RENDER_HIGH_RISK_MIGRATION_ROWS: &[&str] =
+    &["decoration.screen_shader"];
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SessionRuntimeWritePolicy {
     pub scope: &'static str,
@@ -2299,6 +2302,16 @@ pub fn high_risk_write_policy(row_id: &str) -> Option<HighRiskWritePolicy> {
                 "advanced-opt-in-plus-cursor-visibility-keyboard-trigger-dead-man-watchdog-confirm-or-revert",
             watchdog_requirement: "cursor visibility keyboard-trigger watchdog plan must be persisted and backup must exist before mutation; separate process confirm keeps the change, timeout restores the backup, wrong token fails, and real config is refused in dry-run tests; confirmation is represented as CLI token text input; recovery must not depend on visible cursor, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
             review_warning: "High-risk cursor visibility keyboard-trigger policy setting. Cursor may disappear while typing. Requires CLI token confirmation and dead-man watchdog confirm-or-revert recovery; cursor.invisible, cursor.inactive_timeout, hardware cursor, warping, zoom, and monitor-targeting rows remain blocked.",
+        });
+    }
+    if SCREEN_SHADER_DISPLAY_RENDER_HIGH_RISK_MIGRATION_ROWS.contains(&row_id) {
+        return Some(HighRiskWritePolicy {
+            recovery_bucket:
+                "display-render-recovery:screen-shader-gate-migration-design",
+            approval_gate:
+                "advanced-opt-in-plus-display-render-dead-man-watchdog-required-before-full-migration",
+            watchdog_requirement: "screen shader display/render watchdog proof is required before full gated enforcement; future gate must persist a plan and backup before mutation, use separate process confirm, timeout restore, result logging, and recovery independent of visible display or live render state",
+            review_warning: "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; keep writable only with screen-shader high-risk warning until a future display/render watchdog migration proof is completed.",
         });
     }
     None

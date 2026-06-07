@@ -15,23 +15,29 @@
     "productionBehaviorChanged": false,
     "liveDisplayRuntimeProofUsed": false,
     "writableRows": 278,
-    "blockedRows": 63
+    "blockedRows": 63,
+    "selectedMigrationOptionCount": 1,
+    "gateMetadataRepresentedThisSprint": true,
+    "watchdogProofCompletedThisSprint": false
   },
-  "stoppingPoint": "Stop after policy review and metadata warning. Do not continue into compile-aware validation or gate migration in this sprint.",
+  "stoppingPoint": "Stop after high-risk gate migration design and metadata representation. Do not continue into compile-aware validation, live shader compile, or runtime gate enforcement in this sprint.",
   "recommendedNextSprint": {
-    "type": "display-render high-risk gate migration design",
+    "type": "screen shader display/render watchdog migration proof",
     "rowId": "decoration.screen_shader",
-    "objective": "Decide whether to migrate screen_shader from normal writable path treatment into a display/render watchdog gate, or propose explicit block/removal with user approval.",
+    "objective": "Use fixture/temp files only to prove backup-before-mutation, separate process confirm, timeout restore, result logging, visible-display-independent recovery, and live-render-state-independent recovery before any stronger enforcement.",
     "mustNotDo": [
       "do not run live shader compile",
       "do not reload Hyprland",
       "do not mutate real config",
-      "do not use active render state"
+      "do not use active render state",
+      "do not enable rows",
+      "do not remove current writable behavior without explicit approval"
     ]
   },
   "laterOptionalSprint": {
     "type": "compile-aware validation design",
-    "precondition": "Only after display/render high-risk gate policy is decided.",
+    "precondition": "Only after display/render watchdog migration proof is completed or an explicit block/removal proposal is approved.",
     "allowedDirection": "standalone/temp shader fixture validation only if a non-live compiler path is proven safe"
-  }
+  },
+  "selectedMigrationOption": "Option A"
 }

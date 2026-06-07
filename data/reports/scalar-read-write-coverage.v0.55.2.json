@@ -1210,13 +1210,13 @@
       "valueFamily": "path_shader_path",
       "controlKind": "dropdown",
       "parserStatus": "needs_sanitized_path_preview",
-      "riskClass": "path_or_shader_preview_risk",
+      "riskClass": "display_render_screen_shader_compile_sensitive",
       "reportOnly": false,
       "parserSupported": true,
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Parser-backed sanitized path write enabled with typed path parser, validator, fixture write, invalid-value, and UI projection tests. No filesystem reads or execution are performed."
+      "notes": "Currently writable, but official source reads and compiles non-empty values as final screen fragment shader files. Path validation is not display/render safety proof; display/render watchdog gate migration proof is required before stronger enforcement or compile-aware validation."
     },
     {
       "rowId": "animations.workspace_wraparound",
