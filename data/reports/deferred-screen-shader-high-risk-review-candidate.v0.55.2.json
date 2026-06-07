@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-screen-shader-high-risk-review-candidate",
+  "generatedAt": "2026-06-07T01:41:40-07:00",
+  "counts": {
+    "rowsReviewed": 1,
+    "validatorChangedRows": 0,
+    "metadataOnlyRows": 1,
+    "highRiskReviewCandidateRows": 1,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "decision": "Keep current writable status unchanged in this sprint, but stop treating screen_shader as a normal path-only repair target. Compile-aware validation requires later display/render high-risk review.",
+  "rows": [
+    {
+      "rowId": "decoration.screen_shader",
+      "officialSetting": "decoration.screen_shader",
+      "validatorChanged": false,
+      "metadataOnly": true,
+      "highRiskReviewCandidate": true,
+      "metadata": "empty/[[EMPTY]] disables shader; non-empty is config-relative shader file path; file is read and compiled as final screen fragment shader"
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false
+  }
+}
