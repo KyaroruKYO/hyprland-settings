@@ -424,6 +424,7 @@ pub struct RowDetailProjection {
     pub edit: SettingEditProjection,
     pub safety_notes: Vec<String>,
     pub screen_shader_advisory: Option<ScreenShaderAdvisoryUiProjection>,
+    pub screen_shader_advisory_widget: Option<ScreenShaderAdvisoryGtkWidgetProjection>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -447,6 +448,28 @@ pub struct ScreenShaderAdvisoryUiProjection {
     pub missing_tool_policy: String,
     pub timeout_policy: String,
     pub cleanup_warning_policy: String,
+    pub can_approve_write: bool,
+    pub can_block_write: bool,
+    pub can_bypass_production_gate: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ScreenShaderAdvisoryGtkWidgetProjection {
+    pub row_id: String,
+    pub visible_gtk_widget_implemented: bool,
+    pub gtk_widget_module: String,
+    pub placement: String,
+    pub advanced_mode_required: bool,
+    pub explicit_user_trigger_required: bool,
+    pub separated_from_apply_action: bool,
+    pub button_label: String,
+    pub default_state: String,
+    pub missing_selection_state: String,
+    pub file_chooser_behavior_proven: bool,
+    pub selected_file_boundary_proven: bool,
+    pub missing_selection_behavior_proven: bool,
+    pub cancellation_or_progress_behavior_proven: bool,
+    pub result_states_rendered: Vec<String>,
     pub can_approve_write: bool,
     pub can_block_write: bool,
     pub can_bypass_production_gate: bool,
@@ -543,6 +566,61 @@ pub fn initial_screen_shader_advisory_ui_action(
             None,
             None,
         )
+    })
+}
+
+pub fn screen_shader_advisory_gtk_widget_projection(
+    row_id: &str,
+) -> Option<ScreenShaderAdvisoryGtkWidgetProjection> {
+    let projection = screen_shader_advisory_projection(row_id)?;
+    Some(ScreenShaderAdvisoryGtkWidgetProjection {
+        row_id: row_id.to_string(),
+        visible_gtk_widget_implemented: true,
+        gtk_widget_module: "src/ui/window.rs::append_screen_shader_advisory_controls".to_string(),
+        placement: projection.placement,
+        advanced_mode_required: projection.advanced_mode_required,
+        explicit_user_trigger_required: projection.explicit_user_trigger_required,
+        separated_from_apply_action: true,
+        button_label: "Run optional advisory check".to_string(),
+        default_state: ScreenShaderAdvisoryUiResultState::NotRun
+            .as_str()
+            .to_string(),
+        missing_selection_state: ScreenShaderAdvisoryUiResultState::NotRun
+            .as_str()
+            .to_string(),
+        file_chooser_behavior_proven: false,
+        selected_file_boundary_proven: false,
+        missing_selection_behavior_proven: true,
+        cancellation_or_progress_behavior_proven: false,
+        result_states_rendered: vec![
+            ScreenShaderAdvisoryUiResultState::NotRun
+                .as_str()
+                .to_string(),
+            ScreenShaderAdvisoryUiResultState::Running
+                .as_str()
+                .to_string(),
+            ScreenShaderAdvisoryUiResultState::Passed
+                .as_str()
+                .to_string(),
+            ScreenShaderAdvisoryUiResultState::Failed
+                .as_str()
+                .to_string(),
+            ScreenShaderAdvisoryUiResultState::Unavailable
+                .as_str()
+                .to_string(),
+            ScreenShaderAdvisoryUiResultState::TimedOut
+                .as_str()
+                .to_string(),
+            ScreenShaderAdvisoryUiResultState::TempCopyFailed
+                .as_str()
+                .to_string(),
+            ScreenShaderAdvisoryUiResultState::CleanupWarning
+                .as_str()
+                .to_string(),
+        ],
+        can_approve_write: false,
+        can_block_write: false,
+        can_bypass_production_gate: false,
     })
 }
 
@@ -865,6 +943,9 @@ impl RowDetailProjection {
             edit: setting.edit.clone(),
             safety_notes,
             screen_shader_advisory: screen_shader_advisory_projection(&setting.row_id),
+            screen_shader_advisory_widget: screen_shader_advisory_gtk_widget_projection(
+                &setting.row_id,
+            ),
         }
     }
 }

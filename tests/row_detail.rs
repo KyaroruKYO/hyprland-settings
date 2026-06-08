@@ -213,6 +213,7 @@ fn sanitized_path_detail_is_editable() -> Result<()> {
     assert_eq!(pending.validation_label, "valid");
     assert!(!pending.can_review);
     assert!(detail.screen_shader_advisory.is_some());
+    assert!(detail.screen_shader_advisory_widget.is_some());
 
     Ok(())
 }
@@ -260,6 +261,26 @@ fn screen_shader_detail_projects_design_only_advisory_ui_metadata() -> Result<()
     assert!(!advisory.can_block_write);
     assert!(!advisory.can_bypass_production_gate);
 
+    let widget = detail
+        .screen_shader_advisory_widget
+        .expect("screen shader advisory GTK widget metadata expected");
+    assert!(widget.visible_gtk_widget_implemented);
+    assert_eq!(
+        widget.gtk_widget_module,
+        "src/ui/window.rs::append_screen_shader_advisory_controls"
+    );
+    assert!(widget.separated_from_apply_action);
+    assert_eq!(widget.button_label, "Run optional advisory check");
+    assert_eq!(widget.default_state, "not_run");
+    assert_eq!(widget.missing_selection_state, "not_run");
+    assert!(!widget.file_chooser_behavior_proven);
+    assert!(!widget.selected_file_boundary_proven);
+    assert!(widget.missing_selection_behavior_proven);
+    assert!(!widget.cancellation_or_progress_behavior_proven);
+    assert!(!widget.can_approve_write);
+    assert!(!widget.can_block_write);
+    assert!(!widget.can_bypass_production_gate);
+
     Ok(())
 }
 
@@ -268,6 +289,7 @@ fn non_screen_shader_rows_do_not_project_advisory_ui_metadata() -> Result<()> {
     let detail = detail_for("appearance.blur.size")?;
 
     assert!(detail.screen_shader_advisory.is_none());
+    assert!(detail.screen_shader_advisory_widget.is_none());
 
     Ok(())
 }

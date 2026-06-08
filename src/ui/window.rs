@@ -8,7 +8,10 @@ use crate::config_discovery::ConfigDiscovery;
 use crate::current_config::CurrentConfigSnapshot;
 use crate::export::ExportBundle;
 use crate::search::{search_projection, SearchRank, SearchResult};
-use crate::ui::model::{RowDetailProjection, UiProjection};
+use crate::ui::model::{
+    initial_screen_shader_advisory_ui_action, run_screen_shader_advisory_ui_action,
+    RowDetailProjection, ScreenShaderAdvisoryUiActionRequest, UiProjection,
+};
 use crate::validation::ValidationSummary;
 use crate::write_classification::ScalarWriteValueKind;
 use crate::write_flow::{apply_setting_change, write_flow_value_kind};
@@ -588,10 +591,58 @@ fn render_detail(model: &UiProjection, row_id: &str, detail_content: &gtk::Box) 
             detail_content.append(&small_label(line));
         }
     }
+    append_screen_shader_advisory_controls(&detail, detail_content);
     append_write_controls(model, &detail, detail_content);
     for note in &detail.safety_notes {
         detail_content.append(&small_label(note));
     }
+}
+
+fn append_screen_shader_advisory_controls(detail: &RowDetailProjection, detail_content: &gtk::Box) {
+    let (Some(advisory), Some(widget)) = (
+        detail.screen_shader_advisory.as_ref(),
+        detail.screen_shader_advisory_widget.as_ref(),
+    ) else {
+        return;
+    };
+
+    let frame = gtk::Frame::new(Some("Advanced advisory shader check"));
+    let controls = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    controls.set_margin_top(10);
+    controls.set_margin_bottom(10);
+    controls.set_margin_start(10);
+    controls.set_margin_end(10);
+
+    controls.append(&body_label("Optional standalone advisory check"));
+    controls.append(&small_label(&advisory.consent_message));
+    controls.append(&small_label(&advisory.temp_copy_message));
+    controls.append(&small_label(&advisory.original_path_message));
+    controls.append(&small_label(&advisory.runtime_safety_disclaimer));
+    controls.append(&small_label(&advisory.production_gate_disclaimer));
+
+    let button = gtk::Button::with_label(&widget.button_label);
+    button.set_tooltip_text(Some(
+        "This proof wires the visible advanced control. File chooser execution remains deferred.",
+    ));
+    controls.append(&button);
+
+    let initial = initial_screen_shader_advisory_ui_action(&detail.row_id)
+        .expect("screen shader widget should have initial advisory action state");
+    let result_label = small_label(&format!("{}: {}", initial.state_label(), initial.message));
+    controls.append(&result_label);
+
+    let row_id = detail.row_id.clone();
+    button.connect_clicked(move |_| {
+        let render = run_screen_shader_advisory_ui_action(ScreenShaderAdvisoryUiActionRequest {
+            row_id: row_id.clone(),
+            explicit_user_trigger: true,
+            helper_request: None,
+        });
+        result_label.set_label(&format!("{}: {}", render.state_label(), render.message));
+    });
+
+    frame.set_child(Some(&controls));
+    detail_content.append(&frame);
 }
 
 fn append_write_controls(

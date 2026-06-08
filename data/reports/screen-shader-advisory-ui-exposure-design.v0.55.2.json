@@ -118,5 +118,5 @@
     "No proof exists that glslangValidator output is equivalent to Hyprland's OpenGL runtime compile/link behavior.",
     "No production compile-aware validator implementation exists."
   ],
-  "nextRecommendedSprint": "Screen shader optional advisory GTK widget wiring proof sprint: wire the proven non-production action model into a visible advanced/high-risk UI control only if it remains explicit-trigger only, disconnected from write safety, and proves file chooser/result rendering/cancellation without reading real user shader files in tests."
+  "nextRecommendedSprint": "Screen shader optional advisory file chooser execution proof sprint: implement visible file selection only if it can use generated fixture/temp files in tests, never read real user shader files in tests, pass only temp paths to glslangValidator, and keep advisory output disconnected from write safety."
 }

@@ -13862,9 +13862,14 @@
     "selectedAdvisoryUiImplementationProofOption": "Option A",
     "advisoryUiActionImplemented": true,
     "advisoryUiActionModule": "src/ui/model.rs::run_screen_shader_advisory_ui_action",
-    "visualGtkWidgetImplemented": false,
+    "advisoryGtkWidgetWiringProofReport": "data/reports/screen-shader-advisory-gtk-widget-wiring-proof.v0.55.2.json",
+    "selectedGtkWidgetWiringProofOption": "Option A",
+    "visibleGtkWidgetImplemented": true,
+    "gtkWidgetModule": "src/ui/window.rs::append_screen_shader_advisory_controls",
+    "visualGtkWidgetImplemented": true,
     "advancedModeRequired": true,
     "explicitUserTriggerRequired": true,
+    "separatedFromApplyAction": true,
     "resultStatesModeled": [
       "not_run",
       "running",
@@ -13875,10 +13880,24 @@
       "temp_copy_failed",
       "cleanup_warning"
     ],
+    "resultStatesRendered": [
+      "not_run",
+      "running",
+      "passed",
+      "failed",
+      "unavailable",
+      "timed_out",
+      "temp_copy_failed",
+      "cleanup_warning"
+    ],
+    "fileChooserBehaviorProven": false,
+    "selectedFileBoundaryProven": false,
+    "missingSelectionBehaviorProven": true,
     "missingConsentBehaviorProven": true,
+    "cancellationOrProgressBehaviorProven": false,
     "advisoryResultCanApproveWrite": false,
     "advisoryResultCanBlockWrite": false,
     "advisoryResultCanBypassProductionGate": false,
-    "recommendedNextSprint": "Screen shader optional advisory GTK widget wiring proof sprint; wire the proven non-production action model into a visible advanced/high-risk UI control only if it remains explicit-trigger only, disconnected from write safety, and proves file chooser/result rendering/cancellation without reading real user shader files in tests."
+    "recommendedNextSprint": "Screen shader optional advisory file chooser execution proof sprint; implement visible file selection only if it can use generated fixture/temp files in tests, never read real user shader files in tests, pass only temp paths to glslangValidator, and keep advisory output disconnected from write safety."
   }
 }

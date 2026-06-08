@@ -112,11 +112,12 @@
     "Aggregate reports link this proof without changing counts, SAFE_WRITABLE_ROWS, write allowlist, validators, pending changes, write planning, apply flow, or production gate behavior."
   ],
   "proofStillMissing": [
-    "No full GTK file chooser/widget implementation exists for selecting a shader and displaying the advisory result visually.",
-    "No cancellation UI proof exists yet.",
+    "Full GTK widget wiring now exists for the missing-selection path in screen-shader-advisory-gtk-widget-wiring-proof.v0.55.2.json, but full GTK file chooser execution is still missing.",
+    "No selected-file boundary proof exists through a visible GTK file chooser.",
+    "No cancellation/progress UI proof exists yet.",
     "No screenshot-based UI proof exists yet.",
     "No proof exists that glslangValidator output is equivalent to Hyprland's OpenGL runtime compile/link behavior.",
     "No production compile-aware validator implementation exists."
   ],
-  "nextRecommendedSprint": "Screen shader optional advisory GTK widget wiring proof sprint: wire the proven non-production action model into a visible advanced/high-risk UI control only if it remains explicit-trigger only, disconnected from write safety, and proves file chooser/result rendering/cancellation without reading real user shader files in tests."
+  "nextRecommendedSprint": "Screen shader optional advisory file chooser execution proof sprint: implement visible file selection only if it can use generated fixture/temp files in tests, never read real user shader files in tests, pass only temp paths to glslangValidator, and keep advisory output disconnected from write safety."
 }

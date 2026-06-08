@@ -2,23 +2,23 @@
 
 This file is the starting context for a new ChatGPT conversation. It is written for ChatGPT and the user, not for Codex internals. Assume the new conversation has no other history.
 
-State reviewed after the screen shader optional advisory UI implementation proof sprint on branch `completion-sprint`.
+State reviewed after the screen shader optional advisory GTK widget wiring proof sprint on branch `completion-sprint`.
 
 Latest reviewed implementation baseline before this sprint:
 
-- `4a32d6b Design screen shader advisory UI exposure`
+- `ae6242b Prove screen shader advisory UI implementation`
 
 Latest sprint commit:
 
-- `Prove screen shader advisory UI implementation` (this commit; use `git log -1 --oneline` for the exact hash)
+- `Prove screen shader advisory GTK widget wiring` (this commit; use `git log -1 --oneline` for the exact hash)
 
 Latest restore point and backups:
 
-- Restore tag: `pre-screen-shader-advisory-ui-implementation-proof-20260608-021543`
-- Project backup: `/home/kyo/Documents/hyprland-settings-pre-screen-shader-advisory-ui-implementation-proof-backup_20260608_021543/`
-- AGS backup: `/home/kyo/Documents/ags-pre-screen-shader-advisory-ui-implementation-proof-backup_20260608_021543`
-- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-advisory-ui-implementation-proof-20260608_021543`
-- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-advisory-ui-implementation-proof-backup_20260608_021543`
+- Restore tag: `pre-screen-shader-advisory-gtk-widget-wiring-proof-20260608-035312`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-screen-shader-advisory-gtk-widget-wiring-proof-backup_20260608_035312/`
+- AGS backup: `/home/kyo/Documents/ags-pre-screen-shader-advisory-gtk-widget-wiring-proof-backup_20260608_035312`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-advisory-gtk-widget-wiring-proof-20260608_035312`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-advisory-gtk-widget-wiring-proof-backup_20260608_035312`
 
 ## 1. Primary Project Goal
 
@@ -73,13 +73,13 @@ Every sprint should preserve safety boundaries and end with clear final counts:
 
 Current branch: `completion-sprint`
 
-Latest reviewed implementation baseline before the screen shader optional advisory UI implementation proof sprint:
+Latest reviewed implementation baseline before the screen shader optional advisory GTK widget wiring proof sprint:
 
-- `4a32d6b Design screen shader advisory UI exposure`
+- `ae6242b Prove screen shader advisory UI implementation`
 
 Latest sprint commit message:
 
-- `Prove screen shader advisory UI implementation`
+- `Prove screen shader advisory GTK widget wiring`
 
 Current scalar row counts:
 
@@ -113,6 +113,7 @@ Screen shader state:
 - Selected advisory compiler implementation proof option: `Option A`.
 - Selected advisory UI exposure design option: `Option A`.
 - Selected advisory UI implementation proof option: `Option A`.
+- Selected advisory GTK widget wiring proof option: `Option A`.
 - Dry-run/non-production gate primitive added: yes.
 - Primitive name: `screen-shader-dry-run-gated-write-review`.
 - Ungated dry-run `decoration.screen_shader` rejected: yes.
@@ -164,10 +165,18 @@ Screen shader state:
 - UI exposure design only: yes.
 - Non-production advisory UI action/model implemented: yes.
 - UI action module/model: `src/ui/model.rs::run_screen_shader_advisory_ui_action`.
-- Full GTK file chooser/widget implemented: no.
+- Visible GTK widget/control implemented: yes.
+- GTK widget/control module: `src/ui/window.rs::append_screen_shader_advisory_controls`.
+- GTK widget placement: advanced/high-risk section separated from write/apply controls.
+- Full GTK file chooser execution implemented: no.
+- File chooser behavior proven: no.
+- Selected-file boundary proven through visible file chooser: no.
+- Missing selection behavior proven: yes.
+- Cancellation/progress behavior proven through visible GTK control: no.
 - Advanced/high-risk placement required: yes.
 - Explicit user trigger required: yes.
-- Result states modeled: `not_run`, `running`, `passed`, `failed`, `unavailable`, `timed_out`, `temp_copy_failed`, `cleanup_warning`.
+- Separated from apply/write action: yes.
+- Result states modeled/rendered: `not_run`, `running`, `passed`, `failed`, `unavailable`, `timed_out`, `temp_copy_failed`, `cleanup_warning`.
 - Missing consent behavior proven: yes.
 - Advisory pass/fail/unavailable/timeout/temp-copy/cleanup-warning rendering proven: yes.
 - Runs on row load: no.
@@ -177,7 +186,7 @@ Screen shader state:
 - Advisory result can block writes: no.
 - Advisory result can bypass production gate: no.
 - Recommended compile-aware policy: advisory or research-only until compatibility with Hyprland's OpenGL runtime path is proven.
-- No row was enabled during the screen shader optional advisory UI implementation proof sprint.
+- No row was enabled during the screen shader optional advisory GTK widget wiring proof sprint.
 - Write allowlist unchanged.
 - Recovery gates unchanged.
 - Real config untouched.
@@ -197,6 +206,7 @@ Decision report:
 - `data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json`
 - `data/reports/screen-shader-advisory-ui-exposure-design.v0.55.2.json`
 - `data/reports/screen-shader-advisory-ui-implementation-proof.v0.55.2.json`
+- `data/reports/screen-shader-advisory-gtk-widget-wiring-proof.v0.55.2.json`
 
 Decision summary:
 
@@ -223,7 +233,9 @@ Decision summary:
 - Option A was selected in the advisory UI implementation proof sprint because a non-production UI action model could be implemented and fixture-proven while staying disconnected from write safety.
 - `src/ui/model.rs::run_screen_shader_advisory_ui_action` is the UI action model. It models `not_run`, `running`, `passed`, `failed`, `unavailable`, `timed_out`, `temp_copy_failed`, and `cleanup_warning`.
 - The UI action model proves missing-consent, pass, fail, unavailable, timeout, temp-copy failure, and cleanup-warning rendering as advisory-only.
-- Full GTK file chooser/widget wiring is not implemented yet.
+- Option A was selected in the advisory GTK widget wiring proof sprint because the visible advanced control could be wired while proving only the missing-selection path and staying disconnected from write safety.
+- `src/ui/window.rs::append_screen_shader_advisory_controls` renders the visible advanced advisory section for `decoration.screen_shader`.
+- Full GTK file chooser execution, selected-file boundary proof, and cancellation/progress proof are still missing.
 - Compiler checks remain unwired from validators, pending changes, write planning, and apply flow.
 
 Validation state from the most recent sprint:
@@ -237,7 +249,7 @@ Validation state from the most recent sprint:
 - `appstreamcli validate --pedantic ... || true`: completed with expected non-blocking metadata warnings
 - Python export/UI/schema validators: passed
 
-Worktree state should be clean after committing the screen shader advisory UI implementation proof sprint changes.
+Worktree state should be clean after committing the screen shader advisory GTK widget wiring proof sprint changes.
 
 ## 4. Project Architecture Overview
 
@@ -592,9 +604,9 @@ Relevant reports:
 
 Near-term work:
 
-- Screen shader optional advisory GTK widget wiring proof sprint.
-- Wire the proven non-production action model into a visible advanced/high-risk UI control only if it remains explicit-trigger only and disconnected from validators, pending changes, write planning, apply flow, and write safety.
-- Prove file chooser behavior, result rendering, cancellation/progress behavior, no auto-run, no real user shader reads in tests, no live shader compile, no live display proof, and advisory-only result rendering.
+- Screen shader optional advisory file chooser execution proof sprint.
+- Implement visible file selection only if it can use generated fixture/temp files in tests, never read real user shader files in tests, and pass only temp paths to `glslangValidator`.
+- Prove selected-file boundary, file chooser behavior, cancellation/progress behavior, no auto-run, no real user shader reads in tests, no live shader compile, no live display proof, and advisory-only result rendering.
 - Keep production gate enforcement intact for `decoration.screen_shader`.
 - Do not implement production compile-aware validation.
 - Do not wire compiler checks into validators, pending changes, write planning, or production apply flow without a separate approved implementation sprint.
@@ -635,8 +647,12 @@ Remaining deferred validators:
   - Design-only UI metadata is projected only for `decoration.screen_shader`.
   - Advisory UI implementation proof selected Option A.
   - Non-production UI action model is implemented in `src/ui/model.rs::run_screen_shader_advisory_ui_action`.
+  - Advisory GTK widget wiring proof selected Option A.
+  - Visible advanced/high-risk GTK widget/control is implemented in `src/ui/window.rs::append_screen_shader_advisory_controls`.
+  - Visible control is separated from write/apply controls and proves the missing-selection path only.
   - Result states modeled: `not_run`, `running`, `passed`, `failed`, `unavailable`, `timed_out`, `temp_copy_failed`, `cleanup_warning`.
-  - Full GTK file chooser/widget wiring is still missing.
+  - Full GTK file chooser execution and selected-file boundary proof are still missing.
+  - Cancellation/progress behavior through visible GTK UI is still missing.
   - Compatibility with Hyprland's actual OpenGL runtime compile/link path is not proven.
   - Compile-aware validation remains deferred.
 
@@ -692,13 +708,14 @@ Do not remove current writable behavior without explicit user approval.
 
 Recommended next sprint title:
 
-Screen shader optional advisory GTK widget wiring proof sprint.
+Screen shader optional advisory file chooser execution proof sprint.
 
 The sprint should:
 
-- Wire the proven non-production action model into a visible advanced/high-risk UI control only if it remains explicit-trigger only and disconnected from validators, pending changes, write planning, apply flow, and write safety.
+- Implement visible file selection only if it can use generated fixture/temp files in tests.
+- Pass only temp paths to `glslangValidator`.
 - Render advisory output as non-authoritative and non-blocking.
-- Prove file chooser behavior, result rendering, and cancellation/progress behavior without reading real user shader files in tests.
+- Prove selected-file boundary, file chooser behavior, and cancellation/progress behavior without reading real user shader files in tests.
 - Keep existing production apply-flow gate enforcement unchanged.
 - Keep `decoration.screen_shader` writable and gated.
 - Keep advisory compiler output non-authoritative.
@@ -740,7 +757,8 @@ Current AppStream warnings are expected and non-blocking under `|| true`:
 
 Latest important commits:
 
-- `Prove screen shader advisory UI implementation` (this commit)
+- `Prove screen shader advisory GTK widget wiring` (this commit)
+- `ae6242b Prove screen shader advisory UI implementation`
 - `4a32d6b Design screen shader advisory UI exposure`
 - `9363dc6 Prove screen shader advisory compiler helper`
 - `aea7586 Design screen shader advisory compiler integration`
@@ -763,16 +781,16 @@ Latest important commits:
 - `96b73be Enforce deferred consumer source validator research`
 - `6c785cc Enforce official writable validator source research`
 
-Latest restore tag created before the screen shader optional advisory UI implementation proof sprint:
+Latest restore tag created before the screen shader optional advisory GTK widget wiring proof sprint:
 
-- `pre-screen-shader-advisory-ui-implementation-proof-20260608-021543`
+- `pre-screen-shader-advisory-gtk-widget-wiring-proof-20260608-035312`
 
-Backup paths created before the screen shader optional advisory UI implementation proof sprint:
+Backup paths created before the screen shader optional advisory GTK widget wiring proof sprint:
 
-- `/home/kyo/Documents/hyprland-settings-pre-screen-shader-advisory-ui-implementation-proof-backup_20260608_021543/`
-- `/home/kyo/Documents/ags-pre-screen-shader-advisory-ui-implementation-proof-backup_20260608_021543`
-- `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-advisory-ui-implementation-proof-20260608_021543`
-- `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-advisory-ui-implementation-proof-backup_20260608_021543`
+- `/home/kyo/Documents/hyprland-settings-pre-screen-shader-advisory-gtk-widget-wiring-proof-backup_20260608_035312/`
+- `/home/kyo/Documents/ags-pre-screen-shader-advisory-gtk-widget-wiring-proof-backup_20260608_035312`
+- `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-advisory-gtk-widget-wiring-proof-20260608_035312`
+- `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-advisory-gtk-widget-wiring-proof-backup_20260608_035312`
 
 Important report filenames:
 
@@ -801,6 +819,7 @@ Important report filenames:
 - `data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json`
 - `data/reports/screen-shader-advisory-ui-exposure-design.v0.55.2.json`
 - `data/reports/screen-shader-advisory-ui-implementation-proof.v0.55.2.json`
+- `data/reports/screen-shader-advisory-gtk-widget-wiring-proof.v0.55.2.json`
 
 Important docs filenames:
 
@@ -819,6 +838,7 @@ Important docs filenames:
 - `/home/kyo/.config/hypr/docs/SCREEN-SHADER-ADVISORY-COMPILER-IMPLEMENTATION-PROOF.md`
 - `/home/kyo/.config/hypr/docs/SCREEN-SHADER-ADVISORY-UI-EXPOSURE-DESIGN.md`
 - `/home/kyo/.config/hypr/docs/SCREEN-SHADER-ADVISORY-UI-IMPLEMENTATION-PROOF.md`
+- `/home/kyo/.config/hypr/docs/SCREEN-SHADER-ADVISORY-GTK-WIDGET-WIRING-PROOF.md`
 - `/home/kyo/.config/hypr/docs/NEXT-HIGH-RISK-BUCKET-READINESS.md`
 - `/home/kyo/.config/hypr/docs/RUST-DEFERRED-SOURCE-BACKED-VALIDATOR-REPAIR-REPORT.md`
 - `/home/kyo/.config/hypr/docs/SOURCE-BACKED-VALIDATOR-DEFERRED-ITEMS.md`
@@ -843,4 +863,4 @@ Remaining deferred row list:
 
 Next recommended prompt title:
 
-Screen shader optional advisory GTK widget wiring proof sprint.
+Screen shader optional advisory file chooser execution proof sprint.
