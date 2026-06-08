@@ -134,6 +134,17 @@
     "fixtureInvalidShaderRejected": true,
     "fixtureUsesHyprlandVertexPairing": true,
     "advisoryCompilerRecommendedPolicy": "optional-advisory-research-only",
-    "recommendedNextSprint": "Screen shader advisory compiler integration design sprint; decide whether optional advanced advisory checks may copy user-selected shader files into temp fixtures and run glslangValidator without production enforcement or runtime-safety claims."
+    "advisoryCompilerIntegrationDesignReport": "data/reports/screen-shader-advisory-compiler-integration-design.v0.55.2.json",
+    "selectedAdvisoryCompilerIntegrationDesignOption": "Option A",
+    "advisoryCompilerIntegrationImplemented": false,
+    "compilerChecksWiredIntoValidators": false,
+    "compilerChecksWiredIntoPendingChanges": false,
+    "compilerChecksWiredIntoWritePlanning": false,
+    "compilerChecksWiredIntoApplyFlow": false,
+    "userConsentRequiredBeforeShaderRead": true,
+    "backgroundShaderScanningAllowed": false,
+    "originalUserPathPassedToCompiler": false,
+    "tempCopyRequired": true,
+    "recommendedNextSprint": "Screen shader optional advisory compiler implementation proof sprint; implement a non-production, user-triggered advisory helper only if it copies explicit user-selected fixture files into temp dirs and proves advisory output is not wired into write safety decisions."
   }
 }
