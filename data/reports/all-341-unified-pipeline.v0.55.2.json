@@ -3335,7 +3335,6 @@
       "testsPresent": true,
       "productionValueKind": "Path",
       "proofSource": "screen-shader-production-gate-approval.v0.55.2.json",
-      "nextRequiredWork": "Screen shader optional advisory compiler implementation proof sprint; implement a non-production, user-triggered advisory helper only if it copies explicit user-selected fixture files into temp dirs, runs glslangValidator only on temp paths, and proves it is not wired into validators, pending changes, write planning, apply flow, or write safety decisions.",
       "companionSchemaType": "string",
       "companionSchemaDefault": "",
       "companionSuggestedValidTestValues": [
@@ -3361,14 +3360,16 @@
       "compileAwareResearchSource": "screen-shader-compile-aware-validation-research.v0.55.2.json",
       "advisoryCompilerFeasibilitySource": "screen-shader-non-live-advisory-compiler-feasibility.v0.55.2.json",
       "advisoryCompilerIntegrationDesignSource": "screen-shader-advisory-compiler-integration-design.v0.55.2.json",
+      "advisoryCompilerImplementationProofSource": "screen-shader-advisory-compiler-implementation-proof.v0.55.2.json",
       "pipelineTemplate": "display-render-screen-shader-watchdog-template",
       "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
       "watchdogRequirement": "screen shader display/render watchdog proof is required before final apply; the production apply flow rejects ungated decoration.screen_shader writes and accepts only gated fixture-proven writes with a valid watchdog plan",
-      "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; production apply requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred; a future glslangValidator advisory check must be explicit-user-action, temp-copy-only, non-blocking, and non-authoritative.",
+      "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; production apply requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred. A non-production glslangValidator advisory helper exists for future optional UI exposure; it is explicit-user-consent, temp-copy-only, non-blocking, non-authoritative, and not wired into write safety.",
       "templateNormalizationStatus": "screen-shader-production-gate-enforced",
       "recoveryGateWeakened": false,
       "productionGateEnforcedThisSprint": true,
-      "countedAsEnabledHighRiskRow": false
+      "countedAsEnabledHighRiskRow": false,
+      "nextRequiredWork": "Screen shader optional advisory UI exposure design sprint: design how to expose the non-production advisory helper as an explicit advanced user action without wiring advisory output into validators, pending changes, write planning, apply flow, or write safety decisions."
     },
     {
       "rowId": "animations.workspace_wraparound",
@@ -17348,14 +17349,26 @@
     "advisoryCompilerIntegrationDesignReport": "data/reports/screen-shader-advisory-compiler-integration-design.v0.55.2.json",
     "selectedAdvisoryCompilerIntegrationDesignOption": "Option A",
     "advisoryCompilerIntegrationImplemented": false,
+    "advisoryCompilerImplementationProofReport": "data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json",
+    "selectedAdvisoryCompilerImplementationProofOption": "Option A",
+    "advisoryHelperImplemented": true,
+    "advisoryHelperModule": "src/screen_shader_advisory.rs",
     "compilerChecksWiredIntoValidators": false,
     "compilerChecksWiredIntoPendingChanges": false,
     "compilerChecksWiredIntoWritePlanning": false,
     "compilerChecksWiredIntoApplyFlow": false,
+    "standaloneCompilerCommandsRunThisSprint": true,
+    "standaloneCompilerCommandsRunOnlyOnTempFixtures": true,
+    "realUserShaderFilesReadInTests": false,
     "userConsentRequiredBeforeShaderRead": true,
     "backgroundShaderScanningAllowed": false,
     "originalUserPathPassedToCompiler": false,
     "tempCopyRequired": true,
-    "recommendedNextSprint": "Screen shader optional advisory compiler implementation proof sprint; implement a non-production, user-triggered advisory helper only if it copies explicit user-selected fixture files into temp dirs and proves advisory output is not wired into write safety decisions."
+    "missingToolBehaviorProven": true,
+    "timeoutBehaviorProven": true,
+    "advisoryPassBehaviorProven": true,
+    "advisoryFailBehaviorProven": true,
+    "cleanupFailureBehaviorProven": true,
+    "recommendedNextSprint": "Screen shader optional advisory UI exposure design sprint; design how to expose the non-production advisory helper as an explicit advanced user action without wiring advisory output into validators, pending changes, write planning, apply flow, or write safety decisions."
   }
 }

@@ -18,6 +18,9 @@
   "compileAwareValidationImplemented": false,
   "productionCompileAwareValidationImplemented": false,
   "advisoryCompilerIntegrationImplemented": false,
+  "advisoryCompilerImplementationProofReport": "data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json",
+  "advisoryHelperImplemented": true,
+  "advisoryHelperModule": "src/screen_shader_advisory.rs",
   "compilerChecksWiredIntoValidators": false,
   "compilerChecksWiredIntoPendingChanges": false,
   "compilerChecksWiredIntoWritePlanning": false,
@@ -121,7 +124,7 @@
     "The advisory command can approximate Hyprland's vertex/fragment pairing but cannot prove behavior inside Hyprland's actual CShader::createProgram runtime path.",
     "The advisory command does not prove uniform availability, sampler binding behavior, output behavior, GPU-specific compiler behavior, damage tracking requirements, or visual safety.",
     "No official Hyprland non-live screen-shader validation interface was found.",
-    "This sprint designs but does not implement user-file temp-copy handling, cleanup handling, timeout handling, or UI rendering of advisory output."
+    "The implementation proof sprint added a non-production helper for explicit-consent temp-copy handling, cleanup handling, and timeout handling, but UI rendering of advisory output is not proven."
   ],
   "proofUsed": [
     "Existing production gate approval report proves decoration.screen_shader remains writable with production gate enforcement intact.",
@@ -130,12 +133,10 @@
     "Report and test design records that advisory output is non-authoritative and cannot change validators, pending changes, write planning, apply flow, SAFE_WRITABLE_ROWS, write allowlist, or row enablement."
   ],
   "proofStillMissing": [
-    "No implementation proof exists for copying real user-selected shader files into temp fixtures.",
     "No UI proof exists for explicit user consent and advisory output rendering.",
-    "No timeout/cleanup implementation exists.",
     "No production compile-aware validator implementation exists.",
     "No proof exists that glslangValidator output is equivalent to Hyprland's OpenGL runtime compile/link behavior.",
     "No official Hyprland non-live validation interface was found."
   ],
-  "nextRecommendedSprint": "Screen shader optional advisory compiler implementation proof sprint: implement a non-production, user-triggered advisory helper that copies only explicit user-selected fixture files into temp dirs, runs glslangValidator only on temp paths, records advisory output, and proves it is not wired into validators, pending changes, write planning, apply flow, or write safety decisions."
+  "nextRecommendedSprint": "Screen shader optional advisory UI exposure design sprint: design how to expose the non-production advisory helper as an explicit advanced user action without wiring advisory output into validators, pending changes, write planning, apply flow, or write safety decisions."
 }

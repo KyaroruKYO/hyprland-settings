@@ -7,13 +7,16 @@ fn read_json(path: &str) -> Result<Value> {
 }
 
 #[test]
-fn screen_shader_advisory_integration_design_report_records_option_a() -> Result<()> {
-    let report =
-        read_json("data/reports/screen-shader-advisory-compiler-integration-design.v0.55.2.json")?;
+fn screen_shader_advisory_helper_implementation_report_records_option_a() -> Result<()> {
+    let report = read_json(
+        "data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json",
+    )?;
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
     let feasibility = read_json(
         "data/reports/screen-shader-non-live-advisory-compiler-feasibility.v0.55.2.json",
     )?;
+    let design =
+        read_json("data/reports/screen-shader-advisory-compiler-integration-design.v0.55.2.json")?;
     let approval = read_json("data/reports/screen-shader-production-gate-approval.v0.55.2.json")?;
 
     assert!(is_safe_writable_setting("decoration.screen_shader"));
@@ -24,32 +27,27 @@ fn screen_shader_advisory_integration_design_report_records_option_a() -> Result
 
     assert_eq!(report["rowId"], "decoration.screen_shader");
     assert_eq!(report["officialSetting"], "decoration.screen_shader");
-    assert_eq!(report["startingCommit"], "865849f");
-    assert_eq!(report["selectedIntegrationDesignOption"], "Option A");
+    assert_eq!(report["startingCommit"], "aea7586");
+    assert_eq!(report["selectedImplementationProofOption"], "Option A");
     assert_eq!(report["currentWritableStatus"], "writable");
     assert_eq!(report["productionGateEnforced"], true);
     assert_eq!(report["productionGateChanged"], false);
     assert_eq!(report["watchdogMigrationProofStatus"], "complete");
     assert_eq!(report["advisoryCompilerFeasibilityStatus"], "complete");
+    assert_eq!(
+        report["advisoryCompilerIntegrationDesignStatus"],
+        "complete"
+    );
     assert_eq!(report["chosenAdvisoryTool"], "glslangValidator");
-    assert_eq!(report["compileAwareValidationCurrentStatus"], "deferred");
-    assert_eq!(report["compileAwareValidationChanged"], false);
-    assert_eq!(report["compileAwareValidationImplemented"], false);
-    assert_eq!(report["productionCompileAwareValidationImplemented"], false);
-    assert_eq!(report["advisoryCompilerIntegrationImplemented"], false);
     assert_eq!(report["advisoryHelperImplemented"], true);
     assert_eq!(
         report["advisoryHelperModule"],
         "src/screen_shader_advisory.rs"
     );
-    assert_eq!(report["shaderCompilationThroughHyprlandRun"], false);
-    assert_eq!(report["standaloneCompilerCommandsRunThisSprint"], false);
-    assert_eq!(report["liveShaderCompileUsed"], false);
-    assert_eq!(report["liveDisplayRuntimeProofUsed"], false);
-    assert_eq!(report["realConfigTouched"], false);
-    assert_eq!(report["runtimeTouched"], false);
-    assert_eq!(report["reloadEvalLuaUsed"], false);
-    assert_eq!(report["realUserShaderFilesReadInTests"], false);
+    assert_eq!(report["compileAwareValidationCurrentStatus"], "deferred");
+    assert_eq!(report["compileAwareValidationChanged"], false);
+    assert_eq!(report["compileAwareValidationImplemented"], false);
+    assert_eq!(report["productionCompileAwareValidationImplemented"], false);
     assert_eq!(report["safeWritableRowsChanged"], false);
     assert_eq!(report["writeAllowlistChanged"], false);
     assert_eq!(report["rowsEnabledThisSprint"], 0);
@@ -57,17 +55,17 @@ fn screen_shader_advisory_integration_design_report_records_option_a() -> Result
     assert_eq!(report["writableRows"], 278);
     assert_eq!(report["blockedRows"], 63);
     assert_eq!(feasibility["selectedFeasibilityOption"], "Option A");
-    assert_eq!(feasibility["chosenAdvisoryTool"], "glslangValidator");
+    assert_eq!(design["selectedIntegrationDesignOption"], "Option A");
     assert_eq!(approval["productionGateEnforcedThisSprint"], true);
-    assert_eq!(approval["compileAwareValidationStatus"], "deferred");
 
     Ok(())
 }
 
 #[test]
-fn screen_shader_advisory_integration_design_is_not_wired_into_write_paths() -> Result<()> {
-    let report =
-        read_json("data/reports/screen-shader-advisory-compiler-integration-design.v0.55.2.json")?;
+fn screen_shader_advisory_helper_is_not_wired_into_write_safety() -> Result<()> {
+    let report = read_json(
+        "data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json",
+    )?;
 
     assert_eq!(report["compilerChecksWiredIntoValidators"], false);
     assert_eq!(report["compilerChecksWiredIntoPendingChanges"], false);
@@ -105,87 +103,87 @@ fn screen_shader_advisory_integration_design_is_not_wired_into_write_paths() -> 
 }
 
 #[test]
-fn screen_shader_advisory_integration_design_defines_user_consent_and_temp_copy_boundary(
-) -> Result<()> {
-    let report =
-        read_json("data/reports/screen-shader-advisory-compiler-integration-design.v0.55.2.json")?;
+fn screen_shader_advisory_helper_records_safety_boundaries() -> Result<()> {
+    let report = read_json(
+        "data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json",
+    )?;
 
-    assert_eq!(report["userConsentRequiredBeforeShaderRead"], true);
+    assert_eq!(report["shaderCompilationThroughHyprlandRun"], false);
+    assert_eq!(report["standaloneCompilerCommandsRunThisSprint"], true);
+    assert_eq!(
+        report["standaloneCompilerCommandsRunOnlyOnTempFixtures"],
+        true
+    );
+    assert_eq!(report["liveShaderCompileUsed"], false);
+    assert_eq!(report["liveDisplayRuntimeProofUsed"], false);
+    assert_eq!(report["realConfigTouched"], false);
+    assert_eq!(report["runtimeTouched"], false);
+    assert_eq!(report["reloadEvalLuaUsed"], false);
+    assert_eq!(report["realUserShaderFilesReadInTests"], false);
+    assert_eq!(
+        report["realUserShaderFilesReadByHelperWithoutConsent"],
+        false
+    );
+    assert_eq!(report["explicitUserConsentRequired"], true);
     assert_eq!(report["backgroundShaderScanningAllowed"], false);
     assert_eq!(report["originalUserPathPassedToCompiler"], false);
     assert_eq!(report["tempCopyRequired"], true);
     assert_eq!(report["writesOutsideTempDirAllowed"], false);
-    assert_eq!(
-        report["realUserShaderFilesReadByDesign"],
-        "only-after-explicit-user-action-and-only-for-the-user-selected-shader-file-in-a-future-implementation"
-    );
-    assert_eq!(
-        report["futureAdvisoryFlowDesign"]["readConfigPathAutomatically"],
-        false
-    );
-    assert_eq!(
-        report["futureAdvisoryFlowDesign"]["backgroundScanningAllowed"],
-        false
-    );
-    assert_eq!(
-        report["futureAdvisoryFlowDesign"]["compilerCommandShape"],
-        "glslangValidator -l <temp vertex> <temp fragment>"
-    );
-    assert_eq!(
-        report["futureAdvisoryFlowDesign"]["resultCannotBypassProductionGate"],
-        true
-    );
-    assert_eq!(
-        report["futureAdvisoryFlowDesign"]["resultCannotApproveWrite"],
-        true
-    );
-    assert_eq!(
-        report["futureAdvisoryFlowDesign"]["resultCannotBlockWrite"],
-        true
-    );
-    assert_eq!(
-        report["futureAdvisoryFlowDesign"]["resultCannotBecomeRequiredPreflight"],
-        true
-    );
 
     Ok(())
 }
 
 #[test]
-fn screen_shader_advisory_integration_design_defines_non_blocking_failure_policies() -> Result<()> {
-    let report =
-        read_json("data/reports/screen-shader-advisory-compiler-integration-design.v0.55.2.json")?;
+fn screen_shader_advisory_helper_records_result_behaviors() -> Result<()> {
+    let report = read_json(
+        "data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json",
+    )?;
 
+    assert_eq!(report["missingToolBehaviorProven"], true);
+    assert_eq!(report["timeoutBehaviorProven"], true);
+    assert_eq!(report["advisoryPassBehaviorProven"], true);
+    assert_eq!(report["advisoryFailBehaviorProven"], true);
+    assert_eq!(report["cleanupFailureBehaviorProven"], true);
     assert_eq!(
-        report["missingToolPolicy"]["policy"],
-        "advisory-unavailable-non-blocking"
+        report["helperBehaviorProof"]["explicitUserConsentMissingStatus"],
+        "missing_consent"
     );
     assert_eq!(
-        report["timeoutPolicy"]["policy"],
-        "advisory-inconclusive-non-blocking"
+        report["helperBehaviorProof"]["missingToolStatus"],
+        "unavailable"
+    );
+    assert_eq!(report["helperBehaviorProof"]["timeoutStatus"], "timed_out");
+    assert_eq!(
+        report["helperBehaviorProof"]["advisorySuccessStatus"],
+        "passed"
     );
     assert_eq!(
-        report["advisoryFailurePolicy"]["policy"],
-        "warning-only-not-write-blocking"
+        report["helperBehaviorProof"]["advisoryFailureStatus"],
+        "failed"
     );
     assert_eq!(
-        report["advisorySuccessPolicy"]["policy"],
-        "advisory-pass-not-runtime-safety-proof"
+        report["helperBehaviorProof"]["cleanupFailureStatus"],
+        "cleanup_warning"
     );
-    assert_eq!(report["cleanupPolicyDefined"]["defined"], true);
-    assert!(report["cleanupPolicyDefined"]["policy"]
-        .as_str()
-        .unwrap()
-        .contains("must not approve, block, or bypass any write"));
+    assert_eq!(
+        report["helperBehaviorProof"]["originalUserPathPassedToCompiler"],
+        false
+    );
+    assert_eq!(
+        report["helperBehaviorProof"]["productionWriteDecisionChanged"],
+        false
+    );
+    assert_eq!(report["helperBehaviorProof"]["runtimeSafetyClaimed"], false);
+    assert_eq!(report["helperBehaviorProof"]["writeBlocking"], false);
 
     Ok(())
 }
 
 #[test]
-fn screen_shader_advisory_integration_design_records_source_backed_pairing_and_pipeline_link(
-) -> Result<()> {
-    let report =
-        read_json("data/reports/screen-shader-advisory-compiler-integration-design.v0.55.2.json")?;
+fn screen_shader_advisory_helper_records_source_pairing_and_pipeline_link() -> Result<()> {
+    let report = read_json(
+        "data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json",
+    )?;
     let pipeline = read_json("data/reports/all-341-unified-pipeline.v0.55.2.json")?;
 
     assert_eq!(
@@ -201,31 +199,22 @@ fn screen_shader_advisory_integration_design_records_source_backed_pairing_and_p
         .unwrap()
         .contains("#version 320 es"));
     assert_eq!(report["glslcChosen"], false);
-    assert!(report["glslcRejectionReason"]
-        .as_str()
-        .unwrap()
-        .contains("SPIR-V-oriented invocation"));
     assert_eq!(
         report["recommendedValidationPolicy"]["policy"],
-        "optional-advanced-advisory-only"
+        "optional-non-production-advisory-helper-only"
     );
 
     let gaps = report["compatibilityGaps"]
         .as_array()
         .expect("compatibility gaps should be explicit");
     assert!(!gaps.is_empty());
-    assert!(gaps.iter().any(|gap| gap
-        .as_str()
-        .unwrap()
-        .contains("not Hyprland's live OpenGL driver")));
+    assert!(gaps
+        .iter()
+        .any(|gap| gap.as_str().unwrap().contains("not Hyprland's live OpenGL")));
 
     let missing = report["proofStillMissing"]
         .as_array()
         .expect("missing proof should be explicit");
-    assert!(missing.iter().all(|gap| !gap
-        .as_str()
-        .unwrap()
-        .contains("No implementation proof exists")));
     assert!(missing
         .iter()
         .any(|gap| gap.as_str().unwrap().contains("No UI proof exists")));
@@ -244,10 +233,6 @@ fn screen_shader_advisory_integration_design_records_source_backed_pairing_and_p
     assert_eq!(
         screen_shader_row["gateStatus"],
         "production-screen-shader-gate-enforced-compile-aware-validation-deferred"
-    );
-    assert_eq!(
-        screen_shader_row["advisoryCompilerIntegrationDesignSource"],
-        "screen-shader-advisory-compiler-integration-design.v0.55.2.json"
     );
     assert_eq!(
         screen_shader_row["advisoryCompilerImplementationProofSource"],

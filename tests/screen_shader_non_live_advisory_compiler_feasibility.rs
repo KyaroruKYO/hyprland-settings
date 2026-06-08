@@ -188,7 +188,7 @@ fn screen_shader_advisory_compiler_feasibility_keeps_policy_advisory_only() -> R
     assert!(screen_shader_row["nextRequiredWork"]
         .as_str()
         .unwrap()
-        .contains("optional advisory compiler implementation proof"));
+        .contains("optional advisory UI exposure design"));
 
     Ok(())
 }

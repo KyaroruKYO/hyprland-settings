@@ -92,14 +92,26 @@
     "advisoryCompilerIntegrationDesignReport": "data/reports/screen-shader-advisory-compiler-integration-design.v0.55.2.json",
     "selectedAdvisoryCompilerIntegrationDesignOption": "Option A",
     "advisoryCompilerIntegrationImplemented": false,
+    "advisoryCompilerImplementationProofReport": "data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json",
+    "selectedAdvisoryCompilerImplementationProofOption": "Option A",
+    "advisoryHelperImplemented": true,
+    "advisoryHelperModule": "src/screen_shader_advisory.rs",
     "compilerChecksWiredIntoValidators": false,
     "compilerChecksWiredIntoPendingChanges": false,
     "compilerChecksWiredIntoWritePlanning": false,
     "compilerChecksWiredIntoApplyFlow": false,
+    "standaloneCompilerCommandsRunThisSprint": true,
+    "standaloneCompilerCommandsRunOnlyOnTempFixtures": true,
+    "realUserShaderFilesReadInTests": false,
     "userConsentRequiredBeforeShaderRead": true,
     "backgroundShaderScanningAllowed": false,
     "originalUserPathPassedToCompiler": false,
     "tempCopyRequired": true,
-    "recommendedNextSprint": "Screen shader optional advisory compiler implementation proof sprint; implement a non-production, user-triggered advisory helper only if it copies explicit user-selected fixture files into temp dirs and proves advisory output is not wired into write safety decisions."
+    "missingToolBehaviorProven": true,
+    "timeoutBehaviorProven": true,
+    "advisoryPassBehaviorProven": true,
+    "advisoryFailBehaviorProven": true,
+    "cleanupFailureBehaviorProven": true,
+    "recommendedNextSprint": "Screen shader optional advisory UI exposure design sprint; design how to expose the non-production advisory helper as an explicit advanced user action without wiring advisory output into validators, pending changes, write planning, apply flow, or write safety decisions."
   }
 }
