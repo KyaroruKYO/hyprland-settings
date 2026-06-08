@@ -8,7 +8,10 @@
     "writable-253-unified-pipeline-proof.v0.55.2.json",
     "hyprmod-companion-full-scalar-comparison.v0.55.2.json",
     "companion-schema-conflict-resolution.v0.55.2.json",
-    "high-risk-enabled-row-pipeline-audit.v0.55.2.json"
+    "high-risk-enabled-row-pipeline-audit.v0.55.2.json",
+    "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+    "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+    "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
   ],
   "counts": {
     "totalWritableRowsAudited": 278,
@@ -13949,6 +13952,20 @@
     "allBlockedRowsAutonomousSafeWritableRowsAfter": 278,
     "allBlockedRowsAutonomousWriteAllowlistChanged": false,
     "allBlockedRowsAutonomousHyprModUsed": false,
-    "allBlockedRowsAutonomousNextRecommendedSprint": "Blocked high-risk rows safety-gate and invalid-value proof design sprint"
+    "allBlockedRowsAutonomousNextRecommendedSprint": "Blocked high-risk rows safety-gate and invalid-value proof design sprint",
+    "allBlockedRowsPreEnablementProofReport": "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+    "allBlockedRowsPreEnablementBlockersReport": "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+    "allBlockedRowsPreEnablementSummaryReport": "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json",
+    "allBlockedRowsPreEnablementRowsProcessed": 63,
+    "allBlockedRowsPreEnablementRowsEnabledThisSprint": 0,
+    "allBlockedRowsPreEnablementRowsStillBlocked": 63,
+    "allBlockedRowsPreEnablementValidatorProofAdded": 63,
+    "allBlockedRowsPreEnablementInvalidValueProofAdded": 63,
+    "allBlockedRowsPreEnablementFixtureWriteRereadProofAdded": 63,
+    "allBlockedRowsPreEnablementSafetyGateProofAdded": 63,
+    "allBlockedRowsPreEnablementUiWarningProofAdded": 63,
+    "allBlockedRowsPreEnablementSafeWritableRowsAfter": 278,
+    "allBlockedRowsPreEnablementWriteAllowlistChanged": false,
+    "allBlockedRowsPreEnablementNextRecommendedSprint": "High-risk production gate and recovery proof planning sprint"
   }
 }

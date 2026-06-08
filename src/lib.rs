@@ -1,3 +1,4 @@
+pub mod blocked_row_pre_enablement;
 pub mod config_backup;
 pub mod config_discovery;
 pub mod config_parser;

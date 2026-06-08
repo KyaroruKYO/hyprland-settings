@@ -1,0 +1,1643 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "all-blocked-rows-pre-enablement-proof",
+  "generatedAt": "2026-06-08T23:32:40.516028Z",
+  "startingCommit": "5fde674",
+  "inputBlockedRows": 63,
+  "rowsProcessed": 63,
+  "rowsWithValidatorProofAdded": 63,
+  "rowsWithInvalidValueProofAdded": 63,
+  "rowsWithFixtureWriteRereadProofAdded": 63,
+  "rowsWithSafetyGateProofAdded": 63,
+  "rowsWithUiWarningProofAdded": 63,
+  "rowsEnabledThisSprint": 0,
+  "rowsStillBlocked": 63,
+  "safeWritableRowsBefore": 278,
+  "safeWritableRowsAfter": 278,
+  "writeAllowlistChanged": false,
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63
+  },
+  "hyprmodUsed": true,
+  "hyprmodPolicyFollowed": true,
+  "hyprmodUse": "companion-only-after-official-source-proof; not used as official evidence, safety proof, or writability proof",
+  "realConfigTouched": false,
+  "runtimeTouched": false,
+  "reloadEvalLuaUsed": false,
+  "screenShaderTrackStatus": "closed-for-now",
+  "rows": [
+    {
+      "rowId": "xwayland.enabled",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "hyprmodHasCompanionHintOnly",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "xwayland.create_abstract_socket",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "opengl.nvidia_anti_flicker",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.direct_scanout",
+      "bucket": "display/render",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.expand_undersized_textures",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.xp_mode",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.ctm_animation",
+      "bucket": "display/render",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.cm_enabled",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.send_content_type",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.cm_auto_hdr",
+      "bucket": "display/render",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.new_render_scheduling",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.non_shader_cm",
+      "bucket": "display/render",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.cm_sdr_eotf",
+      "bucket": "display/render",
+      "valueFamily": "transfer-function",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "official-source-fallback-behavior-recorded-and-proof-validator-rejects-unknown-transfer-functions",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.commit_timing_enabled",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.icc_vcgt_enabled",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.use_shader_blur_blend",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.use_fp16",
+      "bucket": "display/render",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.keep_unmodified_copy",
+      "bucket": "display/render",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.non_shader_cm_interop",
+      "bucket": "display/render",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "render.fp16_sdr_tf",
+      "bucket": "display/render",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.invisible",
+      "bucket": "cursor/input",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "bucket": "cursor/input",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "hyprmodHasCompanionHintOnly",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "bucket": "cursor/input",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "bucket": "cursor/input",
+      "valueFamily": "bounded-integer",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "bucket": "cursor/input",
+      "valueFamily": "bounded-integer",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "bucket": "cursor/input",
+      "valueFamily": "bounded-float",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "hyprmodHasCompanionHintOnly",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "bucket": "cursor/input",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "hyprmodHasCompanionHintOnly",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "bucket": "cursor/input",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "hyprmodHasCompanionHintOnly",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "bucket": "cursor/input",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "hyprmodHasCompanionHintOnly",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "bucket": "cursor/input",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "bucket": "cursor/input",
+      "valueFamily": "dynamic-monitor-name",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-line-safe-dynamic-monitor-validator-added; runtime monitor existence proof remains missing",
+      "invalidValueProofStatus": "proof-validator-rejects config-breaking monitor-name syntax; nonexistent-runtime-monitor behavior remains notProven without live monitor inventory",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "runtime monitor-name allowlist/readback proof is missing; production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "bucket": "cursor/input",
+      "valueFamily": "bounded-float",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "hyprmodHasCompanionHintOnly",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "bucket": "cursor/input",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "bucket": "cursor/input",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "bucket": "cursor/input",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "bucket": "cursor/input",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "hyprmodHasCompanionHintOnly",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "bucket": "cursor/input",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "bucket": "cursor/input",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live input/cursor proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.overlay",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.damage_blink",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.gl_debugging",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.disable_logs",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.disable_time",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.damage_tracking",
+      "bucket": "debug/crash",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.enable_stdout_logs",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.manual_crash",
+      "bucket": "debug/crash",
+      "valueFamily": "bounded-integer",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.suppress_errors",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.disable_scale_checks",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.error_limit",
+      "bucket": "debug/crash",
+      "valueFamily": "bounded-integer",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.error_position",
+      "bucket": "debug/crash",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.colored_stdout_logs",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.log_damage",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.pass",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.full_cm_proto",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer_fifo",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.fifo_pending_workaround",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.render_solitary_wo_damage",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.vfr",
+      "bucket": "debug/crash",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "debug.invalidate_fp16",
+      "bucket": "debug/crash",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; crash/debug proof against the active compositor is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "experimental.wp_cm_1_2",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "quirks.prefer_hdr",
+      "bucket": "display/render",
+      "valueFamily": "finite-choice",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    },
+    {
+      "rowId": "quirks.skip_non_kms_dmabuf_formats",
+      "bucket": "display/render",
+      "valueFamily": "boolean",
+      "startingStatus": "high-risk",
+      "validatorProofStatus": "proof-only-source-backed-validator-added",
+      "invalidValueProofStatus": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProofStatus": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "safetyGateProofStatus": "non-production gate projection added and current production allowlist rejection proven; production-capable live-independent gate remains missing",
+      "uiWarningProofStatus": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "hyprmodCompanionStatus": "notPresentInHyprMod",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-pre-enablement-proof-added-but-production-gate-incomplete",
+      "exactBlockerIfStillBlocked": "production-capable high-risk safety gate proof is missing; live display/render proof is prohibited in this sprint; live-independent recovery proof for this high-risk bucket is missing; explicit approval for high-risk enablement is missing; unified-pipeline enablement tests are missing because the row remains blocked",
+      "filesChangedForRow": [
+        "src/blocked_row_pre_enablement.rs",
+        "tests/all_blocked_rows_pre_enablement_proof.rs",
+        "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+        "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_pre_enablement_proof.rs"
+      ]
+    }
+  ],
+  "summary": {
+    "rowsProcessed": 63,
+    "rowsWithValidatorProofAdded": 63,
+    "rowsWithInvalidValueProofAdded": 63,
+    "rowsWithFixtureWriteRereadProofAdded": 63,
+    "rowsWithSafetyGateProofAdded": 63,
+    "rowsWithUiWarningProofAdded": 63,
+    "rowsEnabledThisSprint": 0,
+    "rowsStillBlocked": 63,
+    "proofLayer": "pre-enablement-only",
+    "rowsFullyProvenForEnablement": 0,
+    "reasonNoRowsEnabled": "all remaining rows still require production-capable high-risk gate/recovery proof, explicit approval, and unified pipeline enablement tests; live proof is prohibited in this sprint"
+  },
+  "proofUsed": [
+    "src/blocked_row_pre_enablement.rs proof-only validators, fixture write/reread helper, gate projection, and UI warning projection",
+    "tests/all_blocked_rows_pre_enablement_proof.rs",
+    "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+    "/tmp/Hyprland-v0.55.2-full/src/helpers/TransferFunction.cpp",
+    "/tmp/Hyprland-v0.55.2-full/src/Compositor.cpp",
+    "data/reports/all-blocked-rows-official-evidence-matrix.v0.55.2.json",
+    "data/reports/all-blocked-rows-allowed-values-matrix.v0.55.2.json",
+    "/home/kyo/Downloads/hyprmod-main.zip companion schema scan only after official source proof"
+  ],
+  "proofStillMissing": [
+    "production-capable high-risk safety gates for display/render, cursor/input, and debug/crash blocked rows",
+    "live-independent recovery proof for each high-risk bucket",
+    "explicit approval for high-risk enablement",
+    "production unified-pipeline enablement tests after gates are proven",
+    "runtime monitor-name oracle for cursor.default_monitor"
+  ],
+  "nextRecommendedSprint": "High-risk production gate and recovery proof planning sprint"
+}

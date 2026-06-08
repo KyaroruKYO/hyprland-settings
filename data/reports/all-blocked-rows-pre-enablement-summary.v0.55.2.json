@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "all-blocked-rows-pre-enablement-summary",
+  "generatedAt": "2026-06-08T23:32:40.516028Z",
+  "blockedRowsBefore": 63,
+  "writableRowsBefore": 278,
+  "rowsProcessed": 63,
+  "rowsEnabledThisSprint": 0,
+  "blockedRowsAfter": 63,
+  "writableRowsAfter": 278,
+  "rowsWithValidatorProofAdded": 63,
+  "rowsWithInvalidValueProofAdded": 63,
+  "rowsWithFixtureWriteRereadProofAdded": 63,
+  "rowsWithSafetyGateProofAdded": 63,
+  "rowsWithUiWarningProofAdded": 63,
+  "rowsStillBlockedByBucket": {
+    "display/render": 23,
+    "cursor/input": 18,
+    "debug/crash": 22
+  },
+  "topBlockerCategories": {
+    "missingSafetyGate": 63,
+    "requiresLiveRuntimeProof": 63,
+    "requiresExplicitApproval": 63,
+    "cursorDefaultMonitorRuntimeOracle": 1
+  },
+  "hyprmodUsed": true,
+  "hyprmodUse": "companion-only-after-official-source-proof",
+  "screenShaderTrackStatus": "closed-for-now",
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "nextRecommendedSprint": "High-risk production gate and recovery proof planning sprint"
+}
