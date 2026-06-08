@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "screen-shader-non-live-advisory-compiler-feasibility",
+  "generatedAt": "2026-06-08T00:44:33-07:00",
+  "rowId": "decoration.screen_shader",
+  "officialSetting": "decoration.screen_shader",
+  "startingCommit": "df2626a",
+  "selectedFeasibilityOption": "Option A",
+  "decisionSummary": "A fixture/temp-only glslangValidator command is feasible for future optional advisory or research checks. It is not Hyprland runtime safety proof, is not required preflight, and was not wired into production validation or write planning.",
+  "currentWritableStatus": "writable",
+  "productionGateEnforced": true,
+  "productionGateChanged": false,
+  "watchdogMigrationProofStatus": "complete",
+  "compileAwareValidationCurrentStatus": "deferred",
+  "compileAwareValidationChanged": false,
+  "compileAwareValidationImplemented": false,
+  "productionCompileAwareValidationImplemented": false,
+  "shaderCompilationThroughHyprlandRun": false,
+  "standaloneCompilerCommandsRun": [
+    {
+      "tool": "glslangValidator",
+      "commandShape": "glslangValidator -l <temp tex300.vert> <temp good-300.frag>",
+      "fixtureTempOnly": true,
+      "exitCode": 0,
+      "result": "accepted-known-good-es300-fixture"
+    },
+    {
+      "tool": "glslangValidator",
+      "commandShape": "glslangValidator -l <temp tex300.vert> <temp bad-300.frag>",
+      "fixtureTempOnly": true,
+      "exitCode": 2,
+      "result": "rejected-intentionally-invalid-es300-fixture"
+    },
+    {
+      "tool": "glslangValidator",
+      "commandShape": "glslangValidator -l <temp tex320.vert> <temp good-320.frag>",
+      "fixtureTempOnly": true,
+      "exitCode": 0,
+      "result": "accepted-known-good-es320-fixture"
+    },
+    {
+      "tool": "glslangValidator",
+      "commandShape": "glslangValidator -l <temp tex320.vert> <temp bad-320.frag>",
+      "fixtureTempOnly": true,
+      "exitCode": 2,
+      "result": "rejected-intentionally-invalid-es320-fixture"
+    },
+    {
+      "tool": "glslc",
+      "commandShape": "glslc -fshader-stage=fragment <temp good-300.frag> -o <temp output.spv>",
+      "fixtureTempOnly": true,
+      "exitCode": 1,
+      "result": "not-chosen-spv-semantics-rejected-hyprland-shaped-es300-fixture"
+    },
+    {
+      "tool": "glslc",
+      "commandShape": "glslc -fshader-stage=fragment <temp good-320.frag> -o <temp output.spv>",
+      "fixtureTempOnly": true,
+      "exitCode": 1,
+      "result": "not-chosen-spv-semantics-rejected-hyprland-shaped-es320-fixture"
+    }
+  ],
+  "liveShaderCompileUsed": false,
+  "liveDisplayRuntimeProofUsed": false,
+  "realConfigTouched": false,
+  "runtimeTouched": false,
+  "reloadEvalLuaUsed": false,
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0,
+  "readableRows": 341,
+  "writableRows": 278,
+  "blockedRows": 63,
+  "candidateToolsChecked": [
+    {
+      "tool": "glslangValidator",
+      "available": true,
+      "path": "/usr/bin/glslangValidator",
+      "selectedForAdvisoryResearch": true,
+      "reason": "The -l command can link generated fixture fragment shaders with the official Hyprland tex300.vert and tex320.vert vertex shaders without Hyprland runtime access."
+    },
+    {
+      "tool": "glslc",
+      "available": true,
+      "path": "/usr/bin/glslc",
+      "selectedForAdvisoryResearch": false,
+      "reason": "The tested SPIR-V-oriented invocation rejected Hyprland-shaped GLSL ES fixtures for SPIR-V requirements that are not Hyprland's OpenGL runtime compile path."
+    }
+  ],
+  "chosenAdvisoryTool": "glslangValidator",
+  "fixtureTempOnly": true,
+  "fixtureGoodShaderAccepted": true,
+  "fixtureInvalidShaderRejected": true,
+  "fixtureUsesHyprlandVertexPairing": true,
+  "realUserShaderFilesRead": false,
+  "writesOutsideTempDir": false,
+  "hyprlandRuntimeRequired": false,
+  "displayRuntimeRequired": false,
+  "officialHyprlandSourceBasis": [
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/src/render/OpenGL.cpp",
+      "evidence": "CHyprOpenGLImpl::applyScreenShader reads a config-relative fragment shader file, selects tex320.vert when the fragment starts with #version 320 es, otherwise selects tex300.vert, and calls CShader::createProgram."
+    },
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/src/render/Shader.cpp",
+      "evidence": "CShader::createProgram compiles vertex and fragment sources and links them through OpenGL runtime APIs."
+    },
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/src/render/shaders/glsl/tex300.vert",
+      "evidence": "Official Hyprland GLSL ES 300 vertex shader used for non-320 screen shader fragments."
+    },
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/src/render/shaders/glsl/tex320.vert",
+      "evidence": "Official Hyprland GLSL ES 320 vertex shader used when the fragment shader begins with #version 320 es."
+    },
+    {
+      "path": "/tmp/Hyprland-v0.55.2-full/example/screenShader.frag",
+      "evidence": "Official example fragment shader shape uses #version 300 es, precision qualifier, v_texcoord, fragColor, and sampler2D tex."
+    }
+  ],
+  "fixtureProof": {
+    "tempDirPattern": "/tmp/hyprland-settings-screen-shader-advisory-compiler-*",
+    "actualTempDir": "/tmp/hyprland-settings-screen-shader-advisory-compiler-njPjBk",
+    "generatedFixtureFiles": [
+      "tex300.vert",
+      "tex320.vert",
+      "good-300.frag",
+      "bad-300.frag",
+      "good-320.frag",
+      "bad-320.frag"
+    ],
+    "knownGoodFixtureShape": "Hyprland example-compatible raw fragment shader with #version 300 es or #version 320 es, precision mediump float, in vec2 v_texcoord, layout(location = 0) out vec4 fragColor, uniform sampler2D tex, and main sampling tex.",
+    "invalidFixtureShape": "Same fixture shape with an intentionally malformed vec4 constructor to force a syntax error.",
+    "goodFixtureAcceptedByChosenTool": true,
+    "invalidFixtureRejectedByChosenTool": true,
+    "usesOfficialHyprlandVertexPairing": true,
+    "readsRealUserShaderFiles": false,
+    "writesOutsideTempDir": false,
+    "requiresHyprlandRuntime": false,
+    "requiresDisplayRuntime": false
+  },
+  "recommendedValidationPolicy": {
+    "policy": "optional-advisory-research-only",
+    "requiredPreflight": false,
+    "productionValidator": false,
+    "writePlanningIntegration": false,
+    "userShaderFileReadsAllowedByThisSprint": false,
+    "summary": "A future sprint may design an optional advanced advisory check around glslangValidator fixture/user-selected temp copies, but it must not be treated as equivalent to Hyprland runtime safety."
+  },
+  "compatibilityGaps": [
+    "glslangValidator is not Hyprland's live OpenGL driver, context, extension set, or linker implementation.",
+    "The fixture command approximates Hyprland's vertex/fragment pairing but does not prove behavior inside Hyprland's actual CShader::createProgram runtime path.",
+    "The fixture command does not prove uniform availability, sampler binding behavior, output behavior, GPU-specific compiler behavior, or visual safety.",
+    "No official Hyprland non-live screen-shader validation interface was found.",
+    "This sprint does not prove a policy for reading real user shader files during write planning.",
+    "glslc was checked but not chosen because the tested command uses SPIR-V-oriented semantics that rejected Hyprland-shaped OpenGL GLSL ES fixtures."
+  ],
+  "proofUsed": [
+    "Official Hyprland v0.55.2 OpenGL source inspection for screen shader consumption and compile/link path.",
+    "Official Hyprland tex300.vert and tex320.vert copied into a temporary fixture directory for command-shape proof.",
+    "Generated good and invalid GLSL ES 300 and 320 fragment shader fixtures under /tmp.",
+    "Local glslangValidator command proof accepted good fixtures and rejected invalid fixtures without using Hyprland runtime.",
+    "Local glslc command proof recorded a non-chosen candidate with SPIR-V compatibility mismatch."
+  ],
+  "proofStillMissing": [
+    "No proof that glslangValidator results are equivalent to Hyprland's OpenGL runtime compile/link results.",
+    "No proof that advisory validation can safely read real user shader files during write planning.",
+    "No production compile-aware validator implementation exists.",
+    "No official Hyprland non-live validation interface was found.",
+    "No visual/display safety proof exists and no live display/render proof was attempted."
+  ],
+  "nextRecommendedSprint": "Screen shader advisory compiler integration design sprint: design whether an optional advanced advisory check may copy a user-selected shader into a temp fixture and run glslangValidator without production enforcement, without live Hyprland, and without treating the result as runtime safety proof."
+}

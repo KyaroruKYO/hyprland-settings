@@ -2,23 +2,23 @@
 
 This file is the starting context for a new ChatGPT conversation. It is written for ChatGPT and the user, not for Codex internals. Assume the new conversation has no other history.
 
-State reviewed after the screen shader compile-aware validation design research sprint on branch `completion-sprint`.
+State reviewed after the screen shader non-live advisory compiler feasibility proof sprint on branch `completion-sprint`.
 
 Latest completed baseline before this research sprint:
 
-- `1791924 Wire screen shader production gate approval`
+- `df2626a Research screen shader compile-aware validation`
 
 Latest sprint commit:
 
-- `Research screen shader compile-aware validation` (this commit; use `git log -1 --oneline` for the exact hash)
+- `Prove screen shader advisory compiler feasibility` (this commit; use `git log -1 --oneline` for the exact hash)
 
 Latest restore point and backups:
 
-- Restore tag: `pre-screen-shader-compile-aware-research-20260607-034130`
-- Project backup: `/home/kyo/Documents/hyprland-settings-pre-screen-shader-compile-aware-research-backup_20260607_034130/`
-- AGS backup: `/home/kyo/Documents/ags-pre-screen-shader-compile-aware-research-backup_20260607_034130`
-- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-compile-aware-research-20260607_034130`
-- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-compile-aware-research-backup_20260607_034130`
+- Restore tag: `pre-screen-shader-advisory-compiler-feasibility-20260608-004054`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-screen-shader-advisory-compiler-feasibility-backup_20260608_004054/`
+- AGS backup: `/home/kyo/Documents/ags-pre-screen-shader-advisory-compiler-feasibility-backup_20260608_004054`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-advisory-compiler-feasibility-20260608_004054`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-advisory-compiler-feasibility-backup_20260608_004054`
 
 ## 1. Primary Project Goal
 
@@ -73,13 +73,13 @@ Every sprint should preserve safety boundaries and end with clear final counts:
 
 Current branch: `completion-sprint`
 
-Latest reviewed implementation baseline before the screen shader compile-aware validation design research sprint:
+Latest reviewed implementation baseline before the screen shader non-live advisory compiler feasibility proof sprint:
 
-- `1791924 Wire screen shader production gate approval`
+- `df2626a Research screen shader compile-aware validation`
 
 Latest sprint commit message:
 
-- `Research screen shader compile-aware validation`
+- `Prove screen shader advisory compiler feasibility`
 
 Current scalar row counts:
 
@@ -108,6 +108,7 @@ Screen shader state:
 - Selected production gate architecture option: `Option C`.
 - Selected production gate approval option: `Option C`.
 - Selected compile-aware validation research option: `Option C`.
+- Selected advisory compiler feasibility option: `Option A`.
 - Dry-run/non-production gate primitive added: yes.
 - Primitive name: `screen-shader-dry-run-gated-write-review`.
 - Ungated dry-run `decoration.screen_shader` rejected: yes.
@@ -129,8 +130,15 @@ Screen shader state:
 - Compile-aware validation implemented: no.
 - Shader compilation run: no.
 - Non-live validation designable: yes, for advisory/research-only fixture/temp checks.
+- Standalone compiler commands run: yes, against generated fixture/temp shaders only.
+- Chosen advisory compiler research tool: `glslangValidator`.
+- Fixture good shader accepted: yes.
+- Fixture invalid shader rejected: yes.
+- Fixture uses Hyprland vertex pairing: yes.
+- Real user shader files read: no.
+- Writes outside temp dir: no.
 - Recommended compile-aware policy: advisory or research-only until compatibility with Hyprland's OpenGL runtime path is proven.
-- No row was enabled during the screen shader compile-aware validation research sprint.
+- No row was enabled during the screen shader advisory compiler feasibility sprint.
 - Write allowlist unchanged.
 - Recovery gates unchanged.
 - Real config untouched.
@@ -145,6 +153,7 @@ Decision report:
 - `data/reports/screen-shader-production-gate-architecture.v0.55.2.json`
 - `data/reports/screen-shader-production-gate-approval.v0.55.2.json`
 - `data/reports/screen-shader-compile-aware-validation-research.v0.55.2.json`
+- `data/reports/screen-shader-non-live-advisory-compiler-feasibility.v0.55.2.json`
 
 Decision summary:
 
@@ -159,6 +168,9 @@ Decision summary:
 - Option C was selected in the compile-aware validation research sprint because a standalone non-live check can be researched as advisory syntax/link-shape validation, but cannot prove exact Hyprland runtime OpenGL compile/link or display/render safety.
 - Official source shows Hyprland passes the raw user fragment shader to `CShader::createProgram` and compiles/links through OpenGL with either `tex300.vert` or `tex320.vert`. No official non-live screen-shader validation interface was found.
 - Compile-aware validation remains deferred and was not implemented.
+- Option A was selected in the advisory compiler feasibility sprint because `glslangValidator -l` accepted generated known-good ES 300/320 fixture shader pairs with official Hyprland vertex shaders and rejected intentionally invalid fixture fragments.
+- `glslc` was checked but not chosen because the tested SPIR-V-oriented invocation rejected Hyprland-shaped GLSL ES fixtures for requirements that are not Hyprland's OpenGL runtime path.
+- The advisory compiler feasibility proof is fixture/temp-only. It does not read real user shader files, does not write outside `/tmp`, and is not equivalent to Hyprland runtime safety.
 
 Validation state from the most recent sprint:
 
@@ -171,7 +183,7 @@ Validation state from the most recent sprint:
 - `appstreamcli validate --pedantic ... || true`: completed with expected non-blocking metadata warnings
 - Python export/UI/schema validators: passed
 
-Worktree state at the end of the screen shader sprint was clean. This handoff sprint should also end clean after committing `docs/CHATGPT-HYPRLAND-SETTINGS-HANDOFF.md`.
+Worktree state should be clean after committing the screen shader advisory compiler feasibility sprint changes.
 
 ## 4. Project Architecture Overview
 
@@ -522,11 +534,12 @@ Relevant reports:
 
 Near-term work:
 
-- Screen shader non-live advisory compiler feasibility proof sprint.
-- Use fixture/temp shader files only.
-- Compare candidate standalone validation commands against Hyprland's source-backed vertex pairing expectations.
+- Screen shader advisory compiler integration design sprint.
+- Decide whether an optional advanced advisory check may copy a user-selected shader file into a temp fixture and run `glslangValidator`.
 - Keep production gate enforcement intact for `decoration.screen_shader`.
 - Do not implement production compile-aware validation.
+- Do not wire compiler checks into validators, pending changes, or production apply flow without a separate approved implementation sprint.
+- Do not treat standalone compiler output as Hyprland runtime safety proof.
 - Do not run live shader compile, live display/render proof, reload Hyprland, or mutate real config/runtime.
 
 Remaining deferred validators:
@@ -550,7 +563,11 @@ Remaining deferred validators:
   - Production apply-flow gate enforcement is wired for this row only.
   - Ungated production-flow fixture writes are rejected, gated fixture writes are accepted, and invalid proof is rejected.
   - Compile-aware research selected Option C: advisory/research-only.
-  - Standalone candidates found: `/usr/bin/glslangValidator`, `/usr/bin/glslc`, and Hyprland's internal glslang preprocessing path for built-in shaders.
+  - Advisory compiler feasibility selected Option A.
+  - Standalone candidates checked: `/usr/bin/glslangValidator` and `/usr/bin/glslc`.
+  - Chosen advisory research tool: `glslangValidator`.
+  - `glslangValidator -l` accepted generated known-good ES 300/320 fixture shader pairs using official Hyprland vertex shaders and rejected intentionally invalid fixture fragments.
+  - `glslc` was checked but not chosen because the tested SPIR-V-oriented invocation rejected Hyprland-shaped GLSL ES fixtures for requirements that are not Hyprland's OpenGL runtime path.
   - Compatibility with Hyprland's actual OpenGL runtime compile/link path is not proven.
   - Compile-aware validation remains deferred.
 
@@ -606,14 +623,15 @@ Do not remove current writable behavior without explicit user approval.
 
 Recommended next sprint title:
 
-Screen shader non-live advisory compiler feasibility proof sprint.
+Screen shader advisory compiler integration design sprint.
 
 The sprint should:
 
-- Use fixture/temp shader files only.
-- Compare `glslangValidator`, `glslc`, or an embedded glslang approach against Hyprland's source-backed `tex300.vert` / `tex320.vert` pairing expectations.
+- Decide whether an optional advanced advisory check may copy a user-selected shader file into a temp fixture and run `glslangValidator`.
 - Keep existing production apply-flow gate enforcement unchanged.
 - Keep `decoration.screen_shader` writable and gated.
+- Keep advisory compiler output non-authoritative.
+- Avoid real user shader reads unless the sprint explicitly proves a temp-copy policy and user approval boundary.
 - Not run live shader compile.
 - Not reload Hyprland.
 - Not touch real config.
@@ -649,7 +667,8 @@ Current AppStream warnings are expected and non-blocking under `|| true`:
 
 Latest important commits:
 
-- `Research screen shader compile-aware validation` (this commit)
+- `Prove screen shader advisory compiler feasibility` (this commit)
+- `df2626a Research screen shader compile-aware validation`
 - `1791924 Wire screen shader production gate approval`
 - `6b3bfe1 Design screen shader production gate architecture`
 - `4f22d65 Decide screen shader production gate enforcement`
@@ -667,16 +686,16 @@ Latest important commits:
 - `96b73be Enforce deferred consumer source validator research`
 - `6c785cc Enforce official writable validator source research`
 
-Latest restore tag created before the screen shader compile-aware validation design research sprint:
+Latest restore tag created before the screen shader advisory compiler feasibility proof sprint:
 
-- `pre-screen-shader-compile-aware-research-20260607-034130`
+- `pre-screen-shader-advisory-compiler-feasibility-20260608-004054`
 
-Backup paths created before the screen shader compile-aware validation design research sprint:
+Backup paths created before the screen shader advisory compiler feasibility proof sprint:
 
-- `/home/kyo/Documents/hyprland-settings-pre-screen-shader-compile-aware-research-backup_20260607_034130/`
-- `/home/kyo/Documents/ags-pre-screen-shader-compile-aware-research-backup_20260607_034130`
-- `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-compile-aware-research-20260607_034130`
-- `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-compile-aware-research-backup_20260607_034130`
+- `/home/kyo/Documents/hyprland-settings-pre-screen-shader-advisory-compiler-feasibility-backup_20260608_004054/`
+- `/home/kyo/Documents/ags-pre-screen-shader-advisory-compiler-feasibility-backup_20260608_004054`
+- `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-advisory-compiler-feasibility-20260608_004054`
+- `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-advisory-compiler-feasibility-backup_20260608_004054`
 
 Important report filenames:
 
@@ -700,6 +719,7 @@ Important report filenames:
 - `data/reports/screen-shader-production-gate-architecture.v0.55.2.json`
 - `data/reports/screen-shader-production-gate-approval.v0.55.2.json`
 - `data/reports/screen-shader-compile-aware-validation-research.v0.55.2.json`
+- `data/reports/screen-shader-non-live-advisory-compiler-feasibility.v0.55.2.json`
 
 Important docs filenames:
 
@@ -713,6 +733,7 @@ Important docs filenames:
 - `/home/kyo/.config/hypr/docs/SCREEN-SHADER-PRODUCTION-GATE-ARCHITECTURE.md`
 - `/home/kyo/.config/hypr/docs/SCREEN-SHADER-PRODUCTION-GATE-APPROVAL.md`
 - `/home/kyo/.config/hypr/docs/SCREEN-SHADER-COMPILE-AWARE-VALIDATION-RESEARCH.md`
+- `/home/kyo/.config/hypr/docs/SCREEN-SHADER-NON-LIVE-ADVISORY-COMPILER-FEASIBILITY.md`
 - `/home/kyo/.config/hypr/docs/NEXT-HIGH-RISK-BUCKET-READINESS.md`
 - `/home/kyo/.config/hypr/docs/RUST-DEFERRED-SOURCE-BACKED-VALIDATOR-REPAIR-REPORT.md`
 - `/home/kyo/.config/hypr/docs/SOURCE-BACKED-VALIDATOR-DEFERRED-ITEMS.md`
@@ -737,4 +758,4 @@ Remaining deferred row list:
 
 Next recommended prompt title:
 
-Screen shader non-live advisory compiler feasibility proof sprint.
+Screen shader advisory compiler integration design sprint.

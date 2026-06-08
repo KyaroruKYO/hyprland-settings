@@ -190,10 +190,14 @@ fn screen_shader_policy_followup_is_projected_in_aggregate_reports() -> Result<(
             follow_up["compileAwareValidationStatus"], "deferred",
             "{path}"
         );
-        assert!(follow_up["recommendedNextSprint"]
+        assert!(follow_up["previousRecommendedNextSprint"]
             .as_str()
             .unwrap()
             .contains("production gate enforcement decision"));
+        assert!(follow_up["recommendedNextSprint"]
+            .as_str()
+            .unwrap()
+            .contains("advisory compiler integration design"));
     }
 
     Ok(())

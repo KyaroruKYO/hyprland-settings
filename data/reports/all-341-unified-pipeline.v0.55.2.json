@@ -3335,7 +3335,7 @@
       "testsPresent": true,
       "productionValueKind": "Path",
       "proofSource": "screen-shader-production-gate-approval.v0.55.2.json",
-      "nextRequiredWork": "Screen shader non-live advisory compiler feasibility proof sprint; use fixture/temp shader files only, keep production gate enforcement unchanged, do not implement production compile-aware validation, and do not run live shader compile or display/render proof.",
+      "nextRequiredWork": "Screen shader advisory compiler integration design sprint; decide whether an optional advanced advisory check may copy a user-selected shader into a temp fixture and run glslangValidator, keep production gate enforcement unchanged, do not implement production compile-aware validation, and do not treat standalone compiler output as Hyprland runtime safety proof.",
       "companionSchemaType": "string",
       "companionSchemaDefault": "",
       "companionSuggestedValidTestValues": [
@@ -3359,10 +3359,11 @@
       "watchdogProofSource": "screen-shader-watchdog-migration-proof.v0.55.2.json",
       "approvalProofSource": "screen-shader-production-gate-approval.v0.55.2.json",
       "compileAwareResearchSource": "screen-shader-compile-aware-validation-research.v0.55.2.json",
+      "advisoryCompilerFeasibilitySource": "screen-shader-non-live-advisory-compiler-feasibility.v0.55.2.json",
       "pipelineTemplate": "display-render-screen-shader-watchdog-template",
       "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
       "watchdogRequirement": "screen shader display/render watchdog proof is required before final apply; the production apply flow rejects ungated decoration.screen_shader writes and accepts only gated fixture-proven writes with a valid watchdog plan",
-      "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; production apply requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred; standalone validation is advisory/research-only until compatibility is proven.",
+      "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; production apply requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred; glslangValidator fixture proof supports optional advisory research only and is not Hyprland runtime safety proof.",
       "templateNormalizationStatus": "screen-shader-production-gate-enforced",
       "recoveryGateWeakened": false,
       "productionGateEnforcedThisSprint": true,
@@ -17325,7 +17326,7 @@
     "validationBoundaryReport": "data/reports/screen-shader-validation-boundary.v0.55.2.json",
     "templateMappingReport": "data/reports/screen-shader-high-risk-template-mapping.v0.55.2.json",
     "nextStepReport": "data/reports/screen-shader-next-step-plan.v0.55.2.json",
-    "recommendedNextSprint": "Screen shader production gate enforcement decision sprint; decide whether to migrate production writes into the proven watchdog gate, keep temporary writable candidate status, or propose block/removal with explicit user approval.",
+    "previousRecommendedNextSprint": "Screen shader production gate enforcement decision sprint; decide whether to migrate production writes into the proven watchdog gate, keep temporary writable candidate status, or propose block/removal with explicit user approval.",
     "selectedMigrationOption": "Option A",
     "gateMigrationReport": "data/reports/screen-shader-high-risk-gate-migration.v0.55.2.json",
     "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
@@ -17335,6 +17336,14 @@
     "productionEnforcementChanged": false,
     "productionGateEnforcedThisSprint": false,
     "countedAsEnabledHighRiskRow": false,
-    "compileAwareValidationStatus": "deferred"
+    "compileAwareValidationStatus": "deferred",
+    "advisoryCompilerFeasibilityReport": "data/reports/screen-shader-non-live-advisory-compiler-feasibility.v0.55.2.json",
+    "selectedAdvisoryCompilerFeasibilityOption": "Option A",
+    "chosenAdvisoryTool": "glslangValidator",
+    "fixtureGoodShaderAccepted": true,
+    "fixtureInvalidShaderRejected": true,
+    "fixtureUsesHyprlandVertexPairing": true,
+    "advisoryCompilerRecommendedPolicy": "optional-advisory-research-only",
+    "recommendedNextSprint": "Screen shader advisory compiler integration design sprint; decide whether optional advanced advisory checks may copy user-selected shader files into temp fixtures and run glslangValidator without production enforcement or runtime-safety claims."
   }
 }

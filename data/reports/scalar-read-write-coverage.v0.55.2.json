@@ -1216,7 +1216,7 @@
       "validatorSupported": true,
       "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Currently writable. Official source reads and compiles non-empty values as final screen fragment shader files. Path validation is not display/render safety proof; production apply now requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred; non-live standalone validation is advisory/research-only until compatibility with Hyprland's OpenGL runtime path is proven."
+      "notes": "Currently writable. Official source reads and compiles non-empty values as final screen fragment shader files. Path validation is not display/render safety proof; production apply now requires the screen-shader high-risk watchdog gate. Fixture/temp glslangValidator proof shows a future optional advisory compiler check is feasible, but compile-aware validation remains deferred and standalone output is not Hyprland runtime safety proof."
     },
     {
       "rowId": "animations.workspace_wraparound",
