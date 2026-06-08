@@ -195,6 +195,18 @@
     "allBlockedRowsAuditRowsEnabledThisSprint": 0,
     "allBlockedRowsAuditSafeWritableRowsChanged": false,
     "allBlockedRowsAuditWriteAllowlistChanged": false,
-    "allBlockedRowsAuditNextRecommendedSprint": "All blocked rows invalid-value behavior and safety-gate proof cleanup sprint"
+    "allBlockedRowsAuditNextRecommendedSprint": "All blocked rows invalid-value behavior and safety-gate proof cleanup sprint",
+    "allBlockedRowsAutonomousCompletionReport": "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+    "allBlockedRowsAutonomousErrorFutureResearchLog": "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+    "allBlockedRowsAutonomousSummaryReport": "data/reports/all-blocked-rows-autonomous-writability-summary.v0.55.2.json",
+    "allBlockedRowsAutonomousReviewLog": "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md",
+    "allBlockedRowsAutonomousRowsProcessed": 63,
+    "allBlockedRowsAutonomousRowsEnabledThisSprint": 0,
+    "allBlockedRowsAutonomousRowsStillBlocked": 63,
+    "allBlockedRowsAutonomousSafeWritableRowsBefore": 278,
+    "allBlockedRowsAutonomousSafeWritableRowsAfter": 278,
+    "allBlockedRowsAutonomousWriteAllowlistChanged": false,
+    "allBlockedRowsAutonomousHyprModUsed": false,
+    "allBlockedRowsAutonomousNextRecommendedSprint": "Blocked high-risk rows safety-gate and invalid-value proof design sprint"
   }
 }

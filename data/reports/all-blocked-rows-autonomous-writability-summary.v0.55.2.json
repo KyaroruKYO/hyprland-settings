@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "all-blocked-rows-autonomous-writability-summary",
+  "generatedAt": "2026-06-08T16:05:33-07:00",
+  "blockedRowsBefore": 63,
+  "writableRowsBefore": 278,
+  "rowsEnabledThisSprint": 0,
+  "blockedRowsAfter": 63,
+  "writableRowsAfter": 278,
+  "rowsStillBlocked": 63,
+  "rowsCompletedByBucket": {
+    "display/render": 0,
+    "cursor/input": 0,
+    "debug/crash": 0
+  },
+  "rowsStillBlockedByBucket": {
+    "display/render": 23,
+    "cursor/input": 18,
+    "debug/crash": 22
+  },
+  "topBlockerCategories": {
+    "missingInvalidValueBehavior": 63,
+    "missingValidatorProof": 63,
+    "missingFixtureWriteReread": 63,
+    "missingSafetyGate": 63,
+    "missingUiWarning": 63,
+    "missingTests": 63,
+    "requiresLiveRuntimeProof": 63,
+    "requiresUserApproval": 63,
+    "missingAllowedValues": 1,
+    "missingOfficialDocsCitation": 63
+  },
+  "screenShaderTrackStatus": "closed-for-now",
+  "nextRecommendedSprint": "Blocked high-risk rows safety-gate and invalid-value proof design sprint",
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false
+}
