@@ -187,7 +187,7 @@ fn screen_shader_advisory_ui_design_links_unified_pipeline() -> Result<()> {
     assert!(screen_shader_row["nextRequiredWork"]
         .as_str()
         .unwrap()
-        .contains("GTK file chooser visual proof"));
+        .contains("Next high-risk bucket readiness"));
     assert_eq!(screen_shader_row["productionGateEnforcedThisSprint"], true);
     assert_eq!(screen_shader_row["countedAsEnabledHighRiskRow"], false);
 

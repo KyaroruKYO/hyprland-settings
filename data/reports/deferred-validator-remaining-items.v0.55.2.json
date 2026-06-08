@@ -38,8 +38,8 @@
     {
       "rowId": "decoration.screen_shader",
       "officialSetting": "decoration.screen_shader",
-      "remainingReason": "display/render compile-sensitive path requires high-risk review before compile-aware validation",
-      "nextAction": "run display/render high-risk screen shader review sprint"
+      "remainingReason": "display/render compile-sensitive path remains compile-aware deferred after production gate and advisory proof closure",
+      "nextAction": "screen-shader-specific work is deferred by default; return to grouped high-risk/bucket-level planning unless explicitly approved or required by a proven safety failure"
     }
   ],
   "safety": {
@@ -164,6 +164,17 @@
     "advisoryResultCanApproveWrite": false,
     "advisoryResultCanBlockWrite": false,
     "advisoryResultCanBypassProductionGate": false,
-    "recommendedNextSprint": "Screen shader optional advisory GTK file chooser visual proof sprint; implement direct GTK file chooser interaction only if it can be tested with generated fixture/temp files, never read real user shader files in tests, keep compiler arguments temp-only, and keep advisory output disconnected from write safety."
+    "screenShaderTrackClosureReport": "data/reports/screen-shader-track-closure.v0.55.2.json",
+    "highRiskPatternReport": "data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json",
+    "returnTo341RoadmapReport": "data/reports/return-to-341-writable-roadmap.v0.55.2.json",
+    "screenShaderTrackClosedForNow": true,
+    "deferredShaderSpecificWork": [
+      "direct GTK file chooser visual interaction proof",
+      "visible selected-file boundary proof through direct GTK file chooser interaction",
+      "cancellation/progress behavior through visible GTK UI",
+      "Hyprland OpenGL runtime compile/link equivalence",
+      "production compile-aware validation"
+    ],
+    "recommendedNextSprint": "Next high-risk bucket readiness and batching sprint; return to grouped high-risk/bucket-level planning instead of another direct screen-shader sprint."
   }
 }

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "return-to-341-writable-roadmap",
+  "generatedAt": "2026-06-08T14:51:04-07:00",
+  "projectGoal": "Make all 341 official Hyprland scalar rows writable where possible, including officially supported variables/options within those settings, but only when official Hyprland documentation/source supports the behavior and the unified row-driven pipeline proves the row works safely.",
+  "currentCounts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63
+  },
+  "screenShaderStatus": {
+    "rowId": "decoration.screen_shader",
+    "currentWritableStatus": "writable",
+    "productionGateEnforced": true,
+    "screenShaderTrackClosedForNow": true,
+    "remainingShaderSpecificWorkDeferred": true
+  },
+  "nextWorkMode": "grouped-high-risk-bucket-level-planning",
+  "remainingBlockedBuckets": {
+    "displayRenderBlockedRows": 23,
+    "cursorInputBlockedRows": 18,
+    "debugCrashBlockedRows": 22
+  },
+  "recommendedNextSprint": "Next high-risk bucket readiness and batching sprint",
+  "batchingPolicy": "Next work should return to grouped high-risk/bucket-level planning, not further decoration.screen_shader deep-dives.",
+  "avoidRabbitHolePolicy": "Do not continue one-row deep dives unless explicitly approved or required by a proven current safety failure.",
+  "sourceEvidencePolicy": "Every future writable row still needs official Hyprland documentation/source evidence or a recorded missing-proof blocker.",
+  "writeEnablementPolicy": "No row should be enabled without a dedicated approved sprint that proves source-backed validator behavior, fixture/temp write safety, recovery gates when risky, unchanged unrelated rows, and final counts.",
+  "proofRequiredForWritable": [
+    "official source/docs evidence",
+    "value validator proof",
+    "pending-change proof",
+    "fixture/temp config write and reread proof",
+    "risk bucket classification",
+    "watchdog/recovery proof when risky",
+    "UI warning or advisory separation proof when needed",
+    "aggregate report links and regression tests"
+  ],
+  "doNotEnableWithoutApproval": true,
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0,
+  "readableRows": 341,
+  "writableRows": 278,
+  "blockedRows": 63,
+  "proofUsed": [
+    "data/reports/scalar-read-write-coverage.v0.55.2.json",
+    "data/reports/all-341-unified-pipeline.v0.55.2.json",
+    "data/reports/next-high-risk-bucket-readiness.v0.55.2.json",
+    "data/reports/screen-shader-track-closure.v0.55.2.json",
+    "data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json"
+  ],
+  "proofStillMissing": [
+    "selection of the next grouped high-risk bucket or subset",
+    "row-specific source-backed proof for future blocked rows",
+    "approved behavior-change sprint before any new row enablement"
+  ]
+}

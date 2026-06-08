@@ -11,7 +11,10 @@
     "data/reports/config-persistence-validation-results.v0.55.2.json",
     "data/reports/hyprmod-merged-schema-evidence.v0.55.2.json",
     "data/reports/hyprmod-companion-full-scalar-comparison.v0.55.2.json",
-    "src/write_classification.rs"
+    "src/write_classification.rs",
+    "data/reports/screen-shader-track-closure.v0.55.2.json",
+    "data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json",
+    "data/reports/return-to-341-writable-roadmap.v0.55.2.json"
   ],
   "pipelineShape": [
     "rowId",
@@ -3365,15 +3368,26 @@
       "advisoryUiImplementationProofSource": "screen-shader-advisory-ui-implementation-proof.v0.55.2.json",
       "advisoryGtkWidgetWiringProofSource": "screen-shader-advisory-gtk-widget-wiring-proof.v0.55.2.json",
       "advisoryFileChooserExecutionProofSource": "screen-shader-advisory-file-chooser-execution-proof.v0.55.2.json",
+      "screenShaderTrackClosureSource": "screen-shader-track-closure.v0.55.2.json",
+      "highRiskPatternSource": "high-risk-row-pattern-from-screen-shader.v0.55.2.json",
+      "returnTo341RoadmapSource": "return-to-341-writable-roadmap.v0.55.2.json",
       "pipelineTemplate": "display-render-screen-shader-watchdog-template",
       "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
       "watchdogRequirement": "screen shader display/render watchdog proof is required before final apply; the production apply flow rejects ungated decoration.screen_shader writes and accepts only gated fixture-proven writes with a valid watchdog plan",
-      "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; production apply requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred. A visible non-production advanced advisory GTK widget exists, and a fixture-selected file action model proves temp-copy execution with generated temp files only. Direct GTK file chooser visual interaction remains deferred; advisory output is explicit-user-triggered, temp-copy-only, non-blocking, non-authoritative, row-specific, and not wired into write safety.",
+      "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; production apply requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred. A visible non-production advanced advisory GTK widget exists, and a fixture-selected file action model proves temp-copy execution with generated temp files only. Direct GTK file chooser visual interaction remains deferred; advisory output is explicit-user-triggered, temp-copy-only, non-blocking, non-authoritative, row-specific, and not wired into write safety. The screen-shader track is closed for now; remaining shader-specific gaps are deferred by default.",
       "templateNormalizationStatus": "screen-shader-production-gate-enforced",
       "recoveryGateWeakened": false,
       "productionGateEnforcedThisSprint": true,
       "countedAsEnabledHighRiskRow": false,
-      "nextRequiredWork": "Screen shader optional advisory GTK file chooser visual proof sprint: implement direct GTK file chooser interaction only if it can be tested with generated fixture/temp files, never read real user shader files in tests, keep compiler arguments temp-only, and keep advisory output disconnected from write safety."
+      "screenShaderTrackClosedForNow": true,
+      "deferredShaderSpecificWork": [
+        "direct GTK file chooser visual interaction proof",
+        "visible selected-file boundary proof through direct GTK file chooser interaction",
+        "cancellation/progress behavior through visible GTK UI",
+        "Hyprland OpenGL runtime compile/link equivalence",
+        "production compile-aware validation"
+      ],
+      "nextRequiredWork": "Next high-risk bucket readiness and batching sprint; do not continue decoration.screen_shader work by default unless explicitly approved or required by a proven current safety failure."
     },
     {
       "rowId": "animations.workspace_wraparound",
@@ -17425,6 +17439,17 @@
     "advisoryResultCanApproveWrite": false,
     "advisoryResultCanBlockWrite": false,
     "advisoryResultCanBypassProductionGate": false,
-    "recommendedNextSprint": "Screen shader optional advisory GTK file chooser visual proof sprint; implement direct GTK file chooser interaction only if it can be tested with generated fixture/temp files, never read real user shader files in tests, keep compiler arguments temp-only, and keep advisory output disconnected from write safety."
+    "screenShaderTrackClosureReport": "data/reports/screen-shader-track-closure.v0.55.2.json",
+    "highRiskPatternReport": "data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json",
+    "returnTo341RoadmapReport": "data/reports/return-to-341-writable-roadmap.v0.55.2.json",
+    "screenShaderTrackClosedForNow": true,
+    "deferredShaderSpecificWork": [
+      "direct GTK file chooser visual interaction proof",
+      "visible selected-file boundary proof through direct GTK file chooser interaction",
+      "cancellation/progress behavior through visible GTK UI",
+      "Hyprland OpenGL runtime compile/link equivalence",
+      "production compile-aware validation"
+    ],
+    "recommendedNextSprint": "Next high-risk bucket readiness and batching sprint; return to grouped high-risk/bucket-level planning instead of another direct screen-shader sprint."
   }
 }

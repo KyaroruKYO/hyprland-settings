@@ -2,23 +2,23 @@
 
 This file is the starting context for a new ChatGPT conversation. It is written for ChatGPT and the user, not for Codex internals. Assume the new conversation has no other history.
 
-State reviewed after the screen shader optional advisory file chooser execution proof sprint on branch `completion-sprint`.
+State reviewed after the screen shader closure and high-risk pattern extraction sprint on branch `completion-sprint`.
 
 Latest reviewed implementation baseline before this sprint:
 
-- `e21ee10 Prove screen shader advisory GTK widget wiring`
+- `2d98e7c Prove screen shader advisory file chooser execution`
 
 Latest sprint commit:
 
-- `Prove screen shader advisory file chooser execution` (this commit; use `git log -1 --oneline` for the exact hash)
+- `Close screen shader track and return to 341 roadmap` (this commit; use `git log -1 --oneline` for the exact hash)
 
 Latest restore point and backups:
 
-- Restore tag: `pre-screen-shader-advisory-file-chooser-execution-proof-20260608-051321`
-- Project backup: `/home/kyo/Documents/hyprland-settings-pre-screen-shader-advisory-file-chooser-execution-proof-backup_20260608_051321/`
-- AGS backup: `/home/kyo/Documents/ags-pre-screen-shader-advisory-file-chooser-execution-proof-backup_20260608_051321`
-- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-advisory-file-chooser-execution-proof-20260608_051321`
-- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-advisory-file-chooser-execution-proof-backup_20260608_051321`
+- Restore tag: `pre-screen-shader-closure-high-risk-pattern-20260608-145104`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-screen-shader-closure-high-risk-pattern-backup_20260608_145104/`
+- AGS backup: `/home/kyo/Documents/ags-pre-screen-shader-closure-high-risk-pattern-backup_20260608_145104`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-closure-high-risk-pattern-20260608_145104`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-closure-high-risk-pattern-backup_20260608_145104`
 
 ## 1. Primary Project Goal
 
@@ -73,13 +73,13 @@ Every sprint should preserve safety boundaries and end with clear final counts:
 
 Current branch: `completion-sprint`
 
-Latest reviewed implementation baseline before the screen shader optional advisory file chooser execution proof sprint:
+Latest reviewed implementation baseline before the screen shader closure and high-risk pattern extraction sprint:
 
-- `e21ee10 Prove screen shader advisory GTK widget wiring`
+- `2d98e7c Prove screen shader advisory file chooser execution`
 
 Latest sprint commit message:
 
-- `Prove screen shader advisory file chooser execution`
+- `Close screen shader track and return to 341 roadmap`
 
 Current scalar row counts:
 
@@ -115,6 +115,9 @@ Screen shader state:
 - Selected advisory UI implementation proof option: `Option A`.
 - Selected advisory GTK widget wiring proof option: `Option A`.
 - Selected advisory file chooser execution proof option: `Option B`.
+- Screen shader closure status: closed for now.
+- Reusable high-risk pattern status: extracted in `data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json`.
+- Return-to-341 roadmap status: created in `data/reports/return-to-341-writable-roadmap.v0.55.2.json`.
 - Dry-run/non-production gate primitive added: yes.
 - Primitive name: `screen-shader-dry-run-gated-write-review`.
 - Ungated dry-run `decoration.screen_shader` rejected: yes.
@@ -195,7 +198,12 @@ Screen shader state:
 - Advisory result can block writes: no.
 - Advisory result can bypass production gate: no.
 - Recommended compile-aware policy: advisory or research-only until compatibility with Hyprland's OpenGL runtime path is proven.
-- No row was enabled during the screen shader optional advisory file chooser execution proof sprint.
+- Screen-shader-specific track closed for now: yes.
+- Remaining shader-specific work is deferred by default: direct GTK file chooser visual proof, visible selected-file boundary proof, cancellation/progress behavior through visible GTK UI, Hyprland OpenGL runtime compile/link equivalence, and production compile-aware validation.
+- Future screen-shader work should occur only if explicitly approved or if a proven safety failure appears.
+- Reusable high-risk row pattern extracted: yes; it is a decision framework, not automatic permission to enable rows.
+- Return-to-341 roadmap created: yes; next work should return to grouped high-risk/bucket-level planning.
+- No row was enabled during the screen shader closure and high-risk pattern extraction sprint.
 - Write allowlist unchanged.
 - Recovery gates unchanged.
 - Real config untouched.
@@ -217,6 +225,9 @@ Decision report:
 - `data/reports/screen-shader-advisory-ui-implementation-proof.v0.55.2.json`
 - `data/reports/screen-shader-advisory-gtk-widget-wiring-proof.v0.55.2.json`
 - `data/reports/screen-shader-advisory-file-chooser-execution-proof.v0.55.2.json`
+- `data/reports/screen-shader-track-closure.v0.55.2.json`
+- `data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json`
+- `data/reports/return-to-341-writable-roadmap.v0.55.2.json`
 
 Decision summary:
 
@@ -250,6 +261,9 @@ Decision summary:
 - The selected-file action model proves original selected paths are not passed to `glslangValidator`, compiler path arguments are temp paths only, and advisory output remains disconnected from write safety.
 - Direct GTK file chooser visual interaction, visible selected-file boundary proof, and cancellation/progress proof are still missing.
 - Compiler checks remain unwired from validators, pending changes, write planning, and apply flow.
+- The screen-shader closure sprint closed the `decoration.screen_shader` track for now. The row remains writable and production-gated, compile-aware validation remains deferred, and remaining shader-specific gaps are no longer the default next sprint.
+- The high-risk row pattern extracted from the screen-shader work says parser acceptance, HyprMod exposure, UI metadata, advisory checks, and standalone compiler output are not safety proof. Each future high-risk row still requires source-backed, row-specific proof.
+- The return-to-341 roadmap moves the project back to grouped high-risk/bucket-level planning toward all 341 official scalar rows writable where possible.
 
 Validation state from the most recent sprint:
 
@@ -262,7 +276,7 @@ Validation state from the most recent sprint:
 - `appstreamcli validate --pedantic ... || true`: completed with expected non-blocking metadata warnings
 - Python export/UI/schema validators: passed
 
-Worktree state should be clean after committing the screen shader advisory file chooser execution proof sprint changes.
+Worktree state should be clean after committing the screen shader closure and high-risk pattern extraction sprint changes.
 
 ## 4. Project Architecture Overview
 
@@ -617,10 +631,12 @@ Relevant reports:
 
 Near-term work:
 
-- Screen shader optional advisory GTK file chooser visual proof sprint.
-- Implement direct GTK file chooser interaction only if it can be tested with generated fixture/temp files, never read real user shader files in tests, and keep compiler arguments temp-only.
-- Prove visible selected-file boundary, file chooser behavior, cancellation/progress behavior, no auto-run, no real user shader reads in tests, no live shader compile, no live display proof, and advisory-only result rendering.
+- Next high-risk bucket readiness and batching sprint.
+- Return to grouped high-risk/bucket-level planning toward the 341-row writable goal.
+- Use the extracted high-risk pattern as a framework, not automatic permission to enable rows.
+- Keep `decoration.screen_shader` closed for now unless explicitly approved or required by a proven current safety failure.
 - Keep production gate enforcement intact for `decoration.screen_shader`.
+- Keep direct GTK file chooser visual proof, visible selected-file boundary proof, cancellation/progress behavior, Hyprland OpenGL runtime equivalence, and production compile-aware validation deferred by default.
 - Do not implement production compile-aware validation.
 - Do not wire compiler checks into validators, pending changes, write planning, or production apply flow without a separate approved implementation sprint.
 - Do not treat standalone compiler output as Hyprland runtime safety proof.
@@ -672,6 +688,27 @@ Remaining deferred validators:
   - Cancellation/progress behavior through visible GTK UI is still missing.
   - Compatibility with Hyprland's actual OpenGL runtime compile/link path is not proven.
   - Compile-aware validation remains deferred.
+  - Screen-shader track closure report exists: `data/reports/screen-shader-track-closure.v0.55.2.json`.
+  - Screen-shader track is closed for now.
+  - Remaining shader-specific gaps are deferred by default, not the next default sprint.
+  - Future screen-shader work should occur only with explicit approval or if a proven current safety failure appears.
+
+Reusable high-risk pattern:
+
+- Extracted from `decoration.screen_shader` into `data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json`.
+- This is a decision framework, not automatic permission to enable rows.
+- Future high-risk rows still require source-backed, row-specific proof.
+- Do not infer safety from parser acceptance, HyprMod exposure, UI metadata alone, advisory checks alone, standalone compiler output alone, or policy names without tests.
+- Advisory checks do not replace recovery/watchdog gates.
+- Prefer grouped high-risk bucket planning and small approved batches instead of endless one-row deep dives.
+
+Return-to-341 roadmap:
+
+- Created in `data/reports/return-to-341-writable-roadmap.v0.55.2.json`.
+- Project goal remains all 341 official Hyprland scalar rows writable where possible.
+- Current counts remain 341 readable / 278 writable / 63 blocked.
+- Next work mode is grouped high-risk/bucket-level planning.
+- Recommended next sprint: `Next high-risk bucket readiness and batching sprint`.
 
 Remaining high-risk blocked settings:
 
@@ -725,21 +762,17 @@ Do not remove current writable behavior without explicit user approval.
 
 Recommended next sprint title:
 
-Screen shader optional advisory GTK file chooser visual proof sprint.
+Next high-risk bucket readiness and batching sprint.
 
 The sprint should:
 
-- Implement direct GTK file chooser interaction only if it can use generated fixture/temp files in tests.
-- Keep compiler path arguments limited to temp paths.
-- Render advisory output as non-authoritative and non-blocking.
-- Prove visible selected-file boundary, file chooser behavior, and cancellation/progress behavior without reading real user shader files in tests.
-- Keep existing production apply-flow gate enforcement unchanged.
-- Keep `decoration.screen_shader` writable and gated.
-- Keep advisory compiler output non-authoritative.
-- Require explicit user action before reading/copying a shader file.
-- Avoid passing original user shader paths to `glslangValidator`.
-- Keep advisory output disconnected from validators, pending changes, write planning, apply flow, and write safety decisions.
-- Not run live shader compile.
+- Return to grouped high-risk/bucket-level planning toward the 341-row writable goal.
+- Use `data/reports/next-high-risk-bucket-readiness.v0.55.2.json`, `data/reports/return-to-341-writable-roadmap.v0.55.2.json`, and `data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json` as starting proof.
+- Select a grouped bucket or small subset only when source-backed proof, validators, write safety, recovery requirements, and tests can be defined.
+- Keep `decoration.screen_shader` closed for now unless explicitly approved or a proven current safety failure appears.
+- Keep existing production apply-flow gate enforcement for `decoration.screen_shader` unchanged.
+- Not continue into direct GTK file chooser visual proof by default.
+- Not continue into shader compile-aware validation by default.
 - Not reload Hyprland.
 - Not touch real config.
 - Not enable rows.
@@ -774,7 +807,8 @@ Current AppStream warnings are expected and non-blocking under `|| true`:
 
 Latest important commits:
 
-- `Prove screen shader advisory file chooser execution` (this commit)
+- `Close screen shader track and return to 341 roadmap` (this commit)
+- `Prove screen shader advisory file chooser execution`
 - `e21ee10 Prove screen shader advisory GTK widget wiring`
 - `ae6242b Prove screen shader advisory UI implementation`
 - `4a32d6b Design screen shader advisory UI exposure`
@@ -799,16 +833,16 @@ Latest important commits:
 - `96b73be Enforce deferred consumer source validator research`
 - `6c785cc Enforce official writable validator source research`
 
-Latest restore tag created before the screen shader optional advisory file chooser execution proof sprint:
+Latest restore tag created before the screen shader closure and high-risk pattern extraction sprint:
 
-- `pre-screen-shader-advisory-file-chooser-execution-proof-20260608-051321`
+- `pre-screen-shader-closure-high-risk-pattern-20260608-145104`
 
-Backup paths created before the screen shader optional advisory file chooser execution proof sprint:
+Backup paths created before the screen shader closure and high-risk pattern extraction sprint:
 
-- `/home/kyo/Documents/hyprland-settings-pre-screen-shader-advisory-file-chooser-execution-proof-backup_20260608_051321/`
-- `/home/kyo/Documents/ags-pre-screen-shader-advisory-file-chooser-execution-proof-backup_20260608_051321`
-- `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-advisory-file-chooser-execution-proof-20260608_051321`
-- `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-advisory-file-chooser-execution-proof-backup_20260608_051321`
+- `/home/kyo/Documents/hyprland-settings-pre-screen-shader-closure-high-risk-pattern-backup_20260608_145104/`
+- `/home/kyo/Documents/ags-pre-screen-shader-closure-high-risk-pattern-backup_20260608_145104`
+- `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-closure-high-risk-pattern-20260608_145104`
+- `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-closure-high-risk-pattern-backup_20260608_145104`
 
 Important report filenames:
 
@@ -838,6 +872,10 @@ Important report filenames:
 - `data/reports/screen-shader-advisory-ui-exposure-design.v0.55.2.json`
 - `data/reports/screen-shader-advisory-ui-implementation-proof.v0.55.2.json`
 - `data/reports/screen-shader-advisory-gtk-widget-wiring-proof.v0.55.2.json`
+- `data/reports/screen-shader-advisory-file-chooser-execution-proof.v0.55.2.json`
+- `data/reports/screen-shader-track-closure.v0.55.2.json`
+- `data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json`
+- `data/reports/return-to-341-writable-roadmap.v0.55.2.json`
 - `data/reports/screen-shader-advisory-file-chooser-execution-proof.v0.55.2.json`
 
 Important docs filenames:
@@ -883,4 +921,4 @@ Remaining deferred row list:
 
 Next recommended prompt title:
 
-Screen shader optional advisory GTK file chooser visual proof sprint.
+Next high-risk bucket readiness and batching sprint.

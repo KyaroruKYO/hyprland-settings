@@ -223,7 +223,7 @@ fn gtk_widget_wiring_links_unified_pipeline() -> Result<()> {
     assert!(screen_shader_row["nextRequiredWork"]
         .as_str()
         .unwrap()
-        .contains("GTK file chooser visual proof"));
+        .contains("Next high-risk bucket readiness"));
 
     Ok(())
 }

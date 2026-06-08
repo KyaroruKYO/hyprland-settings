@@ -377,7 +377,7 @@ fn screen_shader_ui_action_report_keeps_write_safety_disconnected() -> Result<()
     assert!(screen_shader_row["nextRequiredWork"]
         .as_str()
         .unwrap()
-        .contains("GTK file chooser visual proof"));
+        .contains("Next high-risk bucket readiness"));
 
     Ok(())
 }
