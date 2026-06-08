@@ -3364,15 +3364,16 @@
       "advisoryUiExposureDesignSource": "screen-shader-advisory-ui-exposure-design.v0.55.2.json",
       "advisoryUiImplementationProofSource": "screen-shader-advisory-ui-implementation-proof.v0.55.2.json",
       "advisoryGtkWidgetWiringProofSource": "screen-shader-advisory-gtk-widget-wiring-proof.v0.55.2.json",
+      "advisoryFileChooserExecutionProofSource": "screen-shader-advisory-file-chooser-execution-proof.v0.55.2.json",
       "pipelineTemplate": "display-render-screen-shader-watchdog-template",
       "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
       "watchdogRequirement": "screen shader display/render watchdog proof is required before final apply; the production apply flow rejects ungated decoration.screen_shader writes and accepts only gated fixture-proven writes with a valid watchdog plan",
-      "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; production apply requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred. A visible non-production advanced advisory GTK widget exists for the missing-selection path only; full file chooser execution remains deferred; advisory output is explicit-user-triggered, temp-copy-only when execution is later implemented, non-blocking, non-authoritative, row-specific, and not wired into write safety.",
+      "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; production apply requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred. A visible non-production advanced advisory GTK widget exists, and a fixture-selected file action model proves temp-copy execution with generated temp files only. Direct GTK file chooser visual interaction remains deferred; advisory output is explicit-user-triggered, temp-copy-only, non-blocking, non-authoritative, row-specific, and not wired into write safety.",
       "templateNormalizationStatus": "screen-shader-production-gate-enforced",
       "recoveryGateWeakened": false,
       "productionGateEnforcedThisSprint": true,
       "countedAsEnabledHighRiskRow": false,
-      "nextRequiredWork": "Screen shader optional advisory file chooser execution proof sprint: implement visible file selection only if it can use generated fixture/temp files in tests, never read real user shader files in tests, pass only temp paths to glslangValidator, and keep advisory output disconnected from write safety."
+      "nextRequiredWork": "Screen shader optional advisory GTK file chooser visual proof sprint: implement direct GTK file chooser interaction only if it can be tested with generated fixture/temp files, never read real user shader files in tests, keep compiler arguments temp-only, and keep advisory output disconnected from write safety."
     },
     {
       "rowId": "animations.workspace_wraparound",
@@ -17384,6 +17385,11 @@
     "selectedGtkWidgetWiringProofOption": "Option A",
     "visibleGtkWidgetImplemented": true,
     "gtkWidgetModule": "src/ui/window.rs::append_screen_shader_advisory_controls",
+    "advisoryFileChooserExecutionProofReport": "data/reports/screen-shader-advisory-file-chooser-execution-proof.v0.55.2.json",
+    "selectedFileChooserExecutionProofOption": "Option B",
+    "fileChooserExecutionImplemented": false,
+    "selectedFileActionModelImplemented": true,
+    "selectedFileActionModule": "src/ui/model.rs::run_screen_shader_advisory_selected_file_ui_action",
     "visualGtkWidgetImplemented": true,
     "advancedModeRequired": true,
     "explicitUserTriggerRequired": true,
@@ -17409,13 +17415,16 @@
       "cleanup_warning"
     ],
     "fileChooserBehaviorProven": false,
-    "selectedFileBoundaryProven": false,
+    "selectedFileBoundaryProven": true,
+    "generatedFixtureSelectedFilesUsedInTests": true,
+    "compilerReceivesOnlyTempPaths": true,
+    "originalSelectedPathPassedToCompiler": false,
     "missingSelectionBehaviorProven": true,
     "missingConsentBehaviorProven": true,
     "cancellationOrProgressBehaviorProven": false,
     "advisoryResultCanApproveWrite": false,
     "advisoryResultCanBlockWrite": false,
     "advisoryResultCanBypassProductionGate": false,
-    "recommendedNextSprint": "Screen shader optional advisory file chooser execution proof sprint; implement visible file selection only if it can use generated fixture/temp files in tests, never read real user shader files in tests, pass only temp paths to glslangValidator, and keep advisory output disconnected from write safety."
+    "recommendedNextSprint": "Screen shader optional advisory GTK file chooser visual proof sprint; implement direct GTK file chooser interaction only if it can be tested with generated fixture/temp files, never read real user shader files in tests, keep compiler arguments temp-only, and keep advisory output disconnected from write safety."
   }
 }

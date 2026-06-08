@@ -78,7 +78,7 @@ fn screen_shader_compile_aware_research_report_records_advisory_outcome() -> Res
     assert!(screen_shader_row["nextRequiredWork"]
         .as_str()
         .unwrap()
-        .contains("file chooser execution proof"));
+        .contains("GTK file chooser visual proof"));
 
     Ok(())
 }

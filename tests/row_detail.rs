@@ -269,6 +269,16 @@ fn screen_shader_detail_projects_design_only_advisory_ui_metadata() -> Result<()
         widget.gtk_widget_module,
         "src/ui/window.rs::append_screen_shader_advisory_controls"
     );
+    assert!(!widget.file_chooser_execution_implemented);
+    assert!(widget.selected_file_action_model_implemented);
+    assert_eq!(
+        widget.file_chooser_module,
+        "not-implemented-direct-gtk-file-chooser-deferred"
+    );
+    assert_eq!(
+        widget.selected_file_action_module,
+        "src/ui/model.rs::run_screen_shader_advisory_selected_file_ui_action"
+    );
     assert!(widget.separated_from_apply_action);
     assert_eq!(widget.button_label, "Run optional advisory check");
     assert_eq!(widget.default_state, "not_run");

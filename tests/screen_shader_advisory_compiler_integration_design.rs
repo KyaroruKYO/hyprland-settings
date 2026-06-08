@@ -229,7 +229,7 @@ fn screen_shader_advisory_integration_design_records_source_backed_pairing_and_p
     assert!(report["nextRecommendedSprint"]
         .as_str()
         .unwrap()
-        .contains("file chooser execution proof"));
+        .contains("GTK file chooser visual proof"));
 
     let screen_shader_row = pipeline["rows"]
         .as_array()
@@ -253,7 +253,7 @@ fn screen_shader_advisory_integration_design_records_source_backed_pairing_and_p
     assert!(screen_shader_row["nextRequiredWork"]
         .as_str()
         .unwrap()
-        .contains("file chooser execution proof"));
+        .contains("GTK file chooser visual proof"));
     assert_eq!(screen_shader_row["productionGateEnforcedThisSprint"], true);
     assert_eq!(screen_shader_row["countedAsEnabledHighRiskRow"], false);
 

@@ -73,6 +73,16 @@ fn gtk_widget_projection_is_screen_shader_only_and_separated_from_apply() -> Res
         widget.gtk_widget_module,
         "src/ui/window.rs::append_screen_shader_advisory_controls"
     );
+    assert!(!widget.file_chooser_execution_implemented);
+    assert!(widget.selected_file_action_model_implemented);
+    assert_eq!(
+        widget.file_chooser_module,
+        "not-implemented-direct-gtk-file-chooser-deferred"
+    );
+    assert_eq!(
+        widget.selected_file_action_module,
+        "src/ui/model.rs::run_screen_shader_advisory_selected_file_ui_action"
+    );
     assert_eq!(
         widget.placement,
         "advanced-display-render-screen-shader-advisory-section-separated-from-apply-action"
@@ -196,7 +206,7 @@ fn gtk_widget_wiring_links_unified_pipeline() -> Result<()> {
     assert!(report["nextRecommendedSprint"]
         .as_str()
         .unwrap()
-        .contains("file chooser execution proof"));
+        .contains("GTK file chooser visual proof"));
 
     let screen_shader_row = pipeline["rows"]
         .as_array()
@@ -213,7 +223,7 @@ fn gtk_widget_wiring_links_unified_pipeline() -> Result<()> {
     assert!(screen_shader_row["nextRequiredWork"]
         .as_str()
         .unwrap()
-        .contains("file chooser execution proof"));
+        .contains("GTK file chooser visual proof"));
 
     Ok(())
 }

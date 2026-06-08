@@ -458,6 +458,10 @@ pub struct ScreenShaderAdvisoryGtkWidgetProjection {
     pub row_id: String,
     pub visible_gtk_widget_implemented: bool,
     pub gtk_widget_module: String,
+    pub file_chooser_execution_implemented: bool,
+    pub selected_file_action_model_implemented: bool,
+    pub file_chooser_module: String,
+    pub selected_file_action_module: String,
     pub placement: String,
     pub advanced_mode_required: bool,
     pub explicit_user_trigger_required: bool,
@@ -507,6 +511,19 @@ pub struct ScreenShaderAdvisoryUiActionRequest {
     pub row_id: String,
     pub explicit_user_trigger: bool,
     pub helper_request: Option<ScreenShaderAdvisoryRequest>,
+}
+
+#[derive(Debug, Clone)]
+pub struct ScreenShaderAdvisorySelectedFileUiActionRequest {
+    pub row_id: String,
+    pub explicit_user_trigger: bool,
+    pub selected_shader_path: Option<PathBuf>,
+    pub temp_root: PathBuf,
+    pub tex300_vertex_path: PathBuf,
+    pub tex320_vertex_path: PathBuf,
+    pub glslang_validator_path: PathBuf,
+    pub timeout: std::time::Duration,
+    pub simulate_cleanup_failure: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -577,6 +594,11 @@ pub fn screen_shader_advisory_gtk_widget_projection(
         row_id: row_id.to_string(),
         visible_gtk_widget_implemented: true,
         gtk_widget_module: "src/ui/window.rs::append_screen_shader_advisory_controls".to_string(),
+        file_chooser_execution_implemented: false,
+        selected_file_action_model_implemented: true,
+        file_chooser_module: "not-implemented-direct-gtk-file-chooser-deferred".to_string(),
+        selected_file_action_module:
+            "src/ui/model.rs::run_screen_shader_advisory_selected_file_ui_action".to_string(),
         placement: projection.placement,
         advanced_mode_required: projection.advanced_mode_required,
         explicit_user_trigger_required: projection.explicit_user_trigger_required,
@@ -763,6 +785,35 @@ pub fn run_screen_shader_advisory_ui_action(
         result.diagnostic,
         result.cleanup_warning,
     )
+}
+
+pub fn run_screen_shader_advisory_selected_file_ui_action(
+    request: ScreenShaderAdvisorySelectedFileUiActionRequest,
+) -> ScreenShaderAdvisoryUiActionRender {
+    let Some(selected_shader_path) = request.selected_shader_path else {
+        return run_screen_shader_advisory_ui_action(ScreenShaderAdvisoryUiActionRequest {
+            row_id: request.row_id,
+            explicit_user_trigger: request.explicit_user_trigger,
+            helper_request: None,
+        });
+    };
+
+    let helper_request = ScreenShaderAdvisoryRequest {
+        selected_shader_path,
+        temp_root: request.temp_root,
+        tex300_vertex_path: request.tex300_vertex_path,
+        tex320_vertex_path: request.tex320_vertex_path,
+        glslang_validator_path: request.glslang_validator_path,
+        timeout: request.timeout,
+        explicit_user_consent: request.explicit_user_trigger,
+        simulate_cleanup_failure: request.simulate_cleanup_failure,
+    };
+
+    run_screen_shader_advisory_ui_action(ScreenShaderAdvisoryUiActionRequest {
+        row_id: request.row_id,
+        explicit_user_trigger: request.explicit_user_trigger,
+        helper_request: Some(helper_request),
+    })
 }
 
 fn advisory_result_copy(state: ScreenShaderAdvisoryUiResultState) -> (&'static str, &'static str) {

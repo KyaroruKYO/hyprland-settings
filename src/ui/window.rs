@@ -622,7 +622,7 @@ fn append_screen_shader_advisory_controls(detail: &RowDetailProjection, detail_c
 
     let button = gtk::Button::with_label(&widget.button_label);
     button.set_tooltip_text(Some(
-        "This proof wires the visible advanced control. File chooser execution remains deferred.",
+        "This visible control uses the advisory action model. Direct GTK file chooser execution remains deferred.",
     ));
     controls.append(&button);
 

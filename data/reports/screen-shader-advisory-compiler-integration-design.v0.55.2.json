@@ -138,5 +138,5 @@
     "No proof exists that glslangValidator output is equivalent to Hyprland's OpenGL runtime compile/link behavior.",
     "No official Hyprland non-live validation interface was found."
   ],
-  "nextRecommendedSprint": "Screen shader optional advisory file chooser execution proof sprint: implement visible file selection only if it can use generated fixture/temp files in tests, never read real user shader files in tests, pass only temp paths to glslangValidator, and keep advisory output disconnected from write safety."
+  "nextRecommendedSprint": "Screen shader optional advisory GTK file chooser visual proof sprint: implement direct GTK file chooser interaction only if it can be tested with generated fixture/temp files, never read real user shader files in tests, keep compiler arguments temp-only, and keep advisory output disconnected from write safety."
 }
