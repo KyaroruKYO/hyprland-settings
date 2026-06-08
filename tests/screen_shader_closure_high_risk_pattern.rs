@@ -219,7 +219,7 @@ fn aggregate_reports_link_closure_pattern_and_roadmap() -> Result<()> {
     assert!(screen_shader_row["nextRequiredWork"]
         .as_str()
         .unwrap()
-        .contains("Next high-risk bucket readiness"));
+        .contains("Display/render blocked rows source evidence inventory sprint"));
     assert!(!screen_shader_row["nextRequiredWork"]
         .as_str()
         .unwrap()
@@ -246,7 +246,7 @@ fn aggregate_reports_link_closure_pattern_and_roadmap() -> Result<()> {
         );
         assert_eq!(
             follow_up["recommendedNextSprint"],
-            "Display/render blocked rows readiness batching sprint"
+            "Display/render blocked rows source evidence inventory sprint"
         );
         assert_eq!(
             follow_up["nextWorkMode"],

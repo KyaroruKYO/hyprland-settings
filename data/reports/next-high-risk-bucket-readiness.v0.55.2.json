@@ -220,10 +220,12 @@
       "Hyprland OpenGL runtime compile/link equivalence",
       "production compile-aware validation"
     ],
-    "recommendedNextSprint": "Display/render blocked rows readiness batching sprint",
+    "recommendedNextSprint": "Display/render blocked rows source evidence inventory sprint",
     "nextHighRiskBucketReadinessBatchingReport": "data/reports/next-high-risk-bucket-readiness-batching.v0.55.2.json",
+    "displayRenderBlockedRowsReadinessBatchingReport": "data/reports/display-render-blocked-rows-readiness-batching.v0.55.2.json",
     "selectedNextBucket": "display-render-bucket-readiness",
-    "selectedNextBatch": "non-enabling display/render readiness inventory for non-display-critical boolean/finite-choice candidates",
+    "selectedNextBatch": "unresolved-display-render-inventory",
+    "displayRenderCandidateRowsCount": 23,
     "nextWorkMode": "grouped-high-risk-bucket-level-readiness",
     "screenShaderSpecificWorkDefaultNext": false
   }
