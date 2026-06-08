@@ -113,10 +113,10 @@
     "Aggregate reports link this design as metadata-only without changing counts, SAFE_WRITABLE_ROWS, write allowlist, validators, pending changes, write planning, apply flow, or production gate behavior."
   ],
   "proofStillMissing": [
-    "No runnable UI implementation exists for the advisory action.",
-    "No UI proof exists for file chooser behavior, output rendering, progress state, cancellation, or cleanup warning presentation.",
+    "No full GTK file chooser/widget implementation exists for selecting a shader and displaying the advisory result visually.",
+    "No UI proof exists for cancellation or screenshot-backed visual presentation.",
     "No proof exists that glslangValidator output is equivalent to Hyprland's OpenGL runtime compile/link behavior.",
     "No production compile-aware validator implementation exists."
   ],
-  "nextRecommendedSprint": "Screen shader optional advisory UI implementation proof sprint: implement a non-production explicit advanced UI action only if it stays disconnected from validators, pending changes, write planning, apply flow, and write safety; prove no auto-run, no real user shader reads in tests, no live shader compile, no live display proof, and advisory-only result rendering."
+  "nextRecommendedSprint": "Screen shader optional advisory GTK widget wiring proof sprint: wire the proven non-production action model into a visible advanced/high-risk UI control only if it remains explicit-trigger only, disconnected from write safety, and proves file chooser/result rendering/cancellation without reading real user shader files in tests."
 }

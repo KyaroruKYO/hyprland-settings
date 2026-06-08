@@ -197,7 +197,7 @@ fn screen_shader_policy_followup_is_projected_in_aggregate_reports() -> Result<(
         assert!(follow_up["recommendedNextSprint"]
             .as_str()
             .unwrap()
-            .contains("optional advisory UI implementation proof"));
+            .contains("GTK widget wiring proof"));
     }
 
     Ok(())

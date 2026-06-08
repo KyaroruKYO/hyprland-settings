@@ -3362,15 +3362,16 @@
       "advisoryCompilerIntegrationDesignSource": "screen-shader-advisory-compiler-integration-design.v0.55.2.json",
       "advisoryCompilerImplementationProofSource": "screen-shader-advisory-compiler-implementation-proof.v0.55.2.json",
       "advisoryUiExposureDesignSource": "screen-shader-advisory-ui-exposure-design.v0.55.2.json",
+      "advisoryUiImplementationProofSource": "screen-shader-advisory-ui-implementation-proof.v0.55.2.json",
       "pipelineTemplate": "display-render-screen-shader-watchdog-template",
       "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
       "watchdogRequirement": "screen shader display/render watchdog proof is required before final apply; the production apply flow rejects ungated decoration.screen_shader writes and accepts only gated fixture-proven writes with a valid watchdog plan",
-      "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; production apply requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred. A non-production glslangValidator advisory helper exists for future optional advanced UI exposure; the UI design is explicit-user-triggered, temp-copy-only, non-blocking, non-authoritative, and not wired into write safety.",
+      "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; production apply requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred. A non-production advanced advisory UI action model exists; it is explicit-user-triggered, temp-copy-only, non-blocking, non-authoritative, row-specific, and not wired into write safety.",
       "templateNormalizationStatus": "screen-shader-production-gate-enforced",
       "recoveryGateWeakened": false,
       "productionGateEnforcedThisSprint": true,
       "countedAsEnabledHighRiskRow": false,
-      "nextRequiredWork": "Screen shader optional advisory UI implementation proof sprint: implement a non-production explicit advanced UI action only if it stays disconnected from validators, pending changes, write planning, apply flow, and write safety; prove no auto-run, no real user shader reads in tests, no live shader compile, no live display proof, and advisory-only result rendering."
+      "nextRequiredWork": "Screen shader optional advisory GTK widget wiring proof sprint: wire the proven non-production action model into a visible advanced/high-risk UI control only if it remains explicit-trigger only, disconnected from write safety, and proves file chooser/result rendering/cancellation without reading real user shader files in tests."
     },
     {
       "rowId": "animations.workspace_wraparound",
@@ -17374,11 +17375,27 @@
     "selectedAdvisoryUiExposureDesignOption": "Option A",
     "advisoryUiExposureImplemented": false,
     "uiExposureDesignOnly": true,
+    "advisoryUiImplementationProofReport": "data/reports/screen-shader-advisory-ui-implementation-proof.v0.55.2.json",
+    "selectedAdvisoryUiImplementationProofOption": "Option A",
+    "advisoryUiActionImplemented": true,
+    "advisoryUiActionModule": "src/ui/model.rs::run_screen_shader_advisory_ui_action",
+    "visualGtkWidgetImplemented": false,
     "advancedModeRequired": true,
     "explicitUserTriggerRequired": true,
+    "resultStatesModeled": [
+      "not_run",
+      "running",
+      "passed",
+      "failed",
+      "unavailable",
+      "timed_out",
+      "temp_copy_failed",
+      "cleanup_warning"
+    ],
+    "missingConsentBehaviorProven": true,
     "advisoryResultCanApproveWrite": false,
     "advisoryResultCanBlockWrite": false,
     "advisoryResultCanBypassProductionGate": false,
-    "recommendedNextSprint": "Screen shader optional advisory UI implementation proof sprint; implement a non-production explicit advanced UI action only if it stays disconnected from validators, pending changes, write planning, apply flow, and write safety; prove no auto-run, no real user shader reads in tests, no live shader compile, no live display proof, and advisory-only result rendering."
+    "recommendedNextSprint": "Screen shader optional advisory GTK widget wiring proof sprint; wire the proven non-production action model into a visible advanced/high-risk UI control only if it remains explicit-trigger only, disconnected from write safety, and proves file chooser/result rendering/cancellation without reading real user shader files in tests."
   }
 }

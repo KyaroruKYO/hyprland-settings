@@ -865,11 +865,27 @@
     "selectedAdvisoryUiExposureDesignOption": "Option A",
     "advisoryUiExposureImplemented": false,
     "uiExposureDesignOnly": true,
+    "advisoryUiImplementationProofReport": "data/reports/screen-shader-advisory-ui-implementation-proof.v0.55.2.json",
+    "selectedAdvisoryUiImplementationProofOption": "Option A",
+    "advisoryUiActionImplemented": true,
+    "advisoryUiActionModule": "src/ui/model.rs::run_screen_shader_advisory_ui_action",
+    "visualGtkWidgetImplemented": false,
     "advancedModeRequired": true,
     "explicitUserTriggerRequired": true,
+    "resultStatesModeled": [
+      "not_run",
+      "running",
+      "passed",
+      "failed",
+      "unavailable",
+      "timed_out",
+      "temp_copy_failed",
+      "cleanup_warning"
+    ],
+    "missingConsentBehaviorProven": true,
     "advisoryResultCanApproveWrite": false,
     "advisoryResultCanBlockWrite": false,
     "advisoryResultCanBypassProductionGate": false,
-    "recommendedNextSprint": "Screen shader optional advisory UI implementation proof sprint; implement a non-production explicit advanced UI action only if it stays disconnected from validators, pending changes, write planning, apply flow, and write safety; prove no auto-run, no real user shader reads in tests, no live shader compile, no live display proof, and advisory-only result rendering."
+    "recommendedNextSprint": "Screen shader optional advisory GTK widget wiring proof sprint; wire the proven non-production action model into a visible advanced/high-risk UI control only if it remains explicit-trigger only, disconnected from write safety, and proves file chooser/result rendering/cancellation without reading real user shader files in tests."
   }
 }

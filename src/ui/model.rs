@@ -1,4 +1,5 @@
 use std::collections::{BTreeMap, BTreeSet};
+use std::path::PathBuf;
 
 use crate::config_discovery::ConfigDiscovery;
 use crate::config_parser::ParsedConfigLine;
@@ -6,6 +7,9 @@ use crate::current_config::{
     CurrentConfigSnapshot, CurrentValueProjection, CurrentValueSourceStatus,
 };
 use crate::export::{ExportBundle, InventoryEntry, TabEntry};
+use crate::screen_shader_advisory::{
+    run_screen_shader_advisory_check, AdvisoryStatus, ScreenShaderAdvisoryRequest,
+};
 use crate::validation::ValidationSummary;
 use crate::write_flow::{
     edit_projection_for_setting_with_config, review_block_reason, write_flow_config_setting,
@@ -446,6 +450,353 @@ pub struct ScreenShaderAdvisoryUiProjection {
     pub can_approve_write: bool,
     pub can_block_write: bool,
     pub can_bypass_production_gate: bool,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ScreenShaderAdvisoryUiResultState {
+    NotRun,
+    Running,
+    Passed,
+    Failed,
+    Unavailable,
+    TimedOut,
+    TempCopyFailed,
+    CleanupWarning,
+}
+
+impl ScreenShaderAdvisoryUiResultState {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::NotRun => "not_run",
+            Self::Running => "running",
+            Self::Passed => "passed",
+            Self::Failed => "failed",
+            Self::Unavailable => "unavailable",
+            Self::TimedOut => "timed_out",
+            Self::TempCopyFailed => "temp_copy_failed",
+            Self::CleanupWarning => "cleanup_warning",
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
+pub struct ScreenShaderAdvisoryUiActionRequest {
+    pub row_id: String,
+    pub explicit_user_trigger: bool,
+    pub helper_request: Option<ScreenShaderAdvisoryRequest>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ScreenShaderAdvisoryUiActionRender {
+    pub row_id: String,
+    pub state: ScreenShaderAdvisoryUiResultState,
+    pub placement: String,
+    pub advanced_mode_required: bool,
+    pub explicit_user_trigger_required: bool,
+    pub helper_invoked: bool,
+    pub consent_required: bool,
+    pub selected_shader_read: bool,
+    pub compiler_invoked: bool,
+    pub compiler_args: Vec<String>,
+    pub temp_fragment_path: Option<PathBuf>,
+    pub temp_vertex_path: Option<PathBuf>,
+    pub original_user_path_passed_to_compiler: bool,
+    pub can_approve_write: bool,
+    pub can_block_write: bool,
+    pub can_bypass_production_gate: bool,
+    pub production_write_decision_changed: bool,
+    pub runtime_safety_claimed: bool,
+    pub write_blocking: bool,
+    pub title: String,
+    pub message: String,
+    pub diagnostic: Option<String>,
+    pub cleanup_warning: Option<String>,
+}
+
+impl ScreenShaderAdvisoryUiActionRender {
+    pub fn state_label(&self) -> &'static str {
+        self.state.as_str()
+    }
+}
+
+pub fn initial_screen_shader_advisory_ui_action(
+    row_id: &str,
+) -> Option<ScreenShaderAdvisoryUiActionRender> {
+    screen_shader_advisory_projection(row_id).map(|projection| {
+        advisory_ui_render(
+            row_id,
+            ScreenShaderAdvisoryUiResultState::NotRun,
+            projection,
+            false,
+            false,
+            false,
+            Vec::new(),
+            None,
+            None,
+            false,
+            false,
+            false,
+            false,
+            "Advisory check not run".to_string(),
+            "The optional screen shader advisory check runs only after an explicit advanced user action."
+                .to_string(),
+            None,
+            None,
+        )
+    })
+}
+
+pub fn running_screen_shader_advisory_ui_action(
+    row_id: &str,
+) -> Option<ScreenShaderAdvisoryUiActionRender> {
+    screen_shader_advisory_projection(row_id).map(|projection| {
+        advisory_ui_render(
+            row_id,
+            ScreenShaderAdvisoryUiResultState::Running,
+            projection,
+            false,
+            false,
+            false,
+            Vec::new(),
+            None,
+            None,
+            false,
+            false,
+            false,
+            false,
+            "Advisory check running".to_string(),
+            "The optional advisory check is running after explicit user action; it cannot approve, block, or bypass writes."
+                .to_string(),
+            None,
+            None,
+        )
+    })
+}
+
+pub fn run_screen_shader_advisory_ui_action(
+    request: ScreenShaderAdvisoryUiActionRequest,
+) -> ScreenShaderAdvisoryUiActionRender {
+    let Some(projection) = screen_shader_advisory_projection(&request.row_id) else {
+        return advisory_ui_render(
+            &request.row_id,
+            ScreenShaderAdvisoryUiResultState::NotRun,
+            non_screen_shader_advisory_projection(),
+            false,
+            false,
+            false,
+            Vec::new(),
+            None,
+            None,
+            false,
+            false,
+            false,
+            false,
+            "No screen shader advisory action".to_string(),
+            "This advisory action is only available for decoration.screen_shader.".to_string(),
+            None,
+            None,
+        );
+    };
+
+    let Some(helper_request) = request.helper_request else {
+        return advisory_ui_render(
+            &request.row_id,
+            ScreenShaderAdvisoryUiResultState::NotRun,
+            projection,
+            false,
+            true,
+            false,
+            Vec::new(),
+            None,
+            None,
+            false,
+            false,
+            false,
+            false,
+            "Explicit action required".to_string(),
+            "Choose a shader file and run the advanced advisory check explicitly.".to_string(),
+            Some("no selected shader request was supplied".to_string()),
+            None,
+        );
+    };
+
+    if !request.explicit_user_trigger || !helper_request.explicit_user_consent {
+        return advisory_ui_render(
+            &request.row_id,
+            ScreenShaderAdvisoryUiResultState::NotRun,
+            projection,
+            false,
+            true,
+            false,
+            Vec::new(),
+            None,
+            None,
+            false,
+            false,
+            false,
+            false,
+            "Explicit action required".to_string(),
+            "The selected shader is not read until the user explicitly starts the advanced advisory check."
+                .to_string(),
+            Some("missing explicit user trigger or consent".to_string()),
+            None,
+        );
+    }
+
+    let result = run_screen_shader_advisory_check(&helper_request);
+    let state = match result.status {
+        AdvisoryStatus::Passed => ScreenShaderAdvisoryUiResultState::Passed,
+        AdvisoryStatus::Failed => ScreenShaderAdvisoryUiResultState::Failed,
+        AdvisoryStatus::Unavailable => ScreenShaderAdvisoryUiResultState::Unavailable,
+        AdvisoryStatus::TimedOut => ScreenShaderAdvisoryUiResultState::TimedOut,
+        AdvisoryStatus::TempCopyFailed => ScreenShaderAdvisoryUiResultState::TempCopyFailed,
+        AdvisoryStatus::MissingConsent => ScreenShaderAdvisoryUiResultState::NotRun,
+        AdvisoryStatus::CleanupWarning => ScreenShaderAdvisoryUiResultState::CleanupWarning,
+    };
+    let compiler_invoked = !result.compiler_args.is_empty()
+        && !matches!(
+            result.status,
+            AdvisoryStatus::Unavailable
+                | AdvisoryStatus::TempCopyFailed
+                | AdvisoryStatus::MissingConsent
+        );
+    let selected_shader_read = !matches!(
+        result.status,
+        AdvisoryStatus::MissingConsent | AdvisoryStatus::TempCopyFailed
+    ) || result.temp_fragment_path.is_some();
+    let (title, message) = advisory_result_copy(state);
+
+    advisory_ui_render(
+        &request.row_id,
+        state,
+        projection,
+        true,
+        false,
+        compiler_invoked,
+        result.compiler_args,
+        result.temp_fragment_path,
+        result.temp_vertex_path,
+        result.original_user_path_passed_to_compiler,
+        selected_shader_read,
+        result.production_write_decision_changed,
+        result.runtime_safety_claimed,
+        title.to_string(),
+        message.to_string(),
+        result.diagnostic,
+        result.cleanup_warning,
+    )
+}
+
+fn advisory_result_copy(state: ScreenShaderAdvisoryUiResultState) -> (&'static str, &'static str) {
+    match state {
+        ScreenShaderAdvisoryUiResultState::NotRun => (
+            "Advisory check not run",
+            "No shader file has been read and no compiler command has been run.",
+        ),
+        ScreenShaderAdvisoryUiResultState::Running => (
+            "Advisory check running",
+            "The advisory check is in progress after explicit user action.",
+        ),
+        ScreenShaderAdvisoryUiResultState::Passed => (
+            "Standalone advisory check passed",
+            "This is not Hyprland runtime safety proof and does not approve the write.",
+        ),
+        ScreenShaderAdvisoryUiResultState::Failed => (
+            "Standalone advisory warning",
+            "This warns about the standalone check result and does not automatically block the write.",
+        ),
+        ScreenShaderAdvisoryUiResultState::Unavailable => (
+            "Advisory check unavailable",
+            "glslangValidator is unavailable; this does not approve or block writes.",
+        ),
+        ScreenShaderAdvisoryUiResultState::TimedOut => (
+            "Advisory check inconclusive",
+            "The advisory check timed out and does not approve or block writes.",
+        ),
+        ScreenShaderAdvisoryUiResultState::TempCopyFailed => (
+            "Advisory temp copy failed",
+            "The advisory check could not prepare temp files and does not approve or block writes.",
+        ),
+        ScreenShaderAdvisoryUiResultState::CleanupWarning => (
+            "Advisory cleanup warning",
+            "The advisory check produced a cleanup warning and does not approve, block, or bypass writes.",
+        ),
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
+fn advisory_ui_render(
+    row_id: &str,
+    state: ScreenShaderAdvisoryUiResultState,
+    projection: ScreenShaderAdvisoryUiProjection,
+    helper_invoked: bool,
+    consent_required: bool,
+    compiler_invoked: bool,
+    compiler_args: Vec<String>,
+    temp_fragment_path: Option<PathBuf>,
+    temp_vertex_path: Option<PathBuf>,
+    original_user_path_passed_to_compiler: bool,
+    selected_shader_read: bool,
+    production_write_decision_changed: bool,
+    runtime_safety_claimed: bool,
+    title: String,
+    message: String,
+    diagnostic: Option<String>,
+    cleanup_warning: Option<String>,
+) -> ScreenShaderAdvisoryUiActionRender {
+    ScreenShaderAdvisoryUiActionRender {
+        row_id: row_id.to_string(),
+        state,
+        placement: projection.placement,
+        advanced_mode_required: projection.advanced_mode_required,
+        explicit_user_trigger_required: projection.explicit_user_trigger_required,
+        helper_invoked,
+        consent_required,
+        selected_shader_read,
+        compiler_invoked,
+        compiler_args,
+        temp_fragment_path,
+        temp_vertex_path,
+        original_user_path_passed_to_compiler,
+        can_approve_write: false,
+        can_block_write: false,
+        can_bypass_production_gate: false,
+        production_write_decision_changed,
+        runtime_safety_claimed,
+        write_blocking: false,
+        title,
+        message,
+        diagnostic,
+        cleanup_warning,
+    }
+}
+
+fn non_screen_shader_advisory_projection() -> ScreenShaderAdvisoryUiProjection {
+    ScreenShaderAdvisoryUiProjection {
+        placement: "not-available-for-this-row".to_string(),
+        advanced_mode_required: true,
+        explicit_user_trigger_required: true,
+        runs_on_row_load: false,
+        runs_on_value_change: false,
+        runs_during_validation: false,
+        runs_during_pending_change: false,
+        runs_during_write_planning: false,
+        runs_during_apply_flow: false,
+        consent_message: "No advisory shader action is available for this row.".to_string(),
+        temp_copy_message: "No temp shader copy is created for this row.".to_string(),
+        original_path_message: "No user path is passed to a compiler for this row.".to_string(),
+        runtime_safety_disclaimer: "No runtime safety claim is made.".to_string(),
+        production_gate_disclaimer: "No screen-shader production gate applies to this row."
+            .to_string(),
+        pass_policy: "No advisory pass state exists for this row.".to_string(),
+        failure_policy: "No advisory failure state exists for this row.".to_string(),
+        missing_tool_policy: "No advisory tool is used for this row.".to_string(),
+        timeout_policy: "No advisory timeout state exists for this row.".to_string(),
+        cleanup_warning_policy: "No advisory cleanup state exists for this row.".to_string(),
+        can_approve_write: false,
+        can_block_write: false,
+        can_bypass_production_gate: false,
+    }
 }
 
 impl RowDetailProjection {

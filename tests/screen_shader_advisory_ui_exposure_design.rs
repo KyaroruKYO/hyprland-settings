@@ -166,14 +166,13 @@ fn screen_shader_advisory_ui_design_links_unified_pipeline() -> Result<()> {
     let missing = report["proofStillMissing"]
         .as_array()
         .expect("missing proof should be explicit");
-    assert!(missing.iter().any(|gap| gap
-        .as_str()
-        .unwrap()
-        .contains("No runnable UI implementation")));
+    assert!(missing
+        .iter()
+        .any(|gap| gap.as_str().unwrap().contains("No full GTK file chooser")));
     assert!(report["nextRecommendedSprint"]
         .as_str()
         .unwrap()
-        .contains("optional advisory UI implementation proof"));
+        .contains("GTK widget wiring proof"));
 
     let screen_shader_row = pipeline["rows"]
         .as_array()
@@ -188,7 +187,7 @@ fn screen_shader_advisory_ui_design_links_unified_pipeline() -> Result<()> {
     assert!(screen_shader_row["nextRequiredWork"]
         .as_str()
         .unwrap()
-        .contains("optional advisory UI implementation proof"));
+        .contains("GTK widget wiring proof"));
     assert_eq!(screen_shader_row["productionGateEnforcedThisSprint"], true);
     assert_eq!(screen_shader_row["countedAsEnabledHighRiskRow"], false);
 
