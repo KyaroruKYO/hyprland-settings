@@ -175,6 +175,11 @@
       "Hyprland OpenGL runtime compile/link equivalence",
       "production compile-aware validation"
     ],
-    "recommendedNextSprint": "Next high-risk bucket readiness and batching sprint; return to grouped high-risk/bucket-level planning instead of another direct screen-shader sprint."
+    "recommendedNextSprint": "Display/render blocked rows readiness batching sprint",
+    "nextHighRiskBucketReadinessBatchingReport": "data/reports/next-high-risk-bucket-readiness-batching.v0.55.2.json",
+    "selectedNextBucket": "display-render-bucket-readiness",
+    "selectedNextBatch": "non-enabling display/render readiness inventory for non-display-critical boolean/finite-choice candidates",
+    "nextWorkMode": "grouped-high-risk-bucket-level-readiness",
+    "screenShaderSpecificWorkDefaultNext": false
   }
 }

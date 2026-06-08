@@ -2,23 +2,38 @@
 
 This file is the starting context for a new ChatGPT conversation. It is written for ChatGPT and the user, not for Codex internals. Assume the new conversation has no other history.
 
-State reviewed after the screen shader closure and high-risk pattern extraction sprint on branch `completion-sprint`.
+State reviewed after the next high-risk bucket readiness and batching sprint on branch `completion-sprint`.
 
 Latest reviewed implementation baseline before this sprint:
 
-- `2d98e7c Prove screen shader advisory file chooser execution`
+- `8cdf69c Close screen shader track and return to 341 roadmap`
 
 Latest sprint commit:
 
-- `Close screen shader track and return to 341 roadmap` (this commit; use `git log -1 --oneline` for the exact hash)
+- `Plan next high-risk bucket readiness batch` (this commit; use `git log -1 --oneline` for the exact hash)
 
 Latest restore point and backups:
 
-- Restore tag: `pre-screen-shader-closure-high-risk-pattern-20260608-145104`
-- Project backup: `/home/kyo/Documents/hyprland-settings-pre-screen-shader-closure-high-risk-pattern-backup_20260608_145104/`
-- AGS backup: `/home/kyo/Documents/ags-pre-screen-shader-closure-high-risk-pattern-backup_20260608_145104`
-- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-closure-high-risk-pattern-20260608_145104`
-- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-closure-high-risk-pattern-backup_20260608_145104`
+- Restore tag: `pre-next-high-risk-bucket-readiness-batching-20260608-150545`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-next-high-risk-bucket-readiness-batching-backup_20260608_150545/`
+- AGS backup: `/home/kyo/Documents/ags-pre-next-high-risk-bucket-readiness-batching-backup_20260608_150545`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-next-high-risk-bucket-readiness-batching-20260608_150545`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-next-high-risk-bucket-readiness-batching-backup_20260608_150545`
+
+Latest grouped readiness status:
+
+- Grouped batching report status: created in `data/reports/next-high-risk-bucket-readiness-batching.v0.55.2.json`.
+- Selected next bucket: `display-render-bucket-readiness`.
+- Selected next batch: non-enabling display/render readiness inventory for non-display-critical boolean/finite-choice candidates.
+- Screen-shader closure status: closed for now.
+- Reusable high-risk pattern status: active.
+- Return-to-341 roadmap status: active.
+- Rows enabled in this sprint: 0.
+- `SAFE_WRITABLE_ROWS` changed: no.
+- Write allowlist changed: no.
+- Hard boundaries preserved: yes.
+- Validation results: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `desktop-file-validate`, export validator, UI design validator, and schema validator passed. `appstreamcli validate --pedantic` produced only the expected non-blocking GitHub URL and releases-info warnings.
+- Next recommended sprint: `Display/render blocked rows readiness batching sprint`.
 
 ## 1. Primary Project Goal
 
@@ -73,13 +88,13 @@ Every sprint should preserve safety boundaries and end with clear final counts:
 
 Current branch: `completion-sprint`
 
-Latest reviewed implementation baseline before the screen shader closure and high-risk pattern extraction sprint:
+Latest reviewed implementation baseline before the next high-risk bucket readiness and batching sprint:
 
-- `2d98e7c Prove screen shader advisory file chooser execution`
+- `8cdf69c Close screen shader track and return to 341 roadmap`
 
 Latest sprint commit message:
 
-- `Close screen shader track and return to 341 roadmap`
+- `Plan next high-risk bucket readiness batch`
 
 Current scalar row counts:
 
@@ -118,6 +133,10 @@ Screen shader state:
 - Screen shader closure status: closed for now.
 - Reusable high-risk pattern status: extracted in `data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json`.
 - Return-to-341 roadmap status: created in `data/reports/return-to-341-writable-roadmap.v0.55.2.json`.
+- Grouped batching report status: created in `data/reports/next-high-risk-bucket-readiness-batching.v0.55.2.json`.
+- Selected next bucket: `display-render-bucket-readiness`.
+- Selected next batch: non-enabling display/render readiness inventory for non-display-critical boolean/finite-choice candidates.
+- Next recommended grouped sprint: `Display/render blocked rows readiness batching sprint`.
 - Dry-run/non-production gate primitive added: yes.
 - Primitive name: `screen-shader-dry-run-gated-write-review`.
 - Ungated dry-run `decoration.screen_shader` rejected: yes.

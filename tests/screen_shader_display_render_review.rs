@@ -194,10 +194,14 @@ fn screen_shader_policy_followup_is_projected_in_aggregate_reports() -> Result<(
             .as_str()
             .unwrap()
             .contains("production gate enforcement decision"));
-        assert!(follow_up["recommendedNextSprint"]
-            .as_str()
-            .unwrap()
-            .contains("Next high-risk bucket readiness"));
+        assert_eq!(
+            follow_up["recommendedNextSprint"],
+            "Display/render blocked rows readiness batching sprint"
+        );
+        assert_eq!(
+            follow_up["screenShaderSpecificWorkDefaultNext"], false,
+            "{path}"
+        );
     }
 
     Ok(())

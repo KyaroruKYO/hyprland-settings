@@ -14,7 +14,8 @@
     "src/write_classification.rs",
     "data/reports/screen-shader-track-closure.v0.55.2.json",
     "data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json",
-    "data/reports/return-to-341-writable-roadmap.v0.55.2.json"
+    "data/reports/return-to-341-writable-roadmap.v0.55.2.json",
+    "data/reports/next-high-risk-bucket-readiness-batching.v0.55.2.json"
   ],
   "pipelineShape": [
     "rowId",
@@ -3371,6 +3372,7 @@
       "screenShaderTrackClosureSource": "screen-shader-track-closure.v0.55.2.json",
       "highRiskPatternSource": "high-risk-row-pattern-from-screen-shader.v0.55.2.json",
       "returnTo341RoadmapSource": "return-to-341-writable-roadmap.v0.55.2.json",
+      "nextHighRiskBucketReadinessBatchingSource": "next-high-risk-bucket-readiness-batching.v0.55.2.json",
       "pipelineTemplate": "display-render-screen-shader-watchdog-template",
       "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
       "watchdogRequirement": "screen shader display/render watchdog proof is required before final apply; the production apply flow rejects ungated decoration.screen_shader writes and accepts only gated fixture-proven writes with a valid watchdog plan",
@@ -3387,7 +3389,7 @@
         "Hyprland OpenGL runtime compile/link equivalence",
         "production compile-aware validation"
       ],
-      "nextRequiredWork": "Next high-risk bucket readiness and batching sprint; do not continue decoration.screen_shader work by default unless explicitly approved or required by a proven current safety failure."
+      "nextRequiredWork": "Display/render blocked rows readiness batching sprint selected by the Next high-risk bucket readiness batching plan; do not continue decoration.screen_shader work by default unless explicitly approved or required by a proven current safety failure."
     },
     {
       "rowId": "animations.workspace_wraparound",
@@ -17450,6 +17452,11 @@
       "Hyprland OpenGL runtime compile/link equivalence",
       "production compile-aware validation"
     ],
-    "recommendedNextSprint": "Next high-risk bucket readiness and batching sprint; return to grouped high-risk/bucket-level planning instead of another direct screen-shader sprint."
+    "recommendedNextSprint": "Display/render blocked rows readiness batching sprint",
+    "nextHighRiskBucketReadinessBatchingReport": "data/reports/next-high-risk-bucket-readiness-batching.v0.55.2.json",
+    "selectedNextBucket": "display-render-bucket-readiness",
+    "selectedNextBatch": "non-enabling display/render readiness inventory for non-display-critical boolean/finite-choice candidates",
+    "nextWorkMode": "grouped-high-risk-bucket-level-readiness",
+    "screenShaderSpecificWorkDefaultNext": false
   }
 }

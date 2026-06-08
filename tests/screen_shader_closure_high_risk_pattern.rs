@@ -244,10 +244,14 @@ fn aggregate_reports_link_closure_pattern_and_roadmap() -> Result<()> {
             follow_up["returnTo341RoadmapReport"],
             "data/reports/return-to-341-writable-roadmap.v0.55.2.json"
         );
-        assert!(follow_up["recommendedNextSprint"]
-            .as_str()
-            .unwrap()
-            .contains("Next high-risk bucket readiness"));
+        assert_eq!(
+            follow_up["recommendedNextSprint"],
+            "Display/render blocked rows readiness batching sprint"
+        );
+        assert_eq!(
+            follow_up["nextWorkMode"],
+            "grouped-high-risk-bucket-level-readiness"
+        );
     }
 
     let deferred_screen_shader = deferred["rows"]
