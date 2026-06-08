@@ -226,13 +226,14 @@ fn screen_shader_advisory_integration_design_records_source_backed_pairing_and_p
         .as_str()
         .unwrap()
         .contains("No implementation proof exists")));
-    assert!(missing
-        .iter()
-        .any(|gap| gap.as_str().unwrap().contains("No UI proof exists")));
+    assert!(missing.iter().any(|gap| gap
+        .as_str()
+        .unwrap()
+        .contains("no runnable UI implementation")));
     assert!(report["nextRecommendedSprint"]
         .as_str()
         .unwrap()
-        .contains("optional advisory UI exposure design"));
+        .contains("optional advisory UI implementation proof"));
 
     let screen_shader_row = pipeline["rows"]
         .as_array()
@@ -256,7 +257,7 @@ fn screen_shader_advisory_integration_design_records_source_backed_pairing_and_p
     assert!(screen_shader_row["nextRequiredWork"]
         .as_str()
         .unwrap()
-        .contains("optional advisory UI exposure design"));
+        .contains("optional advisory UI implementation proof"));
     assert_eq!(screen_shader_row["productionGateEnforcedThisSprint"], true);
     assert_eq!(screen_shader_row["countedAsEnabledHighRiskRow"], false);
 

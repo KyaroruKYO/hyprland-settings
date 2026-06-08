@@ -3361,15 +3361,16 @@
       "advisoryCompilerFeasibilitySource": "screen-shader-non-live-advisory-compiler-feasibility.v0.55.2.json",
       "advisoryCompilerIntegrationDesignSource": "screen-shader-advisory-compiler-integration-design.v0.55.2.json",
       "advisoryCompilerImplementationProofSource": "screen-shader-advisory-compiler-implementation-proof.v0.55.2.json",
+      "advisoryUiExposureDesignSource": "screen-shader-advisory-ui-exposure-design.v0.55.2.json",
       "pipelineTemplate": "display-render-screen-shader-watchdog-template",
       "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
       "watchdogRequirement": "screen shader display/render watchdog proof is required before final apply; the production apply flow rejects ungated decoration.screen_shader writes and accepts only gated fixture-proven writes with a valid watchdog plan",
-      "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; production apply requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred. A non-production glslangValidator advisory helper exists for future optional UI exposure; it is explicit-user-consent, temp-copy-only, non-blocking, non-authoritative, and not wired into write safety.",
+      "uiReviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; production apply requires the screen-shader high-risk watchdog gate. Compile-aware validation remains deferred. A non-production glslangValidator advisory helper exists for future optional advanced UI exposure; the UI design is explicit-user-triggered, temp-copy-only, non-blocking, non-authoritative, and not wired into write safety.",
       "templateNormalizationStatus": "screen-shader-production-gate-enforced",
       "recoveryGateWeakened": false,
       "productionGateEnforcedThisSprint": true,
       "countedAsEnabledHighRiskRow": false,
-      "nextRequiredWork": "Screen shader optional advisory UI exposure design sprint: design how to expose the non-production advisory helper as an explicit advanced user action without wiring advisory output into validators, pending changes, write planning, apply flow, or write safety decisions."
+      "nextRequiredWork": "Screen shader optional advisory UI implementation proof sprint: implement a non-production explicit advanced UI action only if it stays disconnected from validators, pending changes, write planning, apply flow, and write safety; prove no auto-run, no real user shader reads in tests, no live shader compile, no live display proof, and advisory-only result rendering."
     },
     {
       "rowId": "animations.workspace_wraparound",
@@ -17369,6 +17370,15 @@
     "advisoryPassBehaviorProven": true,
     "advisoryFailBehaviorProven": true,
     "cleanupFailureBehaviorProven": true,
-    "recommendedNextSprint": "Screen shader optional advisory UI exposure design sprint; design how to expose the non-production advisory helper as an explicit advanced user action without wiring advisory output into validators, pending changes, write planning, apply flow, or write safety decisions."
+    "advisoryUiExposureDesignReport": "data/reports/screen-shader-advisory-ui-exposure-design.v0.55.2.json",
+    "selectedAdvisoryUiExposureDesignOption": "Option A",
+    "advisoryUiExposureImplemented": false,
+    "uiExposureDesignOnly": true,
+    "advancedModeRequired": true,
+    "explicitUserTriggerRequired": true,
+    "advisoryResultCanApproveWrite": false,
+    "advisoryResultCanBlockWrite": false,
+    "advisoryResultCanBypassProductionGate": false,
+    "recommendedNextSprint": "Screen shader optional advisory UI implementation proof sprint; implement a non-production explicit advanced UI action only if it stays disconnected from validators, pending changes, write planning, apply flow, and write safety; prove no auto-run, no real user shader reads in tests, no live shader compile, no live display proof, and advisory-only result rendering."
   }
 }

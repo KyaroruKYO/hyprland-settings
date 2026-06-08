@@ -419,6 +419,33 @@ pub struct RowDetailProjection {
     pub comparison: ComparisonProjection,
     pub edit: SettingEditProjection,
     pub safety_notes: Vec<String>,
+    pub screen_shader_advisory: Option<ScreenShaderAdvisoryUiProjection>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ScreenShaderAdvisoryUiProjection {
+    pub placement: String,
+    pub advanced_mode_required: bool,
+    pub explicit_user_trigger_required: bool,
+    pub runs_on_row_load: bool,
+    pub runs_on_value_change: bool,
+    pub runs_during_validation: bool,
+    pub runs_during_pending_change: bool,
+    pub runs_during_write_planning: bool,
+    pub runs_during_apply_flow: bool,
+    pub consent_message: String,
+    pub temp_copy_message: String,
+    pub original_path_message: String,
+    pub runtime_safety_disclaimer: String,
+    pub production_gate_disclaimer: String,
+    pub pass_policy: String,
+    pub failure_policy: String,
+    pub missing_tool_policy: String,
+    pub timeout_policy: String,
+    pub cleanup_warning_policy: String,
+    pub can_approve_write: bool,
+    pub can_block_write: bool,
+    pub can_bypass_production_gate: bool,
 }
 
 impl RowDetailProjection {
@@ -486,6 +513,52 @@ impl RowDetailProjection {
             comparison: setting.comparison.clone(),
             edit: setting.edit.clone(),
             safety_notes,
+            screen_shader_advisory: screen_shader_advisory_projection(&setting.row_id),
         }
     }
+}
+
+fn screen_shader_advisory_projection(row_id: &str) -> Option<ScreenShaderAdvisoryUiProjection> {
+    (row_id == "decoration.screen_shader").then(|| ScreenShaderAdvisoryUiProjection {
+        placement:
+            "advanced-display-render-screen-shader-advisory-section-separated-from-apply-action"
+                .to_string(),
+        advanced_mode_required: true,
+        explicit_user_trigger_required: true,
+        runs_on_row_load: false,
+        runs_on_value_change: false,
+        runs_during_validation: false,
+        runs_during_pending_change: false,
+        runs_during_write_planning: false,
+        runs_during_apply_flow: false,
+        consent_message: "Run optional advisory check: the app will read the selected shader file only after this explicit action and copy it into a temporary folder."
+            .to_string(),
+        temp_copy_message:
+            "The advisory check runs glslangValidator only against temporary copies of the fragment shader and Hyprland vertex shader."
+                .to_string(),
+        original_path_message:
+            "The original selected shader path is not passed to glslangValidator.".to_string(),
+        runtime_safety_disclaimer:
+            "A passing advisory check is not Hyprland runtime, GPU, or visual safety proof."
+                .to_string(),
+        production_gate_disclaimer:
+            "The production screen-shader watchdog gate is still required before applying this setting."
+                .to_string(),
+        pass_policy:
+            "Standalone advisory check passed; this does not approve or apply the write.".to_string(),
+        failure_policy:
+            "Standalone advisory warning; this does not automatically block the write.".to_string(),
+        missing_tool_policy:
+            "Advisory check unavailable because glslangValidator is missing; writes are not approved or blocked."
+                .to_string(),
+        timeout_policy:
+            "Advisory check timed out and is inconclusive; writes are not approved or blocked."
+                .to_string(),
+        cleanup_warning_policy:
+            "Temp cleanup warning should be logged/displayed without approving, blocking, or bypassing writes."
+                .to_string(),
+        can_approve_write: false,
+        can_block_write: false,
+        can_bypass_production_gate: false,
+    })
 }

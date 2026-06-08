@@ -157,6 +157,15 @@
     "advisoryPassBehaviorProven": true,
     "advisoryFailBehaviorProven": true,
     "cleanupFailureBehaviorProven": true,
-    "recommendedNextSprint": "Screen shader optional advisory UI exposure design sprint; design how to expose the non-production advisory helper as an explicit advanced user action without wiring advisory output into validators, pending changes, write planning, apply flow, or write safety decisions."
+    "advisoryUiExposureDesignReport": "data/reports/screen-shader-advisory-ui-exposure-design.v0.55.2.json",
+    "selectedAdvisoryUiExposureDesignOption": "Option A",
+    "advisoryUiExposureImplemented": false,
+    "uiExposureDesignOnly": true,
+    "advancedModeRequired": true,
+    "explicitUserTriggerRequired": true,
+    "advisoryResultCanApproveWrite": false,
+    "advisoryResultCanBlockWrite": false,
+    "advisoryResultCanBypassProductionGate": false,
+    "recommendedNextSprint": "Screen shader optional advisory UI implementation proof sprint; implement a non-production explicit advanced UI action only if it stays disconnected from validators, pending changes, write planning, apply flow, and write safety; prove no auto-run, no real user shader reads in tests, no live shader compile, no live display proof, and advisory-only result rendering."
   }
 }

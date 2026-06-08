@@ -2,23 +2,23 @@
 
 This file is the starting context for a new ChatGPT conversation. It is written for ChatGPT and the user, not for Codex internals. Assume the new conversation has no other history.
 
-State reviewed after the screen shader optional advisory compiler implementation proof sprint on branch `completion-sprint`.
+State reviewed after the screen shader optional advisory UI exposure design sprint on branch `completion-sprint`.
 
 Latest reviewed implementation baseline before this sprint:
 
-- `aea7586 Design screen shader advisory compiler integration`
+- `9363dc6 Prove screen shader advisory compiler helper`
 
 Latest sprint commit:
 
-- `Prove screen shader advisory compiler helper` (this commit; use `git log -1 --oneline` for the exact hash)
+- `Design screen shader advisory UI exposure` (this commit; use `git log -1 --oneline` for the exact hash)
 
 Latest restore point and backups:
 
-- Restore tag: `pre-screen-shader-advisory-compiler-implementation-proof-20260608-012035`
-- Project backup: `/home/kyo/Documents/hyprland-settings-pre-screen-shader-advisory-compiler-implementation-proof-backup_20260608_012035/`
-- AGS backup: `/home/kyo/Documents/ags-pre-screen-shader-advisory-compiler-implementation-proof-backup_20260608_012035`
-- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-advisory-compiler-implementation-proof-20260608_012035`
-- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-advisory-compiler-implementation-proof-backup_20260608_012035`
+- Restore tag: `pre-screen-shader-advisory-ui-exposure-design-20260608-015404`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-screen-shader-advisory-ui-exposure-design-backup_20260608_015404/`
+- AGS backup: `/home/kyo/Documents/ags-pre-screen-shader-advisory-ui-exposure-design-backup_20260608_015404`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-advisory-ui-exposure-design-20260608_015404`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-advisory-ui-exposure-design-backup_20260608_015404`
 
 ## 1. Primary Project Goal
 
@@ -73,13 +73,13 @@ Every sprint should preserve safety boundaries and end with clear final counts:
 
 Current branch: `completion-sprint`
 
-Latest reviewed implementation baseline before the screen shader optional advisory compiler implementation proof sprint:
+Latest reviewed implementation baseline before the screen shader optional advisory UI exposure design sprint:
 
-- `aea7586 Design screen shader advisory compiler integration`
+- `9363dc6 Prove screen shader advisory compiler helper`
 
 Latest sprint commit message:
 
-- `Prove screen shader advisory compiler helper`
+- `Design screen shader advisory UI exposure`
 
 Current scalar row counts:
 
@@ -111,6 +111,7 @@ Screen shader state:
 - Selected advisory compiler feasibility option: `Option A`.
 - Selected advisory compiler integration design option: `Option A`.
 - Selected advisory compiler implementation proof option: `Option A`.
+- Selected advisory UI exposure design option: `Option A`.
 - Dry-run/non-production gate primitive added: yes.
 - Primitive name: `screen-shader-dry-run-gated-write-review`.
 - Ungated dry-run `decoration.screen_shader` rejected: yes.
@@ -158,8 +159,18 @@ Screen shader state:
 - Advisory pass behavior proven: yes.
 - Advisory fail behavior proven: yes.
 - Cleanup failure behavior proven: yes.
+- Advisory UI exposure implemented: no.
+- UI exposure design only: yes.
+- Advanced/high-risk placement required: yes.
+- Explicit user trigger required: yes.
+- Runs on row load: no.
+- Runs on value change: no.
+- Runs during validation/pending/write planning/apply flow: no.
+- Advisory result can approve writes: no.
+- Advisory result can block writes: no.
+- Advisory result can bypass production gate: no.
 - Recommended compile-aware policy: advisory or research-only until compatibility with Hyprland's OpenGL runtime path is proven.
-- No row was enabled during the screen shader optional advisory compiler implementation proof sprint.
+- No row was enabled during the screen shader optional advisory UI exposure design sprint.
 - Write allowlist unchanged.
 - Recovery gates unchanged.
 - Real config untouched.
@@ -177,6 +188,7 @@ Decision report:
 - `data/reports/screen-shader-non-live-advisory-compiler-feasibility.v0.55.2.json`
 - `data/reports/screen-shader-advisory-compiler-integration-design.v0.55.2.json`
 - `data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json`
+- `data/reports/screen-shader-advisory-ui-exposure-design.v0.55.2.json`
 
 Decision summary:
 
@@ -198,6 +210,9 @@ Decision summary:
 - Option A was selected in the advisory compiler implementation proof sprint because a non-production helper could be implemented and fixture-proven while staying disconnected from write safety.
 - The helper lives in `src/screen_shader_advisory.rs`. It requires explicit user consent, copies the selected fixture shader into a temp directory, copies the matching source-backed Hyprland vertex shader into that temp directory, runs `glslangValidator -l` only on temp paths, and captures advisory result data.
 - The helper proves missing-tool, timeout, advisory pass, advisory fail, temp-copy failure, and cleanup-warning behavior. It does not claim Hyprland runtime safety, does not block or approve writes, and does not bypass the production screen-shader gate.
+- Option A was selected in the advisory UI exposure design sprint because the project can represent a row-specific, design-only advanced advisory UI projection for `decoration.screen_shader` without invoking the helper or changing write safety.
+- `src/ui/model.rs` now projects screen-shader advisory UI metadata only for `decoration.screen_shader`: advanced placement, explicit trigger, consent/temp-copy/runtime-safety/production-gate messages, result policies, and no approve/block/bypass capability.
+- UI exposure remains design-only. Runnable UI implementation is not present yet.
 - Compiler checks remain unwired from validators, pending changes, write planning, and apply flow.
 
 Validation state from the most recent sprint:
@@ -211,7 +226,7 @@ Validation state from the most recent sprint:
 - `appstreamcli validate --pedantic ... || true`: completed with expected non-blocking metadata warnings
 - Python export/UI/schema validators: passed
 
-Worktree state should be clean after committing the screen shader advisory compiler implementation proof sprint changes.
+Worktree state should be clean after committing the screen shader advisory UI exposure design sprint changes.
 
 ## 4. Project Architecture Overview
 
@@ -379,6 +394,8 @@ Screen shader migration/proof status:
 - Compile-aware shader validation is still deferred.
 - A non-production advisory helper exists in `src/screen_shader_advisory.rs`.
 - The helper is fixture/temp-only in tests, requires explicit user consent, passes only temp paths to `glslangValidator`, and cannot approve, block, or bypass write safety.
+- Design-only advisory UI metadata exists in `src/ui/model.rs` for `decoration.screen_shader` only.
+- The UI design projection requires advanced placement, explicit user trigger, consent/temp-copy/runtime-safety/production-gate messaging, no automatic runs, and no approve/block/bypass effect.
 
 Validator/value-type work completed:
 
@@ -564,9 +581,9 @@ Relevant reports:
 
 Near-term work:
 
-- Screen shader optional advisory UI exposure design sprint.
-- Design how to expose the non-production advisory helper as an explicit advanced user action.
-- Render advisory output as non-authoritative and non-blocking.
+- Screen shader optional advisory UI implementation proof sprint.
+- Implement a non-production explicit advanced UI action only if it stays disconnected from validators, pending changes, write planning, apply flow, and write safety.
+- Prove no auto-run, no real user shader reads in tests, no live shader compile, no live display proof, and advisory-only result rendering.
 - Keep production gate enforcement intact for `decoration.screen_shader`.
 - Do not implement production compile-aware validation.
 - Do not wire compiler checks into validators, pending changes, write planning, or production apply flow without a separate approved implementation sprint.
@@ -603,6 +620,9 @@ Remaining deferred validators:
   - Future advisory integration must require explicit user action before reading a shader file.
   - Future advisory integration must copy the selected shader into a temp fixture and pass only temp paths to `glslangValidator`.
   - Advisory pass/fail output must remain non-authoritative and non-blocking.
+  - Advisory UI exposure design selected Option A.
+  - Design-only UI metadata is projected only for `decoration.screen_shader`.
+  - Runnable UI implementation is still missing.
   - Compatibility with Hyprland's actual OpenGL runtime compile/link path is not proven.
   - Compile-aware validation remains deferred.
 
@@ -658,11 +678,11 @@ Do not remove current writable behavior without explicit user approval.
 
 Recommended next sprint title:
 
-Screen shader optional advisory UI exposure design sprint.
+Screen shader optional advisory UI implementation proof sprint.
 
 The sprint should:
 
-- Design how to expose the non-production advisory helper as an explicit advanced user action.
+- Implement a non-production explicit advanced UI action only if it stays disconnected from validators, pending changes, write planning, apply flow, and write safety.
 - Render advisory output as non-authoritative and non-blocking.
 - Keep existing production apply-flow gate enforcement unchanged.
 - Keep `decoration.screen_shader` writable and gated.
@@ -705,7 +725,8 @@ Current AppStream warnings are expected and non-blocking under `|| true`:
 
 Latest important commits:
 
-- `Prove screen shader advisory compiler helper` (this commit)
+- `Design screen shader advisory UI exposure` (this commit)
+- `9363dc6 Prove screen shader advisory compiler helper`
 - `aea7586 Design screen shader advisory compiler integration`
 - `865849f Prove screen shader advisory compiler feasibility`
 - `df2626a Research screen shader compile-aware validation`
@@ -726,16 +747,16 @@ Latest important commits:
 - `96b73be Enforce deferred consumer source validator research`
 - `6c785cc Enforce official writable validator source research`
 
-Latest restore tag created before the screen shader optional advisory compiler implementation proof sprint:
+Latest restore tag created before the screen shader optional advisory UI exposure design sprint:
 
-- `pre-screen-shader-advisory-compiler-implementation-proof-20260608-012035`
+- `pre-screen-shader-advisory-ui-exposure-design-20260608-015404`
 
-Backup paths created before the screen shader optional advisory compiler implementation proof sprint:
+Backup paths created before the screen shader optional advisory UI exposure design sprint:
 
-- `/home/kyo/Documents/hyprland-settings-pre-screen-shader-advisory-compiler-implementation-proof-backup_20260608_012035/`
-- `/home/kyo/Documents/ags-pre-screen-shader-advisory-compiler-implementation-proof-backup_20260608_012035`
-- `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-advisory-compiler-implementation-proof-20260608_012035`
-- `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-advisory-compiler-implementation-proof-backup_20260608_012035`
+- `/home/kyo/Documents/hyprland-settings-pre-screen-shader-advisory-ui-exposure-design-backup_20260608_015404/`
+- `/home/kyo/Documents/ags-pre-screen-shader-advisory-ui-exposure-design-backup_20260608_015404`
+- `/home/kyo/hyprland-config-backups/hypr-pre-screen-shader-advisory-ui-exposure-design-20260608_015404`
+- `/home/kyo/Documents/system-audit/next-agent-handoff-pre-screen-shader-advisory-ui-exposure-design-backup_20260608_015404`
 
 Important report filenames:
 
@@ -762,6 +783,7 @@ Important report filenames:
 - `data/reports/screen-shader-non-live-advisory-compiler-feasibility.v0.55.2.json`
 - `data/reports/screen-shader-advisory-compiler-integration-design.v0.55.2.json`
 - `data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json`
+- `data/reports/screen-shader-advisory-ui-exposure-design.v0.55.2.json`
 
 Important docs filenames:
 
@@ -778,6 +800,7 @@ Important docs filenames:
 - `/home/kyo/.config/hypr/docs/SCREEN-SHADER-NON-LIVE-ADVISORY-COMPILER-FEASIBILITY.md`
 - `/home/kyo/.config/hypr/docs/SCREEN-SHADER-ADVISORY-COMPILER-INTEGRATION-DESIGN.md`
 - `/home/kyo/.config/hypr/docs/SCREEN-SHADER-ADVISORY-COMPILER-IMPLEMENTATION-PROOF.md`
+- `/home/kyo/.config/hypr/docs/SCREEN-SHADER-ADVISORY-UI-EXPOSURE-DESIGN.md`
 - `/home/kyo/.config/hypr/docs/NEXT-HIGH-RISK-BUCKET-READINESS.md`
 - `/home/kyo/.config/hypr/docs/RUST-DEFERRED-SOURCE-BACKED-VALIDATOR-REPAIR-REPORT.md`
 - `/home/kyo/.config/hypr/docs/SOURCE-BACKED-VALIDATOR-DEFERRED-ITEMS.md`
@@ -802,4 +825,4 @@ Remaining deferred row list:
 
 Next recommended prompt title:
 
-Screen shader optional advisory UI exposure design sprint.
+Screen shader optional advisory UI implementation proof sprint.

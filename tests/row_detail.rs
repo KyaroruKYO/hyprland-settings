@@ -212,6 +212,62 @@ fn sanitized_path_detail_is_editable() -> Result<()> {
     assert_eq!(pending.setting_id, "decoration.screen_shader");
     assert_eq!(pending.validation_label, "valid");
     assert!(!pending.can_review);
+    assert!(detail.screen_shader_advisory.is_some());
+
+    Ok(())
+}
+
+#[test]
+fn screen_shader_detail_projects_design_only_advisory_ui_metadata() -> Result<()> {
+    let detail = detail_for("decoration.screen_shader")?;
+    let advisory = detail
+        .screen_shader_advisory
+        .expect("screen shader advisory UI metadata expected");
+
+    assert_eq!(
+        advisory.placement,
+        "advanced-display-render-screen-shader-advisory-section-separated-from-apply-action"
+    );
+    assert!(advisory.advanced_mode_required);
+    assert!(advisory.explicit_user_trigger_required);
+    assert!(!advisory.runs_on_row_load);
+    assert!(!advisory.runs_on_value_change);
+    assert!(!advisory.runs_during_validation);
+    assert!(!advisory.runs_during_pending_change);
+    assert!(!advisory.runs_during_write_planning);
+    assert!(!advisory.runs_during_apply_flow);
+    assert!(advisory.consent_message.contains("explicit action"));
+    assert!(advisory.temp_copy_message.contains("temporary copies"));
+    assert!(advisory
+        .original_path_message
+        .contains("not passed to glslangValidator"));
+    assert!(advisory
+        .runtime_safety_disclaimer
+        .contains("not Hyprland runtime"));
+    assert!(advisory
+        .production_gate_disclaimer
+        .contains("watchdog gate is still required"));
+    assert!(advisory.pass_policy.contains("does not approve"));
+    assert!(advisory
+        .failure_policy
+        .contains("does not automatically block"));
+    assert!(advisory.missing_tool_policy.contains("unavailable"));
+    assert!(advisory.timeout_policy.contains("inconclusive"));
+    assert!(advisory
+        .cleanup_warning_policy
+        .contains("without approving"));
+    assert!(!advisory.can_approve_write);
+    assert!(!advisory.can_block_write);
+    assert!(!advisory.can_bypass_production_gate);
+
+    Ok(())
+}
+
+#[test]
+fn non_screen_shader_rows_do_not_project_advisory_ui_metadata() -> Result<()> {
+    let detail = detail_for("appearance.blur.size")?;
+
+    assert!(detail.screen_shader_advisory.is_none());
 
     Ok(())
 }

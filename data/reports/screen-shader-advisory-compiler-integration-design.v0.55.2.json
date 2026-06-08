@@ -133,10 +133,10 @@
     "Report and test design records that advisory output is non-authoritative and cannot change validators, pending changes, write planning, apply flow, SAFE_WRITABLE_ROWS, write allowlist, or row enablement."
   ],
   "proofStillMissing": [
-    "No UI proof exists for explicit user consent and advisory output rendering.",
+    "UI exposure design proof exists, but no runnable UI implementation exists for explicit user consent and advisory output rendering.",
     "No production compile-aware validator implementation exists.",
     "No proof exists that glslangValidator output is equivalent to Hyprland's OpenGL runtime compile/link behavior.",
     "No official Hyprland non-live validation interface was found."
   ],
-  "nextRecommendedSprint": "Screen shader optional advisory UI exposure design sprint: design how to expose the non-production advisory helper as an explicit advanced user action without wiring advisory output into validators, pending changes, write planning, apply flow, or write safety decisions."
+  "nextRecommendedSprint": "Screen shader optional advisory UI implementation proof sprint: implement a non-production explicit advanced UI action only if it stays disconnected from validators, pending changes, write planning, apply flow, and write safety; prove no auto-run, no real user shader reads in tests, no live shader compile, no live display proof, and advisory-only result rendering."
 }
