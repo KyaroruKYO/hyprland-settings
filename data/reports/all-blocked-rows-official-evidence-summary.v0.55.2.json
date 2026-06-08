@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "all-blocked-rows-official-evidence-summary",
+  "generatedAt": "2026-06-08T15:47:26-07:00",
+  "totalBlockedRows": 63,
+  "officialRowsCount": 63,
+  "notOfficialRowsCount": 0,
+  "notProvenRowsCount": 0,
+  "readyForFutureEnablementCount": 0,
+  "officialButBlockedCount": 63,
+  "needsFurtherResearchCount": 63,
+  "byBucket": {
+    "display/render": 23,
+    "cursor/input": 18,
+    "debug/crash": 22
+  },
+  "byMissingProofType": {
+    "officialDocs": 63,
+    "sourceCodeConsumer": 0,
+    "allowedValues": 2,
+    "invalidValueBehavior": 63,
+    "writeReadback": 63,
+    "safetyGate": 63,
+    "uiWarning": 63,
+    "tests": 63
+  },
+  "recommendedNextSprint": "All blocked rows invalid-value behavior and safety-gate proof cleanup sprint",
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0
+}

@@ -699,5 +699,33 @@
     "independent watchdog/recovery proof for candidate rows",
     "UI warning projection proof for candidate rows",
     "explicit approval for any future row enablement sprint"
-  ]
+  ],
+  "screenShaderDisplayRenderReviewFollowUp": {
+    "allBlockedRowsOfficialEvidenceMatrixReport": "data/reports/all-blocked-rows-official-evidence-matrix.v0.55.2.json",
+    "allBlockedRowsAllowedValuesMatrixReport": "data/reports/all-blocked-rows-allowed-values-matrix.v0.55.2.json",
+    "allBlockedRowsWritabilityReadinessReport": "data/reports/all-blocked-rows-writability-readiness.v0.55.2.json",
+    "allBlockedRowsErrorsAndFurtherResearchReport": "data/reports/all-blocked-rows-errors-and-further-research.v0.55.2.json",
+    "allBlockedRowsOfficialEvidenceSummaryReport": "data/reports/all-blocked-rows-official-evidence-summary.v0.55.2.json",
+    "allBlockedRowsAudited": 63,
+    "allBlockedRowsOfficialRowsCount": 63,
+    "allBlockedRowsReadyForFutureEnablementCount": 0,
+    "allBlockedRowsNeedsFurtherResearchCount": 63,
+    "allBlockedRowsAuditRowsEnabledThisSprint": 0,
+    "allBlockedRowsAuditSafeWritableRowsChanged": false,
+    "allBlockedRowsAuditWriteAllowlistChanged": false,
+    "allBlockedRowsAuditNextRecommendedSprint": "All blocked rows invalid-value behavior and safety-gate proof cleanup sprint"
+  },
+  "allBlockedRowsOfficialEvidenceMatrixReport": "data/reports/all-blocked-rows-official-evidence-matrix.v0.55.2.json",
+  "allBlockedRowsAllowedValuesMatrixReport": "data/reports/all-blocked-rows-allowed-values-matrix.v0.55.2.json",
+  "allBlockedRowsWritabilityReadinessReport": "data/reports/all-blocked-rows-writability-readiness.v0.55.2.json",
+  "allBlockedRowsErrorsAndFurtherResearchReport": "data/reports/all-blocked-rows-errors-and-further-research.v0.55.2.json",
+  "allBlockedRowsOfficialEvidenceSummaryReport": "data/reports/all-blocked-rows-official-evidence-summary.v0.55.2.json",
+  "allBlockedRowsAudited": 63,
+  "allBlockedRowsOfficialRowsCount": 63,
+  "allBlockedRowsReadyForFutureEnablementCount": 0,
+  "allBlockedRowsNeedsFurtherResearchCount": 63,
+  "allBlockedRowsAuditRowsEnabledThisSprint": 0,
+  "allBlockedRowsAuditSafeWritableRowsChanged": false,
+  "allBlockedRowsAuditWriteAllowlistChanged": false,
+  "allBlockedRowsAuditNextRecommendedSprint": "All blocked rows invalid-value behavior and safety-gate proof cleanup sprint"
 }

@@ -2,41 +2,54 @@
 
 This file is the starting context for a new ChatGPT conversation. It is written for ChatGPT and the user, not for Codex internals. Assume the new conversation has no other history.
 
-State reviewed after the display/render blocked rows readiness batching sprint on branch `completion-sprint`.
+State reviewed after the all remaining blocked rows official evidence and writability audit sprint on branch `completion-sprint`.
 
 Latest reviewed implementation baseline before this sprint:
 
-- `761abf2 Plan next high-risk bucket readiness batch`
+- `6c23291 Plan display render blocked row readiness` (known later planning commit that includes `761abf2 Plan next high-risk bucket readiness batch`)
 
 Latest sprint commit:
 
-- `Plan display render blocked row readiness` (this commit; use `git log -1 --oneline` for the exact hash)
+- `Audit all blocked rows official evidence` (this commit; use `git log -1 --oneline` for the exact hash)
 
 Latest restore point and backups:
 
-- Restore tag: `pre-display-render-blocked-readiness-batching-20260608-151710`
-- Project backup: `/home/kyo/Documents/hyprland-settings-pre-display-render-blocked-readiness-batching-backup_20260608_151710/`
-- AGS backup: `/home/kyo/Documents/ags-pre-display-render-blocked-readiness-batching-backup_20260608_151710`
-- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-display-render-blocked-readiness-batching-20260608_151710`
-- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-display-render-blocked-readiness-batching-backup_20260608_151710`
+- Restore tag: `pre-all-blocked-official-evidence-writability-audit-20260608-154726`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-all-blocked-official-evidence-writability-audit-backup_20260608_154726/`
+- AGS backup: `/home/kyo/Documents/ags-pre-all-blocked-official-evidence-writability-audit-backup_20260608_154726`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-all-blocked-official-evidence-writability-audit-20260608_154726`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-all-blocked-official-evidence-writability-audit-backup_20260608_154726`
 
-Latest grouped readiness status:
+Latest blocked-row audit status:
 
-- Grouped batching report status: created in `data/reports/next-high-risk-bucket-readiness-batching.v0.55.2.json`.
-- Display/render readiness report status: created in `data/reports/display-render-blocked-rows-readiness-batching.v0.55.2.json`.
-- Selected next bucket: `display-render-bucket-readiness`.
-- Candidate rows count: 23 blocked display/render rows.
-- Selected candidate batch: `unresolved-display-render-inventory`.
-- Unresolved proof items: source-backed row selection, row-specific official source proof, row-specific validator tests, display/render gate proof, independent watchdog/recovery proof, UI warning proof, and explicit approval for future enablement.
-- Screen-shader closure status: closed for now.
-- Reusable high-risk pattern status: active.
-- Return-to-341 roadmap status: active.
+- Blocked rows audited: 63.
+- Official rows count: 63, based on local official Hyprland 0.55.2 `ConfigValues.cpp` declarations plus existing project inventory reports.
+- Not official rows count: 0.
+- Not proven rows count: 0 for official support; row-specific docs/default-config proof remains missing.
+- Ready-for-future-enablement count: 0.
+- Official but blocked count: 63.
+- Needs further research count: 63.
+- HyprMod cross-reference status: not used in this sprint; no HyprMod-only hint was accepted as official evidence.
+- Main missing proof categories: official docs/wiki citations, exact invalid-value behavior, fixture write/readback proof, row-specific safety gates, row-specific UI risk warnings, and row-specific tests proving all seven writability questions.
 - Rows enabled in this sprint: 0.
 - `SAFE_WRITABLE_ROWS` changed: no.
 - Write allowlist changed: no.
-- Hard boundaries preserved: yes.
+- Final counts: 341 readable / 278 writable / 63 blocked.
+- Screen-shader closure status: closed for now.
+- Reusable high-risk pattern status: active.
+- Return-to-341 roadmap status: active.
+- New reports:
+  - `data/reports/all-blocked-rows-official-evidence-matrix.v0.55.2.json`
+  - `data/reports/all-blocked-rows-allowed-values-matrix.v0.55.2.json`
+  - `data/reports/all-blocked-rows-writability-readiness.v0.55.2.json`
+  - `data/reports/all-blocked-rows-errors-and-further-research.v0.55.2.json`
+  - `data/reports/all-blocked-rows-official-evidence-summary.v0.55.2.json`
+- Human docs:
+  - `/home/kyo/.config/hypr/docs/ALL-BLOCKED-ROWS-OFFICIAL-EVIDENCE-AUDIT.md`
+  - `/home/kyo/.config/hypr/docs/ALL-BLOCKED-ROWS-ERRORS-AND-FURTHER-RESEARCH.md`
 - Validation results: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `desktop-file-validate`, export validator, UI design validator, and schema validator passed. `appstreamcli validate --pedantic` produced only the expected non-blocking GitHub URL and releases-info warnings.
-- Next recommended sprint: `Display/render blocked rows source evidence inventory sprint`.
+- Next recommended sprint: `All blocked rows invalid-value behavior and safety-gate proof cleanup sprint`.
+- Hard boundaries preserved: yes. No real config/runtime mutation, no reload/eval/Lua, no live display/input/crash proof, no row enablement, no allowlist changes, and no push.
 
 ## 1. Primary Project Goal
 
