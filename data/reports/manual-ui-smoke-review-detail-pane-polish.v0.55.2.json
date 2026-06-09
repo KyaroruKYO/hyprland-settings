@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "manual-ui-smoke-review-detail-pane-polish",
+  "generatedAt": "2026-06-09T00:48:47-07:00",
+  "startingCommit": "5b75b88 Fix setting detail visibility layout",
+  "bugOrUsabilitySummary": "The selected setting detail pane was visible after the layout fix, but it presented a long flat list of raw/internal labels before user-facing meaning. Normal users had to interpret read/write metadata, pending validation labels, conflicts, and high-risk gates from debug-oriented wording.",
+  "filesChanged": [
+    "src/ui/window.rs",
+    "tests/manual_ui_smoke_detail_pane_polish.rs",
+    "data/reports/manual-ui-smoke-review-detail-pane-polish.v0.55.2.json",
+    "docs/MANUAL-UI-SMOKE-REVIEW-DETAIL-PANE-POLISH-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/MANUAL-UI-SMOKE-REVIEW-DETAIL-PANE-POLISH-REVIEW-LOG.md"
+  ],
+  "rowsManuallyReviewed": [
+    {
+      "rowId": "appearance.blur.enabled",
+      "expectedDetail": "standard appearance row with clear current value, duplicate-conflict explanation when applicable, and edit controls"
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "expectedDetail": "gated high-risk cursor/input row with runtime monitor-name oracle wording and no freeform-string implication"
+    },
+    {
+      "rowId": "debug.manual_crash",
+      "expectedDetail": "debug/crash high-risk row with strong crash-sensitive warning and gate wording"
+    },
+    {
+      "rowId": "decoration.screen_shader",
+      "expectedDetail": "screen-shader row with screen-shader production gate and advisory wording preserved"
+    },
+    {
+      "rowId": "render.direct_scanout",
+      "expectedDetail": "display/render high-risk row with production high-risk gate and recovery warning"
+    },
+    {
+      "rowId": "windows.snap.enabled",
+      "expectedDetail": "normal writable-row comparison with reviewed config-write explanation"
+    }
+  ],
+  "detailPaneBefore": {
+    "structure": "single flat list of detail lines followed by write controls and safety notes",
+    "problem": "raw fields such as row id, read support, write support, comparison detail, write candidate status, pending review labels, source line, and duplicate line numbers appeared at the same level as user-facing content"
+  },
+  "detailPaneAfter": {
+    "structure": "grouped user-facing sections",
+    "sections": [
+      "Setting",
+      "Current value",
+      "Edit",
+      "Safety",
+      "Source / advanced metadata"
+    ],
+    "result": "display name, official setting, category, current value status, editability, and safety warnings appear before raw metadata"
+  },
+  "sectionsAdded": [
+    "Setting",
+    "Current value",
+    "Edit",
+    "Safety",
+    "Source / advanced metadata"
+  ],
+  "advancedMetadataBehavior": "raw/internal metadata moved into collapsed Source / advanced metadata expander",
+  "highRiskWarningBehavior": "high-risk rows show user-facing warnings from high-risk write policy before advanced metadata; cursor.default_monitor adds monitor-name oracle wording; debug.manual_crash adds crash-sensitive wording; screen-shader gate wording is preserved",
+  "writeButtonExplanationBehavior": "Apply state text is derived from pending validation and review state: conflicts, unreadable config, invalid values, high-risk gate requirements, and non-editable rows are explained in user-facing language",
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "testsAdded": [
+    "tests/manual_ui_smoke_detail_pane_polish.rs"
+  ],
+  "manualVerificationSteps": [
+    "Launch the app.",
+    "Open or search Appearance.",
+    "Select Appearance Blur Enabled and confirm the Setting, Current value, Edit, Safety, and Source / advanced metadata sections are visible.",
+    "If duplicate config entries are present for Appearance Blur Enabled, confirm Apply is disabled and the duplicate-resolution message is shown.",
+    "Search for cursor.default_monitor and confirm monitor-name oracle and high-risk cursor/input wording is visible.",
+    "Search for debug.manual_crash and confirm crash-sensitive gate wording is visible.",
+    "Search for decoration.screen_shader and confirm screen-shader advisory/gate wording is preserved.",
+    "Search for render.direct_scanout and confirm display/render high-risk wording is visible.",
+    "Search for windows.snap.enabled and confirm the normal reviewed config-write flow remains understandable.",
+    "Expand Source / advanced metadata and confirm raw metadata remains available."
+  ],
+  "proofUsed": [
+    "src/ui/window.rs grouped detail sections",
+    "existing RowDetailProjection fields for current value, pending validation, high-risk policy, and screen-shader advisory metadata",
+    "tests/manual_ui_smoke_detail_pane_polish.rs projection/source checks",
+    "existing final 341 writable coverage tests"
+  ],
+  "proofStillMissing": [
+    "human visual confirmation on the user's actual display"
+  ],
+  "nextRecommendedSprint": "Manual UI visual pass and copy polish sprint"
+}

@@ -5,7 +5,7 @@ use adw::prelude::*;
 use gtk4 as gtk;
 
 use crate::config_discovery::ConfigDiscovery;
-use crate::current_config::CurrentConfigSnapshot;
+use crate::current_config::{CurrentConfigSnapshot, CurrentValueSourceStatus};
 use crate::export::ExportBundle;
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::ui::model::{
@@ -13,7 +13,7 @@ use crate::ui::model::{
     RowDetailProjection, ScreenShaderAdvisoryUiActionRequest, UiProjection,
 };
 use crate::validation::ValidationSummary;
-use crate::write_classification::ScalarWriteValueKind;
+use crate::write_classification::{high_risk_write_policy, ScalarWriteValueKind};
 use crate::write_flow::{apply_setting_change, write_flow_value_kind};
 
 pub fn show_main_window(
@@ -527,120 +527,264 @@ fn render_detail(model: &UiProjection, row_id: &str, detail_content: &gtk::Box) 
     };
 
     clear_box(detail_content);
-    detail_content.append(&title_label(&detail.label));
-    append_detail_line(detail_content, "Row ID", &detail.row_id);
-    append_detail_line(detail_content, "Official setting", &detail.official_setting);
+    append_detail_section(detail_content, "Setting", |section| {
+        section.append(&title_label(&detail.label));
+        append_detail_line(section, "Official setting", &detail.official_setting);
+        append_detail_line(
+            section,
+            "Category",
+            &format!("{} / {}", detail.tab_label, detail.subsection),
+        );
+        if !detail.description.is_empty() {
+            append_detail_line(section, "Description", &detail.description);
+        }
+    });
+
+    append_detail_section(detail_content, "Current value", |section| {
+        append_current_value_summary(&detail, section);
+    });
+
+    append_detail_section(detail_content, "Edit", |section| {
+        append_user_facing_write_reason(&detail, section);
+        append_write_controls(model, &detail, section);
+    });
+
+    append_detail_section(detail_content, "Safety", |section| {
+        append_safety_summary(&detail, section);
+        append_screen_shader_advisory_controls(&detail, section);
+    });
+
+    append_advanced_detail_expander(&detail, detail_content);
+}
+
+fn append_current_value_summary(detail: &RowDetailProjection, section: &gtk::Box) {
     append_detail_line(
-        detail_content,
-        "Tab",
-        &format!("{} · {}", detail.tab_label, detail.subsection),
+        section,
+        "Status",
+        match detail.current_value.status {
+            CurrentValueSourceStatus::Configured => "Configured in your hyprland.conf",
+            CurrentValueSourceStatus::NotConfigured => {
+                "Not configured; Hyprland will use its default behavior"
+            }
+            CurrentValueSourceStatus::DuplicateConflict => {
+                "Conflict: duplicate config entries found"
+            }
+            CurrentValueSourceStatus::ReadUnavailable => "Current config could not be read",
+        },
     );
-    if !detail.description.is_empty() {
-        append_detail_line(detail_content, "Description", &detail.description);
-    }
     append_detail_line(
-        detail_content,
-        "Default metadata",
-        &detail.default_config_presence,
+        section,
+        "Current value",
+        detail
+            .current_value
+            .raw_value
+            .as_deref()
+            .unwrap_or("not configured"),
     );
-    append_detail_line(detail_content, "Comparison", &detail.comparison.badge);
-    append_detail_line(
-        detail_content,
-        "Comparison detail",
-        &detail.comparison.detail,
-    );
-    append_detail_line(detail_content, "Read support", &detail.read_support);
-    append_detail_line(
-        detail_content,
-        "Current value status",
-        detail.current_value.status_label(),
-    );
-    if let Some(raw_value) = &detail.current_value.raw_value {
-        append_detail_line(detail_content, "Current value", raw_value);
-    }
     if let (Some(path), Some(line_number)) = (
         &detail.current_value.source_path,
         detail.current_value.line_number,
     ) {
         append_detail_line(
-            detail_content,
-            "Current value source",
+            section,
+            "Source",
             &format!("{}:{line_number}", path.display()),
         );
     }
-    if let Some(raw_line) = &detail.current_value.raw_line {
-        append_detail_line(detail_content, "Source line", raw_line);
-    }
-    if !detail.current_value.duplicate_lines.is_empty() {
-        append_detail_line(
-            detail_content,
-            "Duplicate lines",
-            &format!("{:?}", detail.current_value.duplicate_lines),
-        );
+    if detail.current_value.status == CurrentValueSourceStatus::DuplicateConflict {
+        section.append(&body_label(
+            "This setting appears more than once in your config. The app will not write this setting until the duplicate entries are resolved manually.",
+        ));
     }
     if let Some(warning) = &detail.current_value.warning {
-        append_detail_line(detail_content, "Current value warning", warning);
+        append_detail_line(section, "Warning", warning);
     }
-    if let Some(status) = &detail.non_read_status {
-        append_detail_line(detail_content, "Non-read status", status);
-    }
-    append_detail_line(detail_content, "Preview status", &detail.preview_status);
-    append_detail_line(detail_content, "Risk class", &detail.risk_class);
+}
+
+fn append_user_facing_write_reason(detail: &RowDetailProjection, section: &gtk::Box) {
     append_detail_line(
-        detail_content,
-        "Report-only status",
-        &detail.report_only_status,
+        section,
+        "Editable in app",
+        if detail.edit.editable { "yes" } else { "no" },
     );
-    append_detail_line(detail_content, "Write support", &detail.write_support);
+    if let Some(proposed_value) = &detail.edit.proposed_value {
+        append_detail_line(section, "Proposed value", proposed_value);
+    }
+    section.append(&body_label(&apply_state_message(detail)));
+}
+
+fn apply_state_message(detail: &RowDetailProjection) -> String {
+    if !detail.edit.editable {
+        return format!(
+            "Apply is blocked because this setting is not currently editable in the app: {}.",
+            detail
+                .edit
+                .disabled_reason
+                .as_deref()
+                .unwrap_or("no edit path is available")
+        );
+    }
+
+    let Some(pending) = &detail.edit.pending else {
+        return "Apply is blocked because no pending value could be prepared.".to_string();
+    };
+
+    if pending.can_review {
+        if high_risk_write_policy(&detail.row_id).is_some() {
+            return "Apply can proceed only through the high-risk gated review path with recovery and confirmation proof."
+                .to_string();
+        }
+        return "Apply is available after backup, config write, and reread verification."
+            .to_string();
+    }
+
+    if let Some(reason) = pending
+        .review_summary
+        .iter()
+        .find_map(|line| line.strip_prefix("blocked: "))
+    {
+        return format!("Apply is blocked because {reason}.");
+    }
+
+    if let Some(reason) = pending.validation_label.strip_prefix("invalid: ") {
+        return format!("Apply is blocked because the proposed value is invalid: {reason}.");
+    }
+
+    if let Some(reason) = pending.validation_label.strip_prefix("not allowed: ") {
+        return format!("Apply is blocked because {reason}.");
+    }
+
+    if high_risk_write_policy(&detail.row_id).is_some() {
+        return "Apply is blocked until the high-risk gate has complete recovery, rollback, confirmation, and approval proof."
+            .to_string();
+    }
+
+    "Apply is blocked until the current config is readable, conflict-free, and the proposed value passes validation."
+        .to_string()
+}
+
+fn append_safety_summary(detail: &RowDetailProjection, section: &gtk::Box) {
+    append_detail_line(section, "Risk", &risk_class_label(&detail.risk_class));
     append_detail_line(
-        detail_content,
+        section,
+        "Write path",
+        if high_risk_write_policy(&detail.row_id).is_some() {
+            "Gated high-risk config write"
+        } else if detail.edit.editable {
+            "Reviewed config write"
+        } else {
+            "Not currently writable in the app"
+        },
+    );
+
+    if let Some(policy) = high_risk_write_policy(&detail.row_id) {
+        section.append(&body_label(&policy.review_warning));
+        append_detail_line(section, "Gate", policy.approval_gate);
+        append_detail_line(section, "Recovery", policy.watchdog_requirement);
+    }
+
+    if detail.row_id == "cursor.default_monitor" {
+        section.append(&body_label(
+            "This is not a freeform string write. The proposed monitor name must be proven by the runtime monitor-name oracle before the high-risk gate can accept it.",
+        ));
+    }
+
+    if detail.row_id == "debug.manual_crash" {
+        section.append(&body_label(
+            "This setting is crash/debug sensitive. It must not look or behave like a casual toggle; the production gate requires recovery and confirmation proof before any apply path can proceed.",
+        ));
+    }
+
+    if let Some(advisory) = &detail.screen_shader_advisory {
+        section.append(&body_label(&advisory.production_gate_disclaimer));
+        section.append(&small_label(&advisory.runtime_safety_disclaimer));
+    }
+}
+
+fn risk_class_label(risk_class: &str) -> String {
+    match risk_class {
+        "safe" => "Standard config setting".to_string(),
+        "display_render_risk" => "Display/render high-risk setting".to_string(),
+        "cursor_input_risk" => "Cursor/input high-risk setting".to_string(),
+        "debug_crash_risk" => "Debug/crash high-risk setting".to_string(),
+        other => other.replace('_', " "),
+    }
+}
+
+fn append_advanced_detail_expander(detail: &RowDetailProjection, detail_content: &gtk::Box) {
+    let expander = gtk::Expander::new(Some("Source / advanced metadata"));
+    expander.set_expanded(false);
+
+    let advanced = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    advanced.set_margin_top(10);
+    advanced.set_margin_bottom(10);
+    advanced.set_margin_start(10);
+    advanced.set_margin_end(10);
+
+    append_detail_line(&advanced, "Row ID", &detail.row_id);
+    append_detail_line(&advanced, "Read support raw label", &detail.read_support);
+    if let Some(status) = &detail.non_read_status {
+        append_detail_line(&advanced, "Non-read status", status);
+    }
+    append_detail_line(&advanced, "Write support raw label", &detail.write_support);
+    append_detail_line(&advanced, "Preview status", &detail.preview_status);
+    append_detail_line(&advanced, "Report-only status", &detail.report_only_status);
+    append_detail_line(
+        &advanced,
         "Write candidate status",
         &detail.write_candidate_status,
     );
+    append_detail_line(
+        &advanced,
+        "Default metadata",
+        &detail.default_config_presence,
+    );
+    append_detail_line(&advanced, "Comparison", &detail.comparison.badge);
+    append_detail_line(&advanced, "Comparison detail", &detail.comparison.detail);
+    if let Some(raw_line) = &detail.current_value.raw_line {
+        append_detail_line(&advanced, "Source line", raw_line);
+    }
+    if !detail.current_value.duplicate_lines.is_empty() {
+        append_detail_line(
+            &advanced,
+            "Duplicate line numbers",
+            &format!("{:?}", detail.current_value.duplicate_lines),
+        );
+    }
     if let Some(target_mode) = &detail.write_candidate_target_mode {
-        append_detail_line(detail_content, "Target mode", target_mode);
+        append_detail_line(&advanced, "Target mode", target_mode);
     }
     if let Some(executable) = detail.write_candidate_executable {
-        append_detail_line(detail_content, "Executable", &executable.to_string());
+        append_detail_line(&advanced, "Executable", &executable.to_string());
     }
     if let Some(command_generation_allowed) = detail.write_candidate_command_generation_allowed {
         append_detail_line(
-            detail_content,
+            &advanced,
             "Command generation",
             &command_generation_allowed.to_string(),
         );
     }
-    append_detail_line(
-        detail_content,
-        "Editable in app",
-        if detail.edit.editable { "yes" } else { "no" },
-    );
-    if let Some(reason) = &detail.edit.disabled_reason {
-        append_detail_line(detail_content, "Disabled reason", reason);
-    }
-    if let Some(proposed_value) = &detail.edit.proposed_value {
-        append_detail_line(detail_content, "Suggested pending value", proposed_value);
-    }
     if let Some(pending) = &detail.edit.pending {
         append_detail_line(
-            detail_content,
+            &advanced,
             "Pending change validation",
             &pending.validation_label,
         );
         append_detail_line(
-            detail_content,
+            &advanced,
             "Pending review available",
             if pending.can_review { "yes" } else { "no" },
         );
         for line in &pending.review_summary {
-            detail_content.append(&small_label(line));
+            advanced.append(&small_label(line));
         }
     }
-    append_screen_shader_advisory_controls(&detail, detail_content);
-    append_write_controls(model, &detail, detail_content);
     for note in &detail.safety_notes {
-        detail_content.append(&small_label(note));
+        advanced.append(&small_label(note));
     }
+
+    expander.set_child(Some(&advanced));
+    detail_content.append(&expander);
 }
 
 fn append_screen_shader_advisory_controls(detail: &RowDetailProjection, detail_content: &gtk::Box) {
@@ -688,6 +832,19 @@ fn append_screen_shader_advisory_controls(detail: &RowDetailProjection, detail_c
 
     frame.set_child(Some(&controls));
     detail_content.append(&frame);
+}
+
+fn append_detail_section(parent: &gtk::Box, title: &str, build: impl FnOnce(&gtk::Box)) {
+    let frame = gtk::Frame::new(None);
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    content.set_margin_top(10);
+    content.set_margin_bottom(10);
+    content.set_margin_start(10);
+    content.set_margin_end(10);
+    content.append(&title_label(title));
+    build(&content);
+    frame.set_child(Some(&content));
+    parent.append(&frame);
 }
 
 fn append_write_controls(
@@ -757,11 +914,7 @@ fn append_write_controls(
     apply_button.set_sensitive(can_review);
     controls.append(&apply_button);
 
-    let result_label = small_label(if can_review {
-        "Ready for backup, write, and reread verification."
-    } else {
-        "Apply is blocked until current config is readable and conflict-free."
-    });
+    let result_label = small_label(&apply_state_message(detail));
     controls.append(&result_label);
 
     let known_setting_ids = model.known_setting_ids.clone();
