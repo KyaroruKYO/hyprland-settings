@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-accel-profile-consumer-research",
+  "generatedAt": "2026-06-07T00:49:01-07:00",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "rowsResearched": 1,
+    "finiteChoiceRows": 1,
+    "customGrammarRows": 1,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "safety": {
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "recoveryGatesChanged": false
+  },
+  "rows": [
+    {
+      "rowId": "input.accel_profile",
+      "officialSetting": "input.accel_profile",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/managers/input/InputManager.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "Accepted consumer branches are empty/default, adaptive, flat, and strings beginning with custom that are parsed as custom <step> <point...>; unknown profiles log a warning and fall back to default.",
+      "recommendedValidatorPolicy": "Future validator should accept empty/default, adaptive, flat, and source-backed custom profiles with finite double components.",
+      "recommendedUiEditorPolicy": "Segmented default/adaptive/flat choices plus advanced custom curve editor.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    }
+  ]
+}

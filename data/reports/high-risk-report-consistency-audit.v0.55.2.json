@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "high-risk-report-consistency-audit",
+  "generatedAt": "2026-06-06T21:37:13-07:00",
+  "sourceOfTruth": {
+    "rustSafeWritableRows": "src/write_classification.rs::SAFE_WRITABLE_ROWS",
+    "authoritativeCurrentCoverage": "data/reports/scalar-read-write-coverage.v0.55.2.json",
+    "authoritativeUnifiedPipeline": "data/reports/all-341-unified-pipeline.v0.55.2.json",
+    "remainingHighRiskCandidates": "data/reports/high-risk-write-candidates.v0.55.2.json",
+    "proofIndex": "enablement and watchdog proof reports listed in row audit"
+  },
+  "counts": {
+    "currentReadableRows": 341,
+    "currentWritableRows": 278,
+    "currentBlockedRows": 63,
+    "pipelineWritableRows": 278,
+    "pipelineBlockedRows": null,
+    "candidateBlockedRows": 63,
+    "writableProofRows": 278,
+    "backfillWritableRows": null,
+    "deadManRowsEnabled": 9,
+    "enabledHighRiskRowsAudited": 9,
+    "remainingHighRiskBlockedRows": 63,
+    "displayRenderBlockedRows": 23,
+    "cursorInputBlockedRows": 18,
+    "debugCrashBlockedRows": 22,
+    "sourceOfTruthMismatches": 0,
+    "rowsEnabledThisSprint": 0,
+    "writeAllowlistChangedThisSprint": false,
+    "productionBehaviorChangedThisSprint": false,
+    "recoveryGateWeakenedRows": 0,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "driftFoundRows": 9,
+    "driftFixedRows": 9,
+    "staleReportsFixed": 3
+  },
+  "currentState": {
+    "readableRows": "341 / 341",
+    "writableRows": "278 / 341",
+    "blockedRows": "63 / 341",
+    "cursorHideOnKeyPressEnabled": true
+  },
+  "enabledHighRiskRows": [
+    "ecosystem.no_update_news",
+    "ecosystem.no_donation_nag",
+    "ecosystem.enforce_permissions",
+    "xwayland.use_nearest_neighbor",
+    "xwayland.force_zero_scaling",
+    "cursor.sync_gsettings_theme",
+    "cursor.hide_on_touch",
+    "cursor.hide_on_tablet",
+    "cursor.hide_on_key_press"
+  ],
+  "mismatchesBetweenSourceOfTruth": [],
+  "staleHistoricalReportsBeingTreatedAsCurrent": [
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "issue": "historical filename but current count differs from coverage",
+      "value": null
+    }
+  ],
+  "currentReportsChecked": [
+    "scalar-read-write-coverage.v0.55.2.json",
+    "all-341-unified-pipeline.v0.55.2.json",
+    "high-risk-write-candidates.v0.55.2.json",
+    "writable-253-unified-pipeline-proof.v0.55.2.json",
+    "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+    "high-risk-dead-man-recovery-design.v0.55.2.json"
+  ],
+  "safety": {
+    "noRowsEnabled": true,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakened": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "reportDriftFixed": [
+    {
+      "file": "all-341-unified-pipeline.v0.55.2.json",
+      "issue": "missing explicit high-risk template/proof/watchdog/ui metadata",
+      "correction": "normalized enabled high-risk row metadata; no write behavior changed"
+    },
+    {
+      "file": "writable-253-unified-pipeline-proof.v0.55.2.json",
+      "issue": "missing explicit high-risk template/proof/watchdog/ui metadata",
+      "correction": "normalized enabled high-risk row metadata; no write behavior changed"
+    },
+    {
+      "file": "all-341-unified-pipeline-backfill-audit.v0.55.2.json",
+      "issue": "missing explicit high-risk template/proof/watchdog/ui metadata",
+      "correction": "normalized enabled high-risk row metadata; no write behavior changed"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "cursor-hide-on-key-press-readiness",
+  "generatedAtUnixSeconds": 1780737934,
+  "subsetName": "cursor-hide-on-key-press-keyboard-token-usability-proof",
+  "sourceReports": [
+    "cursor-hide-on-key-press-usability-proof.v0.55.2.json",
+    "cursor-hide-on-key-press-watchdog-proof.v0.55.2.json",
+    "cursor-visibility-conditional-policy-enablements.v0.55.2.json"
+  ],
+  "counts": {
+    "rowsReviewed": 1,
+    "readyForLaterEnablementRows": 1,
+    "notReadyRows": 0,
+    "partiallyReadyRows": 0,
+    "rowsEnabled": 0,
+    "finalWritableRows": 277,
+    "finalBlockedRows": 64,
+    "cursorInputBlockedRows": 19,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakenedRows": 0,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "readinessDecision": "ready-for-later-enable-sprint-no-enablements-now",
+  "rows": [
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "officialSetting": "cursor.hide_on_key_press",
+      "currentWriteStatus": "high-risk",
+      "enabled": false,
+      "validatorProofPassed": true,
+      "invalidRejectionProofPassed": true,
+      "fixtureTempConfigProofPassed": true,
+      "hyprlandVerifyConfigPassed": true,
+      "watchdogArmBeforeMutationProofPassed": true,
+      "separateProcessConfirmPassed": true,
+      "timeoutRestorePassed": true,
+      "wrongTokenFailurePassed": true,
+      "dryRunRealConfigRefusalPassed": true,
+      "keyboardTokenUsabilityProofPassed": true,
+      "recoveryIndependenceProofPassed": true,
+      "uiReviewWarningRequirementsDefined": true,
+      "reloadEvalLuaUsed": false,
+      "activeRuntimeModified": false,
+      "readyForLaterEnablementSprint": true,
+      "remainingBlocker": "proof-only sprint; row remains blocked until a later explicit enablement sprint"
+    }
+  ],
+  "stillBlockedRows": [
+    "cursor.hide_on_key_press",
+    "cursor.invisible",
+    "cursor.inactive_timeout"
+  ],
+  "notEnabledRows": [
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "reason": "proof-only sprint; later enablement requires explicit approval and preserved high-risk cursor visibility watchdog gate"
+    }
+  ],
+  "requiredForEnablement": [
+    "explicit later enablement sprint approval",
+    "preserve high-risk cursor visibility warning",
+    "preserve dead-man watchdog confirm-or-revert gate",
+    "do not enable cursor.invisible or cursor.inactive_timeout"
+  ],
+  "safety": {
+    "fixtureTempFilesOnly": true,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakened": false
+  }
+}

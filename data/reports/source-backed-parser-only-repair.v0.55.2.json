@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "source-backed-parser-only-repair",
+  "generatedAt": "2026-06-07T07:36:49.556814Z",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "validatorsChanged": true,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": true,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "parserOnlyRowsReviewed": 2,
+    "rowsReclassifiedSourceConsumerBacked": 2,
+    "validatorChangedRows": 1,
+    "validatorUnchangedRows": 1
+  },
+  "rows": [
+    {
+      "rowId": "master.center_master_fallback",
+      "officialSetting": "master.center_master_fallback",
+      "previousClassification": "parser-only",
+      "newClassification": "source-consumer-backed-finite-choice",
+      "validatorChanged": false,
+      "acceptedValues": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "repairDecision": "keep finite-choice validator",
+      "sourceRefs": [
+        "ConfigValues.cpp: master:center_master_fallback declared as String without strChoice",
+        "MasterAlgorithm.cpp: consumer maps four strings and else falls back to left"
+      ]
+    },
+    {
+      "rowId": "scrolling.explicit_column_widths",
+      "officialSetting": "scrolling.explicit_column_widths",
+      "previousClassification": "parser-only",
+      "newClassification": "source-consumer-backed-comma-float-list",
+      "validatorChanged": true,
+      "acceptedShape": "non-empty comma-separated finite float list with each value in 0.05..1.0",
+      "normalizationPolicy": "reject out-of-range values before write instead of relying on consumer clamp",
+      "repairDecision": "narrow validator to source-backed range policy",
+      "sourceRefs": [
+        "ConfigValues.cpp: scrolling:explicit_column_widths declared as String",
+        "ScrollingAlgorithm.cpp: parseColumnWidths consumer and MIN/MAX column constants"
+      ]
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "pushed": false,
+    "mainTouched": false,
+    "validatorsChanged": true,
+    "productionBehaviorChanged": true
+  }
+}

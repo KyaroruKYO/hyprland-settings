@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-cssgap-validator-repair",
+  "generatedAt": "2026-06-07T01:41:40-07:00",
+  "counts": {
+    "rowsRepaired": 2,
+    "validatorChangedRows": 2,
+    "metadataUpdatedRows": 2,
+    "negativeValuesRejectedRows": 2,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "appearance.gaps_in",
+      "officialSetting": "general.gaps_in",
+      "acceptedForms": ["N", "N N", "N N N", "N N N N"],
+      "componentType": "non-negative integer",
+      "rejectedForms": ["empty", "more than four components", "non-integer components", "negative components", "unsafe config text"],
+      "sourceBacked": true,
+      "conservativePolicy": "negative values blocked",
+      "editorHint": "structured-css-gap"
+    },
+    {
+      "rowId": "appearance.gaps_out",
+      "officialSetting": "general.gaps_out",
+      "acceptedForms": ["N", "N N", "N N N", "N N N N"],
+      "componentType": "non-negative integer",
+      "rejectedForms": ["empty", "more than four components", "non-integer components", "negative components", "unsafe config text"],
+      "sourceBacked": true,
+      "conservativePolicy": "negative values blocked pending layout-risk approval",
+      "editorHint": "structured-css-gap"
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false
+  }
+}

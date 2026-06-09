@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "high-risk-remaining-blocked-after-accepted-enablement",
+  "generatedAt": "2026-06-09T02:05:17.664873Z",
+  "startingCommit": "6ba4d589a36462d9eedb06a569e9b0c729e9a1ab",
+  "rowsStillBlocked": 1,
+  "blockedRows": [
+    {
+      "rowId": "cursor.default_monitor",
+      "reason": "runtime monitor-name allowlist/readback oracle proof missing",
+      "nextConcreteAction": "complete runtime monitor-name oracle proof with non-mutating adapter and stale-name readback tests"
+    }
+  ],
+  "reason": [
+    "runtime monitor-name allowlist/readback oracle proof missing"
+  ],
+  "proofUsed": [
+    "data/reports/high-risk-production-gate-dry-run.v0.55.2.json",
+    "data/reports/cursor-default-monitor-runtime-oracle-research.v0.55.2.json"
+  ],
+  "proofStillMissing": [
+    "cursor.default_monitor runtime monitor-name oracle proof"
+  ]
+}

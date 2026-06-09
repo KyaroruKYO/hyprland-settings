@@ -4,13 +4,31 @@ use std::rc::Rc;
 use adw::prelude::*;
 use gtk4 as gtk;
 
+use crate::config_discovery::ConfigDiscovery;
+use crate::current_config::CurrentConfigSnapshot;
 use crate::export::ExportBundle;
 use crate::search::{search_projection, SearchRank, SearchResult};
-use crate::ui::model::UiProjection;
+use crate::ui::model::{
+    initial_screen_shader_advisory_ui_action, run_screen_shader_advisory_ui_action,
+    RowDetailProjection, ScreenShaderAdvisoryUiActionRequest, UiProjection,
+};
 use crate::validation::ValidationSummary;
+use crate::write_classification::ScalarWriteValueKind;
+use crate::write_flow::{apply_setting_change, write_flow_value_kind};
 
-pub fn show_main_window(app: &adw::Application, bundle: ExportBundle, summary: ValidationSummary) {
-    let model = Rc::new(UiProjection::from_bundle(&bundle, &summary));
+pub fn show_main_window(
+    app: &adw::Application,
+    bundle: ExportBundle,
+    summary: ValidationSummary,
+    config_discovery: ConfigDiscovery,
+    current_config: CurrentConfigSnapshot,
+) {
+    let model = Rc::new(UiProjection::from_bundle(
+        &bundle,
+        &summary,
+        config_discovery,
+        current_config,
+    ));
     let selected_tab_id = Rc::new(RefCell::new(
         model
             .tabs
@@ -32,7 +50,7 @@ pub fn show_main_window(app: &adw::Application, bundle: ExportBundle, summary: V
 
     let root = gtk::Box::new(gtk::Orientation::Vertical, 0);
 
-    let title = adw::WindowTitle::new("Hyprland Settings", "Read-only export preview");
+    let title = adw::WindowTitle::new("Hyprland Settings", "Hyprland config metadata and values");
     let header = adw::HeaderBar::new();
     header.set_title_widget(Some(&title));
     root.append(&header);
@@ -268,12 +286,61 @@ fn build_summary_card(model: &UiProjection) -> gtk::Frame {
         model.summary.structured_family_count
     )));
     content.append(&body_label(
-        "Read-only export metadata. No live Hyprland config is read. No settings are changed. AGS is not required at runtime.",
+        "Export metadata is bundled. Current values are parsed from hyprland.conf as plain text when available. AGS is not required at runtime.",
     ));
+    content.append(&body_label(&model.config_discovery.summary()));
+    content.append(&small_label(model.config_discovery.live_read_status()));
+    content.append(&body_label(&model.current_config.summary()));
+    content.append(&body_label(&format!(
+        "Current-value rows: readable {} / {} · unreadable {} · configured {} · unconfigured {} · conflicts {} · parser warnings {}",
+        model.current_value_summary.readable_rows,
+        model.current_value_summary.total_rows,
+        model.current_value_summary.unreadable_rows,
+        model.current_value_summary.configured_rows,
+        model.current_value_summary.unconfigured_rows,
+        model.current_value_summary.duplicate_conflict_rows,
+        model.current_value_summary.parser_warning_rows
+    )));
+    content.append(&body_label(&model.current_config.structured_summary()));
+    append_structured_family_summary(model, &content);
     content.append(&body_label(&write_safety_text(model)));
 
     frame.set_child(Some(&content));
     frame
+}
+
+fn append_structured_family_summary(model: &UiProjection, content: &gtk::Box) {
+    if model.structured_families.is_empty() {
+        return;
+    }
+
+    content.append(&body_label("Structured config entries"));
+    for family in &model.structured_families {
+        content.append(&small_label(&format!(
+            "{} ({}) · {} entries · warnings: {} · {}",
+            family.label,
+            family.family_id,
+            family.entries.len(),
+            family.warning_count,
+            family.edit_status
+        )));
+        for entry in family.entries.iter().take(3) {
+            content.append(&small_label(&format!(
+                "{}:{} · {} · {}",
+                entry.source_path, entry.line_number, entry.parser_status, entry.raw_line
+            )));
+            if let Some(warning) = &entry.warning {
+                content.append(&small_label(&format!("warning: {warning}")));
+            }
+        }
+        if family.entries.len() > 3 {
+            content.append(&small_label(&format!(
+                "{} more {} entries preserved read-only",
+                family.entries.len() - 3,
+                family.family_id
+            )));
+        }
+    }
 }
 
 fn render_settings_view(
@@ -363,15 +430,19 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
     } else {
         "not report-only"
     };
-    let write_status = if setting.is_write_candidate {
-        "write metadata disabled"
+    let write_status = if setting.edit.editable {
+        "editable pilot"
+    } else if setting.is_write_candidate {
+        "write metadata present"
     } else {
-        "no write metadata"
+        "not editable"
     };
 
     row_box.append(&small_label(&format!(
-        "{} · {} · {} · preview: {} · risk: {} · write support: {}",
+        "{} · current: {} · {} · {} · {} · preview: {} · risk: {} · write support: {}",
         read_status,
+        setting.current_value.status_label(),
+        setting.comparison.badge,
         report_status,
         write_status,
         setting.preview_status,
@@ -422,7 +493,49 @@ fn render_detail(model: &UiProjection, row_id: &str, detail_content: &gtk::Box) 
     if !detail.description.is_empty() {
         append_detail_line(detail_content, "Description", &detail.description);
     }
+    append_detail_line(
+        detail_content,
+        "Default metadata",
+        &detail.default_config_presence,
+    );
+    append_detail_line(detail_content, "Comparison", &detail.comparison.badge);
+    append_detail_line(
+        detail_content,
+        "Comparison detail",
+        &detail.comparison.detail,
+    );
     append_detail_line(detail_content, "Read support", &detail.read_support);
+    append_detail_line(
+        detail_content,
+        "Current value status",
+        detail.current_value.status_label(),
+    );
+    if let Some(raw_value) = &detail.current_value.raw_value {
+        append_detail_line(detail_content, "Current value", raw_value);
+    }
+    if let (Some(path), Some(line_number)) = (
+        &detail.current_value.source_path,
+        detail.current_value.line_number,
+    ) {
+        append_detail_line(
+            detail_content,
+            "Current value source",
+            &format!("{}:{line_number}", path.display()),
+        );
+    }
+    if let Some(raw_line) = &detail.current_value.raw_line {
+        append_detail_line(detail_content, "Source line", raw_line);
+    }
+    if !detail.current_value.duplicate_lines.is_empty() {
+        append_detail_line(
+            detail_content,
+            "Duplicate lines",
+            &format!("{:?}", detail.current_value.duplicate_lines),
+        );
+    }
+    if let Some(warning) = &detail.current_value.warning {
+        append_detail_line(detail_content, "Current value warning", warning);
+    }
     if let Some(status) = &detail.non_read_status {
         append_detail_line(detail_content, "Non-read status", status);
     }
@@ -452,10 +565,202 @@ fn render_detail(model: &UiProjection, row_id: &str, detail_content: &gtk::Box) 
             &command_generation_allowed.to_string(),
         );
     }
-    detail_content.append(&small_label("Write controls disabled · no write executor"));
+    append_detail_line(
+        detail_content,
+        "Editable in app",
+        if detail.edit.editable { "yes" } else { "no" },
+    );
+    if let Some(reason) = &detail.edit.disabled_reason {
+        append_detail_line(detail_content, "Disabled reason", reason);
+    }
+    if let Some(proposed_value) = &detail.edit.proposed_value {
+        append_detail_line(detail_content, "Suggested pending value", proposed_value);
+    }
+    if let Some(pending) = &detail.edit.pending {
+        append_detail_line(
+            detail_content,
+            "Pending change validation",
+            &pending.validation_label,
+        );
+        append_detail_line(
+            detail_content,
+            "Pending review available",
+            if pending.can_review { "yes" } else { "no" },
+        );
+        for line in &pending.review_summary {
+            detail_content.append(&small_label(line));
+        }
+    }
+    append_screen_shader_advisory_controls(&detail, detail_content);
+    append_write_controls(model, &detail, detail_content);
     for note in &detail.safety_notes {
         detail_content.append(&small_label(note));
     }
+}
+
+fn append_screen_shader_advisory_controls(detail: &RowDetailProjection, detail_content: &gtk::Box) {
+    let (Some(advisory), Some(widget)) = (
+        detail.screen_shader_advisory.as_ref(),
+        detail.screen_shader_advisory_widget.as_ref(),
+    ) else {
+        return;
+    };
+
+    let frame = gtk::Frame::new(Some("Advanced advisory shader check"));
+    let controls = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    controls.set_margin_top(10);
+    controls.set_margin_bottom(10);
+    controls.set_margin_start(10);
+    controls.set_margin_end(10);
+
+    controls.append(&body_label("Optional standalone advisory check"));
+    controls.append(&small_label(&advisory.consent_message));
+    controls.append(&small_label(&advisory.temp_copy_message));
+    controls.append(&small_label(&advisory.original_path_message));
+    controls.append(&small_label(&advisory.runtime_safety_disclaimer));
+    controls.append(&small_label(&advisory.production_gate_disclaimer));
+
+    let button = gtk::Button::with_label(&widget.button_label);
+    button.set_tooltip_text(Some(
+        "This visible control uses the advisory action model. Direct GTK file chooser execution remains deferred.",
+    ));
+    controls.append(&button);
+
+    let initial = initial_screen_shader_advisory_ui_action(&detail.row_id)
+        .expect("screen shader widget should have initial advisory action state");
+    let result_label = small_label(&format!("{}: {}", initial.state_label(), initial.message));
+    controls.append(&result_label);
+
+    let row_id = detail.row_id.clone();
+    button.connect_clicked(move |_| {
+        let render = run_screen_shader_advisory_ui_action(ScreenShaderAdvisoryUiActionRequest {
+            row_id: row_id.clone(),
+            explicit_user_trigger: true,
+            helper_request: None,
+        });
+        result_label.set_label(&format!("{}: {}", render.state_label(), render.message));
+    });
+
+    frame.set_child(Some(&controls));
+    detail_content.append(&frame);
+}
+
+fn append_write_controls(
+    model: &UiProjection,
+    detail: &RowDetailProjection,
+    detail_content: &gtk::Box,
+) {
+    if !detail.edit.editable {
+        return;
+    }
+
+    let controls = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    controls.set_margin_top(8);
+
+    controls.append(&body_label("Write review"));
+    controls.append(&small_label(
+        "Only allowlisted scalar settings can be applied. A backup is created first, the config is rewritten, and the value is reread for verification. Hyprland reload is not run.",
+    ));
+
+    let value_row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    value_row.append(&body_label("Proposed value"));
+    let value_kind = write_flow_value_kind(&detail.row_id);
+    let value_choice = if value_kind == Some(ScalarWriteValueKind::Boolean) {
+        let value_choice = gtk::ComboBoxText::new();
+        value_choice.append(Some("true"), "true");
+        value_choice.append(Some("false"), "false");
+        if detail.edit.proposed_value.as_deref() == Some("false") {
+            value_choice.set_active(Some(1));
+        } else {
+            value_choice.set_active(Some(0));
+        }
+        value_row.append(&value_choice);
+        Some(value_choice)
+    } else if value_kind == Some(ScalarWriteValueKind::FiniteChoice) {
+        let value_choice = gtk::ComboBoxText::new();
+        for choice in &detail.edit.choices {
+            value_choice.append(Some(&choice.raw_value), &choice.label);
+        }
+        if let Some(proposed) = detail.edit.proposed_value.as_deref() {
+            value_choice.set_active_id(Some(proposed));
+        }
+        if value_choice.active_id().is_none() && !detail.edit.choices.is_empty() {
+            value_choice.set_active(Some(0));
+        }
+        value_row.append(&value_choice);
+        Some(value_choice)
+    } else {
+        None
+    };
+    let value_entry = if value_choice.is_none() {
+        let value_entry = gtk::Entry::new();
+        value_entry.set_text(detail.edit.proposed_value.as_deref().unwrap_or_default());
+        value_row.append(&value_entry);
+        Some(value_entry)
+    } else {
+        None
+    };
+    controls.append(&value_row);
+
+    let apply_button = gtk::Button::with_label("Apply reviewed change");
+    let can_review = detail
+        .edit
+        .pending
+        .as_ref()
+        .map(|pending| pending.can_review)
+        .unwrap_or(false);
+    apply_button.set_sensitive(can_review);
+    controls.append(&apply_button);
+
+    let result_label = small_label(if can_review {
+        "Ready for backup, write, and reread verification."
+    } else {
+        "Apply is blocked until current config is readable and conflict-free."
+    });
+    controls.append(&result_label);
+
+    let known_setting_ids = model.known_setting_ids.clone();
+    let config_discovery = model.config_discovery.clone();
+    let current_config = model.current_config.clone();
+    let setting_id = detail.row_id.clone();
+    apply_button.connect_clicked(move |button| {
+        let proposed_value = value_choice
+            .as_ref()
+            .and_then(|choice| choice.active_id())
+            .map(|value| value.to_string())
+            .or_else(|| value_entry.as_ref().map(|entry| entry.text().to_string()))
+            .unwrap_or_default();
+        match apply_setting_change(
+            known_setting_ids.clone(),
+            &config_discovery,
+            &current_config,
+            &setting_id,
+            &proposed_value,
+        ) {
+            Ok(outcome) => {
+                button.set_sensitive(false);
+                result_label.set_label(&format!(
+                    "Applied and verified {} = {}. Backup: {}. Rollback source: {}. {}",
+                    outcome.setting_id,
+                    outcome
+                        .verified_value
+                        .unwrap_or_else(|| "unknown".to_string()),
+                    outcome.backup_path.display(),
+                    outcome.rollback_source_path.display(),
+                    outcome.reload_note
+                ));
+            }
+            Err(error) => {
+                result_label.set_label(&format!(
+                    "Apply blocked: {} ({})",
+                    error.reason,
+                    error.failures.join(", ")
+                ));
+            }
+        }
+    });
+
+    detail_content.append(&controls);
 }
 
 fn append_detail_line(parent: &gtk::Box, label: &str, value: &str) {
@@ -481,7 +786,7 @@ fn search_rank_label(rank: Option<SearchRank>) -> &'static str {
 }
 
 fn write_safety_text(model: &UiProjection) -> String {
-    let mut parts = vec!["Write controls disabled".to_string()];
+    let mut parts = vec!["Write controls gated".to_string()];
     for candidate in &model.active_write_candidates {
         parts.push(format!(
             "active candidate: {} · target mode: {} · executable: {} · command generation: {}",
@@ -491,7 +796,8 @@ fn write_safety_text(model: &UiProjection) -> String {
             candidate.command_generation_allowed
         ));
     }
-    parts.push("no write executor".to_string());
+    parts.push("first pilot requires backup and reread verification".to_string());
+    parts.push("no Hyprland reload command is run".to_string());
     parts.join(" · ")
 }
 

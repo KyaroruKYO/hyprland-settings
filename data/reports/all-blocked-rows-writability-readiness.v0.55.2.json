@@ -1,0 +1,1240 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "all-blocked-rows-writability-readiness",
+  "generatedAt": "2026-06-08T15:47:26-07:00",
+  "startingCommit": "6c23291",
+  "currentCounts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63
+  },
+  "blockedRowsTotal": 63,
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0,
+  "rows": [
+    {
+      "rowId": "xwayland.enabled",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "xwayland.create_abstract_socket",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "opengl.nvidia_anti_flicker",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.direct_scanout",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.expand_undersized_textures",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.xp_mode",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.ctm_animation",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.cm_enabled",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.send_content_type",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.cm_auto_hdr",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.new_render_scheduling",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.non_shader_cm",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.cm_sdr_eotf",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "notProven",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingAllowedValues",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "official allowed-values proof",
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.commit_timing_enabled",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.icc_vcgt_enabled",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.use_shader_blur_blend",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.use_fp16",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.keep_unmodified_copy",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.non_shader_cm_interop",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "render.fp16_sdr_tf",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.invisible",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBackedBounds",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBackedBounds",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBackedBounds",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "notProven",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingAllowedValues",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "official allowed-values proof",
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBackedBounds",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.overlay",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.damage_blink",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.gl_debugging",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.disable_logs",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.disable_time",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.damage_tracking",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.enable_stdout_logs",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.manual_crash",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBackedBounds",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.suppress_errors",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.disable_scale_checks",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.error_limit",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBackedBounds",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.error_position",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.colored_stdout_logs",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.log_damage",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.pass",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.full_cm_proto",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer_fifo",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.fifo_pending_workaround",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.render_solitary_wo_damage",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.vfr",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "debug.invalidate_fp16",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "experimental.wp_cm_1_2",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "quirks.prefer_hdr",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    },
+    {
+      "rowId": "quirks.skip_non_kms_dmabuf_formats",
+      "isOfficiallySupported": "official",
+      "whatValuesAreAllowed": "officialSourceBacked",
+      "whatHappensIfValueIsWrong": "notProven",
+      "canSafelyWriteAndReadBack": "notProven",
+      "needsSafetyGate": true,
+      "uiExplainsRiskClearly": "notProven",
+      "testsProveAllOfThat": false,
+      "finalReadiness": "notReadyMissingInvalidValueBehavior",
+      "enablementRecommendation": "do-not-enable; collect missing official behavior, validator, gate, UI warning, and test proof first",
+      "missingProof": [
+        "row-specific invalid-value behavior proof",
+        "fixture write/readback proof",
+        "row-specific safety gate proof",
+        "row-specific UI risk warning proof",
+        "row-specific tests proving official support, values, invalid behavior, write/readback, gate, UI warning, and safety boundaries"
+      ]
+    }
+  ],
+  "summary": {
+    "readyForFutureEnablementCount": 0,
+    "notReadyCount": 63,
+    "byFinalReadiness": {
+      "notReadyMissingAllowedValues": 2,
+      "notReadyMissingInvalidValueBehavior": 61
+    }
+  },
+  "proofUsed": [
+    "data/reports/all-341-unified-pipeline.v0.55.2.json",
+    "data/reports/scalar-read-write-coverage.v0.55.2.json",
+    "data/reports/display-render-blocked-rows-readiness-batching.v0.55.2.json",
+    "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp"
+  ],
+  "proofStillMissing": [
+    "official docs/wiki citations for every blocked row",
+    "default/generated config evidence for every blocked row",
+    "exact invalid-value behavior for every blocked row",
+    "fixture write/readback proof for every blocked row",
+    "row-specific safety gate and watchdog/recovery proof",
+    "row-specific UI risk warning proof",
+    "row-specific tests proving all seven writability questions"
+  ],
+  "nextRecommendedSprint": "All blocked rows invalid-value behavior and safety-gate proof cleanup sprint"
+}

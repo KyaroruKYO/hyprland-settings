@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-regex-validator-repair-decision",
+  "generatedAt": "2026-06-07T01:41:40-07:00",
+  "counts": {
+    "rowsReviewed": 2,
+    "validatorChangedRows": 0,
+    "remainingDeferredRows": 2,
+    "re2ImplementationAvailable": false,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "decision": "No Rust-side RE2-compatible validation support was present in the project without adding a new dependency. The current line-safe validator remains in place, and RE2 semantics are recorded as metadata only.",
+  "rows": [
+    {
+      "rowId": "misc.swallow_regex",
+      "officialSetting": "misc.swallow_regex",
+      "validatorChanged": false,
+      "remainingDeferred": true,
+      "metadata": "RE2 FullMatch against window class; empty/[[EMPTY]] disables swallow matching"
+    },
+    {
+      "rowId": "misc.swallow_exception_regex",
+      "officialSetting": "misc.swallow_exception_regex",
+      "validatorChanged": false,
+      "remainingDeferred": true,
+      "metadata": "RE2 FullMatch against window title to exclude swallow candidates"
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false
+  }
+}

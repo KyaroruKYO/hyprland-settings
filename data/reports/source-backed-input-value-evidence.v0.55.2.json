@@ -1,0 +1,368 @@
+{
+  "artifactKind": "source-backed-input-value-evidence",
+  "schemaVersion": "0.55.2",
+  "sourceFiles": [
+    "/usr/share/X11/xkb/rules/evdev.lst",
+    "/usr/share/X11/xkb/rules/base.lst"
+  ],
+  "counts": {
+    "rows": 5,
+    "xkbModelValues": 184,
+    "xkbLayoutValues": 99,
+    "xkbVariantValues": 496,
+    "xkbOptionValues": 239,
+    "rowsEnabled": 5,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false
+  },
+  "safety": {
+    "readOnlySystemFiles": true,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadUsed": false,
+    "evalUsed": false,
+    "luaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "input.kb_model",
+      "officialSetting": "input.kb_model",
+      "sourceName": "xkb_models",
+      "sourcePath": "/usr/share/X11/xkb/rules/evdev.lst",
+      "sourceSection": "model",
+      "enumeratorImplementedInRust": true,
+      "valueCount": 184,
+      "sampleValues": [
+        {
+          "rawValue": "pc86",
+          "label": "Generic 86-key PC"
+        },
+        {
+          "rawValue": "pc101",
+          "label": "Generic 101-key PC"
+        },
+        {
+          "rawValue": "pc102",
+          "label": "Generic 102-key PC"
+        },
+        {
+          "rawValue": "pc104",
+          "label": "Generic 104-key PC"
+        },
+        {
+          "rawValue": "pc104alt",
+          "label": "Generic 104-key PC with L-shaped Enter key"
+        },
+        {
+          "rawValue": "pc105",
+          "label": "Generic 105-key PC"
+        },
+        {
+          "rawValue": "a4techKB21",
+          "label": "A4Tech KB-21"
+        },
+        {
+          "rawValue": "a4techKBS8",
+          "label": "A4Tech KBS-8"
+        },
+        {
+          "rawValue": "a4_rfkb23",
+          "label": "A4Tech Wireless Desktop RFKB-23"
+        },
+        {
+          "rawValue": "airkey",
+          "label": "Acer AirKey V"
+        }
+      ],
+      "invalidExamples": [
+        "__not_a_known_xkb_value__",
+        "bad\nvalue"
+      ],
+      "proofStrategy": "single source-backed dropdown value",
+      "safeToEnableNow": true,
+      "missingProofCategoriesAfterEnumeration": [],
+      "nextStepToMakeWritable": "Already wired into production source-backed validators and dropdown projection with fixture/temp-config proof.",
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "enabledByCommitPending": true,
+      "representativeValidValues": [
+        "pc105",
+        "pc104"
+      ],
+      "representativeInvalidValuesRejectedByApp": [
+        "__not_a_model__"
+      ],
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptsUnknownInvalidTokens": true,
+      "notes": "Hyprland verify-config accepts unknown XKB tokens; source-backed app validation is required and implemented."
+    },
+    {
+      "rowId": "input.kb_layout",
+      "officialSetting": "input.kb_layout",
+      "sourceName": "xkb_layouts",
+      "sourcePath": "/usr/share/X11/xkb/rules/evdev.lst",
+      "sourceSection": "layout",
+      "enumeratorImplementedInRust": true,
+      "valueCount": 99,
+      "sampleValues": [
+        {
+          "rawValue": "al",
+          "label": "Albanian"
+        },
+        {
+          "rawValue": "et",
+          "label": "Amharic"
+        },
+        {
+          "rawValue": "am",
+          "label": "Armenian"
+        },
+        {
+          "rawValue": "ara",
+          "label": "Arabic"
+        },
+        {
+          "rawValue": "eg",
+          "label": "Arabic (Egypt)"
+        },
+        {
+          "rawValue": "iq",
+          "label": "Arabic (Iraq)"
+        },
+        {
+          "rawValue": "ma",
+          "label": "Arabic (Morocco)"
+        },
+        {
+          "rawValue": "sy",
+          "label": "Arabic (Syria)"
+        },
+        {
+          "rawValue": "az",
+          "label": "Azerbaijani"
+        },
+        {
+          "rawValue": "ml",
+          "label": "Bambara"
+        }
+      ],
+      "invalidExamples": [
+        "__not_a_known_xkb_value__",
+        "bad\nvalue"
+      ],
+      "proofStrategy": "single or comma-separated source-backed layout values",
+      "safeToEnableNow": true,
+      "missingProofCategoriesAfterEnumeration": [],
+      "nextStepToMakeWritable": "Already wired into production source-backed validators and dropdown projection with fixture/temp-config proof.",
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "enabledByCommitPending": true,
+      "representativeValidValues": [
+        "us",
+        "de",
+        "us,de"
+      ],
+      "representativeInvalidValuesRejectedByApp": [
+        "__not_a_layout__"
+      ],
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptsUnknownInvalidTokens": true,
+      "notes": "Hyprland verify-config accepts unknown XKB tokens; source-backed app validation is required and implemented."
+    },
+    {
+      "rowId": "input.kb_variant",
+      "officialSetting": "input.kb_variant",
+      "sourceName": "xkb_variants",
+      "sourcePath": "/usr/share/X11/xkb/rules/evdev.lst",
+      "sourceSection": "variant",
+      "enumeratorImplementedInRust": true,
+      "valueCount": 496,
+      "sampleValues": [
+        {
+          "rawValue": "plisi",
+          "label": "Albanian (Plisi)",
+          "parentLayout": "al"
+        },
+        {
+          "rawValue": "veqilharxhi",
+          "label": "Albanian (Veqilharxhi)",
+          "parentLayout": "al"
+        },
+        {
+          "rawValue": "phonetic",
+          "label": "Armenian (phonetic)",
+          "parentLayout": "am"
+        },
+        {
+          "rawValue": "phonetic-alt",
+          "label": "Armenian (alt. phonetic)",
+          "parentLayout": "am"
+        },
+        {
+          "rawValue": "eastern",
+          "label": "Armenian (eastern)",
+          "parentLayout": "am"
+        },
+        {
+          "rawValue": "eastern-alt",
+          "label": "Armenian (alt. eastern)",
+          "parentLayout": "am"
+        },
+        {
+          "rawValue": "western",
+          "label": "Armenian (western)",
+          "parentLayout": "am"
+        },
+        {
+          "rawValue": "digits",
+          "label": "Arabic (Eastern Arabic numerals)",
+          "parentLayout": "ara"
+        },
+        {
+          "rawValue": "azerty",
+          "label": "Arabic (AZERTY)",
+          "parentLayout": "ara"
+        },
+        {
+          "rawValue": "azerty_digits",
+          "label": "Arabic (AZERTY, Eastern Arabic numerals)",
+          "parentLayout": "ara"
+        }
+      ],
+      "invalidExamples": [
+        "__not_a_known_xkb_value__",
+        "bad\nvalue"
+      ],
+      "proofStrategy": "layout-dependent source-backed variant values",
+      "safeToEnableNow": true,
+      "missingProofCategoriesAfterEnumeration": [],
+      "nextStepToMakeWritable": "Already wired into production source-backed validators and dropdown projection with fixture/temp-config proof.",
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "enabledByCommitPending": true,
+      "representativeValidValues": [
+        "intl",
+        ""
+      ],
+      "representativeInvalidValuesRejectedByApp": [
+        "__not_a_variant__"
+      ],
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptsUnknownInvalidTokens": true,
+      "notes": "Hyprland verify-config accepts unknown XKB tokens; source-backed app validation is required and implemented."
+    },
+    {
+      "rowId": "input.kb_options",
+      "officialSetting": "input.kb_options",
+      "sourceName": "xkb_options",
+      "sourcePath": "/usr/share/X11/xkb/rules/evdev.lst",
+      "sourceSection": "option",
+      "enumeratorImplementedInRust": true,
+      "valueCount": 239,
+      "sampleValues": [
+        {
+          "rawValue": "grp",
+          "label": "Switching to another layout"
+        },
+        {
+          "rawValue": "grp:switch",
+          "label": "Right Alt (while pressed)"
+        },
+        {
+          "rawValue": "grp:lswitch",
+          "label": "Left Alt (while pressed)"
+        },
+        {
+          "rawValue": "grp:lwin_switch",
+          "label": "Left Win (while pressed)"
+        },
+        {
+          "rawValue": "grp:rwin_switch",
+          "label": "Right Win (while pressed)"
+        },
+        {
+          "rawValue": "grp:win_switch",
+          "label": "Any Win (while pressed)"
+        },
+        {
+          "rawValue": "grp:menu_switch",
+          "label": "Menu (while pressed), Shift+Menu for Menu"
+        },
+        {
+          "rawValue": "grp:caps_switch",
+          "label": "Caps Lock (while pressed), Alt+Caps Lock for the original Caps Lock action"
+        },
+        {
+          "rawValue": "grp:rctrl_switch",
+          "label": "Right Ctrl (while pressed)"
+        },
+        {
+          "rawValue": "grp:toggle",
+          "label": "Right Alt"
+        }
+      ],
+      "invalidExamples": [
+        "__not_a_known_xkb_value__",
+        "bad\nvalue"
+      ],
+      "proofStrategy": "single or comma-separated source-backed option values",
+      "safeToEnableNow": true,
+      "missingProofCategoriesAfterEnumeration": [],
+      "nextStepToMakeWritable": "Already wired into production source-backed validators and dropdown projection with fixture/temp-config proof.",
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "enabledByCommitPending": true,
+      "representativeValidValues": [
+        "grp:alt_shift_toggle",
+        "ctrl:nocaps",
+        "grp:alt_shift_toggle,ctrl:nocaps"
+      ],
+      "representativeInvalidValuesRejectedByApp": [
+        "__not_an_option__"
+      ],
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptsUnknownInvalidTokens": true,
+      "notes": "Hyprland verify-config accepts unknown XKB tokens; source-backed app validation is required and implemented."
+    },
+    {
+      "rowId": "input.kb_rules",
+      "officialSetting": "input.kb_rules",
+      "sourceName": "xkb_rules",
+      "sourcePath": "/usr/share/X11/xkb/rules/{evdev,base}.lst",
+      "sourceSection": "rules-file",
+      "enumeratorImplementedInRust": true,
+      "valueCount": 2,
+      "sampleValues": [
+        {
+          "rawValue": "evdev",
+          "label": "evdev rules"
+        },
+        {
+          "rawValue": "base",
+          "label": "base rules"
+        }
+      ],
+      "invalidExamples": [
+        "__not_a_known_xkb_value__",
+        "bad\nvalue"
+      ],
+      "proofStrategy": "finite rules-file value",
+      "safeToEnableNow": true,
+      "missingProofCategoriesAfterEnumeration": [],
+      "nextStepToMakeWritable": "Already wired into production source-backed validators and dropdown projection with fixture/temp-config proof.",
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "enabledByCommitPending": true,
+      "representativeValidValues": [
+        "evdev",
+        "base"
+      ],
+      "representativeInvalidValuesRejectedByApp": [
+        "__not_rules__"
+      ],
+      "hyprlandVerifyConfigPassedForValidValues": true,
+      "hyprlandVerifyConfigAcceptsUnknownInvalidTokens": true,
+      "notes": "Hyprland verify-config accepts unknown XKB tokens; source-backed app validation is required and implemented."
+    }
+  ]
+}

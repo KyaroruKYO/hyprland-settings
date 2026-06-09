@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-regex-consumer-research",
+  "generatedAt": "2026-06-07T00:49:01-07:00",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "rowsResearched": 2,
+    "re2FullMatchRows": 2,
+    "emptyDisablesRows": 1,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "safety": {
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "recoveryGatesChanged": false
+  },
+  "rows": [
+    {
+      "rowId": "misc.swallow_regex",
+      "officialSetting": "misc.swallow_regex",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/desktop/view/Window.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "If swallow is enabled and the value is neither empty nor [[EMPTY]], the consumer applies RE2::FullMatch against candidate window class.",
+      "recommendedValidatorPolicy": "Future validator may compile/check RE2 syntax if feasible; keep line-safe validation otherwise.",
+      "recommendedUiEditorPolicy": "Explain RE2 full-match class regex and empty disables matching.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "misc.swallow_exception_regex",
+      "officialSetting": "misc.swallow_exception_regex",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/desktop/view/Window.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "When non-empty, the consumer applies RE2::FullMatch against candidate window title and removes matches from swallow candidates.",
+      "recommendedValidatorPolicy": "Future validator may compile/check RE2 syntax if feasible; keep line-safe validation otherwise.",
+      "recommendedUiEditorPolicy": "Explain RE2 full-match title exception regex.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    }
+  ]
+}

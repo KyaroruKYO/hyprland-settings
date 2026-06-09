@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "cursor-input-smoke-subset-review",
+  "generatedAtUnixSeconds": 1780730643,
+  "sourceReports": [
+    "cursor-input-first-subset-enablements.v0.55.2.json",
+    "cursor-theme-sync-policy-smoke-subset-proof.v0.55.2.json",
+    "cursor-theme-sync-policy-watchdog-proof.v0.55.2.json",
+    "scalar-read-write-coverage.v0.55.2.json"
+  ],
+  "counts": {
+    "reviewedRows": 1,
+    "enabledRows": 1,
+    "issuesFound": 0,
+    "warningsFound": 0,
+    "currentWritableRows": 275,
+    "currentBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChangedInThisSelectionSprint": false,
+    "productionBehaviorChangedInThisSelectionSprint": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "cursor.sync_gsettings_theme",
+      "officialSetting": "cursor.sync_gsettings_theme",
+      "enabledByPreviousSprint": true,
+      "validatorUsed": "bool",
+      "validatorAuthority": "app-validator-authoritative-plus-official-schema-bool-evidence",
+      "acceptedValues": [
+        "true",
+        "false"
+      ],
+      "invalidValuesRejected": [
+        "maybe",
+        "arbitrary-string"
+      ],
+      "invalidValuesRejectedBeforeWritePlanning": true,
+      "tempConfigProofResult": true,
+      "hyprlandVerifyConfigResult": true,
+      "watchdogArmBeforeMutationResult": true,
+      "backupBeforeMutationResult": true,
+      "separateProcessConfirmResult": true,
+      "timeoutRestoreResult": true,
+      "wrongTokenResult": true,
+      "realConfigRefusalResult": true,
+      "recoveryIndependenceResult": true,
+      "issues": [],
+      "warnings": []
+    }
+  ],
+  "selectionSprintEffect": {
+    "rowsEnabled": 0,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false
+  }
+}

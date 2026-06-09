@@ -1,0 +1,457 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "hyprmod-cursor-input-metadata-provenance",
+  "generatedAtUnixSeconds": 1780734944,
+  "counts": {
+    "rows": 21,
+    "hyprmodOverlayRows": 10,
+    "hyprmodSchemaOnlyRows": 11,
+    "rowsWithProvenance": 21,
+    "copiedImplementationCodeRows": 0
+  },
+  "rows": [
+    {
+      "rowId": "cursor.invisible",
+      "officialSetting": "cursor.invisible",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "metadataSources": [
+        "hyprmod-schema-only",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "officialSetting": "cursor.no_hardware_cursors",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "metadataSources": [
+        "hyprmod-overlay",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprmod/data/schema/options.json/groups/4/sections/0/options/0",
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [
+        "hyprmod/data/schema/options.json/groups/4/sections/0/options/0"
+      ],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "officialSetting": "cursor.no_break_fs_vrr",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "metadataSources": [
+        "hyprmod-schema-only",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "officialSetting": "cursor.min_refresh_rate",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "metadataSources": [
+        "hyprmod-schema-only",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "officialSetting": "cursor.hotspot_padding",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "metadataSources": [
+        "hyprmod-schema-only",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "officialSetting": "cursor.inactive_timeout",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "metadataSources": [
+        "hyprmod-overlay",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprmod/data/schema/options.json/groups/4/sections/1/options/0",
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [
+        "hyprmod/data/schema/options.json/groups/4/sections/1/options/0"
+      ],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "officialSetting": "cursor.no_warps",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "metadataSources": [
+        "hyprmod-overlay",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprmod/data/schema/options.json/groups/4/sections/0/options/2",
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [
+        "hyprmod/data/schema/options.json/groups/4/sections/0/options/2"
+      ],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "officialSetting": "cursor.persistent_warps",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "metadataSources": [
+        "hyprmod-overlay",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprmod/data/schema/options.json/groups/4/sections/0/options/3",
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [
+        "hyprmod/data/schema/options.json/groups/4/sections/0/options/3"
+      ],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "officialSetting": "cursor.warp_on_change_workspace",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "metadataSources": [
+        "hyprmod-overlay",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprmod/data/schema/options.json/groups/4/sections/0/options/4",
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [
+        "hyprmod/data/schema/options.json/groups/4/sections/0/options/4"
+      ],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "officialSetting": "cursor.warp_on_toggle_special",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "metadataSources": [
+        "hyprmod-schema-only",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "officialSetting": "cursor.default_monitor",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "metadataSources": [
+        "hyprmod-schema-only",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "officialSetting": "cursor.zoom_factor",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "metadataSources": [
+        "hyprmod-overlay",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprmod/data/schema/options.json/groups/4/sections/0/options/5",
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [
+        "hyprmod/data/schema/options.json/groups/4/sections/0/options/5"
+      ],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "officialSetting": "cursor.zoom_rigid",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "metadataSources": [
+        "hyprmod-schema-only",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "officialSetting": "cursor.zoom_disable_aa",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "metadataSources": [
+        "hyprmod-schema-only",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "officialSetting": "cursor.zoom_detached_camera",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "metadataSources": [
+        "hyprmod-schema-only",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "officialSetting": "cursor.enable_hyprcursor",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "metadataSources": [
+        "hyprmod-overlay",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprmod/data/schema/options.json/groups/4/sections/0/options/1",
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [
+        "hyprmod/data/schema/options.json/groups/4/sections/0/options/1"
+      ],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "officialSetting": "cursor.hide_on_key_press",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "metadataSources": [
+        "hyprmod-overlay",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprmod/data/schema/options.json/groups/4/sections/1/options/1",
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [
+        "hyprmod/data/schema/options.json/groups/4/sections/1/options/1"
+      ],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.hide_on_touch",
+      "officialSetting": "cursor.hide_on_touch",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "metadataSources": [
+        "hyprmod-overlay",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprmod/data/schema/options.json/groups/4/sections/1/options/2",
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [
+        "hyprmod/data/schema/options.json/groups/4/sections/1/options/2"
+      ],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "officialSetting": "cursor.hide_on_tablet",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "metadataSources": [
+        "hyprmod-overlay",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprmod/data/schema/options.json/groups/4/sections/1/options/3",
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [
+        "hyprmod/data/schema/options.json/groups/4/sections/1/options/3"
+      ],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "officialSetting": "cursor.use_cpu_buffer",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "metadataSources": [
+        "hyprmod-schema-only",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [],
+      "copiedImplementationCode": false
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "officialSetting": "cursor.warp_back_after_non_mouse_input",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "metadataSources": [
+        "hyprmod-schema-only",
+        "existing-project-risk-report",
+        "existing-companion-schema-report"
+      ],
+      "hyprmodEvidenceSourcePaths": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "companionComparisonResult": "complementary",
+      "officialOrSchemaEvidence": [
+        "hyprland_schema 0.6.1: hyprland_schema/_data.py (generated from https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/values/ConfigValues.cpp)"
+      ],
+      "overlayEvidence": [],
+      "copiedImplementationCode": false
+    }
+  ],
+  "safety": {
+    "rowsEnabled": 0,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "safeWritableRowsChanged": false,
+    "recoveryGateWeakened": false,
+    "anythingPushed": false,
+    "mainTouched": false
+  }
+}

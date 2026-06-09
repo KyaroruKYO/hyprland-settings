@@ -1,0 +1,122 @@
+{
+  "artifactKind": "batch-c-string-semantic-investigation",
+  "schemaVersion": "0.55.2",
+  "sourceReports": [
+    "data/reports/remaining-105-proof-results.v0.55.2.json",
+    "data/reports/remaining-105-missing-proof-classification.v0.55.2.json",
+    "data/reports/hyprmod-merged-schema-evidence.v0.55.2.json"
+  ],
+  "counts": {
+    "rows": 2,
+    "rowsWithArbitraryStringAcceptance": 2,
+    "rowsEnabled": 2,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false
+  },
+  "safety": {
+    "tempConfigOnly": true,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadUsed": false,
+    "evalUsed": false,
+    "luaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "master.center_master_fallback",
+      "officialSetting": "master.center_master_fallback",
+      "originalPlannedProofStrategy": "finite-choice-temp-config-proof",
+      "extraCandidateRawValuesTested": [
+        "left",
+        "right",
+        "top",
+        "bottom",
+        "center",
+        "master",
+        "slave",
+        "inherit",
+        "example"
+      ],
+      "acceptedRawValues": [
+        "left",
+        "right",
+        "top",
+        "bottom",
+        "center",
+        "master",
+        "slave",
+        "inherit",
+        "example"
+      ],
+      "rejectedRawValues": [],
+      "verifyConfigSemanticStrength": "parser-only-app-validator-authoritative",
+      "sufficientToEnableWrites": true,
+      "updatedMissingProofCategories": [],
+      "semanticConclusion": "Finite semantic validator implemented from official wiki/source; Hyprland parser accepts arbitrary strings, so app validator is authoritative.",
+      "exactNextStepToMakeWritable": "Already writable after semantic validator implementation.",
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "implementedValidator": "enum:left|right|top|bottom",
+      "acceptedByAppValidator": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "rejectedByAppValidator": [
+        "",
+        "center",
+        "Left",
+        "1",
+        "example"
+      ]
+    },
+    {
+      "rowId": "scrolling.explicit_column_widths",
+      "officialSetting": "scrolling.explicit_column_widths",
+      "originalPlannedProofStrategy": "finite-choice-temp-config-proof",
+      "extraCandidateRawValuesTested": [
+        "0.333, 0.5, 0.667, 1.0",
+        "0.5, 1.0",
+        "1.0",
+        "0.25, 0.5, 0.75",
+        "example",
+        "0, bad"
+      ],
+      "acceptedRawValues": [
+        "0.333, 0.5, 0.667, 1.0",
+        "0.5, 1.0",
+        "1.0",
+        "0.25, 0.5, 0.75",
+        "example",
+        "0, bad"
+      ],
+      "rejectedRawValues": [],
+      "verifyConfigSemanticStrength": "parser-only-app-validator-authoritative",
+      "sufficientToEnableWrites": true,
+      "updatedMissingProofCategories": [],
+      "semanticConclusion": "Comma-separated finite-float validator implemented conservatively; Hyprland parser accepts arbitrary strings, so app validator is authoritative.",
+      "exactNextStepToMakeWritable": "Already writable after semantic validator implementation.",
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "implementedValidator": "comma-separated-finite-float-list",
+      "acceptedByAppValidator": [
+        "1.0",
+        "0.333, 0.5, 0.667, 1.0",
+        "0.25,0.75"
+      ],
+      "rejectedByAppValidator": [
+        "",
+        "example",
+        "0.5,",
+        "0.5,,1.0",
+        "NaN",
+        "inf",
+        "-inf",
+        "0.5, bad",
+        "0.5 0.75",
+        "0.5\n1.0"
+      ]
+    }
+  ]
+}

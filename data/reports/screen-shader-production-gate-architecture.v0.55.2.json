@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactKind": "screen-shader-production-gate-architecture",
+  "generatedAt": "2026-06-07T03:20:53-07:00",
+  "rowId": "decoration.screen_shader",
+  "officialSetting": "decoration.screen_shader",
+  "startingCommit": "4f22d65",
+  "selectedArchitectureOption": "Option C",
+  "decisionSummary": "A dry-run/non-production gated write-review primitive was added. It can require a screen-shader watchdog gate for decoration.screen_shader in fixture review, reject ungated screen-shader fixture reviews, and accept gated fixture reviews backed by a valid dry-run watchdog plan. Production enforcement remains unchanged and compile-aware validation remains deferred.",
+  "currentWritableStatus": "writable",
+  "writableMigrationCandidate": true,
+  "watchdogMigrationProofStatus": "complete",
+  "productionEnforcementChanged": false,
+  "productionGateEnforcedThisSprint": false,
+  "productionWriteFlowChanged": false,
+  "dryRunGatePrimitiveAdded": true,
+  "dryRunGatePrimitiveName": "screen-shader-dry-run-gated-write-review",
+  "normalProductionReviewChanged": false,
+  "normalPathOnlyApprovalStillAcceptedInProduction": true,
+  "ungatedDryRunScreenShaderRejected": true,
+  "gatedDryRunScreenShaderAccepted": true,
+  "unrelatedNormalWritableRowsRequireGate": false,
+  "countedAsEnabledHighRiskRow": false,
+  "readableRows": 341,
+  "writableRows": 278,
+  "blockedRows": 63,
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0,
+  "realConfigTouched": false,
+  "runtimeTouched": false,
+  "reloadEvalLuaUsed": false,
+  "liveShaderCompileUsed": false,
+  "liveDisplayRuntimeProofUsed": false,
+  "compileAwareValidationChanged": false,
+  "compileAwareValidationStatus": "deferred",
+  "proofUsed": [
+    {
+      "source": "src/write_safety.rs",
+      "finding": "Added review_screen_shader_gated_write_plan as a dry-run/non-production wrapper around normal WriteReview. The normal review_write_plan path remains unchanged."
+    },
+    {
+      "source": "src/high_risk_recovery.rs",
+      "finding": "The primitive reuses existing HighRiskWatchdogPlan validation and dry-run/temp watchdog plans. It does not create a second watchdog framework."
+    },
+    {
+      "source": "tests/screen_shader_production_gate_architecture.rs",
+      "finding": "Tests prove screen-shader detection, ungated fixture rejection, gated fixture acceptance with a dry-run watchdog plan, unrelated-row bypass, unchanged normal review, and mismatched proof rejection."
+    },
+    {
+      "source": "data/reports/screen-shader-watchdog-migration-proof.v0.55.2.json",
+      "finding": "Existing watchdog migration proof remains complete and fixture/temp-only."
+    }
+  ],
+  "proofStillMissing": [
+    "explicit approved behavior-change sprint to wire the dry-run primitive into production apply flow",
+    "production write-flow tests proving normal path-only approval is rejected by production enforcement after approval",
+    "live/production watchdog execution remains disabled and was not changed",
+    "compile-aware shader validation design remains deferred",
+    "standalone non-live shader compiler feasibility proof remains deferred"
+  ],
+  "nextRecommendedSprint": "Screen shader production gate enforcement approval sprint: decide whether to wire the proven dry-run gated-review primitive into production apply flow, with fixture/temp tests only, no live config/runtime mutation, and compile-aware validation still deferred."
+}

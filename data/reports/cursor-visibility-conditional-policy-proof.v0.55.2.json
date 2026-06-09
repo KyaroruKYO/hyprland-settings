@@ -1,0 +1,202 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "cursor-visibility-conditional-policy-proof",
+  "generatedAtUnixSeconds": 1780735907,
+  "subsetName": "cursor-visibility-conditional-touch-tablet-proof-subset",
+  "sourceReports": [
+    "cursor-visibility-risk-class-analysis.v0.55.2.json",
+    "cursor-visibility-recovery-proof-design.v0.55.2.json",
+    "cursor-visibility-next-subset-recommendation.v0.55.2.json",
+    "cursor-input-metadata-after-hyprmod-adoption.v0.55.2.json",
+    "scalar-read-write-coverage.v0.55.2.json"
+  ],
+  "counts": {
+    "rows": 2,
+    "acceptedValues": 4,
+    "rejectedInvalidValues": 4,
+    "parserReadPassedRows": 2,
+    "validatorPassedRows": 2,
+    "invalidRejectionPassedRows": 2,
+    "fixtureReplacePassedRows": 2,
+    "fixtureAppendPassedRows": 2,
+    "singleMutationVerifiedRows": 2,
+    "hyprlandVerifyConfigPassedRows": 2,
+    "safeForLaterEnablementByPreflightRows": 2,
+    "rowsEnabled": 0,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakenedRows": 0,
+    "hyprmodRecoveryEvidenceRows": 0,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "cursor.hide_on_touch",
+      "officialSetting": "cursor.hide_on_touch",
+      "currentWriteStatus": "high-risk",
+      "safeWriteSupported": false,
+      "valueType": "bool",
+      "validatorRef": "bool",
+      "validatorAuthority": "app-validator-authoritative-plus-companion-schema-bool-evidence",
+      "hyprmodMetadataUse": {
+        "usedFor": [
+          "label",
+          "default",
+          "description"
+        ],
+        "notUsedFor": [
+          "safety proof",
+          "recovery proof",
+          "write allowlist proof"
+        ],
+        "default": true,
+        "description": "Hides the cursor when the last input was a touch input until a mouse input is done.",
+        "hyprmodRecoveryEvidenceFound": false
+      },
+      "acceptedValues": [
+        "true",
+        "false"
+      ],
+      "rejectedInvalidValues": [
+        "maybe",
+        "arbitrary-string"
+      ],
+      "parserReadProof": {
+        "passed": true,
+        "fixtureValue": "true"
+      },
+      "validatorProof": {
+        "passed": true,
+        "accepted": [
+          "true",
+          "false"
+        ],
+        "validatorType": "boolean"
+      },
+      "invalidRejectionProof": {
+        "passed": true,
+        "rejected": [
+          "maybe",
+          "arbitrary-string"
+        ],
+        "rejectedBeforeWritePlanning": true
+      },
+      "fixtureWriteRereadProof": {
+        "replacePassed": true,
+        "appendPassed": true,
+        "singleMutationVerified": true,
+        "usesTempFixturesOnly": true
+      },
+      "tempConfigProof": {
+        "passed": true,
+        "verifyConfigRole": "parser-proof-not-recovery-proof",
+        "valuesVerified": [
+          "true",
+          "false"
+        ],
+        "command": "Hyprland --verify-config --config <temp-file>",
+        "result": "config ok for true and false"
+      },
+      "uiProjection": {
+        "controlKind": "toggle",
+        "reviewWarningRequired": "cursor visibility high-risk watchdog/dead-man warning",
+        "mustWarnCursorMayDisappear": true,
+        "mustShowRestoreCommandBeforeApply": true
+      },
+      "safeForLaterEnablementByPreflight": true,
+      "enabled": false
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "officialSetting": "cursor.hide_on_tablet",
+      "currentWriteStatus": "high-risk",
+      "safeWriteSupported": false,
+      "valueType": "bool",
+      "validatorRef": "bool",
+      "validatorAuthority": "app-validator-authoritative-plus-companion-schema-bool-evidence",
+      "hyprmodMetadataUse": {
+        "usedFor": [
+          "label",
+          "default",
+          "description"
+        ],
+        "notUsedFor": [
+          "safety proof",
+          "recovery proof",
+          "write allowlist proof"
+        ],
+        "default": false,
+        "description": "Hides the cursor when the last input was a tablet input until a mouse input is done.",
+        "hyprmodRecoveryEvidenceFound": false
+      },
+      "acceptedValues": [
+        "true",
+        "false"
+      ],
+      "rejectedInvalidValues": [
+        "maybe",
+        "arbitrary-string"
+      ],
+      "parserReadProof": {
+        "passed": true,
+        "fixtureValue": "true"
+      },
+      "validatorProof": {
+        "passed": true,
+        "accepted": [
+          "true",
+          "false"
+        ],
+        "validatorType": "boolean"
+      },
+      "invalidRejectionProof": {
+        "passed": true,
+        "rejected": [
+          "maybe",
+          "arbitrary-string"
+        ],
+        "rejectedBeforeWritePlanning": true
+      },
+      "fixtureWriteRereadProof": {
+        "replacePassed": true,
+        "appendPassed": true,
+        "singleMutationVerified": true,
+        "usesTempFixturesOnly": true
+      },
+      "tempConfigProof": {
+        "passed": true,
+        "verifyConfigRole": "parser-proof-not-recovery-proof",
+        "valuesVerified": [
+          "true",
+          "false"
+        ],
+        "command": "Hyprland --verify-config --config <temp-file>",
+        "result": "config ok for true and false"
+      },
+      "uiProjection": {
+        "controlKind": "toggle",
+        "reviewWarningRequired": "cursor visibility high-risk watchdog/dead-man warning",
+        "mustWarnCursorMayDisappear": true,
+        "mustShowRestoreCommandBeforeApply": true
+      },
+      "safeForLaterEnablementByPreflight": true,
+      "enabled": false
+    }
+  ],
+  "safety": {
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "anythingPushed": false,
+    "mainTouched": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "screen-shader-write-policy-decision",
+  "generatedAt": "2026-06-07T02:00:17-07:00",
+  "counts": {
+    "rowsReviewed": 1,
+    "selectedPolicyCount": 1,
+    "rowsEnabledThisSprint": 0,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "liveShaderCompileUsed": false,
+    "productionBehaviorChanged": false,
+    "liveDisplayRuntimeProofUsed": false
+  },
+  "selectedPolicy": "Policy D",
+  "policyDecision": "Keep current writable behavior temporarily, but require a later dedicated migration sprint to move decoration.screen_shader behind a display/render high-risk gate or otherwise resolve the mismatch.",
+  "decisionRationale": [
+    "The row is currently writable and removing it from SAFE_WRITABLE_ROWS would be a behavior change requiring explicit approval.",
+    "Official source shows non-empty values are read and compiled as final screen fragment shader code, so normal path-only treatment is insufficient as a long-term policy.",
+    "Path validation alone is not display/render safety proof.",
+    "Compile-aware validation would require a dedicated shader validation design and must not use the live compositor or active render state."
+  ],
+  "rejectedPolicies": [
+    {
+      "policy": "Policy A",
+      "reason": "Warning-only is insufficient long term because official source compiles shader content in the render path."
+    },
+    {
+      "policy": "Policy B",
+      "reason": "A high-risk gate is likely required, but this sprint does not change recovery behavior or migrate the row without a dedicated proof/migration plan."
+    },
+    {
+      "policy": "Policy C",
+      "reason": "Moving the row back to blocked would remove current writable behavior and needs explicit user approval in a behavior-change sprint."
+    }
+  ],
+  "row": {
+    "rowId": "decoration.screen_shader",
+    "officialSetting": "decoration.screen_shader",
+    "currentStatus": "writable-temporarily-retained",
+    "correctFuturePolicy": "display-render-high-risk-gated-or-explicitly-approved-blocking-decision",
+    "allowlistChangeThisSprint": false,
+    "recoveryGateChangeThisSprint": false,
+    "compileAwareValidationThisSprint": false
+  }
+}

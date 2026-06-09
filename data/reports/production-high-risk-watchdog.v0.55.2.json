@@ -1,0 +1,68 @@
+{
+  "artifactKind": "production-high-risk-watchdog",
+  "schemaVersion": 1,
+  "hyprlandVersion": "0.55.2",
+  "counts": {
+    "watchdogPrimitivesImplemented": true,
+    "persistLoadPassed": true,
+    "confirmPathPassed": true,
+    "timeoutRestorePassed": true,
+    "restoreFailurePassed": true,
+    "realConfigPathsUsed": 0,
+    "activeRuntimeMutations": 0,
+    "reloadRuns": 0,
+    "evalRuns": 0,
+    "luaExecutions": 0,
+    "liveExecutionEnabled": false,
+    "separateProcessProofPassed": true,
+    "cliTokenConfirmationPassed": true,
+    "wrongTokenFailed": true,
+    "cliTimeoutRestorePassed": true,
+    "separateProcessRestoreFailurePassed": true,
+    "rowsEnabledBySeparateProcessProof": 3,
+    "displayRenderBoundaryRepresented": true,
+    "displayRenderRowsEnabledByBoundarySprint": 2,
+    "xwaylandScalingRowsEnabled": 2,
+    "cursorThemeSyncRowsEnabled": 1,
+    "cursorInputRowsEnabled": 4,
+    "cursorVisibilityConditionalRowsEnabled": 2
+  },
+  "contract": {
+    "modeImplemented": "DryRunTempOnly",
+    "productionMode": "ProductionPlannedDisabled",
+    "planCanPersistBeforeMutation": true,
+    "independentProcessCanLoadPlan": true,
+    "confirmationTokenRequired": true,
+    "timeoutRestoreVerifiesReread": true,
+    "refusesLivePathsInDryRun": true,
+    "requiresHyprlandKeybind": false,
+    "requiresAppUi": false,
+    "requiresVisibleDisplay": false,
+    "requiresMouseInput": false
+  },
+  "result": "gate-1-passed",
+  "controlledLiveModeStatus": {
+    "currentExecutableMode": "dry-run-temp-only",
+    "liveConfigMode": "live-config-planned-disabled",
+    "liveExecutionEnabled": false,
+    "reason": "Live config watchdog plans can be represented for validation, but execution remains disabled until a later approved live-mode sprint."
+  },
+  "separateProcessProofStatus": {
+    "status": "passed-fixture-temp-only",
+    "binaryInvocation": "hyprland-settings high-risk-watchdog --plan <temp> --result <temp> --backup-root <temp> --action confirm|expire",
+    "correctTokenConfirm": "passed",
+    "wrongTokenFailure": "passed",
+    "timeoutRestore": "passed",
+    "restoreFailure": "passed",
+    "livePathRefusal": "passed",
+    "liveExecutionEnabled": false
+  },
+  "displayRenderBoundaryStatus": {
+    "separateWatchdogProcessProofPassed": true,
+    "displayRenderLiveBoundaryRepresented": true,
+    "liveExecutionEnabled": false,
+    "displayRenderRowsEnabled": 0,
+    "recommendedNextSubset": "next-display-render-subset-not-selected",
+    "xwaylandScalingSmokeSubsetEnabled": true
+  }
+}

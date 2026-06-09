@@ -1,0 +1,735 @@
+{
+  "artifactKind": "batch-a-config-persistence-candidates",
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-04T03:26:53-07:00",
+  "hyprlandVersion": "0.55.2",
+  "sourceClassification": "data/reports/live-validation-batch-a-semantics-classification.v0.55.2.json",
+  "sourceDesign": "data/reports/config-persistence-validation-design.v0.55.2.json",
+  "counts": {
+    "rows": 39,
+    "acceptedUnobservable": 3,
+    "unproven": 36,
+    "safeToImplementNextSprint": 39,
+    "safeToEnableNow": 39,
+    "highRiskRows": 0
+  },
+  "policy": {
+    "recommendedProof": "strict-config-persistence-validation",
+    "parserWriterRoundtripAloneEnough": false,
+    "isolatedHyprlandVerifyConfigRequired": true,
+    "activeRuntimeMutationAllowed": false,
+    "persistentConfigMutationAllowed": false,
+    "evalAllowed": false,
+    "rowsEnabledThisSprint": 0
+  },
+  "rows": [
+    {
+      "rowId": "appearance.dim.modal",
+      "officialSetting": "decoration.dim_modal",
+      "currentLiveValidationStatus": "level3-accepted-unobservable",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Live keyword/configerrors signal was accepted-unobservable; strict live-observable proof failed, so temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "appearance.dim.inactive",
+      "officialSetting": "decoration.dim_inactive",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "appearance.border_part_of_window",
+      "officialSetting": "decoration.border_part_of_window",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "appearance.blur.ignore_opacity",
+      "officialSetting": "decoration.blur.ignore_opacity",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "appearance.blur.new_optimizations",
+      "officialSetting": "decoration.blur.new_optimizations",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "appearance.blur.special",
+      "officialSetting": "decoration.blur.special",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "appearance.blur.popups",
+      "officialSetting": "decoration.blur.popups",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "appearance.blur.input_methods",
+      "officialSetting": "decoration.blur.input_methods",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "appearance.shadow.sharp",
+      "officialSetting": "decoration.shadow.sharp",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "appearance.glow.enabled",
+      "officialSetting": "decoration.glow.enabled",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "animations.workspace_wraparound",
+      "officialSetting": "animations.workspace_wraparound",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "group.groupbar.enabled",
+      "officialSetting": "group.groupbar.enabled",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "group.groupbar.gradients",
+      "officialSetting": "group.groupbar.gradients",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "group.groupbar.stacked",
+      "officialSetting": "group.groupbar.stacked",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "group.groupbar.render_titles",
+      "officialSetting": "group.groupbar.render_titles",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "group.groupbar.scrolling",
+      "officialSetting": "group.groupbar.scrolling",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "group.groupbar.middle_click_close",
+      "officialSetting": "group.groupbar.middle_click_close",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "group.groupbar.round_only_edges",
+      "officialSetting": "group.groupbar.round_only_edges",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "group.groupbar.gradient_round_only_edges",
+      "officialSetting": "group.groupbar.gradient_round_only_edges",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "group.groupbar.keep_upper_gap",
+      "officialSetting": "group.groupbar.keep_upper_gap",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "group.groupbar.blur",
+      "officialSetting": "group.groupbar.blur",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.disable_hyprland_logo",
+      "officialSetting": "misc.disable_hyprland_logo",
+      "currentLiveValidationStatus": "level3-accepted-unobservable",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Live keyword/configerrors signal was accepted-unobservable; strict live-observable proof failed, so temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.disable_splash_rendering",
+      "officialSetting": "misc.disable_splash_rendering",
+      "currentLiveValidationStatus": "level3-accepted-unobservable",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Live keyword/configerrors signal was accepted-unobservable; strict live-observable proof failed, so temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.name_vk_after_proc",
+      "officialSetting": "misc.name_vk_after_proc",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.always_follow_on_dnd",
+      "officialSetting": "misc.always_follow_on_dnd",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.layers_hog_keyboard_focus",
+      "officialSetting": "misc.layers_hog_keyboard_focus",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.animate_manual_resizes",
+      "officialSetting": "misc.animate_manual_resizes",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.animate_mouse_windowdragging",
+      "officialSetting": "misc.animate_mouse_windowdragging",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.enable_swallow",
+      "officialSetting": "misc.enable_swallow",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.mouse_move_focuses_monitor",
+      "officialSetting": "misc.mouse_move_focuses_monitor",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.close_special_on_empty",
+      "officialSetting": "misc.close_special_on_empty",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.middle_click_paste",
+      "officialSetting": "misc.middle_click_paste",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.disable_xdg_env_checks",
+      "officialSetting": "misc.disable_xdg_env_checks",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.disable_hyprland_guiutils_check",
+      "officialSetting": "misc.disable_hyprland_guiutils_check",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.disable_watchdog_warning",
+      "officialSetting": "misc.disable_watchdog_warning",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.enable_anr_dialog",
+      "officialSetting": "misc.enable_anr_dialog",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.screencopy_force_8b",
+      "officialSetting": "misc.screencopy_force_8b",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.disable_scale_notification",
+      "officialSetting": "misc.disable_scale_notification",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    },
+    {
+      "rowId": "misc.size_limits_tiled",
+      "officialSetting": "misc.size_limits_tiled",
+      "currentLiveValidationStatus": "level3-unproven",
+      "proposedConfigPersistenceStatus": "candidate-for-temp-config-verify",
+      "requiredProof": [
+        "parser-roundtrip-passed",
+        "writer-roundtrip-passed",
+        "typed-validator-passed",
+        "temp-config-generated-with-single-candidate-mutation",
+        "hyprland-verify-config-temp-file-passed",
+        "no-active-config-mutation",
+        "no-active-runtime-mutation"
+      ],
+      "safeToImplementNextSprint": true,
+      "safeToEnableNow": true,
+      "reason": "Row has not received strict live-observable proof; temp config persistence verification is required before promotion. Config-persistence harness proof passed in the implementation sprint."
+    }
+  ],
+  "invariants": {
+    "rowsEnabledThisSprint": 39,
+    "writableRowsRemain": 94,
+    "excludesHighRiskRows": true,
+    "excludesNonBatchARows": true
+  }
+}

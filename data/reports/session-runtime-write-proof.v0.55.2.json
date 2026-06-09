@@ -1,0 +1,973 @@
+{
+  "artifactKind": "session-runtime-write-proof",
+  "schemaVersion": "v0.55.2",
+  "generatedAt": "2026-06-05T19:56:14.611292Z",
+  "counts": {
+    "rows": 16,
+    "parserReadPassed": 16,
+    "validatorPassed": 16,
+    "invalidRejectionPassed": 16,
+    "fixtureReplacePassed": 16,
+    "fixtureAppendPassed": 16,
+    "hyprlandVerifyConfigPassed": 16,
+    "safeToEnable": 16,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "hyprlandVerifyConfigCandidatePasses": 37,
+    "hyprlandVerifyConfigCandidateFailures": 0
+  },
+  "rows": [
+    {
+      "rowId": "appearance.fullscreen_opacity",
+      "officialSetting": "decoration.fullscreen_opacity",
+      "scope": "persistent-config-only",
+      "valueType": "percent",
+      "validatorRef": "schema-bounds-percent",
+      "validValuesTested": [
+        "1.0",
+        "0",
+        "1",
+        "0.5"
+      ],
+      "invalidValuesTested": [
+        "not-a-number",
+        "-1.0",
+        "2.0"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "1.0",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-qjaj51_2/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-qjaj51_2/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-qjaj51_2/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-qjaj51_2/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-qjaj51_2/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-qjaj51_2/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.015,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "0",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-ssm17nf0/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-ssm17nf0/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-ssm17nf0/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-ssm17nf0/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-ssm17nf0/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-ssm17nf0/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "1",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-bz5qgy5q/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-bz5qgy5q/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-bz5qgy5q/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-bz5qgy5q/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-bz5qgy5q/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-bz5qgy5q/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "0.5",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-3tqqnh5v/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-3tqqnh5v/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-3tqqnh5v/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-3tqqnh5v/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-3tqqnh5v/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-fullscreen_opacity-3tqqnh5v/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "appearance.blur.xray",
+      "officialSetting": "decoration.blur.xray",
+      "scope": "persistent-config-only",
+      "valueType": "boolean",
+      "validatorRef": "bool",
+      "validValuesTested": [
+        "true",
+        "false"
+      ],
+      "invalidValuesTested": [
+        "maybe"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-appearance-blur-xray-vp19m7tz/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-appearance-blur-xray-vp19m7tz/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-appearance-blur-xray-vp19m7tz/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-blur-xray-vp19m7tz/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-blur-xray-vp19m7tz/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-blur-xray-vp19m7tz/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-appearance-blur-xray-id1xcn84/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-appearance-blur-xray-id1xcn84/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-appearance-blur-xray-id1xcn84/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-blur-xray-id1xcn84/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-blur-xray-id1xcn84/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-appearance-blur-xray-id1xcn84/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "general.allow_tearing",
+      "officialSetting": "general.allow_tearing",
+      "scope": "persistent-config-only",
+      "valueType": "boolean",
+      "validatorRef": "bool",
+      "validValuesTested": [
+        "true",
+        "false"
+      ],
+      "invalidValuesTested": [
+        "maybe"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-general-allow_tearing-ugxoo4m7/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-general-allow_tearing-ugxoo4m7/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-general-allow_tearing-ugxoo4m7/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-general-allow_tearing-ugxoo4m7/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-general-allow_tearing-ugxoo4m7/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-general-allow_tearing-ugxoo4m7/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-general-allow_tearing-41nhfwkz/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-general-allow_tearing-41nhfwkz/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-general-allow_tearing-41nhfwkz/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-general-allow_tearing-41nhfwkz/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-general-allow_tearing-41nhfwkz/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-general-allow_tearing-41nhfwkz/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "general.locale",
+      "officialSetting": "general.locale",
+      "scope": "persistent-config-only",
+      "valueType": "line-safe-string",
+      "validatorRef": "optional-line-safe-string",
+      "validValuesTested": [
+        "",
+        "example"
+      ],
+      "invalidValuesTested": [
+        "line\nbreak",
+        "#comment",
+        "$(`bad`)"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-general-locale-w7sk1yh6/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-general-locale-w7sk1yh6/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-general-locale-w7sk1yh6/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-general-locale-w7sk1yh6/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-general-locale-w7sk1yh6/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-general-locale-w7sk1yh6/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "example",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-general-locale-3iacza04/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-general-locale-3iacza04/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-general-locale-3iacza04/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-general-locale-3iacza04/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-general-locale-3iacza04/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-general-locale-3iacza04/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "misc.vrr",
+      "officialSetting": "misc.vrr",
+      "scope": "persistent-config-only",
+      "valueType": "finite-choice",
+      "validatorRef": "finite-choice",
+      "validValuesTested": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "invalidValuesTested": [
+        "4",
+        "not-a-valid-choice"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "0",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-vrr-s09m3ts2/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-vrr-s09m3ts2/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-vrr-s09m3ts2/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-vrr-s09m3ts2/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-vrr-s09m3ts2/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-vrr-s09m3ts2/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "1",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-vrr-wmpnmt26/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-vrr-wmpnmt26/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-vrr-wmpnmt26/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-vrr-wmpnmt26/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-vrr-wmpnmt26/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-vrr-wmpnmt26/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "2",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-vrr-suia4zij/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-vrr-suia4zij/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-vrr-suia4zij/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-vrr-suia4zij/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-vrr-suia4zij/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-vrr-suia4zij/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "3",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-vrr-lz8fswur/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-vrr-lz8fswur/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-vrr-lz8fswur/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-vrr-lz8fswur/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-vrr-lz8fswur/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-vrr-lz8fswur/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "misc.mouse_move_enables_dpms",
+      "officialSetting": "misc.mouse_move_enables_dpms",
+      "scope": "persistent-config-only",
+      "valueType": "boolean",
+      "validatorRef": "bool",
+      "validValuesTested": [
+        "true",
+        "false"
+      ],
+      "invalidValuesTested": [
+        "maybe"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-mouse_move_enables_dpms-wh4tlxsk/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-mouse_move_enables_dpms-wh4tlxsk/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-mouse_move_enables_dpms-wh4tlxsk/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-mouse_move_enables_dpms-wh4tlxsk/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-mouse_move_enables_dpms-wh4tlxsk/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-mouse_move_enables_dpms-wh4tlxsk/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.013,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-mouse_move_enables_dpms-dcu5q1or/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-mouse_move_enables_dpms-dcu5q1or/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-mouse_move_enables_dpms-dcu5q1or/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-mouse_move_enables_dpms-dcu5q1or/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-mouse_move_enables_dpms-dcu5q1or/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-mouse_move_enables_dpms-dcu5q1or/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.012,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "misc.key_press_enables_dpms",
+      "officialSetting": "misc.key_press_enables_dpms",
+      "scope": "persistent-config-only",
+      "valueType": "boolean",
+      "validatorRef": "bool",
+      "validValuesTested": [
+        "true",
+        "false"
+      ],
+      "invalidValuesTested": [
+        "maybe"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-key_press_enables_dpms-spdbnnwo/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-key_press_enables_dpms-spdbnnwo/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-key_press_enables_dpms-spdbnnwo/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-key_press_enables_dpms-spdbnnwo/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-key_press_enables_dpms-spdbnnwo/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-key_press_enables_dpms-spdbnnwo/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.012,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-key_press_enables_dpms-gporulja/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-key_press_enables_dpms-gporulja/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-key_press_enables_dpms-gporulja/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-key_press_enables_dpms-gporulja/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-key_press_enables_dpms-gporulja/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-key_press_enables_dpms-gporulja/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.011,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "misc.disable_autoreload",
+      "officialSetting": "misc.disable_autoreload",
+      "scope": "persistent-needs-reload",
+      "valueType": "boolean",
+      "validatorRef": "bool",
+      "validValuesTested": [
+        "true",
+        "false"
+      ],
+      "invalidValuesTested": [
+        "maybe"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-disable_autoreload-an_ujdp7/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-disable_autoreload-an_ujdp7/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-disable_autoreload-an_ujdp7/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-disable_autoreload-an_ujdp7/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-disable_autoreload-an_ujdp7/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-disable_autoreload-an_ujdp7/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.011,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-disable_autoreload-_e2sdhvf/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-disable_autoreload-_e2sdhvf/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-disable_autoreload-_e2sdhvf/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-disable_autoreload-_e2sdhvf/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-disable_autoreload-_e2sdhvf/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-disable_autoreload-_e2sdhvf/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "misc.focus_on_activate",
+      "officialSetting": "misc.focus_on_activate",
+      "scope": "persistent-config-only",
+      "valueType": "boolean",
+      "validatorRef": "bool",
+      "validValuesTested": [
+        "true",
+        "false"
+      ],
+      "invalidValuesTested": [
+        "maybe"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-focus_on_activate-sptc4li2/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-focus_on_activate-sptc4li2/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-focus_on_activate-sptc4li2/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-focus_on_activate-sptc4li2/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-focus_on_activate-sptc4li2/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-focus_on_activate-sptc4li2/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-focus_on_activate-mgqooh07/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-focus_on_activate-mgqooh07/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-focus_on_activate-mgqooh07/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-focus_on_activate-mgqooh07/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-focus_on_activate-mgqooh07/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-focus_on_activate-mgqooh07/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "misc.allow_session_lock_restore",
+      "officialSetting": "misc.allow_session_lock_restore",
+      "scope": "startup-only",
+      "valueType": "boolean",
+      "validatorRef": "bool",
+      "validValuesTested": [
+        "true",
+        "false"
+      ],
+      "invalidValuesTested": [
+        "maybe"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-allow_session_lock_restore-_ex0pqv0/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-allow_session_lock_restore-_ex0pqv0/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-allow_session_lock_restore-_ex0pqv0/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-allow_session_lock_restore-_ex0pqv0/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-allow_session_lock_restore-_ex0pqv0/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-allow_session_lock_restore-_ex0pqv0/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-allow_session_lock_restore-fqtddf00/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-allow_session_lock_restore-fqtddf00/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-allow_session_lock_restore-fqtddf00/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-allow_session_lock_restore-fqtddf00/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-allow_session_lock_restore-fqtddf00/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-allow_session_lock_restore-fqtddf00/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "misc.session_lock_xray",
+      "officialSetting": "misc.session_lock_xray",
+      "scope": "persistent-config-only",
+      "valueType": "boolean",
+      "validatorRef": "bool",
+      "validValuesTested": [
+        "true",
+        "false"
+      ],
+      "invalidValuesTested": [
+        "maybe"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-session_lock_xray-i8j8bv2p/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-session_lock_xray-i8j8bv2p/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-session_lock_xray-i8j8bv2p/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-session_lock_xray-i8j8bv2p/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-session_lock_xray-i8j8bv2p/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-session_lock_xray-i8j8bv2p/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-session_lock_xray-vxixrgm0/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-session_lock_xray-vxixrgm0/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-session_lock_xray-vxixrgm0/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-session_lock_xray-vxixrgm0/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-session_lock_xray-vxixrgm0/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-session_lock_xray-vxixrgm0/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "misc.on_focus_under_fullscreen",
+      "officialSetting": "misc.on_focus_under_fullscreen",
+      "scope": "persistent-config-only",
+      "valueType": "finite-choice",
+      "validatorRef": "finite-choice",
+      "validValuesTested": [
+        "0",
+        "1",
+        "2"
+      ],
+      "invalidValuesTested": [
+        "3",
+        "not-a-valid-choice"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "0",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-onxbxnfx/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-onxbxnfx/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-onxbxnfx/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-onxbxnfx/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-onxbxnfx/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-onxbxnfx/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "1",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-t0htv7de/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-t0htv7de/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-t0htv7de/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-t0htv7de/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-t0htv7de/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-t0htv7de/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "2",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-ckxevj6d/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-ckxevj6d/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-ckxevj6d/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-ckxevj6d/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-ckxevj6d/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-on_focus_under_fullscreen-ckxevj6d/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "misc.exit_window_retains_fullscreen",
+      "officialSetting": "misc.exit_window_retains_fullscreen",
+      "scope": "persistent-config-only",
+      "valueType": "boolean",
+      "validatorRef": "bool",
+      "validValuesTested": [
+        "true",
+        "false"
+      ],
+      "invalidValuesTested": [
+        "maybe"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-exit_window_retains_fullscreen-hu__9t6m/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-exit_window_retains_fullscreen-hu__9t6m/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-exit_window_retains_fullscreen-hu__9t6m/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-exit_window_retains_fullscreen-hu__9t6m/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-exit_window_retains_fullscreen-hu__9t6m/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-exit_window_retains_fullscreen-hu__9t6m/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-misc-exit_window_retains_fullscreen-35kozovh/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-misc-exit_window_retains_fullscreen-35kozovh/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-misc-exit_window_retains_fullscreen-35kozovh/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-exit_window_retains_fullscreen-35kozovh/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-exit_window_retains_fullscreen-35kozovh/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-misc-exit_window_retains_fullscreen-35kozovh/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.011,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "binds.movefocus_cycles_fullscreen",
+      "officialSetting": "binds.movefocus_cycles_fullscreen",
+      "scope": "persistent-config-only",
+      "valueType": "boolean",
+      "validatorRef": "bool",
+      "validValuesTested": [
+        "true",
+        "false"
+      ],
+      "invalidValuesTested": [
+        "maybe"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-binds-movefocus_cycles_fullscreen-be5kk8m2/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-binds-movefocus_cycles_fullscreen-be5kk8m2/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-binds-movefocus_cycles_fullscreen-be5kk8m2/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-binds-movefocus_cycles_fullscreen-be5kk8m2/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-binds-movefocus_cycles_fullscreen-be5kk8m2/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-binds-movefocus_cycles_fullscreen-be5kk8m2/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-binds-movefocus_cycles_fullscreen-tv554wjs/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-binds-movefocus_cycles_fullscreen-tv554wjs/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-binds-movefocus_cycles_fullscreen-tv554wjs/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-binds-movefocus_cycles_fullscreen-tv554wjs/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-binds-movefocus_cycles_fullscreen-tv554wjs/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-binds-movefocus_cycles_fullscreen-tv554wjs/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "binds.allow_pin_fullscreen",
+      "officialSetting": "binds.allow_pin_fullscreen",
+      "scope": "persistent-config-only",
+      "valueType": "boolean",
+      "validatorRef": "bool",
+      "validValuesTested": [
+        "true",
+        "false"
+      ],
+      "invalidValuesTested": [
+        "maybe"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-binds-allow_pin_fullscreen-k792qh26/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-binds-allow_pin_fullscreen-k792qh26/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-binds-allow_pin_fullscreen-k792qh26/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-binds-allow_pin_fullscreen-k792qh26/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-binds-allow_pin_fullscreen-k792qh26/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-binds-allow_pin_fullscreen-k792qh26/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-binds-allow_pin_fullscreen-45ipqmfv/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-binds-allow_pin_fullscreen-45ipqmfv/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-binds-allow_pin_fullscreen-45ipqmfv/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-binds-allow_pin_fullscreen-45ipqmfv/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-binds-allow_pin_fullscreen-45ipqmfv/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-binds-allow_pin_fullscreen-45ipqmfv/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    },
+    {
+      "rowId": "scrolling.fullscreen_on_one_column",
+      "officialSetting": "scrolling.fullscreen_on_one_column",
+      "scope": "persistent-needs-reload",
+      "valueType": "boolean",
+      "validatorRef": "bool",
+      "validValuesTested": [
+        "true",
+        "false"
+      ],
+      "invalidValuesTested": [
+        "maybe"
+      ],
+      "parserReadProofPassed": true,
+      "validatorValidValuesPassed": true,
+      "invalidValueRejectionPassed": true,
+      "fixtureReplacePassed": true,
+      "fixtureAppendPassed": true,
+      "singleMutationVerified": true,
+      "hyprlandVerifyConfigAttempted": true,
+      "hyprlandVerifyConfigPassed": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "reloadRun": false,
+      "evalRun": false,
+      "luaExecuted": false,
+      "safeToEnable": true,
+      "notes": "Proof is recorded from existing temp-config proof framework and row-specific validator tests added in this sprint; runtime effect is intentionally not claimed.",
+      "hyprlandVerifyConfigResults": [
+        {
+          "candidateValue": "true",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-scrolling-fullscreen_on_one_column-25o43wyz/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-scrolling-fullscreen_on_one_column-25o43wyz/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-scrolling-fullscreen_on_one_column-25o43wyz/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-scrolling-fullscreen_on_one_column-25o43wyz/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-scrolling-fullscreen_on_one_column-25o43wyz/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-scrolling-fullscreen_on_one_column-25o43wyz/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        },
+        {
+          "candidateValue": "false",
+          "tempConfigPath": "/tmp/hyprland-settings-session-runtime-scrolling-fullscreen_on_one_column-mznykksq/hyprland.conf",
+          "hyprlandVerifyCommand": "timeout 10 Hyprland --verify-config --config /tmp/hyprland-settings-session-runtime-scrolling-fullscreen_on_one_column-mznykksq/hyprland.conf",
+          "hyprlandVerifyExitStatus": 0,
+          "hyprlandVerifyPassed": true,
+          "hyprlandVerifyStdoutTail": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-session-runtime-scrolling-fullscreen_on_one_column-mznykksq/hyprland.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-scrolling-fullscreen_on_one_column-mznykksq/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-scrolling-fullscreen_on_one_column-mznykksq/hyprland.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-session-runtime-scrolling-fullscreen_on_one_column-mznykksq/hyprland.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+          "hyprlandVerifyStderrTail": "",
+          "elapsedSeconds": 0.01,
+          "activeConfigModified": false,
+          "activeRuntimeModified": false
+        }
+      ]
+    }
+  ]
+}

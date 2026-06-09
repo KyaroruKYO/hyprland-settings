@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "high-risk-row-pattern-from-screen-shader",
+  "generatedAt": "2026-06-08T14:51:04-07:00",
+  "patternName": "source-backed-row-specific-high-risk-gated-write-pattern",
+  "derivedFromRow": "decoration.screen_shader",
+  "scope": "Reusable decision framework for future high-risk Hyprland scalar rows that may affect display/render, cursor/input, debug/crash, or other recovery-sensitive behavior.",
+  "notUniversalWarning": "This pattern is a reusable decision framework, not automatic permission to enable rows. Each future high-risk row still requires source-backed, row-specific proof.",
+  "requiredEvidenceBeforeWritable": [
+    "official Hyprland documentation or source evidence for the setting and accepted value shape",
+    "Rust validator proof for accepted and rejected values",
+    "fixture/temp write, reread, rollback, and gate proof",
+    "risk classification tied to the row's actual failure mode",
+    "tests proving counts, allowlists, and unrelated rows remain unchanged"
+  ],
+  "sourceProofRequired": true,
+  "validatorProofRequired": true,
+  "writeSafetyProofRequired": true,
+  "riskClassificationRequired": true,
+  "gateRequiredWhenRisky": true,
+  "watchdogRequiredWhenRisky": true,
+  "recoveryProofRequiredWhenRisky": true,
+  "advisoryChecksPolicy": "Advisory checks may provide additional user information, but they do not replace source proof, validators, recovery/watchdog gates, or production write safety.",
+  "uiSeparationPolicy": "Advanced advisory UI actions must be separated from write/apply controls and must not approve, block, or bypass writes unless a future approved sprint explicitly makes them part of write safety with tests.",
+  "unifiedPipelineReportPolicy": "Each high-risk row must link its source proof, validator proof, write safety proof, gate proof, recovery proof, UI warning, and remaining deferred work in aggregate reports.",
+  "testsRequired": [
+    "row remains blocked or writable only according to the approved policy",
+    "SAFE_WRITABLE_ROWS length is unchanged unless an approved enablement sprint proves otherwise",
+    "write allowlist is unchanged unless explicitly approved",
+    "ungated risky writes are rejected when a gate is required",
+    "valid gated fixture/temp writes are accepted when enablement is approved",
+    "unrelated rows remain on their existing path",
+    "real config and active runtime are untouched in tests unless explicitly approved",
+    "advisory output cannot approve, block, or bypass writes unless explicitly designed as write safety"
+  ],
+  "blockedIfProofMissing": true,
+  "doNotInferSafetyFrom": [
+    "parser acceptance",
+    "HyprMod exposure",
+    "current app acceptance",
+    "UI metadata alone",
+    "missing warnings elsewhere",
+    "ordinary path validation",
+    "watchdog migration proof alone",
+    "production gate enforcement alone",
+    "advisory helper existence alone",
+    "advisory UI existence alone",
+    "standalone compiler output alone",
+    "a policy name without source-backed evidence and tests"
+  ],
+  "batchingPolicy": "Prefer grouped high-risk bucket readiness and small approved batches over endless one-row deep dives, unless a row has a unique proven risk that requires isolation.",
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0,
+  "readableRows": 341,
+  "writableRows": 278,
+  "blockedRows": 63,
+  "proofUsed": [
+    "screen shader production gate approval proof",
+    "screen shader watchdog migration proof",
+    "screen shader advisory helper/UI/file chooser execution proof reports",
+    "high-risk unified pipeline reconciliation reports",
+    "current Rust write safety and UI source"
+  ],
+  "proofStillMissing": [
+    "row-specific source-backed proof for each future high-risk row",
+    "bucket-specific recovery proof before future grouped enablement",
+    "approval for any future write allowlist/count change"
+  ],
+  "nextRecommendedSprint": "Next high-risk bucket readiness and batching sprint"
+}

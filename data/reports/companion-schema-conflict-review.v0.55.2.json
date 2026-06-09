@@ -1,0 +1,918 @@
+{
+  "artifactKind": "companion-schema-conflict-review",
+  "schemaVersion": "1.0",
+  "hyprlandVersion": "v0.55.2",
+  "sourceComparisonReport": "data/reports/hyprmod-companion-full-scalar-comparison.v0.55.2.json",
+  "counts": {
+    "conflictRows": 12,
+    "rowsChanged": 12,
+    "writeBehaviorChanged": true
+  },
+  "invariants": {
+    "conflictRowsProductionBehaviorUnchanged": true,
+    "rowsEnabled": 0,
+    "writeAllowlistChanged": false,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false
+  },
+  "rows": [
+    {
+      "rowId": "general.resize_corner",
+      "officialSetting": "general.resize_corner",
+      "currentWriteStatus": "writable",
+      "currentControlKind": "dropdown",
+      "currentValueFamily": "finite-choice",
+      "currentValidatorBehavior": "finite-choice validator accepts only Hyprland --verify-config accepted numeric raw IDs and rejects unverified semantic labels/arbitrary slider values",
+      "currentEditorType": "enum/dropdown",
+      "currentTestValues": {
+        "valid": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "invalid": [
+          "-1",
+          "99",
+          "bottom_left",
+          "bottom_right",
+          "disable",
+          "not-a-valid-choice",
+          "top_left",
+          "top_right"
+        ]
+      },
+      "currentWriteProofStatus": "migrated after temp-config Hyprland --verify-config proof for chosen numeric raw values; write remains gated through existing backup/write/reread flow",
+      "companionSchemaType": "choice",
+      "companionSchemaDefault": 0,
+      "companionSchemaMin": null,
+      "companionSchemaMax": null,
+      "companionSchemaEnumChoiceValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "top_left"
+        },
+        {
+          "id": "2",
+          "label": "top_right"
+        },
+        {
+          "id": "3",
+          "label": "bottom_right"
+        },
+        {
+          "id": "4",
+          "label": "bottom_left"
+        }
+      ],
+      "companionSuggestedEditorType": "enum/dropdown",
+      "companionSuggestedValidTestValues": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "companionSuggestedInvalidTestValues": [
+        "not-a-valid-choice"
+      ],
+      "exactConflictReason": "Current model uses controlKind='slider'; companion schema type 'choice' with editor 'enum/dropdown' and choices ['disable', 'top_left', 'top_right', 'bottom_right', 'bottom_left'].",
+      "whatWouldChangeIfCompanionModelIsAdopted": "Applied: finite dropdown labels are shown in UI while verified numeric raw values are written to config.",
+      "whatWouldBreakIfOurModelIsKept": "Resolved: old slider/number semantics are no longer used for this finite behavior mode.",
+      "recommendedProvisionalAction": "approved-companion-model-applied",
+      "userDecision": "approved-companion-model",
+      "notes": "Conflict resolved in retry sprint. Semantic labels are UI-only unless also part of the verified numeric mapping; production writes store verified raw IDs only.",
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "chosenDisplayLabels": [
+        "disable",
+        "top_left",
+        "top_right",
+        "bottom_right",
+        "bottom_left"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "rejectedRawValues": [
+        "disable",
+        "top_left",
+        "top_right",
+        "bottom_right",
+        "bottom_left"
+      ]
+    },
+    {
+      "rowId": "input.focus_on_close",
+      "officialSetting": "input.focus_on_close",
+      "currentWriteStatus": "writable",
+      "currentControlKind": "dropdown",
+      "currentValueFamily": "finite-choice",
+      "currentValidatorBehavior": "finite-choice validator accepts only Hyprland --verify-config accepted numeric raw IDs and rejects unverified semantic labels/arbitrary slider values",
+      "currentEditorType": "enum/dropdown",
+      "currentTestValues": {
+        "valid": [
+          "0",
+          "1",
+          "2"
+        ],
+        "invalid": [
+          "-1",
+          "99",
+          "cursor",
+          "mru",
+          "next",
+          "not-a-valid-choice"
+        ]
+      },
+      "currentWriteProofStatus": "migrated after temp-config Hyprland --verify-config proof for chosen numeric raw values; write remains gated through existing backup/write/reread flow",
+      "companionSchemaType": "choice",
+      "companionSchemaDefault": 0,
+      "companionSchemaMin": null,
+      "companionSchemaMax": null,
+      "companionSchemaEnumChoiceValues": [
+        {
+          "id": "0",
+          "label": "next"
+        },
+        {
+          "id": "1",
+          "label": "cursor"
+        },
+        {
+          "id": "2",
+          "label": "mru"
+        }
+      ],
+      "companionSuggestedEditorType": "enum/dropdown",
+      "companionSuggestedValidTestValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "companionSuggestedInvalidTestValues": [
+        "not-a-valid-choice"
+      ],
+      "exactConflictReason": "Current model uses controlKind='slider'; companion schema type 'choice' with editor 'enum/dropdown' and choices ['next', 'cursor', 'mru'].",
+      "whatWouldChangeIfCompanionModelIsAdopted": "Applied: finite dropdown labels are shown in UI while verified numeric raw values are written to config.",
+      "whatWouldBreakIfOurModelIsKept": "Resolved: old slider/number semantics are no longer used for this finite behavior mode.",
+      "recommendedProvisionalAction": "approved-companion-model-applied",
+      "userDecision": "approved-companion-model",
+      "notes": "Conflict resolved in retry sprint. Semantic labels are UI-only unless also part of the verified numeric mapping; production writes store verified raw IDs only.",
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "next",
+        "cursor",
+        "mru"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "rejectedRawValues": [
+        "next",
+        "cursor",
+        "mru"
+      ]
+    },
+    {
+      "rowId": "input.float_switch_override_focus",
+      "officialSetting": "input.float_switch_override_focus",
+      "currentWriteStatus": "writable",
+      "currentControlKind": "dropdown",
+      "currentValueFamily": "finite-choice",
+      "currentValidatorBehavior": "finite-choice validator accepts only Hyprland --verify-config accepted numeric raw IDs and rejects unverified semantic labels/arbitrary slider values",
+      "currentEditorType": "enum/dropdown",
+      "currentTestValues": {
+        "valid": [
+          "0",
+          "1",
+          "2"
+        ],
+        "invalid": [
+          "-1",
+          "99",
+          "Disabled",
+          "Enabled",
+          "Enabled (also unfocuses)",
+          "Enabled also unfocuses",
+          "not-a-valid-choice"
+        ]
+      },
+      "currentWriteProofStatus": "migrated after temp-config Hyprland --verify-config proof for chosen numeric raw values; write remains gated through existing backup/write/reread flow",
+      "companionSchemaType": "choice",
+      "companionSchemaDefault": 1,
+      "companionSchemaMin": null,
+      "companionSchemaMax": null,
+      "companionSchemaEnumChoiceValues": [
+        {
+          "id": "0",
+          "label": "Disabled"
+        },
+        {
+          "id": "1",
+          "label": "Enabled"
+        },
+        {
+          "id": "2",
+          "label": "Enabled (also unfocuses)"
+        }
+      ],
+      "companionSuggestedEditorType": "enum/dropdown",
+      "companionSuggestedValidTestValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "companionSuggestedInvalidTestValues": [
+        "not-a-valid-choice"
+      ],
+      "exactConflictReason": "Current model uses controlKind='slider'; companion schema type 'choice' with editor 'enum/dropdown' and choices ['Disabled', 'Enabled', 'Enabled (also unfocuses)'].",
+      "whatWouldChangeIfCompanionModelIsAdopted": "Applied: finite dropdown labels are shown in UI while verified numeric raw values are written to config.",
+      "whatWouldBreakIfOurModelIsKept": "Resolved: old slider/number semantics are no longer used for this finite behavior mode.",
+      "recommendedProvisionalAction": "approved-companion-model-applied",
+      "userDecision": "approved-companion-model",
+      "notes": "Conflict resolved in retry sprint. Semantic labels are UI-only unless also part of the verified numeric mapping; production writes store verified raw IDs only.",
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "Disabled",
+        "Enabled",
+        "Enabled also unfocuses"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "rejectedRawValues": [
+        "Disabled",
+        "Enabled",
+        "Enabled also unfocuses",
+        "Enabled (also unfocuses)"
+      ]
+    },
+    {
+      "rowId": "input.off_window_axis_events",
+      "officialSetting": "input.off_window_axis_events",
+      "currentWriteStatus": "writable",
+      "currentControlKind": "dropdown",
+      "currentValueFamily": "finite-choice",
+      "currentValidatorBehavior": "finite-choice validator accepts only Hyprland --verify-config accepted numeric raw IDs and rejects unverified semantic labels/arbitrary slider values",
+      "currentEditorType": "enum/dropdown",
+      "currentTestValues": {
+        "valid": [
+          "0",
+          "1",
+          "2",
+          "3"
+        ],
+        "invalid": [
+          "-1",
+          "99",
+          "clamp",
+          "ignore",
+          "not-a-valid-choice",
+          "send",
+          "warp"
+        ]
+      },
+      "currentWriteProofStatus": "migrated after temp-config Hyprland --verify-config proof for chosen numeric raw values; write remains gated through existing backup/write/reread flow",
+      "companionSchemaType": "choice",
+      "companionSchemaDefault": 1,
+      "companionSchemaMin": null,
+      "companionSchemaMax": null,
+      "companionSchemaEnumChoiceValues": [
+        {
+          "id": "0",
+          "label": "ignore"
+        },
+        {
+          "id": "1",
+          "label": "send"
+        },
+        {
+          "id": "2",
+          "label": "clamp"
+        },
+        {
+          "id": "3",
+          "label": "warp"
+        }
+      ],
+      "companionSuggestedEditorType": "enum/dropdown",
+      "companionSuggestedValidTestValues": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "companionSuggestedInvalidTestValues": [
+        "not-a-valid-choice"
+      ],
+      "exactConflictReason": "Current model uses controlKind='slider'; companion schema type 'choice' with editor 'enum/dropdown' and choices ['ignore', 'send', 'clamp', 'warp'].",
+      "whatWouldChangeIfCompanionModelIsAdopted": "Applied: finite dropdown labels are shown in UI while verified numeric raw values are written to config.",
+      "whatWouldBreakIfOurModelIsKept": "Resolved: old slider/number semantics are no longer used for this finite behavior mode.",
+      "recommendedProvisionalAction": "approved-companion-model-applied",
+      "userDecision": "approved-companion-model",
+      "notes": "Conflict resolved in retry sprint. Semantic labels are UI-only unless also part of the verified numeric mapping; production writes store verified raw IDs only.",
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2",
+        "3"
+      ],
+      "chosenDisplayLabels": [
+        "ignore",
+        "send",
+        "clamp",
+        "warp"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "rejectedRawValues": [
+        "ignore",
+        "send",
+        "clamp",
+        "warp"
+      ]
+    },
+    {
+      "rowId": "input.emulate_discrete_scroll",
+      "officialSetting": "input.emulate_discrete_scroll",
+      "currentWriteStatus": "writable",
+      "currentControlKind": "dropdown",
+      "currentValueFamily": "finite-choice",
+      "currentValidatorBehavior": "finite-choice validator accepts only Hyprland --verify-config accepted numeric raw IDs and rejects unverified semantic labels/arbitrary slider values",
+      "currentEditorType": "enum/dropdown",
+      "currentTestValues": {
+        "valid": [
+          "0",
+          "1",
+          "2"
+        ],
+        "invalid": [
+          "-1",
+          "99",
+          "disable",
+          "force_all",
+          "not-a-valid-choice"
+        ]
+      },
+      "currentWriteProofStatus": "migrated after temp-config Hyprland --verify-config proof for chosen numeric raw values; write remains gated through existing backup/write/reread flow",
+      "companionSchemaType": "choice",
+      "companionSchemaDefault": 1,
+      "companionSchemaMin": null,
+      "companionSchemaMax": null,
+      "companionSchemaEnumChoiceValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "non_standard"
+        },
+        {
+          "id": "2",
+          "label": "force_all"
+        }
+      ],
+      "companionSuggestedEditorType": "enum/dropdown",
+      "companionSuggestedValidTestValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "companionSuggestedInvalidTestValues": [
+        "not-a-valid-choice"
+      ],
+      "exactConflictReason": "Current model uses controlKind='slider'; companion schema type 'choice' with editor 'enum/dropdown' and choices ['disable', 'non_standard', 'force_all'].",
+      "whatWouldChangeIfCompanionModelIsAdopted": "Applied: finite dropdown labels are shown in UI while verified numeric raw values are written to config.",
+      "whatWouldBreakIfOurModelIsKept": "Resolved: old slider/number semantics are no longer used for this finite behavior mode.",
+      "recommendedProvisionalAction": "approved-companion-model-applied",
+      "userDecision": "approved-companion-model",
+      "notes": "Conflict resolved in retry sprint. Semantic labels are UI-only unless also part of the verified numeric mapping; production writes store verified raw IDs only.",
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "disable",
+        "non_standard",
+        "force_all"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "rejectedRawValues": [
+        "disable",
+        "force_all"
+      ]
+    },
+    {
+      "rowId": "input.touchpad.drag_lock",
+      "officialSetting": "input.touchpad.drag_lock",
+      "currentWriteStatus": "writable",
+      "currentControlKind": "dropdown",
+      "currentValueFamily": "finite-choice",
+      "currentValidatorBehavior": "finite-choice validator accepts only Hyprland --verify-config accepted numeric raw IDs and rejects unverified semantic labels/arbitrary slider values",
+      "currentEditorType": "enum/dropdown",
+      "currentTestValues": {
+        "valid": [
+          "0",
+          "1",
+          "2"
+        ],
+        "invalid": [
+          "-1",
+          "99",
+          "Disabled",
+          "Enabled with timeout",
+          "Sticky",
+          "not-a-valid-choice"
+        ]
+      },
+      "currentWriteProofStatus": "migrated after temp-config Hyprland --verify-config proof for chosen numeric raw values; write remains gated through existing backup/write/reread flow",
+      "companionSchemaType": "choice",
+      "companionSchemaDefault": 0,
+      "companionSchemaMin": null,
+      "companionSchemaMax": null,
+      "companionSchemaEnumChoiceValues": [
+        {
+          "id": "0",
+          "label": "Disabled"
+        },
+        {
+          "id": "1",
+          "label": "Enabled with timeout"
+        },
+        {
+          "id": "2",
+          "label": "Sticky"
+        }
+      ],
+      "companionSuggestedEditorType": "enum/dropdown",
+      "companionSuggestedValidTestValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "companionSuggestedInvalidTestValues": [
+        "not-a-valid-choice"
+      ],
+      "exactConflictReason": "Current model uses controlKind='slider'; companion schema type 'choice' with editor 'enum/dropdown' and choices ['Disabled', 'Enabled with timeout', 'Sticky'].",
+      "whatWouldChangeIfCompanionModelIsAdopted": "Applied: finite dropdown labels are shown in UI while verified numeric raw values are written to config.",
+      "whatWouldBreakIfOurModelIsKept": "Resolved: old slider/number semantics are no longer used for this finite behavior mode.",
+      "recommendedProvisionalAction": "approved-companion-model-applied",
+      "userDecision": "approved-companion-model",
+      "notes": "Conflict resolved in retry sprint. Semantic labels are UI-only unless also part of the verified numeric mapping; production writes store verified raw IDs only.",
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "Disabled",
+        "Enabled with timeout",
+        "Sticky"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "rejectedRawValues": [
+        "Disabled",
+        "Enabled with timeout",
+        "Sticky"
+      ]
+    },
+    {
+      "rowId": "input.touchpad.drag_3fg",
+      "officialSetting": "input.touchpad.drag_3fg",
+      "currentWriteStatus": "writable",
+      "currentControlKind": "dropdown",
+      "currentValueFamily": "finite-choice",
+      "currentValidatorBehavior": "finite-choice validator accepts only Hyprland --verify-config accepted numeric raw IDs and rejects unverified semantic labels/arbitrary slider values",
+      "currentEditorType": "enum/dropdown",
+      "currentTestValues": {
+        "valid": [
+          "0",
+          "1",
+          "2"
+        ],
+        "invalid": [
+          "-1",
+          "3_finger",
+          "4_finger",
+          "99",
+          "disable",
+          "not-a-valid-choice"
+        ]
+      },
+      "currentWriteProofStatus": "migrated after temp-config Hyprland --verify-config proof for chosen numeric raw values; write remains gated through existing backup/write/reread flow",
+      "companionSchemaType": "choice",
+      "companionSchemaDefault": 0,
+      "companionSchemaMin": null,
+      "companionSchemaMax": null,
+      "companionSchemaEnumChoiceValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "3_finger"
+        },
+        {
+          "id": "2",
+          "label": "4_finger"
+        }
+      ],
+      "companionSuggestedEditorType": "enum/dropdown",
+      "companionSuggestedValidTestValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "companionSuggestedInvalidTestValues": [
+        "not-a-valid-choice"
+      ],
+      "exactConflictReason": "Current model uses controlKind='slider'; companion schema type 'choice' with editor 'enum/dropdown' and choices ['disable', '3_finger', '4_finger'].",
+      "whatWouldChangeIfCompanionModelIsAdopted": "Applied: finite dropdown labels are shown in UI while verified numeric raw values are written to config.",
+      "whatWouldBreakIfOurModelIsKept": "Resolved: old slider/number semantics are no longer used for this finite behavior mode.",
+      "recommendedProvisionalAction": "approved-companion-model-applied",
+      "userDecision": "approved-companion-model",
+      "notes": "Conflict resolved in retry sprint. Semantic labels are UI-only unless also part of the verified numeric mapping; production writes store verified raw IDs only.",
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "disable",
+        "3_finger",
+        "4_finger"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "rejectedRawValues": [
+        "disable",
+        "3_finger",
+        "4_finger"
+      ]
+    },
+    {
+      "rowId": "input.virtualkeyboard.share_states",
+      "officialSetting": "input.virtualkeyboard.share_states",
+      "currentWriteStatus": "writable",
+      "currentControlKind": "dropdown",
+      "currentValueFamily": "finite-choice",
+      "currentValidatorBehavior": "finite-choice validator accepts only Hyprland --verify-config accepted numeric raw IDs and rejects unverified semantic labels/arbitrary slider values",
+      "currentEditorType": "enum/dropdown",
+      "currentTestValues": {
+        "valid": [
+          "0",
+          "1",
+          "2"
+        ],
+        "invalid": [
+          "-1",
+          "99",
+          "disable",
+          "enable",
+          "not-a-valid-choice"
+        ]
+      },
+      "currentWriteProofStatus": "migrated after temp-config Hyprland --verify-config proof for chosen numeric raw values; write remains gated through existing backup/write/reread flow",
+      "companionSchemaType": "choice",
+      "companionSchemaDefault": 2,
+      "companionSchemaMin": null,
+      "companionSchemaMax": null,
+      "companionSchemaEnumChoiceValues": [
+        {
+          "id": "0",
+          "label": "disable"
+        },
+        {
+          "id": "1",
+          "label": "enable"
+        },
+        {
+          "id": "2",
+          "label": "only_non_ime"
+        }
+      ],
+      "companionSuggestedEditorType": "enum/dropdown",
+      "companionSuggestedValidTestValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "companionSuggestedInvalidTestValues": [
+        "not-a-valid-choice"
+      ],
+      "exactConflictReason": "Current model uses controlKind='slider'; companion schema type 'choice' with editor 'enum/dropdown' and choices ['disable', 'enable', 'only_non_ime'].",
+      "whatWouldChangeIfCompanionModelIsAdopted": "Applied: finite dropdown labels are shown in UI while verified numeric raw values are written to config.",
+      "whatWouldBreakIfOurModelIsKept": "Resolved: old slider/number semantics are no longer used for this finite behavior mode.",
+      "recommendedProvisionalAction": "approved-companion-model-applied",
+      "userDecision": "approved-companion-model",
+      "notes": "Conflict resolved in retry sprint. Semantic labels are UI-only unless also part of the verified numeric mapping; production writes store verified raw IDs only.",
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "disable",
+        "enable",
+        "only_non_ime"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "rejectedRawValues": [
+        "disable",
+        "enable"
+      ]
+    },
+    {
+      "rowId": "group.drag_into_group",
+      "officialSetting": "group.drag_into_group",
+      "currentWriteStatus": "writable",
+      "currentControlKind": "dropdown",
+      "currentValueFamily": "finite-choice",
+      "currentValidatorBehavior": "finite-choice validator accepts only Hyprland --verify-config accepted numeric raw IDs and rejects unverified semantic labels/arbitrary slider values",
+      "currentEditorType": "enum/dropdown",
+      "currentTestValues": {
+        "valid": [
+          "0",
+          "1",
+          "2"
+        ],
+        "invalid": [
+          "-1",
+          "99",
+          "disabled",
+          "enabled",
+          "not-a-valid-choice"
+        ]
+      },
+      "currentWriteProofStatus": "migrated after temp-config Hyprland --verify-config proof for chosen numeric raw values; write remains gated through existing backup/write/reread flow",
+      "companionSchemaType": "choice",
+      "companionSchemaDefault": 1,
+      "companionSchemaMin": null,
+      "companionSchemaMax": null,
+      "companionSchemaEnumChoiceValues": [
+        {
+          "id": "0",
+          "label": "disabled"
+        },
+        {
+          "id": "1",
+          "label": "enabled"
+        },
+        {
+          "id": "2",
+          "label": "only when dragging into the groupbar"
+        }
+      ],
+      "companionSuggestedEditorType": "enum/dropdown",
+      "companionSuggestedValidTestValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "companionSuggestedInvalidTestValues": [
+        "not-a-valid-choice"
+      ],
+      "exactConflictReason": "Current model uses controlKind='slider'; companion schema type 'choice' with editor 'enum/dropdown' and choices ['disabled', 'enabled', 'only when dragging into the groupbar'].",
+      "whatWouldChangeIfCompanionModelIsAdopted": "Applied: finite dropdown labels are shown in UI while verified numeric raw values are written to config.",
+      "whatWouldBreakIfOurModelIsKept": "Resolved: old slider/number semantics are no longer used for this finite behavior mode.",
+      "recommendedProvisionalAction": "approved-companion-model-applied",
+      "userDecision": "approved-companion-model",
+      "notes": "Conflict resolved in retry sprint. Semantic labels are UI-only unless also part of the verified numeric mapping; production writes store verified raw IDs only.",
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "disabled",
+        "enabled",
+        "only when dragging into the groupbar"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "rejectedRawValues": [
+        "disabled",
+        "enabled"
+      ]
+    },
+    {
+      "rowId": "dwindle.force_split",
+      "officialSetting": "dwindle.force_split",
+      "currentWriteStatus": "writable",
+      "currentControlKind": "dropdown",
+      "currentValueFamily": "finite-choice",
+      "currentValidatorBehavior": "finite-choice validator accepts only Hyprland --verify-config accepted numeric raw IDs and rejects unverified semantic labels/arbitrary slider values",
+      "currentEditorType": "enum/dropdown",
+      "currentTestValues": {
+        "valid": [
+          "0",
+          "1",
+          "2"
+        ],
+        "invalid": [
+          "-1",
+          "99",
+          "Follow mouse",
+          "Left / Top",
+          "Right / Bottom",
+          "not-a-valid-choice"
+        ]
+      },
+      "currentWriteProofStatus": "migrated after temp-config Hyprland --verify-config proof for chosen numeric raw values; write remains gated through existing backup/write/reread flow",
+      "companionSchemaType": "choice",
+      "companionSchemaDefault": 0,
+      "companionSchemaMin": null,
+      "companionSchemaMax": null,
+      "companionSchemaEnumChoiceValues": [
+        {
+          "id": "0",
+          "label": "Follow mouse"
+        },
+        {
+          "id": "1",
+          "label": "Left / Top"
+        },
+        {
+          "id": "2",
+          "label": "Right / Bottom"
+        }
+      ],
+      "companionSuggestedEditorType": "enum/dropdown",
+      "companionSuggestedValidTestValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "companionSuggestedInvalidTestValues": [
+        "not-a-valid-choice"
+      ],
+      "exactConflictReason": "Current model uses controlKind='slider'; companion schema type 'choice' with editor 'enum/dropdown' and choices ['Follow mouse', 'Left / Top', 'Right / Bottom'].",
+      "whatWouldChangeIfCompanionModelIsAdopted": "Applied: finite dropdown labels are shown in UI while verified numeric raw values are written to config.",
+      "whatWouldBreakIfOurModelIsKept": "Resolved: old slider/number semantics are no longer used for this finite behavior mode.",
+      "recommendedProvisionalAction": "approved-companion-model-applied",
+      "userDecision": "approved-companion-model",
+      "notes": "Conflict resolved in retry sprint. Semantic labels are UI-only unless also part of the verified numeric mapping; production writes store verified raw IDs only.",
+      "chosenRawValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "chosenDisplayLabels": [
+        "Follow mouse",
+        "Left / Top",
+        "Right / Bottom"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "rejectedRawValues": [
+        "Follow mouse",
+        "Left / Top",
+        "Right / Bottom"
+      ]
+    },
+    {
+      "rowId": "dwindle.split_bias",
+      "officialSetting": "dwindle.split_bias",
+      "currentWriteStatus": "writable",
+      "currentControlKind": "dropdown",
+      "currentValueFamily": "finite-choice",
+      "currentValidatorBehavior": "finite-choice validator accepts only Hyprland --verify-config accepted numeric raw IDs and rejects unverified semantic labels/arbitrary slider values",
+      "currentEditorType": "enum/dropdown",
+      "currentTestValues": {
+        "valid": [
+          "0",
+          "1"
+        ],
+        "invalid": [
+          "-1",
+          "99",
+          "current",
+          "directional",
+          "not-a-valid-choice"
+        ]
+      },
+      "currentWriteProofStatus": "migrated after temp-config Hyprland --verify-config proof for chosen numeric raw values; write remains gated through existing backup/write/reread flow",
+      "companionSchemaType": "choice",
+      "companionSchemaDefault": 0,
+      "companionSchemaMin": null,
+      "companionSchemaMax": null,
+      "companionSchemaEnumChoiceValues": [
+        {
+          "id": "0",
+          "label": "directional"
+        },
+        {
+          "id": "1",
+          "label": "current"
+        }
+      ],
+      "companionSuggestedEditorType": "enum/dropdown",
+      "companionSuggestedValidTestValues": [
+        "0",
+        "1"
+      ],
+      "companionSuggestedInvalidTestValues": [
+        "not-a-valid-choice"
+      ],
+      "exactConflictReason": "Current model uses controlKind='slider'; companion schema type 'choice' with editor 'enum/dropdown' and choices ['directional', 'current'].",
+      "whatWouldChangeIfCompanionModelIsAdopted": "Applied: finite dropdown labels are shown in UI while verified numeric raw values are written to config.",
+      "whatWouldBreakIfOurModelIsKept": "Resolved: old slider/number semantics are no longer used for this finite behavior mode.",
+      "recommendedProvisionalAction": "approved-companion-model-applied",
+      "userDecision": "approved-companion-model",
+      "notes": "Conflict resolved in retry sprint. Semantic labels are UI-only unless also part of the verified numeric mapping; production writes store verified raw IDs only.",
+      "chosenRawValues": [
+        "0",
+        "1"
+      ],
+      "chosenDisplayLabels": [
+        "directional",
+        "current"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "rejectedRawValues": [
+        "directional",
+        "current"
+      ]
+    },
+    {
+      "rowId": "scrolling.focus_fit_method",
+      "officialSetting": "scrolling.focus_fit_method",
+      "currentWriteStatus": "writable",
+      "currentControlKind": "dropdown",
+      "currentValueFamily": "finite-choice",
+      "currentValidatorBehavior": "finite-choice validator accepts only Hyprland --verify-config accepted numeric raw IDs and rejects unverified semantic labels/arbitrary slider values",
+      "currentEditorType": "enum/dropdown",
+      "currentTestValues": {
+        "valid": [
+          "0",
+          "1"
+        ],
+        "invalid": [
+          "-1",
+          "99",
+          "Center",
+          "Fit",
+          "center",
+          "fit",
+          "not-a-valid-choice"
+        ]
+      },
+      "currentWriteProofStatus": "migrated after temp-config Hyprland --verify-config proof for chosen numeric raw values; write remains gated through existing backup/write/reread flow",
+      "companionSchemaType": "choice",
+      "companionSchemaDefault": 1,
+      "companionSchemaMin": null,
+      "companionSchemaMax": null,
+      "companionSchemaEnumChoiceValues": [
+        {
+          "id": "0",
+          "label": "Center"
+        },
+        {
+          "id": "1",
+          "label": "Fit"
+        }
+      ],
+      "companionSuggestedEditorType": "enum/dropdown",
+      "companionSuggestedValidTestValues": [
+        "0",
+        "1"
+      ],
+      "companionSuggestedInvalidTestValues": [
+        "not-a-valid-choice"
+      ],
+      "exactConflictReason": "Current model uses controlKind='slider'; companion schema type 'choice' with editor 'enum/dropdown' and choices ['Center', 'Fit'].",
+      "whatWouldChangeIfCompanionModelIsAdopted": "Applied: finite dropdown labels are shown in UI while verified numeric raw values are written to config.",
+      "whatWouldBreakIfOurModelIsKept": "Resolved: old slider/number semantics are no longer used for this finite behavior mode.",
+      "recommendedProvisionalAction": "approved-companion-model-applied",
+      "userDecision": "approved-companion-model",
+      "notes": "Conflict resolved in retry sprint. Semantic labels are UI-only unless also part of the verified numeric mapping; production writes store verified raw IDs only.",
+      "chosenRawValues": [
+        "0",
+        "1"
+      ],
+      "chosenDisplayLabels": [
+        "center",
+        "fit"
+      ],
+      "chosenStorageMode": "numeric-raw-values-with-semantic-labels",
+      "rejectedRawValues": [
+        "center",
+        "fit",
+        "Center",
+        "Fit"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "cursor-visibility-conditional-policy-readiness",
+  "generatedAtUnixSeconds": 1780735907,
+  "subsetName": "cursor-visibility-conditional-touch-tablet-proof-subset",
+  "readinessDecision": "both-rows-ready-for-later-enable-sprint-no-enablements-now",
+  "sourceReports": [
+    "cursor-visibility-conditional-policy-proof.v0.55.2.json",
+    "cursor-visibility-conditional-policy-watchdog-proof.v0.55.2.json",
+    "cursor-visibility-recovery-proof-design.v0.55.2.json"
+  ],
+  "counts": {
+    "rowsReviewed": 2,
+    "readyForLaterEnablementRows": 2,
+    "notReadyRows": 0,
+    "rowsEnabled": 0,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakenedRows": 0,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "requiredForReadiness": [
+    "validator proof passed",
+    "invalid rejection proof passed",
+    "fixture/temp config proof passed",
+    "watchdog arm-before-mutation proof passed",
+    "separate process confirm passed",
+    "timeout restore passed",
+    "wrong-token failure passed",
+    "dry-run real config refusal passed",
+    "recovery-independence proof passed",
+    "UI/review warning requirements defined",
+    "no reload/eval/Lua",
+    "no active runtime mutation"
+  ],
+  "rows": [
+    {
+      "rowId": "cursor.hide_on_touch",
+      "officialSetting": "cursor.hide_on_touch",
+      "currentWriteStatus": "high-risk",
+      "enabled": false,
+      "validatorProofPassed": true,
+      "invalidRejectionProofPassed": true,
+      "fixtureTempConfigProofPassed": true,
+      "watchdogArmBeforeMutationProofPassed": true,
+      "separateProcessConfirmPassed": true,
+      "timeoutRestorePassed": true,
+      "wrongTokenFailurePassed": true,
+      "dryRunRealConfigRefusalPassed": true,
+      "recoveryIndependenceProofPassed": true,
+      "uiReviewWarningRequirementsDefined": true,
+      "reloadEvalLuaUsed": false,
+      "activeRuntimeModified": false,
+      "readyForLaterEnablementSprint": true,
+      "remainingBlocker": "proof-only sprint; row remains blocked until a later explicit enablement sprint"
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "officialSetting": "cursor.hide_on_tablet",
+      "currentWriteStatus": "high-risk",
+      "enabled": false,
+      "validatorProofPassed": true,
+      "invalidRejectionProofPassed": true,
+      "fixtureTempConfigProofPassed": true,
+      "watchdogArmBeforeMutationProofPassed": true,
+      "separateProcessConfirmPassed": true,
+      "timeoutRestorePassed": true,
+      "wrongTokenFailurePassed": true,
+      "dryRunRealConfigRefusalPassed": true,
+      "recoveryIndependenceProofPassed": true,
+      "uiReviewWarningRequirementsDefined": true,
+      "reloadEvalLuaUsed": false,
+      "activeRuntimeModified": false,
+      "readyForLaterEnablementSprint": true,
+      "remainingBlocker": "proof-only sprint; row remains blocked until a later explicit enablement sprint"
+    }
+  ],
+  "notEnabledRows": [
+    {
+      "rowId": "cursor.hide_on_touch",
+      "reason": "Proof-only sprint forbids enablement."
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "reason": "Proof-only sprint forbids enablement."
+    }
+  ],
+  "stillBlockedRows": [
+    {
+      "rowId": "cursor.invisible",
+      "reason": "Immediate/global invisibility risk remains higher than the conditional proof subset."
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "reason": "Timing-sensitive numeric row still needs bound-specific proof."
+    },
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "reason": "Keyboard-triggered hiding still needs CLI-token usability proof."
+    }
+  ],
+  "safety": {
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "anythingPushed": false,
+    "mainTouched": false
+  }
+}

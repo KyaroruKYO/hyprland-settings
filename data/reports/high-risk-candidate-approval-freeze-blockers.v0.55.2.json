@@ -1,0 +1,2187 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "high-risk-candidate-approval-freeze-blockers",
+  "generatedAt": "2026-06-09T01:18:43.386831Z",
+  "startingCommit": "02c5195e46ec675420307806faabf77b4a2f7395",
+  "blockerCategories": {
+    "missingExplicitApprovalForEnablement": [
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded by hard rule because it is the manual crash row and intentional crash behavior cannot be first-batch candidate review.",
+        "nextConcreteAction": "Keep blocked until an explicit crash-safe proof or explicit do-not-enable decision exists."
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      }
+    ],
+    "missingProductionWriteIntegration": [
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded by hard rule because it is the manual crash row and intentional crash behavior cannot be first-batch candidate review.",
+        "nextConcreteAction": "Keep blocked until an explicit crash-safe proof or explicit do-not-enable decision exists."
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      }
+    ],
+    "missingLiveRuntimeProofOrWaiver": [
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded by hard rule because it is the manual crash row and intentional crash behavior cannot be first-batch candidate review.",
+        "nextConcreteAction": "Keep blocked until an explicit crash-safe proof or explicit do-not-enable decision exists."
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      }
+    ],
+    "runtimeDynamicState": [
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded because dry-run gate rejects it without runtime monitor-name allowlist/readback oracle proof; it is explicitly runtime-dynamic.",
+        "nextConcreteAction": "Build runtime monitor-name oracle proof or explicit waiver before candidate review."
+      }
+    ],
+    "excludedFromFirstCandidateBatch": [
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded because dry-run gate rejects it without runtime monitor-name allowlist/readback oracle proof; it is explicitly runtime-dynamic.",
+        "nextConcreteAction": "Build runtime monitor-name oracle proof or explicit waiver before candidate review."
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded by hard rule because it is the manual crash row and intentional crash behavior cannot be first-batch candidate review.",
+        "nextConcreteAction": "Keep blocked until an explicit crash-safe proof or explicit do-not-enable decision exists."
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      }
+    ],
+    "notYetEnablementSprint": [
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row is selected as candidateForReview with frozen production gate requirements; no write enablement occurred",
+        "whatStillBlocksEnablement": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint",
+        "nextConcreteAction": "Review this candidate for explicit high-risk approval before any future enablement sprint."
+      },
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+        "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded because dry-run gate rejects it without runtime monitor-name allowlist/readback oracle proof; it is explicitly runtime-dynamic.",
+        "nextConcreteAction": "Build runtime monitor-name oracle proof or explicit waiver before candidate review."
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+        "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded by hard rule because it is the manual crash row and intentional crash behavior cannot be first-batch candidate review.",
+        "nextConcreteAction": "Keep blocked until an explicit crash-safe proof or explicit do-not-enable decision exists."
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "whatCandidateReviewNowProves": "row was explicitly excluded from the first candidate batch with a recorded category and reason",
+        "whatStillBlocksEnablement": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+        "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+      }
+    ]
+  },
+  "rowsEnabledThisSprint": 0,
+  "rowsStillBlocked": 63,
+  "selectedCandidateRows": [
+    "debug.disable_logs",
+    "debug.disable_time",
+    "debug.enable_stdout_logs",
+    "debug.colored_stdout_logs",
+    "debug.error_position"
+  ],
+  "excludedRowsCount": 58,
+  "nextRecommendedSprint": "High-risk candidate explicit approval review sprint"
+}

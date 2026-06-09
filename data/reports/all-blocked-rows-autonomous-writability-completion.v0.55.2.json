@@ -1,0 +1,2240 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "all-blocked-rows-autonomous-writability-completion",
+  "generatedAt": "2026-06-08T16:05:33-07:00",
+  "startingCommit": "f304481",
+  "inputBlockedRows": 63,
+  "rowsProcessed": 63,
+  "rowsEnabledThisSprint": 0,
+  "rowsStillBlocked": 63,
+  "safeWritableRowsBefore": 278,
+  "safeWritableRowsAfter": 278,
+  "writeAllowlistChanged": false,
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63
+  },
+  "hyprmodUsed": false,
+  "hyprmodPolicyFollowed": true,
+  "officialEvidenceSourcesUsed": [
+    "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+    "/tmp/Hyprland-v0.55.2-full/src/helpers/TransferFunction.cpp",
+    "/tmp/Hyprland-v0.55.2-full/src/Compositor.cpp",
+    "data/reports/all-blocked-rows-official-evidence-matrix.v0.55.2.json",
+    "data/reports/all-blocked-rows-allowed-values-matrix.v0.55.2.json",
+    "data/reports/all-blocked-rows-writability-readiness.v0.55.2.json",
+    "data/reports/all-341-unified-pipeline.v0.55.2.json"
+  ],
+  "rows": [
+    {
+      "rowId": "xwayland.enabled",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "xwayland.create_abstract_socket",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "opengl.nvidia_anti_flicker",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.direct_scanout",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.expand_undersized_textures",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.xp_mode",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.ctm_animation",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.cm_enabled",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.send_content_type",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.cm_auto_hdr",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.new_render_scheduling",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.non_shader_cm",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.cm_sdr_eotf",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "partiallyProvenFromOfficialSource",
+      "invalidValueBehaviorResult": "partiallyProvenFromOfficialSource",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.commit_timing_enabled",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.icc_vcgt_enabled",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.use_shader_blur_blend",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.use_fp16",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.keep_unmodified_copy",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.non_shader_cm_interop",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "render.fp16_sdr_tf",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.invisible",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBackedBounds",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBackedBounds",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBackedBounds",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "notProvenDynamicRuntimeSourceNeeded",
+      "invalidValueBehaviorResult": "notProvenDynamicRuntimeSourceNeeded",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "dynamic monitor-name allowed-values proof without live monitor/input access; row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "dynamic monitor-name allowed-values proof without live monitor/input access",
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBackedBounds",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "bucket": "cursor/input",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; cursor/input safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "cursor/input safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.overlay",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.damage_blink",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.gl_debugging",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.disable_logs",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.disable_time",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.damage_tracking",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.enable_stdout_logs",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.manual_crash",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBackedBounds",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.suppress_errors",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.disable_scale_checks",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.error_limit",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBackedBounds",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.error_position",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.colored_stdout_logs",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.log_damage",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.pass",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.full_cm_proto",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer_fifo",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.fifo_pending_workaround",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.render_solitary_wo_damage",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.vfr",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "debug.invalidate_fp16",
+      "bucket": "debug/crash",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; debug/crash safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "debug/crash safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "experimental.wp_cm_1_2",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "quirks.prefer_hdr",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    },
+    {
+      "rowId": "quirks.skip_non_kms_dmabuf_formats",
+      "bucket": "display/render",
+      "startingStatus": "high-risk",
+      "officialEvidenceResult": "official-source-proven",
+      "allowedValuesResult": "officialSourceBacked",
+      "invalidValueBehaviorResult": "notProvenByNonLiveFixture",
+      "validatorResult": "not-added; production validator proof deferred because row remains blocked and validators cannot be wired without allowlist enablement proof",
+      "fixtureWriteRereadResult": "notProven; no production write/reread fixture added because enablement prerequisites are incomplete",
+      "safetyGateResult": "notProven; existing high-risk pattern requires row-specific live-capable gate/recovery proof before enablement",
+      "uiWarningResult": "notProven; no row-specific advanced UI warning added because row remains blocked",
+      "testsResult": "report/tests added for autonomous review; no enablement tests added for this row because prerequisites remain missing",
+      "writabilityDecision": "keepBlocked",
+      "enabledThisSprint": false,
+      "finalStatus": "blocked-high-risk-proof-incomplete",
+      "exactBlockerIfStillBlocked": "row-specific invalid-value behavior fixture proof; row-specific validator acceptance/rejection tests wired only if enabled; fixture write/reread proof through the production row pipeline; display/render safety gate proof that can survive the row-specific failure mode; advanced/high-risk UI warning proof for this exact row; full row-specific unified-pipeline tests for enablement; explicit future approval for high-risk enablement",
+      "futureResearchNeeded": [
+        "row-specific invalid-value behavior fixture proof",
+        "row-specific validator acceptance/rejection tests wired only if enabled",
+        "fixture write/reread proof through the production row pipeline",
+        "display/render safety gate proof that can survive the row-specific failure mode",
+        "advanced/high-risk UI warning proof for this exact row",
+        "full row-specific unified-pipeline tests for enablement",
+        "explicit future approval for high-risk enablement"
+      ],
+      "filesChangedForRow": [
+        "data/reports/all-blocked-rows-autonomous-writability-completion.v0.55.2.json",
+        "data/reports/all-blocked-rows-autonomous-error-and-future-research-log.v0.55.2.json",
+        "docs/ALL-BLOCKED-ROWS-AUTONOMOUS-WRITABILITY-REVIEW-LOG.md"
+      ],
+      "testsAddedForRow": [
+        "tests/all_blocked_rows_autonomous_writability_completion.rs"
+      ]
+    }
+  ],
+  "summary": {
+    "blockedRowsBefore": 63,
+    "writableRowsBefore": 278,
+    "rowsEnabledThisSprint": 0,
+    "blockedRowsAfter": 63,
+    "writableRowsAfter": 278,
+    "rowsStillBlocked": 63,
+    "rowsCompletedByBucket": {
+      "display/render": 0,
+      "cursor/input": 0,
+      "debug/crash": 0
+    },
+    "rowsStillBlockedByBucket": {
+      "display/render": 23,
+      "cursor/input": 18,
+      "debug/crash": 22
+    },
+    "topBlockerCategories": {
+      "missingInvalidValueBehavior": 63,
+      "missingValidatorProof": 63,
+      "missingFixtureWriteReread": 63,
+      "missingSafetyGate": 63,
+      "missingUiWarning": 63,
+      "missingTests": 63,
+      "requiresLiveRuntimeProof": 63,
+      "requiresUserApproval": 63,
+      "missingAllowedValues": 1,
+      "missingOfficialDocsCitation": 63
+    },
+    "screenShaderTrackStatus": "closed-for-now",
+    "nextRecommendedSprint": "Blocked high-risk rows safety-gate and invalid-value proof design sprint",
+    "safeWritableRowsChanged": false,
+    "writeAllowlistChanged": false
+  },
+  "proofUsed": [
+    "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+    "/tmp/Hyprland-v0.55.2-full/src/helpers/TransferFunction.cpp",
+    "/tmp/Hyprland-v0.55.2-full/src/Compositor.cpp",
+    "src/write_classification.rs",
+    "src/write_flow.rs",
+    "src/write_safety.rs",
+    "src/high_risk_recovery.rs",
+    "src/pending_change.rs",
+    "src/ui/model.rs",
+    "src/ui/window.rs",
+    "data/reports/all-blocked-rows-official-evidence-matrix.v0.55.2.json",
+    "data/reports/all-blocked-rows-allowed-values-matrix.v0.55.2.json",
+    "data/reports/all-blocked-rows-writability-readiness.v0.55.2.json",
+    "data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json"
+  ],
+  "proofStillMissing": [
+    "row-specific invalid-value behavior fixture proof for all 63 blocked rows",
+    "row-specific production validator acceptance/rejection tests for all 63 blocked rows",
+    "fixture write/reread proof for all 63 blocked rows",
+    "row-specific high-risk safety gate and watchdog/recovery proof for all 63 blocked rows",
+    "row-specific advanced/high-risk UI warning proof for all 63 blocked rows",
+    "safe live-runtime equivalent proof is unavailable under this sprint boundary for display/render, cursor/input, and debug/crash rows",
+    "dynamic monitor-name allowed-values proof for cursor.default_monitor",
+    "explicit future user approval for high-risk enablement"
+  ],
+  "nextRecommendedSprint": "Blocked high-risk rows safety-gate and invalid-value proof design sprint"
+}

@@ -1,0 +1,2800 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "source-backed-bool-policy-repair",
+  "generatedAt": "2026-06-07T07:36:49.556814Z",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "booleanRowsReviewed": 130,
+    "validatorChangedRows": 0,
+    "uiTrueFalseOnlyRows": 130,
+    "exactAliasesAcceptedRows": 130,
+    "arbitraryIntegerAliasesAcceptedRows": 0,
+    "prefixAliasesAcceptedRows": 0
+  },
+  "policy": {
+    "sourceBackedExactAliases": [
+      "true",
+      "false",
+      "1",
+      "0",
+      "yes",
+      "no",
+      "on",
+      "off"
+    ],
+    "uiOfferedValues": [
+      "true",
+      "false"
+    ],
+    "validatorChange": "none-current-validator-already-exact-source-backed-aliases",
+    "normalizationPolicy": "future optional typed-input normalization to true/false; app-generated UI values remain true/false",
+    "sourceRefs": {
+      "hyprlandBoolRegistration": {
+        "localPath": "/tmp/Hyprland-v0.55.2-full/src/config/legacy/ConfigManager.cpp",
+        "officialUrl": "https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/legacy/ConfigManager.cpp",
+        "finding": "Hyprland registers CBoolValue as Hyprlang::INT with default 1 or 0."
+      },
+      "hyprlangIntParser": {
+        "localPath": "/tmp/hyprlang-source-research/src/config.cpp",
+        "officialUrl": "https://github.com/hyprwm/hyprlang/blob/main/src/config.cpp",
+        "finding": "Hyprlang CONFIGDATATYPE_INT uses configStringToInt; it accepts 0x hex, rgb/rgba color-style ints, prefixes true/on/yes as 1, prefixes false/off/no as 0, and numeric integers."
+      }
+    }
+  },
+  "rows": [
+    {
+      "rowId": "appearance.dim.modal",
+      "officialSetting": "decoration.dim_modal",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "appearance.dim.inactive",
+      "officialSetting": "decoration.dim_inactive",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "appearance.border_part_of_window",
+      "officialSetting": "decoration.border_part_of_window",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "appearance.blur.enabled",
+      "officialSetting": "decoration.blur.enabled",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "appearance.blur.ignore_opacity",
+      "officialSetting": "decoration.blur.ignore_opacity",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "appearance.blur.new_optimizations",
+      "officialSetting": "decoration.blur.new_optimizations",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "appearance.blur.special",
+      "officialSetting": "decoration.blur.special",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "appearance.blur.popups",
+      "officialSetting": "decoration.blur.popups",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "appearance.blur.input_methods",
+      "officialSetting": "decoration.blur.input_methods",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "appearance.blur.xray",
+      "officialSetting": "decoration.blur.xray",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "appearance.shadow.enabled",
+      "officialSetting": "decoration.shadow.enabled",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "appearance.shadow.sharp",
+      "officialSetting": "decoration.shadow.sharp",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "animations.enabled",
+      "officialSetting": "animations.enabled",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "animations.workspace_wraparound",
+      "officialSetting": "animations.workspace_wraparound",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "appearance.glow.enabled",
+      "officialSetting": "decoration.glow.enabled",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.groupbar.enabled",
+      "officialSetting": "group.groupbar.enabled",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.groupbar.gradients",
+      "officialSetting": "group.groupbar.gradients",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.groupbar.stacked",
+      "officialSetting": "group.groupbar.stacked",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.groupbar.render_titles",
+      "officialSetting": "group.groupbar.render_titles",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.groupbar.scrolling",
+      "officialSetting": "group.groupbar.scrolling",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.groupbar.middle_click_close",
+      "officialSetting": "group.groupbar.middle_click_close",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.groupbar.round_only_edges",
+      "officialSetting": "group.groupbar.round_only_edges",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.groupbar.gradient_round_only_edges",
+      "officialSetting": "group.groupbar.gradient_round_only_edges",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.groupbar.keep_upper_gap",
+      "officialSetting": "group.groupbar.keep_upper_gap",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.groupbar.blur",
+      "officialSetting": "group.groupbar.blur",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.disable_hyprland_logo",
+      "officialSetting": "misc.disable_hyprland_logo",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.disable_splash_rendering",
+      "officialSetting": "misc.disable_splash_rendering",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.name_vk_after_proc",
+      "officialSetting": "misc.name_vk_after_proc",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.always_follow_on_dnd",
+      "officialSetting": "misc.always_follow_on_dnd",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.layers_hog_keyboard_focus",
+      "officialSetting": "misc.layers_hog_keyboard_focus",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.animate_manual_resizes",
+      "officialSetting": "misc.animate_manual_resizes",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.animate_mouse_windowdragging",
+      "officialSetting": "misc.animate_mouse_windowdragging",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.enable_swallow",
+      "officialSetting": "misc.enable_swallow",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.mouse_move_focuses_monitor",
+      "officialSetting": "misc.mouse_move_focuses_monitor",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.close_special_on_empty",
+      "officialSetting": "misc.close_special_on_empty",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.middle_click_paste",
+      "officialSetting": "misc.middle_click_paste",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.disable_xdg_env_checks",
+      "officialSetting": "misc.disable_xdg_env_checks",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.disable_hyprland_guiutils_check",
+      "officialSetting": "misc.disable_hyprland_guiutils_check",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.disable_watchdog_warning",
+      "officialSetting": "misc.disable_watchdog_warning",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.enable_anr_dialog",
+      "officialSetting": "misc.enable_anr_dialog",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.screencopy_force_8b",
+      "officialSetting": "misc.screencopy_force_8b",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.disable_scale_notification",
+      "officialSetting": "misc.disable_scale_notification",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.size_limits_tiled",
+      "officialSetting": "misc.size_limits_tiled",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.mouse_move_enables_dpms",
+      "officialSetting": "misc.mouse_move_enables_dpms",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.key_press_enables_dpms",
+      "officialSetting": "misc.key_press_enables_dpms",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.disable_autoreload",
+      "officialSetting": "misc.disable_autoreload",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.focus_on_activate",
+      "officialSetting": "misc.focus_on_activate",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.allow_session_lock_restore",
+      "officialSetting": "misc.allow_session_lock_restore",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.session_lock_xray",
+      "officialSetting": "misc.session_lock_xray",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "misc.exit_window_retains_fullscreen",
+      "officialSetting": "misc.exit_window_retains_fullscreen",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "windows.snap.enabled",
+      "officialSetting": "general.snap.enabled",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "general.allow_tearing",
+      "officialSetting": "general.allow_tearing",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "general.no_focus_fallback",
+      "officialSetting": "general.no_focus_fallback",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "general.resize_on_border",
+      "officialSetting": "general.resize_on_border",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "general.hover_icon_on_border",
+      "officialSetting": "general.hover_icon_on_border",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "general.snap.border_overlap",
+      "officialSetting": "general.snap.border_overlap",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "general.snap.respect_gaps",
+      "officialSetting": "general.snap.respect_gaps",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "general.modal_parent_blocking",
+      "officialSetting": "general.modal_parent_blocking",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.numlock_by_default",
+      "officialSetting": "input.numlock_by_default",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.resolve_binds_by_sym",
+      "officialSetting": "input.resolve_binds_by_sym",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.force_no_accel",
+      "officialSetting": "input.force_no_accel",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.left_handed",
+      "officialSetting": "input.left_handed",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.scroll_button_lock",
+      "officialSetting": "input.scroll_button_lock",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.natural_scroll",
+      "officialSetting": "input.natural_scroll",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.mouse_refocus",
+      "officialSetting": "input.mouse_refocus",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.special_fallthrough",
+      "officialSetting": "input.special_fallthrough",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.touchpad.disable_while_typing",
+      "officialSetting": "input.touchpad.disable_while_typing",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.touchpad.natural_scroll",
+      "officialSetting": "input.touchpad.natural_scroll",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.touchpad.middle_button_emulation",
+      "officialSetting": "input.touchpad.middle_button_emulation",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.touchpad.clickfinger_behavior",
+      "officialSetting": "input.touchpad.clickfinger_behavior",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.touchpad.tap-to-click",
+      "officialSetting": "input.touchpad.tap-to-click",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.touchpad.tap-and-drag",
+      "officialSetting": "input.touchpad.tap-and-drag",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.touchpad.flip_x",
+      "officialSetting": "input.touchpad.flip_x",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.touchpad.flip_y",
+      "officialSetting": "input.touchpad.flip_y",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.touchdevice.enabled",
+      "officialSetting": "input.touchdevice.enabled",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.virtualkeyboard.release_pressed_on_close",
+      "officialSetting": "input.virtualkeyboard.release_pressed_on_close",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.tablet.absolute_region_position",
+      "officialSetting": "input.tablet.absolute_region_position",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.tablet.relative_input",
+      "officialSetting": "input.tablet.relative_input",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "input.tablet.left_handed",
+      "officialSetting": "input.tablet.left_handed",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_touch",
+      "officialSetting": "gestures.workspace_swipe_touch",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_invert",
+      "officialSetting": "gestures.workspace_swipe_invert",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_touch_invert",
+      "officialSetting": "gestures.workspace_swipe_touch_invert",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_create_new",
+      "officialSetting": "gestures.workspace_swipe_create_new",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_direction_lock",
+      "officialSetting": "gestures.workspace_swipe_direction_lock",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_forever",
+      "officialSetting": "gestures.workspace_swipe_forever",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "gestures.workspace_swipe_use_r",
+      "officialSetting": "gestures.workspace_swipe_use_r",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "gestures.scrolling.move_snap_to_grid",
+      "officialSetting": "gestures.scrolling.move_snap_to_grid",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "gestures.scrolling.move_snap_cursor",
+      "officialSetting": "gestures.scrolling.move_snap_cursor",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.insert_after_current",
+      "officialSetting": "group.insert_after_current",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.focus_removed_window",
+      "officialSetting": "group.focus_removed_window",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.merge_groups_on_drag",
+      "officialSetting": "group.merge_groups_on_drag",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.merge_groups_on_groupbar",
+      "officialSetting": "group.merge_groups_on_groupbar",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.auto_group",
+      "officialSetting": "group.auto_group",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.merge_floated_into_tiled_on_groupbar",
+      "officialSetting": "group.merge_floated_into_tiled_on_groupbar",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "group.group_on_movetoworkspace",
+      "officialSetting": "group.group_on_movetoworkspace",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "binds.pass_mouse_when_bound",
+      "officialSetting": "binds.pass_mouse_when_bound",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "binds.workspace_back_and_forth",
+      "officialSetting": "binds.workspace_back_and_forth",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "binds.hide_special_on_workspace_change",
+      "officialSetting": "binds.hide_special_on_workspace_change",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "binds.allow_workspace_cycles",
+      "officialSetting": "binds.allow_workspace_cycles",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "binds.ignore_group_lock",
+      "officialSetting": "binds.ignore_group_lock",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "binds.movefocus_cycles_groupfirst",
+      "officialSetting": "binds.movefocus_cycles_groupfirst",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "binds.movefocus_cycles_fullscreen",
+      "officialSetting": "binds.movefocus_cycles_fullscreen",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "binds.disable_keybind_grabbing",
+      "officialSetting": "binds.disable_keybind_grabbing",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "binds.window_direction_monitor_fallback",
+      "officialSetting": "binds.window_direction_monitor_fallback",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "binds.allow_pin_fullscreen",
+      "officialSetting": "binds.allow_pin_fullscreen",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "dwindle.preserve_split",
+      "officialSetting": "dwindle.preserve_split",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "dwindle.smart_split",
+      "officialSetting": "dwindle.smart_split",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "dwindle.smart_resizing",
+      "officialSetting": "dwindle.smart_resizing",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "dwindle.permanent_direction_override",
+      "officialSetting": "dwindle.permanent_direction_override",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "dwindle.use_active_for_splits",
+      "officialSetting": "dwindle.use_active_for_splits",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "dwindle.precise_mouse_move",
+      "officialSetting": "dwindle.precise_mouse_move",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "master.allow_small_split",
+      "officialSetting": "master.allow_small_split",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "master.new_on_top",
+      "officialSetting": "master.new_on_top",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "master.center_ignores_reserved",
+      "officialSetting": "master.center_ignores_reserved",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "master.smart_resizing",
+      "officialSetting": "master.smart_resizing",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "master.drop_at_cursor",
+      "officialSetting": "master.drop_at_cursor",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "master.always_keep_position",
+      "officialSetting": "master.always_keep_position",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "scrolling.follow_focus",
+      "officialSetting": "scrolling.follow_focus",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "scrolling.wrap_focus",
+      "officialSetting": "scrolling.wrap_focus",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "scrolling.wrap_swapcol",
+      "officialSetting": "scrolling.wrap_swapcol",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "scrolling.fullscreen_on_one_column",
+      "officialSetting": "scrolling.fullscreen_on_one_column",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "ecosystem.no_update_news",
+      "officialSetting": "ecosystem.no_update_news",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "ecosystem.no_donation_nag",
+      "officialSetting": "ecosystem.no_donation_nag",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "ecosystem.enforce_permissions",
+      "officialSetting": "ecosystem.enforce_permissions",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "xwayland.use_nearest_neighbor",
+      "officialSetting": "xwayland.use_nearest_neighbor",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "xwayland.force_zero_scaling",
+      "officialSetting": "xwayland.force_zero_scaling",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "cursor.sync_gsettings_theme",
+      "officialSetting": "cursor.sync_gsettings_theme",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "cursor.hide_on_touch",
+      "officialSetting": "cursor.hide_on_touch",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "officialSetting": "cursor.hide_on_tablet",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    },
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "officialSetting": "cursor.hide_on_key_press",
+      "validatorChanged": false,
+      "acceptedAliases": [
+        "true",
+        "false",
+        "1",
+        "0",
+        "yes",
+        "no",
+        "on",
+        "off"
+      ],
+      "uiOfferedValues": [
+        "true",
+        "false"
+      ],
+      "sourceEvidenceStatus": "source-backed-for-current-exact-aliases",
+      "repairDecision": "no-validator-change-needed"
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "pushed": false,
+    "mainTouched": false,
+    "validatorsChanged": false,
+    "productionBehaviorChanged": false
+  }
+}

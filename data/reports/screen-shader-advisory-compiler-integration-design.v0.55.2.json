@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "screen-shader-advisory-compiler-integration-design",
+  "generatedAt": "2026-06-08T01:00:39-07:00",
+  "rowId": "decoration.screen_shader",
+  "officialSetting": "decoration.screen_shader",
+  "startingCommit": "865849f",
+  "selectedIntegrationDesignOption": "Option A",
+  "decisionSummary": "Optional advisory compiler integration is designable as an advanced, explicit-user-action feature, but implementation must wait for a dedicated implementation sprint. The design copies a user-selected shader into a temp fixture, copies the source-backed Hyprland vertex shader into the same temp directory, runs glslangValidator only against temp files, and reports non-authoritative advisory results that cannot approve, block, or bypass production write safety decisions.",
+  "currentWritableStatus": "writable",
+  "productionGateEnforced": true,
+  "productionGateChanged": false,
+  "watchdogMigrationProofStatus": "complete",
+  "advisoryCompilerFeasibilityStatus": "complete",
+  "chosenAdvisoryTool": "glslangValidator",
+  "compileAwareValidationCurrentStatus": "deferred",
+  "compileAwareValidationChanged": false,
+  "compileAwareValidationImplemented": false,
+  "productionCompileAwareValidationImplemented": false,
+  "advisoryCompilerIntegrationImplemented": false,
+  "advisoryCompilerImplementationProofReport": "data/reports/screen-shader-advisory-compiler-implementation-proof.v0.55.2.json",
+  "advisoryHelperImplemented": true,
+  "advisoryHelperModule": "src/screen_shader_advisory.rs",
+  "compilerChecksWiredIntoValidators": false,
+  "compilerChecksWiredIntoPendingChanges": false,
+  "compilerChecksWiredIntoWritePlanning": false,
+  "compilerChecksWiredIntoApplyFlow": false,
+  "shaderCompilationThroughHyprlandRun": false,
+  "standaloneCompilerCommandsRunThisSprint": false,
+  "liveShaderCompileUsed": false,
+  "liveDisplayRuntimeProofUsed": false,
+  "realConfigTouched": false,
+  "runtimeTouched": false,
+  "reloadEvalLuaUsed": false,
+  "realUserShaderFilesReadInTests": false,
+  "realUserShaderFilesReadByDesign": "only-after-explicit-user-action-and-only-for-the-user-selected-shader-file-in-a-future-implementation",
+  "userConsentRequiredBeforeShaderRead": true,
+  "backgroundShaderScanningAllowed": false,
+  "originalUserPathPassedToCompiler": false,
+  "tempCopyRequired": true,
+  "writesOutsideTempDirAllowed": false,
+  "cleanupPolicyDefined": {
+    "defined": true,
+    "policy": "Best-effort cleanup of the temp fixture directory after the advisory command completes. Cleanup failure is logged as an advisory cleanup warning and must not approve, block, or bypass any write."
+  },
+  "missingToolPolicy": {
+    "policy": "advisory-unavailable-non-blocking",
+    "effect": "If glslangValidator is missing, show that the optional advisory check is unavailable. Do not block writes, do not approve writes, and do not bypass the production screen-shader watchdog gate."
+  },
+  "timeoutPolicy": {
+    "policy": "advisory-inconclusive-non-blocking",
+    "effect": "If the command times out, show an inconclusive advisory result. Do not block writes, do not approve writes, and do not bypass the production screen-shader watchdog gate."
+  },
+  "advisoryFailurePolicy": {
+    "policy": "warning-only-not-write-blocking",
+    "effect": "If glslangValidator rejects the temp fixture shader, display an advisory warning and compiler output. Do not automatically block writes or change validators."
+  },
+  "advisorySuccessPolicy": {
+    "policy": "advisory-pass-not-runtime-safety-proof",
+    "effect": "If glslangValidator accepts the temp fixture shader, display an advisory pass. Do not claim Hyprland runtime safety and do not bypass the production screen-shader watchdog gate."
+  },
+  "hyprlandRuntimeSafetyClaimed": false,
+  "requiredPreflight": false,
+  "writeBlocking": false,
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0,
+  "readableRows": 341,
+  "writableRows": 278,
+  "blockedRows": 63,
+  "sourceBackedVertexPairingRule": {
+    "source": "/tmp/Hyprland-v0.55.2-full/src/render/OpenGL.cpp",
+    "function": "CHyprOpenGLImpl::applyScreenShader",
+    "rule": "Use tex320.vert only when the temp-copied fragment begins with #version 320 es; otherwise use tex300.vert.",
+    "vertexSources": [
+      "/tmp/Hyprland-v0.55.2-full/src/render/shaders/glsl/tex300.vert",
+      "/tmp/Hyprland-v0.55.2-full/src/render/shaders/glsl/tex320.vert"
+    ],
+    "matchesHyprlandV0552Source": true
+  },
+  "glslcChosen": false,
+  "glslcRejectionReason": "The previous feasibility proof checked glslc and did not choose it because the tested SPIR-V-oriented invocation rejected Hyprland-shaped OpenGL GLSL ES fixtures for requirements that are not Hyprland's OpenGL runtime compile path.",
+  "unifiedPipelineRepresentation": {
+    "metadataOnly": true,
+    "rowLinkField": "advisoryCompilerIntegrationDesignSource",
+    "status": "design-only-advisory-integration-not-implemented",
+    "currentWriteStatus": "writable",
+    "productionGateStatus": "production-screen-shader-gate-enforced-compile-aware-validation-deferred",
+    "doesNotChangeWriteDecision": true
+  },
+  "futureAdvisoryFlowDesign": {
+    "userVisiblePurpose": "Optional advanced advisory check. It may catch syntax/link-shape issues before the user chooses to proceed, but it is not Hyprland runtime safety proof.",
+    "userConsentBoundary": "The app must only read or copy a shader file after a direct user action such as selecting an advisory check command for that exact file.",
+    "backgroundScanningAllowed": false,
+    "readConfigPathAutomatically": false,
+    "tempCopySteps": [
+      "Create a private temp directory.",
+      "Copy the explicit user-selected fragment shader into that temp directory.",
+      "Inspect only the temp-copied fragment prefix for #version 320 es.",
+      "Copy tex320.vert or tex300.vert from the bundled/source-backed Hyprland fixture into the same temp directory.",
+      "Run glslangValidator -l against the temp vertex and temp fragment paths.",
+      "Capture stdout, stderr, exit status, and timeout status as advisory result data.",
+      "Best-effort cleanup the temp directory and log cleanup failures as advisory warnings."
+    ],
+    "compilerCommandShape": "glslangValidator -l <temp vertex> <temp fragment>",
+    "originalUserPathPolicy": "The original user path is used only as the source for the explicit copy step after consent. It is not passed to glslangValidator.",
+    "resultCannotBypassProductionGate": true,
+    "resultCannotApproveWrite": true,
+    "resultCannotBlockWrite": true,
+    "resultCannotBecomeRequiredPreflight": true
+  },
+  "recommendedValidationPolicy": {
+    "policy": "optional-advanced-advisory-only",
+    "requiredPreflight": false,
+    "productionValidator": false,
+    "writePlanningIntegration": false,
+    "pendingChangeIntegration": false,
+    "validatorIntegration": false,
+    "applyFlowIntegration": false,
+    "summary": "A future implementation may expose an optional advanced advisory check, but the check must not control write safety decisions and must not claim Hyprland runtime safety."
+  },
+  "compatibilityGaps": [
+    "glslangValidator is not Hyprland's live OpenGL driver, context, extension set, or linker implementation.",
+    "The advisory command can approximate Hyprland's vertex/fragment pairing but cannot prove behavior inside Hyprland's actual CShader::createProgram runtime path.",
+    "The advisory command does not prove uniform availability, sampler binding behavior, output behavior, GPU-specific compiler behavior, damage tracking requirements, or visual safety.",
+    "No official Hyprland non-live screen-shader validation interface was found.",
+    "The implementation proof sprint added a non-production helper for explicit-consent temp-copy handling, cleanup handling, and timeout handling, but UI rendering of advisory output is not proven."
+  ],
+  "proofUsed": [
+    "Existing production gate approval report proves decoration.screen_shader remains writable with production gate enforcement intact.",
+    "Existing advisory compiler feasibility report proves glslangValidator fixture/temp command shape accepted good ES 300/320 fixtures and rejected invalid fixtures.",
+    "Official Hyprland OpenGL source inspection proves the vertex-pairing rule and runtime OpenGL compile/link path.",
+    "Report and test design records that advisory output is non-authoritative and cannot change validators, pending changes, write planning, apply flow, SAFE_WRITABLE_ROWS, write allowlist, or row enablement."
+  ],
+  "proofStillMissing": [
+    "A non-production UI action model proof exists, but no full GTK file chooser/widget implementation exists for explicit user consent and advisory output rendering.",
+    "No production compile-aware validator implementation exists.",
+    "No proof exists that glslangValidator output is equivalent to Hyprland's OpenGL runtime compile/link behavior.",
+    "No official Hyprland non-live validation interface was found."
+  ],
+  "nextRecommendedSprint": "Screen shader optional advisory GTK file chooser visual proof sprint: implement direct GTK file chooser interaction only if it can be tested with generated fixture/temp files, never read real user shader files in tests, keep compiler arguments temp-only, and keep advisory output disconnected from write safety."
+}

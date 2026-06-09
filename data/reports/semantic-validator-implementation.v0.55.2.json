@@ -1,0 +1,144 @@
+{
+  "artifactKind": "semantic-validator-implementation",
+  "schemaVersion": "0.55.2",
+  "generatedAt": "2026-06-05T12:15:52-0700",
+  "sourceReports": [
+    "data/reports/unified-remaining-90-pipeline-design.v0.55.2.json",
+    "data/reports/remaining-90-official-source-evidence.v0.55.2.json",
+    "/tmp/hyprland-official-v0.55.2",
+    "/tmp/hyprland-wiki-official"
+  ],
+  "counts": {
+    "rows": 2,
+    "validatorsImplemented": 2,
+    "rowsEnabled": 2,
+    "validValuesPassedVerifyConfig": 7,
+    "invalidValuesRejectedByApp": 15,
+    "invalidValuesAcceptedByVerifyConfig": 10,
+    "finalWritableRows": 253,
+    "finalBlockedRows": 88
+  },
+  "safety": {
+    "activeConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadUsed": false,
+    "evalUsed": false,
+    "luaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "master.center_master_fallback",
+      "officialSetting": "master.center_master_fallback",
+      "implementedValidator": "enum:left|right|top|bottom",
+      "validatorAuthority": "official-source-authoritative",
+      "editorKind": "dropdown",
+      "acceptedValues": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "rejectedValues": [
+        "",
+        "center",
+        "Left",
+        "1",
+        "example"
+      ],
+      "officialEvidence": [
+        "official Hyprland wiki content/Configuring/Layouts/Master-Layout.md: center_master_fallback can be left/right/top/bottom",
+        "official Hyprland source src/config/values/ConfigValues.cpp: MS<String>(\"master:center_master_fallback\", default \"left\", REFRESH_LAYOUTS)",
+        "official Hyprland source src/layout/algorithm/tiled/master/MasterAlgorithm.cpp: branches on left/right/top and falls through otherwise"
+      ],
+      "hyprlandVerifyConfigRole": "parser-only",
+      "validValuesPassedVerifyConfig": [
+        "left",
+        "right",
+        "top",
+        "bottom"
+      ],
+      "invalidValuesAcceptedByVerifyConfig": [
+        "center",
+        "example",
+        "1",
+        "Left",
+        ""
+      ],
+      "invalidValuesRejectedByAppBeforeVerifyConfig": [
+        "",
+        "center",
+        "Left",
+        "1",
+        "example"
+      ],
+      "fixtureWriteRereadTested": true,
+      "uiProjectionTested": true,
+      "safeWriteSupported": true,
+      "enabled": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "notes": "Finite semantic validator implemented from official wiki/source; Hyprland parser accepts arbitrary strings, so app validator is authoritative."
+    },
+    {
+      "rowId": "scrolling.explicit_column_widths",
+      "officialSetting": "scrolling.explicit_column_widths",
+      "implementedValidator": "comma-separated-finite-float-list",
+      "validatorAuthority": "app-validator-authoritative",
+      "editorKind": "comma-float-list-text",
+      "acceptedValues": [
+        "1.0",
+        "0.333, 0.5, 0.667, 1.0",
+        "0.25,0.75"
+      ],
+      "rejectedValues": [
+        "",
+        "example",
+        "0.5,",
+        "0.5,,1.0",
+        "NaN",
+        "inf",
+        "-inf",
+        "0.5, bad",
+        "0.5 0.75",
+        "0.5\n1.0"
+      ],
+      "officialEvidence": [
+        "official Hyprland wiki content/Configuring/Layouts/Scrolling-Layout.md: explicit_column_widths is comma-separated preconfigured widths",
+        "official Hyprland source src/config/values/ConfigValues.cpp: MS<String>(\"scrolling:explicit_column_widths\", default \"0.333, 0.5, 0.667, 1.0\")",
+        "official Hyprland source src/layout/algorithm/tiled/scrolling/ScrollingAlgorithm.cpp: parses comma-separated tokens with std::stof and clamps valid floats"
+      ],
+      "hyprlandVerifyConfigRole": "parser-only",
+      "validValuesPassedVerifyConfig": [
+        "1.0",
+        "0.333, 0.5, 0.667, 1.0",
+        "0.25,0.75"
+      ],
+      "invalidValuesAcceptedByVerifyConfig": [
+        "example",
+        "0.5, bad",
+        "NaN",
+        "0.5,",
+        ""
+      ],
+      "invalidValuesRejectedByAppBeforeVerifyConfig": [
+        "",
+        "example",
+        "0.5,",
+        "0.5,,1.0",
+        "NaN",
+        "inf",
+        "-inf",
+        "0.5, bad",
+        "0.5 0.75",
+        "0.5\n1.0"
+      ],
+      "fixtureWriteRereadTested": true,
+      "uiProjectionTested": true,
+      "safeWriteSupported": true,
+      "enabled": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "notes": "Comma-separated finite-float validator implemented conservatively; Hyprland parser accepts arbitrary strings, so app validator is authoritative."
+    }
+  ]
+}

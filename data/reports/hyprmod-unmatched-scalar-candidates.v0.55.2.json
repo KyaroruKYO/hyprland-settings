@@ -1,0 +1,61 @@
+{
+  "artifactKind": "hyprmod-unmatched-scalar-candidates",
+  "schemaVersion": 1,
+  "hyprlandVersion": "0.55.2",
+  "hyprmodArchive": "/home/kyo/Downloads/hyprmod-main.zip",
+  "counts": {
+    "rows": 3,
+    "mayBeMissingFromOurScalarInventory": 3,
+    "mayCorrespondToStructuredNonScalarSetting": 0
+  },
+  "rows": [
+    {
+      "hyprmodKey": "decoration:shadow:ignore_window",
+      "type": null,
+      "editorType": null,
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "enumValues": [],
+      "sourceBackedValues": [],
+      "sourcePath": "hyprmod/data/schema/options.json/groups/1/sections/2/options/3",
+      "reasonNoMatchFound": "no normalized official-setting key in our 341 scalar inventory matched this HyprMod key",
+      "mayCorrespondToStructuredNonScalarSetting": false,
+      "mayBeMissingFromOurScalarInventory": true,
+      "notes": "Review manually before adding; do not add automatically from HyprMod evidence."
+    },
+    {
+      "hyprmodKey": "dwindle:pseudotile",
+      "type": null,
+      "editorType": null,
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "enumValues": [],
+      "sourceBackedValues": [],
+      "sourcePath": "hyprmod/data/schema/options.json/groups/6/sections/0/options/1",
+      "reasonNoMatchFound": "no normalized official-setting key in our 341 scalar inventory matched this HyprMod key",
+      "mayCorrespondToStructuredNonScalarSetting": false,
+      "mayBeMissingFromOurScalarInventory": true,
+      "notes": "Review manually before adding; do not add automatically from HyprMod evidence."
+    },
+    {
+      "hyprmodKey": "misc:vfr",
+      "type": null,
+      "editorType": null,
+      "default": null,
+      "min": null,
+      "max": null,
+      "step": null,
+      "enumValues": [],
+      "sourceBackedValues": [],
+      "sourcePath": "hyprmod/data/schema/options.json/groups/11/sections/0/options/1",
+      "reasonNoMatchFound": "no normalized official-setting key in our 341 scalar inventory matched this HyprMod key",
+      "mayCorrespondToStructuredNonScalarSetting": false,
+      "mayBeMissingFromOurScalarInventory": true,
+      "notes": "Review manually before adding; do not add automatically from HyprMod evidence."
+    }
+  ]
+}

@@ -1,0 +1,574 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "hyprmod-cursor-input-risk-deltas",
+  "generatedAtUnixSeconds": 1780731638,
+  "sourceReports": [
+    "hyprmod-cursor-input-risk-comparison.v0.55.2.json"
+  ],
+  "counts": {
+    "rowsCompared": 21,
+    "betterThanHyprmodRows": 21,
+    "equalToHyprmodRows": 21,
+    "worseThanHyprmodRows": 0,
+    "hyprmodUsefulMetadataRows": 21,
+    "hyprmodConflictingMetadataRows": 0,
+    "hyprmodNoMatchRows": 0,
+    "needsOfficialSourceResearchRows": 0,
+    "rowsEnabled": 0,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false
+  },
+  "rows": [
+    {
+      "rowId": "cursor.invisible",
+      "officialSetting": "cursor.invisible",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "officialSetting": "cursor.no_hardware_cursors",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "officialSetting": "cursor.no_break_fs_vrr",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "officialSetting": "cursor.min_refresh_rate",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "officialSetting": "cursor.hotspot_padding",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "officialSetting": "cursor.inactive_timeout",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "officialSetting": "cursor.no_warps",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "officialSetting": "cursor.persistent_warps",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "officialSetting": "cursor.warp_on_change_workspace",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "officialSetting": "cursor.warp_on_toggle_special",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "officialSetting": "cursor.default_monitor",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "officialSetting": "cursor.zoom_factor",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "officialSetting": "cursor.zoom_rigid",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "officialSetting": "cursor.zoom_disable_aa",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "officialSetting": "cursor.zoom_detached_camera",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "officialSetting": "cursor.enable_hyprcursor",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "officialSetting": "cursor.hide_on_key_press",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.hide_on_touch",
+      "officialSetting": "cursor.hide_on_touch",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "officialSetting": "cursor.hide_on_tablet",
+      "hyprmodMatchStatus": "hyprmod-overlay-and-schema-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "officialSetting": "cursor.use_cpu_buffer",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "officialSetting": "cursor.warp_back_after_non_mouse_input",
+      "hyprmodMatchStatus": "hyprmod-schema-only-match",
+      "comparisonStatuses": [
+        "equal-to-hyprmod",
+        "hyprmod-has-useful-metadata",
+        "better-than-hyprmod"
+      ],
+      "primaryComparisonStatus": "better-than-hyprmod",
+      "comparisonReasons": [
+        "Value type/editor metadata matches current app model at the validator/control level.",
+        "HyprMod contributes labels/descriptions/defaults/bounds/choices that may improve display metadata or test evidence.",
+        "Our model has explicit high-risk classification and requires independent watchdog/recovery proof; HyprMod appears to expose schema controls without cursor-input dead-man recovery."
+      ],
+      "validatorTypeComparison": "equal",
+      "metadataDelta": "hyprmod-useful-display-or-test-metadata",
+      "editorTypeComparison": "equal-or-compatible",
+      "advancedWarningPolicyComparison": "our-model-better: high-risk block and watchdog proof required; HyprMod warning/advanced treatment not found",
+      "recoveryPolicyComparison": "our-model-better: independent watchdog/dead-man recovery required; HyprMod cursor config recovery not found",
+      "riskClassificationComparison": "our-model-better-for-safety; HyprMod exposure does not prove normal safety",
+      "recommendedAction": "keep-blocked; optionally adopt metadata labels/descriptions/bounds/choices where useful"
+    }
+  ],
+  "summary": {
+    "rowsWhereHyprmodHasUsefulMetadata": [
+      "cursor.default_monitor",
+      "cursor.enable_hyprcursor",
+      "cursor.hide_on_key_press",
+      "cursor.hide_on_tablet",
+      "cursor.hide_on_touch",
+      "cursor.hotspot_padding",
+      "cursor.inactive_timeout",
+      "cursor.invisible",
+      "cursor.min_refresh_rate",
+      "cursor.no_break_fs_vrr",
+      "cursor.no_hardware_cursors",
+      "cursor.no_warps",
+      "cursor.persistent_warps",
+      "cursor.use_cpu_buffer",
+      "cursor.warp_back_after_non_mouse_input",
+      "cursor.warp_on_change_workspace",
+      "cursor.warp_on_toggle_special",
+      "cursor.zoom_detached_camera",
+      "cursor.zoom_disable_aa",
+      "cursor.zoom_factor",
+      "cursor.zoom_rigid"
+    ],
+    "rowsWhereHyprmodConflictsWithOurModel": [],
+    "rowsWhereOurModelIsBetter": [
+      "cursor.default_monitor",
+      "cursor.enable_hyprcursor",
+      "cursor.hide_on_key_press",
+      "cursor.hide_on_tablet",
+      "cursor.hide_on_touch",
+      "cursor.hotspot_padding",
+      "cursor.inactive_timeout",
+      "cursor.invisible",
+      "cursor.min_refresh_rate",
+      "cursor.no_break_fs_vrr",
+      "cursor.no_hardware_cursors",
+      "cursor.no_warps",
+      "cursor.persistent_warps",
+      "cursor.use_cpu_buffer",
+      "cursor.warp_back_after_non_mouse_input",
+      "cursor.warp_on_change_workspace",
+      "cursor.warp_on_toggle_special",
+      "cursor.zoom_detached_camera",
+      "cursor.zoom_disable_aa",
+      "cursor.zoom_factor",
+      "cursor.zoom_rigid"
+    ],
+    "rowsWhereOurModelIsWeaker": [],
+    "interpretation": "HyprMod is useful for metadata on exposed/schema-backed controls, but it does not provide cursor-input-specific recovery evidence. Our blocked risk model remains stronger for safety."
+  },
+  "safety": {
+    "rowsEnabled": 0,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "anythingPushed": false,
+    "mainTouched": false
+  }
+}

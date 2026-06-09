@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "screen-shader-next-step-plan",
+  "generatedAt": "2026-06-07T02:00:17-07:00",
+  "counts": {
+    "recommendedNextSprints": 1,
+    "rowsEnabledThisSprint": 0,
+    "writeAllowlistChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "liveShaderCompileUsed": false,
+    "safeWritableRowsChanged": false,
+    "productionBehaviorChanged": false,
+    "liveDisplayRuntimeProofUsed": false,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "selectedMigrationOptionCount": 1,
+    "gateMetadataRepresentedThisSprint": true,
+    "watchdogProofCompletedThisSprint": true
+  },
+  "stoppingPoint": "Stop after fixture/temp-only screen shader watchdog migration proof. Do not continue into production gate enforcement, compile-aware validation, live shader compile, or runtime mutation in this sprint.",
+  "recommendedNextSprint": {
+    "type": "screen shader production gate enforcement decision",
+    "rowId": "decoration.screen_shader",
+    "objective": "Decide whether to migrate production writes into the proven display/render watchdog gate, keep temporary writable migration-candidate status, or propose block/removal with explicit user approval.",
+    "mustNotDo": [
+      "do not run live shader compile",
+      "do not reload Hyprland",
+      "do not mutate real config",
+      "do not use active render state",
+      "do not enable rows",
+      "do not add compile-aware validation unless separately approved"
+    ]
+  },
+  "laterOptionalSprint": {
+    "type": "compile-aware validation design",
+    "precondition": "Only after display/render watchdog migration proof is completed or an explicit block/removal proposal is approved.",
+    "allowedDirection": "standalone/temp shader fixture validation only if a non-live compiler path is proven safe"
+  },
+  "selectedMigrationOption": "Option A",
+  "watchdogMigrationProofReport": "data/reports/screen-shader-watchdog-migration-proof.v0.55.2.json"
+}

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-scroll-points-validator-repair",
+  "generatedAt": "2026-06-07T01:41:40-07:00",
+  "counts": {
+    "rowsRepaired": 1,
+    "validatorChangedRows": 1,
+    "metadataUpdatedRows": 1,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "input.scroll_points",
+      "officialSetting": "input.scroll_points",
+      "acceptedForms": ["<positive finite step> <finite point...>"],
+      "rejectedForms": ["empty", "step-only", "zero or negative step", "comma-separated values", "NaN/inf", "invalid tokens", "unsafe config text"],
+      "sourceBacked": true,
+      "conservativePolicy": "requires at least one point after step",
+      "contextMetadata": "only meaningful when input.accel_profile uses a custom profile",
+      "editorHint": "custom-accel-scroll-points"
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false
+  }
+}

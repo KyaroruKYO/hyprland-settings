@@ -1,0 +1,22 @@
+{
+  "artifactKind": "manual-review-write-candidates",
+  "schemaVersion": 1,
+  "hyprlandVersion": "0.55.2",
+  "sourceCoverageReport": "data/reports/scalar-read-write-coverage.v0.55.2.json",
+  "counts": {
+    "rows": 0,
+    "byBatch": {},
+    "byRecommendedAction": {}
+  },
+  "invariants": {
+    "noRowsEnabledByThisReport": false,
+    "sourceWriteStatus": "manual-review-needed",
+    "parserNeededRowsRemainingInCoverage": 0,
+    "validatorNeededRowsRemainingInCoverage": 0,
+    "writableRowsRemain": 275,
+    "notes": "Session/runtime-sensitive rows were promoted through the dedicated session/runtime write pipeline; no manual-review rows remain.",
+    "blockedWriteRowsRemain": 66,
+    "manualReviewRows": 0
+  },
+  "items": []
+}

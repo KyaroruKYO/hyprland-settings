@@ -1,0 +1,114 @@
+{
+  "artifactKind": "batch-d-remaining-input-proof",
+  "schemaVersion": "0.55.2",
+  "generatedAt": "2026-06-05T01:40:00-07:00",
+  "sourceReports": [
+    "data/reports/scalar-read-write-coverage.v0.55.2.json",
+    "data/reports/manual-review-write-candidates.v0.55.2.json",
+    "data/reports/remaining-105-missing-proof-classification.v0.55.2.json"
+  ],
+  "counts": {
+    "rows": 3,
+    "rowsEnabled": 3,
+    "rowsStillBlocked": 0,
+    "hyprlandVerifyConfigAttempted": 11,
+    "hyprlandVerifyConfigPassed": 11,
+    "activeConfigModified": false,
+    "activeRuntimeModified": false
+  },
+  "rows": [
+    {
+      "rowId": "input.scroll_method",
+      "officialSetting": "input.scroll_method",
+      "status": "enabled",
+      "valueKind": "finite-choice",
+      "officialEvidence": "Official Hyprland Variables documentation describes input:scroll_method values as 2fg, edge, on_button_down, and no_scroll.",
+      "candidateValues": [
+        "2fg",
+        "edge",
+        "on_button_down",
+        "no_scroll"
+      ],
+      "invalidProbeValues": [
+        "__invalid_scroll__"
+      ],
+      "hyprlandVerifyConfigPassedValues": [
+        "2fg",
+        "edge",
+        "on_button_down",
+        "no_scroll"
+      ],
+      "hyprlandVerifyConfigAlsoAcceptedInvalidProbe": true,
+      "appValidatorRequired": true,
+      "appValidatorRejectsInvalidProbe": true,
+      "parserRoundtripPassed": true,
+      "writerRoundtripPassed": true,
+      "singleMutationVerified": true,
+      "uiProjection": "dropdown",
+      "safeToEnable": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "notes": "Hyprland's config parser is permissive for this string setting, so production safety depends on the strict app finite-choice validator rather than invalid rejection by verify-config."
+    },
+    {
+      "rowId": "input.touchdevice.output",
+      "officialSetting": "input.touchdevice.output",
+      "status": "enabled",
+      "valueKind": "monitor-name",
+      "officialEvidence": "Official Hyprland Variables documentation describes input:touchdevice:output as the monitor to bind touch devices.",
+      "candidateValues": [
+        "",
+        "DP-1"
+      ],
+      "invalidProbeValues": [
+        "__invalid_monitor__"
+      ],
+      "hyprlandVerifyConfigPassedValues": [
+        "",
+        "DP-1"
+      ],
+      "hyprlandVerifyConfigAlsoAcceptedInvalidProbe": true,
+      "appValidatorRequired": true,
+      "missingProof": [],
+      "safeToEnable": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "notes": "Enabled through current-config monitor-name enumeration. Empty/default and configured monitor names are valid; unknown monitor names are rejected by the app before write planning.",
+      "appValidatorRejectsInvalidProbe": true,
+      "parserRoundtripPassed": true,
+      "writerRoundtripPassed": true,
+      "singleMutationVerified": true,
+      "uiProjection": "dropdown"
+    },
+    {
+      "rowId": "input.tablet.output",
+      "officialSetting": "input.tablet.output",
+      "status": "enabled",
+      "valueKind": "monitor-name",
+      "officialEvidence": "Official Hyprland Variables documentation describes input:tablet:output as the monitor to bind tablets.",
+      "candidateValues": [
+        "",
+        "DP-1"
+      ],
+      "invalidProbeValues": [
+        "__invalid_monitor__"
+      ],
+      "hyprlandVerifyConfigPassedValues": [
+        "",
+        "DP-1"
+      ],
+      "hyprlandVerifyConfigAlsoAcceptedInvalidProbe": true,
+      "appValidatorRequired": true,
+      "missingProof": [],
+      "safeToEnable": true,
+      "activeConfigModified": false,
+      "activeRuntimeModified": false,
+      "notes": "Enabled through current-config monitor-name enumeration. Empty/default and configured monitor names are valid; unknown monitor names are rejected by the app before write planning.",
+      "appValidatorRejectsInvalidProbe": true,
+      "parserRoundtripPassed": true,
+      "writerRoundtripPassed": true,
+      "singleMutationVerified": true,
+      "uiProjection": "dropdown"
+    }
+  ]
+}

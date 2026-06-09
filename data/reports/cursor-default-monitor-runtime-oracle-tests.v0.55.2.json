@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "cursor-default-monitor-runtime-oracle-tests",
+  "generatedAt": "2026-06-09T02:59:15.613975Z",
+  "startingCommit": "3243fd31d51916b6390a2c4708ddedca10ddfe7c",
+  "tests": [
+    {
+      "testName": "fixture_monitor_oracle_accepts_current_monitor_names",
+      "proofTarget": "valid monitor names are accepted from current snapshot",
+      "result": "passed",
+      "whatItProves": "candidate names present in the current fixture snapshot validate",
+      "whatItDoesNotProve": "live monitor mutation safety"
+    },
+    {
+      "testName": "fixture_monitor_oracle_rejects_missing_stale_and_unsafe_monitor_names",
+      "proofTarget": "missing, stale, and unsafe monitor names reject",
+      "result": "passed",
+      "whatItProves": "empty, unknown, command-like, and path-like names do not pass oracle validation",
+      "whatItDoesNotProve": "live monitor enumeration availability"
+    },
+    {
+      "testName": "hyprctl_monitors_fixture_parser_extracts_monitor_names_without_live_query",
+      "proofTarget": "hyprctl monitors fixture parser",
+      "result": "passed",
+      "whatItProves": "monitor names can be parsed from fixture hyprctl monitors output",
+      "whatItDoesNotProve": "current user monitor names"
+    },
+    {
+      "testName": "stale_monitor_names_reject_after_snapshot_refresh",
+      "proofTarget": "stale-name refresh behavior",
+      "result": "passed",
+      "whatItProves": "a previously valid name is rejected after a current snapshot no longer contains it",
+      "whatItDoesNotProve": "live hotplug timing"
+    },
+    {
+      "testName": "production_gate_requires_monitor_name_oracle_proof",
+      "proofTarget": "high-risk gate oracle requirement",
+      "result": "passed",
+      "whatItProves": "cursor.default_monitor ProductionWrite rejects without oracle proof and accepts with complete proof",
+      "whatItDoesNotProve": "live runtime mutation safety"
+    },
+    {
+      "testName": "valid_oracle_and_gate_proof_accepts_temp_fixture_write",
+      "proofTarget": "temp fixture write through gated production path",
+      "result": "passed",
+      "whatItProves": "valid oracle proof plus high-risk gate proof can write and reread a temp config only",
+      "whatItDoesNotProve": "real config mutation or live Hyprland reload behavior"
+    }
+  ]
+}

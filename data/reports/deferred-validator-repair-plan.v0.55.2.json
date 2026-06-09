@@ -1,0 +1,331 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-validator-repair-plan",
+  "generatedAt": "2026-06-07T00:49:01-07:00",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "deferredRows": 12,
+    "readyForValidatorRepairRows": 7,
+    "readyForUiEditorMetadataRepairRows": 10,
+    "shouldRemainConservativeRows": 4,
+    "shouldRemainDeferredRows": 4,
+    "shouldBecomeHighRiskRows": 1,
+    "needsTempParserVerificationRows": 5,
+    "needsConsumerUnitTestsRows": 7,
+    "officialSourceStillMissingRows": 0,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "safety": {
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "recoveryGatesChanged": false,
+    "pushed": false,
+    "mainTouched": false
+  },
+  "groups": [
+    {
+      "group": "ready-for-validator-repair",
+      "rows": [
+        "appearance.gaps_in",
+        "appearance.gaps_out",
+        "input.accel_profile",
+        "input.scroll_points",
+        "misc.swallow_regex",
+        "misc.swallow_exception_regex",
+        "decoration.screen_shader"
+      ],
+      "evidence": "Official consumers were located for every row in this group.",
+      "futureAction": "Apply only source-backed grammar repairs after adding focused tests and, for screen_shader, after high-risk policy review.",
+      "validatorWouldChange": true,
+      "uiEditorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "group": "ready-for-ui-editor-metadata-repair",
+      "rows": [
+        "appearance.gaps_in",
+        "appearance.gaps_out",
+        "general.locale",
+        "input.accel_profile",
+        "input.scroll_points",
+        "input.kb_file",
+        "group.groupbar.font_family",
+        "misc.font_family",
+        "misc.splash_font_family",
+        "decoration.screen_shader"
+      ],
+      "evidence": "Official consumer behavior supports better labels, fallback notes, context hints, or editor affordances.",
+      "futureAction": "Update report/UI metadata without changing write allowlist or recovery gates.",
+      "validatorWouldChange": false,
+      "uiEditorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "group": "should-remain-conservative",
+      "rows": [
+        "general.locale",
+        "input.kb_file",
+        "group.groupbar.font_family",
+        "misc.splash_font_family"
+      ],
+      "evidence": "Consumers accept strings or paths and fall back/log on failure; writer-side existence or installation checks would exceed current source-backed policy.",
+      "futureAction": "Keep line-safe/path-safe validators and add explanatory metadata.",
+      "validatorWouldChange": false,
+      "uiEditorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "group": "should-remain-deferred",
+      "rows": [
+        "input.kb_file",
+        "misc.swallow_regex",
+        "misc.swallow_exception_regex",
+        "decoration.screen_shader"
+      ],
+      "evidence": "Additional policy or implementation decisions are needed: context-relative file probing, RE2 compatibility, or display/render shader compile risk.",
+      "futureAction": "Do not repair until the next sprint selects explicit validation policy and test strategy.",
+      "validatorWouldChange": false,
+      "uiEditorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "group": "should-become-high-risk-review-candidate",
+      "rows": [
+        "decoration.screen_shader"
+      ],
+      "evidence": "Official source reads and compiles a final screen shader from the configured path.",
+      "futureAction": "Run a display/render high-risk review before adding compile-aware validation or treating it as a normal path row.",
+      "validatorWouldChange": false,
+      "uiEditorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "group": "needs-temp-parser-verification",
+      "rows": [
+        "appearance.gaps_in",
+        "appearance.gaps_out",
+        "input.accel_profile",
+        "input.scroll_points",
+        "decoration.screen_shader"
+      ],
+      "evidence": "Consumer source is known, but future repair should record parser acceptance/rejection for representative source-backed forms.",
+      "futureAction": "Use temp config files only; do not mutate real config or runtime.",
+      "validatorWouldChange": false,
+      "uiEditorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "group": "needs-consumer-unit-tests",
+      "rows": [
+        "appearance.gaps_in",
+        "appearance.gaps_out",
+        "input.accel_profile",
+        "input.scroll_points",
+        "misc.swallow_regex",
+        "misc.swallow_exception_regex",
+        "decoration.screen_shader"
+      ],
+      "evidence": "Future validator behavior should be pinned to consumer grammar rather than parser acceptance alone.",
+      "futureAction": "Add focused Rust validator tests and report consistency tests in the repair sprint.",
+      "validatorWouldChange": true,
+      "uiEditorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "group": "official-source-still-missing",
+      "rows": [],
+      "evidence": "All deferred rows had official source files located in the local Hyprland v0.55.2 source tree.",
+      "futureAction": "No missing-source blocker remains for this deferred set.",
+      "validatorWouldChange": false,
+      "uiEditorWouldChange": false,
+      "reportsTestsWouldChange": false,
+      "highRiskRecoveryGatesAffected": false
+    }
+  ],
+  "rows": [
+    {
+      "rowId": "appearance.gaps_in",
+      "officialSetting": "general.gaps_in",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/shared/complex/ComplexDataTypes.hpp",
+        "/tmp/Hyprland-v0.55.2-full/src/layout/LayoutManager.cpp"
+      ],
+      "consumerBehaviorFound": "CssGap one-to-four integer components consumed by layout.",
+      "recommendedValidatorPolicy": "Full CssGap integer grammar in future repair.",
+      "recommendedUiEditorPolicy": "Structured gap editor.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "appearance.gaps_out",
+      "officialSetting": "general.gaps_out",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/shared/complex/ComplexDataTypes.hpp",
+        "/tmp/Hyprland-v0.55.2-full/src/layout/LayoutManager.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/layout/space/Space.cpp"
+      ],
+      "consumerBehaviorFound": "CssGap one-to-four integer components consumed by layout reserved areas.",
+      "recommendedValidatorPolicy": "Full CssGap integer grammar with conservative negative-value policy decision.",
+      "recommendedUiEditorPolicy": "Structured edge gap editor.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "general.locale",
+      "officialSetting": "general.locale",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/i18n/Engine.cpp"
+      ],
+      "consumerBehaviorFound": "Empty value falls back to system locale; non-empty string is passed to localization.",
+      "recommendedValidatorPolicy": "Keep line-safe string.",
+      "recommendedUiEditorPolicy": "Add empty-means-system-locale help text.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "input.accel_profile",
+      "officialSetting": "input.accel_profile",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/managers/input/InputManager.cpp"
+      ],
+      "consumerBehaviorFound": "Default/adaptive/flat/custom profile branches.",
+      "recommendedValidatorPolicy": "Finite choices plus custom double list grammar.",
+      "recommendedUiEditorPolicy": "Choice control with advanced custom editor.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "input.scroll_points",
+      "officialSetting": "input.scroll_points",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/managers/input/InputManager.cpp"
+      ],
+      "consumerBehaviorFound": "Space-separated double step and points used only with custom accel profile.",
+      "recommendedValidatorPolicy": "Finite double list with first step token.",
+      "recommendedUiEditorPolicy": "Contextual custom-scroll point editor.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "input.kb_file",
+      "officialSetting": "input.kb_file",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/devices/IKeyboard.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/helpers/MiscFunctions.cpp"
+      ],
+      "consumerBehaviorFound": "Config-relative optional XKB keymap file path.",
+      "recommendedValidatorPolicy": "Keep path-like line-safe validation; defer existence checks.",
+      "recommendedUiEditorPolicy": "Optional config-relative path picker.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "group.groupbar.font_family",
+      "officialSetting": "group.groupbar.font_family",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/render/decorations/CHyprGroupBarDecoration.cpp"
+      ],
+      "consumerBehaviorFound": "Font family string with [[EMPTY]] fallback.",
+      "recommendedValidatorPolicy": "Keep line-safe font-family string.",
+      "recommendedUiEditorPolicy": "Document fallback and allow spaces.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "misc.font_family",
+      "officialSetting": "misc.font_family",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/errorOverlay/Overlay.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/debug/Overlay.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/notification/NotificationOverlay.cpp"
+      ],
+      "consumerBehaviorFound": "Freeform Pango/Cairo font-family string.",
+      "recommendedValidatorPolicy": "Keep line-safe font-family string.",
+      "recommendedUiEditorPolicy": "Allow spaces and avoid installed-font enforcement.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "misc.splash_font_family",
+      "officialSetting": "misc.splash_font_family",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/render/Renderer.cpp"
+      ],
+      "consumerBehaviorFound": "Font family string with [[EMPTY]] fallback.",
+      "recommendedValidatorPolicy": "Keep line-safe font-family string.",
+      "recommendedUiEditorPolicy": "Document fallback and allow spaces.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "misc.swallow_regex",
+      "officialSetting": "misc.swallow_regex",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/desktop/view/Window.cpp"
+      ],
+      "consumerBehaviorFound": "RE2 full-match class regex.",
+      "recommendedValidatorPolicy": "Add RE2 syntax validation if feasible.",
+      "recommendedUiEditorPolicy": "RE2 full-match class regex field.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "misc.swallow_exception_regex",
+      "officialSetting": "misc.swallow_exception_regex",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/desktop/view/Window.cpp"
+      ],
+      "consumerBehaviorFound": "RE2 full-match title exception regex.",
+      "recommendedValidatorPolicy": "Add RE2 syntax validation if feasible.",
+      "recommendedUiEditorPolicy": "RE2 full-match title regex field.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "decoration.screen_shader",
+      "officialSetting": "decoration.screen_shader",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/render/OpenGL.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/helpers/MiscFunctions.cpp"
+      ],
+      "consumerBehaviorFound": "Config-relative shader file path loaded and compiled as final screen fragment shader.",
+      "recommendedValidatorPolicy": "Defer repair pending display/render high-risk review.",
+      "recommendedUiEditorPolicy": "Path picker with render-risk warning.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false,
+      "shouldBecomeHighRisk": true
+    }
+  ]
+}

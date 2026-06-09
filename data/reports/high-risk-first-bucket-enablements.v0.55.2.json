@@ -1,0 +1,29 @@
+{
+  "artifactKind": "high-risk-first-bucket-enablements",
+  "schemaVersion": 1,
+  "counts": {
+    "attemptedRows": 3,
+    "enabledRows": 3,
+    "notEnabledRows": 0,
+    "finalWritableRows": 272,
+    "finalBlockedRows": 69,
+    "highRiskRowsStillBlocked": 69,
+    "displayRenderRowsEnabled": 0,
+    "cursorInputRowsEnabled": 0,
+    "debugCrashRowsEnabled": 0
+  },
+  "enabledRows": [
+    "ecosystem.enforce_permissions",
+    "ecosystem.no_donation_nag",
+    "ecosystem.no_update_news"
+  ],
+  "notEnabledRows": [],
+  "invariants": {
+    "onlyEcosystemPermissionRowsEnabled": true,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false
+  }
+}

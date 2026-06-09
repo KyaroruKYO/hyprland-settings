@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-scroll-points-consumer-research",
+  "generatedAt": "2026-06-07T00:49:01-07:00",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "rowsResearched": 1,
+    "spaceSeparatedDoubleRows": 1,
+    "contextDependentRows": 1,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "safety": {
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "recoveryGatesChanged": false
+  },
+  "rows": [
+    {
+      "rowId": "input.scroll_points",
+      "officialSetting": "input.scroll_points",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/managers/input/InputManager.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "When accel_profile is custom and scroll_points is non-empty, the consumer splits on spaces, parses the first token as a double step, parses following tokens as double points, and logs invalid parsing.",
+      "recommendedValidatorPolicy": "Future validator should reject non-finite doubles, comma-delimited forms, and empty first-step forms; decide whether to require at least one point beyond the step.",
+      "recommendedUiEditorPolicy": "Only surface with custom acceleration profile context; label first value as step and remaining values as points.",
+      "validatorWouldChange": true,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+use anyhow::Result;
+use hyprland_settings::write_classification::{
+    high_risk_write_policy, is_safe_writable_setting, SAFE_WRITABLE_ROWS,
+};
+use serde_json::Value;
+use std::collections::{BTreeMap, BTreeSet};
+
+fn read_json(path: &str) -> Result<Value> {
+    Ok(serde_json::from_str(&std::fs::read_to_string(path)?)?)
+}
+
+#[test]
+fn cursor_hide_on_key_press_enablement_enables_only_target_row() -> Result<()> {
+    let enablements = read_json("data/reports/cursor-hide-on-key-press-enablements.v0.55.2.json")?;
+    let proof = read_json("data/reports/cursor-hide-on-key-press-enable-proof.v0.55.2.json")?;
+    let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
+    let pipeline = read_json("data/reports/all-341-unified-pipeline.v0.55.2.json")?;
+
+    assert_eq!(enablements["counts"]["attemptedRows"], 1);
+    assert_eq!(enablements["counts"]["enabledRows"], 1);
+    assert_eq!(enablements["counts"]["notEnabledRows"], 0);
+    assert_eq!(proof["counts"]["rows"], 1);
+    assert_eq!(proof["counts"]["rowsEnabled"], 1);
+    assert_eq!(proof["counts"]["readyForEnablementRows"], 1);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
+    assert_eq!(pipeline["counts"]["totalRows"], 341);
+    assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
+
+    let enabled_ids = enablements["rows"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|row| row["rowId"].as_str().unwrap())
+        .collect::<BTreeSet<_>>();
+    assert_eq!(enabled_ids, BTreeSet::from(["cursor.hide_on_key_press"]));
+    assert!(is_safe_writable_setting("cursor.hide_on_key_press"));
+
+    let coverage_by_id = coverage["rows"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|row| (row["rowId"].as_str().unwrap(), row))
+        .collect::<BTreeMap<_, _>>();
+    let row = coverage_by_id["cursor.hide_on_key_press"];
+    assert_eq!(row["writeStatus"].as_str(), Some("writable"));
+    assert_eq!(row["safeWriteSupported"].as_bool(), Some(true));
+    assert_eq!(row["validatorSupported"].as_bool(), Some(true));
+
+    let policy = high_risk_write_policy("cursor.hide_on_key_press").expect("policy should exist");
+    assert_eq!(
+        policy.recovery_bucket,
+        "cursor-input-recovery:cursor-hide-on-key-press-keyboard-token-subset"
+    );
+    assert!(policy.approval_gate.contains("dead-man"));
+    assert!(policy
+        .watchdog_requirement
+        .contains("plan must be persisted"));
+    assert!(policy
+        .watchdog_requirement
+        .contains("backup must exist before mutation"));
+    assert!(policy
+        .watchdog_requirement
+        .contains("timeout restores the backup"));
+    assert!(policy.watchdog_requirement.contains("wrong token fails"));
+    assert!(policy.watchdog_requirement.contains("CLI token text input"));
+    assert!(policy.watchdog_requirement.contains("visible cursor"));
+    assert!(policy.watchdog_requirement.contains("mouse input"));
+    assert!(policy.watchdog_requirement.contains("Hyprland keybinds"));
+    assert!(policy.watchdog_requirement.contains("pointer focus"));
+    assert!(policy.watchdog_requirement.contains("workspace focus"));
+    assert!(policy
+        .review_warning
+        .contains("Cursor may disappear while typing"));
+    assert!(policy.review_warning.contains("CLI token confirmation"));
+
+    Ok(())
+}
+
+#[test]
+fn cursor_hide_on_key_press_enablement_keeps_other_high_risk_rows_blocked() -> Result<()> {
+    let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
+    let enablements = read_json("data/reports/cursor-hide-on-key-press-enablements.v0.55.2.json")?;
+    let coverage_by_id = coverage["rows"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|row| (row["rowId"].as_str().unwrap(), row))
+        .collect::<BTreeMap<_, _>>();
+
+    for row_id in [
+        "cursor.invisible",
+        "cursor.inactive_timeout",
+        "cursor.no_hardware_cursors",
+        "cursor.no_break_fs_vrr",
+        "cursor.min_refresh_rate",
+        "cursor.hotspot_padding",
+        "cursor.no_warps",
+        "cursor.persistent_warps",
+        "cursor.warp_on_change_workspace",
+        "cursor.warp_on_toggle_special",
+        "cursor.default_monitor",
+        "cursor.zoom_factor",
+        "cursor.zoom_rigid",
+        "cursor.zoom_disable_aa",
+        "cursor.zoom_detached_camera",
+    ] {
+        let row = coverage_by_id[row_id];
+        assert_eq!(row["writeStatus"].as_str(), Some("writable"), "{row_id}");
+        assert_eq!(row["safeWriteSupported"].as_bool(), Some(true), "{row_id}");
+        assert!(is_safe_writable_setting(row_id), "{row_id}");
+    }
+
+    assert_eq!(enablements["counts"]["cursorInputRowsStillBlocked"], 18);
+    assert_eq!(enablements["counts"]["displayRenderRowsStillBlocked"], 23);
+    assert_eq!(enablements["counts"]["debugCrashRowsStillBlocked"], 22);
+
+    Ok(())
+}
+
+#[test]
+fn cursor_hide_on_key_press_enablement_preserves_safety_flags() -> Result<()> {
+    let enablements = read_json("data/reports/cursor-hide-on-key-press-enablements.v0.55.2.json")?;
+    let proof = read_json("data/reports/cursor-hide-on-key-press-enable-proof.v0.55.2.json")?;
+
+    for report in [&enablements, &proof] {
+        assert_eq!(report["counts"]["recoveryGateWeakenedRows"], 0);
+        assert_eq!(report["counts"]["realConfigModified"], false);
+        assert_eq!(report["counts"]["activeRuntimeModified"], false);
+        assert_eq!(report["counts"]["reloadEvalLuaUsed"], false);
+        assert_eq!(report["counts"]["finalWritableRows"], 278);
+        assert_eq!(report["counts"]["finalBlockedRows"], 63);
+    }
+
+    let row = &proof["rows"].as_array().unwrap()[0];
+    assert_eq!(row["validatorProofExistsAndPassed"], true);
+    assert_eq!(row["invalidRejectionProofExistsAndPassed"], true);
+    assert_eq!(row["fixtureTempConfigProofExistsAndPassed"], true);
+    assert_eq!(row["watchdogArmBeforeMutationProofExistsAndPassed"], true);
+    assert_eq!(row["backupBeforeMutationProofExistsAndPassed"], true);
+    assert_eq!(row["separateProcessConfirmProofExistsAndPassed"], true);
+    assert_eq!(row["timeoutRestoreProofExistsAndPassed"], true);
+    assert_eq!(row["wrongTokenFailureProofExistsAndPassed"], true);
+    assert_eq!(row["dryRunRealConfigRefusalProofExistsAndPassed"], true);
+    assert_eq!(row["keyboardTokenUsabilityProofExistsAndPassed"], true);
+    assert_eq!(row["recoveryIndependenceProofExistsAndPassed"], true);
+    assert_eq!(row["recoveryGateWeakened"], false);
+
+    Ok(())
+}

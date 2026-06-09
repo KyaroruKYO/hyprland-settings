@@ -1,0 +1,42 @@
+{
+  "artifactKind": "display-render-live-mode-gate-proof",
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-05T21:08:09.855469+00:00",
+  "counts": {
+    "liveExecutionEnabled": false,
+    "liveExecutionRefused": true,
+    "realConfigPathRefused": true,
+    "missingBackupBlocksReadiness": true,
+    "missingConfirmationTokenBlocksReadiness": true,
+    "missingIndependentWatchdogBlocksReadiness": true,
+    "missingOutOfBandInstructionsBlocksReadiness": true,
+    "visibleUiOnlyConfirmationRejected": true,
+    "hyprlandKeybindOnlyConfirmationRejected": true,
+    "mouseOnlyConfirmationRejected": true,
+    "tempFixturePathCanPassBoundaryRepresentation": true,
+    "rowsEnabled": 2,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "xwaylandScalingWatchdogProofPassed": true
+  },
+  "liveBoundaryFields": {
+    "liveExecutionEnabledDefaultFalse": true,
+    "advancedOptInRequired": true,
+    "restoreCommandBeforeApplyRequired": true,
+    "persistedPlanBeforeMutationRequired": true,
+    "backupBeforeMutationRequired": true,
+    "independentWatchdogRequired": true,
+    "confirmationTokenBeforeMutationRequired": true,
+    "shortVisibleTimeoutRequired": true,
+    "noAppUiDependency": true,
+    "noVisibleDisplayDependency": true,
+    "noMouseInputDependency": true,
+    "noHyprlandKeybindDependency": true,
+    "resultLogRequired": true,
+    "restoreRereadVerificationRequired": true,
+    "reloadAndRuntimeMutationDisabled": true
+  },
+  "proofStatus": "passed-inert-boundary-tests-fixture-only",
+  "canExecuteLiveConfigNow": false,
+  "remainingBlocker": "live config execution remains disabled and no bucket-specific live apply policy has been approved"
+}

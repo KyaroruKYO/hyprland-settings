@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "deferred-string-path-font-consumer-research",
+  "generatedAt": "2026-06-07T00:49:01-07:00",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "rowsResearched": 5,
+    "lineSafeStringRows": 4,
+    "pathRows": 1,
+    "emptyStringValidRows": 1,
+    "emptySentinelFallbackRows": 3,
+    "spacesValidRows": 3,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "safety": {
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "recoveryGatesChanged": false
+  },
+  "rows": [
+    {
+      "rowId": "general.locale",
+      "officialSetting": "general.locale",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/i18n/Engine.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "Empty string falls back to system locale; non-empty string is passed to the localization engine.",
+      "recommendedValidatorPolicy": "Keep line-safe string validation.",
+      "recommendedUiEditorPolicy": "Document empty means system locale fallback.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "input.kb_file",
+      "officialSetting": "input.kb_file",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/managers/input/InputManager.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/devices/IKeyboard.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/helpers/MiscFunctions.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "The keyboard consumer resolves non-empty paths relative to the current config path and opens them as XKB keymap files; failure falls back to XKB names and logs/queues an error.",
+      "recommendedValidatorPolicy": "Keep path-like line-safe syntax; optional existence/readability checks belong in future UI validation.",
+      "recommendedUiEditorPolicy": "Optional config-relative XKB keymap path.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "group.groupbar.font_family",
+      "officialSetting": "group.groupbar.font_family",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/render/decorations/CHyprGroupBarDecoration.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "The groupbar text renderer uses the configured string unless it is [[EMPTY]], then falls back to misc:font_family.",
+      "recommendedValidatorPolicy": "Keep line-safe font-family string validation.",
+      "recommendedUiEditorPolicy": "Allow font family names with spaces and document fallback sentinel.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "misc.font_family",
+      "officialSetting": "misc.font_family",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/errorOverlay/Overlay.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/debug/Overlay.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/notification/NotificationOverlay.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "Overlay consumers use the configured string as a font family name.",
+      "recommendedValidatorPolicy": "Keep line-safe freeform font-family validation.",
+      "recommendedUiEditorPolicy": "Allow font family names with spaces; do not require installed-font probing in write validation.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    },
+    {
+      "rowId": "misc.splash_font_family",
+      "officialSetting": "misc.splash_font_family",
+      "sourceFilesInspected": [
+        "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp",
+        "/tmp/Hyprland-v0.55.2-full/src/render/Renderer.cpp"
+      ],
+      "missingSourceReason": null,
+      "consumerBehaviorFound": "The splash renderer uses the configured string unless it is [[EMPTY]], then falls back to misc:font_family.",
+      "recommendedValidatorPolicy": "Keep line-safe font-family string validation.",
+      "recommendedUiEditorPolicy": "Allow font family names with spaces and document fallback sentinel.",
+      "validatorWouldChange": false,
+      "reportsTestsWouldChange": true,
+      "highRiskRecoveryGatesAffected": false
+    }
+  ]
+}

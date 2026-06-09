@@ -1,0 +1,810 @@
+use std::collections::BTreeSet;
+use std::path::PathBuf;
+
+use anyhow::Result;
+
+use crate::config_backup::BackupManager;
+use crate::config_discovery::{ConfigDiscovery, ConfigDiscoveryStatus};
+use crate::current_config::{
+    CurrentConfigSnapshot, CurrentValueProjection, CurrentValueSourceStatus,
+};
+use crate::high_risk_persisted_recovery::HighRiskRecoveryBucket;
+use crate::high_risk_production_gate::{
+    evaluate_high_risk_production_gate, HighRiskProductionGateDecisionKind,
+    HighRiskProductionGateMode, HighRiskProductionGateProof, HighRiskProductionGateRequest,
+};
+use crate::pending_change::{
+    stage_pending_change, stage_pending_change_with_sources, PendingChange,
+    PendingChangeValidation, PendingChangeValueSources,
+};
+use crate::scalar_write::apply_scalar_write_plan;
+use crate::source_values::{read_system_xkb_rules, MonitorSourceValue, XkbSourceValue};
+use crate::write_classification::{
+    finite_choice_options, high_risk_write_policy, is_high_risk_gated_writable_setting,
+    is_safe_writable_setting, safe_writable_official_setting, safe_writable_value_kind,
+    session_runtime_write_policy, ScalarWriteValueKind,
+};
+use crate::write_safety::{
+    review_screen_shader_gated_write_plan, review_write_plan, GatedWriteFailure, HighRiskGateProof,
+    WriteGateFailure, WritePlanRequest, WriteResult,
+};
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SettingEditProjection {
+    pub setting_id: String,
+    pub editable: bool,
+    pub editor_kind: String,
+    pub choices: Vec<FiniteChoiceEditOption>,
+    pub disabled_reason: Option<String>,
+    pub proposed_value: Option<String>,
+    pub pending: Option<PendingChangeProjection>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct FiniteChoiceEditOption {
+    pub raw_value: String,
+    pub label: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct PendingChangeProjection {
+    pub setting_id: String,
+    pub old_value: Option<String>,
+    pub proposed_value: String,
+    pub validation_label: String,
+    pub can_review: bool,
+    pub review_summary: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ApplyOutcome {
+    pub setting_id: String,
+    pub target_path: PathBuf,
+    pub backup_path: PathBuf,
+    pub rollback_source_path: PathBuf,
+    pub rollback_backup_path: PathBuf,
+    pub verified_value: Option<String>,
+    pub reload_note: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ApplyFailure {
+    pub reason: String,
+    pub failures: Vec<String>,
+}
+
+pub fn edit_projection_for_setting(
+    setting_id: &str,
+    current_value: &CurrentValueProjection,
+) -> SettingEditProjection {
+    edit_projection_for_setting_with_sources(
+        setting_id,
+        current_value,
+        &PendingChangeValueSources::default(),
+        &[],
+    )
+}
+
+pub fn edit_projection_for_setting_with_config(
+    setting_id: &str,
+    current_value: &CurrentValueProjection,
+    current_config: &CurrentConfigSnapshot,
+) -> SettingEditProjection {
+    let sources = PendingChangeValueSources::from_current_config(current_config);
+    let monitors = current_config.monitor_source_values();
+    edit_projection_for_setting_with_sources(setting_id, current_value, &sources, &monitors)
+}
+
+fn edit_projection_for_setting_with_sources(
+    setting_id: &str,
+    current_value: &CurrentValueProjection,
+    sources: &PendingChangeValueSources,
+    monitors: &[MonitorSourceValue],
+) -> SettingEditProjection {
+    if !is_safe_writable_setting(setting_id) {
+        return SettingEditProjection {
+            setting_id: setting_id.to_string(),
+            editable: false,
+            editor_kind: "disabled".to_string(),
+            choices: Vec::new(),
+            disabled_reason: Some("not write-allowlisted".to_string()),
+            proposed_value: None,
+            pending: None,
+        };
+    }
+
+    let value_kind = safe_writable_value_kind(setting_id);
+    let proposed_value = next_proposed_value(setting_id, current_value, monitors);
+    let pending = stage_pending_change_with_sources(
+        setting_id,
+        current_value,
+        proposed_value.clone(),
+        sources,
+    );
+    SettingEditProjection {
+        setting_id: setting_id.to_string(),
+        editable: true,
+        editor_kind: editor_kind_for_value_kind(value_kind).to_string(),
+        choices: edit_options(setting_id, monitors),
+        disabled_reason: None,
+        proposed_value: Some(proposed_value),
+        pending: Some(pending_projection(&pending, current_value.status)),
+    }
+}
+
+pub fn pending_projection_for_value(
+    setting_id: &str,
+    current_value: &CurrentValueProjection,
+    proposed_value: &str,
+) -> PendingChangeProjection {
+    let pending = stage_pending_change(setting_id, current_value, proposed_value);
+    pending_projection(&pending, current_value.status)
+}
+
+pub fn apply_setting_change(
+    known_setting_ids: BTreeSet<String>,
+    discovery: &ConfigDiscovery,
+    current_config: &CurrentConfigSnapshot,
+    setting_id: &str,
+    proposed_value: &str,
+) -> Result<ApplyOutcome, ApplyFailure> {
+    let backup_root = BackupManager::default_user_backup_root().map_err(|error| ApplyFailure {
+        reason: error.to_string(),
+        failures: vec!["MissingBackup".to_string()],
+    })?;
+    apply_setting_change_with_backup_manager(
+        known_setting_ids,
+        discovery,
+        current_config,
+        setting_id,
+        proposed_value,
+        &BackupManager::new(backup_root),
+    )
+}
+
+pub fn apply_setting_change_with_backup_manager(
+    known_setting_ids: BTreeSet<String>,
+    discovery: &ConfigDiscovery,
+    current_config: &CurrentConfigSnapshot,
+    setting_id: &str,
+    proposed_value: &str,
+    backup_manager: &BackupManager,
+) -> Result<ApplyOutcome, ApplyFailure> {
+    apply_setting_change_with_backup_manager_and_high_risk_gate(
+        known_setting_ids,
+        discovery,
+        current_config,
+        setting_id,
+        proposed_value,
+        backup_manager,
+        None,
+    )
+}
+
+pub fn apply_setting_change_with_backup_manager_and_high_risk_gate(
+    known_setting_ids: BTreeSet<String>,
+    discovery: &ConfigDiscovery,
+    current_config: &CurrentConfigSnapshot,
+    setting_id: &str,
+    proposed_value: &str,
+    backup_manager: &BackupManager,
+    high_risk_gate_proof: Option<HighRiskGateProof>,
+) -> Result<ApplyOutcome, ApplyFailure> {
+    apply_setting_change_with_backup_manager_and_all_gates(
+        known_setting_ids,
+        discovery,
+        current_config,
+        setting_id,
+        proposed_value,
+        backup_manager,
+        high_risk_gate_proof,
+        None,
+    )
+}
+
+pub fn apply_setting_change_with_backup_manager_and_production_gate(
+    known_setting_ids: BTreeSet<String>,
+    discovery: &ConfigDiscovery,
+    current_config: &CurrentConfigSnapshot,
+    setting_id: &str,
+    proposed_value: &str,
+    backup_manager: &BackupManager,
+    high_risk_production_gate_proof: Option<HighRiskProductionGateProof>,
+) -> Result<ApplyOutcome, ApplyFailure> {
+    apply_setting_change_with_backup_manager_and_all_gates(
+        known_setting_ids,
+        discovery,
+        current_config,
+        setting_id,
+        proposed_value,
+        backup_manager,
+        None,
+        high_risk_production_gate_proof,
+    )
+}
+
+fn apply_setting_change_with_backup_manager_and_all_gates(
+    known_setting_ids: BTreeSet<String>,
+    discovery: &ConfigDiscovery,
+    current_config: &CurrentConfigSnapshot,
+    setting_id: &str,
+    proposed_value: &str,
+    backup_manager: &BackupManager,
+    high_risk_gate_proof: Option<HighRiskGateProof>,
+    high_risk_production_gate_proof: Option<HighRiskProductionGateProof>,
+) -> Result<ApplyOutcome, ApplyFailure> {
+    if !is_safe_writable_setting(setting_id) {
+        return Err(ApplyFailure {
+            reason: "setting is not write-allowlisted".to_string(),
+            failures: vec!["NotAllowlisted".to_string()],
+        });
+    }
+    if !known_setting_ids.contains(setting_id) {
+        return Err(ApplyFailure {
+            reason: "setting is not known to the export inventory".to_string(),
+            failures: vec!["UnknownSetting".to_string()],
+        });
+    }
+
+    let target_path = detected_config_path(discovery).map_err(|reason| ApplyFailure {
+        reason,
+        failures: vec!["MissingCurrentSource".to_string()],
+    })?;
+    let official_setting =
+        safe_writable_official_setting(setting_id).ok_or_else(|| ApplyFailure {
+            reason: "setting is not write-allowlisted".to_string(),
+            failures: vec!["NotAllowlisted".to_string()],
+        })?;
+    let current_value = current_config.value_for(official_setting);
+    let mut sources = PendingChangeValueSources::from_current_config(current_config);
+    if setting_id == "cursor.default_monitor" {
+        if let Some(oracle_proof) = high_risk_production_gate_proof
+            .as_ref()
+            .and_then(|proof| proof.monitor_name_oracle_proof.as_ref())
+        {
+            sources.monitor_names = oracle_proof.valid_names.clone();
+        }
+    }
+    let pending_change =
+        stage_pending_change_with_sources(setting_id, &current_value, proposed_value, &sources);
+    match &pending_change.validation {
+        PendingChangeValidation::Valid => {}
+        PendingChangeValidation::Invalid { reason }
+        | PendingChangeValidation::NotAllowed { reason } => {
+            return Err(ApplyFailure {
+                reason: reason.clone(),
+                failures: vec!["InvalidProposedValue".to_string()],
+            });
+        }
+    }
+    if let Some(reason) = review_block_reason(current_value.status) {
+        let failure = match current_value.status {
+            CurrentValueSourceStatus::DuplicateConflict => "DuplicateConflict",
+            CurrentValueSourceStatus::ReadUnavailable => "MissingCurrentSource",
+            CurrentValueSourceStatus::Configured | CurrentValueSourceStatus::NotConfigured => {
+                "MissingCurrentSource"
+            }
+        };
+        return Err(ApplyFailure {
+            reason: reason.to_string(),
+            failures: vec![failure.to_string()],
+        });
+    }
+
+    if is_high_risk_gated_writable_setting(setting_id) && high_risk_production_gate_proof.is_none()
+    {
+        return Err(ApplyFailure {
+            reason: "high-risk production gate proof is required".to_string(),
+            failures: vec!["MissingHighRiskProductionGateProof".to_string()],
+        });
+    }
+
+    let backup = backup_manager
+        .create_backup(&target_path)
+        .map_err(|error| ApplyFailure {
+            reason: error.to_string(),
+            failures: vec!["MissingBackup".to_string()],
+        })?;
+
+    let review = review_write_plan(WritePlanRequest {
+        known_setting_ids,
+        detected_config_path: target_path.clone(),
+        current_value,
+        pending_change,
+        backup: Some(backup),
+    });
+    if !review.is_approved() {
+        return Err(ApplyFailure {
+            reason: "write plan rejected by safety gates".to_string(),
+            failures: review.failures.iter().map(format_gate_failure).collect(),
+        });
+    }
+    let gated_review = review_screen_shader_gated_write_plan(review, high_risk_gate_proof);
+    if !gated_review.is_approved() {
+        return Err(ApplyFailure {
+            reason: "write plan rejected by high-risk gate".to_string(),
+            failures: gated_review
+                .failures
+                .iter()
+                .map(format_gated_write_failure)
+                .collect(),
+        });
+    }
+
+    if is_high_risk_gated_writable_setting(setting_id) {
+        let production_gate_proof =
+            high_risk_production_gate_proof.ok_or_else(|| ApplyFailure {
+                reason: "high-risk production gate proof is required".to_string(),
+                failures: vec!["MissingHighRiskProductionGateProof".to_string()],
+            })?;
+        if production_gate_proof.recovery_plan.target_config_path != target_path {
+            return Err(ApplyFailure {
+                reason: "high-risk production gate proof target does not match write target"
+                    .to_string(),
+                failures: vec!["HighRiskProductionGateTargetMismatch".to_string()],
+            });
+        }
+        let bucket = HighRiskRecoveryBucket::from(
+            crate::blocked_row_pre_enablement::blocked_pre_enablement_row(setting_id)
+                .expect("high-risk gated writable rows must be in pre-enablement metadata")
+                .bucket,
+        );
+        let runtime_oracle_proven = production_gate_proof
+            .monitor_name_oracle_proof
+            .as_ref()
+            .map(|validation| validation.accepted())
+            .unwrap_or(false);
+        let evaluation = evaluate_high_risk_production_gate(HighRiskProductionGateRequest {
+            mode: HighRiskProductionGateMode::ProductionWrite,
+            row_id: setting_id.to_string(),
+            official_setting: official_setting.to_string(),
+            bucket,
+            requested_keep_apply: true,
+            now_unix_seconds: production_gate_proof
+                .recovery_plan
+                .created_unix_seconds
+                .saturating_add(1),
+            proof: Some(production_gate_proof),
+            runtime_oracle_proven,
+        });
+        if evaluation.decision.kind != HighRiskProductionGateDecisionKind::ProductionWriteAccepted {
+            return Err(ApplyFailure {
+                reason: "write plan rejected by high-risk production gate".to_string(),
+                failures: evaluation
+                    .decision
+                    .errors
+                    .iter()
+                    .map(|error| error.to_string())
+                    .collect(),
+            });
+        }
+    }
+
+    let result = apply_scalar_write_plan(
+        &gated_review
+            .base_review
+            .plan
+            .clone()
+            .expect("approved review should include a plan"),
+    )
+    .map_err(|error| ApplyFailure {
+        reason: error.to_string(),
+        failures: vec!["WriteFailed".to_string()],
+    })?;
+
+    Ok(outcome_from_result(result))
+}
+
+fn detected_config_path(discovery: &ConfigDiscovery) -> Result<PathBuf, String> {
+    match &discovery.status {
+        ConfigDiscoveryStatus::Found { path, .. } => Ok(path.clone()),
+        ConfigDiscoveryStatus::Missing => Err("no Hyprland config file was detected".to_string()),
+        ConfigDiscoveryStatus::Unreadable { path, error, .. } => Err(format!(
+            "Hyprland config is not readable: {}: {error}",
+            path.display()
+        )),
+        ConfigDiscoveryStatus::NotAFile { path, .. } => Err(format!(
+            "Hyprland config target is not a regular file: {}",
+            path.display()
+        )),
+    }
+}
+
+fn pending_projection(
+    pending: &PendingChange,
+    current_status: CurrentValueSourceStatus,
+) -> PendingChangeProjection {
+    let validation_label = match &pending.validation {
+        PendingChangeValidation::Valid => "valid".to_string(),
+        PendingChangeValidation::Invalid { reason } => format!("invalid: {reason}"),
+        PendingChangeValidation::NotAllowed { reason } => format!("not allowed: {reason}"),
+    };
+    let mut review_summary = vec![
+        format!("setting: {}", pending.setting_id),
+        format!(
+            "current: {}",
+            pending
+                .old_parsed_value
+                .clone()
+                .unwrap_or_else(|| "not configured".to_string())
+        ),
+        format!("proposed: {}", pending.proposed_value),
+        format!("validation: {validation_label}"),
+    ];
+    if let Some(source) = &pending.source {
+        review_summary.push(format!(
+            "source: {}:{}",
+            source.path.display(),
+            source.line_number
+        ));
+    }
+    if let Some(reason) = &pending.non_editable_reason {
+        review_summary.push(format!("blocked: {reason}"));
+    }
+    if let Some(reason) = review_block_reason(current_status) {
+        review_summary.push(format!("blocked: {reason}"));
+    }
+    if let Some(policy) = session_runtime_write_policy(&pending.setting_id) {
+        review_summary.push(format!("scope: {}", policy.scope));
+        review_summary.push(format!("runtime effect: {}", policy.runtime_effect));
+        review_summary.push(format!("approval gate: {}", policy.approval_gate));
+        review_summary.push(format!("warning: {}", policy.review_warning));
+    }
+    if let Some(policy) = high_risk_write_policy(&pending.setting_id) {
+        review_summary.push(format!("recovery bucket: {}", policy.recovery_bucket));
+        review_summary.push(format!("approval gate: {}", policy.approval_gate));
+        review_summary.push(format!(
+            "watchdog requirement: {}",
+            policy.watchdog_requirement
+        ));
+        review_summary.push(format!("warning: {}", policy.review_warning));
+    }
+
+    PendingChangeProjection {
+        setting_id: pending.setting_id.clone(),
+        old_value: pending.old_parsed_value.clone(),
+        proposed_value: pending.proposed_value.clone(),
+        validation_label,
+        can_review: pending.can_be_applied() && status_allows_review(current_status),
+        review_summary,
+    }
+}
+
+fn next_proposed_value(
+    setting_id: &str,
+    current_value: &CurrentValueProjection,
+    monitors: &[MonitorSourceValue],
+) -> String {
+    match safe_writable_value_kind(setting_id) {
+        Some(ScalarWriteValueKind::Boolean) => next_bool_value(current_value),
+        Some(ScalarWriteValueKind::FiniteChoice) => {
+            next_finite_choice_value(setting_id, current_value)
+        }
+        Some(ScalarWriteValueKind::SourceBacked) => {
+            next_source_backed_value(setting_id, current_value)
+        }
+        Some(ScalarWriteValueKind::MonitorName) => next_monitor_name_value(current_value, monitors),
+        Some(ScalarWriteValueKind::Number) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "0".to_string()),
+        Some(ScalarWriteValueKind::Percent) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| {
+                if setting_id == "input.pointer_sensitivity" {
+                    "0".to_string()
+                } else {
+                    "1.0".to_string()
+                }
+            }),
+        Some(ScalarWriteValueKind::Color) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "rgba(ffffffff)".to_string()),
+        Some(ScalarWriteValueKind::Gradient) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "rgba(ffffffff) rgba(000000ff) 45deg".to_string()),
+        Some(ScalarWriteValueKind::Vector2) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "0 0".to_string()),
+        Some(ScalarWriteValueKind::NumericList) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "0.2 0.0 0.5 1 1.2 1.5".to_string()),
+        Some(ScalarWriteValueKind::CssGap) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "5".to_string()),
+        Some(ScalarWriteValueKind::AccelProfile) => current_value
+            .raw_value
+            .clone()
+            .unwrap_or_else(|| "flat".to_string()),
+        Some(ScalarWriteValueKind::CommaSeparatedFloatList) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "0.333, 0.5, 0.667, 1.0".to_string()),
+        Some(ScalarWriteValueKind::LineSafeString) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| {
+                if setting_id == "input.accel_profile" {
+                    "flat".to_string()
+                } else {
+                    "Sans".to_string()
+                }
+            }),
+        Some(ScalarWriteValueKind::Path) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "~/.config/hypr/example.conf".to_string()),
+        Some(ScalarWriteValueKind::RegexString) => current_value
+            .raw_value
+            .clone()
+            .filter(|value| !value.trim().is_empty())
+            .unwrap_or_else(|| "^(Alacritty|kitty)$".to_string()),
+        Some(ScalarWriteValueKind::StringLike)
+        | Some(ScalarWriteValueKind::ComplexRaw)
+        | Some(ScalarWriteValueKind::Unknown)
+        | None => current_value.raw_value.clone().unwrap_or_default(),
+    }
+}
+
+fn editor_kind_for_value_kind(value_kind: Option<ScalarWriteValueKind>) -> &'static str {
+    match value_kind {
+        Some(ScalarWriteValueKind::Boolean) => "toggle",
+        Some(ScalarWriteValueKind::FiniteChoice)
+        | Some(ScalarWriteValueKind::SourceBacked)
+        | Some(ScalarWriteValueKind::MonitorName) => "dropdown",
+        Some(ScalarWriteValueKind::Number) | Some(ScalarWriteValueKind::Percent) => "number",
+        Some(ScalarWriteValueKind::Color) => "color-text",
+        Some(ScalarWriteValueKind::Gradient) => "gradient-text",
+        Some(ScalarWriteValueKind::Vector2) => "vector-text",
+        Some(ScalarWriteValueKind::CssGap) => "css-gap-text",
+        Some(ScalarWriteValueKind::AccelProfile) => "accel-profile-text",
+        Some(ScalarWriteValueKind::NumericList) => "numeric-list-text",
+        Some(ScalarWriteValueKind::CommaSeparatedFloatList) => "comma-float-list-text",
+        Some(ScalarWriteValueKind::LineSafeString)
+        | Some(ScalarWriteValueKind::Path)
+        | Some(ScalarWriteValueKind::RegexString) => "text",
+        Some(ScalarWriteValueKind::StringLike)
+        | Some(ScalarWriteValueKind::ComplexRaw)
+        | Some(ScalarWriteValueKind::Unknown)
+        | None => "unknown",
+    }
+}
+
+fn edit_options(setting_id: &str, monitors: &[MonitorSourceValue]) -> Vec<FiniteChoiceEditOption> {
+    if safe_writable_value_kind(setting_id) == Some(ScalarWriteValueKind::MonitorName) {
+        return monitor_name_edit_options(monitors);
+    }
+    if let Some(options) = finite_choice_options(setting_id) {
+        return options
+            .iter()
+            .map(|option| FiniteChoiceEditOption {
+                raw_value: option.raw_value.to_string(),
+                label: option.label.to_string(),
+            })
+            .collect();
+    }
+
+    source_backed_edit_options(setting_id)
+}
+
+fn monitor_name_edit_options(monitors: &[MonitorSourceValue]) -> Vec<FiniteChoiceEditOption> {
+    let mut options = vec![FiniteChoiceEditOption {
+        raw_value: String::new(),
+        label: "Default / auto".to_string(),
+    }];
+    options.extend(monitors.iter().map(|value| FiniteChoiceEditOption {
+        raw_value: value.raw_value.clone(),
+        label: value.label.clone(),
+    }));
+    options
+}
+
+fn source_backed_edit_options(setting_id: &str) -> Vec<FiniteChoiceEditOption> {
+    let Ok(rules) = read_system_xkb_rules() else {
+        return Vec::new();
+    };
+
+    match setting_id {
+        "input.kb_model" => source_values_to_edit_options(&rules.models),
+        "input.kb_layout" => source_values_to_edit_options(&rules.layouts),
+        "input.kb_variant" => source_values_to_edit_options(&rules.variants),
+        "input.kb_options" => source_values_to_edit_options(&rules.options),
+        "input.kb_rules" => vec![
+            FiniteChoiceEditOption {
+                raw_value: "evdev".to_string(),
+                label: "evdev".to_string(),
+            },
+            FiniteChoiceEditOption {
+                raw_value: "base".to_string(),
+                label: "base".to_string(),
+            },
+        ],
+        _ => Vec::new(),
+    }
+}
+
+fn source_values_to_edit_options(values: &[XkbSourceValue]) -> Vec<FiniteChoiceEditOption> {
+    values
+        .iter()
+        .map(|value| FiniteChoiceEditOption {
+            raw_value: value.raw_value.to_string(),
+            label: if value.label.is_empty() {
+                value.raw_value.to_string()
+            } else {
+                value.label.to_string()
+            },
+        })
+        .collect()
+}
+
+fn next_finite_choice_value(setting_id: &str, current_value: &CurrentValueProjection) -> String {
+    let Some(options) = finite_choice_options(setting_id) else {
+        return current_value.raw_value.clone().unwrap_or_default();
+    };
+    if options.is_empty() {
+        return current_value.raw_value.clone().unwrap_or_default();
+    }
+    let current = current_value.raw_value.as_deref().map(str::trim);
+    if let Some((index, _)) = current.and_then(|value| {
+        options
+            .iter()
+            .enumerate()
+            .find(|(_, option)| option.raw_value == value)
+    }) {
+        return options[(index + 1) % options.len()].raw_value.to_string();
+    }
+    options[0].raw_value.to_string()
+}
+
+fn next_source_backed_value(setting_id: &str, current_value: &CurrentValueProjection) -> String {
+    let options = source_backed_edit_options(setting_id);
+    if options.is_empty() {
+        return current_value.raw_value.clone().unwrap_or_default();
+    }
+    let current = current_value.raw_value.as_deref().map(str::trim);
+    if let Some((index, _)) = current.and_then(|value| {
+        options
+            .iter()
+            .enumerate()
+            .find(|(_, option)| option.raw_value == value)
+    }) {
+        return options[(index + 1) % options.len()].raw_value.clone();
+    }
+    options[0].raw_value.clone()
+}
+
+fn next_monitor_name_value(
+    current_value: &CurrentValueProjection,
+    monitors: &[MonitorSourceValue],
+) -> String {
+    let current = current_value
+        .raw_value
+        .as_deref()
+        .map(str::trim)
+        .unwrap_or("");
+    if current.is_empty() {
+        return monitors
+            .first()
+            .map(|value| value.raw_value.clone())
+            .unwrap_or_default();
+    }
+    monitors
+        .iter()
+        .find(|value| value.raw_value != current)
+        .map(|value| value.raw_value.clone())
+        .unwrap_or_default()
+}
+
+fn next_bool_value(current_value: &CurrentValueProjection) -> String {
+    match current_value
+        .raw_value
+        .as_deref()
+        .map(normalize_bool_literal)
+    {
+        Some(Some(true)) => "false".to_string(),
+        Some(Some(false)) => "true".to_string(),
+        _ => "true".to_string(),
+    }
+}
+
+fn normalize_bool_literal(value: &str) -> Option<bool> {
+    match value.trim().to_ascii_lowercase().as_str() {
+        "true" | "1" | "yes" | "on" => Some(true),
+        "false" | "0" | "no" | "off" => Some(false),
+        _ => None,
+    }
+}
+
+fn outcome_from_result(result: WriteResult) -> ApplyOutcome {
+    let setting_id = result.plan.setting_id;
+    let reload_note = high_risk_write_policy(&setting_id)
+        .map(|policy| policy.review_warning.to_string())
+        .or_else(|| {
+            session_runtime_write_policy(&setting_id)
+                .map(|policy| policy.review_warning.to_string())
+        })
+        .unwrap_or_else(|| "Hyprland reload is not performed by this app yet.".to_string());
+    ApplyOutcome {
+        setting_id,
+        target_path: result.plan.target_path,
+        backup_path: result.plan.backup_path.clone(),
+        rollback_source_path: result.plan.rollback.source_path,
+        rollback_backup_path: result.plan.rollback.backup_path,
+        verified_value: result.verified_value,
+        reload_note,
+    }
+}
+
+fn format_gate_failure(failure: &WriteGateFailure) -> String {
+    match failure {
+        WriteGateFailure::UnknownSetting => "UnknownSetting".to_string(),
+        WriteGateFailure::NotAllowlisted => "NotAllowlisted".to_string(),
+        WriteGateFailure::InvalidProposedValue(reason) => {
+            format!("InvalidProposedValue: {reason}")
+        }
+        WriteGateFailure::MissingCurrentSource => "MissingCurrentSource".to_string(),
+        WriteGateFailure::DuplicateConflict => "DuplicateConflict".to_string(),
+        WriteGateFailure::MissingBackup => "MissingBackup".to_string(),
+        WriteGateFailure::BackupTargetMismatch => "BackupTargetMismatch".to_string(),
+        WriteGateFailure::TargetMismatch => "TargetMismatch".to_string(),
+        WriteGateFailure::StructuredFamilyRejected => "StructuredFamilyRejected".to_string(),
+    }
+}
+
+fn format_gated_write_failure(failure: &GatedWriteFailure) -> String {
+    match failure {
+        GatedWriteFailure::BaseWriteRejected => "BaseWriteRejected".to_string(),
+        GatedWriteFailure::MissingScreenShaderGateProof => {
+            "MissingScreenShaderGateProof".to_string()
+        }
+        GatedWriteFailure::GateProofForWrongSetting => "GateProofForWrongSetting".to_string(),
+        GatedWriteFailure::GateProofForWrongRecoveryBucket => {
+            "GateProofForWrongRecoveryBucket".to_string()
+        }
+        GatedWriteFailure::GateProofTargetMismatch => "GateProofTargetMismatch".to_string(),
+        GatedWriteFailure::InvalidWatchdogPlan(reason) => {
+            format!("InvalidWatchdogPlan: {reason}")
+        }
+    }
+}
+
+pub fn write_flow_config_setting(setting_id: &str) -> Option<&'static str> {
+    safe_writable_official_setting(setting_id)
+}
+
+pub fn write_flow_value_kind(setting_id: &str) -> Option<ScalarWriteValueKind> {
+    safe_writable_value_kind(setting_id)
+}
+
+pub fn status_allows_review(status: CurrentValueSourceStatus) -> bool {
+    matches!(
+        status,
+        CurrentValueSourceStatus::Configured | CurrentValueSourceStatus::NotConfigured
+    )
+}
+
+pub fn review_block_reason(status: CurrentValueSourceStatus) -> Option<&'static str> {
+    match status {
+        CurrentValueSourceStatus::Configured | CurrentValueSourceStatus::NotConfigured => None,
+        CurrentValueSourceStatus::DuplicateConflict => {
+            Some("duplicate config entries must be resolved manually before writing")
+        }
+        CurrentValueSourceStatus::ReadUnavailable => Some("current config could not be read"),
+    }
+}

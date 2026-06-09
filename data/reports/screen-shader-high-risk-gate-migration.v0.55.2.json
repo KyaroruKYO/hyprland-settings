@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "screen-shader-high-risk-gate-migration",
+  "generatedAt": "2026-06-07T02:39:01-07:00",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "rowsReviewed": 1,
+    "rowsEnabledThisSprint": 0,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "recoveryGatesWeakened": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "liveShaderCompileUsed": false,
+    "liveDisplayRuntimeProofUsed": false
+  },
+  "selectedMigrationOption": "Option A",
+  "decision": "decoration.screen_shader remains writable, but is formally marked as requiring display/render high-risk gate migration and future watchdog/dead-man recovery proof before stronger enforcement or compile-aware validation.",
+  "row": {
+    "rowId": "decoration.screen_shader",
+    "officialSetting": "decoration.screen_shader",
+    "currentWritableStatus": "writable",
+    "safeWriteSupported": true,
+    "valueKind": "Path",
+    "currentValidator": "line-safe sanitized path validator",
+    "ordinaryPathValidationIsInsufficient": true,
+    "reasonOrdinaryPathValidationIsInsufficient": "Official source reads non-empty values as config-relative files and compiles file contents as the final screen fragment shader. A syntactically safe path does not prove shader content is display/render safe.",
+    "safeWritableRowsChanged": false,
+    "writeAllowlistChanged": false
+  },
+  "requiredHighRiskGateMetadata": {
+    "riskClass": "display-render-screen-shader-compile-sensitive",
+    "pipelineTemplate": "display-render-screen-shader-watchdog-template",
+    "recoveryBucket": "display-render-recovery:screen-shader-gate-migration-design",
+    "approvalGate": "advanced-opt-in-plus-display-render-dead-man-watchdog-required-before-full-migration",
+    "watchdogRequirement": "screen shader display/render watchdog proof is required before full gated enforcement; future gate must persist a plan and backup before mutation, use separate process confirm, timeout restore, result logging, and recovery independent of visible display or live render state",
+    "warningCategory": "display-render-screen-shader-warning",
+    "reviewWarning": "Display/render sensitive: non-empty values are config-relative shader files compiled as the final screen fragment shader. Path validation is not display/render safety proof; keep writable only with screen-shader high-risk warning until a future display/render watchdog migration proof is completed."
+  },
+  "proofExists": {
+    "officialSourceConsumerEvidence": true,
+    "pathShapeValidatorProof": true,
+    "fixtureWriteRereadProof": true,
+    "displayRenderRiskReview": true,
+    "policyDecisionReport": true,
+    "validationBoundaryReport": true,
+    "templateMappingReport": true,
+    "liveRuntimeProof": false,
+    "compileAwareValidationProof": false,
+    "screenShaderWatchdogProof": true
+  },
+  "proofStillMissing": [
+    "production high-risk gate enforcement decision",
+    "production write flow migration into the screen-shader display/render gate",
+    "compile-aware shader validation design",
+    "standalone non-live shader compiler feasibility proof"
+  ],
+  "forbiddenInThisSprint": [
+    "real config mutation",
+    "active runtime mutation",
+    "hyprctl reload",
+    "mutating hyprctl eval",
+    "Lua execution or evaluation",
+    "live shader compile",
+    "live display/render proof",
+    "SAFE_WRITABLE_ROWS removal",
+    "new row enablement"
+  ],
+  "reconciliation": {
+    "highRiskEnabledRowsAuditedRemain": 9,
+    "screenShaderIncludedInEnabledHighRiskAudit": false,
+    "reasonNotIncludedInEnabledHighRiskAudit": "The row is already writable from earlier normal-path support and has not completed high-risk watchdog proof. This sprint records migration-required metadata instead of claiming completed gated enablement.",
+    "recommendedRepresentation": "Represent as a writable display/render high-risk migration candidate with completed fixture/temp watchdog migration proof, but do not count it as an enabled high-risk row until production gate enforcement is explicitly implemented in a later sprint."
+  },
+  "safety": {
+    "realConfigTouched": false,
+    "runtimeTouched": false,
+    "reloadEvalLuaUsed": false,
+    "liveShaderCompileUsed": false,
+    "pushed": false,
+    "mainTouched": false
+  },
+  "nextRecommendedSprint": "Screen shader production gate enforcement decision sprint: decide whether to migrate decoration.screen_shader production writes into the proven display/render watchdog gate, keep temporary writable candidate status, or propose block/removal with explicit user approval. Do not add compile-aware validation in that sprint unless separately approved.",
+  "watchdogMigrationProofReport": "data/reports/screen-shader-watchdog-migration-proof.v0.55.2.json"
+}

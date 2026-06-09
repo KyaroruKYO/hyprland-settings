@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "high-risk-pipeline-template-normalization",
+  "generatedAt": "2026-06-06T21:37:13-07:00",
+  "counts": {
+    "templates": 4,
+    "enabledHighRiskRowsMapped": 9,
+    "rowsWithoutTemplate": 0,
+    "missingTemplateFields": 0,
+    "oneOffFieldsNormalized": 5,
+    "rowsEnabledThisSprint": 0,
+    "currentWritableRows": 278,
+    "currentBlockedRows": 63
+  },
+  "templates": [
+    {
+      "templateId": "high-risk-policy-watchdog-template",
+      "description": "Ecosystem/permission policy rows enabled after high-risk watchdog proof.",
+      "rows": [
+        "ecosystem.no_update_news",
+        "ecosystem.no_donation_nag",
+        "ecosystem.enforce_permissions"
+      ],
+      "rowCount": 3,
+      "requiredTemplateFields": [
+        "advanced opt-in",
+        "policy warning",
+        "dead-man watchdog gate",
+        "backup before mutation",
+        "result log",
+        "file reread"
+      ],
+      "missingTemplateFields": [],
+      "oneOffFieldsNormalized": [
+        "pipelineTemplate",
+        "watchdogRequirement",
+        "uiReviewWarning",
+        "proofSource",
+        "watchdogProofSource"
+      ],
+      "intentionallyRowSpecificFields": [
+        "proofSource",
+        "watchdogProofSource",
+        "enablementReport",
+        "recoveryBucket for keyboard-trigger cursor visibility row"
+      ]
+    },
+    {
+      "templateId": "display-render-watchdog-template",
+      "description": "Display/render XWayland scaling rows enabled after fixture watchdog proof.",
+      "rows": [
+        "xwayland.use_nearest_neighbor",
+        "xwayland.force_zero_scaling"
+      ],
+      "rowCount": 2,
+      "requiredTemplateFields": [
+        "advanced opt in",
+        "display/render warning",
+        "independent watchdog gate",
+        "no visible display dependency",
+        "backup before mutation",
+        "result log",
+        "file reread"
+      ],
+      "missingTemplateFields": [],
+      "oneOffFieldsNormalized": [
+        "pipelineTemplate",
+        "watchdogRequirement",
+        "uiReviewWarning",
+        "proofSource",
+        "watchdogProofSource"
+      ],
+      "intentionallyRowSpecificFields": [
+        "proofSource",
+        "watchdogProofSource",
+        "enablementReport",
+        "recoveryBucket for keyboard-trigger cursor visibility row"
+      ]
+    },
+    {
+      "templateId": "cursor-input-theme-sync-watchdog-template",
+      "description": "Cursor/input theme sync policy row enabled after cursor-input watchdog and recovery independence proof.",
+      "rows": [
+        "cursor.sync_gsettings_theme"
+      ],
+      "rowCount": 1,
+      "requiredTemplateFields": [
+        "advanced opt in",
+        "cursor/input warning",
+        "independent watchdog gate",
+        "mouse independence",
+        "visible cursor independence",
+        "keybind independence",
+        "pointer/workspace focus independence"
+      ],
+      "missingTemplateFields": [],
+      "oneOffFieldsNormalized": [
+        "pipelineTemplate",
+        "watchdogRequirement",
+        "uiReviewWarning",
+        "proofSource",
+        "watchdogProofSource"
+      ],
+      "intentionallyRowSpecificFields": [
+        "proofSource",
+        "watchdogProofSource",
+        "enablementReport",
+        "recoveryBucket for keyboard-trigger cursor visibility row"
+      ]
+    },
+    {
+      "templateId": "cursor-visibility-conditional-watchdog-template",
+      "description": "Cursor visibility conditional and keyboard-trigger rows enabled after cursor visibility watchdog proof.",
+      "rows": [
+        "cursor.hide_on_touch",
+        "cursor.hide_on_tablet",
+        "cursor.hide_on_key_press"
+      ],
+      "rowCount": 3,
+      "requiredTemplateFields": [
+        "advanced opt in",
+        "cursor visibility warning",
+        "independent watchdog gate",
+        "visible cursor independence",
+        "mouse independence",
+        "app UI independence",
+        "keybind independence",
+        "pointer/workspace focus independence",
+        "normal pointer behavior independence"
+      ],
+      "missingTemplateFields": [],
+      "oneOffFieldsNormalized": [
+        "pipelineTemplate",
+        "watchdogRequirement",
+        "uiReviewWarning",
+        "proofSource",
+        "watchdogProofSource"
+      ],
+      "intentionallyRowSpecificFields": [
+        "proofSource",
+        "watchdogProofSource",
+        "enablementReport",
+        "recoveryBucket for keyboard-trigger cursor visibility row"
+      ]
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakened": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  }
+}

@@ -1,0 +1,578 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "source-backed-complex-grammar-repair",
+  "generatedAt": "2026-06-07T07:36:49.556814Z",
+  "counts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63,
+    "validatorsChanged": true,
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "productionBehaviorChanged": true,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "complexRowsReviewed": 38,
+    "colorRowsRepaired": 10,
+    "gradientRowsRepaired": 12,
+    "vectorRowsRepaired": 6,
+    "deferredRows": 10,
+    "validatorChangedRows": 28
+  },
+  "repairPolicy": {
+    "color": "accept official #RGB/#RRGGBB/#RRGGBBAA, rgb/rgba hex, rgb/rgba comma numeric, 0x hex, and decimal uint32 forms while preserving line/command guardrails",
+    "gradient": "space-separated official color tokens, optional final integer deg angle, at least one color, max 10 colors",
+    "vector": "exactly two space-separated finite floats; comma forms rejected as not source-backed",
+    "deferred": "line-safe string/path/regex/numeric-list consumer semantics remain deferred"
+  },
+  "rows": [
+    {
+      "rowId": "decoration.shadow.color",
+      "officialSetting": "decoration.shadow.color",
+      "grammarFamily": "Color",
+      "previousAssessment": "too-narrow",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "decoration.shadow.color_inactive",
+      "officialSetting": "decoration.shadow.color_inactive",
+      "grammarFamily": "Color",
+      "previousAssessment": "too-narrow",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "decoration.shadow.offset",
+      "officialSetting": "decoration.shadow.offset",
+      "grammarFamily": "Vector2",
+      "previousAssessment": "mixed-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "decoration.screen_shader",
+      "officialSetting": "decoration.screen_shader",
+      "grammarFamily": "Path",
+      "previousAssessment": "intentionally-conservative",
+      "validatorChanged": false,
+      "repairDecision": "deferred-consumer-source-needed",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "general.locale",
+      "officialSetting": "general.locale",
+      "grammarFamily": "LineSafeString",
+      "previousAssessment": "intentionally-conservative",
+      "validatorChanged": false,
+      "repairDecision": "deferred-consumer-source-needed",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "general.col.inactive_border",
+      "officialSetting": "general.col.inactive_border",
+      "grammarFamily": "Gradient",
+      "previousAssessment": "mixed-too-narrow-and-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "general.col.active_border",
+      "officialSetting": "general.col.active_border",
+      "grammarFamily": "Gradient",
+      "previousAssessment": "mixed-too-narrow-and-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "general.col.nogroup_border",
+      "officialSetting": "general.col.nogroup_border",
+      "grammarFamily": "Gradient",
+      "previousAssessment": "mixed-too-narrow-and-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "general.col.nogroup_border_active",
+      "officialSetting": "general.col.nogroup_border_active",
+      "grammarFamily": "Gradient",
+      "previousAssessment": "mixed-too-narrow-and-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.accel_profile",
+      "officialSetting": "input.accel_profile",
+      "grammarFamily": "LineSafeString",
+      "previousAssessment": "intentionally-conservative",
+      "validatorChanged": false,
+      "repairDecision": "deferred-consumer-source-needed",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.scroll_points",
+      "officialSetting": "input.scroll_points",
+      "grammarFamily": "NumericList",
+      "previousAssessment": "source-research-incomplete",
+      "validatorChanged": false,
+      "repairDecision": "deferred-consumer-source-needed",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.kb_file",
+      "officialSetting": "input.kb_file",
+      "grammarFamily": "Path",
+      "previousAssessment": "intentionally-conservative",
+      "validatorChanged": false,
+      "repairDecision": "deferred-consumer-source-needed",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.tablet.region_position",
+      "officialSetting": "input.tablet.region_position",
+      "grammarFamily": "Vector2",
+      "previousAssessment": "mixed-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.tablet.region_size",
+      "officialSetting": "input.tablet.region_size",
+      "grammarFamily": "Vector2",
+      "previousAssessment": "mixed-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.tablet.active_area_size",
+      "officialSetting": "input.tablet.active_area_size",
+      "grammarFamily": "Vector2",
+      "previousAssessment": "mixed-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.tablet.active_area_position",
+      "officialSetting": "input.tablet.active_area_position",
+      "grammarFamily": "Vector2",
+      "previousAssessment": "mixed-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "decoration.glow.color",
+      "officialSetting": "decoration.glow.color",
+      "grammarFamily": "Color",
+      "previousAssessment": "too-narrow",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "decoration.glow.color_inactive",
+      "officialSetting": "decoration.glow.color_inactive",
+      "grammarFamily": "Color",
+      "previousAssessment": "too-narrow",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.text_color",
+      "officialSetting": "group.groupbar.text_color",
+      "grammarFamily": "Color",
+      "previousAssessment": "too-narrow",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.text_color_inactive",
+      "officialSetting": "group.groupbar.text_color_inactive",
+      "grammarFamily": "Color",
+      "previousAssessment": "too-narrow",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.text_color_locked_active",
+      "officialSetting": "group.groupbar.text_color_locked_active",
+      "grammarFamily": "Color",
+      "previousAssessment": "too-narrow",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.text_color_locked_inactive",
+      "officialSetting": "group.groupbar.text_color_locked_inactive",
+      "grammarFamily": "Color",
+      "previousAssessment": "too-narrow",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.font_family",
+      "officialSetting": "group.groupbar.font_family",
+      "grammarFamily": "LineSafeString",
+      "previousAssessment": "intentionally-conservative",
+      "validatorChanged": false,
+      "repairDecision": "deferred-consumer-source-needed",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.col.border_active",
+      "officialSetting": "group.col.border_active",
+      "grammarFamily": "Gradient",
+      "previousAssessment": "mixed-too-narrow-and-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.col.border_inactive",
+      "officialSetting": "group.col.border_inactive",
+      "grammarFamily": "Gradient",
+      "previousAssessment": "mixed-too-narrow-and-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.col.border_locked_inactive",
+      "officialSetting": "group.col.border_locked_inactive",
+      "grammarFamily": "Gradient",
+      "previousAssessment": "mixed-too-narrow-and-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.col.border_locked_active",
+      "officialSetting": "group.col.border_locked_active",
+      "grammarFamily": "Gradient",
+      "previousAssessment": "mixed-too-narrow-and-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.col.active",
+      "officialSetting": "group.groupbar.col.active",
+      "grammarFamily": "Gradient",
+      "previousAssessment": "mixed-too-narrow-and-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.col.inactive",
+      "officialSetting": "group.groupbar.col.inactive",
+      "grammarFamily": "Gradient",
+      "previousAssessment": "mixed-too-narrow-and-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.col.locked_active",
+      "officialSetting": "group.groupbar.col.locked_active",
+      "grammarFamily": "Gradient",
+      "previousAssessment": "mixed-too-narrow-and-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.col.locked_inactive",
+      "officialSetting": "group.groupbar.col.locked_inactive",
+      "grammarFamily": "Gradient",
+      "previousAssessment": "mixed-too-narrow-and-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "misc.col.splash",
+      "officialSetting": "misc.col.splash",
+      "grammarFamily": "Color",
+      "previousAssessment": "too-narrow",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "misc.background_color",
+      "officialSetting": "misc.background_color",
+      "grammarFamily": "Color",
+      "previousAssessment": "too-narrow",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "misc.font_family",
+      "officialSetting": "misc.font_family",
+      "grammarFamily": "LineSafeString",
+      "previousAssessment": "intentionally-conservative",
+      "validatorChanged": false,
+      "repairDecision": "deferred-consumer-source-needed",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "misc.splash_font_family",
+      "officialSetting": "misc.splash_font_family",
+      "grammarFamily": "LineSafeString",
+      "previousAssessment": "intentionally-conservative",
+      "validatorChanged": false,
+      "repairDecision": "deferred-consumer-source-needed",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "misc.swallow_regex",
+      "officialSetting": "misc.swallow_regex",
+      "grammarFamily": "RegexString",
+      "previousAssessment": "intentionally-conservative",
+      "validatorChanged": false,
+      "repairDecision": "deferred-consumer-source-needed",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "misc.swallow_exception_regex",
+      "officialSetting": "misc.swallow_exception_regex",
+      "grammarFamily": "RegexString",
+      "previousAssessment": "intentionally-conservative",
+      "validatorChanged": false,
+      "repairDecision": "deferred-consumer-source-needed",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "layout.single_window_aspect_ratio",
+      "officialSetting": "layout.single_window_aspect_ratio",
+      "grammarFamily": "Vector2",
+      "previousAssessment": "mixed-too-broad",
+      "validatorChanged": true,
+      "repairDecision": "source-backed-grammar-repaired",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    }
+  ],
+  "safety": {
+    "writeAllowlistChanged": false,
+    "safeWritableRowsChanged": false,
+    "rowsEnabledThisSprint": 0,
+    "recoveryGatesChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false,
+    "pushed": false,
+    "mainTouched": false,
+    "validatorsChanged": true,
+    "productionBehaviorChanged": true
+  }
+}

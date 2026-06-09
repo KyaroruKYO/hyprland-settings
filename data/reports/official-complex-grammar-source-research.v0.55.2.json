@@ -1,0 +1,864 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "official-complex-grammar-source-research",
+  "generatedAt": "2026-06-07T07:12:35.122223Z",
+  "researchMode": "official-source-research-only-no-validator-changes",
+  "sourceInputs": [
+    "writable-complex-grammar-research.v0.55.2.json"
+  ],
+  "officialSources": {
+    "parserUtils": {
+      "localPath": "/tmp/Hyprland-v0.55.2-full/src/config/shared/parserUtils/ParserUtils.cpp",
+      "officialUrl": "https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/shared/parserUtils/ParserUtils.cpp"
+    },
+    "legacyConfigManager": {
+      "localPath": "/tmp/Hyprland-v0.55.2-full/src/config/legacy/ConfigManager.cpp",
+      "officialUrl": "https://github.com/hyprwm/Hyprland/blob/v0.55.2/src/config/legacy/ConfigManager.cpp"
+    },
+    "hyprlangConfig": {
+      "localPath": "/tmp/hyprlang-source-research/src/config.cpp",
+      "officialUrl": "https://github.com/hyprwm/hyprlang/blob/main/src/config.cpp"
+    }
+  },
+  "counts": {
+    "complexGrammarRowsResearched": 38,
+    "colorRows": 10,
+    "gradientRows": 12,
+    "vector2Rows": 6,
+    "lineSafeStringRows": 5,
+    "pathRows": 2,
+    "regexStringRows": 2,
+    "numericListRows": 1,
+    "sourceBackedCompleteRows": 0,
+    "intentionallyConservativeRows": 9,
+    "tooBroadRows": 18,
+    "tooNarrowRows": 22,
+    "sourceResearchStillIncompleteRows": 10,
+    "validatorsChanged": false,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGatesChanged": false,
+    "rowsEnabledThisSprint": 0
+  },
+  "families": [
+    {
+      "grammarFamily": "Color",
+      "rowCount": 10,
+      "officialGrammar": "#RGB, #RRGGBB, #RRGGBBAA, 0x hex, rgb(RRGGBB), rgb(r,g,b), rgba(RRGGBBAA), rgba(r,g,b,a), and numeric integer forms via ParserUtils/configStringToInt.",
+      "currentValidatorAssessment": "too-narrow",
+      "recommendedFutureAction": "broaden or explicitly document conservative subset; add source-level tests for # forms and comma rgb/rgba before repair"
+    },
+    {
+      "grammarFamily": "Gradient",
+      "rowCount": 12,
+      "officialGrammar": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests"
+    },
+    {
+      "grammarFamily": "Vector2",
+      "rowCount": 6,
+      "officialGrammar": "exactly two float tokens separated by a single space in hyprlang VEC2 parsing; some rows add source validators such as vec2Range.",
+      "currentValidatorAssessment": "mixed-too-broad",
+      "recommendedFutureAction": "prefer official space-separated serialization; remove comma output or keep only as typed compatibility after explicit parser proof; add row-specific range validators where source has vec2Range"
+    },
+    {
+      "grammarFamily": "LineSafeString",
+      "rowCount": 5,
+      "officialGrammar": "Hyprland String values are parser-unconstrained at config value type level; row consumers may add semantics.",
+      "currentValidatorAssessment": "intentionally-conservative",
+      "recommendedFutureAction": "keep line-safe guardrails unless row-specific source consumer requires broader semantics"
+    },
+    {
+      "grammarFamily": "Path",
+      "rowCount": 2,
+      "officialGrammar": "String values in ConfigValues; path existence/expansion semantics are consumer-specific or absent in inspected source.",
+      "currentValidatorAssessment": "intentionally-conservative",
+      "recommendedFutureAction": "keep sanitized path guardrail; inspect each consumer before adding existence or expansion semantics"
+    },
+    {
+      "grammarFamily": "RegexString",
+      "rowCount": 2,
+      "officialGrammar": "String values at config level; regex compilation/consumer behavior is not proven by ConfigValues alone.",
+      "currentValidatorAssessment": "intentionally-conservative",
+      "recommendedFutureAction": "inspect consumer compile path before deciding whether to validate regex syntax"
+    },
+    {
+      "grammarFamily": "NumericList",
+      "rowCount": 1,
+      "officialGrammar": "Device/input consumer semantics are not fully proven by ConfigValues; current app scroll_points validator remains source-research-needed.",
+      "currentValidatorAssessment": "source-research-incomplete",
+      "recommendedFutureAction": "inspect input scroll_points consumer before changing grammar or bounds"
+    }
+  ],
+  "rows": [
+    {
+      "rowId": "decoration.shadow.color",
+      "officialSetting": "decoration.shadow.color",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow.",
+      "grammarFamily": "Color",
+      "officialGrammarFinding": "#RGB, #RRGGBB, #RRGGBBAA, 0x hex, rgb(RRGGBB), rgb(r,g,b), rgba(RRGGBBAA), rgba(r,g,b,a), and numeric integer forms via ParserUtils/configStringToInt.",
+      "currentValidatorAssessment": "too-narrow",
+      "recommendedFutureAction": "broaden or explicitly document conservative subset; add source-level tests for # forms and comma rgb/rgba before repair",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "decoration.shadow.color_inactive",
+      "officialSetting": "decoration.shadow.color_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow.",
+      "grammarFamily": "Color",
+      "officialGrammarFinding": "#RGB, #RRGGBB, #RRGGBBAA, 0x hex, rgb(RRGGBB), rgb(r,g,b), rgba(RRGGBBAA), rgba(r,g,b,a), and numeric integer forms via ParserUtils/configStringToInt.",
+      "currentValidatorAssessment": "too-narrow",
+      "recommendedFutureAction": "broaden or explicitly document conservative subset; add source-level tests for # forms and comma rgb/rgba before repair",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "decoration.shadow.offset",
+      "officialSetting": "decoration.shadow.offset",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Vector2",
+      "appValueType": "vector2",
+      "appValidatorKind": "vector2-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds.",
+      "grammarFamily": "Vector2",
+      "officialGrammarFinding": "exactly two float tokens separated by a single space in hyprlang VEC2 parsing; some rows add source validators such as vec2Range.",
+      "currentValidatorAssessment": "mixed-too-broad",
+      "recommendedFutureAction": "prefer official space-separated serialization; remove comma output or keep only as typed compatibility after explicit parser proof; add row-specific range validators where source has vec2Range",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "decoration.screen_shader",
+      "officialSetting": "decoration.screen_shader",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Path",
+      "appValueType": "path",
+      "appValidatorKind": "sanitized-path-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect source behavior for path expansion, relative paths, shader/file existence expectations, and shell-like character treatment.",
+      "grammarFamily": "Path",
+      "officialGrammarFinding": "String values in ConfigValues; path existence/expansion semantics are consumer-specific or absent in inspected source.",
+      "currentValidatorAssessment": "intentionally-conservative",
+      "recommendedFutureAction": "keep sanitized path guardrail; inspect each consumer before adding existence or expansion semantics",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "general.locale",
+      "officialSetting": "general.locale",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "LineSafeString",
+      "appValueType": "line-safe-string",
+      "appValidatorKind": "optional-line-safe-string",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect row-specific string consumers; retain line-safety but determine whether empty strings, spaces, and enum-like values need tighter policies.",
+      "grammarFamily": "LineSafeString",
+      "officialGrammarFinding": "Hyprland String values are parser-unconstrained at config value type level; row consumers may add semantics.",
+      "currentValidatorAssessment": "intentionally-conservative",
+      "recommendedFutureAction": "keep line-safe guardrails unless row-specific source consumer requires broader semantics",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "general.col.inactive_border",
+      "officialSetting": "general.col.inactive_border",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance.",
+      "grammarFamily": "Gradient",
+      "officialGrammarFinding": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "general.col.active_border",
+      "officialSetting": "general.col.active_border",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance.",
+      "grammarFamily": "Gradient",
+      "officialGrammarFinding": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "general.col.nogroup_border",
+      "officialSetting": "general.col.nogroup_border",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance.",
+      "grammarFamily": "Gradient",
+      "officialGrammarFinding": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "general.col.nogroup_border_active",
+      "officialSetting": "general.col.nogroup_border_active",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance.",
+      "grammarFamily": "Gradient",
+      "officialGrammarFinding": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.accel_profile",
+      "officialSetting": "input.accel_profile",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "LineSafeString",
+      "appValueType": "line-safe-string",
+      "appValidatorKind": "line-safe-string-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect row-specific string consumers; retain line-safety but determine whether empty strings, spaces, and enum-like values need tighter policies.",
+      "grammarFamily": "LineSafeString",
+      "officialGrammarFinding": "Hyprland String values are parser-unconstrained at config value type level; row consumers may add semantics.",
+      "currentValidatorAssessment": "intentionally-conservative",
+      "recommendedFutureAction": "keep line-safe guardrails unless row-specific source consumer requires broader semantics",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.scroll_points",
+      "officialSetting": "input.scroll_points",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "NumericList",
+      "appValueType": "numeric-list",
+      "appValidatorKind": "numeric-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect list grammar and bounds for numeric-list rows; parser acceptance alone is not enough for semantic completeness.",
+      "grammarFamily": "NumericList",
+      "officialGrammarFinding": "Device/input consumer semantics are not fully proven by ConfigValues; current app scroll_points validator remains source-research-needed.",
+      "currentValidatorAssessment": "source-research-incomplete",
+      "recommendedFutureAction": "inspect input scroll_points consumer before changing grammar or bounds",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.kb_file",
+      "officialSetting": "input.kb_file",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Path",
+      "appValueType": "path",
+      "appValidatorKind": "sanitized-path-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect source behavior for path expansion, relative paths, shader/file existence expectations, and shell-like character treatment.",
+      "grammarFamily": "Path",
+      "officialGrammarFinding": "String values in ConfigValues; path existence/expansion semantics are consumer-specific or absent in inspected source.",
+      "currentValidatorAssessment": "intentionally-conservative",
+      "recommendedFutureAction": "keep sanitized path guardrail; inspect each consumer before adding existence or expansion semantics",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.tablet.region_position",
+      "officialSetting": "input.tablet.region_position",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Vector2",
+      "appValueType": "vector2",
+      "appValidatorKind": "vector2-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds.",
+      "grammarFamily": "Vector2",
+      "officialGrammarFinding": "exactly two float tokens separated by a single space in hyprlang VEC2 parsing; some rows add source validators such as vec2Range.",
+      "currentValidatorAssessment": "mixed-too-broad",
+      "recommendedFutureAction": "prefer official space-separated serialization; remove comma output or keep only as typed compatibility after explicit parser proof; add row-specific range validators where source has vec2Range",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.tablet.region_size",
+      "officialSetting": "input.tablet.region_size",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Vector2",
+      "appValueType": "vector2",
+      "appValidatorKind": "vector2-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds.",
+      "grammarFamily": "Vector2",
+      "officialGrammarFinding": "exactly two float tokens separated by a single space in hyprlang VEC2 parsing; some rows add source validators such as vec2Range.",
+      "currentValidatorAssessment": "mixed-too-broad",
+      "recommendedFutureAction": "prefer official space-separated serialization; remove comma output or keep only as typed compatibility after explicit parser proof; add row-specific range validators where source has vec2Range",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.tablet.active_area_size",
+      "officialSetting": "input.tablet.active_area_size",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Vector2",
+      "appValueType": "vector2",
+      "appValidatorKind": "vector2-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds.",
+      "grammarFamily": "Vector2",
+      "officialGrammarFinding": "exactly two float tokens separated by a single space in hyprlang VEC2 parsing; some rows add source validators such as vec2Range.",
+      "currentValidatorAssessment": "mixed-too-broad",
+      "recommendedFutureAction": "prefer official space-separated serialization; remove comma output or keep only as typed compatibility after explicit parser proof; add row-specific range validators where source has vec2Range",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "input.tablet.active_area_position",
+      "officialSetting": "input.tablet.active_area_position",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Vector2",
+      "appValueType": "vector2",
+      "appValidatorKind": "vector2-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds.",
+      "grammarFamily": "Vector2",
+      "officialGrammarFinding": "exactly two float tokens separated by a single space in hyprlang VEC2 parsing; some rows add source validators such as vec2Range.",
+      "currentValidatorAssessment": "mixed-too-broad",
+      "recommendedFutureAction": "prefer official space-separated serialization; remove comma output or keep only as typed compatibility after explicit parser proof; add row-specific range validators where source has vec2Range",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "decoration.glow.color",
+      "officialSetting": "decoration.glow.color",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow.",
+      "grammarFamily": "Color",
+      "officialGrammarFinding": "#RGB, #RRGGBB, #RRGGBBAA, 0x hex, rgb(RRGGBB), rgb(r,g,b), rgba(RRGGBBAA), rgba(r,g,b,a), and numeric integer forms via ParserUtils/configStringToInt.",
+      "currentValidatorAssessment": "too-narrow",
+      "recommendedFutureAction": "broaden or explicitly document conservative subset; add source-level tests for # forms and comma rgb/rgba before repair",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "decoration.glow.color_inactive",
+      "officialSetting": "decoration.glow.color_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow.",
+      "grammarFamily": "Color",
+      "officialGrammarFinding": "#RGB, #RRGGBB, #RRGGBBAA, 0x hex, rgb(RRGGBB), rgb(r,g,b), rgba(RRGGBBAA), rgba(r,g,b,a), and numeric integer forms via ParserUtils/configStringToInt.",
+      "currentValidatorAssessment": "too-narrow",
+      "recommendedFutureAction": "broaden or explicitly document conservative subset; add source-level tests for # forms and comma rgb/rgba before repair",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.text_color",
+      "officialSetting": "group.groupbar.text_color",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow.",
+      "grammarFamily": "Color",
+      "officialGrammarFinding": "#RGB, #RRGGBB, #RRGGBBAA, 0x hex, rgb(RRGGBB), rgb(r,g,b), rgba(RRGGBBAA), rgba(r,g,b,a), and numeric integer forms via ParserUtils/configStringToInt.",
+      "currentValidatorAssessment": "too-narrow",
+      "recommendedFutureAction": "broaden or explicitly document conservative subset; add source-level tests for # forms and comma rgb/rgba before repair",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.text_color_inactive",
+      "officialSetting": "group.groupbar.text_color_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow.",
+      "grammarFamily": "Color",
+      "officialGrammarFinding": "#RGB, #RRGGBB, #RRGGBBAA, 0x hex, rgb(RRGGBB), rgb(r,g,b), rgba(RRGGBBAA), rgba(r,g,b,a), and numeric integer forms via ParserUtils/configStringToInt.",
+      "currentValidatorAssessment": "too-narrow",
+      "recommendedFutureAction": "broaden or explicitly document conservative subset; add source-level tests for # forms and comma rgb/rgba before repair",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.text_color_locked_active",
+      "officialSetting": "group.groupbar.text_color_locked_active",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow.",
+      "grammarFamily": "Color",
+      "officialGrammarFinding": "#RGB, #RRGGBB, #RRGGBBAA, 0x hex, rgb(RRGGBB), rgb(r,g,b), rgba(RRGGBBAA), rgba(r,g,b,a), and numeric integer forms via ParserUtils/configStringToInt.",
+      "currentValidatorAssessment": "too-narrow",
+      "recommendedFutureAction": "broaden or explicitly document conservative subset; add source-level tests for # forms and comma rgb/rgba before repair",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.text_color_locked_inactive",
+      "officialSetting": "group.groupbar.text_color_locked_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow.",
+      "grammarFamily": "Color",
+      "officialGrammarFinding": "#RGB, #RRGGBB, #RRGGBBAA, 0x hex, rgb(RRGGBB), rgb(r,g,b), rgba(RRGGBBAA), rgba(r,g,b,a), and numeric integer forms via ParserUtils/configStringToInt.",
+      "currentValidatorAssessment": "too-narrow",
+      "recommendedFutureAction": "broaden or explicitly document conservative subset; add source-level tests for # forms and comma rgb/rgba before repair",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.font_family",
+      "officialSetting": "group.groupbar.font_family",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "LineSafeString",
+      "appValueType": "line-safe-string",
+      "appValidatorKind": "line-safe-string-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect row-specific string consumers; retain line-safety but determine whether empty strings, spaces, and enum-like values need tighter policies.",
+      "grammarFamily": "LineSafeString",
+      "officialGrammarFinding": "Hyprland String values are parser-unconstrained at config value type level; row consumers may add semantics.",
+      "currentValidatorAssessment": "intentionally-conservative",
+      "recommendedFutureAction": "keep line-safe guardrails unless row-specific source consumer requires broader semantics",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.col.border_active",
+      "officialSetting": "group.col.border_active",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance.",
+      "grammarFamily": "Gradient",
+      "officialGrammarFinding": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.col.border_inactive",
+      "officialSetting": "group.col.border_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance.",
+      "grammarFamily": "Gradient",
+      "officialGrammarFinding": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.col.border_locked_inactive",
+      "officialSetting": "group.col.border_locked_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance.",
+      "grammarFamily": "Gradient",
+      "officialGrammarFinding": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.col.border_locked_active",
+      "officialSetting": "group.col.border_locked_active",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance.",
+      "grammarFamily": "Gradient",
+      "officialGrammarFinding": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.col.active",
+      "officialSetting": "group.groupbar.col.active",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance.",
+      "grammarFamily": "Gradient",
+      "officialGrammarFinding": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.col.inactive",
+      "officialSetting": "group.groupbar.col.inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance.",
+      "grammarFamily": "Gradient",
+      "officialGrammarFinding": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.col.locked_active",
+      "officialSetting": "group.groupbar.col.locked_active",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance.",
+      "grammarFamily": "Gradient",
+      "officialGrammarFinding": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "group.groupbar.col.locked_inactive",
+      "officialSetting": "group.groupbar.col.locked_inactive",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Gradient",
+      "appValueType": "gradient-color-list",
+      "appValidatorKind": "gradient-color-list-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official gradient grammar for color-list count, angle units, separators, alpha rules, and color literal grammar inheritance.",
+      "grammarFamily": "Gradient",
+      "officialGrammarFinding": "space-separated color tokens plus optional deg angle token; at least one color; max 10 colors; color tokens use official color parser; angle is parsed by stoi-like integer degree logic.",
+      "currentValidatorAssessment": "mixed-too-narrow-and-too-broad",
+      "recommendedFutureAction": "adopt source color grammar if broadening color; enforce max 10 colors; decide angle integer/float policy by temp/source tests",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "misc.col.splash",
+      "officialSetting": "misc.col.splash",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow.",
+      "grammarFamily": "Color",
+      "officialGrammarFinding": "#RGB, #RRGGBB, #RRGGBBAA, 0x hex, rgb(RRGGBB), rgb(r,g,b), rgba(RRGGBBAA), rgba(r,g,b,a), and numeric integer forms via ParserUtils/configStringToInt.",
+      "currentValidatorAssessment": "too-narrow",
+      "recommendedFutureAction": "broaden or explicitly document conservative subset; add source-level tests for # forms and comma rgb/rgba before repair",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "misc.background_color",
+      "officialSetting": "misc.background_color",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Color",
+      "appValueType": "color",
+      "appValidatorKind": "color-parser-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official color parser/source for accepted literal formats, alpha handling, named colors if any, and invalid forms; then decide whether app color parser is exact, too broad, or too narrow.",
+      "grammarFamily": "Color",
+      "officialGrammarFinding": "#RGB, #RRGGBB, #RRGGBBAA, 0x hex, rgb(RRGGBB), rgb(r,g,b), rgba(RRGGBBAA), rgba(r,g,b,a), and numeric integer forms via ParserUtils/configStringToInt.",
+      "currentValidatorAssessment": "too-narrow",
+      "recommendedFutureAction": "broaden or explicitly document conservative subset; add source-level tests for # forms and comma rgb/rgba before repair",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "misc.font_family",
+      "officialSetting": "misc.font_family",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "LineSafeString",
+      "appValueType": "line-safe-string",
+      "appValidatorKind": "line-safe-string-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect row-specific string consumers; retain line-safety but determine whether empty strings, spaces, and enum-like values need tighter policies.",
+      "grammarFamily": "LineSafeString",
+      "officialGrammarFinding": "Hyprland String values are parser-unconstrained at config value type level; row consumers may add semantics.",
+      "currentValidatorAssessment": "intentionally-conservative",
+      "recommendedFutureAction": "keep line-safe guardrails unless row-specific source consumer requires broader semantics",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "misc.splash_font_family",
+      "officialSetting": "misc.splash_font_family",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "LineSafeString",
+      "appValueType": "line-safe-string",
+      "appValidatorKind": "line-safe-string-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect row-specific string consumers; retain line-safety but determine whether empty strings, spaces, and enum-like values need tighter policies.",
+      "grammarFamily": "LineSafeString",
+      "officialGrammarFinding": "Hyprland String values are parser-unconstrained at config value type level; row consumers may add semantics.",
+      "currentValidatorAssessment": "intentionally-conservative",
+      "recommendedFutureAction": "keep line-safe guardrails unless row-specific source consumer requires broader semantics",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "misc.swallow_regex",
+      "officialSetting": "misc.swallow_regex",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "RegexString",
+      "appValueType": "regex-string",
+      "appValidatorKind": "regex-line-safe-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect regex consumer semantics and determine whether app only needs config line-safety or should also compile/validate regex.",
+      "grammarFamily": "RegexString",
+      "officialGrammarFinding": "String values at config level; regex compilation/consumer behavior is not proven by ConfigValues alone.",
+      "currentValidatorAssessment": "intentionally-conservative",
+      "recommendedFutureAction": "inspect consumer compile path before deciding whether to validate regex syntax",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "misc.swallow_exception_regex",
+      "officialSetting": "misc.swallow_exception_regex",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "RegexString",
+      "appValueType": "regex-string",
+      "appValidatorKind": "regex-line-safe-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect regex consumer semantics and determine whether app only needs config line-safety or should also compile/validate regex.",
+      "grammarFamily": "RegexString",
+      "officialGrammarFinding": "String values at config level; regex compilation/consumer behavior is not proven by ConfigValues alone.",
+      "currentValidatorAssessment": "intentionally-conservative",
+      "recommendedFutureAction": "inspect consumer compile path before deciding whether to validate regex syntax",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    },
+    {
+      "rowId": "layout.single_window_aspect_ratio",
+      "officialSetting": "layout.single_window_aspect_ratio",
+      "currentWriteStatus": "writable",
+      "rustValueKind": "Vector2",
+      "appValueType": "vector2",
+      "appValidatorKind": "vector2-validator",
+      "classificationFromWritableAudit": "source-research-needed",
+      "recommendedPreviousAction": "Inspect official vector parsing for comma/space delimiters, finite-only behavior, integer/float acceptance, and row-specific semantic bounds.",
+      "grammarFamily": "Vector2",
+      "officialGrammarFinding": "exactly two float tokens separated by a single space in hyprlang VEC2 parsing; some rows add source validators such as vec2Range.",
+      "currentValidatorAssessment": "mixed-too-broad",
+      "recommendedFutureAction": "prefer official space-separated serialization; remove comma output or keep only as typed compatibility after explicit parser proof; add row-specific range validators where source has vec2Range",
+      "sourceRefs": [
+        "ParserUtils.cpp for color/int grammar",
+        "ConfigManager.cpp gradient handler for gradient grammar",
+        "hyprlang config.cpp for VEC2/String parse behavior",
+        "ConfigValues.cpp for row declarations"
+      ]
+    }
+  ],
+  "safety": {
+    "validatorsChanged": false,
+    "safeWritableRowsChanged": false,
+    "writeBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "recoveryGatesChanged": false
+  }
+}

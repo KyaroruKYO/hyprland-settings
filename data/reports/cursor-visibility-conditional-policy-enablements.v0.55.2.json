@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "cursor-visibility-conditional-policy-enablements",
+  "generatedAtUnixSeconds": 1780736769,
+  "subsetName": "cursor-visibility-conditional-touch-tablet-proof-subset",
+  "sourceReports": [
+    "cursor-visibility-conditional-policy-enable-proof.v0.55.2.json",
+    "cursor-visibility-conditional-policy-proof.v0.55.2.json",
+    "cursor-visibility-conditional-policy-watchdog-proof.v0.55.2.json",
+    "cursor-visibility-conditional-policy-readiness.v0.55.2.json"
+  ],
+  "counts": {
+    "attemptedRows": 2,
+    "enabledRows": 2,
+    "notEnabledRows": 0,
+    "finalWritableRows": 277,
+    "finalBlockedRows": 64,
+    "cursorInputRowsStillBlocked": 19,
+    "displayRenderRowsStillBlocked": 23,
+    "debugCrashRowsStillBlocked": 22,
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true,
+    "recoveryGateWeakenedRows": 0,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "enabledRows": [
+    "cursor.hide_on_touch",
+    "cursor.hide_on_tablet"
+  ],
+  "notEnabledRows": [],
+  "rows": [
+    {
+      "rowId": "cursor.hide_on_touch",
+      "officialSetting": "cursor.hide_on_touch",
+      "enabled": true,
+      "valueType": "bool",
+      "acceptedValues": [
+        "true",
+        "false"
+      ],
+      "rejectedInvalidValues": [
+        "maybe",
+        "arbitrary-string"
+      ],
+      "recoveryBucket": "cursor-input-recovery:cursor-visibility-conditional-touch-tablet-subset",
+      "approvalGate": "advanced-opt-in-plus-cursor-visibility-dead-man-watchdog-confirm-or-revert",
+      "watchdogGatePreserved": true,
+      "recoveryIndependencePreserved": true,
+      "cursorVisibilityWarningRequired": true
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "officialSetting": "cursor.hide_on_tablet",
+      "enabled": true,
+      "valueType": "bool",
+      "acceptedValues": [
+        "true",
+        "false"
+      ],
+      "rejectedInvalidValues": [
+        "maybe",
+        "arbitrary-string"
+      ],
+      "recoveryBucket": "cursor-input-recovery:cursor-visibility-conditional-touch-tablet-subset",
+      "approvalGate": "advanced-opt-in-plus-cursor-visibility-dead-man-watchdog-confirm-or-revert",
+      "watchdogGatePreserved": true,
+      "recoveryIndependencePreserved": true,
+      "cursorVisibilityWarningRequired": true
+    }
+  ],
+  "stillBlockedRows": [
+    {
+      "rowId": "cursor.invisible",
+      "reason": "Immediate/global invisibility risk remains blocked pending explicit higher-risk proof."
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "reason": "Timing-sensitive numeric row remains blocked pending bound-specific proof."
+    },
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "reason": "Keyboard-triggered hiding remains blocked pending CLI-token usability proof."
+    }
+  ],
+  "safety": {
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "anythingPushed": false,
+    "mainTouched": false
+  }
+}

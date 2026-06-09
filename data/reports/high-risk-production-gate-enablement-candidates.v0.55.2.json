@@ -1,0 +1,1181 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "high-risk-production-gate-enablement-candidates",
+  "generatedAt": "2026-06-09T00:03:55.540909Z",
+  "startingCommit": "7a21f07",
+  "nonLiveGateCandidateRows": [
+    {
+      "rowId": "xwayland.enabled",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "xwayland.create_abstract_socket",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "opengl.nvidia_anti_flicker",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.direct_scanout",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.expand_undersized_textures",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.xp_mode",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.ctm_animation",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.cm_enabled",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.send_content_type",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.cm_auto_hdr",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.new_render_scheduling",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.non_shader_cm",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.cm_sdr_eotf",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.commit_timing_enabled",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.icc_vcgt_enabled",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.use_shader_blur_blend",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.use_fp16",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.keep_unmodified_copy",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.non_shader_cm_interop",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.fp16_sdr_tf",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "experimental.wp_cm_1_2",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "quirks.prefer_hdr",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "quirks.skip_non_kms_dmabuf_formats",
+      "bucket": "display/render",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "cursor.invisible",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "First create a runtime monitor-name source oracle, then apply the cursor/input gate and recovery model."
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "bucket": "cursor/input",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "debug.overlay",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.damage_blink",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.gl_debugging",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.disable_logs",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.disable_time",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.damage_tracking",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.enable_stdout_logs",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.manual_crash",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.suppress_errors",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.disable_scale_checks",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.error_limit",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.error_position",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.colored_stdout_logs",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.log_damage",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.pass",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.full_cm_proto",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer_fifo",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.fifo_pending_workaround",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.render_solitary_wo_damage",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.vfr",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.invalidate_fp16",
+      "bucket": "debug/crash",
+      "reason": "Non-live gate scaffolding can be tested for persisted plan, backup, rollback, and token confirmation, but this is not enablement proof.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    }
+  ],
+  "liveProofRequiredRows": [
+    {
+      "rowId": "xwayland.enabled",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "xwayland.create_abstract_socket",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "opengl.nvidia_anti_flicker",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.direct_scanout",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.expand_undersized_textures",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.xp_mode",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.ctm_animation",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.cm_enabled",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.send_content_type",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.cm_auto_hdr",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.new_render_scheduling",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.non_shader_cm",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.cm_sdr_eotf",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.commit_timing_enabled",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.icc_vcgt_enabled",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.use_shader_blur_blend",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.use_fp16",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.keep_unmodified_copy",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.non_shader_cm_interop",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.fp16_sdr_tf",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "experimental.wp_cm_1_2",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "quirks.prefer_hdr",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "quirks.skip_non_kms_dmabuf_formats",
+      "bucket": "display/render",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "cursor.invisible",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "First create a runtime monitor-name source oracle, then apply the cursor/input gate and recovery model."
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "bucket": "cursor/input",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "debug.overlay",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.damage_blink",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.gl_debugging",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.disable_logs",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.disable_time",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.damage_tracking",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.enable_stdout_logs",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.manual_crash",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.suppress_errors",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.disable_scale_checks",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.error_limit",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.error_position",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.colored_stdout_logs",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.log_damage",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.pass",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.full_cm_proto",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer_fifo",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.fifo_pending_workaround",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.render_solitary_wo_damage",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.vfr",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.invalidate_fp16",
+      "bucket": "debug/crash",
+      "reason": "Runtime effect cannot be proven by parser, fixture, validator, or report-only gate proof alone.",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    }
+  ],
+  "explicitApprovalOnlyRows": [],
+  "runtimeDynamicRows": [
+    {
+      "rowId": "cursor.default_monitor",
+      "bucket": "cursor/input",
+      "reason": "Configured value is compared to runtime monitor names in Hyprland source.",
+      "nextConcreteAction": "Create a source-backed monitor-name oracle/readback proof before enablement."
+    }
+  ],
+  "doNotEnableYetRows": [
+    {
+      "rowId": "xwayland.enabled",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "xwayland.create_abstract_socket",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "opengl.nvidia_anti_flicker",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.direct_scanout",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.expand_undersized_textures",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.xp_mode",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.ctm_animation",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.cm_enabled",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.send_content_type",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.cm_auto_hdr",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.new_render_scheduling",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.non_shader_cm",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.cm_sdr_eotf",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.commit_timing_enabled",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.icc_vcgt_enabled",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.use_shader_blur_blend",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.use_fp16",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.keep_unmodified_copy",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.non_shader_cm_interop",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "render.fp16_sdr_tf",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "experimental.wp_cm_1_2",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "quirks.prefer_hdr",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "quirks.skip_non_kms_dmabuf_formats",
+      "bucket": "display/render",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build display/render persisted recovery plan and separate confirmation/timeout runner in temp-only proof mode before any enablement sprint."
+    },
+    {
+      "rowId": "cursor.invisible",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing; runtime monitor-name allowlist/readback proof is missing",
+      "nextConcreteAction": "First create a runtime monitor-name source oracle, then apply the cursor/input gate and recovery model."
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "bucket": "cursor/input",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build cursor/input persisted recovery plan and keyboard-token confirmation proof before any cursor/input enablement batch."
+    },
+    {
+      "rowId": "debug.overlay",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.damage_blink",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.gl_debugging",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.disable_logs",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.disable_time",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.damage_tracking",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.enable_stdout_logs",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.manual_crash",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.suppress_errors",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.disable_scale_checks",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.error_limit",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.error_position",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.colored_stdout_logs",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.log_damage",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.pass",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.full_cm_proto",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer_fifo",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.fifo_pending_workaround",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.render_solitary_wo_damage",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.vfr",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    },
+    {
+      "rowId": "debug.invalidate_fp16",
+      "bucket": "debug/crash",
+      "reason": "missing production gate implementation and acceptance/rejection tests; missing persisted recovery plan implementation for this bucket; missing out-of-band confirmation runner proof; missing production rollback proof against the future gated write path; live/runtime safety proof remains required or must be explicitly waived by future approval; explicit high-risk enablement approval is missing",
+      "nextConcreteAction": "Build debug/crash external recovery proof and explicit no-crash temp-only tests before any debug/crash enablement batch."
+    }
+  ],
+  "summary": {
+    "nonLiveGateCandidateRows": 63,
+    "liveProofRequiredRows": 63,
+    "explicitApprovalOnlyRows": 0,
+    "runtimeDynamicRows": 1,
+    "doNotEnableYetRows": 63
+  },
+  "proofUsed": [
+    "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+    "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+    "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json",
+    "src/blocked_row_pre_enablement.rs",
+    "src/high_risk_recovery.rs persisted dry-run watchdog and backup/rollback primitives",
+    "src/write_safety.rs current screen-shader gated review primitive and allowlist rejection behavior",
+    "data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json",
+    "data/reports/return-to-341-writable-roadmap.v0.55.2.json"
+  ],
+  "proofStillMissing": [
+    "production gate implementation for the 63 blocked high-risk rows",
+    "persisted recovery plan runner for display/render, cursor/input, and debug/crash buckets",
+    "out-of-band confirmation runner proof for each bucket",
+    "production rollback proof against a future gated write path",
+    "future approved live/runtime proof or explicit approval to proceed without live unsafe testing",
+    "runtime monitor-name oracle for cursor.default_monitor"
+  ],
+  "nextRecommendedSprint": "Implement high-risk persisted recovery plan scaffold sprint"
+}

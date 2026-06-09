@@ -1,0 +1,965 @@
+# High-risk Persisted Recovery Scaffold Review Log
+
+## Sprint summary
+- Rows analyzed: 63
+- Rows enabled: 0
+- Counts before: 341 readable / 278 writable / 63 blocked
+- Counts after: 341 readable / 278 writable / 63 blocked
+- Source module added: src/high_risk_persisted_recovery.rs
+- Tests added: tests/high_risk_persisted_recovery_scaffold.rs
+- Why this sprint did or did not enable rows: This sprint implemented and tested a temp-only persisted recovery scaffold. It did not wire the scaffold into production write planning/apply flow, did not run live/runtime proof, and did not receive explicit high-risk enablement approval.
+
+## What the scaffold now proves
+- Persisted plan creation: temp-only high-risk plans can be created, validated, persisted, and reloaded.
+- Plan validation: missing row id, official setting, target path, backup path, mismatched bucket, non-high-risk row, and non-temp target are rejected.
+- Backup creation: temp config backup creation verifies copied bytes.
+- Rollback restore: temp config can be restored from backup.
+- Parser reread after restore: restored temp config is reread through the project parser.
+- Confirmation token acceptance: correct token selects keep/apply.
+- Wrong token rejection: wrong token is rejected.
+- Timeout/dead-man rollback decision: timeout or no confirmation selects rollback.
+- Live-target refusal: live target execution is refused while live execution is disabled.
+
+## Bucket: display/render
+### Recovery model
+- display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+### Rows covered
+- xwayland.enabled
+- xwayland.create_abstract_socket
+- opengl.nvidia_anti_flicker
+- render.direct_scanout
+- render.expand_undersized_textures
+- render.xp_mode
+- render.ctm_animation
+- render.cm_enabled
+- render.send_content_type
+- render.cm_auto_hdr
+- render.new_render_scheduling
+- render.non_shader_cm
+- render.cm_sdr_eotf
+- render.commit_timing_enabled
+- render.icc_vcgt_enabled
+- render.use_shader_blur_blend
+- render.use_fp16
+- render.keep_unmodified_copy
+- render.non_shader_cm_interop
+- render.fp16_sdr_tf
+- experimental.wp_cm_1_2
+- quirks.prefer_hdr
+- quirks.skip_non_kms_dmabuf_formats
+### Temp-only proof added
+- temp-only persisted recovery plan creation and validation
+- temp-only plan persistence and load
+- temp-only backup creation
+- temp-only rollback restore and parser reread
+- correct confirmation token acceptance
+- wrong confirmation token rejection
+- timeout/no-confirmation rollback decision
+- live-target execution refusal while disabled
+### Remaining blocker
+- Production gate integration, live/runtime proof or explicit future waiver, and explicit high-risk enablement approval are still missing.
+### Next concrete action
+- Integrate the scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+## Bucket: cursor/input
+### Recovery model
+- cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+### Rows covered
+- cursor.invisible
+- cursor.no_hardware_cursors
+- cursor.no_break_fs_vrr
+- cursor.min_refresh_rate
+- cursor.hotspot_padding
+- cursor.inactive_timeout
+- cursor.no_warps
+- cursor.persistent_warps
+- cursor.warp_on_change_workspace
+- cursor.warp_on_toggle_special
+- cursor.default_monitor
+- cursor.zoom_factor
+- cursor.zoom_rigid
+- cursor.zoom_disable_aa
+- cursor.zoom_detached_camera
+- cursor.enable_hyprcursor
+- cursor.use_cpu_buffer
+- cursor.warp_back_after_non_mouse_input
+### Temp-only proof added
+- temp-only persisted recovery plan creation and validation
+- temp-only plan persistence and load
+- temp-only backup creation
+- temp-only rollback restore and parser reread
+- correct confirmation token acceptance
+- wrong confirmation token rejection
+- timeout/no-confirmation rollback decision
+- live-target execution refusal while disabled
+### Special cases
+- cursor.default_monitor remains runtime-dynamic because monitor-name allowlist/readback proof is still missing.
+### Remaining blocker
+- Production gate integration, live/runtime proof or explicit future waiver, and explicit high-risk enablement approval are still missing.
+### Next concrete action
+- Integrate the scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+## Bucket: debug/crash
+### Recovery model
+- debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+### Rows covered
+- debug.overlay
+- debug.damage_blink
+- debug.gl_debugging
+- debug.disable_logs
+- debug.disable_time
+- debug.damage_tracking
+- debug.enable_stdout_logs
+- debug.manual_crash
+- debug.suppress_errors
+- debug.disable_scale_checks
+- debug.error_limit
+- debug.error_position
+- debug.colored_stdout_logs
+- debug.log_damage
+- debug.pass
+- debug.full_cm_proto
+- debug.ds_handle_same_buffer
+- debug.ds_handle_same_buffer_fifo
+- debug.fifo_pending_workaround
+- debug.render_solitary_wo_damage
+- debug.vfr
+- debug.invalidate_fp16
+### Temp-only proof added
+- temp-only persisted recovery plan creation and validation
+- temp-only plan persistence and load
+- temp-only backup creation
+- temp-only rollback restore and parser reread
+- correct confirmation token acceptance
+- wrong confirmation token rejection
+- timeout/no-confirmation rollback decision
+- live-target execution refusal while disabled
+### Remaining blocker
+- Production gate integration, live/runtime proof or explicit future waiver, and explicit high-risk enablement approval are still missing.
+### Next concrete action
+- Integrate the scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+## Row-by-row scaffold classification
+- Row: xwayland.enabled
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: xwayland.create_abstract_socket
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: opengl.nvidia_anti_flicker
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.direct_scanout
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.expand_undersized_textures
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.xp_mode
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.ctm_animation
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.cm_enabled
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.send_content_type
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.cm_auto_hdr
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.new_render_scheduling
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.non_shader_cm
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.cm_sdr_eotf
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.commit_timing_enabled
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.icc_vcgt_enabled
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.use_shader_blur_blend
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.use_fp16
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.keep_unmodified_copy
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.non_shader_cm_interop
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: render.fp16_sdr_tf
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: experimental.wp_cm_1_2
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: quirks.prefer_hdr
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: quirks.skip_non_kms_dmabuf_formats
+- Bucket: display/render
+- Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.invisible
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.no_hardware_cursors
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.no_break_fs_vrr
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.min_refresh_rate
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.hotspot_padding
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.inactive_timeout
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.no_warps
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.persistent_warps
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.warp_on_change_workspace
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.warp_on_toggle_special
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.default_monitor
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: true
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.zoom_factor
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.zoom_rigid
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.zoom_disable_aa
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.zoom_detached_camera
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.enable_hyprcursor
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.use_cpu_buffer
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: cursor.warp_back_after_non_mouse_input
+- Bucket: cursor/input
+- Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.overlay
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.damage_blink
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.gl_debugging
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.disable_logs
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.disable_time
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.damage_tracking
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.enable_stdout_logs
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.manual_crash
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.suppress_errors
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.disable_scale_checks
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.error_limit
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.error_position
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.colored_stdout_logs
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.log_damage
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.pass
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.full_cm_proto
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.ds_handle_same_buffer
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.ds_handle_same_buffer_fifo
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.fifo_pending_workaround
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.render_solitary_wo_damage
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.vfr
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+- Row: debug.invalidate_fp16
+- Bucket: debug/crash
+- Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+- Persisted plan scaffold: implemented-temp-only-and-tested
+- Backup/restore proof: implemented-temp-only-backup-restore-parser-reread-tested
+- Confirmation token proof: implemented-correct-token-accepted-wrong-token-rejected
+- Timeout rollback proof: implemented-timeout-without-confirmation-selects-rollback
+- Live-target refusal proof: implemented-live-execution-disabled-and-refused
+- Runtime dynamic special case: false
+- Enabled this sprint: no
+- Exact remaining blocker: production gate integration is missing; live/runtime safety proof or explicit future waiver is missing; explicit high-risk enablement approval is missing; this was not an enablement sprint
+- Recommended next action: Integrate the persisted recovery scaffold into a production gate dry-run path with acceptance/rejection tests before any enablement sprint.
+
+## Projected next 3 steps
+1. Integrate the persisted recovery scaffold into a production gate in report-only/dry-run mode.
+2. Enable fully proven low-risk high-risk-bucket candidates only after production gate acceptance/rejection tests pass.
+3. Create explicit live/runtime approval plans only for rows that cannot be proven non-live.

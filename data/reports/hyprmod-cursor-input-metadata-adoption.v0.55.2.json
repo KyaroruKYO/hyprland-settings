@@ -1,0 +1,2073 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "hyprmod-cursor-input-metadata-adoption",
+  "generatedAtUnixSeconds": 1780734944,
+  "sourceReports": [
+    "hyprmod-cursor-input-risk-comparison.v0.55.2.json",
+    "hyprmod-cursor-input-risk-deltas.v0.55.2.json",
+    "hyprmod-cursor-input-next-subset-recommendation.v0.55.2.json",
+    "scalar-read-write-coverage.v0.55.2.json",
+    "all-341-unified-pipeline.v0.55.2.json",
+    "cursor-input-recovery-boundary-design.v0.55.2.json"
+  ],
+  "counts": {
+    "rowsConsidered": 21,
+    "rowsWithAdoptedMetadata": 21,
+    "rowsWithMetadataProvenance": 21,
+    "hyprmodRecoveryRollbackDeadManEvidenceRows": 0,
+    "hyprmodOverlayMetadataRows": 10,
+    "hyprmodSchemaOnlyMetadataRows": 11,
+    "labelsAdoptedRows": 21,
+    "descriptionsAdoptedRows": 21,
+    "defaultsAdoptedRows": 21,
+    "boundsAdoptedRows": 4,
+    "choicesAdoptedRows": 5,
+    "editorHintsRecordedRows": 21,
+    "groupingCategoryAdoptedRows": 10,
+    "rowsEnabled": 0,
+    "finalWritableRows": 275,
+    "finalBlockedRows": 66,
+    "cursorInputBlockedRows": 21,
+    "displayRenderBlockedRows": 23,
+    "debugCrashBlockedRows": 22,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "recoveryGateWeakenedRows": 0
+  },
+  "adoptionPolicy": {
+    "allowedAdoption": [
+      "labels/title metadata",
+      "descriptions/help text",
+      "default value metadata",
+      "min/max bounds metadata",
+      "enum/choice metadata",
+      "editor hints as disabled/future UI metadata only",
+      "grouping/category hints",
+      "source provenance references"
+    ],
+    "forbiddenAdoption": [
+      "write allowlist changes",
+      "write status changes",
+      "recovery gate weakening",
+      "treating HyprMod normal exposure as safety proof",
+      "copying HyprMod implementation code",
+      "adopting unsafe editor behavior",
+      "removing high-risk warnings",
+      "removing independent watchdog requirement"
+    ],
+    "policyConclusion": "metadata-only adoption; no write behavior or recovery gate changes"
+  },
+  "fieldAdoptionSummary": {
+    "label": 21,
+    "description": 21,
+    "default": 21,
+    "editorHint": 21,
+    "sourceProvenance": 21,
+    "choices": 5,
+    "grouping/category": 10,
+    "bounds": 4
+  },
+  "sourceProvenanceSummary": {
+    "hyprmod-schema-only": 11,
+    "existing-project-risk-report": 21,
+    "existing-companion-schema-report": 21,
+    "hyprmod-overlay": 10
+  },
+  "subsetRecommendationChanged": false,
+  "nextSubsetRecommendation": "none-selected; HyprMod metadata does not satisfy cursor/input recovery independence requirements",
+  "rows": [
+    {
+      "rowId": "cursor.invisible",
+      "officialSetting": "cursor.invisible",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "valueFamily": "none",
+        "pipelineValueType": "bool",
+        "validatorRef": "bool",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-visibility-critical"
+      },
+      "metadataAfter": {
+        "label": "invisible",
+        "description": "don't render cursors",
+        "default": false,
+        "min": null,
+        "max": null,
+        "choices": [],
+        "editorHint": "toggle",
+        "group": null,
+        "category": null,
+        "helpText": "don't render cursors",
+        "sourceProvenance": [
+          "hyprmod-schema-only",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "schema-backed-control-if-present-in-runtime-schema",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "officialSetting": "cursor.no_hardware_cursors",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "valueFamily": "none",
+        "pipelineValueType": "finite-choice",
+        "validatorRef": "finite-choice",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "hardware-cursor-critical"
+      },
+      "metadataAfter": {
+        "label": "Hardware cursors",
+        "description": "disables hardware cursors.",
+        "default": 2,
+        "min": null,
+        "max": null,
+        "choices": [
+          {
+            "id": "0",
+            "label": "Disabled"
+          },
+          {
+            "id": "1",
+            "label": "Enabled"
+          },
+          {
+            "id": "2",
+            "label": "Auto"
+          }
+        ],
+        "editorHint": "enum/dropdown",
+        "group": "cursor",
+        "category": "cursor",
+        "helpText": "disables hardware cursors.",
+        "sourceProvenance": [
+          "hyprmod-overlay",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "choices",
+        "grouping/category",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "normal-schema-control",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": true,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "officialSetting": "cursor.no_break_fs_vrr",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "valueFamily": "none",
+        "pipelineValueType": "finite-choice",
+        "validatorRef": "finite-choice",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "hardware-cursor-critical"
+      },
+      "metadataAfter": {
+        "label": "no_break_fs_vrr",
+        "description": "disables scheduling new frames on cursor movement for fullscreen apps with VRR enabled.",
+        "default": 2,
+        "min": null,
+        "max": null,
+        "choices": [
+          {
+            "id": "0",
+            "label": "disable"
+          },
+          {
+            "id": "1",
+            "label": "enable"
+          },
+          {
+            "id": "2",
+            "label": "auto"
+          }
+        ],
+        "editorHint": "enum/dropdown",
+        "group": null,
+        "category": null,
+        "helpText": "disables scheduling new frames on cursor movement for fullscreen apps with VRR enabled.",
+        "sourceProvenance": [
+          "hyprmod-schema-only",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "choices",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "schema-backed-control-if-present-in-runtime-schema",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": true,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "officialSetting": "cursor.min_refresh_rate",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "valueFamily": "none",
+        "pipelineValueType": "int",
+        "validatorRef": "schema-bounds-numeric",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "hardware-cursor-critical"
+      },
+      "metadataAfter": {
+        "label": "min_refresh_rate",
+        "description": "minimum refresh rate for cursor movement when no_break_fs_vrr is active.",
+        "default": 24,
+        "min": 10,
+        "max": 500,
+        "choices": [],
+        "editorHint": "integer/number",
+        "group": null,
+        "category": null,
+        "helpText": "minimum refresh rate for cursor movement when no_break_fs_vrr is active.",
+        "sourceProvenance": [
+          "hyprmod-schema-only",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "bounds",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "schema-backed-control-if-present-in-runtime-schema",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": true,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "officialSetting": "cursor.hotspot_padding",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "valueFamily": "none",
+        "pipelineValueType": "int",
+        "validatorRef": "schema-bounds-numeric",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-monitor-targeting-critical"
+      },
+      "metadataAfter": {
+        "label": "hotspot_padding",
+        "description": "the padding, in logical px, between screen edges and the cursor",
+        "default": 0,
+        "min": 0,
+        "max": 20,
+        "choices": [],
+        "editorHint": "integer/number",
+        "group": null,
+        "category": null,
+        "helpText": "the padding, in logical px, between screen edges and the cursor",
+        "sourceProvenance": [
+          "hyprmod-schema-only",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "bounds",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "schema-backed-control-if-present-in-runtime-schema",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": true,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "officialSetting": "cursor.inactive_timeout",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "number-input",
+        "valueFamily": "none",
+        "pipelineValueType": "float",
+        "validatorRef": "schema-bounds-numeric",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-visibility-critical"
+      },
+      "metadataAfter": {
+        "label": "Inactive timeout",
+        "description": "Seconds before hiding cursor (0 to never hide)",
+        "default": 0.0,
+        "min": 0,
+        "max": 20,
+        "choices": [],
+        "editorHint": "float/number",
+        "group": "cursor",
+        "category": "cursor:visibility",
+        "helpText": "Seconds before hiding cursor (0 to never hide)",
+        "sourceProvenance": [
+          "hyprmod-overlay",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "number-input",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "bounds",
+        "grouping/category",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "normal-schema-control",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": true,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "officialSetting": "cursor.no_warps",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "valueFamily": "none",
+        "pipelineValueType": "bool",
+        "validatorRef": "bool",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-warping-critical"
+      },
+      "metadataAfter": {
+        "label": "Disable cursor warps",
+        "description": "Do not warp the cursor when focusing, using keybinds, etc.",
+        "default": false,
+        "min": null,
+        "max": null,
+        "choices": [],
+        "editorHint": "toggle",
+        "group": "cursor",
+        "category": "cursor",
+        "helpText": "Do not warp the cursor when focusing, using keybinds, etc.",
+        "sourceProvenance": [
+          "hyprmod-overlay",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "grouping/category",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "normal-schema-control",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "officialSetting": "cursor.persistent_warps",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "valueFamily": "none",
+        "pipelineValueType": "bool",
+        "validatorRef": "bool",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-warping-critical"
+      },
+      "metadataAfter": {
+        "label": "Persistent warps",
+        "description": "Remember cursor position per window when warping back",
+        "default": false,
+        "min": null,
+        "max": null,
+        "choices": [],
+        "editorHint": "toggle",
+        "group": "cursor",
+        "category": "cursor",
+        "helpText": "Remember cursor position per window when warping back",
+        "sourceProvenance": [
+          "hyprmod-overlay",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "grouping/category",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "normal-schema-control",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "officialSetting": "cursor.warp_on_change_workspace",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "valueFamily": "none",
+        "pipelineValueType": "finite-choice",
+        "validatorRef": "finite-choice",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-warping-critical"
+      },
+      "metadataAfter": {
+        "label": "Warp on workspace change",
+        "description": "Move cursor to the last focused window after switching workspaces. Force ignores the no_warps setting.",
+        "default": 0,
+        "min": null,
+        "max": null,
+        "choices": [
+          {
+            "id": "0",
+            "label": "disable"
+          },
+          {
+            "id": "1",
+            "label": "enable"
+          },
+          {
+            "id": "2",
+            "label": "force"
+          }
+        ],
+        "editorHint": "enum/dropdown",
+        "group": "cursor",
+        "category": "cursor",
+        "helpText": "Move cursor to the last focused window after switching workspaces. Force ignores the no_warps setting.",
+        "sourceProvenance": [
+          "hyprmod-overlay",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "choices",
+        "grouping/category",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "normal-schema-control",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": true,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "officialSetting": "cursor.warp_on_toggle_special",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "valueFamily": "none",
+        "pipelineValueType": "finite-choice",
+        "validatorRef": "finite-choice",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-warping-critical"
+      },
+      "metadataAfter": {
+        "label": "warp_on_toggle_special",
+        "description": "Move the cursor to the last focused window when toggling a special workspace.",
+        "default": 0,
+        "min": null,
+        "max": null,
+        "choices": [
+          {
+            "id": "0",
+            "label": "disable"
+          },
+          {
+            "id": "1",
+            "label": "enable"
+          },
+          {
+            "id": "2",
+            "label": "force"
+          }
+        ],
+        "editorHint": "enum/dropdown",
+        "group": null,
+        "category": null,
+        "helpText": "Move the cursor to the last focused window when toggling a special workspace.",
+        "sourceProvenance": [
+          "hyprmod-schema-only",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "choices",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "schema-backed-control-if-present-in-runtime-schema",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": true,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "officialSetting": "cursor.default_monitor",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "dropdown",
+        "valueFamily": "none",
+        "pipelineValueType": "string",
+        "validatorRef": "line-safe-string-plus-policy",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-monitor-targeting-critical"
+      },
+      "metadataAfter": {
+        "label": "default_monitor",
+        "description": "the name of a default monitor for the cursor to be set to on startup",
+        "default": "",
+        "min": null,
+        "max": null,
+        "choices": [],
+        "editorHint": "text",
+        "group": null,
+        "category": null,
+        "helpText": "the name of a default monitor for the cursor to be set to on startup",
+        "sourceProvenance": [
+          "hyprmod-schema-only",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "dropdown",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "schema-backed-control-if-present-in-runtime-schema",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        },
+        {
+          "field": "hyprmodEditorType",
+          "value": "text",
+          "reason": "Current source-backed/dropdown projection is safer than free text for monitor targeting; keep our editor policy."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": false,
+      "editorHintsImproved": false,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "officialSetting": "cursor.zoom_factor",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "percent-slider",
+        "valueFamily": "none",
+        "pipelineValueType": "float",
+        "validatorRef": "schema-bounds-numeric",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-zoom-critical"
+      },
+      "metadataAfter": {
+        "label": "Zoom factor",
+        "description": "the factor to zoom by around the cursor. 1 means no zoom.",
+        "default": 1.0,
+        "min": 1,
+        "max": 10,
+        "choices": [],
+        "editorHint": "float/number",
+        "group": "cursor",
+        "category": "cursor",
+        "helpText": "the factor to zoom by around the cursor. 1 means no zoom.",
+        "sourceProvenance": [
+          "hyprmod-overlay",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "percent-slider",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "bounds",
+        "grouping/category",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "normal-schema-control",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": true,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "officialSetting": "cursor.zoom_rigid",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "valueFamily": "none",
+        "pipelineValueType": "bool",
+        "validatorRef": "bool",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-zoom-critical"
+      },
+      "metadataAfter": {
+        "label": "zoom_rigid",
+        "description": "whether the zoom should follow the cursor rigidly or loosely",
+        "default": false,
+        "min": null,
+        "max": null,
+        "choices": [],
+        "editorHint": "toggle",
+        "group": null,
+        "category": null,
+        "helpText": "whether the zoom should follow the cursor rigidly or loosely",
+        "sourceProvenance": [
+          "hyprmod-schema-only",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "schema-backed-control-if-present-in-runtime-schema",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "officialSetting": "cursor.zoom_disable_aa",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "valueFamily": "none",
+        "pipelineValueType": "bool",
+        "validatorRef": "bool",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-zoom-critical"
+      },
+      "metadataAfter": {
+        "label": "zoom_disable_aa",
+        "description": "If enabled, when zooming, no antialiasing will be used",
+        "default": false,
+        "min": null,
+        "max": null,
+        "choices": [],
+        "editorHint": "toggle",
+        "group": null,
+        "category": null,
+        "helpText": "If enabled, when zooming, no antialiasing will be used",
+        "sourceProvenance": [
+          "hyprmod-schema-only",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "schema-backed-control-if-present-in-runtime-schema",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "officialSetting": "cursor.zoom_detached_camera",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "valueFamily": "none",
+        "pipelineValueType": "bool",
+        "validatorRef": "bool",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-zoom-critical"
+      },
+      "metadataAfter": {
+        "label": "zoom_detached_camera",
+        "description": "Detaches the camera from the mouse when zoomed in",
+        "default": true,
+        "min": null,
+        "max": null,
+        "choices": [],
+        "editorHint": "toggle",
+        "group": null,
+        "category": null,
+        "helpText": "Detaches the camera from the mouse when zoomed in",
+        "sourceProvenance": [
+          "hyprmod-schema-only",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "schema-backed-control-if-present-in-runtime-schema",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "officialSetting": "cursor.enable_hyprcursor",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "valueFamily": "none",
+        "pipelineValueType": "bool",
+        "validatorRef": "bool",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "hardware-cursor-critical"
+      },
+      "metadataAfter": {
+        "label": "Enable Hyprcursor",
+        "description": "whether to enable hyprcursor support",
+        "default": true,
+        "min": null,
+        "max": null,
+        "choices": [],
+        "editorHint": "toggle",
+        "group": "cursor",
+        "category": "cursor",
+        "helpText": "whether to enable hyprcursor support",
+        "sourceProvenance": [
+          "hyprmod-overlay",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "grouping/category",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "normal-schema-control",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.hide_on_key_press",
+      "officialSetting": "cursor.hide_on_key_press",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "valueFamily": "none",
+        "pipelineValueType": "bool",
+        "validatorRef": "bool",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-visibility-critical"
+      },
+      "metadataAfter": {
+        "label": "Hide on key press",
+        "description": "Hides the cursor when you press any key until the mouse is moved.",
+        "default": false,
+        "min": null,
+        "max": null,
+        "choices": [],
+        "editorHint": "toggle",
+        "group": "cursor",
+        "category": "cursor:visibility",
+        "helpText": "Hides the cursor when you press any key until the mouse is moved.",
+        "sourceProvenance": [
+          "hyprmod-overlay",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "grouping/category",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "normal-schema-control",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.hide_on_touch",
+      "officialSetting": "cursor.hide_on_touch",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "valueFamily": "none",
+        "pipelineValueType": "bool",
+        "validatorRef": "bool",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-visibility-critical"
+      },
+      "metadataAfter": {
+        "label": "Hide on touch",
+        "description": "Hides the cursor when the last input was a touch input until a mouse input is done.",
+        "default": true,
+        "min": null,
+        "max": null,
+        "choices": [],
+        "editorHint": "toggle",
+        "group": "cursor",
+        "category": "cursor:visibility",
+        "helpText": "Hides the cursor when the last input was a touch input until a mouse input is done.",
+        "sourceProvenance": [
+          "hyprmod-overlay",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "grouping/category",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "normal-schema-control",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.hide_on_tablet",
+      "officialSetting": "cursor.hide_on_tablet",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "valueFamily": "none",
+        "pipelineValueType": "bool",
+        "validatorRef": "bool",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-visibility-critical"
+      },
+      "metadataAfter": {
+        "label": "Hide on tablet",
+        "description": "Hides the cursor when the last input was a tablet input until a mouse input is done.",
+        "default": false,
+        "min": null,
+        "max": null,
+        "choices": [],
+        "editorHint": "toggle",
+        "group": "cursor",
+        "category": "cursor:visibility",
+        "helpText": "Hides the cursor when the last input was a tablet input until a mouse input is done.",
+        "sourceProvenance": [
+          "hyprmod-overlay",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "grouping/category",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "normal-schema-control",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "officialSetting": "cursor.use_cpu_buffer",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "valueFamily": "none",
+        "pipelineValueType": "finite-choice",
+        "validatorRef": "finite-choice",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "hardware-cursor-critical"
+      },
+      "metadataAfter": {
+        "label": "use_cpu_buffer",
+        "description": "Makes HW cursors use a CPU buffer.",
+        "default": 2,
+        "min": null,
+        "max": null,
+        "choices": [
+          {
+            "id": "0",
+            "label": "disable"
+          },
+          {
+            "id": "1",
+            "label": "enable"
+          },
+          {
+            "id": "2",
+            "label": "auto"
+          }
+        ],
+        "editorHint": "enum/dropdown",
+        "group": null,
+        "category": null,
+        "helpText": "Makes HW cursors use a CPU buffer.",
+        "sourceProvenance": [
+          "hyprmod-schema-only",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "slider",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "choices",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "schema-backed-control-if-present-in-runtime-schema",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": true,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "officialSetting": "cursor.warp_back_after_non_mouse_input",
+      "metadataBefore": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "valueFamily": "none",
+        "pipelineValueType": "bool",
+        "validatorRef": "bool",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "cursorInputRiskClass": "cursor-warping-critical"
+      },
+      "metadataAfter": {
+        "label": "warp_back_after_non_mouse_input",
+        "description": "warp the cursor back to where it was after using a non-mouse input to move it.",
+        "default": false,
+        "min": null,
+        "max": null,
+        "choices": [],
+        "editorHint": "toggle",
+        "group": null,
+        "category": null,
+        "helpText": "warp the cursor back to where it was after using a non-mouse input to move it.",
+        "sourceProvenance": [
+          "hyprmod-schema-only",
+          "existing-project-risk-report",
+          "existing-companion-schema-report"
+        ]
+      },
+      "safetyAfter": {
+        "writeStatus": "high-risk",
+        "safeWriteSupported": false,
+        "controlKind": "toggle",
+        "recoveryBucket": "cursor-input-recovery",
+        "recoveryStrategy": "independent-file-restore-watchdog-plus-keyboard-and-mouse-independent-confirmation; must not depend on cursor visibility, mouse input, or Hyprland keybinds",
+        "approvalGate": "advanced-opt-in-plus-independent-dead-man-confirm-or-revert",
+        "requiresIndependentWatchdogProof": true,
+        "proofRequirements": [
+          "validator proof",
+          "invalid rejection proof",
+          "fixture write/reread proof",
+          "temp config proof",
+          "watchdog arm-before-mutation proof",
+          "separate process confirm proof",
+          "timeout restore proof",
+          "wrong-token failure proof",
+          "dry-run real config refusal proof",
+          "UI/review projection with cursor/input warning",
+          "proof that recovery does not depend on mouse, cursor, Hyprland keybinds, pointer focus, workspace focus, or app UI"
+        ],
+        "safetyPolicyChanged": false,
+        "recoveryGateWeakened": false
+      },
+      "adoptedFields": [
+        "label",
+        "description",
+        "default",
+        "editorHint",
+        "sourceProvenance"
+      ],
+      "rejectedFields": [
+        {
+          "field": "hyprmodExposureTreatment",
+          "value": "schema-backed-control-if-present-in-runtime-schema",
+          "reason": "HyprMod exposure is not safety proof."
+        },
+        {
+          "field": "hyprmodWarningOrAdvancedTreatment",
+          "value": null,
+          "reason": "Absence of HyprMod warning/advanced metadata cannot remove our high-risk warning."
+        },
+        {
+          "field": "hyprmodRecoveryRollbackConfirmation",
+          "value": "none-found-for-cursor-config-options",
+          "reason": "HyprMod recovery absence cannot weaken independent watchdog requirement."
+        }
+      ],
+      "labelsImproved": true,
+      "descriptionsImproved": true,
+      "defaultsImproved": true,
+      "boundsImproved": false,
+      "choicesImproved": false,
+      "editorHintsImproved": true,
+      "safetyPolicyChanged": false,
+      "writeStatusChanged": false,
+      "safeWriteSupportedChanged": false,
+      "recoveryGateWeakened": false
+    }
+  ],
+  "safety": {
+    "rowsEnabled": 0,
+    "writeAllowlistChanged": false,
+    "productionBehaviorChanged": false,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false,
+    "safeWritableRowsChanged": false,
+    "recoveryGateWeakened": false,
+    "anythingPushed": false,
+    "mainTouched": false
+  }
+}

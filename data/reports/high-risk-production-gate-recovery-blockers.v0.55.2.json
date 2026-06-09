@@ -1,0 +1,2695 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "high-risk-production-gate-recovery-blockers",
+  "generatedAt": "2026-06-09T00:03:55.540909Z",
+  "startingCommit": "7a21f07",
+  "blockerCategories": {
+    "missingProductionGate": [
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "blocker": "missingProductionGate",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production gate implementation and tests that accept only row-appropriate proof and reject missing/wrong proof"
+      }
+    ],
+    "missingRecoveryModel": [],
+    "missingPersistentPlan": [
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "blocker": "missingPersistentPlan",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "persisted recovery plan schema, storage location, and ownership tests for future gated writes"
+      }
+    ],
+    "missingOutOfBandConfirmation": [
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "blocker": "missingOutOfBandConfirmation",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "separate confirmation path independent of the affected compositor/app/input path"
+      }
+    ],
+    "missingRollbackProof": [
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "blocker": "missingRollbackProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "production rollback proof connected to future gated write path, not only temp pre-enablement fixture rollback"
+      }
+    ],
+    "requiresLiveRuntimeProof": [
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "blocker": "requiresLiveRuntimeProof",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "future approved live/runtime proof or explicit approval that non-live proof is sufficient for this row/bucket"
+      }
+    ],
+    "requiresExplicitApproval": [
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "blocker": "requiresExplicitApproval",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "explicit future high-risk enablement approval in the enablement report"
+      }
+    ],
+    "dynamicRuntimeState": [
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "blocker": "dynamicRuntimeState",
+        "whatProofExistsAlready": "official source support, allowed value proof, proof-only validator proof, invalid-value rejection proof, temp fixture write/reread/rollback proof, non-production gate projection, and UI warning projection",
+        "whatProofStillNeeded": "runtime monitor-name source/readback oracle for cursor.default_monitor"
+      }
+    ]
+  },
+  "proofUsed": [
+    "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+    "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+    "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json",
+    "src/blocked_row_pre_enablement.rs",
+    "src/high_risk_recovery.rs persisted dry-run watchdog and backup/rollback primitives",
+    "src/write_safety.rs current screen-shader gated review primitive and allowlist rejection behavior",
+    "data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json",
+    "data/reports/return-to-341-writable-roadmap.v0.55.2.json"
+  ],
+  "proofStillMissing": [
+    "production gate implementation for the 63 blocked high-risk rows",
+    "persisted recovery plan runner for display/render, cursor/input, and debug/crash buckets",
+    "out-of-band confirmation runner proof for each bucket",
+    "production rollback proof against a future gated write path",
+    "future approved live/runtime proof or explicit approval to proceed without live unsafe testing",
+    "runtime monitor-name oracle for cursor.default_monitor"
+  ],
+  "nextRecommendedSprint": "Implement high-risk persisted recovery plan scaffold sprint"
+}

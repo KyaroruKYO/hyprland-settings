@@ -1,0 +1,1918 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "all-blocked-rows-allowed-values-matrix",
+  "generatedAt": "2026-06-08T15:47:26-07:00",
+  "startingCommit": "6c23291",
+  "currentCounts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63
+  },
+  "blockedRowsTotal": 63,
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0,
+  "rows": [
+    {
+      "rowId": "xwayland.enabled",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:509",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "xwayland.create_abstract_socket",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:512",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "opengl.nvidia_anti_flicker",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:518",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.direct_scanout",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:524",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "enable",
+          "rawValue": "1"
+        },
+        {
+          "label": "auto",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.expand_undersized_textures",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:525",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.xp_mode",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:526",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.ctm_animation",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:527",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "enable",
+          "rawValue": "1"
+        },
+        {
+          "label": "auto",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.cm_enabled",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:529",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.send_content_type",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:530",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.cm_auto_hdr",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "hdr",
+        "2",
+        "hdredid"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:531",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "hdr",
+          "rawValue": "1"
+        },
+        {
+          "label": "hdredid",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.new_render_scheduling",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:533",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.non_shader_cm",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "always",
+        "2",
+        "ondemand",
+        "3",
+        "ignore"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:534",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "always",
+          "rawValue": "1"
+        },
+        {
+          "label": "ondemand",
+          "rawValue": "2"
+        },
+        {
+          "label": "ignore",
+          "rawValue": "3"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "3"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.cm_sdr_eotf",
+      "officialSupportStatus": "official",
+      "valueShape": "string",
+      "allowedValuesStatus": "notProven",
+      "allowedValues": [],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:535",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [],
+      "stringFormat": "notProven",
+      "pathRules": "notProven",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.commit_timing_enabled",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:536",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.icc_vcgt_enabled",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:537",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.use_shader_blur_blend",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:538",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.use_fp16",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:539",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "enable",
+          "rawValue": "1"
+        },
+        {
+          "label": "auto",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.keep_unmodified_copy",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:540",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "enable",
+          "rawValue": "1"
+        },
+        {
+          "label": "auto",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.non_shader_cm_interop",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:542",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "enable",
+          "rawValue": "1"
+        },
+        {
+          "label": "auto",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "render.fp16_sdr_tf",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "monitor",
+        "1",
+        "linear"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:544",
+      "finiteChoiceValues": [
+        {
+          "label": "monitor",
+          "rawValue": "0"
+        },
+        {
+          "label": "linear",
+          "rawValue": "1"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "1"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.invisible",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:550",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "Disabled",
+        "1",
+        "Enabled",
+        "2",
+        "Auto"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:551",
+      "finiteChoiceValues": [
+        {
+          "label": "Disabled",
+          "rawValue": "0"
+        },
+        {
+          "label": "Enabled",
+          "rawValue": "1"
+        },
+        {
+          "label": "Auto",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:552",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "enable",
+          "rawValue": "1"
+        },
+        {
+          "label": "auto",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBackedBounds",
+      "allowedValues": [],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:554",
+      "finiteChoiceValues": [],
+      "numericRange": {
+        "min": "10",
+        "max": "500"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBackedBounds",
+      "allowedValues": [],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:555",
+      "finiteChoiceValues": [],
+      "numericRange": {
+        "min": "0",
+        "max": "20"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "officialSupportStatus": "official",
+      "valueShape": "float",
+      "allowedValuesStatus": "officialSourceBackedBounds",
+      "allowedValues": [],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:556",
+      "finiteChoiceValues": [],
+      "numericRange": {
+        "min": "0",
+        "max": "20"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:557",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:558",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "force"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:559",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "enable",
+          "rawValue": "1"
+        },
+        {
+          "label": "force",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "force"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:561",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "enable",
+          "rawValue": "1"
+        },
+        {
+          "label": "force",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "officialSupportStatus": "official",
+      "valueShape": "string",
+      "allowedValuesStatus": "notProven",
+      "allowedValues": [],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:563",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [],
+      "stringFormat": "notProven",
+      "pathRules": "notProven",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "officialSupportStatus": "official",
+      "valueShape": "float",
+      "allowedValuesStatus": "officialSourceBackedBounds",
+      "allowedValues": [],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:564",
+      "finiteChoiceValues": [],
+      "numericRange": {
+        "min": "1",
+        "max": "10"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:565",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:566",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:567",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:568",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:572",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "enable",
+          "rawValue": "1"
+        },
+        {
+          "label": "auto",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:574",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.overlay",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:588",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.damage_blink",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:589",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.gl_debugging",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:590",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.disable_logs",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:591",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.disable_time",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:592",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.damage_tracking",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "monitor",
+        "2",
+        "full"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:593",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "monitor",
+          "rawValue": "1"
+        },
+        {
+          "label": "full",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.enable_stdout_logs",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:594",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.manual_crash",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBackedBounds",
+      "allowedValues": [],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:595",
+      "finiteChoiceValues": [],
+      "numericRange": {
+        "min": "0",
+        "max": "1"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.suppress_errors",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:596",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.disable_scale_checks",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:597",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.error_limit",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBackedBounds",
+      "allowedValues": [],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:598",
+      "finiteChoiceValues": [],
+      "numericRange": {
+        "min": "0",
+        "max": "20"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.error_position",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "top",
+        "1",
+        "bottom"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:599",
+      "finiteChoiceValues": [
+        {
+          "label": "top",
+          "rawValue": "0"
+        },
+        {
+          "label": "bottom",
+          "rawValue": "1"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "1"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.colored_stdout_logs",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:600",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.log_damage",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:601",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.pass",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:602",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.full_cm_proto",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:603",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:604",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer_fifo",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:605",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.fifo_pending_workaround",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:606",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.render_solitary_wo_damage",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:607",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.vfr",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:608",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "debug.invalidate_fp16",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:609",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "enable",
+          "rawValue": "1"
+        },
+        {
+          "label": "auto",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "experimental.wp_cm_1_2",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:678",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "quirks.prefer_hdr",
+      "officialSupportStatus": "official",
+      "valueShape": "integer",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "gamescope_only"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:684",
+      "finiteChoiceValues": [
+        {
+          "label": "disable",
+          "rawValue": "0"
+        },
+        {
+          "label": "enable",
+          "rawValue": "1"
+        },
+        {
+          "label": "gamescope_only",
+          "rawValue": "2"
+        }
+      ],
+      "numericRange": {
+        "min": "0",
+        "max": "2"
+      },
+      "booleanValues": [],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    },
+    {
+      "rowId": "quirks.skip_non_kms_dmabuf_formats",
+      "officialSupportStatus": "official",
+      "valueShape": "boolean",
+      "allowedValuesStatus": "officialSourceBacked",
+      "allowedValues": [
+        "true",
+        "false"
+      ],
+      "valueSource": "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:685",
+      "finiteChoiceValues": [],
+      "numericRange": null,
+      "booleanValues": [
+        "true",
+        "false"
+      ],
+      "stringFormat": "not applicable",
+      "pathRules": "not applicable",
+      "specialCases": [],
+      "invalidValueBehavior": "notProven",
+      "validatorNeeded": true,
+      "validatorAlreadyExists": true,
+      "validatorGap": "Production enablement still needs official invalid-value behavior proof and row-specific acceptance/rejection tests.",
+      "hyprmodHintOnly": [],
+      "notes": "Values are source-backed only where ConfigValues.cpp directly declares type, bounds, or option map; no enablement follows from this matrix."
+    }
+  ],
+  "proofUsed": [
+    "data/reports/all-341-unified-pipeline.v0.55.2.json",
+    "data/reports/scalar-read-write-coverage.v0.55.2.json",
+    "data/reports/display-render-blocked-rows-readiness-batching.v0.55.2.json",
+    "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp"
+  ],
+  "proofStillMissing": [
+    "parser invalid-value behavior and write/readback proof remain missing even where source-backed type/bounds are recorded"
+  ],
+  "nextRecommendedSprint": "All blocked rows invalid-value behavior and safety-gate proof cleanup sprint"
+}

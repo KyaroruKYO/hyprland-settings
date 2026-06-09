@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "next-high-risk-bucket-readiness-batching",
+  "generatedAt": "2026-06-08T15:07:44-07:00",
+  "startingCommit": "8cdf69c",
+  "projectGoal": "Make all 341 official Hyprland scalar rows writable where possible, including officially supported variables/options within those settings, but only when official Hyprland documentation/source supports the behavior and the unified row-driven pipeline proves the row works safely.",
+  "currentCounts": {
+    "readableRows": 341,
+    "writableRows": 278,
+    "blockedRows": 63
+  },
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0,
+  "screenShaderTrackStatus": "closed-for-now",
+  "remainingBlockedBuckets": {
+    "displayRender": {
+      "label": "display/render",
+      "blockedRows": 23
+    },
+    "cursorInput": {
+      "label": "cursor/input",
+      "blockedRows": 18
+    },
+    "debugCrash": {
+      "label": "debug/crash",
+      "blockedRows": 22
+    }
+  },
+  "candidateBuckets": [
+    {
+      "candidate": "display-render-bucket-readiness",
+      "blockedRows": 23,
+      "evidenceSource": "data/reports/next-high-risk-bucket-readiness.v0.55.2.json",
+      "readinessEvidence": "Existing report marks display/render as best-next-candidate-as-small-subset-after-live-watchdog-process-proof and says it can split smaller.",
+      "knownBlocker": "Needs independent watchdog process plus CLI/token confirmation; live execution remains disabled for this sprint.",
+      "selectionStatus": "selected-for-next-non-enabling-readiness-sprint"
+    },
+    {
+      "candidate": "cursor-input-bucket-readiness",
+      "blockedRows": 18,
+      "evidenceSource": "data/reports/next-high-risk-bucket-readiness.v0.55.2.json",
+      "readinessEvidence": "Existing report says cursor/input should wait until input-independent confirmation is proven.",
+      "knownBlocker": "Confirmation and recovery cannot depend on mouse, cursor visibility, Hyprland keybinds, or app UI.",
+      "selectionStatus": "not-selected-this-sprint"
+    },
+    {
+      "candidate": "debug-crash-bucket-readiness",
+      "blockedRows": 22,
+      "evidenceSource": "data/reports/next-high-risk-bucket-readiness.v0.55.2.json",
+      "readinessEvidence": "Existing report says debug/crash should wait until crash-survivable watchdog is proven.",
+      "knownBlocker": "Requires process survivability, persisted plan ownership, and crash/failure result handling before enablement.",
+      "selectionStatus": "not-selected-this-sprint"
+    },
+    {
+      "candidate": "mixed-smallest-safe-cross-bucket-readiness",
+      "blockedRows": 63,
+      "evidenceSource": "data/reports/return-to-341-writable-roadmap.v0.55.2.json",
+      "readinessEvidence": "Fallback option when existing reports do not prove enough detail to choose a specific bucket.",
+      "knownBlocker": "Not needed because existing reports provide a specific display/render grouped readiness candidate.",
+      "selectionStatus": "fallback-not-selected"
+    }
+  ],
+  "selectedNextBucket": "display-render-bucket-readiness",
+  "selectedNextBatch": {
+    "name": "non-enabling display/render readiness inventory for non-display-critical boolean/finite-choice candidates",
+    "enableRows": false,
+    "exactRowsSelectedForEnablement": [],
+    "candidateSelectionNotFinal": true,
+    "batchScope": "Use the existing display/render blocked-row reports to identify a small candidate batch, but do not enable rows until a later sprint proves row-specific source, validator, gate, and recovery evidence."
+  },
+  "selectionReason": "Existing project evidence identifies display/render as the best next grouped candidate because it can split smaller and has likely validators available. Cursor/input and debug/crash remain less ready because their reports require input-independent or crash-survivable recovery proof before enablement. This sprint selects only a non-enabling readiness batch.",
+  "batchingPolicy": "Use grouped high-risk bucket planning. Prefer a small display/render subset with non-display-critical boolean or finite-choice validators. Do not isolate a single row unless reports prove a single row must be isolated for safety.",
+  "avoidRabbitHolePolicy": "Do not continue decoration.screen_shader work by default. Do not start one-row deep dives unless explicitly approved or required by a proven safety failure.",
+  "sourceEvidencePolicy": "Future batch rows require official Hyprland documentation/source evidence for the setting, value shape, runtime consumer, and any side effects before enablement can be considered.",
+  "writeEnablementPolicy": "This sprint enables no rows. Future enablement must occur only after source proof, validator proof, high-risk gate proof, watchdog/recovery proof, fixture tests, and aggregate report reconciliation.",
+  "proofRequiredBeforeEnablement": [
+    "row-specific official source or docs proof",
+    "row-specific value parser and validator proof",
+    "bucket-specific risk classification proof",
+    "write planning and apply-flow gate proof when risky",
+    "watchdog or recovery proof that does not rely on the failed UI path",
+    "fixture/temp write-path tests",
+    "aggregate report reconciliation with unchanged unrelated behavior",
+    "explicit approval for any row enablement sprint"
+  ],
+  "rowSpecificProofRequired": true,
+  "bucketSpecificProofRequired": true,
+  "riskGatePolicy": "Risky display/render rows must remain blocked until a source-backed gate policy and tests prove they cannot bypass required review/recovery boundaries.",
+  "watchdogRecoveryPolicy": "Watchdog/recovery proof is required before high-risk display/render row enablement. Existing watchdog migration proof for screen_shader does not automatically apply to other rows.",
+  "uiWarningPolicy": "Future UI warnings may support user understanding, but UI metadata or warnings alone do not prove write safety and cannot enable a row.",
+  "advisoryPolicy": "Advisory checks may be useful as non-authoritative evidence, but advisory helper/UI/tool output cannot replace source-backed validators, gates, watchdogs, or recovery proof.",
+  "testsRequiredForFutureEnablement": [
+    "counts remain 341 readable / 278 writable / 63 blocked until an approved enablement sprint",
+    "SAFE_WRITABLE_ROWS length remains unchanged until approved enablement",
+    "write allowlist unchanged until approved enablement",
+    "selected batch rows have source-backed value and consumer proof",
+    "selected batch rows have validator acceptance and rejection tests",
+    "risk gate tests reject ungated high-risk writes",
+    "watchdog/recovery tests prove rollback or survivability boundaries",
+    "unrelated writable rows remain on the normal path"
+  ],
+  "doNotInferSafetyFrom": [
+    "parser acceptance",
+    "HyprMod exposure",
+    "current app acceptance",
+    "UI metadata alone",
+    "missing warnings elsewhere",
+    "ordinary path validation",
+    "watchdog migration proof alone",
+    "advisory helper existence alone",
+    "advisory UI existence alone",
+    "standalone tool output alone",
+    "policy name without source-backed evidence and tests"
+  ],
+  "blockedIfProofMissing": true,
+  "nextRecommendedSprint": "Display/render blocked rows readiness batching sprint",
+  "proofUsed": [
+    "src/write_classification.rs",
+    "src/write_flow.rs",
+    "src/write_safety.rs",
+    "src/high_risk_recovery.rs",
+    "src/pending_change.rs",
+    "data/reports/screen-shader-track-closure.v0.55.2.json",
+    "data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json",
+    "data/reports/return-to-341-writable-roadmap.v0.55.2.json",
+    "data/reports/all-341-unified-pipeline.v0.55.2.json",
+    "data/reports/scalar-read-write-coverage.v0.55.2.json",
+    "data/reports/deferred-validator-remaining-items.v0.55.2.json",
+    "data/reports/next-high-risk-bucket-readiness.v0.55.2.json",
+    "data/reports/writable-value-type-evidence-matrix.v0.55.2.json",
+    "data/reports/writable-value-type-gap-summary.v0.55.2.json"
+  ],
+  "proofStillMissing": [
+    "exact display/render row list for a future readiness batch",
+    "row-specific official source proof for each future selected display/render row",
+    "row-specific validator proof for each future selected display/render row",
+    "bucket-specific display/render gate proof for future selected rows",
+    "watchdog/recovery proof for future selected display/render rows",
+    "explicit approval for any future row enablement sprint"
+  ],
+  "screenShaderDisplayRenderReviewFollowUp": {
+    "allBlockedRowsOfficialEvidenceMatrixReport": "data/reports/all-blocked-rows-official-evidence-matrix.v0.55.2.json",
+    "allBlockedRowsAllowedValuesMatrixReport": "data/reports/all-blocked-rows-allowed-values-matrix.v0.55.2.json",
+    "allBlockedRowsWritabilityReadinessReport": "data/reports/all-blocked-rows-writability-readiness.v0.55.2.json",
+    "allBlockedRowsErrorsAndFurtherResearchReport": "data/reports/all-blocked-rows-errors-and-further-research.v0.55.2.json",
+    "allBlockedRowsOfficialEvidenceSummaryReport": "data/reports/all-blocked-rows-official-evidence-summary.v0.55.2.json",
+    "allBlockedRowsAudited": 63,
+    "allBlockedRowsOfficialRowsCount": 63,
+    "allBlockedRowsReadyForFutureEnablementCount": 0,
+    "allBlockedRowsNeedsFurtherResearchCount": 63,
+    "allBlockedRowsAuditRowsEnabledThisSprint": 0,
+    "allBlockedRowsAuditSafeWritableRowsChanged": false,
+    "allBlockedRowsAuditWriteAllowlistChanged": false,
+    "allBlockedRowsAuditNextRecommendedSprint": "All blocked rows invalid-value behavior and safety-gate proof cleanup sprint"
+  },
+  "allBlockedRowsOfficialEvidenceMatrixReport": "data/reports/all-blocked-rows-official-evidence-matrix.v0.55.2.json",
+  "allBlockedRowsAllowedValuesMatrixReport": "data/reports/all-blocked-rows-allowed-values-matrix.v0.55.2.json",
+  "allBlockedRowsWritabilityReadinessReport": "data/reports/all-blocked-rows-writability-readiness.v0.55.2.json",
+  "allBlockedRowsErrorsAndFurtherResearchReport": "data/reports/all-blocked-rows-errors-and-further-research.v0.55.2.json",
+  "allBlockedRowsOfficialEvidenceSummaryReport": "data/reports/all-blocked-rows-official-evidence-summary.v0.55.2.json",
+  "allBlockedRowsAudited": 63,
+  "allBlockedRowsOfficialRowsCount": 63,
+  "allBlockedRowsReadyForFutureEnablementCount": 0,
+  "allBlockedRowsNeedsFurtherResearchCount": 63,
+  "allBlockedRowsAuditRowsEnabledThisSprint": 0,
+  "allBlockedRowsAuditSafeWritableRowsChanged": false,
+  "allBlockedRowsAuditWriteAllowlistChanged": false,
+  "allBlockedRowsAuditNextRecommendedSprint": "All blocked rows invalid-value behavior and safety-gate proof cleanup sprint"
+}

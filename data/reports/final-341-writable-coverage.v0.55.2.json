@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "final-341-writable-coverage",
+  "generatedAt": "2026-06-09T02:59:15.613975Z",
+  "startingCommit": "3243fd31d51916b6390a2c4708ddedca10ddfe7c",
+  "readableRows": 341,
+  "writableRows": 341,
+  "blockedRows": 0,
+  "remainingBlockedRows": [],
+  "cursorDefaultMonitorStatus": "writable-through-gated-high-risk-path-with-runtime-monitor-name-oracle-proof",
+  "safeWritableRowsChanged": true,
+  "writeAllowlistChanged": true,
+  "proofUsed": [
+    "data/reports/cursor-default-monitor-runtime-oracle-proof.v0.55.2.json",
+    "data/reports/cursor-default-monitor-runtime-oracle-tests.v0.55.2.json",
+    "data/reports/all-341-unified-pipeline.v0.55.2.json",
+    "data/reports/scalar-read-write-coverage.v0.55.2.json"
+  ],
+  "proofStillMissing": [
+    "live runtime mutation proof was not run"
+  ],
+  "nextRecommendedSprint": "Final all-341 writable coverage consistency review sprint"
+}

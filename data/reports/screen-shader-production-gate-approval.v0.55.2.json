@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0.0",
+  "artifactKind": "screen-shader-production-gate-approval",
+  "generatedAt": "2026-06-07T03:29:19-07:00",
+  "rowId": "decoration.screen_shader",
+  "officialSetting": "decoration.screen_shader",
+  "startingCommit": "6b3bfe1",
+  "selectedApprovalOption": "Option C",
+  "decisionSummary": "The existing screen-shader gated-review primitive was wired into the production apply-flow decision point for decoration.screen_shader only. Ungated screen-shader production-flow fixture writes are rejected before final apply; gated screen-shader fixture writes with a valid dry-run watchdog proof are accepted. Compile-aware validation remains deferred.",
+  "currentWritableStatus": "writable",
+  "writableMigrationCandidate": true,
+  "watchdogMigrationProofStatus": "complete",
+  "dryRunGatePrimitiveStatus": "complete",
+  "productionEnforcementChanged": true,
+  "productionGateEnforcedThisSprint": true,
+  "productionWriteFlowChanged": true,
+  "productionApplyFlowGateWired": true,
+  "normalProductionReviewChanged": true,
+  "normalPathOnlyApprovalStillAcceptedInProduction": false,
+  "ungatedProductionFlowScreenShaderRejected": true,
+  "gatedProductionFlowScreenShaderAccepted": true,
+  "invalidProductionGateProofRejected": true,
+  "unrelatedNormalWritableRowsRequireGate": false,
+  "countedAsEnabledHighRiskRow": false,
+  "readableRows": 341,
+  "writableRows": 278,
+  "blockedRows": 63,
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0,
+  "realConfigTouched": false,
+  "runtimeTouched": false,
+  "reloadEvalLuaUsed": false,
+  "liveShaderCompileUsed": false,
+  "liveDisplayRuntimeProofUsed": false,
+  "compileAwareValidationChanged": false,
+  "compileAwareValidationStatus": "deferred",
+  "proofUsed": [
+    {
+      "source": "src/write_flow.rs",
+      "finding": "apply_setting_change_with_backup_manager now routes through review_screen_shader_gated_write_plan with no proof, rejecting decoration.screen_shader before final apply. apply_setting_change_with_backup_manager_and_high_risk_gate accepts an explicit HighRiskGateProof for gated fixture/proof flow."
+    },
+    {
+      "source": "src/write_safety.rs",
+      "finding": "screen-shader-dry-run-gated-write-review validates setting id, recovery bucket, target path, and existing dry-run watchdog plan/backup artifacts."
+    },
+    {
+      "source": "tests/screen_shader_production_gate_approval.rs",
+      "finding": "Fixture tests prove ungated production-flow screen_shader rejection, gated fixture acceptance, mismatched proof rejection, unrelated row bypass, unchanged counts, unchanged allowlist, and deferred compile-aware validation."
+    },
+    {
+      "source": "data/reports/screen-shader-watchdog-migration-proof.v0.55.2.json",
+      "finding": "Watchdog migration proof remains complete and fixture/temp-only."
+    }
+  ],
+  "proofStillMissing": [
+    "compile-aware shader validation design remains deferred",
+    "standalone non-live shader compiler feasibility proof remains deferred",
+    "live shader compile and live display/render proof remain forbidden and were not used"
+  ],
+  "nextRecommendedSprint": "Screen shader compile-aware validation design research sprint: research whether non-live shader compile validation can be designed safely. Do not implement shader compilation, do not use live compositor/render proof, and do not change writable counts or allowlists."
+}

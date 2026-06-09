@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "0.55.2",
+  "generatedAtUnixSeconds": 1780728794,
+  "subsetName": "cursor-theme-sync-policy-smoke-subset",
+  "counts": {
+    "rows": 1,
+    "acceptedValues": 2,
+    "rejectedInvalidValues": 2,
+    "parserReadPassedRows": 1,
+    "validatorPassedRows": 1,
+    "invalidRejectionPassedRows": 1,
+    "fixtureReplacePassedRows": 1,
+    "fixtureAppendPassedRows": 1,
+    "singleMutationVerifiedRows": 1,
+    "hyprlandVerifyConfigPassedRows": 1,
+    "safeToEnableByPreflightRows": 1,
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadEvalLuaUsed": false
+  },
+  "rows": [
+    {
+      "rowId": "cursor.sync_gsettings_theme",
+      "officialSetting": "cursor.sync_gsettings_theme",
+      "valueType": "bool",
+      "validatorRef": "bool",
+      "validatorAuthority": "app-validator-authoritative-plus-official-schema-bool-evidence",
+      "acceptedValues": [
+        "true",
+        "false"
+      ],
+      "rejectedInvalidValues": [
+        "maybe",
+        "arbitrary-string"
+      ],
+      "parserReadProof": {
+        "passed": true,
+        "fixtureValue": "true"
+      },
+      "validatorProof": {
+        "passed": true,
+        "accepted": [
+          "true",
+          "false"
+        ]
+      },
+      "invalidRejectionProof": {
+        "passed": true,
+        "rejected": [
+          "maybe",
+          "arbitrary-string"
+        ],
+        "rejectedBeforeWritePlanning": true
+      },
+      "fixtureWriteRereadProof": {
+        "replacePassed": true,
+        "appendPassed": true,
+        "singleMutationVerified": true,
+        "usesTempFixturesOnly": true
+      },
+      "tempConfigProof": {
+        "passed": true,
+        "verifyConfigRole": "parser-proof-not-recovery-proof",
+        "results": [
+          {
+            "value": "true",
+            "tempConfigPath": "/tmp/hyprland-settings-cursor-theme-sync-proof-npx5qe1t/hypr-true.conf",
+            "exitCode": 0,
+            "passed": true,
+            "stdoutExcerpt": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-cursor-theme-sync-proof-npx5qe1t/hypr-true.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-cursor-theme-sync-proof-npx5qe1t/hypr-true.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-cursor-theme-sync-proof-npx5qe1t/hypr-true.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-cursor-theme-sync-proof-npx5qe1t/hypr-true.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+            "stderrExcerpt": ""
+          },
+          {
+            "value": "false",
+            "tempConfigPath": "/tmp/hyprland-settings-cursor-theme-sync-proof-npx5qe1t/hypr-false.conf",
+            "exitCode": 0,
+            "passed": true,
+            "stdoutExcerpt": "\u001b[1;32mDEBUG \u001b[0m]: User-specified config location: '/tmp/hyprland-settings-cursor-theme-sync-proof-npx5qe1t/hypr-false.conf'\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is either explicit or special.\n\u001b[1;32mDEBUG \u001b[0m]: [cfg] Config is NOT lua, loading regular mgr\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-cursor-theme-sync-proof-npx5qe1t/hypr-false.conf\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-cursor-theme-sync-proof-npx5qe1t/hypr-false.conf\n\u001b[1;32mDEBUG \u001b[0m]: Disabling stdout logs! Check the log for further logs.\n\u001b[1;32mDEBUG \u001b[0m]: Using config: /tmp/hyprland-settings-cursor-theme-sync-proof-npx5qe1t/hypr-false.conf\n\n\n======== Config parsing result:\n\nconfig ok\n",
+            "stderrExcerpt": ""
+          }
+        ]
+      },
+      "uiProjection": {
+        "controlKind": "toggle",
+        "reviewWarningRequired": "cursor-input high-risk watchdog/dead-man warning"
+      },
+      "safeToEnableByPreflight": true
+    }
+  ],
+  "safety": {
+    "realConfigModified": false,
+    "activeRuntimeModified": false,
+    "reloadRun": false,
+    "evalRun": false,
+    "luaExecuted": false
+  }
+}

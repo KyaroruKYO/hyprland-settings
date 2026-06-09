@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "screen-shader-advisory-ui-exposure-design",
+  "generatedAt": "2026-06-08T01:55:49-07:00",
+  "rowId": "decoration.screen_shader",
+  "officialSetting": "decoration.screen_shader",
+  "startingCommit": "9363dc6",
+  "selectedUiExposureDesignOption": "Option A",
+  "decisionSummary": "Optional advisory UI exposure is designable as row-specific advanced metadata for decoration.screen_shader, but runnable UI implementation must wait for a dedicated implementation sprint. The current design projects a future explicit advanced action that is separated from apply, requires user trigger and consent messaging, displays non-authoritative advisory results, and cannot approve, block, or bypass write safety.",
+  "currentWritableStatus": "writable",
+  "productionGateEnforced": true,
+  "productionGateChanged": false,
+  "watchdogMigrationProofStatus": "complete",
+  "advisoryCompilerFeasibilityStatus": "complete",
+  "advisoryCompilerIntegrationDesignStatus": "complete",
+  "advisoryHelperImplementationStatus": "complete",
+  "chosenAdvisoryTool": "glslangValidator",
+  "compileAwareValidationCurrentStatus": "deferred",
+  "compileAwareValidationChanged": false,
+  "compileAwareValidationImplemented": false,
+  "productionCompileAwareValidationImplemented": false,
+  "advisoryUiExposureImplemented": false,
+  "uiExposureDesignOnly": true,
+  "uiActionPlacement": "advanced-display-render-screen-shader-advisory-section-separated-from-apply-action",
+  "advancedModeRequired": true,
+  "explicitUserTriggerRequired": true,
+  "runsOnRowLoad": false,
+  "runsOnValueChange": false,
+  "runsDuringValidation": false,
+  "runsDuringPendingChange": false,
+  "runsDuringWritePlanning": false,
+  "runsDuringApplyFlow": false,
+  "userConsentMessageRequired": true,
+  "tempCopyMessageRequired": true,
+  "originalPathNotPassedMessageRequired": true,
+  "runtimeSafetyDisclaimerRequired": true,
+  "productionGateDisclaimerRequired": true,
+  "advisoryPassPolicy": {
+    "status": "standalone-advisory-check-passed",
+    "message": "Standalone advisory check passed. This is not Hyprland runtime safety proof and does not approve or apply the write."
+  },
+  "advisoryFailurePolicy": {
+    "status": "standalone-advisory-warning",
+    "message": "Standalone advisory warning. This does not automatically block the write and does not change validators or write planning."
+  },
+  "missingToolPolicy": {
+    "status": "advisory-unavailable",
+    "message": "glslangValidator is missing, so the optional advisory check is unavailable. This does not approve or block writes."
+  },
+  "timeoutPolicy": {
+    "status": "advisory-inconclusive",
+    "message": "The optional advisory check timed out. This is inconclusive and does not approve or block writes."
+  },
+  "cleanupWarningPolicy": {
+    "status": "advisory-cleanup-warning",
+    "message": "Temp cleanup warning should be logged or displayed without approving, blocking, or bypassing writes."
+  },
+  "advisoryResultCanApproveWrite": false,
+  "advisoryResultCanBlockWrite": false,
+  "advisoryResultCanBypassProductionGate": false,
+  "compilerChecksWiredIntoValidators": false,
+  "compilerChecksWiredIntoPendingChanges": false,
+  "compilerChecksWiredIntoWritePlanning": false,
+  "compilerChecksWiredIntoApplyFlow": false,
+  "shaderCompilationThroughHyprlandRun": false,
+  "standaloneCompilerCommandsRunThisSprint": true,
+  "standaloneCompilerCommandScope": "full-regression-existing-helper-tests-only-generated-temp-fixtures; UI exposure design projection does not run compiler commands",
+  "liveShaderCompileUsed": false,
+  "liveDisplayRuntimeProofUsed": false,
+  "realConfigTouched": false,
+  "runtimeTouched": false,
+  "reloadEvalLuaUsed": false,
+  "realUserShaderFilesReadInTests": false,
+  "backgroundShaderScanningAllowed": false,
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "rowsEnabledThisSprint": 0,
+  "readableRows": 341,
+  "writableRows": 278,
+  "blockedRows": 63,
+  "unifiedPipelineRepresentation": {
+    "metadataOnly": true,
+    "rowLinkField": "advisoryUiExposureDesignSource",
+    "status": "design-only-advisory-ui-exposure-not-implemented",
+    "currentWriteStatus": "writable",
+    "productionGateStatus": "production-screen-shader-gate-enforced-compile-aware-validation-deferred",
+    "doesNotChangeWriteDecision": true,
+    "rowSpecificOnly": true
+  },
+  "recommendedValidationPolicy": {
+    "policy": "optional-advanced-ui-advisory-design-only",
+    "requiredPreflight": false,
+    "productionValidator": false,
+    "writePlanningIntegration": false,
+    "pendingChangeIntegration": false,
+    "validatorIntegration": false,
+    "applyFlowIntegration": false,
+    "uiExecutionImplemented": false,
+    "summary": "A future UI implementation may expose the advisory helper as an explicit advanced action for decoration.screen_shader only, but advisory output must remain non-authoritative and disconnected from write safety."
+  },
+  "compatibilityGaps": [
+    "UI execution of the advisory helper is not implemented in this sprint.",
+    "No UI proof exists yet for file chooser behavior, output rendering, progress state, or cancellation.",
+    "Advisory glslangValidator output is not Hyprland runtime safety proof.",
+    "No production compile-aware validator is implemented.",
+    "No official Hyprland non-live screen-shader validation interface was found."
+  ],
+  "proofUsed": [
+    "src/ui/model.rs projects design-only advisory metadata only for decoration.screen_shader.",
+    "tests/row_detail.rs proves the screen-shader detail projection requires advanced placement, explicit user trigger, consent/temp-copy/runtime-safety/production-gate messages, and does not approve, block, bypass, or auto-run in validation/write phases.",
+    "Existing advisory helper implementation proof proves the helper requires consent, uses temp copies, handles result states, and remains unwired from write safety.",
+    "Existing production gate approval report proves decoration.screen_shader remains writable and production-gated.",
+    "Aggregate reports link this design as metadata-only without changing counts, SAFE_WRITABLE_ROWS, write allowlist, validators, pending changes, write planning, apply flow, or production gate behavior."
+  ],
+  "proofStillMissing": [
+    "No full GTK file chooser/widget implementation exists for selecting a shader and displaying the advisory result visually.",
+    "No UI proof exists for cancellation or screenshot-backed visual presentation.",
+    "No proof exists that glslangValidator output is equivalent to Hyprland's OpenGL runtime compile/link behavior.",
+    "No production compile-aware validator implementation exists."
+  ],
+  "nextRecommendedSprint": "Screen shader optional advisory GTK file chooser visual proof sprint: implement direct GTK file chooser interaction only if it can be tested with generated fixture/temp files, never read real user shader files in tests, keep compiler arguments temp-only, and keep advisory output disconnected from write safety."
+}
