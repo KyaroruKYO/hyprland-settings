@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "dashboard-sidebar-simplification",
+  "generatedAt": "2026-06-09T08:33:59Z",
+  "startingCommit": "c6e9be7",
+  "userVisibleProblem": "Overview, Gaming, and Diagnostics appeared as empty 0-row sidebar categories, sidebar rows exposed technical row counts, and there was no friendly first page for normal settings navigation.",
+  "sidebarBefore": [
+    "Overview (0 rows)",
+    "Appearance (48 rows)",
+    "Animations (2 rows)",
+    "Windows & Layout (97 rows)",
+    "Display (22 rows)",
+    "Input (70 rows)",
+    "Keybinds (14 rows)",
+    "Cursor (22 rows)",
+    "Gaming (0 rows)",
+    "Permissions (3 rows)",
+    "System (63 rows)",
+    "Diagnostics (0 rows)"
+  ],
+  "sidebarAfter": [
+    "Dashboard",
+    "Appearance",
+    "Windows & Layout",
+    "Display",
+    "Input",
+    "Keyboard",
+    "Cursor",
+    "Permissions",
+    "System",
+    "Animations"
+  ],
+  "removedTabs": [
+    "Overview",
+    "Gaming",
+    "Diagnostics"
+  ],
+  "renamedTabs": [
+    {
+      "from": "Keybinds",
+      "to": "Keyboard",
+      "internalTabIdPreserved": "keybinds"
+    }
+  ],
+  "dashboardBehavior": {
+    "isSyntheticSidebarItem": true,
+    "usesSettingsListAndDetailsPane": false,
+    "showsZeroRows": false,
+    "showsBackendCoverageCounts": false,
+    "showsDiagnosticsProofLanguage": false,
+    "cardNavigation": "Dashboard cards include Open buttons that select the matching sidebar category when that category is present."
+  },
+  "dashboardCards": [
+    {
+      "title": "Appearance",
+      "description": "Change blur, shadows, borders, gaps, and other visual settings.",
+      "targetSidebarItem": "Appearance"
+    },
+    {
+      "title": "Windows & Layout",
+      "description": "Choose how windows open, move, resize, snap, and tile.",
+      "targetSidebarItem": "Windows & Layout"
+    },
+    {
+      "title": "Input",
+      "description": "Adjust keyboard, mouse, touchpad, gestures, and focus behavior.",
+      "targetSidebarItem": "Input"
+    },
+    {
+      "title": "Displays",
+      "description": "Review monitor, rendering, color, and display-related options.",
+      "targetSidebarItem": "Display"
+    },
+    {
+      "title": "Shortcuts",
+      "description": "Browse keybind-related settings and preserved shortcut entries.",
+      "targetSidebarItem": "Keyboard"
+    },
+    {
+      "title": "Advanced",
+      "description": "Review settings that need extra care before changing.",
+      "targetSidebarItem": "System"
+    }
+  ],
+  "needsAttentionBehavior": {
+    "shownByDefault": false,
+    "shownWhen": [
+      "duplicate/conflicting current config rows are present",
+      "parser warnings are present",
+      "structured preserved-family warnings are present"
+    ],
+    "copy": [
+      "Some settings appear more than once in your config.",
+      "Review them before applying changes."
+    ]
+  },
+  "technicalDetailsBehavior": "Technical export diagnostics remain available on normal settings pages through the collapsed diagnostics expander, but are not shown on Dashboard.",
+  "filesChanged": [
+    "src/ui/window.rs",
+    "tests/dashboard_sidebar_simplification.rs",
+    "data/reports/dashboard-sidebar-simplification.v0.55.2.json",
+    "docs/DASHBOARD-SIDEBAR-SIMPLIFICATION-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/DASHBOARD-SIDEBAR-SIMPLIFICATION-REVIEW-LOG.md"
+  ],
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "testsAdded": [
+    "tests/dashboard_sidebar_simplification.rs"
+  ],
+  "proofUsed": [
+    "src/ui/window.rs sidebar/dashboard structure",
+    "UiProjection counts and detail projections",
+    "SAFE_WRITABLE_ROWS.len() remains 341",
+    "dashboard_sidebar_simplification tests"
+  ],
+  "proofStillMissing": [
+    "Pixel-level screenshot verification was not added; manual verification is listed below."
+  ],
+  "manualVerificationSteps": [
+    "Launch the app.",
+    "Confirm Dashboard is the first sidebar item and Overview, Gaming, and Diagnostics are absent.",
+    "Confirm sidebar labels do not show row counts.",
+    "Confirm Dashboard shows cards and not the settings list or details pane.",
+    "Click Appearance, then Appearance Blur Enabled, and confirm the polished details pane still appears.",
+    "Search for cursor.default_monitor and confirm its high-risk/oracle details still appear.",
+    "Confirm diagnostics are still available on normal settings pages but do not dominate Dashboard."
+  ],
+  "nextRecommendedSprint": "Manual visual smoke pass for Dashboard card spacing and optional card navigation polish, without changing the write model."
+}

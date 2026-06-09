@@ -5,7 +5,9 @@ use adw::prelude::*;
 use gtk4 as gtk;
 
 use crate::config_discovery::ConfigDiscovery;
-use crate::current_config::{CurrentConfigSnapshot, CurrentValueSourceStatus};
+use crate::current_config::{
+    CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValueSourceStatus,
+};
 use crate::export::ExportBundle;
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::ui::model::{
@@ -15,6 +17,15 @@ use crate::ui::model::{
 use crate::validation::ValidationSummary;
 use crate::write_classification::{high_risk_write_policy, ScalarWriteValueKind};
 use crate::write_flow::{apply_setting_change, write_flow_value_kind};
+
+const DASHBOARD_ID: &str = "dashboard";
+
+#[derive(Debug, Clone)]
+struct SidebarItem {
+    id: String,
+    label: String,
+    target_tab_id: Option<String>,
+}
 
 pub fn show_main_window(
     app: &adw::Application,
@@ -29,15 +40,7 @@ pub fn show_main_window(
         config_discovery,
         current_config,
     ));
-    let selected_tab_id = Rc::new(RefCell::new(
-        model
-            .tabs
-            .iter()
-            .find(|tab| tab.id == "appearance")
-            .or_else(|| model.tabs.first())
-            .map(|tab| tab.id.clone())
-            .unwrap_or_default(),
-    ));
+    let selected_tab_id = Rc::new(RefCell::new(String::from(DASHBOARD_ID)));
     let current_query = Rc::new(RefCell::new(String::new()));
     let displayed_row_ids = Rc::new(RefCell::new(Vec::new()));
 
@@ -60,7 +63,8 @@ pub fn show_main_window(
     body.set_hexpand(true);
     root.append(&body);
 
-    let sidebar = build_sidebar(&model);
+    let sidebar_items = Rc::new(sidebar_items(&model));
+    let sidebar = build_sidebar(&sidebar_items);
     let sidebar_scroll = gtk::ScrolledWindow::builder()
         .min_content_width(250)
         .child(&sidebar)
@@ -76,15 +80,23 @@ pub fn show_main_window(
     content.set_vexpand(true);
     body.append(&content);
 
+    let dashboard_view = build_dashboard_view(&model, &sidebar, &sidebar_items);
+    content.append(&dashboard_view);
+
+    let settings_view = gtk::Box::new(gtk::Orientation::Vertical, 12);
+    settings_view.set_hexpand(true);
+    settings_view.set_vexpand(true);
+    content.append(&settings_view);
+
     let diagnostics = build_status_diagnostics_expander(&model);
-    content.append(&diagnostics);
+    settings_view.append(&diagnostics);
 
     let search_entry = gtk::SearchEntry::new();
     search_entry.set_placeholder_text(Some("Search export metadata"));
-    content.append(&search_entry);
+    settings_view.append(&search_entry);
 
     let tab_title = title_label("");
-    content.append(&tab_title);
+    settings_view.append(&tab_title);
 
     let settings_list = gtk::ListBox::new();
     settings_list.set_selection_mode(gtk::SelectionMode::Single);
@@ -108,11 +120,13 @@ pub fn show_main_window(
     work_area.set_resize_end_child(true);
     work_area.set_shrink_start_child(false);
     work_area.set_shrink_end_child(false);
-    content.append(&work_area);
+    settings_view.append(&work_area);
 
-    render_settings_view(
+    render_dashboard_view(
         &model,
         &selected_tab_id.borrow(),
+        &dashboard_view,
+        &settings_view,
         &current_query.borrow(),
         &tab_title,
         &settings_list,
@@ -124,17 +138,22 @@ pub fn show_main_window(
         let model = Rc::clone(&model);
         let selected_tab_id = Rc::clone(&selected_tab_id);
         let current_query = Rc::clone(&current_query);
+        let sidebar_items = Rc::clone(&sidebar_items);
+        let dashboard_view = dashboard_view.clone();
+        let settings_view = settings_view.clone();
         let tab_title = tab_title.clone();
         let settings_list = settings_list.clone();
         let displayed_row_ids = Rc::clone(&displayed_row_ids);
         let detail_content = detail_content.clone();
         sidebar.connect_row_selected(move |_, row| {
             if let Some(row) = row {
-                if let Some(tab) = model.tabs.get(row.index() as usize) {
-                    *selected_tab_id.borrow_mut() = tab.id.clone();
-                    render_settings_view(
+                if let Some(item) = sidebar_items.get(row.index() as usize) {
+                    *selected_tab_id.borrow_mut() = item.id.clone();
+                    render_dashboard_view(
                         &model,
                         &selected_tab_id.borrow(),
+                        &dashboard_view,
+                        &settings_view,
                         &current_query.borrow(),
                         &tab_title,
                         &settings_list,
@@ -150,15 +169,19 @@ pub fn show_main_window(
         let model = Rc::clone(&model);
         let selected_tab_id = Rc::clone(&selected_tab_id);
         let current_query = Rc::clone(&current_query);
+        let dashboard_view = dashboard_view.clone();
+        let settings_view = settings_view.clone();
         let tab_title = tab_title.clone();
         let settings_list = settings_list.clone();
         let displayed_row_ids = Rc::clone(&displayed_row_ids);
         let detail_content = detail_content.clone();
         search_entry.connect_search_changed(move |entry| {
             *current_query.borrow_mut() = entry.text().to_string();
-            render_settings_view(
+            render_dashboard_view(
                 &model,
                 &selected_tab_id.borrow(),
+                &dashboard_view,
+                &settings_view,
                 &current_query.borrow(),
                 &tab_title,
                 &settings_list,
@@ -189,14 +212,8 @@ pub fn show_main_window(
         });
     }
 
-    if let Some(initial_index) = model
-        .tabs
-        .iter()
-        .position(|tab| tab.id == *selected_tab_id.borrow())
-    {
-        if let Some(row) = sidebar.row_at_index(initial_index as i32) {
-            sidebar.select_row(Some(&row));
-        }
+    if let Some(row) = sidebar.row_at_index(0) {
+        sidebar.select_row(Some(&row));
     }
 
     window.set_content(Some(&root));
@@ -237,11 +254,53 @@ pub fn show_error_window(app: &adw::Application, export_context: &str, error: &s
     window.present();
 }
 
-fn build_sidebar(model: &UiProjection) -> gtk::ListBox {
+fn sidebar_items(model: &UiProjection) -> Vec<SidebarItem> {
+    let mut items = vec![SidebarItem {
+        id: DASHBOARD_ID.to_string(),
+        label: "Dashboard".to_string(),
+        target_tab_id: None,
+    }];
+    let order = [
+        "appearance",
+        "windows-layout",
+        "display",
+        "input",
+        "keybinds",
+        "cursor",
+        "permissions",
+        "system",
+        "animations",
+    ];
+
+    for tab_id in order {
+        let Some(tab) = model
+            .tabs
+            .iter()
+            .find(|tab| tab.id == tab_id && tab.row_count > 0)
+        else {
+            continue;
+        };
+        items.push(SidebarItem {
+            id: tab.id.clone(),
+            label: sidebar_tab_label(&tab.id, &tab.label),
+            target_tab_id: Some(tab.id.clone()),
+        });
+    }
+    items
+}
+
+fn sidebar_tab_label(tab_id: &str, label: &str) -> String {
+    match tab_id {
+        "keybinds" => "Keyboard".to_string(),
+        _ => label.to_string(),
+    }
+}
+
+fn build_sidebar(items: &[SidebarItem]) -> gtk::ListBox {
     let sidebar = gtk::ListBox::new();
     sidebar.set_selection_mode(gtk::SelectionMode::Single);
 
-    for tab in &model.tabs {
+    for item in items {
         let row = gtk::ListBoxRow::new();
         let row_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
         row_box.set_margin_top(8);
@@ -249,15 +308,157 @@ fn build_sidebar(model: &UiProjection) -> gtk::ListBox {
         row_box.set_margin_start(12);
         row_box.set_margin_end(12);
 
-        row_box.append(&body_label(&tab.label));
-        let count = small_label(&format!("{} rows", tab.row_count));
-        row_box.append(&count);
+        row_box.append(&body_label(&item.label));
 
         row.set_child(Some(&row_box));
         sidebar.append(&row);
     }
 
     sidebar
+}
+
+fn build_dashboard_view(
+    model: &UiProjection,
+    sidebar: &gtk::ListBox,
+    sidebar_items: &Rc<Vec<SidebarItem>>,
+) -> gtk::ScrolledWindow {
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 14);
+    content.set_margin_top(4);
+    content.set_margin_bottom(16);
+    content.set_margin_start(4);
+    content.set_margin_end(4);
+
+    content.append(&title_label("Dashboard"));
+
+    let cards = gtk::FlowBox::new();
+    cards.set_selection_mode(gtk::SelectionMode::None);
+    cards.set_homogeneous(true);
+    cards.set_min_children_per_line(2);
+    cards.set_max_children_per_line(3);
+    cards.set_row_spacing(12);
+    cards.set_column_spacing(12);
+    for card in dashboard_cards() {
+        cards.insert(
+            &build_dashboard_card(
+                card.title,
+                card.description,
+                card.target_tab_id,
+                sidebar,
+                sidebar_items,
+            ),
+            -1,
+        );
+    }
+    content.append(&cards);
+
+    if dashboard_needs_attention(model) {
+        let attention = gtk::Frame::new(None);
+        let box_content = gtk::Box::new(gtk::Orientation::Vertical, 6);
+        box_content.set_margin_top(12);
+        box_content.set_margin_bottom(12);
+        box_content.set_margin_start(12);
+        box_content.set_margin_end(12);
+        box_content.append(&title_label("Needs attention"));
+        box_content.append(&body_label(
+            "Some settings appear more than once in your config.",
+        ));
+        box_content.append(&small_label("Review them before applying changes."));
+        attention.set_child(Some(&box_content));
+        content.append(&attention);
+    }
+
+    gtk::ScrolledWindow::builder()
+        .vexpand(true)
+        .hexpand(true)
+        .child(&content)
+        .build()
+}
+
+struct DashboardCard {
+    title: &'static str,
+    description: &'static str,
+    target_tab_id: &'static str,
+}
+
+fn dashboard_cards() -> [DashboardCard; 6] {
+    [
+        DashboardCard {
+            title: "Appearance",
+            description: "Change blur, shadows, borders, gaps, and other visual settings.",
+            target_tab_id: "appearance",
+        },
+        DashboardCard {
+            title: "Windows & Layout",
+            description: "Choose how windows open, move, resize, snap, and tile.",
+            target_tab_id: "windows-layout",
+        },
+        DashboardCard {
+            title: "Input",
+            description: "Adjust keyboard, mouse, touchpad, gestures, and focus behavior.",
+            target_tab_id: "input",
+        },
+        DashboardCard {
+            title: "Displays",
+            description: "Review monitor, rendering, color, and display-related options.",
+            target_tab_id: "display",
+        },
+        DashboardCard {
+            title: "Shortcuts",
+            description: "Browse keybind-related settings and preserved shortcut entries.",
+            target_tab_id: "keybinds",
+        },
+        DashboardCard {
+            title: "Advanced",
+            description: "Review settings that need extra care before changing.",
+            target_tab_id: "system",
+        },
+    ]
+}
+
+fn build_dashboard_card(
+    title: &str,
+    description: &str,
+    target_tab_id: &str,
+    sidebar: &gtk::ListBox,
+    sidebar_items: &Rc<Vec<SidebarItem>>,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    let card = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    card.set_margin_top(12);
+    card.set_margin_bottom(12);
+    card.set_margin_start(12);
+    card.set_margin_end(12);
+    card.append(&title_label(title));
+    card.append(&body_label(description));
+
+    if let Some(index) = sidebar_items
+        .iter()
+        .position(|item| item.target_tab_id.as_deref() == Some(target_tab_id))
+    {
+        let button = gtk::Button::with_label("Open");
+        let sidebar = sidebar.clone();
+        button.connect_clicked(move |_| {
+            if let Some(row) = sidebar.row_at_index(index as i32) {
+                sidebar.select_row(Some(&row));
+            }
+        });
+        card.append(&button);
+    }
+
+    frame.set_child(Some(&card));
+    frame
+}
+
+fn dashboard_needs_attention(model: &UiProjection) -> bool {
+    matches!(
+        model.current_config.status,
+        CurrentConfigLoadStatus::Loaded { .. }
+    ) && (model.current_value_summary.duplicate_conflict_rows > 0
+        || model.current_value_summary.parser_warning_rows > 0
+        || model
+            .structured_families
+            .iter()
+            .any(|family| family.warning_count > 0))
 }
 
 fn build_status_diagnostics_expander(model: &UiProjection) -> gtk::Expander {
@@ -378,6 +579,42 @@ fn append_structured_family_summary(model: &UiProjection, content: &gtk::Box) {
             )));
         }
     }
+}
+
+fn render_dashboard_view(
+    model: &UiProjection,
+    selected_tab_id: &str,
+    dashboard_view: &gtk::ScrolledWindow,
+    settings_view: &gtk::Box,
+    query: &str,
+    tab_title: &gtk::Label,
+    settings_list: &gtk::ListBox,
+    displayed_row_ids: &Rc<RefCell<Vec<String>>>,
+    detail_content: &gtk::Box,
+) {
+    if selected_tab_id == DASHBOARD_ID {
+        dashboard_view.set_visible(true);
+        settings_view.set_visible(false);
+        settings_list.unselect_all();
+        while let Some(child) = settings_list.first_child() {
+            settings_list.remove(&child);
+        }
+        displayed_row_ids.borrow_mut().clear();
+        render_empty_detail(detail_content);
+        return;
+    }
+
+    dashboard_view.set_visible(false);
+    settings_view.set_visible(true);
+    render_settings_view(
+        model,
+        selected_tab_id,
+        query,
+        tab_title,
+        settings_list,
+        displayed_row_ids,
+        detail_content,
+    );
 }
 
 fn render_settings_view(
