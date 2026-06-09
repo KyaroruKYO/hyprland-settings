@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "dashboard-config-page-scaffold",
+  "generatedAt": "2026-06-09T00:00:00-07:00",
+  "startingCommit": "8a2dde1 Fix libadwaita style warning and focus cleanup",
+  "goal": "Add Dashboard and sidebar navigation to a read-only Config page that introduces future config selection, connected-file review, profiles, and write-target selection without activating those behaviors.",
+  "filesChanged": [
+    "src/ui/window.rs",
+    "tests/dashboard_config_page_scaffold.rs",
+    "data/reports/dashboard-config-page-scaffold.v0.55.2.json",
+    "docs/DASHBOARD-CONFIG-PAGE-SCAFFOLD-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/DASHBOARD-CONFIG-PAGE-SCAFFOLD-REVIEW-LOG.md"
+  ],
+  "uiChanges": [
+    "Added a synthetic Config sidebar item after Dashboard.",
+    "Added a Dashboard Config card with an Open button.",
+    "Added a read-only Config page separate from the settings list/detail view.",
+    "Kept normal settings categories on the existing list/detail layout."
+  ],
+  "dashboardChanges": {
+    "cardAdded": "Config",
+    "cardCopy": "Choose which Hyprland config the app reviews and where future changes should be saved.",
+    "navigation": "Open selects the Config sidebar item.",
+    "technicalCountsShown": false
+  },
+  "sidebarChanges": {
+    "order": [
+      "Dashboard",
+      "Config",
+      "Appearance",
+      "Windows & Layout",
+      "Display",
+      "Input",
+      "Keyboard",
+      "Cursor",
+      "Permissions",
+      "System",
+      "Animations"
+    ],
+    "rowCountsShown": false,
+    "technicalMetadataShown": false
+  },
+  "configPageSections": [
+    {
+      "title": "Config file",
+      "purpose": "Show which config path is currently detected or why it is unavailable."
+    },
+    {
+      "title": "Connected files",
+      "purpose": "Explain that connected-file review is planned and not active yet."
+    },
+    {
+      "title": "Profiles",
+      "purpose": "Explain that profile switching is planned and not active yet."
+    },
+    {
+      "title": "Future changes",
+      "purpose": "Explain that future writes will ask where to save when a setting is controlled in more than one place."
+    }
+  ],
+  "disabledOrFutureControls": [
+    "Choose Config File...",
+    "Review connected files (planned)",
+    "Profile switching planned"
+  ],
+  "copyAdded": [
+    "Auto-detection is a starting point. You will be able to choose another config file before the app writes changes.",
+    "This setup may use more than one config file.",
+    "Connected-file review is planned and not active yet.",
+    "The app will review connected files before allowing changes.",
+    "Profile switching is not active yet.",
+    "Future versions may show desktop, gaming, theme, or host profiles here.",
+    "When a setting is controlled in more than one place, the app will ask where to save the change before applying it.",
+    "The app will back up the file before saving changes."
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "symlinksChanged": false,
+    "modeScriptsRun": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "filePickerActive": false,
+    "profileSwitchingActive": false,
+    "layeredWritesActive": false,
+    "appWriteModelChanged": false
+  },
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "testsAdded": [
+    "tests/dashboard_config_page_scaffold.rs"
+  ],
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitStatusShort": "passed with unrelated local-only audit/design artifacts still untracked"
+  },
+  "proofUsed": [
+    "Source inspection of existing Dashboard/sidebar routing in src/ui/window.rs.",
+    "Source inspection of current config discovery and UI projection model.",
+    "New source-level tests proving Config card/sidebar/page wiring and disabled future controls.",
+    "Existing final coverage tests preserving 341 readable / 341 writable / 0 blocked."
+  ],
+  "proofStillMissing": [
+    "No real GTK file picker behavior is implemented yet.",
+    "No profile switching behavior is implemented yet.",
+    "No source/include graph review behavior is implemented yet.",
+    "No layered write-target selection behavior is implemented yet."
+  ],
+  "nextRecommendedSprint": "Implement read-only source/include-aware config detection with fixture tests, then wire its summary into the Config page."
+}

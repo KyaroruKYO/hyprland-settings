@@ -19,6 +19,7 @@ use crate::write_classification::{high_risk_write_policy, ScalarWriteValueKind};
 use crate::write_flow::{apply_setting_change, write_flow_value_kind};
 
 const DASHBOARD_ID: &str = "dashboard";
+const CONFIG_ID: &str = "config";
 
 #[derive(Debug, Clone)]
 struct SidebarItem {
@@ -83,6 +84,9 @@ pub fn show_main_window(
     let dashboard_view = build_dashboard_view(&model, &sidebar, &sidebar_items);
     content.append(&dashboard_view);
 
+    let config_view = build_config_view(&model);
+    content.append(&config_view);
+
     let settings_view = gtk::Box::new(gtk::Orientation::Vertical, 12);
     settings_view.set_hexpand(true);
     settings_view.set_vexpand(true);
@@ -119,10 +123,11 @@ pub fn show_main_window(
     work_area.set_shrink_end_child(false);
     settings_view.append(&work_area);
 
-    render_dashboard_view(
+    render_main_view(
         &model,
         &selected_tab_id.borrow(),
         &dashboard_view,
+        &config_view,
         &settings_view,
         &current_query.borrow(),
         &tab_title,
@@ -137,6 +142,7 @@ pub fn show_main_window(
         let current_query = Rc::clone(&current_query);
         let sidebar_items = Rc::clone(&sidebar_items);
         let dashboard_view = dashboard_view.clone();
+        let config_view = config_view.clone();
         let settings_view = settings_view.clone();
         let tab_title = tab_title.clone();
         let settings_list = settings_list.clone();
@@ -146,10 +152,11 @@ pub fn show_main_window(
             if let Some(row) = row {
                 if let Some(item) = sidebar_items.get(row.index() as usize) {
                     *selected_tab_id.borrow_mut() = item.id.clone();
-                    render_dashboard_view(
+                    render_main_view(
                         &model,
                         &selected_tab_id.borrow(),
                         &dashboard_view,
+                        &config_view,
                         &settings_view,
                         &current_query.borrow(),
                         &tab_title,
@@ -167,6 +174,7 @@ pub fn show_main_window(
         let selected_tab_id = Rc::clone(&selected_tab_id);
         let current_query = Rc::clone(&current_query);
         let dashboard_view = dashboard_view.clone();
+        let config_view = config_view.clone();
         let settings_view = settings_view.clone();
         let tab_title = tab_title.clone();
         let settings_list = settings_list.clone();
@@ -174,10 +182,11 @@ pub fn show_main_window(
         let detail_content = detail_content.clone();
         search_entry.connect_search_changed(move |entry| {
             *current_query.borrow_mut() = entry.text().to_string();
-            render_dashboard_view(
+            render_main_view(
                 &model,
                 &selected_tab_id.borrow(),
                 &dashboard_view,
+                &config_view,
                 &settings_view,
                 &current_query.borrow(),
                 &tab_title,
@@ -251,11 +260,18 @@ pub fn show_error_window(app: &adw::Application, export_context: &str, error: &s
 }
 
 fn sidebar_items(model: &UiProjection) -> Vec<SidebarItem> {
-    let mut items = vec![SidebarItem {
-        id: DASHBOARD_ID.to_string(),
-        label: "Dashboard".to_string(),
-        target_tab_id: None,
-    }];
+    let mut items = vec![
+        SidebarItem {
+            id: DASHBOARD_ID.to_string(),
+            label: "Dashboard".to_string(),
+            target_tab_id: None,
+        },
+        SidebarItem {
+            id: CONFIG_ID.to_string(),
+            label: "Config".to_string(),
+            target_tab_id: None,
+        },
+    ];
     let order = [
         "appearance",
         "windows-layout",
@@ -376,8 +392,13 @@ struct DashboardCard {
     target_tab_id: &'static str,
 }
 
-fn dashboard_cards() -> [DashboardCard; 6] {
+fn dashboard_cards() -> [DashboardCard; 7] {
     [
+        DashboardCard {
+            title: "Config",
+            description: "Choose which Hyprland config the app reviews and where future changes should be saved.",
+            target_tab_id: CONFIG_ID,
+        },
         DashboardCard {
             title: "Appearance",
             description: "Change blur, shadows, borders, gaps, and other visual settings.",
@@ -427,10 +448,9 @@ fn build_dashboard_card(
     card.append(&title_label(title));
     card.append(&body_label(description));
 
-    if let Some(index) = sidebar_items
-        .iter()
-        .position(|item| item.target_tab_id.as_deref() == Some(target_tab_id))
-    {
+    if let Some(index) = sidebar_items.iter().position(|item| {
+        item.id == target_tab_id || item.target_tab_id.as_deref() == Some(target_tab_id)
+    }) {
         let button = gtk::Button::with_label("Open");
         let sidebar = sidebar.clone();
         button.connect_clicked(move |_| {
@@ -457,10 +477,107 @@ fn dashboard_needs_attention(model: &UiProjection) -> bool {
             .any(|family| family.warning_count > 0))
 }
 
-fn render_dashboard_view(
+fn build_config_view(model: &UiProjection) -> gtk::ScrolledWindow {
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 14);
+    content.set_margin_top(4);
+    content.set_margin_bottom(16);
+    content.set_margin_start(4);
+    content.set_margin_end(4);
+
+    content.append(&title_label("Config"));
+    content.append(&body_label(
+        "Review which Hyprland config the app is using before making changes.",
+    ));
+
+    content.append(&config_section(
+        "Config file",
+        vec![
+            "Using:".to_string(),
+            config_path_summary(&model.config_discovery),
+            "Auto-detection is a starting point. You will be able to choose another config file before the app writes changes.".to_string(),
+        ],
+        Some(("Choose Config File...", false)),
+    ));
+
+    content.append(&config_section(
+        "Connected files",
+        vec![
+            "This setup may use more than one config file.".to_string(),
+            "Connected-file review is planned and not active yet.".to_string(),
+            "The app will review connected files before allowing changes.".to_string(),
+        ],
+        Some(("Review connected files (planned)", false)),
+    ));
+
+    content.append(&config_section(
+        "Profiles",
+        vec![
+            "Profile switching is not active yet.".to_string(),
+            "Future versions may show desktop, gaming, theme, or host profiles here.".to_string(),
+        ],
+        Some(("Profile switching planned", false)),
+    ));
+
+    content.append(&config_section(
+        "Future changes",
+        vec![
+            "When a setting is controlled in more than one place, the app will ask where to save the change before applying it.".to_string(),
+            "The app will back up the file before saving changes.".to_string(),
+        ],
+        None,
+    ));
+
+    gtk::ScrolledWindow::builder()
+        .vexpand(true)
+        .hexpand(true)
+        .child(&content)
+        .build()
+}
+
+fn config_path_summary(discovery: &ConfigDiscovery) -> String {
+    match &discovery.status {
+        crate::config_discovery::ConfigDiscoveryStatus::Found { path, .. } => {
+            path.display().to_string()
+        }
+        crate::config_discovery::ConfigDiscoveryStatus::Missing => {
+            "No Hyprland config file was detected.".to_string()
+        }
+        crate::config_discovery::ConfigDiscoveryStatus::Unreadable { path, .. } => {
+            format!("{} could not be read.", path.display())
+        }
+        crate::config_discovery::ConfigDiscoveryStatus::NotAFile { path, .. } => {
+            format!("{} is not a regular file.", path.display())
+        }
+    }
+}
+
+fn config_section(title: &str, lines: Vec<String>, button: Option<(&str, bool)>) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    let box_content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    box_content.set_margin_top(12);
+    box_content.set_margin_bottom(12);
+    box_content.set_margin_start(12);
+    box_content.set_margin_end(12);
+
+    box_content.append(&title_label(title));
+    for line in &lines {
+        box_content.append(&body_label(line));
+    }
+    if let Some((label, active)) = button {
+        let action = gtk::Button::with_label(label);
+        action.set_sensitive(active);
+        box_content.append(&action);
+    }
+
+    frame.set_child(Some(&box_content));
+    frame
+}
+
+fn render_main_view(
     model: &UiProjection,
     selected_tab_id: &str,
     dashboard_view: &gtk::ScrolledWindow,
+    config_view: &gtk::ScrolledWindow,
     settings_view: &gtk::Box,
     query: &str,
     tab_title: &gtk::Label,
@@ -470,6 +587,20 @@ fn render_dashboard_view(
 ) {
     if selected_tab_id == DASHBOARD_ID {
         dashboard_view.set_visible(true);
+        config_view.set_visible(false);
+        settings_view.set_visible(false);
+        settings_list.unselect_all();
+        while let Some(child) = settings_list.first_child() {
+            settings_list.remove(&child);
+        }
+        displayed_row_ids.borrow_mut().clear();
+        render_empty_detail(detail_content);
+        return;
+    }
+
+    if selected_tab_id == CONFIG_ID {
+        dashboard_view.set_visible(false);
+        config_view.set_visible(true);
         settings_view.set_visible(false);
         settings_list.unselect_all();
         while let Some(child) = settings_list.first_child() {
@@ -481,6 +612,7 @@ fn render_dashboard_view(
     }
 
     dashboard_view.set_visible(false);
+    config_view.set_visible(false);
     settings_view.set_visible(true);
     render_settings_view(
         model,

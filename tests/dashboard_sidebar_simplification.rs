@@ -72,22 +72,30 @@ fn dashboard_source_hides_settings_work_area_and_omits_backend_counts() {
     let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
 
     assert!(source.contains("fn build_dashboard_view"));
-    assert!(source.contains("fn render_dashboard_view"));
+    assert!(source.contains("fn render_main_view"));
     assert!(source.contains("dashboard_view.set_visible(true)"));
     assert!(source.contains("settings_view.set_visible(false)"));
     assert!(source.contains("dashboard_view.set_visible(false)"));
     assert!(source.contains("settings_view.set_visible(true)"));
     assert!(source.contains("render_empty_detail(detail_content)"));
 
-    let dashboard_start = source
+    let dashboard_layout_start = source
         .find("fn build_dashboard_view")
         .expect("dashboard function should exist");
-    let render_start = source
-        .find("fn render_dashboard_view")
-        .expect("dashboard render function should exist");
-    let dashboard_source = &source[dashboard_start..render_start];
+    let dashboard_layout_end = source
+        .find("struct DashboardCard")
+        .expect("dashboard card struct should exist");
+    let dashboard_source = &source[dashboard_layout_start..dashboard_layout_end];
+    let dashboard_cards_start = source
+        .find("fn dashboard_cards")
+        .expect("dashboard cards function should exist");
+    let dashboard_cards_end = source
+        .find("fn build_dashboard_card")
+        .expect("dashboard card builder should exist");
+    let dashboard_cards_source = &source[dashboard_cards_start..dashboard_cards_end];
 
     for card in [
+        "Config",
         "Appearance",
         "Windows & Layout",
         "Input",
@@ -96,7 +104,7 @@ fn dashboard_source_hides_settings_work_area_and_omits_backend_counts() {
         "Advanced",
     ] {
         assert!(
-            dashboard_source.contains(card),
+            dashboard_cards_source.contains(card),
             "missing dashboard card {card}"
         );
     }
