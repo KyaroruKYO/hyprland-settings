@@ -15,10 +15,10 @@ fn screen_shader_compile_aware_research_report_records_advisory_outcome() -> Res
     let pipeline = read_json("data/reports/all-341-unified-pipeline.v0.55.2.json")?;
 
     assert!(is_safe_writable_setting("decoration.screen_shader"));
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
 
     assert_eq!(report["rowId"], "decoration.screen_shader");
     assert_eq!(report["officialSetting"], "decoration.screen_shader");

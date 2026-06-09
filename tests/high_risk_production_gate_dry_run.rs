@@ -20,6 +20,9 @@ use hyprland_settings::high_risk_production_gate::{
     HighRiskProductionGateDecisionKind, HighRiskProductionGateError, HighRiskProductionGateMode,
     HighRiskProductionGateProof, HighRiskProductionGateRequest,
 };
+use hyprland_settings::monitor_name_oracle::{
+    validate_monitor_name_candidate, MonitorNameSnapshot, MonitorNameSnapshotSource,
+};
 use hyprland_settings::write_classification::config_key_from_official_setting;
 use hyprland_settings::write_classification::{
     is_high_risk_gated_writable_setting, is_safe_writable_setting, SAFE_WRITABLE_ROWS,
@@ -61,7 +64,11 @@ fn complete_proof(
         .find(|row| row.row_id == row_id)
         .expect("test row should be in blocked pre-enablement list");
     let key = config_key_from_official_setting(row.official_setting);
-    let proposed = valid_pre_enablement_example(row);
+    let proposed = if row.row_id == "cursor.default_monitor" {
+        "DP-1".to_string()
+    } else {
+        valid_pre_enablement_example(row)
+    };
     let previous = if proposed == "1" {
         "0".to_string()
     } else {
@@ -101,6 +108,7 @@ fn complete_proof(
             rollback_proof: Some(rollback_proof),
             confirmation_token: Some(plan.confirmation_token.as_str().to_string()),
             explicit_high_risk_approval: false,
+            monitor_name_oracle_proof: None,
         }),
         runtime_oracle_proven: false,
     };
@@ -154,19 +162,11 @@ fn dry_run_gate_evaluates_all_blocked_rows_and_preserves_bucket_counts() {
             evaluation.decision.kind,
             HighRiskProductionGateDecisionKind::ProductionWriteRefused
         );
-        if evaluation.row_id == "cursor.default_monitor" {
-            assert!(evaluation
-                .decision
-                .errors
-                .contains(&HighRiskProductionGateError::ProductionWriteDisabled));
-            assert!(!evaluation.is_safe_writable_setting);
-        } else {
-            assert!(evaluation
-                .decision
-                .errors
-                .contains(&HighRiskProductionGateError::MissingRecoveryPlan));
-            assert!(evaluation.is_safe_writable_setting);
-        }
+        assert!(evaluation
+            .decision
+            .errors
+            .contains(&HighRiskProductionGateError::MissingRecoveryPlan));
+        assert!(evaluation.is_safe_writable_setting);
     }
 
     assert_eq!(counts.get("display/render"), Some(&23));
@@ -227,6 +227,13 @@ fn runtime_dynamic_default_monitor_can_only_accept_when_runtime_oracle_is_proven
     });
 
     request.runtime_oracle_proven = true;
+    let snapshot =
+        MonitorNameSnapshot::from_names(MonitorNameSnapshotSource::Mock, ["DP-1", "eDP-1"])?;
+    request
+        .proof
+        .as_mut()
+        .expect("proof should exist")
+        .monitor_name_oracle_proof = Some(validate_monitor_name_candidate("DP-1", &snapshot));
     let accepted = evaluate_high_risk_production_gate(request);
     assert_eq!(
         accepted.decision.kind,
@@ -426,28 +433,20 @@ fn production_write_mode_refuses_all_rows_even_with_complete_scaffold_proof() ->
 
 #[test]
 fn current_write_allowlist_and_apply_path_still_refuse_all_blocked_rows() {
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 
     let blocked_rows = blocked_pre_enablement_rows();
     for row in blocked_rows {
-        if row.row_id == "cursor.default_monitor" {
-            assert!(
-                !is_safe_writable_setting(row.row_id),
-                "{} must remain outside SAFE_WRITABLE_ROWS",
-                row.row_id
-            );
-        } else {
-            assert!(
-                is_safe_writable_setting(row.row_id),
-                "{} should now be allowlisted only through the high-risk gate",
-                row.row_id
-            );
-            assert!(
-                is_high_risk_gated_writable_setting(row.row_id),
-                "{} should be classified as a high-risk gated writable row",
-                row.row_id
-            );
-        }
+        assert!(
+            is_safe_writable_setting(row.row_id),
+            "{} should now be allowlisted only through the high-risk gate",
+            row.row_id
+        );
+        assert!(
+            is_high_risk_gated_writable_setting(row.row_id),
+            "{} should be classified as a high-risk gated writable row",
+            row.row_id
+        );
     }
 
     let known_setting_ids: BTreeSet<String> = blocked_rows
@@ -478,8 +477,8 @@ fn current_write_allowlist_and_apply_path_still_refuse_all_blocked_rows() {
         );
         if row.row_id == "cursor.default_monitor" {
             assert!(
-                matches!(result, Err(failure) if failure.failures.contains(&"NotAllowlisted".to_string())),
-                "write flow should keep {} blocked before any write path",
+                matches!(result, Err(failure) if failure.failures.contains(&"InvalidProposedValue".to_string())),
+                "write flow should reject {} without monitor-name oracle proof",
                 row.row_id
             );
         } else {

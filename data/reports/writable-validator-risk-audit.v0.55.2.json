@@ -1,7 +1,7 @@
 {
   "schemaVersion": "0.55.2",
   "artifactKind": "writable-validator-risk-audit",
-  "generatedAt": "2026-06-09T02:05:17.664873Z",
+  "generatedAt": "2026-06-09T02:59:15.613975Z",
   "counts": {
     "validatorRiskRows": 244,
     "appValidatorTooNarrowRows": 0,
@@ -13,7 +13,9 @@
     "validatorsChanged": false,
     "writeAllowlistChanged": true,
     "productionBehaviorChanged": true,
-    "rowsEnabledThisSprint": 62
+    "rowsEnabledThisSprint": 1,
+    "writableRows": 341,
+    "blockedRows": 0
   },
   "rows": [
     {
@@ -3292,6 +3294,7 @@
     "blockedRows": 63,
     "writeAllowlistChanged": false,
     "recoveryGatesChanged": false,
-    "rowsEnabledThisSprint": 0
+    "rowsEnabledThisSprint": 0,
+    "cursorDefaultMonitorRuntimeOracleProofReport": "data/reports/cursor-default-monitor-runtime-oracle-proof.v0.55.2.json"
   }
 }

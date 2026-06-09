@@ -58,7 +58,7 @@ fn snapshot_for(path: &PathBuf, contents: &str) -> CurrentConfigSnapshot {
 fn edit_projection_allows_only_safe_writable_rows() {
     let current =
         CurrentConfigSnapshot::read_unavailable("no config").value_for("general.snap.enabled");
-    let blocked = edit_projection_for_setting("cursor.default_monitor", &current);
+    let blocked = edit_projection_for_setting("device.test-mouse.sensitivity", &current);
 
     for row in SAFE_WRITABLE_ROWS {
         let editable = edit_projection_for_setting(row.row_id, &current);
@@ -845,7 +845,7 @@ fn apply_flow_blocks_non_allowlisted_setting() {
         known_ids(),
         &discovery,
         &snapshot,
-        "cursor.default_monitor",
+        "device.test-mouse.sensitivity",
         "HDMI-A-1",
         &backup_manager,
     )

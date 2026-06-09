@@ -7,6 +7,7 @@ use crate::high_risk_persisted_recovery::{
     HighRiskRecoveryDecision, HighRiskRecoveryPlan, HighRiskRecoveryPlanError, TempBackupProof,
     TempRestoreProof,
 };
+use crate::monitor_name_oracle::{MonitorNameValidation, MonitorNameValidationStatus};
 use crate::write_classification::{is_high_risk_gated_writable_setting, is_safe_writable_setting};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -34,6 +35,7 @@ pub struct HighRiskProductionGateProof {
     pub rollback_proof: Option<TempRestoreProof>,
     pub confirmation_token: Option<String>,
     pub explicit_high_risk_approval: bool,
+    pub monitor_name_oracle_proof: Option<MonitorNameValidation>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -111,6 +113,11 @@ pub enum HighRiskProductionGateError {
     RollbackParserRereadMissing,
     LiveExecutionEnabled,
     RuntimeDynamicOracleMissing,
+    RuntimeDynamicOracleRejected(String),
+    RuntimeDynamicOracleCandidateMismatch {
+        expected: String,
+        actual: String,
+    },
     MissingExplicitHighRiskApproval,
     ProductionWriteDisabled,
 }
@@ -172,6 +179,13 @@ impl fmt::Display for HighRiskProductionGateError {
             Self::RuntimeDynamicOracleMissing => {
                 write!(formatter, "runtime-dynamic oracle proof is missing")
             }
+            Self::RuntimeDynamicOracleRejected(reason) => {
+                write!(formatter, "runtime-dynamic oracle proof rejected: {reason}")
+            }
+            Self::RuntimeDynamicOracleCandidateMismatch { expected, actual } => write!(
+                formatter,
+                "runtime-dynamic oracle candidate mismatch; expected {expected}, got {actual}"
+            ),
             Self::MissingExplicitHighRiskApproval => {
                 write!(formatter, "explicit high-risk approval is missing")
             }
@@ -382,8 +396,28 @@ fn validate_gate_proof(
         }
     }
 
-    if request.row_id == "cursor.default_monitor" && !request.runtime_oracle_proven {
-        errors.push(HighRiskProductionGateError::RuntimeDynamicOracleMissing);
+    if request.row_id == "cursor.default_monitor" {
+        if !request.runtime_oracle_proven {
+            errors.push(HighRiskProductionGateError::RuntimeDynamicOracleMissing);
+        }
+        match &proof.monitor_name_oracle_proof {
+            Some(validation) if validation.accepted() => {
+                if validation.candidate != plan.proposed_value {
+                    errors.push(
+                        HighRiskProductionGateError::RuntimeDynamicOracleCandidateMismatch {
+                            expected: plan.proposed_value.clone(),
+                            actual: validation.candidate.clone(),
+                        },
+                    );
+                }
+            }
+            Some(validation) => {
+                errors.push(HighRiskProductionGateError::RuntimeDynamicOracleRejected(
+                    monitor_validation_status_label(validation.status).to_string(),
+                ));
+            }
+            None => errors.push(HighRiskProductionGateError::RuntimeDynamicOracleMissing),
+        }
     }
 }
 
@@ -394,5 +428,14 @@ fn recovery_plan_error_label(error: HighRiskRecoveryPlanError) -> String {
         HighRiskRecoveryPlanError::PlanPathNotTemp(_) => "non-temp-plan-path".to_string(),
         HighRiskRecoveryPlanError::LiveExecutionDisabled => "live-execution-disabled".to_string(),
         other => other.to_string(),
+    }
+}
+
+fn monitor_validation_status_label(status: MonitorNameValidationStatus) -> &'static str {
+    match status {
+        MonitorNameValidationStatus::Accepted => "accepted",
+        MonitorNameValidationStatus::Missing => "missing",
+        MonitorNameValidationStatus::Stale => "stale",
+        MonitorNameValidationStatus::UnsafeSyntax => "unsafe-syntax",
     }
 }

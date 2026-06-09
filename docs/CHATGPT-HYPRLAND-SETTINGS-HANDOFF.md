@@ -1,5 +1,45 @@
 # Hyprland Settings ChatGPT Handoff
 
+State reviewed after the cursor.default_monitor runtime monitor-name oracle proof sprint on branch `completion-sprint`.
+
+Latest reviewed implementation baseline before this sprint:
+
+- `3243fd31d51916b6390a2c4708ddedca10ddfe7c Enable dry-run accepted high-risk rows`
+
+Latest sprint commit:
+
+- `Complete cursor default monitor oracle proof` (this commit; use `git log -1 --oneline` for the exact hash)
+
+Latest restore point and backups:
+
+- Restore tag: `pre-cursor-default-monitor-runtime-oracle-proof-20260608-194718`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-cursor-default-monitor-runtime-oracle-proof-backup_20260608_194718/`
+- AGS backup: `/home/kyo/Documents/ags-pre-cursor-default-monitor-runtime-oracle-proof-backup_20260608_194718`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-cursor-default-monitor-runtime-oracle-proof-20260608_194718`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-cursor-default-monitor-runtime-oracle-proof-backup_20260608_194718`
+
+Latest cursor.default_monitor oracle proof status:
+
+- Row targeted: `cursor.default_monitor`.
+- Enabled this sprint: yes.
+- Writable rows before/after: 340 / 341.
+- Blocked rows before/after: 1 / 0.
+- Final counts: 341 readable / 341 writable / 0 blocked.
+- Final 341 writable coverage reached: yes.
+- Oracle module added: `src/monitor_name_oracle.rs`.
+- `cursor.default_monitor` oracle status: official source evidence proved the setting and runtime monitor-name comparison path; fixture/mock monitor-name oracle proof accepts current names and rejects empty, missing, stale, malformed, duplicate-problematic, path-like, command-like, and unsafe names; optional read-only adapter abstraction parses fixture `hyprctl monitors` output only.
+- Writability mode: gated high-risk cursor/input row, not a low-risk/freeform string write.
+- Gate integration: `cursor.default_monitor` requires runtime monitor-name oracle proof, high-risk production gate proof, persisted recovery plan proof, backup proof, rollback plus parser reread proof, confirmation token proof, timeout/no-confirmation rollback behavior, and UI warning/advanced placement.
+- Tests added: `tests/cursor_default_monitor_runtime_oracle.rs` and `tests/final_341_writable_coverage.rs`.
+- Reports created: `data/reports/cursor-default-monitor-runtime-oracle-proof.v0.55.2.json`, `data/reports/cursor-default-monitor-runtime-oracle-tests.v0.55.2.json`, and `data/reports/final-341-writable-coverage.v0.55.2.json`.
+- Review log path: `docs/CURSOR-DEFAULT-MONITOR-RUNTIME-ORACLE-PROOF-REVIEW-LOG.md` and `/home/kyo/.config/hypr/docs/CURSOR-DEFAULT-MONITOR-RUNTIME-ORACLE-PROOF-REVIEW-LOG.md`.
+- Next recommended sprint: `Final all-341 writable coverage consistency review sprint`.
+- Projected next 3 steps: perform final all-341 consistency review across UI, reports, and write path; confirm no legacy 340/1 assumptions remain; prepare final migration/handoff summary for the now-complete 341-row writable model.
+- Validation results: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `desktop-file-validate`, export validator, UI design validator, and schema validator passed. `appstreamcli validate --pedantic` produced only the expected non-blocking GitHub URL and releases-info warnings.
+- Hard boundaries preserved: yes. No real config/runtime mutation, Hyprland reload/eval/Lua, live display/input/crash proof, screen-shader work, package/workflow creation, or push.
+
+---
+
 State reviewed after the high-risk accepted rows enablement sprint on branch `completion-sprint`.
 
 Latest reviewed implementation baseline before this sprint:

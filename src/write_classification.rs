@@ -186,6 +186,7 @@ pub const ACCEPTED_HIGH_RISK_CURSOR_INPUT_WRITABLE_ROWS: &[&str] = &[
     "cursor.persistent_warps",
     "cursor.warp_on_change_workspace",
     "cursor.warp_on_toggle_special",
+    "cursor.default_monitor",
     "cursor.zoom_factor",
     "cursor.zoom_rigid",
     "cursor.zoom_disable_aa",
@@ -2421,6 +2422,11 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         value_kind: ScalarWriteValueKind::FiniteChoice,
     },
     SafeWritableRow {
+        row_id: "cursor.default_monitor",
+        official_setting: "cursor.default_monitor",
+        value_kind: ScalarWriteValueKind::MonitorName,
+    },
+    SafeWritableRow {
         row_id: "cursor.zoom_factor",
         official_setting: "cursor.zoom_factor",
         value_kind: ScalarWriteValueKind::Number,
@@ -2851,7 +2857,7 @@ pub fn high_risk_write_policy(row_id: &str) -> Option<HighRiskWritePolicy> {
             approval_gate:
                 "explicit-high-risk-approval-plus-pointer-independent-recovery-production-gate",
             watchdog_requirement: "persisted recovery plan, backup proof, rollback parser reread proof, confirmation token, and timeout rollback behavior are required before any high-risk write can be applied; recovery must not depend on pointer visibility, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
-            review_warning: "High-risk cursor/input setting. Writes require the production high-risk gate and pointer-independent persisted recovery proof; cursor.default_monitor remains blocked until runtime monitor-name oracle proof exists.",
+            review_warning: "High-risk cursor/input setting. Writes require the production high-risk gate and pointer-independent persisted recovery proof; cursor.default_monitor additionally requires current runtime monitor-name oracle proof.",
         });
     }
     if ACCEPTED_HIGH_RISK_DEBUG_CRASH_WRITABLE_ROWS.contains(&row_id) {

@@ -113,6 +113,7 @@ fn complete_production_proof(
         rollback_proof: Some(rollback_proof),
         confirmation_token: Some(plan.confirmation_token.as_str().to_string()),
         explicit_high_risk_approval: true,
+        monitor_name_oracle_proof: None,
     };
     let request = HighRiskProductionGateRequest {
         mode: HighRiskProductionGateMode::ProductionWrite,
@@ -128,17 +129,13 @@ fn complete_production_proof(
 }
 
 #[test]
-fn accepted_high_risk_rows_are_gated_writable_and_default_monitor_remains_blocked() {
+fn accepted_high_risk_rows_are_gated_writable_and_default_monitor_is_oracle_gated() {
     let rows = blocked_pre_enablement_rows();
-    let enabled_rows: Vec<_> = rows
-        .iter()
-        .filter(|row| row.row_id != "cursor.default_monitor")
-        .collect();
-    assert_eq!(enabled_rows.len(), 62);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(rows.len(), 63);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 
     let mut counts = BTreeMap::new();
-    for row in enabled_rows {
+    for row in rows {
         assert!(
             is_safe_writable_setting(row.row_id),
             "{} should now be write-allowlisted",
@@ -158,10 +155,10 @@ fn accepted_high_risk_rows_are_gated_writable_and_default_monitor_remains_blocke
     }
 
     assert_eq!(counts.get("display/render"), Some(&23));
-    assert_eq!(counts.get("cursor/input"), Some(&17));
+    assert_eq!(counts.get("cursor/input"), Some(&18));
     assert_eq!(counts.get("debug/crash"), Some(&22));
-    assert!(!is_safe_writable_setting("cursor.default_monitor"));
-    assert!(!is_high_risk_gated_writable_setting(
+    assert!(is_safe_writable_setting("cursor.default_monitor"));
+    assert!(is_high_risk_gated_writable_setting(
         "cursor.default_monitor"
     ));
 }
@@ -308,21 +305,21 @@ fn incomplete_gate_proof_rejects_production_write() -> anyhow::Result<()> {
 }
 
 #[test]
-fn aggregate_reports_record_340_writable_and_one_blocked_row() {
+fn aggregate_reports_record_341_writable_and_zero_blocked_rows() {
     let coverage: serde_json::Value = serde_json::from_slice(
         &fs::read("data/reports/scalar-read-write-coverage.v0.55.2.json")
             .expect("coverage report should exist"),
     )
     .expect("coverage report should parse");
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
 
     let pipeline: serde_json::Value = serde_json::from_slice(
         &fs::read("data/reports/all-341-unified-pipeline.v0.55.2.json")
             .expect("pipeline report should exist"),
     )
     .expect("pipeline report should parse");
-    assert_eq!(pipeline["counts"]["writableRows"], 340);
-    assert_eq!(pipeline["counts"]["blockedRows"], 1);
+    assert_eq!(pipeline["counts"]["writableRows"], 341);
+    assert_eq!(pipeline["counts"]["blockedRows"], 0);
 }

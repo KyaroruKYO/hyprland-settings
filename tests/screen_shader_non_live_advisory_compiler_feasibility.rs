@@ -17,10 +17,10 @@ fn screen_shader_advisory_compiler_feasibility_report_records_option_a() -> Resu
         read_json("data/reports/screen-shader-compile-aware-validation-research.v0.55.2.json")?;
 
     assert!(is_safe_writable_setting("decoration.screen_shader"));
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
 
     assert_eq!(report["rowId"], "decoration.screen_shader");
     assert_eq!(report["officialSetting"], "decoration.screen_shader");

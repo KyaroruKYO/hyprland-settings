@@ -1,15 +1,15 @@
 {
   "artifactKind": "next-high-risk-bucket-readiness",
   "schemaVersion": 1,
-  "generatedAt": "2026-06-09T02:05:17.664873Z",
+  "generatedAt": "2026-06-09T02:59:15.613975Z",
   "counts": {
-    "remainingBlockedRows": 1,
+    "remainingBlockedRows": 0,
     "displayRenderBlockedRows": 0,
-    "cursorInputBlockedRows": 1,
+    "cursorInputBlockedRows": 0,
     "debugCrashBlockedRows": 0,
     "rowsEnabled": 3,
-    "finalWritableRows": 340,
-    "finalBlockedRows": 1,
+    "finalWritableRows": 341,
+    "finalBlockedRows": 0,
     "recommendedNextBucket": "none-selected-after-cursor-theme-sync-smoke-subset",
     "separateWatchdogProcessProofPassed": true,
     "displayRenderLiveBoundaryRepresented": true,
@@ -17,11 +17,11 @@
     "selectedDisplayRenderSubsetRows": 0,
     "xwaylandScalingRowsEnabled": 2,
     "selectedCursorInputSubsetRows": 0,
-    "cursorInputRowsEnabled": 4,
+    "cursorInputRowsEnabled": 22,
     "cursorVisibilityConditionalRowsEnabled": 2,
-    "highRiskRowsEnabled": 71
+    "highRiskRowsEnabled": 72
   },
-  "recommendation": "Complete cursor.default_monitor runtime monitor-name oracle proof sprint",
+  "recommendation": "final all-341 writable coverage consistency review",
   "buckets": [
     {
       "bucket": "display-render-recovery",
@@ -90,7 +90,7 @@
       "recommendedSplit": "split debug toggles from explicit crash/testing controls; keep not-recommended rows blocked until dedicated approval"
     }
   ],
-  "nextBlockerBeforeEnablement": "Select and prove a new small high-risk subset; visibility, hardware cursor, warping, zoom, monitor targeting, display/render, and debug/crash rows remain blocked. decoration.screen_shader is closed for now and should not be the next default deep dive.",
+  "nextBlockerBeforeEnablement": "none-proven-after-cursor-default-monitor-runtime-oracle-proof",
   "recommendedNextSubset": "none-yet",
   "recommendedNextBucket": "grouped-high-risk-bucket-readiness-planning",
   "screenShaderDisplayRenderReviewFollowUp": {
@@ -335,8 +335,9 @@
     "highRiskAcceptedRowsEnabledThisSprint": 62,
     "highRiskAcceptedRowsStillBlocked": 1,
     "finalReadableRows": 341,
-    "finalWritableRows": 340,
-    "finalBlockedRows": 1,
-    "nextRecommendedSprint": "Complete cursor.default_monitor runtime monitor-name oracle proof sprint"
+    "finalWritableRows": 341,
+    "finalBlockedRows": 0,
+    "nextRecommendedSprint": "Final all-341 writable coverage consistency review sprint",
+    "final341WritableCoverageReport": "data/reports/final-341-writable-coverage.v0.55.2.json"
   }
 }

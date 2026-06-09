@@ -1,7 +1,7 @@
 {
   "schemaVersion": "0.55.2",
   "artifactKind": "writable-value-type-evidence-matrix",
-  "generatedAt": "2026-06-09T02:05:17.664873Z",
+  "generatedAt": "2026-06-09T02:59:15.613975Z",
   "sourceReports": [
     "scalar-read-write-coverage.v0.55.2.json",
     "all-341-unified-pipeline.v0.55.2.json",
@@ -21,8 +21,8 @@
     "high-risk-persisted-recovery-scaffold-blockers.v0.55.2.json"
   ],
   "counts": {
-    "totalWritableRowsAudited": 340,
-    "completeRows": 88,
+    "totalWritableRowsAudited": 341,
+    "completeRows": 89,
     "partialRows": 8,
     "parserOnlyRows": 2,
     "conflictingRows": 0,
@@ -30,9 +30,9 @@
     "appValidatorTooNarrowRows": 0,
     "appValidatorTooBroadRows": 204,
     "sourceResearchNeededRows": 38,
-    "rowsEnabledThisSprint": 62,
-    "writableRows": 340,
-    "blockedRows": 1,
+    "rowsEnabledThisSprint": 1,
+    "writableRows": 341,
+    "blockedRows": 0,
     "writeAllowlistChanged": true,
     "productionBehaviorChanged": true,
     "validatorsChanged": false,
@@ -16391,6 +16391,57 @@
         "fixtureWriteRereadEvidence": "complete",
         "highRiskRecoveryEvidence": "complete-gated"
       }
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "officialSetting": "cursor.default_monitor",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "runtime-monitor-name",
+      "rustValueKind": "MonitorName",
+      "appValidatorKind": "runtime-monitor-name-oracle",
+      "appAcceptedValueShape": "non-empty monitor name present in the current non-mutating monitor-name oracle snapshot",
+      "appAcceptedValuesOrExamples": [
+        "DP-1",
+        "eDP-1"
+      ],
+      "appRejectedInvalidExamples": [
+        "",
+        "HDMI-A-1",
+        "../DP-1",
+        "DP-1; hyprctl reload"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "runtime-monitor-name-oracle",
+      "proofSource": "cursor-default-monitor-runtime-oracle-proof.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "cursor-default-monitor-runtime-oracle-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "cursor-default-monitor-runtime-oracle-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated",
+        "runtimeMonitorNameOracleEvidence": "complete-fixture-and-read-only-adapter-abstraction"
+      },
+      "runtimeAcceptedValueSetKnownByCurrentSnapshot": true,
+      "acceptedValueSetKnownExhaustively": false,
+      "acceptedValueSetScope": "current-non-mutating-monitor-name-oracle-snapshot"
     }
   ],
   "safety": {
@@ -16970,8 +17021,8 @@
     "highRiskAcceptedRowsEnabledThisSprint": 62,
     "highRiskAcceptedRowsStillBlocked": 1,
     "finalReadableRows": 341,
-    "finalWritableRows": 340,
-    "finalBlockedRows": 1,
-    "nextRecommendedSprint": "Complete cursor.default_monitor runtime monitor-name oracle proof sprint"
+    "finalWritableRows": 341,
+    "finalBlockedRows": 0,
+    "nextRecommendedSprint": "Final all-341 writable coverage consistency review sprint"
   }
 }

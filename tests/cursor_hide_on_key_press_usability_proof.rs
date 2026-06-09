@@ -192,9 +192,9 @@ fn cursor_hide_on_key_press_proof_reports_remain_historical_after_enablement() -
     let watchdog = read_json("data/reports/cursor-hide-on-key-press-watchdog-proof.v0.55.2.json")?;
     let readiness = read_json("data/reports/cursor-hide-on-key-press-readiness.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
     assert!(is_safe_writable_setting("cursor.hide_on_key_press"));
 
     for report in [&usability, &watchdog] {

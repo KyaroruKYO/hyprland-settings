@@ -1,7 +1,7 @@
 {
   "schemaVersion": "0.55.2",
   "artifactKind": "deferred-validator-remaining-items",
-  "generatedAt": "2026-06-09T02:05:17.664873Z",
+  "generatedAt": "2026-06-09T02:59:15.613975Z",
   "counts": {
     "remainingDeferredRows": 4,
     "regexRows": 2,
@@ -290,8 +290,12 @@
     "highRiskAcceptedRowsEnabledThisSprint": 62,
     "highRiskAcceptedRowsStillBlocked": 1,
     "finalReadableRows": 341,
-    "finalWritableRows": 340,
-    "finalBlockedRows": 1,
-    "nextRecommendedSprint": "Complete cursor.default_monitor runtime monitor-name oracle proof sprint"
+    "finalWritableRows": 341,
+    "finalBlockedRows": 0,
+    "nextRecommendedSprint": "Final all-341 writable coverage consistency review sprint"
+  },
+  "sourceReports": {
+    "cursorDefaultMonitorRuntimeOracleProofReport": "data/reports/cursor-default-monitor-runtime-oracle-proof.v0.55.2.json",
+    "final341WritableCoverageReport": "data/reports/final-341-writable-coverage.v0.55.2.json"
   }
 }

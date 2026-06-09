@@ -2,14 +2,18 @@
   "artifactKind": "scalar-read-write-coverage",
   "hyprlandVersion": "0.55.2",
   "schemaVersion": 1,
-  "generatedAt": "2026-06-09T02:05:17.664873Z",
-  "source": "Stage 3-6 classification: raw reads for all rows; safe writes only for reviewed boolean toggle subset",
+  "generatedAt": "2026-06-09T02:59:15.613975Z",
+  "source": {
+    "previousSource": "Stage 3-6 classification: raw reads for all rows; safe writes only for reviewed boolean toggle subset",
+    "final341WritableCoverageReport": "data/reports/final-341-writable-coverage.v0.55.2.json",
+    "cursorDefaultMonitorRuntimeOracleProofReport": "data/reports/cursor-default-monitor-runtime-oracle-proof.v0.55.2.json"
+  },
   "counts": {
     "totalScalarRows": 341,
     "readableRows": 341,
     "blockedReadRows": 0,
-    "writableRows": 340,
-    "blockedWriteRows": 1
+    "writableRows": 341,
+    "blockedWriteRows": 0
   },
   "rows": [
     {
@@ -4805,18 +4809,18 @@
       "officialSetting": "cursor.default_monitor",
       "readStatus": "readable",
       "readBlocker": null,
-      "writeStatus": "high-risk",
-      "writeBlocker": "runtime monitor-name allowlist/readback oracle proof missing",
-      "valueFamily": "none",
+      "writeStatus": "writable",
+      "writeBlocker": null,
+      "valueFamily": "monitor-name-oracle",
       "controlKind": "dropdown",
       "parserStatus": "blocked_by_risk_review",
       "riskClass": "cursor_input_risk",
-      "reportOnly": true,
+      "reportOnly": false,
       "parserSupported": true,
-      "validatorSupported": false,
-      "safeWriteSupported": false,
+      "validatorSupported": true,
+      "safeWriteSupported": true,
       "testsPresent": true,
-      "notes": "Raw scalar read supported as unevaluated text by all-row parser projection test; semantic parser may still be needed before safe writing."
+      "notes": "Gated high-risk writable row. Production writes require explicit high-risk approval, persisted recovery proof, and current runtime monitor-name oracle proof; live runtime mutation proof was not run in this sprint."
     },
     {
       "rowId": "cursor.zoom_factor",
@@ -6246,8 +6250,8 @@
     "highRiskAcceptedRowsEnabledThisSprint": 62,
     "highRiskAcceptedRowsStillBlocked": 1,
     "finalReadableRows": 341,
-    "finalWritableRows": 340,
-    "finalBlockedRows": 1,
-    "nextRecommendedSprint": "Complete cursor.default_monitor runtime monitor-name oracle proof sprint"
+    "finalWritableRows": 341,
+    "finalBlockedRows": 0,
+    "nextRecommendedSprint": "Final all-341 writable coverage consistency review sprint"
   }
 }

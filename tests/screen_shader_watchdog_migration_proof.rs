@@ -241,10 +241,10 @@ fn screen_shader_watchdog_migration_proof_report_preserves_project_boundaries() 
     let migration = read_json("data/reports/screen-shader-high-risk-gate-migration.v0.55.2.json")?;
 
     assert!(is_safe_writable_setting("decoration.screen_shader"));
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
 
     assert_eq!(proof["rowId"], "decoration.screen_shader");
     assert_eq!(proof["officialSetting"], "decoration.screen_shader");

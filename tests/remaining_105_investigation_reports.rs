@@ -71,8 +71,8 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
     let results = proof_results()?;
     let classifications = classifications()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
     assert_eq!(investigation["counts"]["rows"], 105);
     assert_eq!(plan["counts"]["rows"], 105);
     assert_eq!(results["counts"]["rows"], 105);
@@ -85,10 +85,7 @@ fn remaining_105_reports_cover_every_blocked_scalar_row() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_string())
         .collect::<BTreeSet<_>>();
-    assert_eq!(
-        blocked_ids,
-        BTreeSet::from(["cursor.default_monitor".to_string()])
-    );
+    assert!(blocked_ids.is_empty());
 
     for report in [&investigation, &plan, &results, &classifications] {
         let ids = report["rows"]
@@ -175,13 +172,8 @@ fn remaining_105_high_risk_rows_remain_blocked() -> Result<()> {
         .collect::<BTreeMap<_, _>>();
     for row_id in high_risk_ids {
         let coverage_row = coverage_by_id.get(row_id.as_str()).unwrap();
-        if row_id == "cursor.default_monitor" {
-            assert_eq!(coverage_row["writeStatus"].as_str(), Some("high-risk"));
-            assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
-        } else {
-            assert_eq!(coverage_row["writeStatus"].as_str(), Some("writable"));
-            assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(true));
-        }
+        assert_eq!(coverage_row["writeStatus"].as_str(), Some("writable"));
+        assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(true));
     }
 
     Ok(())

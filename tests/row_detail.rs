@@ -322,15 +322,18 @@ fn regex_string_detail_is_editable() -> Result<()> {
 }
 
 #[test]
-fn non_allowlisted_detail_explains_disabled_edit_state() -> Result<()> {
+fn cursor_default_monitor_detail_requires_oracle_snapshot() -> Result<()> {
     let detail = detail_for("cursor.default_monitor")?;
 
-    assert!(!detail.edit.editable);
-    assert_eq!(
-        detail.edit.disabled_reason.as_deref(),
-        Some("not write-allowlisted")
-    );
-    assert!(detail.edit.pending.is_none());
+    assert!(detail.edit.editable);
+    assert_eq!(detail.edit.editor_kind, "dropdown");
+    assert!(detail.edit.disabled_reason.is_none());
+    let pending = detail.edit.pending.expect("pending projection expected");
+    assert_eq!(pending.setting_id, "cursor.default_monitor");
+    assert!(pending
+        .validation_label
+        .contains("runtime monitor-name oracle proof"));
+    assert!(!pending.can_review);
 
     Ok(())
 }

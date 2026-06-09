@@ -39,9 +39,9 @@ fn screen_shader_review_reports_exist_and_preserve_current_state() -> Result<()>
     let next_step = read_json("data/reports/screen-shader-next-step-plan.v0.55.2.json")?;
     let migration = read_json("data/reports/screen-shader-high-risk-gate-migration.v0.55.2.json")?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
     assert!(is_safe_writable_setting("decoration.screen_shader"));
     assert_eq!(
         safe_writable_value_kind("decoration.screen_shader"),

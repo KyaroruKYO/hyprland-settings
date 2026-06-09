@@ -1,11 +1,11 @@
 {
   "artifactKind": "writable-274-unified-pipeline-proof",
   "schemaVersion": "v0.55.2",
-  "generatedAt": "2026-06-09T02:06:11.339127Z",
+  "generatedAt": "2026-06-09T02:59:15.613975Z",
   "source": "src/write_classification.rs SAFE_WRITABLE_ROWS plus scalar coverage/proof reports",
   "counts": {
-    "writableRows": 340,
-    "safeWritableRowsFromRustTable": 340,
+    "writableRows": 341,
+    "safeWritableRowsFromRustTable": 341,
     "metadataGapRows": 0,
     "behaviorMismatchRows": 0,
     "writeAllowlistChanged": true,
@@ -7959,6 +7959,29 @@
       "behaviorMismatch": [],
       "productionBehaviorChanged": true,
       "writeAllowlistChanged": true
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "officialSetting": "cursor.default_monitor",
+      "productionValueKind": "gated-high-risk-runtime-monitor-name",
+      "validatorRef": "runtime-monitor-name-oracle",
+      "validatorAuthority": "official-source-plus-runtime-monitor-name-oracle",
+      "scope": "persistent-config-only-high-risk-gated",
+      "applyPath": "gated-high-risk-persistent-config-write-with-persisted-recovery-and-monitor-name-oracle",
+      "rereadOracle": "runtime-monitor-name-oracle-plus-file-reread-plus-recovery-rollback-parser-reread",
+      "recoveryStrategy": "persisted high-risk recovery plan with backup, rollback, confirmation token, timeout rollback, and monitor-name oracle proof",
+      "approvalGate": "explicit-high-risk-approval-plus-production-gate-proof-plus-runtime-monitor-name-oracle",
+      "preflightProofStatus": "complete-runtime-monitor-name-oracle-and-pre-enablement-proof",
+      "commitProofStatus": "temp-fixture-gated-write-proof",
+      "gateStatus": "passed-high-risk-production-gate-with-explicit-approval-and-monitor-oracle",
+      "safeWritableTablePresent": true,
+      "coverageWritable": true,
+      "testsPresent": true,
+      "proofSource": "cursor-default-monitor-runtime-oracle-proof.v0.55.2.json",
+      "metadataGaps": [],
+      "behaviorMismatch": [],
+      "productionBehaviorChanged": true,
+      "writeAllowlistChanged": true
     }
   ],
   "sourceBackedValidatorRepairFollowUp": {
@@ -8392,8 +8415,8 @@
     "highRiskAcceptedRowsEnabledThisSprint": 62,
     "highRiskAcceptedRowsStillBlocked": 1,
     "finalReadableRows": 341,
-    "finalWritableRows": 340,
-    "finalBlockedRows": 1,
-    "nextRecommendedSprint": "Complete cursor.default_monitor runtime monitor-name oracle proof sprint"
+    "finalWritableRows": 341,
+    "finalBlockedRows": 0,
+    "nextRecommendedSprint": "Final all-341 writable coverage consistency review sprint"
   }
 }

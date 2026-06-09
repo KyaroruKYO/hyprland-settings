@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "cursor-default-monitor-runtime-oracle-proof",
+  "generatedAt": "2026-06-09T02:59:15.613975Z",
+  "startingCommit": "3243fd31d51916b6390a2c4708ddedca10ddfe7c",
+  "rowId": "cursor.default_monitor",
+  "officialSourceEvidence": {
+    "filesInspected": [
+      "/tmp/Hyprland-v0.55.2-full/src/config/values/ConfigValues.cpp:563",
+      "/tmp/Hyprland-v0.55.2-full/src/Compositor.cpp:2993-3014"
+    ],
+    "whatSourceProves": [
+      "ConfigValues.cpp declares cursor:default_monitor as MS<String> with default STRVAL_EMPTY.",
+      "Compositor.cpp reads cursor:default_monitor as PCURSORMONITOR and compares the configured value to monitor->m_name before warping the cursor."
+    ],
+    "whatSourceDoesNotProve": [
+      "A static finite list of monitor names is not present in source; names are runtime monitor names.",
+      "Live runtime mutation safety is not proven by source inspection."
+    ]
+  },
+  "runtimeOracleImplemented": true,
+  "oracleSourceModule": "src/monitor_name_oracle.rs",
+  "testsAdded": [
+    "tests/cursor_default_monitor_runtime_oracle.rs",
+    "tests/final_341_writable_coverage.rs"
+  ],
+  "fixtureSnapshots": [
+    "Monitor eDP-1 (ID 0) fixture",
+    "Monitor DP-1 (ID 1) fixture",
+    "duplicate monitor fixture",
+    "empty/malformed/unsafe monitor fixture"
+  ],
+  "validNameProof": "Monitor names present in the current fixture/mock/read-only-adapter snapshot are accepted.",
+  "missingNameRejectionProof": "Empty candidate and empty monitor snapshots are rejected.",
+  "staleNameRejectionProof": "A name accepted by an old snapshot is rejected after a refreshed snapshot no longer contains it.",
+  "unsafeNameRejectionProof": "Newlines, command separators, command substitutions, path-like names, parent paths, and shell-style home paths are rejected.",
+  "readOnlyAdapterStatus": "ReadOnlyHyprctlMonitorNameOracle models hyprctl monitors as a read-only adapter abstraction; tests parse fixture output only and do not query live runtime state.",
+  "enabledThisSprint": true,
+  "safeWritableRowsBefore": 340,
+  "safeWritableRowsAfter": 341,
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 340,
+    "blockedRows": 1
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "proofUsed": [
+    "official Hyprland source in ConfigValues.cpp and Compositor.cpp",
+    "src/monitor_name_oracle.rs",
+    "src/high_risk_production_gate.rs",
+    "src/write_flow.rs",
+    "tests/cursor_default_monitor_runtime_oracle.rs"
+  ],
+  "proofStillMissing": [
+    "live runtime mutation proof was not run and is not required for the current gated persistent-config temp proof"
+  ],
+  "nextRecommendedSprint": "Final all-341 writable coverage consistency review sprint"
+}

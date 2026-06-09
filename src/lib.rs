@@ -13,6 +13,7 @@ pub mod high_risk_production_gate;
 pub mod high_risk_recovery;
 pub mod live_validation;
 pub mod metadata;
+pub mod monitor_name_oracle;
 pub mod pending_change;
 pub mod scalar_write;
 pub mod screen_shader_advisory;

@@ -1,11 +1,11 @@
 {
   "artifactKind": "all-341-unified-pipeline-backfill-audit",
   "schemaVersion": "v0.55.2",
-  "generatedAt": "2026-06-09T02:06:11.339127Z",
+  "generatedAt": "2026-06-09T02:59:15.613975Z",
   "counts": {
     "totalRows": 341,
-    "writableRows": 340,
-    "blockedRows": 1,
+    "writableRows": 341,
+    "blockedRows": 0,
     "metadataGapRows": 0,
     "behaviorMismatchRows": 0,
     "rowsNeedingFutureCleanup": 0,
@@ -3262,12 +3262,12 @@
     {
       "rowId": "cursor.default_monitor",
       "officialSetting": "cursor.default_monitor",
-      "currentWriteStatus": "high-risk",
+      "currentWriteStatus": "writable",
       "pipelineStatus": "complete",
       "missingMetadataFields": [],
       "behaviorPipelineMismatch": [],
-      "productionBehaviorChanged": false,
-      "writeAllowlistChanged": false,
+      "productionBehaviorChanged": true,
+      "writeAllowlistChanged": true,
       "needsFutureCleanup": false,
       "futureCleanupReason": null
     },

@@ -54,9 +54,9 @@ fn deferred_source_backed_repair_reports_exist_and_preserve_counts() -> Result<(
         read_json("data/reports/deferred-screen-shader-high-risk-review-candidate.v0.55.2.json")?;
     let remaining = read_json("data/reports/deferred-validator-remaining-items.v0.55.2.json")?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
 
     for report in [
         &main, &cssgap, &accel, &scroll, &metadata, &regex, &shader, &remaining,

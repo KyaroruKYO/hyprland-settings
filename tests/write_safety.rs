@@ -117,13 +117,13 @@ fn rejects_unknown_setting() {
 fn rejects_unsafe_setting() {
     let current = current_value_for(
         "/tmp/hyprland.conf",
-        "cursor.default_monitor",
-        "cursor:default_monitor = HDMI-A-1\n",
+        "device.test-mouse.sensitivity",
+        "device:test-mouse:sensitivity = 0.0\n",
     );
-    let pending = stage_pending_change("cursor.default_monitor", &current, "DP-1");
+    let pending = stage_pending_change("device.test-mouse.sensitivity", &current, "0.5");
 
     let review = review_write_plan(WritePlanRequest {
-        known_setting_ids: known_ids(&["cursor.default_monitor"]),
+        known_setting_ids: known_ids(&["device.test-mouse.sensitivity"]),
         detected_config_path: PathBuf::from("/tmp/hyprland.conf"),
         current_value: current,
         pending_change: pending,

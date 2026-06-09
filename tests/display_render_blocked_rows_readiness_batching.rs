@@ -13,10 +13,10 @@ fn display_render_readiness_report_exists_and_preserves_counts() -> Result<()> {
     let report = read_json(REPORT)?;
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
 
     assert_eq!(
         report["artifactKind"],

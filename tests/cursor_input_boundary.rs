@@ -144,9 +144,9 @@ fn cursor_input_reports_select_only_theme_sync_future_subset() -> Result<()> {
     let proof_plan =
         read_json("data/reports/cursor-input-subset-readiness-proof-plan.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
     assert_eq!(boundary["counts"]["cursorInputRowsAudited"], 22);
     assert_eq!(boundary["counts"]["rowsEnabled"], 4);
     assert_eq!(selection["counts"]["selectedRows"], 1);
@@ -207,7 +207,7 @@ fn cursor_input_selection_does_not_enable_any_blocked_bucket() -> Result<()> {
     assert!(writable_ids.contains("cursor.zoom_factor"));
     assert!(writable_ids.contains("xwayland.enabled"));
     assert!(writable_ids.contains("debug.disable_logs"));
-    assert!(!writable_ids.contains("cursor.default_monitor"));
+    assert!(writable_ids.contains("cursor.default_monitor"));
 
     Ok(())
 }
@@ -279,9 +279,9 @@ fn next_cursor_input_subset_selection_keeps_remaining_rows_blocked() -> Result<(
     let proof_plan =
         read_json("data/reports/next-cursor-input-subset-readiness-proof-plan.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 
     assert_eq!(smoke_review["counts"]["reviewedRows"], 1);
     assert_eq!(smoke_review["counts"]["enabledRows"], 1);

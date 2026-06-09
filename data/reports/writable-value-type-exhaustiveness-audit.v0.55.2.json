@@ -1,7 +1,7 @@
 {
   "schemaVersion": "0.55.2",
   "artifactKind": "writable-value-type-exhaustiveness-audit",
-  "generatedAt": "2026-06-09T02:05:17.664873Z",
+  "generatedAt": "2026-06-09T02:59:15.613975Z",
   "auditMode": "classified-current-writable-value-type-exhaustiveness",
   "sourceReports": [
     "scalar-read-write-coverage.v0.55.2.json",
@@ -10,14 +10,14 @@
     "high-risk-unified-pipeline-reconciliation.v0.55.2.json"
   ],
   "counts": {
-    "rustSafeWritableRows": 340,
-    "coverageWritableRows": 340,
-    "pipelineWritableRows": 340,
-    "writableProofRows": 340,
-    "blockedRows": 1,
-    "rowsRepresented": 340,
-    "rowsClassified": 340,
-    "completeRows": 88,
+    "rustSafeWritableRows": 341,
+    "coverageWritableRows": 341,
+    "pipelineWritableRows": 341,
+    "writableProofRows": 341,
+    "blockedRows": 0,
+    "rowsRepresented": 341,
+    "rowsClassified": 341,
+    "completeRows": 89,
     "partialRows": 8,
     "parserOnlyRows": 2,
     "conflictingRows": 0,
@@ -31,15 +31,15 @@
     "writablePipelineRowsMissingRustTable": 0,
     "sourceOfTruthMismatches": 0,
     "highRiskConformanceFailures": 0,
-    "rowsEnabledThisSprint": 62,
+    "rowsEnabledThisSprint": 1,
     "writeAllowlistChangedThisSprint": true,
     "productionBehaviorChangedThisSprint": true,
     "recoveryGatesChangedThisSprint": true,
     "realConfigModified": false,
     "activeRuntimeModified": false,
     "reloadEvalLuaUsed": false,
-    "totalWritableRowsAudited": 340,
-    "writableRows": 340,
+    "totalWritableRowsAudited": 341,
+    "writableRows": 341,
     "writeAllowlistChanged": true,
     "productionBehaviorChanged": true,
     "validatorsChanged": false,
@@ -23317,6 +23317,73 @@
       "hyprlandParserAcceptsMoreThanAppAllows": "not-proven-by-current-audit",
       "appAllowsMoreThanSourceEvidenceProves": false,
       "recommendedNextAction": "keep behind high-risk production gate; do not bypass recovery proof"
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "officialSetting": "cursor.default_monitor",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "runtime-monitor-name",
+      "rustValueKind": "MonitorName",
+      "appValidatorKind": "runtime-monitor-name-oracle",
+      "appAcceptedValueShape": "non-empty monitor name present in the current non-mutating monitor-name oracle snapshot",
+      "appAcceptedValuesOrExamples": [
+        "DP-1",
+        "eDP-1"
+      ],
+      "appRejectedInvalidExamples": [
+        "",
+        "HDMI-A-1",
+        "../DP-1",
+        "DP-1; hyprctl reload"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "runtime-monitor-name-oracle",
+      "proofSource": "cursor-default-monitor-runtime-oracle-proof.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "cursor-default-monitor-runtime-oracle-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "cursor-default-monitor-runtime-oracle-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated",
+        "runtimeMonitorNameOracleEvidence": "complete-fixture-and-read-only-adapter-abstraction"
+      },
+      "classification": "complete",
+      "classificationReason": "cursor.default_monitor has official source evidence, current monitor-name oracle proof, stale/missing/unsafe rejection proof, temp fixture write/reread proof, persisted recovery scaffold proof, and production gate proof; live runtime mutation proof remains explicitly outside this non-live sprint.",
+      "strongestSupportingEvidence": [
+        "runtimeMonitorNameOracleEvidence:complete-fixture-and-read-only-adapter-abstraction",
+        "fixtureWriteRereadEvidence:complete",
+        "highRiskRecoveryEvidence:complete-gated"
+      ],
+      "weakestOrMissingEvidence": [
+        "liveRuntimeMutationProof:not-run"
+      ],
+      "appValidatorSafeToKeep": true,
+      "appValidatorNeedsLaterReview": false,
+      "uiEditorMetadataNeedsLaterReview": false,
+      "acceptedValueSetKnownExhaustively": false,
+      "hyprlandParserAcceptsMoreThanAppAllows": "yes-runtime-oracle-intentionally-narrows-string-to-current-monitor-names",
+      "appAllowsMoreThanSourceEvidenceProves": false,
+      "recommendedNextAction": "keep behind high-risk production gate and runtime monitor-name oracle; do not bypass recovery proof",
+      "runtimeAcceptedValueSetKnownByCurrentSnapshot": true,
+      "acceptedValueSetScope": "current-non-mutating-monitor-name-oracle-snapshot"
     }
   ],
   "safety": {
@@ -23674,8 +23741,8 @@
     "highRiskAcceptedRowsEnabledThisSprint": 62,
     "highRiskAcceptedRowsStillBlocked": 1,
     "finalReadableRows": 341,
-    "finalWritableRows": 340,
-    "finalBlockedRows": 1,
-    "nextRecommendedSprint": "Complete cursor.default_monitor runtime monitor-name oracle proof sprint"
+    "finalWritableRows": 341,
+    "finalBlockedRows": 0,
+    "nextRecommendedSprint": "Final all-341 writable coverage consistency review sprint"
   }
 }

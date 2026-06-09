@@ -256,7 +256,15 @@ fn apply_setting_change_with_backup_manager_and_all_gates(
             failures: vec!["NotAllowlisted".to_string()],
         })?;
     let current_value = current_config.value_for(official_setting);
-    let sources = PendingChangeValueSources::from_current_config(current_config);
+    let mut sources = PendingChangeValueSources::from_current_config(current_config);
+    if setting_id == "cursor.default_monitor" {
+        if let Some(oracle_proof) = high_risk_production_gate_proof
+            .as_ref()
+            .and_then(|proof| proof.monitor_name_oracle_proof.as_ref())
+        {
+            sources.monitor_names = oracle_proof.valid_names.clone();
+        }
+    }
     let pending_change =
         stage_pending_change_with_sources(setting_id, &current_value, proposed_value, &sources);
     match &pending_change.validation {
@@ -341,6 +349,11 @@ fn apply_setting_change_with_backup_manager_and_all_gates(
                 .expect("high-risk gated writable rows must be in pre-enablement metadata")
                 .bucket,
         );
+        let runtime_oracle_proven = production_gate_proof
+            .monitor_name_oracle_proof
+            .as_ref()
+            .map(|validation| validation.accepted())
+            .unwrap_or(false);
         let evaluation = evaluate_high_risk_production_gate(HighRiskProductionGateRequest {
             mode: HighRiskProductionGateMode::ProductionWrite,
             row_id: setting_id.to_string(),
@@ -352,7 +365,7 @@ fn apply_setting_change_with_backup_manager_and_all_gates(
                 .created_unix_seconds
                 .saturating_add(1),
             proof: Some(production_gate_proof),
-            runtime_oracle_proven: false,
+            runtime_oracle_proven,
         });
         if evaluation.decision.kind != HighRiskProductionGateDecisionKind::ProductionWriteAccepted {
             return Err(ApplyFailure {

@@ -2,9 +2,14 @@ use std::path::PathBuf;
 
 use crate::blocked_row_pre_enablement::{
     blocked_pre_enablement_row, validate_pre_enablement_value, PreEnablementValidation,
+    PreEnablementValueFamily,
 };
 use crate::current_config::CurrentConfigSnapshot;
 use crate::current_config::CurrentValueProjection;
+use crate::monitor_name_oracle::{
+    validate_monitor_name_candidate, MonitorNameSnapshot, MonitorNameSnapshotSource,
+    MonitorNameValidationStatus,
+};
 use crate::source_values::read_system_xkb_rules;
 use crate::value::{
     color::ColorValue, gradient::GradientValue, numeric_list::NumericListValue,
@@ -141,6 +146,9 @@ fn validate_safe_writable_value(
         let Some(row) = blocked_pre_enablement_row(setting_id) else {
             return invalid("high-risk gated writes require source-backed row metadata");
         };
+        if row.value_family == PreEnablementValueFamily::DynamicMonitorName {
+            return validate_runtime_monitor_name_setting(value, sources);
+        }
         return match validate_pre_enablement_value(row, value) {
             PreEnablementValidation::Accepted => PendingChangeValidation::Valid,
             PreEnablementValidation::Rejected { reason } => invalid(&reason),
@@ -184,6 +192,36 @@ fn validate_safe_writable_value(
         | None => PendingChangeValidation::Invalid {
             reason: "no safe validator is available for this value family".to_string(),
         },
+    }
+}
+
+fn validate_runtime_monitor_name_setting(
+    value: &str,
+    sources: &PendingChangeValueSources,
+) -> PendingChangeValidation {
+    let snapshot = match MonitorNameSnapshot::from_names(
+        MonitorNameSnapshotSource::Mock,
+        sources.monitor_names.clone(),
+    ) {
+        Ok(snapshot) => snapshot,
+        Err(error) => {
+            return invalid(&format!(
+                "cursor.default_monitor requires runtime monitor-name oracle proof: {error}"
+            ));
+        }
+    };
+    let validation = validate_monitor_name_candidate(value, &snapshot);
+    match validation.status {
+        MonitorNameValidationStatus::Accepted => PendingChangeValidation::Valid,
+        MonitorNameValidationStatus::Missing => {
+            invalid("cursor.default_monitor requires a non-empty runtime monitor name")
+        }
+        MonitorNameValidationStatus::Stale => {
+            invalid("cursor.default_monitor requires a monitor name in the current oracle snapshot")
+        }
+        MonitorNameValidationStatus::UnsafeSyntax => {
+            invalid("cursor.default_monitor monitor name contains unsafe syntax")
+        }
     }
 }
 

@@ -25,9 +25,9 @@ fn writable_validator_research_reports_exist_and_preserve_current_counts() -> Re
     let complex = read_json("data/reports/writable-complex-grammar-research.v0.55.2.json")?;
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
 
     for report in [&summary, &boolean, &numeric, &parser, &complex] {
         assert_eq!(report["counts"]["validatorsChanged"], false);

@@ -254,27 +254,19 @@ fn frozen_gate_requirements_are_present_for_each_candidate() {
 }
 
 #[test]
-fn production_write_and_allowlist_remain_refused_for_all_63_rows() {
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+fn current_high_risk_rows_are_allowlisted_but_naked_production_write_is_refused() {
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
     for row in blocked_pre_enablement_rows() {
-        if row.row_id == "cursor.default_monitor" {
-            assert!(
-                !is_safe_writable_setting(row.row_id),
-                "{} should remain outside SAFE_WRITABLE_ROWS",
-                row.row_id
-            );
-        } else {
-            assert!(
-                is_safe_writable_setting(row.row_id),
-                "{} should now be writable through the high-risk gated path",
-                row.row_id
-            );
-            assert!(
-                is_high_risk_gated_writable_setting(row.row_id),
-                "{} should remain high-risk gated",
-                row.row_id
-            );
-        }
+        assert!(
+            is_safe_writable_setting(row.row_id),
+            "{} should now be writable through the high-risk gated path",
+            row.row_id
+        );
+        assert!(
+            is_high_risk_gated_writable_setting(row.row_id),
+            "{} should remain high-risk gated",
+            row.row_id
+        );
     }
 
     let evaluations = high_risk_production_gate_rows();
@@ -284,19 +276,11 @@ fn production_write_and_allowlist_remain_refused_for_all_63_rows() {
             evaluation.decision.kind,
             HighRiskProductionGateDecisionKind::ProductionWriteRefused
         );
-        if evaluation.row_id == "cursor.default_monitor" {
-            assert!(evaluation
-                .decision
-                .errors
-                .contains(&HighRiskProductionGateError::ProductionWriteDisabled));
-            assert!(!evaluation.is_safe_writable_setting);
-        } else {
-            assert!(evaluation
-                .decision
-                .errors
-                .contains(&HighRiskProductionGateError::MissingRecoveryPlan));
-            assert!(evaluation.is_safe_writable_setting);
-        }
+        assert!(evaluation
+            .decision
+            .errors
+            .contains(&HighRiskProductionGateError::MissingRecoveryPlan));
+        assert!(evaluation.is_safe_writable_setting);
     }
 }
 

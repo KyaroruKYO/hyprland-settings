@@ -24,13 +24,13 @@ fn writable_value_type_audit_reports_cover_every_safe_writable_row() -> Result<(
     let risk = read_json("data/reports/writable-validator-risk-audit.v0.55.2.json")?;
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
 
     for report in [&audit, &matrix] {
-        assert_eq!(report["counts"]["totalWritableRowsAudited"], 340);
-        assert_eq!(report["counts"]["rowsEnabledThisSprint"], 62);
+        assert_eq!(report["counts"]["totalWritableRowsAudited"], 341);
+        assert_eq!(report["counts"]["rowsEnabledThisSprint"], 1);
         assert_eq!(report["counts"]["writeAllowlistChanged"], true);
         assert_eq!(report["counts"]["productionBehaviorChanged"], true);
         assert_eq!(report["counts"]["validatorsChanged"], false);
@@ -40,8 +40,8 @@ fn writable_value_type_audit_reports_cover_every_safe_writable_row() -> Result<(
         assert_eq!(report["counts"]["reloadEvalLuaUsed"], false);
     }
 
-    assert_eq!(gap["counts"]["totalWritableRowsAudited"], 340);
-    assert_eq!(risk["counts"]["rowsEnabledThisSprint"], 62);
+    assert_eq!(gap["counts"]["totalWritableRowsAudited"], 341);
+    assert_eq!(risk["counts"]["rowsEnabledThisSprint"], 1);
     assert_eq!(risk["counts"]["writeAllowlistChanged"], true);
     assert_eq!(risk["counts"]["productionBehaviorChanged"], true);
 
@@ -221,7 +221,19 @@ fn complete_rows_have_required_critical_evidence() -> Result<()> {
         .filter(|row| row["classification"].as_str() == Some("complete"))
     {
         let row_id = row["rowId"].as_str().unwrap();
-        assert_eq!(row["acceptedValueSetKnownExhaustively"], true, "{row_id}");
+        let runtime_monitor_oracle_proves_current_set = row["appValueType"].as_str()
+            == Some("runtime-monitor-name")
+            && row["runtimeAcceptedValueSetKnownByCurrentSnapshot"].as_bool() == Some(true)
+            && row["evidenceStatus"]["runtimeMonitorNameOracleEvidence"]
+                .as_str()
+                .unwrap_or_default()
+                .starts_with("complete")
+            && row["appAllowsMoreThanSourceEvidenceProves"].as_bool() == Some(false);
+        assert!(
+            row["acceptedValueSetKnownExhaustively"].as_bool() == Some(true)
+                || runtime_monitor_oracle_proves_current_set,
+            "{row_id}"
+        );
         assert_eq!(
             row["evidenceStatus"]["tempConfigEvidence"].as_str(),
             Some("complete"),

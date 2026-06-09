@@ -59,10 +59,10 @@ fn gate_recovery_plan_covers_all_rows_and_preserves_counts() -> Result<()> {
     assert_eq!(plan["countsAfter"]["readableRows"], 341);
     assert_eq!(plan["countsAfter"]["writableRows"], 278);
     assert_eq!(plan["countsAfter"]["blockedRows"], 63);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
 
     let rows = plan["rowClassifications"].as_array().unwrap();
     assert_eq!(rows.len(), 63);

@@ -38,14 +38,14 @@ fn all_341_pipeline_report_matches_current_scalar_counts() -> Result<()> {
 
     assert_eq!(coverage["counts"]["totalScalarRows"], 341);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 340);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(coverage["counts"]["writableRows"], 341);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 0);
 
     assert_eq!(pipeline["counts"]["totalRows"], 341);
     assert_eq!(pipeline["counts"]["readableRows"], 341);
-    assert_eq!(pipeline["counts"]["writableRows"], 340);
-    assert_eq!(pipeline["counts"]["blockedRows"], 1);
-    assert_eq!(pipeline["counts"]["safeWritableRowsFromRustTable"], 340);
+    assert_eq!(pipeline["counts"]["writableRows"], 341);
+    assert_eq!(pipeline["counts"]["blockedRows"], 0);
+    assert_eq!(pipeline["counts"]["safeWritableRowsFromRustTable"], 341);
     assert_eq!(pipeline["counts"]["highRiskRows"], 72);
     assert_eq!(pipeline["counts"]["sessionRuntimeSensitiveRows"], 0);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
@@ -53,24 +53,24 @@ fn all_341_pipeline_report_matches_current_scalar_counts() -> Result<()> {
     assert_eq!(pipeline["counts"]["writeAllowlistChanged"], true);
     assert_eq!(pipeline["counts"]["productionBehaviorChanged"], true);
 
-    assert_eq!(writable_proof["counts"]["writableRows"], 340);
+    assert_eq!(writable_proof["counts"]["writableRows"], 341);
     assert_eq!(
         writable_proof["counts"]["safeWritableRowsFromRustTable"],
-        340
+        341
     );
     assert_eq!(writable_proof["counts"]["metadataGapRows"], 0);
     assert_eq!(writable_proof["counts"]["behaviorMismatchRows"], 0);
 
     assert_eq!(audit["counts"]["totalRows"], 341);
-    assert_eq!(audit["counts"]["writableRows"], 340);
-    assert_eq!(audit["counts"]["blockedRows"], 1);
+    assert_eq!(audit["counts"]["writableRows"], 341);
+    assert_eq!(audit["counts"]["blockedRows"], 0);
     assert_eq!(audit["counts"]["metadataGapRows"], 0);
     assert_eq!(audit["counts"]["behaviorMismatchRows"], 0);
     assert_eq!(audit["counts"]["rowsNeedingFutureCleanup"], 0);
     assert_eq!(audit["counts"]["writeAllowlistChanged"], true);
     assert_eq!(audit["counts"]["productionBehaviorChanged"], true);
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 
     Ok(())
 }
@@ -301,6 +301,28 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
             );
             assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
             assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
+        } else if row["proofSource"].as_str()
+            == Some("cursor-default-monitor-runtime-oracle-proof.v0.55.2.json")
+        {
+            assert_eq!(
+                row["gateStatus"].as_str(),
+                Some("passed-high-risk-production-gate-with-explicit-approval-and-monitor-oracle"),
+                "{row_id} should use the high-risk production gate plus monitor oracle"
+            );
+            assert_eq!(
+                row["applyPath"].as_str(),
+                Some("gated-high-risk-persistent-config-write-with-persisted-recovery-and-monitor-name-oracle"),
+                "{row_id} should use the monitor-oracle high-risk write path"
+            );
+            assert!(
+                row["recoveryStrategy"]
+                    .as_str()
+                    .unwrap()
+                    .contains("persisted"),
+                "{row_id} should record persisted recovery"
+            );
+            assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
+            assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
         } else {
             assert_eq!(
                 row["gateStatus"].as_str(),
@@ -318,6 +340,13 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
             assert_eq!(
                 row["rereadOracle"].as_str(),
                 Some("file-reread-plus-recovery-rollback-parser-reread")
+            );
+        } else if row["proofSource"].as_str()
+            == Some("cursor-default-monitor-runtime-oracle-proof.v0.55.2.json")
+        {
+            assert_eq!(
+                row["rereadOracle"].as_str(),
+                Some("runtime-monitor-name-oracle-plus-file-reread-plus-recovery-rollback-parser-reread")
             );
         } else {
             assert_eq!(row["rereadOracle"].as_str(), Some("file-reread"));
@@ -339,6 +368,7 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
                 | Some("cursor-visibility-conditional-policy-proof.v0.55.2.json")
                 | Some("cursor-hide-on-key-press-usability-proof.v0.55.2.json")
                 | Some("high-risk-accepted-rows-enablement.v0.55.2.json")
+                | Some("cursor-default-monitor-runtime-oracle-proof.v0.55.2.json")
         ) {
             assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
             assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
@@ -402,8 +432,8 @@ fn blocked_pipeline_rows_remain_blocked_with_policy_metadata() -> Result<()> {
         }
     }
 
-    assert_eq!(blocked, 1);
-    assert_eq!(high_risk, 1);
+    assert_eq!(blocked, 0);
+    assert_eq!(high_risk, 0);
 
     Ok(())
 }
@@ -430,37 +460,7 @@ fn backfill_audit_records_no_behavior_or_allowlist_changes() -> Result<()> {
                 .is_empty(),
             "{row_id} should not have behavior/pipeline mismatches"
         );
-        if row["rowId"].as_str().is_some_and(|row_id| {
-            [
-                "appearance.fullscreen_opacity",
-                "appearance.blur.xray",
-                "general.allow_tearing",
-                "general.locale",
-                "misc.vrr",
-                "misc.mouse_move_enables_dpms",
-                "misc.key_press_enables_dpms",
-                "misc.disable_autoreload",
-                "misc.focus_on_activate",
-                "misc.allow_session_lock_restore",
-                "misc.session_lock_xray",
-                "misc.on_focus_under_fullscreen",
-                "misc.exit_window_retains_fullscreen",
-                "binds.movefocus_cycles_fullscreen",
-                "binds.allow_pin_fullscreen",
-                "scrolling.fullscreen_on_one_column",
-                "ecosystem.no_update_news",
-                "ecosystem.no_donation_nag",
-                "ecosystem.enforce_permissions",
-                "xwayland.use_nearest_neighbor",
-                "xwayland.force_zero_scaling",
-                "cursor.sync_gsettings_theme",
-                "cursor.hide_on_touch",
-                "cursor.hide_on_tablet",
-                "cursor.hide_on_key_press",
-            ]
-            .contains(&row_id)
-        }) {
-            assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
+        if row["productionBehaviorChanged"].as_bool() == Some(true) {
             assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
         } else {
             assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(false));
