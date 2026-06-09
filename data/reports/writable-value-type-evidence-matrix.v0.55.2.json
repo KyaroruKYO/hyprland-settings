@@ -11,7 +11,11 @@
     "high-risk-enabled-row-pipeline-audit.v0.55.2.json",
     "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
     "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
-    "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json"
+    "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json",
+    "data/reports/high-risk-production-gate-recovery-proof-plan.v0.55.2.json",
+    "data/reports/high-risk-recovery-models-by-bucket.v0.55.2.json",
+    "data/reports/high-risk-production-gate-enablement-candidates.v0.55.2.json",
+    "data/reports/high-risk-production-gate-recovery-blockers.v0.55.2.json"
   ],
   "counts": {
     "totalWritableRowsAudited": 278,
@@ -13966,6 +13970,21 @@
     "allBlockedRowsPreEnablementUiWarningProofAdded": 63,
     "allBlockedRowsPreEnablementSafeWritableRowsAfter": 278,
     "allBlockedRowsPreEnablementWriteAllowlistChanged": false,
-    "allBlockedRowsPreEnablementNextRecommendedSprint": "High-risk production gate and recovery proof planning sprint"
+    "allBlockedRowsPreEnablementNextRecommendedSprint": "High-risk production gate and recovery proof planning sprint",
+    "highRiskProductionGateRecoveryProofPlanReport": "data/reports/high-risk-production-gate-recovery-proof-plan.v0.55.2.json",
+    "highRiskRecoveryModelsByBucketReport": "data/reports/high-risk-recovery-models-by-bucket.v0.55.2.json",
+    "highRiskProductionGateEnablementCandidatesReport": "data/reports/high-risk-production-gate-enablement-candidates.v0.55.2.json",
+    "highRiskProductionGateRecoveryBlockersReport": "data/reports/high-risk-production-gate-recovery-blockers.v0.55.2.json",
+    "highRiskProductionGateRowsAnalyzed": 63,
+    "highRiskProductionGateRowsEnabledThisSprint": 0,
+    "highRiskProductionGateRowsStillBlocked": 63,
+    "highRiskProductionGateBucketPlansCreated": 3,
+    "highRiskProductionGateRecoveryModelsCreated": 3,
+    "highRiskProductionGateNonLiveProofPossibleRows": 63,
+    "highRiskProductionGateLiveRuntimeProofRequiredRows": 63,
+    "highRiskProductionGateExplicitApprovalRequiredRows": 63,
+    "highRiskProductionGateSafeWritableRowsAfter": 278,
+    "highRiskProductionGateWriteAllowlistChanged": false,
+    "highRiskProductionGateNextRecommendedSprint": "Implement high-risk persisted recovery plan scaffold sprint"
   }
 }

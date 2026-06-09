@@ -1,0 +1,241 @@
+{
+  "schemaVersion": "v0.55.2",
+  "artifactKind": "high-risk-recovery-models-by-bucket",
+  "generatedAt": "2026-06-09T00:03:55.540909Z",
+  "startingCommit": "7a21f07",
+  "models": [
+    {
+      "bucket": "display/render",
+      "failureModes": [
+        "blank or unreadable display",
+        "render pipeline corruption",
+        "XWayland session disruption",
+        "HDR/color-management mismatch",
+        "restart-required or output-dependent behavior"
+      ],
+      "mustNotDependOn": [
+        "visible compositor output",
+        "screen remains readable",
+        "app UI visibility",
+        "Hyprland keybinds inside the affected compositor session"
+      ],
+      "safeNonLiveProofPieces": [
+        "persisted plan schema validation",
+        "temp config backup creation",
+        "temp config rollback/reread verification",
+        "out-of-band token generation and wrong-token rejection",
+        "live-target refusal while live execution is disabled"
+      ],
+      "requiresLiveOrExplicitApproval": "Required for runtime display safety; non-live proof cannot prove visible output remains usable.",
+      "recoveryMechanism": "Separate recovery process reads a persisted plan, restores the backed-up config on timeout, and records a result log without depending on visible compositor output.",
+      "confirmationMechanism": "Out-of-band CLI/token confirmation from a process independent of the visible app UI.",
+      "rollbackMechanism": "Restore verified backup and reread the target config before declaring recovery complete.",
+      "persistentPlanRequirements": [
+        "plan path outside mutable app memory",
+        "target config path",
+        "backup path",
+        "previous known-good hash or contents",
+        "proposed mutation summary",
+        "deadline",
+        "confirmation token hash or nonce",
+        "result log path"
+      ],
+      "testRequirements": [
+        "temp persisted plan roundtrip",
+        "backup-before-mutation assertion",
+        "timeout rollback verification",
+        "wrong-token rejection",
+        "live target refusal in proof mode",
+        "no real config/runtime mutation"
+      ],
+      "rowsCovered": [
+        "xwayland.enabled",
+        "xwayland.create_abstract_socket",
+        "opengl.nvidia_anti_flicker",
+        "render.direct_scanout",
+        "render.expand_undersized_textures",
+        "render.xp_mode",
+        "render.ctm_animation",
+        "render.cm_enabled",
+        "render.send_content_type",
+        "render.cm_auto_hdr",
+        "render.new_render_scheduling",
+        "render.non_shader_cm",
+        "render.cm_sdr_eotf",
+        "render.commit_timing_enabled",
+        "render.icc_vcgt_enabled",
+        "render.use_shader_blur_blend",
+        "render.use_fp16",
+        "render.keep_unmodified_copy",
+        "render.non_shader_cm_interop",
+        "render.fp16_sdr_tf",
+        "experimental.wp_cm_1_2",
+        "quirks.prefer_hdr",
+        "quirks.skip_non_kms_dmabuf_formats"
+      ],
+      "rowsExcludedOrSpecialCase": []
+    },
+    {
+      "bucket": "cursor/input",
+      "failureModes": [
+        "invisible cursor",
+        "unusable cursor movement",
+        "input focus disruption",
+        "hardware cursor failure",
+        "monitor-specific cursor placement mismatch"
+      ],
+      "mustNotDependOn": [
+        "pointer visibility",
+        "mouse input",
+        "app UI",
+        "Hyprland keybinds",
+        "normal pointer focus or cursor warping behavior"
+      ],
+      "safeNonLiveProofPieces": [
+        "persisted plan schema validation",
+        "temp config backup creation",
+        "temp config rollback/reread verification",
+        "keyboard/token confirmation model",
+        "live-target refusal while live execution is disabled"
+      ],
+      "requiresLiveOrExplicitApproval": "Required for runtime input safety; non-live proof cannot prove pointer/input usability remains intact.",
+      "recoveryMechanism": "Separate recovery process restores backup on timeout and must be usable from keyboard/token workflow without mouse or visible pointer.",
+      "confirmationMechanism": "Keyboard-entered token or CLI confirmation independent of mouse input, pointer visibility, app UI, and Hyprland keybinds.",
+      "rollbackMechanism": "Restore verified backup and reread target config; recovery must not require pointer movement or app focus.",
+      "persistentPlanRequirements": [
+        "plan path outside mutable app memory",
+        "target config path",
+        "backup path",
+        "previous known-good hash or contents",
+        "proposed mutation summary",
+        "deadline",
+        "keyboard confirmation token",
+        "result log path"
+      ],
+      "testRequirements": [
+        "temp persisted plan roundtrip",
+        "backup-before-mutation assertion",
+        "timeout rollback verification",
+        "wrong-token rejection",
+        "input-independent confirmation metadata",
+        "live target refusal in proof mode"
+      ],
+      "rowsCovered": [
+        "cursor.invisible",
+        "cursor.no_hardware_cursors",
+        "cursor.no_break_fs_vrr",
+        "cursor.min_refresh_rate",
+        "cursor.hotspot_padding",
+        "cursor.inactive_timeout",
+        "cursor.no_warps",
+        "cursor.persistent_warps",
+        "cursor.warp_on_change_workspace",
+        "cursor.warp_on_toggle_special",
+        "cursor.default_monitor",
+        "cursor.zoom_factor",
+        "cursor.zoom_rigid",
+        "cursor.zoom_disable_aa",
+        "cursor.zoom_detached_camera",
+        "cursor.enable_hyprcursor",
+        "cursor.use_cpu_buffer",
+        "cursor.warp_back_after_non_mouse_input"
+      ],
+      "rowsExcludedOrSpecialCase": [
+        {
+          "rowId": "cursor.default_monitor",
+          "reason": "dynamic runtime monitor-name oracle still missing"
+        }
+      ]
+    },
+    {
+      "bucket": "debug/crash",
+      "failureModes": [
+        "intentional compositor crash",
+        "debug path disruption",
+        "logging/error overlay disruption",
+        "damage tracking or render-debug instability"
+      ],
+      "mustNotDependOn": [
+        "process that may be disrupted",
+        "active compositor health",
+        "debug/logging subsystem being modified",
+        "app UI running inside the affected session",
+        "Hyprland keybinds"
+      ],
+      "safeNonLiveProofPieces": [
+        "persisted plan schema validation",
+        "temp config backup creation",
+        "temp config rollback/reread verification",
+        "external-process ownership model",
+        "live-target refusal while live execution is disabled"
+      ],
+      "requiresLiveOrExplicitApproval": "Required for runtime crash/debug safety; non-live proof cannot prove the active compositor survives or recovers.",
+      "recoveryMechanism": "External recovery process restores backup on timeout and records result even if the compositor or app process is disrupted.",
+      "confirmationMechanism": "Out-of-band CLI/token confirmation from outside the potentially disrupted compositor/app process.",
+      "rollbackMechanism": "Restore verified backup and reread target config; recovery must not rely on debug/crash subsystem health.",
+      "persistentPlanRequirements": [
+        "plan path outside mutable app memory",
+        "target config path",
+        "backup path",
+        "previous known-good hash or contents",
+        "proposed mutation summary",
+        "deadline",
+        "external confirmation token",
+        "result log path"
+      ],
+      "testRequirements": [
+        "temp persisted plan roundtrip",
+        "backup-before-mutation assertion",
+        "timeout rollback verification",
+        "wrong-token rejection",
+        "external-process model metadata",
+        "live target refusal in proof mode",
+        "no intentional Hyprland crash tests"
+      ],
+      "rowsCovered": [
+        "debug.overlay",
+        "debug.damage_blink",
+        "debug.gl_debugging",
+        "debug.disable_logs",
+        "debug.disable_time",
+        "debug.damage_tracking",
+        "debug.enable_stdout_logs",
+        "debug.manual_crash",
+        "debug.suppress_errors",
+        "debug.disable_scale_checks",
+        "debug.error_limit",
+        "debug.error_position",
+        "debug.colored_stdout_logs",
+        "debug.log_damage",
+        "debug.pass",
+        "debug.full_cm_proto",
+        "debug.ds_handle_same_buffer",
+        "debug.ds_handle_same_buffer_fifo",
+        "debug.fifo_pending_workaround",
+        "debug.render_solitary_wo_damage",
+        "debug.vfr",
+        "debug.invalidate_fp16"
+      ],
+      "rowsExcludedOrSpecialCase": []
+    }
+  ],
+  "proofUsed": [
+    "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+    "data/reports/all-blocked-rows-pre-enablement-blockers.v0.55.2.json",
+    "data/reports/all-blocked-rows-pre-enablement-summary.v0.55.2.json",
+    "src/blocked_row_pre_enablement.rs",
+    "src/high_risk_recovery.rs persisted dry-run watchdog and backup/rollback primitives",
+    "src/write_safety.rs current screen-shader gated review primitive and allowlist rejection behavior",
+    "data/reports/high-risk-row-pattern-from-screen-shader.v0.55.2.json",
+    "data/reports/return-to-341-writable-roadmap.v0.55.2.json"
+  ],
+  "proofStillMissing": [
+    "production gate implementation for the 63 blocked high-risk rows",
+    "persisted recovery plan runner for display/render, cursor/input, and debug/crash buckets",
+    "out-of-band confirmation runner proof for each bucket",
+    "production rollback proof against a future gated write path",
+    "future approved live/runtime proof or explicit approval to proceed without live unsafe testing",
+    "runtime monitor-name oracle for cursor.default_monitor"
+  ],
+  "nextRecommendedSprint": "Implement high-risk persisted recovery plan scaffold sprint"
+}
