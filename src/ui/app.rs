@@ -17,6 +17,11 @@ pub fn run() -> glib::ExitCode {
 
     let app = adw::Application::builder().application_id(APP_ID).build();
 
+    app.connect_startup(|_| {
+        // Use libadwaita style management instead of unsupported GtkSettings dark-theme flags.
+        adw::StyleManager::default().set_color_scheme(adw::ColorScheme::Default);
+    });
+
     app.connect_activate(move |app| {
         let cli_override = cli_override.clone();
         let config_discovery = discover_hyprland_config();

@@ -209,11 +209,10 @@ pub fn show_main_window(
         });
     }
 
+    window.set_content(Some(&root));
     if let Some(row) = sidebar.row_at_index(0) {
         sidebar.select_row(Some(&row));
     }
-
-    window.set_content(Some(&root));
     window.present();
 }
 

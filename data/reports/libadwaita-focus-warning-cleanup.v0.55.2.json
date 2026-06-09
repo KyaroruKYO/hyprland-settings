@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "libadwaita-focus-warning-cleanup",
+  "generatedAt": "2026-06-09T22:33:36Z",
+  "startingCommit": "df5f0a7",
+  "userObservedWarnings": [
+    "Adwaita-WARNING **: Using GtkSettings:gtk-application-prefer-dark-theme with libadwaita is unsupported. Please use AdwStyleManager:color-scheme instead.",
+    "WARNING: radv is not a conformant Vulkan implementation, testing use only.",
+    "Gtk-CRITICAL **: gtk_window_get_focus: assertion 'GTK_IS_WINDOW (window)' failed",
+    "Gtk-CRITICAL **: gtk_root_get_focus: assertion 'GTK_IS_ROOT (self)' failed"
+  ],
+  "darkModeWarningBefore": {
+    "sourceSearchResult": "No project source used gtk-application-prefer-dark-theme or prefer-dark-theme, so the warning could not be attributed to current Rust source.",
+    "userConsoleObserved": true,
+    "externalGtkSettingsEvidence": [
+      "/home/kyo/.config/gtk-4.0/settings.ini contains gtk-application-prefer-dark-theme=1",
+      "/home/kyo/.config/gtk-3.0/settings.ini contains gtk-application-prefer-dark-theme=1"
+    ]
+  },
+  "darkModeWarningAfter": {
+    "usesUnsupportedGtkSetting": false,
+    "styleHandling": "Application explicitly sets adw::StyleManager color scheme to Default so libadwaita follows the system style without GTK dark-theme settings.",
+    "consoleCheck": "Warning remains under the user's normal GTK settings because the unsupported flag is loaded from /home/kyo/.config/gtk-4.0/settings.ini. A second check with a temporary GTK config that omits the flag produced no Adwaita warning."
+  },
+  "darkModeFix": {
+    "file": "src/ui/app.rs",
+    "change": "Added libadwaita StyleManager setup with ColorScheme::Default and did not use GtkSettings dark-theme flags."
+  },
+  "focusWarningInvestigation": {
+    "sourceAreasInspected": [
+      "Dashboard synthetic sidebar item",
+      "Dashboard Open buttons",
+      "sidebar.connect_row_selected",
+      "settings_list.connect_row_selected",
+      "sidebar.select_row(Some(&row))",
+      "set_visible(true/false)",
+      "render_dashboard_view",
+      "render_settings_view",
+      "search_entry.connect_search_changed"
+    ],
+    "likelyIssueFound": "Initial sidebar selection happened before window.set_content, which could run selection/focus work before widgets were rooted.",
+    "manualInteractionsAttempted": "Codex performed timed startup console checks. Full manual interaction could not be automated from this shell session."
+  },
+  "focusWarningReproduced": false,
+  "focusWarningFix": {
+    "file": "src/ui/window.rs",
+    "change": "Moved initial sidebar selection after window.set_content and before window.present so the selected row is rooted before selection."
+  },
+  "radvWarningDisposition": "Observed graphics-stack warning; not treated as an app bug unless rendering issues appear.",
+  "filesChanged": [
+    "src/ui/app.rs",
+    "src/ui/window.rs",
+    "tests/libadwaita_focus_warning_cleanup.rs",
+    "data/reports/libadwaita-focus-warning-cleanup.v0.55.2.json",
+    "docs/LIBADWAITA-FOCUS-WARNING-CLEANUP-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/LIBADWAITA-FOCUS-WARNING-CLEANUP-REVIEW-LOG.md"
+  ],
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "testsAdded": [
+    "tests/libadwaita_focus_warning_cleanup.rs"
+  ],
+  "manualVerificationSteps": [
+    "Open Dashboard.",
+    "Click Dashboard Open buttons.",
+    "Switch sidebar categories.",
+    "Search for appearance.blur.enabled.",
+    "Select Appearance Blur Enabled.",
+    "Search for cursor.default_monitor.",
+    "Select cursor.default_monitor.",
+    "Clear search.",
+    "Switch back to Dashboard.",
+    "Close app."
+  ],
+  "consoleCheckCommand": "cargo run --bin hyprland-settings 2>&1 | tee /tmp/hyprland-settings-console-check.log && grep -E \"Adwaita-WARNING|Gtk-CRITICAL|gtk_window_get_focus|gtk_root_get_focus|radv\" /tmp/hyprland-settings-console-check.log || true",
+  "consoleCheckResult": {
+    "normalUserGtkSettings": [
+      "Adwaita-WARNING remained because gtk-application-prefer-dark-theme=1 is set in the user's GTK settings.",
+      "No Gtk-CRITICAL focus warnings were observed during the timed startup check.",
+      "RADV warning remained."
+    ],
+    "temporaryGtkSettingsWithoutPreferDarkTheme": [
+      "No Adwaita-WARNING was observed.",
+      "No Gtk-CRITICAL focus warnings were observed during the timed startup check.",
+      "RADV warning remained."
+    ]
+  },
+  "proofUsed": [
+    "Source search found no unsupported GTK dark-theme setting usage",
+    "src/ui/app.rs uses libadwaita StyleManager with ColorScheme::Default",
+    "src/ui/window.rs roots window content before initial sidebar selection",
+    "Console check with the user's GTK settings",
+    "Console check with a temporary GTK config omitting gtk-application-prefer-dark-theme",
+    "libadwaita_focus_warning_cleanup tests",
+    "SAFE_WRITABLE_ROWS.len() remains 341"
+  ],
+  "proofStillMissing": [
+    "Full manual GUI interaction was not automated; only timed startup console checks were performed.",
+    "The Adwaita warning cannot be removed for the user's normal session without changing the external GTK settings that set gtk-application-prefer-dark-theme=1."
+  ],
+  "nextRecommendedSprint": "If GTK focus warnings recur with exact interaction steps, capture a fresh console log and inspect the matching callback path."
+}
