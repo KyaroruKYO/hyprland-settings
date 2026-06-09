@@ -76,7 +76,8 @@ pub fn show_main_window(
     content.set_vexpand(true);
     body.append(&content);
 
-    content.append(&build_summary_card(&model));
+    let diagnostics = build_status_diagnostics_expander(&model);
+    content.append(&diagnostics);
 
     let search_entry = gtk::SearchEntry::new();
     search_entry.set_placeholder_text(Some("Search export metadata"));
@@ -88,14 +89,26 @@ pub fn show_main_window(
     let settings_list = gtk::ListBox::new();
     settings_list.set_selection_mode(gtk::SelectionMode::Single);
     let settings_scroll = gtk::ScrolledWindow::builder()
+        .min_content_width(420)
         .vexpand(true)
         .hexpand(true)
         .child(&settings_list)
         .build();
-    content.append(&settings_scroll);
 
     let (detail_panel, detail_content) = build_detail_panel();
-    content.append(&detail_panel);
+
+    let work_area = gtk::Paned::new(gtk::Orientation::Horizontal);
+    work_area.set_vexpand(true);
+    work_area.set_hexpand(true);
+    work_area.set_wide_handle(true);
+    work_area.set_position(520);
+    work_area.set_start_child(Some(&settings_scroll));
+    work_area.set_end_child(Some(&detail_panel));
+    work_area.set_resize_start_child(true);
+    work_area.set_resize_end_child(true);
+    work_area.set_shrink_start_child(false);
+    work_area.set_shrink_end_child(false);
+    content.append(&work_area);
 
     render_settings_view(
         &model,
@@ -245,6 +258,30 @@ fn build_sidebar(model: &UiProjection) -> gtk::ListBox {
     }
 
     sidebar
+}
+
+fn build_status_diagnostics_expander(model: &UiProjection) -> gtk::Expander {
+    let summary = format!(
+        "Export validation passed · official scalar coverage: {} / {} · diagnostics",
+        model.summary.official_scalar_covered, model.summary.official_scalar_total
+    );
+    let expander = gtk::Expander::new(Some(&summary));
+    expander.set_expanded(false);
+    expander.set_tooltip_text(Some(
+        "Export and parser diagnostics are collapsed by default so setting details remain visible.",
+    ));
+
+    let diagnostics = build_summary_card(model);
+    let diagnostics_scroll = gtk::ScrolledWindow::builder()
+        .max_content_height(220)
+        .min_content_height(120)
+        .vexpand(false)
+        .hexpand(true)
+        .child(&diagnostics)
+        .build();
+    diagnostics_scroll.set_policy(gtk::PolicyType::Automatic, gtk::PolicyType::Automatic);
+    expander.set_child(Some(&diagnostics_scroll));
+    expander
 }
 
 fn build_summary_card(model: &UiProjection) -> gtk::Frame {
@@ -454,7 +491,7 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
     row
 }
 
-fn build_detail_panel() -> (gtk::Frame, gtk::Box) {
+fn build_detail_panel() -> (gtk::ScrolledWindow, gtk::Box) {
     let frame = gtk::Frame::new(None);
     let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
     content.set_margin_top(12);
@@ -463,7 +500,15 @@ fn build_detail_panel() -> (gtk::Frame, gtk::Box) {
     content.set_margin_end(12);
     render_empty_detail(&content);
     frame.set_child(Some(&content));
-    (frame, content)
+
+    let scroll = gtk::ScrolledWindow::builder()
+        .min_content_width(420)
+        .vexpand(true)
+        .hexpand(true)
+        .child(&frame)
+        .build();
+    scroll.set_policy(gtk::PolicyType::Automatic, gtk::PolicyType::Automatic);
+    (scroll, content)
 }
 
 fn render_empty_detail(detail_content: &gtk::Box) {

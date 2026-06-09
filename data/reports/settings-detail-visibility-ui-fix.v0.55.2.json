@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "settings-detail-visibility-ui-fix",
+  "generatedAt": "2026-06-08T20:57:02-07:00",
+  "startingCommit": "492fb9f Record final main and GitHub update status",
+  "bugSummary": "The main settings content stacked the always-expanded export diagnostics, search, full settings list, and selected setting detail pane in one vertical box. The settings list expanded vertically before the detail pane, so clicking Appearance Blur Enabled selected the row but left details below the list and effectively off-screen.",
+  "filesChanged": [
+    "src/ui/window.rs",
+    "tests/settings_detail_visibility_ui_fix.rs",
+    "data/reports/settings-detail-visibility-ui-fix.v0.55.2.json",
+    "docs/SETTINGS-DETAIL-VISIBILITY-UI-FIX-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/SETTINGS-DETAIL-VISIBILITY-UI-FIX-REVIEW-LOG.md"
+  ],
+  "layoutBefore": {
+    "diagnostics": "Export validation/status diagnostics rendered as a large expanded frame at the top of the main content.",
+    "workArea": "Search, tab title, settings list, and detail panel were stacked vertically.",
+    "detailsPlacement": "The selected setting detail panel was appended after the vertically expanding settings list."
+  },
+  "layoutAfter": {
+    "diagnostics": "Export diagnostics render inside a collapsed GTK expander with bounded scrolling.",
+    "workArea": "Search and tab title remain above a horizontal GTK Paned work area.",
+    "detailsPlacement": "The setting list and selected setting detail pane are siblings inside the Paned work area, so selection details are visible beside the list on wide windows."
+  },
+  "diagnosticsPanelBehavior": "collapsed-by-default-with-bounded-scroll",
+  "detailsPaneBehavior": "selected-setting-detail-pane-is-a-sibling-of-the-list-in-a-horizontal-paned-work-area",
+  "manualVerificationSteps": [
+    "Launch the app.",
+    "Open Appearance.",
+    "Select Appearance Blur Enabled.",
+    "Confirm details are visible immediately in the right-side detail pane.",
+    "Search for cursor.default_monitor.",
+    "Confirm high-risk/gated details are visible in the detail pane.",
+    "Expand diagnostics and confirm export/status details remain available without dominating normal browsing."
+  ],
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "proofUsed": [
+    "src/ui/window.rs source now uses a collapsed diagnostics expander",
+    "src/ui/window.rs source now uses gtk::Paned for settings list and detail pane siblings",
+    "tests/settings_detail_visibility_ui_fix.rs checks collapsed diagnostics, split work area, detail projection for appearance.blur.enabled, high-risk detail metadata, and unchanged 341/341/0 counts",
+    "existing UI projection tests and final coverage tests preserve the all-341 model"
+  ],
+  "proofStillMissing": [
+    "manual visual confirmation on the user's display after launch and click-through"
+  ],
+  "nextRecommendedSprint": "Manual UI smoke review for the all-341 settings browser"
+}
