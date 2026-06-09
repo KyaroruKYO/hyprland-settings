@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
   "artifactKind": "github-project-update",
-  "generatedAt": "2026-06-09T03:41:33.589729+00:00",
-  "githubCliAvailable": null,
-  "githubAuthenticated": null,
-  "repoDetected": null,
+  "generatedAt": "2026-06-08T20:45:19-07:00",
+  "githubCliAvailable": true,
+  "githubAuthenticated": true,
+  "repoDetected": true,
   "repoRemote": "https://github.com/KyaroruKYO/hyprland-settings.git",
-  "descriptionUpdated": false,
-  "topicsUpdated": false,
+  "descriptionUpdated": true,
+  "topicsUpdated": true,
   "readmeUpdated": true,
-  "projectPageUpdated": false,
+  "projectPageUpdated": true,
   "releaseCreated": false,
   "issuesOrProjectsUpdated": false,
   "commandsRun": [
@@ -22,8 +22,16 @@
     "appstreamcli validate --pedantic data/metainfo/io.github.kyarorukyo.hyprlandsettings.metainfo.xml || true",
     "python /home/kyo/.config/hypr/ags/validate-hyprland-settings-export-v0552.py",
     "python ~/.config/hypr/ags/validate-settings-ui-design-draft.py",
-    "python ~/.config/hypr/ags/validate-schema-draft.py"
+    "python ~/.config/hypr/ags/validate-schema-draft.py",
+    "gh auth status || true",
+    "gh repo view KyaroruKYO/hyprland-settings || true",
+    "git checkout main",
+    "git merge --no-ff completion-sprint",
+    "cargo test",
+    "git push origin main",
+    "gh repo edit KyaroruKYO/hyprland-settings --description \"Rust + GTK4/libadwaita settings app for Hyprland with 341/341 official scalar settings modeled and gated high-risk config-write support.\" --homepage \"https://github.com/KyaroruKYO/hyprland-settings\" --add-topic hyprland --add-topic wayland --add-topic gtk4 --add-topic libadwaita --add-topic rust --add-topic linux --add-topic settings --add-topic desktop --add-topic configuration",
+    "gh repo view KyaroruKYO/hyprland-settings --json nameWithOwner,description,homepageUrl,repositoryTopics,url"
   ],
   "errors": [],
-  "status": "pending-gh-auth-after-validation"
+  "status": "completed"
 }

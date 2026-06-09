@@ -2,12 +2,12 @@
 
 ## Sprint summary
 - Starting commit: `f54c88a Complete cursor default monitor oracle proof`
-- Branch: `completion-sprint`
+- Branch: `completion-sprint` before merge; `main` after merge
 - Final counts: 341 readable / 341 writable / 0 blocked
 - Consistency review passed: yes
-- Merged to main: pending
-- Pushed main: pending
-- GitHub page updated: pending
+- Merged to main: yes (`180d6ef7e76c736e94a1b62237cded9de44c9eee`)
+- Pushed main: yes
+- GitHub page updated: yes
 - README updated: yes
 - Project status doc updated: yes
 
@@ -29,17 +29,17 @@
 
 ## GitHub update
 - Remote: `https://github.com/KyaroruKYO/hyprland-settings.git`
-- gh auth status: pending
-- Description update: pending
-- Topics update: pending
-- README update: pending push to main
+- gh auth status: authenticated as `KyaroruKYO`
+- Description update: completed
+- Topics update: completed
+- README update: pushed to `main`
 - Release status: no release created
 
 ## Merge/push
 - Pre-merge validation: passed (`cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `desktop-file-validate`, AppStream with expected non-blocking releases-info warning, export validator, UI design validator, schema validator)
-- Merge command: pending
-- Push command: pending
-- Post-merge status: pending
+- Merge command: `git merge --no-ff completion-sprint`
+- Push command: `git push origin main`
+- Post-merge status: `cargo test` passed on `main`
 
 ## Remaining work
 - What remains: final UI review, packaging readiness, release preparation.

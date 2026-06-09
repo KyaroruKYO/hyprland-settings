@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactKind": "final-all-341-consistency-review",
-  "generatedAt": "2026-06-09T03:41:33.589729+00:00",
+  "generatedAt": "2026-06-08T20:45:19-07:00",
   "startingCommit": "f54c88a Complete cursor default monitor oracle proof",
   "finalCounts": {
     "readableRows": 341,
@@ -40,7 +40,7 @@
   },
   "testChecks": {
     "preMergeValidationStatus": "passed",
-    "postMergeValidationStatus": "pending",
+    "postMergeValidationStatus": "passed",
     "requiredCommands": [
       "cargo fmt",
       "cargo fmt --check",
@@ -100,18 +100,25 @@
     ]
   },
   "githubUpdateStatus": {
-    "status": "pending-gh-auth-after-validation",
-    "releaseCreated": false
+    "status": "completed",
+    "githubCliAvailable": true,
+    "githubAuthenticated": true,
+    "repoDetected": true,
+    "descriptionUpdated": true,
+    "topicsUpdated": true,
+    "homepageUpdated": true,
+    "releaseCreated": false,
+    "errors": []
   },
   "mergeStatus": {
-    "mergedToMain": false,
-    "mainCommitAfterMerge": null,
-    "mergeCommand": null
+    "mergedToMain": true,
+    "mainCommitAfterMerge": "180d6ef7e76c736e94a1b62237cded9de44c9eee",
+    "mergeCommand": "git merge --no-ff completion-sprint"
   },
   "pushStatus": {
-    "pushedMain": false,
+    "pushedMain": true,
     "forcePushUsed": false,
-    "pushCommand": null
+    "pushCommand": "git push origin main"
   },
   "proofUsed": [
     "Rust SAFE_WRITABLE_ROWS source and tests",
