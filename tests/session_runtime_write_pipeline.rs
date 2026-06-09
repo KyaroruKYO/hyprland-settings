@@ -12,8 +12,9 @@ use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::pending_change::{stage_pending_change, PendingChangeValidation};
 use hyprland_settings::write_classification::{
-    finite_choice_options, is_safe_writable_setting, session_runtime_write_policy,
-    ScalarWriteValueKind, SAFE_WRITABLE_ROWS, SESSION_RUNTIME_SENSITIVE_ROWS,
+    finite_choice_options, is_high_risk_gated_writable_setting, is_safe_writable_setting,
+    session_runtime_write_policy, ScalarWriteValueKind, SAFE_WRITABLE_ROWS,
+    SESSION_RUNTIME_SENSITIVE_ROWS,
 };
 use hyprland_settings::write_flow::{
     apply_setting_change_with_backup_manager, edit_projection_for_setting, write_flow_value_kind,
@@ -211,8 +212,9 @@ fn session_runtime_reports_enable_only_the_16_target_rows() -> Result<()> {
         assert!(is_safe_writable_setting(row_id), "{row_id}");
     }
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
-    assert!(!is_safe_writable_setting("xwayland.enabled"));
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert!(is_safe_writable_setting("xwayland.enabled"));
+    assert!(is_high_risk_gated_writable_setting("xwayland.enabled"));
 
     Ok(())
 }

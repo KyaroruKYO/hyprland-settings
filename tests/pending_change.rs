@@ -49,9 +49,9 @@ fn invalid_pending_change_for_windows_snap_enabled_is_rejected() {
 
 #[test]
 fn only_safe_writable_rows_can_be_staged() {
-    let current = current_value_for("xwayland.enabled", "xwayland:enabled = false\n");
+    let current = current_value_for("cursor.default_monitor", "cursor:default_monitor = DP-1\n");
 
-    let change = stage_pending_change("xwayland.enabled", &current, "true");
+    let change = stage_pending_change("cursor.default_monitor", &current, "DP-2");
 
     assert_eq!(
         change.validation,

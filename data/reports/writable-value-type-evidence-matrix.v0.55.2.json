@@ -1,7 +1,7 @@
 {
   "schemaVersion": "0.55.2",
   "artifactKind": "writable-value-type-evidence-matrix",
-  "generatedAt": "2026-06-06T22:15:40-07:00",
+  "generatedAt": "2026-06-09T02:05:17.664873Z",
   "sourceReports": [
     "scalar-read-write-coverage.v0.55.2.json",
     "all-341-unified-pipeline.v0.55.2.json",
@@ -21,8 +21,8 @@
     "high-risk-persisted-recovery-scaffold-blockers.v0.55.2.json"
   ],
   "counts": {
-    "totalWritableRowsAudited": 278,
-    "completeRows": 26,
+    "totalWritableRowsAudited": 340,
+    "completeRows": 88,
     "partialRows": 8,
     "parserOnlyRows": 2,
     "conflictingRows": 0,
@@ -30,17 +30,17 @@
     "appValidatorTooNarrowRows": 0,
     "appValidatorTooBroadRows": 204,
     "sourceResearchNeededRows": 38,
-    "rowsEnabledThisSprint": 0,
-    "writableRows": 278,
-    "blockedRows": 63,
-    "writeAllowlistChanged": false,
-    "productionBehaviorChanged": false,
+    "rowsEnabledThisSprint": 62,
+    "writableRows": 340,
+    "blockedRows": 1,
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true,
     "validatorsChanged": false,
-    "recoveryGatesChanged": false,
+    "recoveryGatesChanged": true,
     "realConfigModified": false,
     "activeRuntimeModified": false,
     "reloadEvalLuaUsed": false,
-    "tempVerificationRunThisSprint": false
+    "tempVerificationRunThisSprint": true
   },
   "rows": [
     {
@@ -13463,6 +13463,2934 @@
         "fixtureWriteRereadEvidence": "partial",
         "highRiskRecoveryEvidence": "complete"
       }
+    },
+    {
+      "rowId": "xwayland.enabled",
+      "officialSetting": "xwayland.enabled",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "xwayland.create_abstract_socket",
+      "officialSetting": "xwayland.create_abstract_socket",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "opengl.nvidia_anti_flicker",
+      "officialSetting": "opengl.nvidia_anti_flicker",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.direct_scanout",
+      "officialSetting": "render.direct_scanout",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.expand_undersized_textures",
+      "officialSetting": "render.expand_undersized_textures",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.xp_mode",
+      "officialSetting": "render.xp_mode",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.ctm_animation",
+      "officialSetting": "render.ctm_animation",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.cm_enabled",
+      "officialSetting": "render.cm_enabled",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.send_content_type",
+      "officialSetting": "render.send_content_type",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.cm_auto_hdr",
+      "officialSetting": "render.cm_auto_hdr",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "hdr",
+        "2",
+        "hdredid"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "hdr",
+        "2",
+        "hdredid"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.new_render_scheduling",
+      "officialSetting": "render.new_render_scheduling",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.non_shader_cm",
+      "officialSetting": "render.non_shader_cm",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "always",
+        "2",
+        "ondemand",
+        "3",
+        "ignore"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "always",
+        "2",
+        "ondemand",
+        "3",
+        "ignore"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.cm_sdr_eotf",
+      "officialSetting": "render.cm_sdr_eotf",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "default",
+        "0",
+        "auto",
+        "srgb",
+        "3",
+        "gamma22",
+        "1",
+        "gamma22force",
+        "2"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-transfer-function"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "default",
+        "0",
+        "auto",
+        "srgb",
+        "3",
+        "gamma22",
+        "1",
+        "gamma22force",
+        "2"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.commit_timing_enabled",
+      "officialSetting": "render.commit_timing_enabled",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.icc_vcgt_enabled",
+      "officialSetting": "render.icc_vcgt_enabled",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.use_shader_blur_blend",
+      "officialSetting": "render.use_shader_blur_blend",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.use_fp16",
+      "officialSetting": "render.use_fp16",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.keep_unmodified_copy",
+      "officialSetting": "render.keep_unmodified_copy",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.non_shader_cm_interop",
+      "officialSetting": "render.non_shader_cm_interop",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "render.fp16_sdr_tf",
+      "officialSetting": "render.fp16_sdr_tf",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "monitor",
+        "1",
+        "linear"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "monitor",
+        "1",
+        "linear"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.invisible",
+      "officialSetting": "cursor.invisible",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "officialSetting": "cursor.no_hardware_cursors",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "Disabled",
+        "1",
+        "Enabled",
+        "2",
+        "Auto"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "Disabled",
+        "1",
+        "Enabled",
+        "2",
+        "Auto"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "officialSetting": "cursor.no_break_fs_vrr",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "officialSetting": "cursor.min_refresh_rate",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "number",
+      "rustValueKind": "Number",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "10",
+        "500"
+      ],
+      "appRejectedInvalidExamples": [
+        "501"
+      ],
+      "uiEditorType": "number",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "min": 10,
+        "max": 500,
+        "type": "integer"
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "officialSetting": "cursor.hotspot_padding",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "number",
+      "rustValueKind": "Number",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "20"
+      ],
+      "appRejectedInvalidExamples": [
+        "21"
+      ],
+      "uiEditorType": "number",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "min": 0,
+        "max": 20,
+        "type": "integer"
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "officialSetting": "cursor.inactive_timeout",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "number",
+      "rustValueKind": "Number",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0.0",
+        "20.0"
+      ],
+      "appRejectedInvalidExamples": [
+        "21.0"
+      ],
+      "uiEditorType": "number",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "min": 0.0,
+        "max": 20.0,
+        "type": "float"
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "officialSetting": "cursor.no_warps",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "officialSetting": "cursor.persistent_warps",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "officialSetting": "cursor.warp_on_change_workspace",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "force"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "force"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "officialSetting": "cursor.warp_on_toggle_special",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "force"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "force"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "officialSetting": "cursor.zoom_factor",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "number",
+      "rustValueKind": "Number",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "1.0",
+        "10.0"
+      ],
+      "appRejectedInvalidExamples": [
+        "11.0"
+      ],
+      "uiEditorType": "number",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "min": 1.0,
+        "max": 10.0,
+        "type": "float"
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "officialSetting": "cursor.zoom_rigid",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "officialSetting": "cursor.zoom_disable_aa",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "officialSetting": "cursor.zoom_detached_camera",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "officialSetting": "cursor.enable_hyprcursor",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "officialSetting": "cursor.use_cpu_buffer",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "officialSetting": "cursor.warp_back_after_non_mouse_input",
+      "riskClass": "cursor-input-high-risk",
+      "recoveryBucket": "cursor/input",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.overlay",
+      "officialSetting": "debug.overlay",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.damage_blink",
+      "officialSetting": "debug.damage_blink",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.gl_debugging",
+      "officialSetting": "debug.gl_debugging",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.disable_logs",
+      "officialSetting": "debug.disable_logs",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.disable_time",
+      "officialSetting": "debug.disable_time",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.damage_tracking",
+      "officialSetting": "debug.damage_tracking",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "monitor",
+        "2",
+        "full"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "monitor",
+        "2",
+        "full"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.enable_stdout_logs",
+      "officialSetting": "debug.enable_stdout_logs",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.manual_crash",
+      "officialSetting": "debug.manual_crash",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "number",
+      "rustValueKind": "Number",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "1"
+      ],
+      "appRejectedInvalidExamples": [
+        "2"
+      ],
+      "uiEditorType": "number",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "min": 0,
+        "max": 1,
+        "type": "integer"
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.suppress_errors",
+      "officialSetting": "debug.suppress_errors",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.disable_scale_checks",
+      "officialSetting": "debug.disable_scale_checks",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.error_limit",
+      "officialSetting": "debug.error_limit",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "number",
+      "rustValueKind": "Number",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "20"
+      ],
+      "appRejectedInvalidExamples": [
+        "21"
+      ],
+      "uiEditorType": "number",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "min": 0,
+        "max": 20,
+        "type": "integer"
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.error_position",
+      "officialSetting": "debug.error_position",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "top",
+        "1",
+        "bottom"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "top",
+        "1",
+        "bottom"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.colored_stdout_logs",
+      "officialSetting": "debug.colored_stdout_logs",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.log_damage",
+      "officialSetting": "debug.log_damage",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.pass",
+      "officialSetting": "debug.pass",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.full_cm_proto",
+      "officialSetting": "debug.full_cm_proto",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer",
+      "officialSetting": "debug.ds_handle_same_buffer",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer_fifo",
+      "officialSetting": "debug.ds_handle_same_buffer_fifo",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.fifo_pending_workaround",
+      "officialSetting": "debug.fifo_pending_workaround",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.render_solitary_wo_damage",
+      "officialSetting": "debug.render_solitary_wo_damage",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.vfr",
+      "officialSetting": "debug.vfr",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "debug.invalidate_fp16",
+      "officialSetting": "debug.invalidate_fp16",
+      "riskClass": "debug-crash-high-risk",
+      "recoveryBucket": "debug/crash",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "auto"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "experimental.wp_cm_1_2",
+      "officialSetting": "experimental.wp_cm_1_2",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "quirks.prefer_hdr",
+      "officialSetting": "quirks.prefer_hdr",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "finite-choice",
+      "rustValueKind": "FiniteChoice",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "gamescope_only"
+      ],
+      "appRejectedInvalidExamples": [
+        "not-a-source-backed-option"
+      ],
+      "uiEditorType": "dropdown",
+      "finiteChoiceChoices": [
+        "0",
+        "disable",
+        "1",
+        "enable",
+        "2",
+        "gamescope_only"
+      ],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
+    },
+    {
+      "rowId": "quirks.skip_non_kms_dmabuf_formats",
+      "officialSetting": "quirks.skip_non_kms_dmabuf_formats",
+      "riskClass": "display-render-high-risk",
+      "recoveryBucket": "display/render",
+      "appValueType": "boolean",
+      "rustValueKind": "Boolean",
+      "appValidatorKind": "pre-enablement-source-backed",
+      "appAcceptedValueShape": "source-backed high-risk pre-enablement validator accepts only values proven in src/blocked_row_pre_enablement.rs",
+      "appAcceptedValuesOrExamples": [
+        "true",
+        "false"
+      ],
+      "appRejectedInvalidExamples": [
+        "maybe"
+      ],
+      "uiEditorType": "toggle",
+      "finiteChoiceChoices": [],
+      "numericBounds": {
+        "localValidatorPolicy": null,
+        "companionMin": null,
+        "companionMax": null
+      },
+      "currentWriteStatus": "writable",
+      "safeWriteSupported": true,
+      "validatorAuthority": "source-backed-pre-enablement-validator",
+      "proofSource": "high-risk-accepted-rows-enablement.v0.55.2.json",
+      "watchdogProofSource": "high-risk-persisted-recovery-scaffold.v0.55.2.json",
+      "tempConfigProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "fixtureWriteRereadProofSource": "all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+      "hyprmodComparisonResult": "not-used",
+      "hyprmodRecommendedAction": "not-used",
+      "stringListPathColorGradientVectorPolicy": null,
+      "evidenceStatus": {
+        "officialSourceEvidence": "complete",
+        "companionEvidence": "not-required",
+        "hyprmodEvidence": "not-used",
+        "appValidatorEvidence": "complete",
+        "tempConfigEvidence": "complete",
+        "invalidRejectionEvidence": "complete",
+        "fixtureWriteRereadEvidence": "complete",
+        "highRiskRecoveryEvidence": "complete-gated"
+      }
     }
   ],
   "safety": {
@@ -14032,6 +16960,18 @@
     "highRiskCandidateApprovalFreezeSelectedRowsCount": 5,
     "highRiskCandidateApprovalFreezeExcludedRowsCount": 58,
     "highRiskCandidateApprovalFreezeRowsEnabledThisSprint": 0,
-    "highRiskCandidateApprovalFreezeNextRecommendedSprint": "High-risk candidate explicit approval review sprint"
+    "highRiskCandidateApprovalFreezeNextRecommendedSprint": "High-risk candidate explicit approval review sprint",
+    "highRiskAcceptedRowsEnablementReport": "data/reports/high-risk-accepted-rows-enablement.v0.55.2.json",
+    "highRiskAcceptedRowsEnablementTestsReport": "data/reports/high-risk-accepted-rows-enablement-tests.v0.55.2.json",
+    "cursorDefaultMonitorRuntimeOracleResearchReport": "data/reports/cursor-default-monitor-runtime-oracle-research.v0.55.2.json",
+    "highRiskRemainingBlockedAfterAcceptedEnablementReport": "data/reports/high-risk-remaining-blocked-after-accepted-enablement.v0.55.2.json",
+    "highRiskAcceptedRowsAnalyzed": 63,
+    "highRiskAcceptedRowsDryRunAccepted": 62,
+    "highRiskAcceptedRowsEnabledThisSprint": 62,
+    "highRiskAcceptedRowsStillBlocked": 1,
+    "finalReadableRows": 341,
+    "finalWritableRows": 340,
+    "finalBlockedRows": 1,
+    "nextRecommendedSprint": "Complete cursor.default_monitor runtime monitor-name oracle proof sprint"
   }
 }

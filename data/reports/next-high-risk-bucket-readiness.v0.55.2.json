@@ -1,15 +1,15 @@
 {
   "artifactKind": "next-high-risk-bucket-readiness",
   "schemaVersion": 1,
-  "generatedAt": "2026-06-06T06:11:32Z",
+  "generatedAt": "2026-06-09T02:05:17.664873Z",
   "counts": {
-    "remainingBlockedRows": 63,
-    "displayRenderBlockedRows": 23,
-    "cursorInputBlockedRows": 18,
-    "debugCrashBlockedRows": 22,
+    "remainingBlockedRows": 1,
+    "displayRenderBlockedRows": 0,
+    "cursorInputBlockedRows": 1,
+    "debugCrashBlockedRows": 0,
     "rowsEnabled": 3,
-    "finalWritableRows": 278,
-    "finalBlockedRows": 63,
+    "finalWritableRows": 340,
+    "finalBlockedRows": 1,
     "recommendedNextBucket": "none-selected-after-cursor-theme-sync-smoke-subset",
     "separateWatchdogProcessProofPassed": true,
     "displayRenderLiveBoundaryRepresented": true,
@@ -19,9 +19,9 @@
     "selectedCursorInputSubsetRows": 0,
     "cursorInputRowsEnabled": 4,
     "cursorVisibilityConditionalRowsEnabled": 2,
-    "highRiskRowsEnabled": 9
+    "highRiskRowsEnabled": 71
   },
-  "recommendation": "cursor.hide_on_touch and cursor.hide_on_tablet are now enabled behind the cursor visibility watchdog gate. Remaining display/render, cursor/input, and debug/crash rows stay blocked pending later dedicated proof.",
+  "recommendation": "Complete cursor.default_monitor runtime monitor-name oracle proof sprint",
   "buckets": [
     {
       "bucket": "display-render-recovery",
@@ -325,6 +325,18 @@
     "highRiskCandidateApprovalFreezeSelectedRowsCount": 5,
     "highRiskCandidateApprovalFreezeExcludedRowsCount": 58,
     "highRiskCandidateApprovalFreezeRowsEnabledThisSprint": 0,
-    "highRiskCandidateApprovalFreezeNextRecommendedSprint": "High-risk candidate explicit approval review sprint"
+    "highRiskCandidateApprovalFreezeNextRecommendedSprint": "High-risk candidate explicit approval review sprint",
+    "highRiskAcceptedRowsEnablementReport": "data/reports/high-risk-accepted-rows-enablement.v0.55.2.json",
+    "highRiskAcceptedRowsEnablementTestsReport": "data/reports/high-risk-accepted-rows-enablement-tests.v0.55.2.json",
+    "cursorDefaultMonitorRuntimeOracleResearchReport": "data/reports/cursor-default-monitor-runtime-oracle-research.v0.55.2.json",
+    "highRiskRemainingBlockedAfterAcceptedEnablementReport": "data/reports/high-risk-remaining-blocked-after-accepted-enablement.v0.55.2.json",
+    "highRiskAcceptedRowsAnalyzed": 63,
+    "highRiskAcceptedRowsDryRunAccepted": 62,
+    "highRiskAcceptedRowsEnabledThisSprint": 62,
+    "highRiskAcceptedRowsStillBlocked": 1,
+    "finalReadableRows": 341,
+    "finalWritableRows": 340,
+    "finalBlockedRows": 1,
+    "nextRecommendedSprint": "Complete cursor.default_monitor runtime monitor-name oracle proof sprint"
   }
 }

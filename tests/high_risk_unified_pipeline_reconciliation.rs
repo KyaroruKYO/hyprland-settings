@@ -71,10 +71,10 @@ fn enabled_high_risk_rows_conform_to_unified_pipeline() -> Result<()> {
         "pipelineTemplate",
     ];
 
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     assert_eq!(audit["counts"]["enabledHighRiskRowsAudited"], 9);
     assert_eq!(audit["counts"]["rowsWithMissingUnifiedFields"], 0);
     assert_eq!(audit["counts"]["rowsFailingUnifiedPipelineConformance"], 0);
@@ -143,17 +143,31 @@ fn enabled_high_risk_rows_conform_to_unified_pipeline() -> Result<()> {
 
     for row_id in candidate_ids {
         let coverage_row = coverage_by_id[row_id];
-        assert_ne!(
-            coverage_row["writeStatus"].as_str(),
-            Some("writable"),
-            "{row_id}"
-        );
-        assert_eq!(
-            coverage_row["safeWriteSupported"].as_bool(),
-            Some(false),
-            "{row_id}"
-        );
-        assert!(!is_safe_writable_setting(row_id), "{row_id}");
+        if row_id == "cursor.default_monitor" {
+            assert_ne!(
+                coverage_row["writeStatus"].as_str(),
+                Some("writable"),
+                "{row_id}"
+            );
+            assert_eq!(
+                coverage_row["safeWriteSupported"].as_bool(),
+                Some(false),
+                "{row_id}"
+            );
+            assert!(!is_safe_writable_setting(row_id), "{row_id}");
+        } else {
+            assert_eq!(
+                coverage_row["writeStatus"].as_str(),
+                Some("writable"),
+                "{row_id}"
+            );
+            assert_eq!(
+                coverage_row["safeWriteSupported"].as_bool(),
+                Some(true),
+                "{row_id}"
+            );
+            assert!(is_safe_writable_setting(row_id), "{row_id}");
+        }
     }
 
     Ok(())
@@ -227,10 +241,16 @@ fn high_risk_candidate_counts_match_current_blocked_state() -> Result<()> {
     let consistency = read_json("data/reports/high-risk-report-consistency-audit.v0.55.2.json")?;
 
     assert_eq!(coverage["counts"]["writableRows"], SAFE_WRITABLE_ROWS.len());
-    assert_eq!(
-        coverage["counts"]["blockedWriteRows"],
-        candidates["counts"]["rows"]
-    );
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    let current_blocked = coverage["rows"]
+        .as_array()
+        .expect("coverage rows should be an array")
+        .iter()
+        .filter(|row| row["writeStatus"].as_str() != Some("writable"))
+        .map(|row| row["rowId"].as_str().expect("row id should be a string"))
+        .collect::<BTreeSet<_>>();
+    assert_eq!(current_blocked, BTreeSet::from(["cursor.default_monitor"]));
+    assert_eq!(candidates["counts"]["rows"], 63);
     assert_eq!(candidates["counts"]["byRiskClass"]["cursor_input_risk"], 18);
     assert_eq!(
         candidates["counts"]["byRiskClass"]["display_render_session_risk"],

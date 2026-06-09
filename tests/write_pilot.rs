@@ -188,9 +188,9 @@ fn invalid_value_is_rejected_before_write_pilot() -> Result<()> {
 #[test]
 fn no_other_setting_gets_writable_plan() {
     let current = CurrentValueProjection::not_configured();
-    let pending = stage_pending_change("xwayland.enabled", &current, "true");
+    let pending = stage_pending_change("cursor.default_monitor", &current, "HDMI-A-1");
     let review = review_write_plan(WritePlanRequest {
-        known_setting_ids: ["xwayland.enabled"]
+        known_setting_ids: ["cursor.default_monitor"]
             .into_iter()
             .map(str::to_string)
             .collect(),

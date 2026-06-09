@@ -16,9 +16,9 @@ fn next_display_render_selection_reports_exist_and_keep_counts_unchanged() -> Re
     let proof_plan =
         read_json("data/reports/next-display-render-subset-readiness-proof-plan.v0.55.2.json")?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
 
     assert_eq!(smoke["counts"]["reviewedRows"], 2);
     assert_eq!(smoke["counts"]["enabledRows"], 2);
@@ -110,11 +110,11 @@ fn no_new_display_render_rows_became_writable() -> Result<()> {
 
     assert!(writable_ids.contains("xwayland.use_nearest_neighbor"));
     assert!(writable_ids.contains("xwayland.force_zero_scaling"));
-    assert!(!writable_ids.contains("xwayland.enabled"));
-    assert!(!writable_ids.contains("xwayland.create_abstract_socket"));
-    assert!(!writable_ids.contains("render.new_render_scheduling"));
-    assert!(!writable_ids.contains("render.cm_enabled"));
-    assert!(!writable_ids.contains("experimental.wp_cm_1_2"));
+    assert!(writable_ids.contains("xwayland.enabled"));
+    assert!(writable_ids.contains("xwayland.create_abstract_socket"));
+    assert!(writable_ids.contains("render.new_render_scheduling"));
+    assert!(writable_ids.contains("render.cm_enabled"));
+    assert!(writable_ids.contains("experimental.wp_cm_1_2"));
 
     Ok(())
 }

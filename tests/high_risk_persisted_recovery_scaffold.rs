@@ -15,7 +15,8 @@ use hyprland_settings::high_risk_persisted_recovery::{
     HighRiskRecoveryPlanError,
 };
 use hyprland_settings::write_classification::{
-    config_key_from_official_setting, is_safe_writable_setting, SAFE_WRITABLE_ROWS,
+    config_key_from_official_setting, is_high_risk_gated_writable_setting,
+    is_safe_writable_setting, SAFE_WRITABLE_ROWS,
 };
 use serde_json::Value;
 
@@ -93,7 +94,12 @@ fn scaffold_classifies_all_63_rows_into_required_buckets() {
     for row in &rows {
         *counts.entry(row.bucket.as_str()).or_default() += 1;
         assert_eq!(row.recovery_model, row.bucket.recovery_model());
-        assert!(!is_safe_writable_setting(&row.row_id));
+        if row.row_id == "cursor.default_monitor" {
+            assert!(!is_safe_writable_setting(&row.row_id));
+        } else {
+            assert!(is_safe_writable_setting(&row.row_id));
+            assert!(is_high_risk_gated_writable_setting(&row.row_id));
+        }
     }
 
     assert_eq!(counts["display/render"], 23);
@@ -106,7 +112,7 @@ fn scaffold_classifies_all_63_rows_into_required_buckets() {
         .iter()
         .filter(|row| row.runtime_dynamic_special_case)
         .all(|row| row.row_id == "cursor.default_monitor"));
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
 }
 
 #[test]
@@ -305,10 +311,10 @@ fn screen_shader_remains_closed_and_counts_are_unchanged() -> Result<()> {
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
 
     assert_eq!(closure["screenShaderTrackClosedForNow"], true);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     Ok(())
 }

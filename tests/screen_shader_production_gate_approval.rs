@@ -89,10 +89,10 @@ fn screen_shader_production_gate_approval_report_records_option_c() -> Result<()
     let pipeline = read_json("data/reports/all-341-unified-pipeline.v0.55.2.json")?;
 
     assert!(is_safe_writable_setting("decoration.screen_shader"));
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
     assert_eq!(approval["rowId"], "decoration.screen_shader");
     assert_eq!(approval["officialSetting"], "decoration.screen_shader");
     assert_eq!(approval["startingCommit"], "6b3bfe1");
@@ -142,8 +142,8 @@ fn screen_shader_production_gate_approval_report_records_option_c() -> Result<()
     );
     assert_eq!(screen_shader_row["productionGateEnforcedThisSprint"], true);
     assert_eq!(screen_shader_row["countedAsEnabledHighRiskRow"], false);
-    assert_eq!(pipeline["counts"]["writableRows"], 278);
-    assert_eq!(pipeline["counts"]["blockedRows"], 63);
+    assert_eq!(pipeline["counts"]["writableRows"], 340);
+    assert_eq!(pipeline["counts"]["blockedRows"], 1);
 
     Ok(())
 }

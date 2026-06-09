@@ -109,11 +109,19 @@ fn candidate_reports_match_scalar_coverage_statuses() -> Result<()> {
             .iter()
             .find(|row| row["rowId"].as_str() == Some(row_id))
             .unwrap_or_else(|| panic!("missing coverage row {row_id}"));
-        assert_eq!(
-            source["writeStatus"].as_str(),
-            Some("high-risk"),
-            "{row_id} should still be high-risk"
-        );
+        if row_id == "cursor.default_monitor" {
+            assert_eq!(
+                source["writeStatus"].as_str(),
+                Some("high-risk"),
+                "{row_id} should still be high-risk"
+            );
+        } else {
+            assert_eq!(
+                source["writeStatus"].as_str(),
+                Some("writable"),
+                "{row_id} should now be gated high-risk writable"
+            );
+        }
         assert_eq!(item["userApprovalRequired"].as_bool(), Some(true));
         assert!(item["whyNotWritableYet"].as_str().is_some());
         assert!(item["whatWouldBeRequired"].as_str().is_some());
@@ -149,11 +157,11 @@ fn scalar_coverage_counts_reflect_remaining_scalar_completion() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() == Some("validator-needed"))
         .count();
 
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
-    assert_eq!(writable, 278);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(writable, 340);
     assert_eq!(manual, 0);
-    assert_eq!(high_risk, 63);
+    assert_eq!(high_risk, 1);
     assert_eq!(parser_needed, 0);
     assert_eq!(validator_needed, 0);
 

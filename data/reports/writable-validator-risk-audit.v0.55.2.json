@@ -1,7 +1,7 @@
 {
   "schemaVersion": "0.55.2",
   "artifactKind": "writable-validator-risk-audit",
-  "generatedAt": "2026-06-06T22:15:40-07:00",
+  "generatedAt": "2026-06-09T02:05:17.664873Z",
   "counts": {
     "validatorRiskRows": 244,
     "appValidatorTooNarrowRows": 0,
@@ -11,9 +11,9 @@
     "unknownRows": 0,
     "sourceResearchNeededRows": 38,
     "validatorsChanged": false,
-    "writeAllowlistChanged": false,
-    "productionBehaviorChanged": false,
-    "rowsEnabledThisSprint": 0
+    "writeAllowlistChanged": true,
+    "productionBehaviorChanged": true,
+    "rowsEnabledThisSprint": 62
   },
   "rows": [
     {

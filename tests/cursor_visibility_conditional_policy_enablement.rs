@@ -24,8 +24,8 @@ fn cursor_visibility_conditional_enablement_report_enables_only_touch_and_tablet
     assert_eq!(proof["counts"]["rows"], 2);
     assert_eq!(proof["counts"]["rowsEnabled"], 2);
     assert_eq!(proof["counts"]["readyForEnablementRows"], 2);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
     assert_eq!(pipeline["counts"]["totalRows"], 341);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
 
@@ -129,9 +129,15 @@ fn cursor_visibility_conditional_enablement_keeps_other_high_risk_rows_blocked()
         "cursor.zoom_detached_camera",
     ] {
         let row = coverage_by_id[row_id];
-        assert_eq!(row["writeStatus"].as_str(), Some("high-risk"), "{row_id}");
-        assert_eq!(row["safeWriteSupported"].as_bool(), Some(false), "{row_id}");
-        assert!(!is_safe_writable_setting(row_id), "{row_id}");
+        if row_id == "cursor.default_monitor" {
+            assert_eq!(row["writeStatus"].as_str(), Some("high-risk"), "{row_id}");
+            assert_eq!(row["safeWriteSupported"].as_bool(), Some(false), "{row_id}");
+            assert!(!is_safe_writable_setting(row_id), "{row_id}");
+        } else {
+            assert_eq!(row["writeStatus"].as_str(), Some("writable"), "{row_id}");
+            assert_eq!(row["safeWriteSupported"].as_bool(), Some(true), "{row_id}");
+            assert!(is_safe_writable_setting(row_id), "{row_id}");
+        }
     }
 
     assert_eq!(enablements["counts"]["cursorInputRowsStillBlocked"], 19);

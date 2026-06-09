@@ -1,7 +1,7 @@
 {
   "schemaVersion": "0.55.2",
   "artifactKind": "deferred-validator-remaining-items",
-  "generatedAt": "2026-06-07T01:41:40-07:00",
+  "generatedAt": "2026-06-09T02:05:17.664873Z",
   "counts": {
     "remainingDeferredRows": 4,
     "regexRows": 2,
@@ -280,6 +280,18 @@
     "highRiskCandidateApprovalFreezeSelectedRowsCount": 5,
     "highRiskCandidateApprovalFreezeExcludedRowsCount": 58,
     "highRiskCandidateApprovalFreezeRowsEnabledThisSprint": 0,
-    "highRiskCandidateApprovalFreezeNextRecommendedSprint": "High-risk candidate explicit approval review sprint"
+    "highRiskCandidateApprovalFreezeNextRecommendedSprint": "High-risk candidate explicit approval review sprint",
+    "highRiskAcceptedRowsEnablementReport": "data/reports/high-risk-accepted-rows-enablement.v0.55.2.json",
+    "highRiskAcceptedRowsEnablementTestsReport": "data/reports/high-risk-accepted-rows-enablement-tests.v0.55.2.json",
+    "cursorDefaultMonitorRuntimeOracleResearchReport": "data/reports/cursor-default-monitor-runtime-oracle-research.v0.55.2.json",
+    "highRiskRemainingBlockedAfterAcceptedEnablementReport": "data/reports/high-risk-remaining-blocked-after-accepted-enablement.v0.55.2.json",
+    "highRiskAcceptedRowsAnalyzed": 63,
+    "highRiskAcceptedRowsDryRunAccepted": 62,
+    "highRiskAcceptedRowsEnabledThisSprint": 62,
+    "highRiskAcceptedRowsStillBlocked": 1,
+    "finalReadableRows": 341,
+    "finalWritableRows": 340,
+    "finalBlockedRows": 1,
+    "nextRecommendedSprint": "Complete cursor.default_monitor runtime monitor-name oracle proof sprint"
   }
 }

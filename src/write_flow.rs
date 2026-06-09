@@ -8,6 +8,11 @@ use crate::config_discovery::{ConfigDiscovery, ConfigDiscoveryStatus};
 use crate::current_config::{
     CurrentConfigSnapshot, CurrentValueProjection, CurrentValueSourceStatus,
 };
+use crate::high_risk_persisted_recovery::HighRiskRecoveryBucket;
+use crate::high_risk_production_gate::{
+    evaluate_high_risk_production_gate, HighRiskProductionGateDecisionKind,
+    HighRiskProductionGateMode, HighRiskProductionGateProof, HighRiskProductionGateRequest,
+};
 use crate::pending_change::{
     stage_pending_change, stage_pending_change_with_sources, PendingChange,
     PendingChangeValidation, PendingChangeValueSources,
@@ -15,9 +20,9 @@ use crate::pending_change::{
 use crate::scalar_write::apply_scalar_write_plan;
 use crate::source_values::{read_system_xkb_rules, MonitorSourceValue, XkbSourceValue};
 use crate::write_classification::{
-    finite_choice_options, high_risk_write_policy, is_safe_writable_setting,
-    safe_writable_official_setting, safe_writable_value_kind, session_runtime_write_policy,
-    ScalarWriteValueKind,
+    finite_choice_options, high_risk_write_policy, is_high_risk_gated_writable_setting,
+    is_safe_writable_setting, safe_writable_official_setting, safe_writable_value_kind,
+    session_runtime_write_policy, ScalarWriteValueKind,
 };
 use crate::write_safety::{
     review_screen_shader_gated_write_plan, review_write_plan, GatedWriteFailure, HighRiskGateProof,
@@ -185,6 +190,49 @@ pub fn apply_setting_change_with_backup_manager_and_high_risk_gate(
     backup_manager: &BackupManager,
     high_risk_gate_proof: Option<HighRiskGateProof>,
 ) -> Result<ApplyOutcome, ApplyFailure> {
+    apply_setting_change_with_backup_manager_and_all_gates(
+        known_setting_ids,
+        discovery,
+        current_config,
+        setting_id,
+        proposed_value,
+        backup_manager,
+        high_risk_gate_proof,
+        None,
+    )
+}
+
+pub fn apply_setting_change_with_backup_manager_and_production_gate(
+    known_setting_ids: BTreeSet<String>,
+    discovery: &ConfigDiscovery,
+    current_config: &CurrentConfigSnapshot,
+    setting_id: &str,
+    proposed_value: &str,
+    backup_manager: &BackupManager,
+    high_risk_production_gate_proof: Option<HighRiskProductionGateProof>,
+) -> Result<ApplyOutcome, ApplyFailure> {
+    apply_setting_change_with_backup_manager_and_all_gates(
+        known_setting_ids,
+        discovery,
+        current_config,
+        setting_id,
+        proposed_value,
+        backup_manager,
+        None,
+        high_risk_production_gate_proof,
+    )
+}
+
+fn apply_setting_change_with_backup_manager_and_all_gates(
+    known_setting_ids: BTreeSet<String>,
+    discovery: &ConfigDiscovery,
+    current_config: &CurrentConfigSnapshot,
+    setting_id: &str,
+    proposed_value: &str,
+    backup_manager: &BackupManager,
+    high_risk_gate_proof: Option<HighRiskGateProof>,
+    high_risk_production_gate_proof: Option<HighRiskProductionGateProof>,
+) -> Result<ApplyOutcome, ApplyFailure> {
     if !is_safe_writable_setting(setting_id) {
         return Err(ApplyFailure {
             reason: "setting is not write-allowlisted".to_string(),
@@ -235,6 +283,14 @@ pub fn apply_setting_change_with_backup_manager_and_high_risk_gate(
         });
     }
 
+    if is_high_risk_gated_writable_setting(setting_id) && high_risk_production_gate_proof.is_none()
+    {
+        return Err(ApplyFailure {
+            reason: "high-risk production gate proof is required".to_string(),
+            failures: vec!["MissingHighRiskProductionGateProof".to_string()],
+        });
+    }
+
     let backup = backup_manager
         .create_backup(&target_path)
         .map_err(|error| ApplyFailure {
@@ -265,6 +321,50 @@ pub fn apply_setting_change_with_backup_manager_and_high_risk_gate(
                 .map(format_gated_write_failure)
                 .collect(),
         });
+    }
+
+    if is_high_risk_gated_writable_setting(setting_id) {
+        let production_gate_proof =
+            high_risk_production_gate_proof.ok_or_else(|| ApplyFailure {
+                reason: "high-risk production gate proof is required".to_string(),
+                failures: vec!["MissingHighRiskProductionGateProof".to_string()],
+            })?;
+        if production_gate_proof.recovery_plan.target_config_path != target_path {
+            return Err(ApplyFailure {
+                reason: "high-risk production gate proof target does not match write target"
+                    .to_string(),
+                failures: vec!["HighRiskProductionGateTargetMismatch".to_string()],
+            });
+        }
+        let bucket = HighRiskRecoveryBucket::from(
+            crate::blocked_row_pre_enablement::blocked_pre_enablement_row(setting_id)
+                .expect("high-risk gated writable rows must be in pre-enablement metadata")
+                .bucket,
+        );
+        let evaluation = evaluate_high_risk_production_gate(HighRiskProductionGateRequest {
+            mode: HighRiskProductionGateMode::ProductionWrite,
+            row_id: setting_id.to_string(),
+            official_setting: official_setting.to_string(),
+            bucket,
+            requested_keep_apply: true,
+            now_unix_seconds: production_gate_proof
+                .recovery_plan
+                .created_unix_seconds
+                .saturating_add(1),
+            proof: Some(production_gate_proof),
+            runtime_oracle_proven: false,
+        });
+        if evaluation.decision.kind != HighRiskProductionGateDecisionKind::ProductionWriteAccepted {
+            return Err(ApplyFailure {
+                reason: "write plan rejected by high-risk production gate".to_string(),
+                failures: evaluation
+                    .decision
+                    .errors
+                    .iter()
+                    .map(|error| error.to_string())
+                    .collect(),
+            });
+        }
     }
 
     let result = apply_scalar_write_plan(

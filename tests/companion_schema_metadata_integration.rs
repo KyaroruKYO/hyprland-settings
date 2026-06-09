@@ -78,8 +78,8 @@ fn companion_schema_metadata_integration_is_advisory_only() -> Result<()> {
     assert_eq!(integration["counts"]["rowsEnabled"], 0);
     assert_eq!(integration["counts"]["startingWritableRows"], 236);
     assert_eq!(integration["counts"]["finalWritableRows"], 236);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     assert_eq!(integration["invariants"]["writeBehaviorChanged"], false);
     assert_eq!(integration["invariants"]["writeAllowlistChanged"], false);
     assert_eq!(integration["invariants"]["rowsEnabledByMetadataAlone"], 0);
@@ -143,15 +143,16 @@ fn integrated_metadata_has_future_proof_test_values() -> Result<()> {
 }
 
 #[test]
-fn high_risk_rows_remain_blocked_after_metadata_integration() -> Result<()> {
+fn only_runtime_dynamic_high_risk_row_remains_blocked_after_gated_enablement() -> Result<()> {
     let coverage = coverage_report()?;
     let high_risk_rows = coverage["rows"]
         .as_array()
         .expect("coverage rows should be an array")
         .iter()
         .filter(|row| row["writeStatus"].as_str() == Some("high-risk"))
-        .count();
-    assert_eq!(high_risk_rows, 63);
+        .collect::<Vec<_>>();
+    assert_eq!(high_risk_rows.len(), 1);
+    assert_eq!(high_risk_rows[0]["rowId"], "cursor.default_monitor");
 
     let integration = integration_report()?;
     assert_eq!(integration["counts"]["highRiskRowsStillBlocked"], 72);

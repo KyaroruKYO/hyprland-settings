@@ -71,10 +71,10 @@ fn screen_shader_production_gate_architecture_report_records_option_c() -> Resul
         "screen-shader-dry-run-gated-write-review"
     );
     assert!(is_safe_writable_setting("decoration.screen_shader"));
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     assert_eq!(architecture["rowId"], "decoration.screen_shader");
     assert_eq!(architecture["officialSetting"], "decoration.screen_shader");

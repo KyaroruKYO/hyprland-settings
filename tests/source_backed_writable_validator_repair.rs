@@ -77,9 +77,9 @@ fn source_backed_repair_reports_exist_and_preserve_counts() -> Result<()> {
     let complex = read_json("data/reports/source-backed-complex-grammar-repair.v0.55.2.json")?;
     let deferred = read_json("data/reports/source-backed-validator-deferred-items.v0.55.2.json")?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     for report in [&summary, &boolean, &numeric, &parser, &complex, &deferred] {
         assert_repair_safety(report);

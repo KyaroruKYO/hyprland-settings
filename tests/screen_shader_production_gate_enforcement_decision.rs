@@ -31,10 +31,10 @@ fn screen_shader_production_gate_decision_report_records_option_a() -> Result<()
     let watchdog = read_json("data/reports/screen-shader-watchdog-migration-proof.v0.55.2.json")?;
 
     assert!(is_safe_writable_setting("decoration.screen_shader"));
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     assert_eq!(decision["rowId"], "decoration.screen_shader");
     assert_eq!(decision["officialSetting"], "decoration.screen_shader");
@@ -95,9 +95,9 @@ fn screen_shader_remains_migration_candidate_not_enabled_high_risk_row() -> Resu
     assert_eq!(reconciliation["counts"]["displayRenderBlockedRows"], 23);
     assert_eq!(reconciliation["counts"]["cursorInputBlockedRows"], 18);
     assert_eq!(reconciliation["counts"]["debugCrashBlockedRows"], 22);
-    assert_eq!(pipeline["counts"]["highRiskRowsEnabled"], 9);
-    assert_eq!(pipeline["counts"]["writableRows"], 278);
-    assert_eq!(pipeline["counts"]["blockedRows"], 63);
+    assert_eq!(pipeline["counts"]["highRiskRowsEnabled"], 71);
+    assert_eq!(pipeline["counts"]["writableRows"], 340);
+    assert_eq!(pipeline["counts"]["blockedRows"], 1);
 
     let row = pipeline["rows"]
         .as_array()

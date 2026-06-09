@@ -6,7 +6,10 @@ use hyprland_settings::blocked_row_pre_enablement::{
     blocked_pre_enablement_rows, valid_pre_enablement_example,
 };
 use hyprland_settings::config_backup::BackupManager;
-use hyprland_settings::config_discovery::{ConfigDiscovery, ConfigDiscoveryStatus};
+use hyprland_settings::config_discovery::{
+    ConfigDiscovery, ConfigDiscoveryStatus, ConfigPathSource,
+};
+use hyprland_settings::config_parser::parse_hyprland_config_text;
 use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::high_risk_persisted_recovery::{
     create_temp_config_backup, create_temp_recovery_plan, restore_temp_config_from_backup,
@@ -18,7 +21,9 @@ use hyprland_settings::high_risk_production_gate::{
     HighRiskProductionGateProof, HighRiskProductionGateRequest,
 };
 use hyprland_settings::write_classification::config_key_from_official_setting;
-use hyprland_settings::write_classification::{is_safe_writable_setting, SAFE_WRITABLE_ROWS};
+use hyprland_settings::write_classification::{
+    is_high_risk_gated_writable_setting, is_safe_writable_setting, SAFE_WRITABLE_ROWS,
+};
 use hyprland_settings::write_flow::apply_setting_change_with_backup_manager;
 use serde_json::Value;
 
@@ -95,6 +100,7 @@ fn complete_proof(
             backup_proof: Some(backup_proof),
             rollback_proof: Some(rollback_proof),
             confirmation_token: Some(plan.confirmation_token.as_str().to_string()),
+            explicit_high_risk_approval: false,
         }),
         runtime_oracle_proven: false,
     };
@@ -122,6 +128,20 @@ fn read_json(path: &str) -> Value {
     serde_json::from_slice(&bytes).unwrap_or_else(|error| panic!("failed to parse {path}: {error}"))
 }
 
+fn discovery_for(path: PathBuf) -> ConfigDiscovery {
+    ConfigDiscovery {
+        status: ConfigDiscoveryStatus::Found {
+            path: path.clone(),
+            source: ConfigPathSource::HomeFallback,
+        },
+        attempted_paths: vec![path],
+    }
+}
+
+fn snapshot_for(path: &PathBuf, contents: &str) -> CurrentConfigSnapshot {
+    CurrentConfigSnapshot::from_parsed(parse_hyprland_config_text(path, contents))
+}
+
 #[test]
 fn dry_run_gate_evaluates_all_blocked_rows_and_preserves_bucket_counts() {
     let evaluations = high_risk_production_gate_rows();
@@ -134,11 +154,19 @@ fn dry_run_gate_evaluates_all_blocked_rows_and_preserves_bucket_counts() {
             evaluation.decision.kind,
             HighRiskProductionGateDecisionKind::ProductionWriteRefused
         );
-        assert!(evaluation
-            .decision
-            .errors
-            .contains(&HighRiskProductionGateError::ProductionWriteDisabled));
-        assert!(!evaluation.is_safe_writable_setting);
+        if evaluation.row_id == "cursor.default_monitor" {
+            assert!(evaluation
+                .decision
+                .errors
+                .contains(&HighRiskProductionGateError::ProductionWriteDisabled));
+            assert!(!evaluation.is_safe_writable_setting);
+        } else {
+            assert!(evaluation
+                .decision
+                .errors
+                .contains(&HighRiskProductionGateError::MissingRecoveryPlan));
+            assert!(evaluation.is_safe_writable_setting);
+        }
     }
 
     assert_eq!(counts.get("display/render"), Some(&23));
@@ -398,15 +426,28 @@ fn production_write_mode_refuses_all_rows_even_with_complete_scaffold_proof() ->
 
 #[test]
 fn current_write_allowlist_and_apply_path_still_refuse_all_blocked_rows() {
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
 
     let blocked_rows = blocked_pre_enablement_rows();
     for row in blocked_rows {
-        assert!(
-            !is_safe_writable_setting(row.row_id),
-            "{} must remain outside SAFE_WRITABLE_ROWS",
-            row.row_id
-        );
+        if row.row_id == "cursor.default_monitor" {
+            assert!(
+                !is_safe_writable_setting(row.row_id),
+                "{} must remain outside SAFE_WRITABLE_ROWS",
+                row.row_id
+            );
+        } else {
+            assert!(
+                is_safe_writable_setting(row.row_id),
+                "{} should now be allowlisted only through the high-risk gate",
+                row.row_id
+            );
+            assert!(
+                is_high_risk_gated_writable_setting(row.row_id),
+                "{} should be classified as a high-risk gated writable row",
+                row.row_id
+            );
+        }
     }
 
     let known_setting_ids: BTreeSet<String> = blocked_rows
@@ -417,14 +458,16 @@ fn current_write_allowlist_and_apply_path_still_refuse_all_blocked_rows() {
     fs::create_dir_all(&temp_dir).expect("temp backup root should be creatable");
     let backup_manager = BackupManager::new(temp_dir.clone());
 
-    let discovery = ConfigDiscovery {
-        status: ConfigDiscoveryStatus::Missing,
-        attempted_paths: Vec::new(),
-    };
-    let current_config =
-        CurrentConfigSnapshot::read_unavailable("dry-run gate test does not read real config");
-
     for row in blocked_rows {
+        let source = temp_dir.join(format!("{}.conf", row.row_id.replace('.', "-")));
+        let contents = format!(
+            "{} = {}\n",
+            config_key_from_official_setting(row.official_setting),
+            valid_pre_enablement_example(row)
+        );
+        fs::write(&source, &contents).expect("temp config should be writable");
+        let discovery = discovery_for(source.clone());
+        let current_config = snapshot_for(&source, &contents);
         let result = apply_setting_change_with_backup_manager(
             known_setting_ids.clone(),
             &discovery,
@@ -433,11 +476,19 @@ fn current_write_allowlist_and_apply_path_still_refuse_all_blocked_rows() {
             &valid_pre_enablement_example(row),
             &backup_manager,
         );
-        assert!(
-            matches!(result, Err(failure) if failure.failures.contains(&"NotAllowlisted".to_string())),
-            "write flow should reject {} before any write path",
-            row.row_id
-        );
+        if row.row_id == "cursor.default_monitor" {
+            assert!(
+                matches!(result, Err(failure) if failure.failures.contains(&"NotAllowlisted".to_string())),
+                "write flow should keep {} blocked before any write path",
+                row.row_id
+            );
+        } else {
+            assert!(
+                matches!(result, Err(failure) if failure.failures.contains(&"MissingHighRiskProductionGateProof".to_string())),
+                "write flow should reject {} without high-risk production gate proof",
+                row.row_id
+            );
+        }
     }
 
     fs::remove_dir_all(temp_dir).expect("temp backup root should be removable");

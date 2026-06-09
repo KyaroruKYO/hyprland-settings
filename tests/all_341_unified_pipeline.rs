@@ -38,14 +38,14 @@ fn all_341_pipeline_report_matches_current_scalar_counts() -> Result<()> {
 
     assert_eq!(coverage["counts"]["totalScalarRows"], 341);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     assert_eq!(pipeline["counts"]["totalRows"], 341);
     assert_eq!(pipeline["counts"]["readableRows"], 341);
-    assert_eq!(pipeline["counts"]["writableRows"], 278);
-    assert_eq!(pipeline["counts"]["blockedRows"], 63);
-    assert_eq!(pipeline["counts"]["safeWritableRowsFromRustTable"], 278);
+    assert_eq!(pipeline["counts"]["writableRows"], 340);
+    assert_eq!(pipeline["counts"]["blockedRows"], 1);
+    assert_eq!(pipeline["counts"]["safeWritableRowsFromRustTable"], 340);
     assert_eq!(pipeline["counts"]["highRiskRows"], 72);
     assert_eq!(pipeline["counts"]["sessionRuntimeSensitiveRows"], 0);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
@@ -53,24 +53,24 @@ fn all_341_pipeline_report_matches_current_scalar_counts() -> Result<()> {
     assert_eq!(pipeline["counts"]["writeAllowlistChanged"], true);
     assert_eq!(pipeline["counts"]["productionBehaviorChanged"], true);
 
-    assert_eq!(writable_proof["counts"]["writableRows"], 278);
+    assert_eq!(writable_proof["counts"]["writableRows"], 340);
     assert_eq!(
         writable_proof["counts"]["safeWritableRowsFromRustTable"],
-        278
+        340
     );
     assert_eq!(writable_proof["counts"]["metadataGapRows"], 0);
     assert_eq!(writable_proof["counts"]["behaviorMismatchRows"], 0);
 
     assert_eq!(audit["counts"]["totalRows"], 341);
-    assert_eq!(audit["counts"]["writableRows"], 278);
-    assert_eq!(audit["counts"]["blockedRows"], 63);
+    assert_eq!(audit["counts"]["writableRows"], 340);
+    assert_eq!(audit["counts"]["blockedRows"], 1);
     assert_eq!(audit["counts"]["metadataGapRows"], 0);
     assert_eq!(audit["counts"]["behaviorMismatchRows"], 0);
     assert_eq!(audit["counts"]["rowsNeedingFutureCleanup"], 0);
     assert_eq!(audit["counts"]["writeAllowlistChanged"], true);
     assert_eq!(audit["counts"]["productionBehaviorChanged"], true);
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
 
     Ok(())
 }
@@ -279,6 +279,28 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
                 Some("passed-session-runtime-write-gate"),
                 "{row_id} should use the session/runtime gate"
             );
+        } else if row["proofSource"].as_str()
+            == Some("high-risk-accepted-rows-enablement.v0.55.2.json")
+        {
+            assert_eq!(
+                row["gateStatus"].as_str(),
+                Some("passed-high-risk-production-gate-with-explicit-approval"),
+                "{row_id} should use the high-risk production gate"
+            );
+            assert_eq!(
+                row["applyPath"].as_str(),
+                Some("gated-high-risk-persistent-config-write-with-persisted-recovery"),
+                "{row_id} should use the persisted recovery high-risk write path"
+            );
+            assert!(
+                row["recoveryStrategy"]
+                    .as_str()
+                    .unwrap()
+                    .contains("persisted"),
+                "{row_id} should record persisted high-risk recovery"
+            );
+            assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
+            assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
         } else {
             assert_eq!(
                 row["gateStatus"].as_str(),
@@ -292,7 +314,14 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
             );
             assert_eq!(row["recoveryStrategy"].as_str(), Some("backup-rollback"));
         }
-        assert_eq!(row["rereadOracle"].as_str(), Some("file-reread"));
+        if row["proofSource"].as_str() == Some("high-risk-accepted-rows-enablement.v0.55.2.json") {
+            assert_eq!(
+                row["rereadOracle"].as_str(),
+                Some("file-reread-plus-recovery-rollback-parser-reread")
+            );
+        } else {
+            assert_eq!(row["rereadOracle"].as_str(), Some("file-reread"));
+        }
         assert!(
             row["metadataGaps"].as_array().unwrap().is_empty(),
             "{row_id} should not have writable proof metadata gaps"
@@ -309,6 +338,7 @@ fn writable_pipeline_rows_match_the_production_safe_write_table() -> Result<()> 
                 | Some("cursor-theme-sync-policy-smoke-subset-proof.v0.55.2.json")
                 | Some("cursor-visibility-conditional-policy-proof.v0.55.2.json")
                 | Some("cursor-hide-on-key-press-usability-proof.v0.55.2.json")
+                | Some("high-risk-accepted-rows-enablement.v0.55.2.json")
         ) {
             assert_eq!(row["productionBehaviorChanged"].as_bool(), Some(true));
             assert_eq!(row["writeAllowlistChanged"].as_bool(), Some(true));
@@ -372,8 +402,8 @@ fn blocked_pipeline_rows_remain_blocked_with_policy_metadata() -> Result<()> {
         }
     }
 
-    assert_eq!(blocked, 63);
-    assert_eq!(high_risk, 63);
+    assert_eq!(blocked, 1);
+    assert_eq!(high_risk, 1);
 
     Ok(())
 }

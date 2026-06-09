@@ -1,5 +1,8 @@
 use std::path::PathBuf;
 
+use crate::blocked_row_pre_enablement::{
+    blocked_pre_enablement_row, validate_pre_enablement_value, PreEnablementValidation,
+};
 use crate::current_config::CurrentConfigSnapshot;
 use crate::current_config::CurrentValueProjection;
 use crate::source_values::read_system_xkb_rules;
@@ -9,8 +12,9 @@ use crate::value::{
     vector::Vec2Value,
 };
 use crate::write_classification::{
-    is_safe_writable_setting, is_verified_finite_choice_value, safe_writable_value_kind,
-    source_backed_numeric_bounds, ScalarWriteValueKind, SourceBackedNumericType,
+    is_high_risk_gated_writable_setting, is_safe_writable_setting, is_verified_finite_choice_value,
+    safe_writable_value_kind, source_backed_numeric_bounds, ScalarWriteValueKind,
+    SourceBackedNumericType,
 };
 
 pub const ACTIVE_PENDING_CHANGE_SETTING: &str = "windows.snap.enabled";
@@ -133,6 +137,16 @@ fn validate_safe_writable_value(
     value: &str,
     sources: &PendingChangeValueSources,
 ) -> PendingChangeValidation {
+    if is_high_risk_gated_writable_setting(setting_id) {
+        let Some(row) = blocked_pre_enablement_row(setting_id) else {
+            return invalid("high-risk gated writes require source-backed row metadata");
+        };
+        return match validate_pre_enablement_value(row, value) {
+            PreEnablementValidation::Accepted => PendingChangeValidation::Valid,
+            PreEnablementValidation::Rejected { reason } => invalid(&reason),
+        };
+    }
+
     match safe_writable_value_kind(setting_id) {
         Some(ScalarWriteValueKind::Boolean) => {
             if is_bool_literal(value) {

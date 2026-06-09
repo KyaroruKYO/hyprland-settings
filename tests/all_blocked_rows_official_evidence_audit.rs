@@ -33,10 +33,10 @@ fn all_blocked_row_audit_reports_exist_and_preserve_counts() -> Result<()> {
     let summary = read_json(SUMMARY)?;
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     assert_eq!(evidence["blockedRowsTotal"], 63);
     assert_eq!(allowed["blockedRowsTotal"], 63);

@@ -9,7 +9,9 @@ use hyprland_settings::blocked_row_pre_enablement::{
     prove_fixture_write_reread, ui_warning_projection, valid_pre_enablement_example,
     validate_pre_enablement_value,
 };
-use hyprland_settings::write_classification::{is_safe_writable_setting, SAFE_WRITABLE_ROWS};
+use hyprland_settings::write_classification::{
+    is_high_risk_gated_writable_setting, is_safe_writable_setting, SAFE_WRITABLE_ROWS,
+};
 use serde_json::Value;
 
 const PROOF: &str = "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json";
@@ -72,10 +74,10 @@ fn pre_enablement_report_covers_all_63_rows_and_preserves_counts() -> Result<()>
     assert_eq!(summary["writableRowsAfter"], 278);
     assert_eq!(summary["safeWritableRowsChanged"], false);
     assert_eq!(summary["writeAllowlistChanged"], false);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     let spec_ids: BTreeSet<_> = blocked_pre_enablement_rows()
         .iter()
@@ -103,11 +105,19 @@ fn proof_only_validators_accept_valid_values_and_reject_invalid_examples() {
             "{} should reject invalid fixture value {invalid:?}",
             row.row_id
         );
-        assert!(
-            !is_safe_writable_setting(row.row_id),
-            "{} must remain outside the production write allowlist",
-            row.row_id
-        );
+        if row.row_id == "cursor.default_monitor" {
+            assert!(
+                !is_safe_writable_setting(row.row_id),
+                "{} must remain blocked until runtime oracle proof exists",
+                row.row_id
+            );
+        } else {
+            assert!(
+                is_high_risk_gated_writable_setting(row.row_id),
+                "{} should now be writable only through the high-risk gate",
+                row.row_id
+            );
+        }
     }
 }
 
@@ -137,7 +147,10 @@ fn safety_gate_and_ui_warning_projections_are_present_but_non_production() {
         let gate = pre_enablement_gate_projection(row);
         assert_eq!(gate.row_id, row.row_id);
         assert!(gate.gate_family.contains("pre-enablement-gate-model"));
-        assert!(gate.ungated_write_rejected_by_current_allowlist);
+        assert_eq!(
+            gate.ungated_write_rejected_by_current_allowlist,
+            row.row_id == "cursor.default_monitor"
+        );
         assert!(!gate.production_gate_added);
         assert!(gate
             .remaining_gate_blocker

@@ -117,13 +117,13 @@ fn rejects_unknown_setting() {
 fn rejects_unsafe_setting() {
     let current = current_value_for(
         "/tmp/hyprland.conf",
-        "xwayland.enabled",
-        "xwayland:enabled = false\n",
+        "cursor.default_monitor",
+        "cursor:default_monitor = HDMI-A-1\n",
     );
-    let pending = stage_pending_change("xwayland.enabled", &current, "true");
+    let pending = stage_pending_change("cursor.default_monitor", &current, "DP-1");
 
     let review = review_write_plan(WritePlanRequest {
-        known_setting_ids: known_ids(&["xwayland.enabled"]),
+        known_setting_ids: known_ids(&["cursor.default_monitor"]),
         detected_config_path: PathBuf::from("/tmp/hyprland.conf"),
         current_value: current,
         pending_change: pending,

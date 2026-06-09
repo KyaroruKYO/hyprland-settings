@@ -149,6 +149,77 @@ pub const CURSOR_HIDE_ON_KEY_PRESS_HIGH_RISK_WRITABLE_ROWS: &[&str] = &["cursor.
 pub const SCREEN_SHADER_DISPLAY_RENDER_HIGH_RISK_MIGRATION_ROWS: &[&str] =
     &["decoration.screen_shader"];
 
+pub const ACCEPTED_HIGH_RISK_DISPLAY_RENDER_WRITABLE_ROWS: &[&str] = &[
+    "xwayland.enabled",
+    "xwayland.create_abstract_socket",
+    "opengl.nvidia_anti_flicker",
+    "render.direct_scanout",
+    "render.expand_undersized_textures",
+    "render.xp_mode",
+    "render.ctm_animation",
+    "render.cm_enabled",
+    "render.send_content_type",
+    "render.cm_auto_hdr",
+    "render.new_render_scheduling",
+    "render.non_shader_cm",
+    "render.cm_sdr_eotf",
+    "render.commit_timing_enabled",
+    "render.icc_vcgt_enabled",
+    "render.use_shader_blur_blend",
+    "render.use_fp16",
+    "render.keep_unmodified_copy",
+    "render.non_shader_cm_interop",
+    "render.fp16_sdr_tf",
+    "experimental.wp_cm_1_2",
+    "quirks.prefer_hdr",
+    "quirks.skip_non_kms_dmabuf_formats",
+];
+
+pub const ACCEPTED_HIGH_RISK_CURSOR_INPUT_WRITABLE_ROWS: &[&str] = &[
+    "cursor.invisible",
+    "cursor.no_hardware_cursors",
+    "cursor.no_break_fs_vrr",
+    "cursor.min_refresh_rate",
+    "cursor.hotspot_padding",
+    "cursor.inactive_timeout",
+    "cursor.no_warps",
+    "cursor.persistent_warps",
+    "cursor.warp_on_change_workspace",
+    "cursor.warp_on_toggle_special",
+    "cursor.zoom_factor",
+    "cursor.zoom_rigid",
+    "cursor.zoom_disable_aa",
+    "cursor.zoom_detached_camera",
+    "cursor.enable_hyprcursor",
+    "cursor.use_cpu_buffer",
+    "cursor.warp_back_after_non_mouse_input",
+];
+
+pub const ACCEPTED_HIGH_RISK_DEBUG_CRASH_WRITABLE_ROWS: &[&str] = &[
+    "debug.overlay",
+    "debug.damage_blink",
+    "debug.gl_debugging",
+    "debug.disable_logs",
+    "debug.disable_time",
+    "debug.damage_tracking",
+    "debug.enable_stdout_logs",
+    "debug.manual_crash",
+    "debug.suppress_errors",
+    "debug.disable_scale_checks",
+    "debug.error_limit",
+    "debug.error_position",
+    "debug.colored_stdout_logs",
+    "debug.log_damage",
+    "debug.pass",
+    "debug.full_cm_proto",
+    "debug.ds_handle_same_buffer",
+    "debug.ds_handle_same_buffer_fifo",
+    "debug.fifo_pending_workaround",
+    "debug.render_solitary_wo_damage",
+    "debug.vfr",
+    "debug.invalidate_fp16",
+];
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SessionRuntimeWritePolicy {
     pub scope: &'static str,
@@ -542,6 +613,172 @@ const MISC_ON_FOCUS_UNDER_FULLSCREEN_CHOICES: &[FiniteChoiceOption] = &[
     FiniteChoiceOption {
         raw_value: "2",
         label: "exit_fullscreen",
+    },
+];
+
+const HIGH_RISK_AUTO_012_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "disable",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "enable",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "auto",
+    },
+];
+
+const HIGH_RISK_HDR_AUTO_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "disable",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "hdr",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "hdredid",
+    },
+];
+
+const HIGH_RISK_NON_SHADER_CM_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "disable",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "always",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "ondemand",
+    },
+    FiniteChoiceOption {
+        raw_value: "3",
+        label: "ignore",
+    },
+];
+
+const HIGH_RISK_TRANSFER_FUNCTION_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "default",
+        label: "default",
+    },
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "auto",
+    },
+    FiniteChoiceOption {
+        raw_value: "srgb",
+        label: "srgb",
+    },
+    FiniteChoiceOption {
+        raw_value: "3",
+        label: "srgb",
+    },
+    FiniteChoiceOption {
+        raw_value: "gamma22",
+        label: "gamma22",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "gamma22",
+    },
+    FiniteChoiceOption {
+        raw_value: "gamma22force",
+        label: "gamma22force",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "gamma22force",
+    },
+];
+
+const HIGH_RISK_FP16_SDR_TF_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "monitor",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "linear",
+    },
+];
+
+const HIGH_RISK_HARDWARE_CURSOR_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "Disabled",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "Enabled",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "Auto",
+    },
+];
+
+const HIGH_RISK_FORCE_012_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "disable",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "enable",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "force",
+    },
+];
+
+const HIGH_RISK_DAMAGE_TRACKING_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "disable",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "monitor",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "full",
+    },
+];
+
+const HIGH_RISK_ERROR_POSITION_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "top",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "bottom",
+    },
+];
+
+const HIGH_RISK_PREFER_HDR_CHOICES: &[FiniteChoiceOption] = &[
+    FiniteChoiceOption {
+        raw_value: "0",
+        label: "disable",
+    },
+    FiniteChoiceOption {
+        raw_value: "1",
+        label: "enable",
+    },
+    FiniteChoiceOption {
+        raw_value: "2",
+        label: "gamescope_only",
     },
 ];
 
@@ -2033,6 +2270,316 @@ pub const SAFE_WRITABLE_ROWS: &[SafeWritableRow] = &[
         official_setting: "cursor.hide_on_key_press",
         value_kind: ScalarWriteValueKind::Boolean,
     },
+    SafeWritableRow {
+        row_id: "xwayland.enabled",
+        official_setting: "xwayland.enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "xwayland.create_abstract_socket",
+        official_setting: "xwayland.create_abstract_socket",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "opengl.nvidia_anti_flicker",
+        official_setting: "opengl.nvidia_anti_flicker",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "render.direct_scanout",
+        official_setting: "render.direct_scanout",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "render.expand_undersized_textures",
+        official_setting: "render.expand_undersized_textures",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "render.xp_mode",
+        official_setting: "render.xp_mode",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "render.ctm_animation",
+        official_setting: "render.ctm_animation",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "render.cm_enabled",
+        official_setting: "render.cm_enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "render.send_content_type",
+        official_setting: "render.send_content_type",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "render.cm_auto_hdr",
+        official_setting: "render.cm_auto_hdr",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "render.new_render_scheduling",
+        official_setting: "render.new_render_scheduling",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "render.non_shader_cm",
+        official_setting: "render.non_shader_cm",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "render.cm_sdr_eotf",
+        official_setting: "render.cm_sdr_eotf",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "render.commit_timing_enabled",
+        official_setting: "render.commit_timing_enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "render.icc_vcgt_enabled",
+        official_setting: "render.icc_vcgt_enabled",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "render.use_shader_blur_blend",
+        official_setting: "render.use_shader_blur_blend",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "render.use_fp16",
+        official_setting: "render.use_fp16",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "render.keep_unmodified_copy",
+        official_setting: "render.keep_unmodified_copy",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "render.non_shader_cm_interop",
+        official_setting: "render.non_shader_cm_interop",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "render.fp16_sdr_tf",
+        official_setting: "render.fp16_sdr_tf",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "cursor.invisible",
+        official_setting: "cursor.invisible",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "cursor.no_hardware_cursors",
+        official_setting: "cursor.no_hardware_cursors",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "cursor.no_break_fs_vrr",
+        official_setting: "cursor.no_break_fs_vrr",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "cursor.min_refresh_rate",
+        official_setting: "cursor.min_refresh_rate",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "cursor.hotspot_padding",
+        official_setting: "cursor.hotspot_padding",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "cursor.inactive_timeout",
+        official_setting: "cursor.inactive_timeout",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "cursor.no_warps",
+        official_setting: "cursor.no_warps",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "cursor.persistent_warps",
+        official_setting: "cursor.persistent_warps",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "cursor.warp_on_change_workspace",
+        official_setting: "cursor.warp_on_change_workspace",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "cursor.warp_on_toggle_special",
+        official_setting: "cursor.warp_on_toggle_special",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "cursor.zoom_factor",
+        official_setting: "cursor.zoom_factor",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "cursor.zoom_rigid",
+        official_setting: "cursor.zoom_rigid",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "cursor.zoom_disable_aa",
+        official_setting: "cursor.zoom_disable_aa",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "cursor.zoom_detached_camera",
+        official_setting: "cursor.zoom_detached_camera",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "cursor.enable_hyprcursor",
+        official_setting: "cursor.enable_hyprcursor",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "cursor.use_cpu_buffer",
+        official_setting: "cursor.use_cpu_buffer",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "cursor.warp_back_after_non_mouse_input",
+        official_setting: "cursor.warp_back_after_non_mouse_input",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.overlay",
+        official_setting: "debug.overlay",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.damage_blink",
+        official_setting: "debug.damage_blink",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.gl_debugging",
+        official_setting: "debug.gl_debugging",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.disable_logs",
+        official_setting: "debug.disable_logs",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.disable_time",
+        official_setting: "debug.disable_time",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.damage_tracking",
+        official_setting: "debug.damage_tracking",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "debug.enable_stdout_logs",
+        official_setting: "debug.enable_stdout_logs",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.manual_crash",
+        official_setting: "debug.manual_crash",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "debug.suppress_errors",
+        official_setting: "debug.suppress_errors",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.disable_scale_checks",
+        official_setting: "debug.disable_scale_checks",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.error_limit",
+        official_setting: "debug.error_limit",
+        value_kind: ScalarWriteValueKind::Number,
+    },
+    SafeWritableRow {
+        row_id: "debug.error_position",
+        official_setting: "debug.error_position",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "debug.colored_stdout_logs",
+        official_setting: "debug.colored_stdout_logs",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.log_damage",
+        official_setting: "debug.log_damage",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.pass",
+        official_setting: "debug.pass",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.full_cm_proto",
+        official_setting: "debug.full_cm_proto",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.ds_handle_same_buffer",
+        official_setting: "debug.ds_handle_same_buffer",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.ds_handle_same_buffer_fifo",
+        official_setting: "debug.ds_handle_same_buffer_fifo",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.fifo_pending_workaround",
+        official_setting: "debug.fifo_pending_workaround",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.render_solitary_wo_damage",
+        official_setting: "debug.render_solitary_wo_damage",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.vfr",
+        official_setting: "debug.vfr",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "debug.invalidate_fp16",
+        official_setting: "debug.invalidate_fp16",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "experimental.wp_cm_1_2",
+        official_setting: "experimental.wp_cm_1_2",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
+    SafeWritableRow {
+        row_id: "quirks.prefer_hdr",
+        official_setting: "quirks.prefer_hdr",
+        value_kind: ScalarWriteValueKind::FiniteChoice,
+    },
+    SafeWritableRow {
+        row_id: "quirks.skip_non_kms_dmabuf_formats",
+        official_setting: "quirks.skip_non_kms_dmabuf_formats",
+        value_kind: ScalarWriteValueKind::Boolean,
+    },
 ];
 
 pub fn classify_inventory_entry(entry: &InventoryEntry) -> ScalarWriteClassification {
@@ -2130,6 +2677,25 @@ pub fn finite_choice_options(row_id: &str) -> Option<&'static [FiniteChoiceOptio
         "scrolling.focus_fit_method" => Some(SCROLLING_FOCUS_FIT_METHOD_CHOICES),
         "misc.vrr" => Some(MISC_VRR_CHOICES),
         "misc.on_focus_under_fullscreen" => Some(MISC_ON_FOCUS_UNDER_FULLSCREEN_CHOICES),
+        "render.direct_scanout"
+        | "render.ctm_animation"
+        | "render.use_fp16"
+        | "render.keep_unmodified_copy"
+        | "render.non_shader_cm_interop"
+        | "cursor.no_break_fs_vrr"
+        | "cursor.use_cpu_buffer"
+        | "debug.invalidate_fp16" => Some(HIGH_RISK_AUTO_012_CHOICES),
+        "render.cm_auto_hdr" => Some(HIGH_RISK_HDR_AUTO_CHOICES),
+        "render.non_shader_cm" => Some(HIGH_RISK_NON_SHADER_CM_CHOICES),
+        "render.cm_sdr_eotf" => Some(HIGH_RISK_TRANSFER_FUNCTION_CHOICES),
+        "render.fp16_sdr_tf" => Some(HIGH_RISK_FP16_SDR_TF_CHOICES),
+        "cursor.no_hardware_cursors" => Some(HIGH_RISK_HARDWARE_CURSOR_CHOICES),
+        "cursor.warp_on_change_workspace" | "cursor.warp_on_toggle_special" => {
+            Some(HIGH_RISK_FORCE_012_CHOICES)
+        }
+        "debug.damage_tracking" => Some(HIGH_RISK_DAMAGE_TRACKING_CHOICES),
+        "debug.error_position" => Some(HIGH_RISK_ERROR_POSITION_CHOICES),
+        "quirks.prefer_hdr" => Some(HIGH_RISK_PREFER_HDR_CHOICES),
         _ => None,
     }
 }
@@ -2210,6 +2776,12 @@ pub fn source_backed_numeric_bounds(row_id: &str) -> Option<SourceBackedNumericB
         "master.slave_count_for_center_master" => (Integer, 0.0, 10.0),
         "scrolling.column_width" => (Float, 0.1, 1.0),
         "scrolling.follow_min_visible" => (Float, 0.0, 1.0),
+        "cursor.min_refresh_rate" => (Integer, 10.0, 500.0),
+        "cursor.hotspot_padding" => (Integer, 0.0, 20.0),
+        "cursor.inactive_timeout" => (Float, 0.0, 20.0),
+        "cursor.zoom_factor" => (Float, 1.0, 10.0),
+        "debug.manual_crash" => (Integer, 0.0, 1.0),
+        "debug.error_limit" => (Integer, 0.0, 20.0),
         _ => return None,
     };
 
@@ -2257,7 +2829,40 @@ pub fn session_runtime_write_policy(row_id: &str) -> Option<SessionRuntimeWriteP
     }
 }
 
+pub fn is_high_risk_gated_writable_setting(row_id: &str) -> bool {
+    ACCEPTED_HIGH_RISK_DISPLAY_RENDER_WRITABLE_ROWS.contains(&row_id)
+        || ACCEPTED_HIGH_RISK_CURSOR_INPUT_WRITABLE_ROWS.contains(&row_id)
+        || ACCEPTED_HIGH_RISK_DEBUG_CRASH_WRITABLE_ROWS.contains(&row_id)
+}
+
 pub fn high_risk_write_policy(row_id: &str) -> Option<HighRiskWritePolicy> {
+    if ACCEPTED_HIGH_RISK_DISPLAY_RENDER_WRITABLE_ROWS.contains(&row_id) {
+        return Some(HighRiskWritePolicy {
+            recovery_bucket: "display-render-persisted-recovery-gated-enable-all-accepted",
+            approval_gate:
+                "explicit-high-risk-approval-plus-persisted-recovery-production-gate",
+            watchdog_requirement: "persisted recovery plan, backup proof, rollback parser reread proof, confirmation token, and timeout rollback behavior are required before any high-risk write can be applied",
+            review_warning: "High-risk display/render setting. Writes require the production high-risk gate and persisted recovery proof; dry-run acceptance is not live display safety proof.",
+        });
+    }
+    if ACCEPTED_HIGH_RISK_CURSOR_INPUT_WRITABLE_ROWS.contains(&row_id) {
+        return Some(HighRiskWritePolicy {
+            recovery_bucket: "cursor-input-persisted-recovery-gated-enable-all-accepted",
+            approval_gate:
+                "explicit-high-risk-approval-plus-pointer-independent-recovery-production-gate",
+            watchdog_requirement: "persisted recovery plan, backup proof, rollback parser reread proof, confirmation token, and timeout rollback behavior are required before any high-risk write can be applied; recovery must not depend on pointer visibility, mouse input, app UI, Hyprland keybinds, pointer focus, workspace focus, or normal pointer behavior",
+            review_warning: "High-risk cursor/input setting. Writes require the production high-risk gate and pointer-independent persisted recovery proof; cursor.default_monitor remains blocked until runtime monitor-name oracle proof exists.",
+        });
+    }
+    if ACCEPTED_HIGH_RISK_DEBUG_CRASH_WRITABLE_ROWS.contains(&row_id) {
+        return Some(HighRiskWritePolicy {
+            recovery_bucket: "debug-crash-persisted-recovery-gated-enable-all-accepted",
+            approval_gate:
+                "explicit-high-risk-approval-plus-external-process-recovery-production-gate",
+            watchdog_requirement: "persisted recovery plan, backup proof, rollback parser reread proof, confirmation token, and timeout rollback behavior are required before any high-risk write can be applied; recovery must survive debug/crash disruption and not depend on the affected process",
+            review_warning: "High-risk debug/crash setting. Writes require the production high-risk gate and external-process-style recovery proof; debug.manual_crash is gated and cannot be applied without recovery and confirmation proof.",
+        });
+    }
     if ECOSYSTEM_HIGH_RISK_WRITABLE_ROWS.contains(&row_id) {
         return Some(HighRiskWritePolicy {
             recovery_bucket: "ecosystem-permission-policy",

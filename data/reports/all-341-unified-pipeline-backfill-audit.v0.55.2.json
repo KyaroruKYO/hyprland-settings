@@ -1,11 +1,11 @@
 {
   "artifactKind": "all-341-unified-pipeline-backfill-audit",
   "schemaVersion": "v0.55.2",
-  "generatedAt": "2026-06-05T19:34:46.000449Z",
+  "generatedAt": "2026-06-09T02:06:11.339127Z",
   "counts": {
     "totalRows": 341,
-    "writableRows": 278,
-    "blockedRows": 63,
+    "writableRows": 340,
+    "blockedRows": 1,
     "metadataGapRows": 0,
     "behaviorMismatchRows": 0,
     "rowsNeedingFutureCleanup": 0,

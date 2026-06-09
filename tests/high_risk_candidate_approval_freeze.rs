@@ -5,7 +5,9 @@ use hyprland_settings::blocked_row_pre_enablement::blocked_pre_enablement_rows;
 use hyprland_settings::high_risk_production_gate::{
     high_risk_production_gate_rows, HighRiskProductionGateDecisionKind, HighRiskProductionGateError,
 };
-use hyprland_settings::write_classification::{is_safe_writable_setting, SAFE_WRITABLE_ROWS};
+use hyprland_settings::write_classification::{
+    is_high_risk_gated_writable_setting, is_safe_writable_setting, SAFE_WRITABLE_ROWS,
+};
 use serde_json::Value;
 
 const FREEZE_REPORT: &str =
@@ -253,13 +255,26 @@ fn frozen_gate_requirements_are_present_for_each_candidate() {
 
 #[test]
 fn production_write_and_allowlist_remain_refused_for_all_63_rows() {
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     for row in blocked_pre_enablement_rows() {
-        assert!(
-            !is_safe_writable_setting(row.row_id),
-            "{} should remain outside SAFE_WRITABLE_ROWS",
-            row.row_id
-        );
+        if row.row_id == "cursor.default_monitor" {
+            assert!(
+                !is_safe_writable_setting(row.row_id),
+                "{} should remain outside SAFE_WRITABLE_ROWS",
+                row.row_id
+            );
+        } else {
+            assert!(
+                is_safe_writable_setting(row.row_id),
+                "{} should now be writable through the high-risk gated path",
+                row.row_id
+            );
+            assert!(
+                is_high_risk_gated_writable_setting(row.row_id),
+                "{} should remain high-risk gated",
+                row.row_id
+            );
+        }
     }
 
     let evaluations = high_risk_production_gate_rows();
@@ -269,11 +284,19 @@ fn production_write_and_allowlist_remain_refused_for_all_63_rows() {
             evaluation.decision.kind,
             HighRiskProductionGateDecisionKind::ProductionWriteRefused
         );
-        assert!(evaluation
-            .decision
-            .errors
-            .contains(&HighRiskProductionGateError::ProductionWriteDisabled));
-        assert!(!evaluation.is_safe_writable_setting);
+        if evaluation.row_id == "cursor.default_monitor" {
+            assert!(evaluation
+                .decision
+                .errors
+                .contains(&HighRiskProductionGateError::ProductionWriteDisabled));
+            assert!(!evaluation.is_safe_writable_setting);
+        } else {
+            assert!(evaluation
+                .decision
+                .errors
+                .contains(&HighRiskProductionGateError::MissingRecoveryPlan));
+            assert!(evaluation.is_safe_writable_setting);
+        }
     }
 }
 

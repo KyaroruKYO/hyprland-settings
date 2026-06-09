@@ -24,26 +24,26 @@ fn writable_value_type_audit_reports_cover_every_safe_writable_row() -> Result<(
     let risk = read_json("data/reports/writable-validator-risk-audit.v0.55.2.json")?;
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     for report in [&audit, &matrix] {
-        assert_eq!(report["counts"]["totalWritableRowsAudited"], 278);
-        assert_eq!(report["counts"]["rowsEnabledThisSprint"], 0);
-        assert_eq!(report["counts"]["writeAllowlistChanged"], false);
-        assert_eq!(report["counts"]["productionBehaviorChanged"], false);
+        assert_eq!(report["counts"]["totalWritableRowsAudited"], 340);
+        assert_eq!(report["counts"]["rowsEnabledThisSprint"], 62);
+        assert_eq!(report["counts"]["writeAllowlistChanged"], true);
+        assert_eq!(report["counts"]["productionBehaviorChanged"], true);
         assert_eq!(report["counts"]["validatorsChanged"], false);
-        assert_eq!(report["counts"]["recoveryGatesChanged"], false);
+        assert_eq!(report["counts"]["recoveryGatesChanged"], true);
         assert_eq!(report["counts"]["realConfigModified"], false);
         assert_eq!(report["counts"]["activeRuntimeModified"], false);
         assert_eq!(report["counts"]["reloadEvalLuaUsed"], false);
     }
 
-    assert_eq!(gap["counts"]["totalWritableRowsAudited"], 278);
-    assert_eq!(risk["counts"]["rowsEnabledThisSprint"], 0);
-    assert_eq!(risk["counts"]["writeAllowlistChanged"], false);
-    assert_eq!(risk["counts"]["productionBehaviorChanged"], false);
+    assert_eq!(gap["counts"]["totalWritableRowsAudited"], 340);
+    assert_eq!(risk["counts"]["rowsEnabledThisSprint"], 62);
+    assert_eq!(risk["counts"]["writeAllowlistChanged"], true);
+    assert_eq!(risk["counts"]["productionBehaviorChanged"], true);
 
     let audit_rows = row_map(&audit);
     let matrix_rows = row_map(&matrix);

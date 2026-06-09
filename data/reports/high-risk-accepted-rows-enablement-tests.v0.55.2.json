@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "high-risk-accepted-rows-enablement-tests",
+  "generatedAt": "2026-06-09T02:05:17.664873Z",
+  "startingCommit": "6ba4d589a36462d9eedb06a569e9b0c729e9a1ab",
+  "tests": [
+    {
+      "testName": "accepted_high_risk_rows_are_gated_writable_and_default_monitor_remains_blocked",
+      "proofTarget": "62 accepted rows are write-allowlisted only as gated high-risk rows; cursor.default_monitor remains blocked",
+      "rowsCovered": 63,
+      "result": "passed-when-cargo-test-passes",
+      "whatItProves": "allowlist count and high-risk policy coverage",
+      "whatItDoesNotProve": "live runtime safety"
+    },
+    {
+      "testName": "accepted_high_risk_rows_use_source_backed_pre_enablement_validation",
+      "proofTarget": "pending-change validation uses source-backed pre-enablement validators for enabled rows",
+      "rowsCovered": 62,
+      "result": "passed-when-cargo-test-passes",
+      "whatItProves": "valid examples accepted and invalid examples rejected",
+      "whatItDoesNotProve": "Hyprland live parser/runtime behavior"
+    },
+    {
+      "testName": "production_gate_accepts_complete_approved_proof_for_62_rows",
+      "proofTarget": "ProductionWrite accepts complete explicit high-risk approval and scaffold proof",
+      "rowsCovered": 62,
+      "result": "passed-when-cargo-test-passes",
+      "whatItProves": "production gate decision path can accept complete non-live proof",
+      "whatItDoesNotProve": "live runtime safety"
+    },
+    {
+      "testName": "default_apply_path_rejects_enabled_high_risk_rows_without_gate_proof",
+      "proofTarget": "high-risk rows cannot bypass the production gate",
+      "rowsCovered": 1,
+      "result": "passed-when-cargo-test-passes",
+      "whatItProves": "ordinary apply path fails closed",
+      "whatItDoesNotProve": "every row-specific UI rendering"
+    },
+    {
+      "testName": "valid_gated_temp_fixture_write_path_succeeds_without_touching_real_config",
+      "proofTarget": "valid gated temp write path applies to fixture only",
+      "rowsCovered": 1,
+      "result": "passed-when-cargo-test-passes",
+      "whatItProves": "write_flow integrates production gate proof and temp fixture write/reread succeeds",
+      "whatItDoesNotProve": "real config mutation safety"
+    },
+    {
+      "testName": "incomplete_gate_proof_rejects_production_write",
+      "proofTarget": "missing rollback proof rejects",
+      "rowsCovered": 1,
+      "result": "passed-when-cargo-test-passes",
+      "whatItProves": "incomplete proof cannot pass production gate",
+      "whatItDoesNotProve": "all possible proof failures exhaustively in this file"
+    },
+    {
+      "testName": "cursor_default_monitor_runtime_oracle fixture tests",
+      "proofTarget": "cursor.default_monitor fixture oracle accepts valid names and rejects missing/stale/unsafe names",
+      "rowsCovered": 1,
+      "result": "passed-when-cargo-test-passes",
+      "whatItProves": "fixture oracle behavior",
+      "whatItDoesNotProve": "live monitor-name oracle proof"
+    }
+  ]
+}

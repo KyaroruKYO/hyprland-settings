@@ -54,10 +54,10 @@ fn autonomous_completion_report_covers_all_63_rows_and_preserves_counts() -> Res
     assert_eq!(summary["writableRowsAfter"], 278);
     assert_eq!(summary["safeWritableRowsChanged"], false);
     assert_eq!(summary["writeAllowlistChanged"], false);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     Ok(())
 }

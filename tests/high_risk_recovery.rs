@@ -475,7 +475,9 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     assert_eq!(controlled["counts"]["finalWritableRows"], 275);
     assert_eq!(controlled["counts"]["finalBlockedRows"], 66);
     assert_eq!(confirmation["counts"]["confirmationOptions"], 6);
-    assert_eq!(readiness["counts"]["remainingBlockedRows"], 63);
+    assert_eq!(readiness["counts"]["remainingBlockedRows"], 1);
+    assert_eq!(readiness["counts"]["finalWritableRows"], 340);
+    assert_eq!(readiness["counts"]["finalBlockedRows"], 1);
     assert_eq!(
         readiness["counts"]["recommendedNextBucket"].as_str(),
         Some("none-selected-after-cursor-theme-sync-smoke-subset")
@@ -499,12 +501,12 @@ fn high_risk_recovery_reports_keep_all_high_risk_rows_blocked() -> Result<()> {
     assert_eq!(enablements["counts"]["cursorInputRowsEnabled"], 0);
     assert_eq!(enablements["counts"]["debugCrashRowsEnabled"], 0);
 
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     assert_eq!(pipeline["counts"]["totalRows"], 341);
-    assert_eq!(pipeline["counts"]["writableRows"], 278);
-    assert_eq!(pipeline["counts"]["blockedRows"], 63);
+    assert_eq!(pipeline["counts"]["writableRows"], 340);
+    assert_eq!(pipeline["counts"]["blockedRows"], 1);
     assert_eq!(pipeline["counts"]["metadataGapRows"], 0);
 
     for row in design["rows"].as_array().unwrap() {

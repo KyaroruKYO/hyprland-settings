@@ -61,7 +61,7 @@ fn safe_writable_rows_include_config_persistence_verified_rows() -> Result<()> {
         "../data/reports/remaining-scalar-completion.v0.55.2.json"
     ))?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     for row in batch_a["rows"]
         .as_array()
         .expect("Batch A rows should be an array")

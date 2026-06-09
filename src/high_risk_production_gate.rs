@@ -7,7 +7,7 @@ use crate::high_risk_persisted_recovery::{
     HighRiskRecoveryDecision, HighRiskRecoveryPlan, HighRiskRecoveryPlanError, TempBackupProof,
     TempRestoreProof,
 };
-use crate::write_classification::is_safe_writable_setting;
+use crate::write_classification::{is_high_risk_gated_writable_setting, is_safe_writable_setting};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum HighRiskProductionGateMode {
@@ -33,6 +33,7 @@ pub struct HighRiskProductionGateProof {
     pub backup_proof: Option<TempBackupProof>,
     pub rollback_proof: Option<TempRestoreProof>,
     pub confirmation_token: Option<String>,
+    pub explicit_high_risk_approval: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -43,8 +44,11 @@ pub struct HighRiskProductionGateDecision {
 
 impl HighRiskProductionGateDecision {
     pub fn accepted(&self) -> bool {
-        self.kind == HighRiskProductionGateDecisionKind::ReportOnlyDryRunAccepted
-            && self.errors.is_empty()
+        matches!(
+            self.kind,
+            HighRiskProductionGateDecisionKind::ReportOnlyDryRunAccepted
+                | HighRiskProductionGateDecisionKind::ProductionWriteAccepted
+        ) && self.errors.is_empty()
     }
 }
 
@@ -52,6 +56,7 @@ impl HighRiskProductionGateDecision {
 pub enum HighRiskProductionGateDecisionKind {
     ReportOnlyDryRunAccepted,
     ReportOnlyDryRunRejected,
+    ProductionWriteAccepted,
     ProductionWriteRefused,
 }
 
@@ -106,6 +111,7 @@ pub enum HighRiskProductionGateError {
     RollbackParserRereadMissing,
     LiveExecutionEnabled,
     RuntimeDynamicOracleMissing,
+    MissingExplicitHighRiskApproval,
     ProductionWriteDisabled,
 }
 
@@ -166,9 +172,12 @@ impl fmt::Display for HighRiskProductionGateError {
             Self::RuntimeDynamicOracleMissing => {
                 write!(formatter, "runtime-dynamic oracle proof is missing")
             }
+            Self::MissingExplicitHighRiskApproval => {
+                write!(formatter, "explicit high-risk approval is missing")
+            }
             Self::ProductionWriteDisabled => write!(
                 formatter,
-                "production write mode is disabled for blocked high-risk rows"
+                "production write mode is disabled for this high-risk request"
             ),
         }
     }
@@ -225,7 +234,9 @@ pub fn evaluate_high_risk_production_gate(
         }
     }
 
-    if request.mode == HighRiskProductionGateMode::ProductionWrite {
+    if request.mode == HighRiskProductionGateMode::ProductionWrite
+        && !is_high_risk_gated_writable_setting(&request.row_id)
+    {
         errors.push(HighRiskProductionGateError::ProductionWriteDisabled);
         return HighRiskProductionGateEvaluation {
             row_id: request.row_id.clone(),
@@ -241,14 +252,31 @@ pub fn evaluate_high_risk_production_gate(
     }
 
     match &request.proof {
-        Some(proof) => validate_dry_run_proof(&request, proof, &mut errors),
+        Some(proof) => {
+            validate_gate_proof(&request, proof, &mut errors);
+            if request.mode == HighRiskProductionGateMode::ProductionWrite
+                && !proof.explicit_high_risk_approval
+            {
+                errors.push(HighRiskProductionGateError::MissingExplicitHighRiskApproval);
+                errors.push(HighRiskProductionGateError::ProductionWriteDisabled);
+            }
+        }
         None => errors.push(HighRiskProductionGateError::MissingRecoveryPlan),
     }
 
-    let kind = if errors.is_empty() {
-        HighRiskProductionGateDecisionKind::ReportOnlyDryRunAccepted
-    } else {
-        HighRiskProductionGateDecisionKind::ReportOnlyDryRunRejected
+    let kind = match (request.mode, errors.is_empty()) {
+        (HighRiskProductionGateMode::ReportOnlyDryRun, true) => {
+            HighRiskProductionGateDecisionKind::ReportOnlyDryRunAccepted
+        }
+        (HighRiskProductionGateMode::ReportOnlyDryRun, false) => {
+            HighRiskProductionGateDecisionKind::ReportOnlyDryRunRejected
+        }
+        (HighRiskProductionGateMode::ProductionWrite, true) => {
+            HighRiskProductionGateDecisionKind::ProductionWriteAccepted
+        }
+        (HighRiskProductionGateMode::ProductionWrite, false) => {
+            HighRiskProductionGateDecisionKind::ProductionWriteRefused
+        }
     };
 
     HighRiskProductionGateEvaluation {
@@ -261,7 +289,7 @@ pub fn evaluate_high_risk_production_gate(
     }
 }
 
-fn validate_dry_run_proof(
+fn validate_gate_proof(
     request: &HighRiskProductionGateRequest,
     proof: &HighRiskProductionGateProof,
     errors: &mut Vec<HighRiskProductionGateError>,

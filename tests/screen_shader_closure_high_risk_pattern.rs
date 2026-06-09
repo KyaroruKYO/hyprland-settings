@@ -13,10 +13,10 @@ fn screen_shader_track_closure_report_closes_shader_track_without_behavior_chang
     let approval = read_json("data/reports/screen-shader-production-gate-approval.v0.55.2.json")?;
 
     assert!(is_safe_writable_setting("decoration.screen_shader"));
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     assert_eq!(closure["rowId"], "decoration.screen_shader");
     assert_eq!(closure["officialSetting"], "decoration.screen_shader");
@@ -226,8 +226,8 @@ fn aggregate_reports_link_closure_pattern_and_roadmap() -> Result<()> {
         .contains("screen shader optional advisory GTK file chooser visual proof"));
     assert_eq!(screen_shader_row["productionGateEnforcedThisSprint"], true);
     assert_eq!(screen_shader_row["countedAsEnabledHighRiskRow"], false);
-    assert_eq!(pipeline["counts"]["writableRows"], 278);
-    assert_eq!(pipeline["counts"]["blockedRows"], 63);
+    assert_eq!(pipeline["counts"]["writableRows"], 340);
+    assert_eq!(pipeline["counts"]["blockedRows"], 1);
 
     for report in [&deferred, &readiness, &evidence, &gaps] {
         let follow_up = &report["screenShaderDisplayRenderReviewFollowUp"];

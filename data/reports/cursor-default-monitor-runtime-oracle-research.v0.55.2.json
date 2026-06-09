@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "cursor-default-monitor-runtime-oracle-research",
+  "generatedAt": "2026-06-09T02:05:17.664873Z",
+  "startingCommit": "6ba4d589a36462d9eedb06a569e9b0c729e9a1ab",
+  "rowId": "cursor.default_monitor",
+  "currentStatus": "blocked",
+  "whyBlocked": "cursor.default_monitor was the only dry-run rejected row because runtime monitor-name allowlist/readback oracle proof is missing",
+  "officialSourceEvidence": [
+    "ConfigValues.cpp declares cursor:default_monitor as MS<String> with default STRVAL_EMPTY",
+    "Existing audit recorded Compositor.cpp monitor-name consumer as the runtime-specific source location"
+  ],
+  "runtimeOracleNeeded": "runtime monitor-name allowlist/readback oracle",
+  "nonMutatingReadStrategy": "Use a read-only monitor-name provider abstraction; fixture tests parse representative hyprctl monitors output, but no live hyprctl query is required or run in this sprint",
+  "fixtureOracleImplemented": true,
+  "testsAdded": [
+    "tests/cursor_default_monitor_runtime_oracle.rs"
+  ],
+  "staleMonitorNameBehavior": "fixture oracle rejects a name absent from the current fixture snapshot as stale",
+  "missingMonitorNameBehavior": "fixture oracle treats an empty candidate as missing and keeps the row blocked",
+  "validMonitorNameBehavior": "fixture oracle accepts names present in the fixture snapshot",
+  "proofStillMissing": "live/runtime monitor-name source adapter proof and stale-name refresh proof remain missing; row remains blocked",
+  "nextConcreteAction": "Implement and test an optional read-only runtime monitor-name adapter behind the fixture oracle abstraction, then prove stale-name refresh/readback before enablement"
+}

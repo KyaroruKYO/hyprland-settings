@@ -43,9 +43,9 @@ fn official_source_research_reports_exist_and_preserve_state() -> Result<()> {
     let complex = read_json("data/reports/official-complex-grammar-source-research.v0.55.2.json")?;
     let coverage = read_json("data/reports/scalar-read-write-coverage.v0.55.2.json")?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     assert_eq!(summary["counts"]["writableRows"], 278);
     assert_eq!(summary["counts"]["blockedRows"], 63);

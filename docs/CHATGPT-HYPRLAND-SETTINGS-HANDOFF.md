@@ -1,5 +1,50 @@
 # Hyprland Settings ChatGPT Handoff
 
+State reviewed after the high-risk accepted rows enablement sprint on branch `completion-sprint`.
+
+Latest reviewed implementation baseline before this sprint:
+
+- `6ba4d589a36462d9eedb06a569e9b0c729e9a1ab Freeze high-risk candidate approval requirements`
+
+Latest sprint commit:
+
+- `Enable dry-run accepted high-risk rows` (this commit; use `git log -1 --oneline` for the exact hash)
+
+Latest restore point and backups:
+
+- Restore tag: `pre-enable-all-dry-run-accepted-high-risk-rows-20260608-185037`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-enable-all-dry-run-accepted-high-risk-rows-backup_20260608_185037/`
+- AGS backup: `/home/kyo/Documents/ags-pre-enable-all-dry-run-accepted-high-risk-rows-backup_20260608_185037`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-enable-all-dry-run-accepted-high-risk-rows-20260608_185037`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-enable-all-dry-run-accepted-high-risk-rows-backup_20260608_185037`
+
+Latest high-risk accepted rows enablement status:
+
+- Rows analyzed: 63.
+- Dry-run accepted rows: 62.
+- Rows targeted for enablement: 62.
+- Rows enabled this sprint: 62.
+- Rows still blocked: 1.
+- Writable rows before/after: 278 / 340.
+- Blocked rows before/after: 63 / 1.
+- Final counts: 341 readable / 340 writable / 1 blocked.
+- Enabled display/render rows: `xwayland.enabled`, `xwayland.create_abstract_socket`, `opengl.nvidia_anti_flicker`, `render.direct_scanout`, `render.expand_undersized_textures`, `render.xp_mode`, `render.ctm_animation`, `render.cm_enabled`, `render.send_content_type`, `render.cm_auto_hdr`, `render.new_render_scheduling`, `render.non_shader_cm`, `render.cm_sdr_eotf`, `render.commit_timing_enabled`, `render.icc_vcgt_enabled`, `render.use_shader_blur_blend`, `render.use_fp16`, `render.keep_unmodified_copy`, `render.non_shader_cm_interop`, `render.fp16_sdr_tf`, `experimental.wp_cm_1_2`, `quirks.prefer_hdr`, `quirks.skip_non_kms_dmabuf_formats`.
+- Enabled cursor/input rows: `cursor.invisible`, `cursor.no_hardware_cursors`, `cursor.no_break_fs_vrr`, `cursor.min_refresh_rate`, `cursor.hotspot_padding`, `cursor.inactive_timeout`, `cursor.no_warps`, `cursor.persistent_warps`, `cursor.warp_on_change_workspace`, `cursor.warp_on_toggle_special`, `cursor.zoom_factor`, `cursor.zoom_rigid`, `cursor.zoom_disable_aa`, `cursor.zoom_detached_camera`, `cursor.enable_hyprcursor`, `cursor.use_cpu_buffer`, `cursor.warp_back_after_non_mouse_input`.
+- Enabled debug/crash rows: `debug.overlay`, `debug.damage_blink`, `debug.gl_debugging`, `debug.disable_logs`, `debug.disable_time`, `debug.damage_tracking`, `debug.enable_stdout_logs`, `debug.manual_crash`, `debug.suppress_errors`, `debug.disable_scale_checks`, `debug.error_limit`, `debug.error_position`, `debug.colored_stdout_logs`, `debug.log_damage`, `debug.pass`, `debug.full_cm_proto`, `debug.ds_handle_same_buffer`, `debug.ds_handle_same_buffer_fifo`, `debug.fifo_pending_workaround`, `debug.render_solitary_wo_damage`, `debug.vfr`, `debug.invalidate_fp16`.
+- Still blocked row: `cursor.default_monitor`.
+- `cursor.default_monitor` research status: fixture-only runtime monitor-name oracle scaffold exists; fixture valid names are accepted and missing/stale/unsafe names are rejected; live runtime monitor-name allowlist/readback proof remains missing.
+- Gate architecture summary: the 62 enabled rows are gated high-risk writable rows, not plain low-risk writes. Production writes require explicit high-risk approval, persisted recovery plan validation, backup proof, rollback plus parser reread proof, confirmation token proof, timeout/no-confirmation rollback behavior, UI warning or advanced placement, and high-risk production gate acceptance. Default apply without gate proof fails closed.
+- Tests added: `tests/high_risk_accepted_rows_enablement.rs` and `tests/cursor_default_monitor_runtime_oracle.rs`.
+- Reports created: `data/reports/high-risk-accepted-rows-enablement.v0.55.2.json`, `data/reports/high-risk-accepted-rows-enablement-tests.v0.55.2.json`, `data/reports/cursor-default-monitor-runtime-oracle-research.v0.55.2.json`, and `data/reports/high-risk-remaining-blocked-after-accepted-enablement.v0.55.2.json`.
+- Review log path: `docs/HIGH-RISK-ACCEPTED-ROWS-ENABLEMENT-REVIEW-LOG.md` and `/home/kyo/.config/hypr/docs/HIGH-RISK-ACCEPTED-ROWS-ENABLEMENT-REVIEW-LOG.md`.
+- Blocker report path: `data/reports/high-risk-remaining-blocked-after-accepted-enablement.v0.55.2.json`.
+- Next recommended sprint: `Complete cursor.default_monitor runtime monitor-name oracle proof sprint`.
+- Projected next 3 steps: review the 62 newly gated high-risk writable rows in the UI and reports; complete runtime monitor-name oracle proof for `cursor.default_monitor`; after `cursor.default_monitor` is proven, enable it through the same high-risk gate or permanently classify it as runtime-dependent/manual-only.
+- Validation results: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `desktop-file-validate`, export validator, UI design validator, and schema validator passed. `appstreamcli validate --pedantic` produced only the expected non-blocking GitHub URL and releases-info warnings.
+- Hard boundaries preserved: yes. No real config/runtime mutation, Hyprland reload/eval/Lua, live display/input/crash proof, screen-shader work, package/workflow creation, or push.
+
+---
+
 State reviewed after the high-risk candidate approval freeze sprint on branch `completion-sprint`.
 
 Latest reviewed implementation baseline before this sprint:

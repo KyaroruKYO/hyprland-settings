@@ -72,9 +72,9 @@ fn deferred_consumer_research_reports_exist_and_preserve_state() -> Result<()> {
     let shader = read_json("data/reports/deferred-screen-shader-consumer-research.v0.55.2.json")?;
     let plan = read_json("data/reports/deferred-validator-repair-plan.v0.55.2.json")?;
 
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     for report in [
         &main,

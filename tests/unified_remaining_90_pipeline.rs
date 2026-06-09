@@ -1,6 +1,7 @@
 use std::collections::BTreeSet;
 
 use anyhow::Result;
+use hyprland_settings::write_classification::is_high_risk_gated_writable_setting;
 use serde_json::Value;
 
 fn coverage() -> Result<Value> {
@@ -34,8 +35,8 @@ fn unified_remaining_90_pipeline_covers_current_blocked_rows() -> Result<()> {
     let official = official_evidence()?;
     let scope_policy = scope_policy()?;
 
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
     assert_eq!(pipeline["counts"]["rows"], 90);
     assert_eq!(official["counts"]["rows"], 90);
     assert_eq!(scope_policy["counts"]["rows"], 90);
@@ -47,7 +48,11 @@ fn unified_remaining_90_pipeline_covers_current_blocked_rows() -> Result<()> {
         .filter(|row| row["writeStatus"].as_str() != Some("writable"))
         .map(|row| row["rowId"].as_str().unwrap().to_owned())
         .collect::<BTreeSet<_>>();
-    assert_eq!(blocked_ids.len(), 63);
+    assert_eq!(blocked_ids.len(), 1);
+    assert_eq!(
+        blocked_ids,
+        BTreeSet::from(["cursor.default_monitor".to_string()])
+    );
 
     for report in [&pipeline, &official, &scope_policy] {
         let ids = report["rows"]
@@ -164,7 +169,7 @@ fn custom_semantic_rows_are_parser_only_and_have_specific_validator_paths() -> R
 }
 
 #[test]
-fn session_rows_are_resolved_and_high_risk_rows_remain_blocked_with_recovery_gates() -> Result<()> {
+fn session_rows_are_resolved_and_high_risk_rows_use_current_gated_status() -> Result<()> {
     let coverage = coverage()?;
     let pipeline = pipeline()?;
 
@@ -197,18 +202,25 @@ fn session_rows_are_resolved_and_high_risk_rows_remain_blocked_with_recovery_gat
             continue;
         }
 
-        assert_ne!(coverage_row["writeStatus"].as_str(), Some("writable"));
-        assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
-
         if row["currentWriteStatus"].as_str() == Some("high-risk") {
             assert!(
                 row["approvalGate"].as_str().unwrap().contains("dead-man"),
                 "{row_id} should require dead-man recovery"
             );
-            assert!(
-                row["applyPath"].as_str().unwrap().contains("blocked"),
-                "{row_id} should stay blocked"
-            );
+            if row_id == "cursor.default_monitor" {
+                assert_ne!(coverage_row["writeStatus"].as_str(), Some("writable"));
+                assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
+                assert!(
+                    row["applyPath"].as_str().unwrap().contains("blocked"),
+                    "{row_id} should stay blocked"
+                );
+            } else if is_high_risk_gated_writable_setting(row_id) {
+                assert_eq!(coverage_row["writeStatus"].as_str(), Some("writable"));
+                assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(true));
+            } else {
+                assert_ne!(coverage_row["writeStatus"].as_str(), Some("writable"));
+                assert_eq!(coverage_row["safeWriteSupported"].as_bool(), Some(false));
+            }
         }
     }
 

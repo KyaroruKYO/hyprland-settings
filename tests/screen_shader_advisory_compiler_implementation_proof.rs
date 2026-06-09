@@ -20,10 +20,10 @@ fn screen_shader_advisory_helper_implementation_report_records_option_a() -> Res
     let approval = read_json("data/reports/screen-shader-production-gate-approval.v0.55.2.json")?;
 
     assert!(is_safe_writable_setting("decoration.screen_shader"));
-    assert_eq!(SAFE_WRITABLE_ROWS.len(), 278);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 340);
     assert_eq!(coverage["counts"]["readableRows"], 341);
-    assert_eq!(coverage["counts"]["writableRows"], 278);
-    assert_eq!(coverage["counts"]["blockedWriteRows"], 63);
+    assert_eq!(coverage["counts"]["writableRows"], 340);
+    assert_eq!(coverage["counts"]["blockedWriteRows"], 1);
 
     assert_eq!(report["rowId"], "decoration.screen_shader");
     assert_eq!(report["officialSetting"], "decoration.screen_shader");
