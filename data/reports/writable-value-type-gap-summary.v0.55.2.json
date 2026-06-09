@@ -1012,6 +1012,23 @@
     "highRiskProductionGateProductionWriteRowsRefused": 63,
     "highRiskProductionGateSourceModuleAdded": "src/high_risk_production_gate.rs",
     "highRiskProductionGateTestsAdded": "tests/high_risk_production_gate_dry_run.rs",
-    "highRiskProductionGateDryRunNextRecommendedSprint": "Explicit high-risk dry-run accepted candidate approval and production gate requirements freeze sprint"
+    "highRiskProductionGateDryRunNextRecommendedSprint": "Explicit high-risk dry-run accepted candidate approval and production gate requirements freeze sprint",
+    "highRiskCandidateApprovalFreezeReport": "data/reports/high-risk-dry-run-accepted-candidate-approval-freeze.v0.55.2.json",
+    "highRiskCandidateApprovalFreezeTestsReport": "data/reports/high-risk-candidate-approval-freeze-tests.v0.55.2.json",
+    "highRiskCandidateApprovalFreezeBlockersReport": "data/reports/high-risk-candidate-approval-freeze-blockers.v0.55.2.json",
+    "highRiskCandidateApprovalFreezeRowsAnalyzed": 63,
+    "highRiskCandidateApprovalFreezeDryRunAcceptedRows": 62,
+    "highRiskCandidateApprovalFreezeDryRunRejectedRows": 1,
+    "highRiskCandidateApprovalFreezeSelectedRows": [
+      "debug.disable_logs",
+      "debug.disable_time",
+      "debug.enable_stdout_logs",
+      "debug.colored_stdout_logs",
+      "debug.error_position"
+    ],
+    "highRiskCandidateApprovalFreezeSelectedRowsCount": 5,
+    "highRiskCandidateApprovalFreezeExcludedRowsCount": 58,
+    "highRiskCandidateApprovalFreezeRowsEnabledThisSprint": 0,
+    "highRiskCandidateApprovalFreezeNextRecommendedSprint": "High-risk candidate explicit approval review sprint"
   }
 }

@@ -1,5 +1,51 @@
 # Hyprland Settings ChatGPT Handoff
 
+State reviewed after the high-risk candidate approval freeze sprint on branch `completion-sprint`.
+
+Latest reviewed implementation baseline before this sprint:
+
+- `02c5195e46ec675420307806faabf77b4a2f7395 Integrate high-risk production gate dry-run`
+
+Latest sprint commit:
+
+- `Freeze high-risk candidate approval requirements` (this commit; use `git log -1 --oneline` for the exact hash)
+
+Latest restore point and backups:
+
+- Restore tag: `pre-high-risk-candidate-approval-freeze-20260608-181533`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-high-risk-candidate-approval-freeze-backup_20260608_181533/`
+- AGS backup: `/home/kyo/Documents/ags-pre-high-risk-candidate-approval-freeze-backup_20260608_181533`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-high-risk-candidate-approval-freeze-20260608_181533`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-high-risk-candidate-approval-freeze-backup_20260608_181533`
+
+Latest high-risk candidate approval freeze status:
+
+- Rows analyzed: 63.
+- Dry-run accepted rows: 62.
+- Dry-run rejected rows: 1 (`cursor.default_monitor`).
+- Selected candidate rows: 5 (`debug.disable_logs`, `debug.disable_time`, `debug.enable_stdout_logs`, `debug.colored_stdout_logs`, `debug.error_position`).
+- Excluded rows: 58.
+- Rows enabled this sprint: 0.
+- Rows still blocked: 63.
+- Writable rows before/after: 278 / 278.
+- Blocked rows before/after: 63 / 63.
+- Final counts: 341 readable / 278 writable / 63 blocked.
+- Candidate selection criteria: dry-run accepted; official source-backed allowed values; proof-only validators and invalid-value rejection proof; temp fixture write/reread/rollback proof; UI warning projection; persisted recovery scaffold proof; no runtime-dynamic behavior; no intentional crash behavior; no production write enablement.
+- Selected candidates are `candidateForReview`, not `approvedForFutureEnablementSprint` and not enabled.
+- Excluded row categories: 23 `displayRenderLiveProofFirst`, 17 `cursorInputRecoveryConcern`, 16 `debugCrashDisruptionConcern`, 1 `runtimeDynamic`, 1 `intentionalCrashOrCrashAdjacent`.
+- Frozen production gate requirements: future enablement requires explicit high-risk approval, persisted recovery plan validation, confirmation token proof, backup plus rollback parser reread proof, timeout/no-confirmation rollback behavior, continued ProductionWrite refusal until an enablement sprint intentionally wires approved rows, and live/runtime proof or explicit future waiver.
+- `cursor.default_monitor` special-case status: excluded as `runtimeDynamic`; runtime monitor-name allowlist/readback oracle proof remains missing.
+- Review log path: `docs/HIGH-RISK-CANDIDATE-APPROVAL-FREEZE-REVIEW-LOG.md` and `/home/kyo/.config/hypr/docs/HIGH-RISK-CANDIDATE-APPROVAL-FREEZE-REVIEW-LOG.md`.
+- Blocker report path: `data/reports/high-risk-candidate-approval-freeze-blockers.v0.55.2.json`.
+- Candidate approval freeze report path: `data/reports/high-risk-dry-run-accepted-candidate-approval-freeze.v0.55.2.json`.
+- Candidate approval freeze tests report path: `data/reports/high-risk-candidate-approval-freeze-tests.v0.55.2.json`.
+- Next recommended sprint: `High-risk candidate explicit approval review sprint`.
+- Projected next 3 steps: review the selected candidate batch for explicit high-risk approval; if approved, run a small enablement sprint that wires only approved candidates into the production gate while keeping live safety boundaries intact; keep excluded, runtime-dynamic, and live-proof-required rows blocked until their specific blocker is resolved.
+- Validation results: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `desktop-file-validate`, export validator, UI design validator, and schema validator passed. `appstreamcli validate --pedantic` produced only the expected non-blocking GitHub URL and releases-info warnings.
+- Hard boundaries preserved: yes. No push.
+
+---
+
 State reviewed after the high-risk production gate dry-run sprint on branch `completion-sprint`.
 
 Latest reviewed implementation baseline before this sprint:

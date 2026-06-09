@@ -1,0 +1,439 @@
+# High-risk Candidate Approval Freeze Review Log
+
+## Sprint summary
+- Rows analyzed: 63
+- Dry-run accepted rows: 62
+- Dry-run rejected rows: 1
+- Selected candidate rows: debug.disable_logs, debug.disable_time, debug.enable_stdout_logs, debug.colored_stdout_logs, debug.error_position
+- Excluded rows: 58
+- Rows enabled: 0
+- Counts before: 341 readable / 278 writable / 63 blocked
+- Counts after: 341 readable / 278 writable / 63 blocked
+- Why this sprint did or did not enable rows: this sprint only selects candidateForReview rows and freezes future production gate requirements. It does not create explicit approval artifacts for enablement and does not change ProductionWrite, SAFE_WRITABLE_ROWS, or the write allowlist.
+
+## Candidate selection criteria
+- Required proof: official source evidence, source-backed allowed values, pre-enablement validator/invalid-value/fixture write proof, UI warning projection, persisted recovery scaffold proof, ReportOnlyDryRun acceptance, and current ProductionWrite refusal.
+- Exclusion rules: exclude cursor.default_monitor, debug.manual_crash, intentional crash rows, runtime-dynamic rows, display/render live-proof-first rows, and any row needing real config access in this sprint.
+- Preferred first-batch traits: dry-run accepted, simple boolean or finite-choice values, complete pre-enablement proof, complete scaffold proof, not runtime-dynamic, not intentional crash behavior, and suitable for explicit high-risk review.
+- Why the batch is intentionally small: only five debug logging/error presentation rows are selected to avoid approving all 62 dry-run accepted rows at once.
+
+## Selected candidate batch
+- Row: debug.disable_logs
+  - Bucket: debug/crash
+  - Official setting: debug.disable_logs
+  - Why selected: Selected for the first small approval-review batch because existing reports prove official source support, source-backed allowed values, proof-only validator acceptance/rejection, temp fixture write/reread/rollback proof, UI warning projection, persisted recovery scaffold proof, and ReportOnlyDryRun gate acceptance; the row is a debug logging/error presentation setting, is not runtime-dynamic, and is not intentional crash behavior.
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: notSafeWritable; is_safe_writable_setting=false; SAFE_WRITABLE_ROWS unchanged
+  - Approval status: candidateForReview
+  - Frozen production gate requirements: confirmation token required; backup and rollback parser reread required; timeout/no-confirmation must rollback; ProductionWrite refused until future enablement sprint; explicit high-risk approval required; live/runtime proof or waiver required.
+  - Remaining blocker: explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint
+  - Future enablement condition: A future sprint may only enable this row if frozen requirements remain true and explicit high-risk approval exists.
+- Row: debug.disable_time
+  - Bucket: debug/crash
+  - Official setting: debug.disable_time
+  - Why selected: Selected for the first small approval-review batch because existing reports prove official source support, source-backed allowed values, proof-only validator acceptance/rejection, temp fixture write/reread/rollback proof, UI warning projection, persisted recovery scaffold proof, and ReportOnlyDryRun gate acceptance; the row is a debug logging/error presentation setting, is not runtime-dynamic, and is not intentional crash behavior.
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: notSafeWritable; is_safe_writable_setting=false; SAFE_WRITABLE_ROWS unchanged
+  - Approval status: candidateForReview
+  - Frozen production gate requirements: confirmation token required; backup and rollback parser reread required; timeout/no-confirmation must rollback; ProductionWrite refused until future enablement sprint; explicit high-risk approval required; live/runtime proof or waiver required.
+  - Remaining blocker: explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint
+  - Future enablement condition: A future sprint may only enable this row if frozen requirements remain true and explicit high-risk approval exists.
+- Row: debug.enable_stdout_logs
+  - Bucket: debug/crash
+  - Official setting: debug.enable_stdout_logs
+  - Why selected: Selected for the first small approval-review batch because existing reports prove official source support, source-backed allowed values, proof-only validator acceptance/rejection, temp fixture write/reread/rollback proof, UI warning projection, persisted recovery scaffold proof, and ReportOnlyDryRun gate acceptance; the row is a debug logging/error presentation setting, is not runtime-dynamic, and is not intentional crash behavior.
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: notSafeWritable; is_safe_writable_setting=false; SAFE_WRITABLE_ROWS unchanged
+  - Approval status: candidateForReview
+  - Frozen production gate requirements: confirmation token required; backup and rollback parser reread required; timeout/no-confirmation must rollback; ProductionWrite refused until future enablement sprint; explicit high-risk approval required; live/runtime proof or waiver required.
+  - Remaining blocker: explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint
+  - Future enablement condition: A future sprint may only enable this row if frozen requirements remain true and explicit high-risk approval exists.
+- Row: debug.colored_stdout_logs
+  - Bucket: debug/crash
+  - Official setting: debug.colored_stdout_logs
+  - Why selected: Selected for the first small approval-review batch because existing reports prove official source support, source-backed allowed values, proof-only validator acceptance/rejection, temp fixture write/reread/rollback proof, UI warning projection, persisted recovery scaffold proof, and ReportOnlyDryRun gate acceptance; the row is a debug logging/error presentation setting, is not runtime-dynamic, and is not intentional crash behavior.
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: notSafeWritable; is_safe_writable_setting=false; SAFE_WRITABLE_ROWS unchanged
+  - Approval status: candidateForReview
+  - Frozen production gate requirements: confirmation token required; backup and rollback parser reread required; timeout/no-confirmation must rollback; ProductionWrite refused until future enablement sprint; explicit high-risk approval required; live/runtime proof or waiver required.
+  - Remaining blocker: explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint
+  - Future enablement condition: A future sprint may only enable this row if frozen requirements remain true and explicit high-risk approval exists.
+- Row: debug.error_position
+  - Bucket: debug/crash
+  - Official setting: debug.error_position
+  - Why selected: Selected for the first small approval-review batch because existing reports prove official source support, source-backed allowed values, proof-only validator acceptance/rejection, temp fixture write/reread/rollback proof, UI warning projection, persisted recovery scaffold proof, and ReportOnlyDryRun gate acceptance; the row is a debug logging/error presentation setting, is not runtime-dynamic, and is not intentional crash behavior.
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: notSafeWritable; is_safe_writable_setting=false; SAFE_WRITABLE_ROWS unchanged
+  - Approval status: candidateForReview
+  - Frozen production gate requirements: confirmation token required; backup and rollback parser reread required; timeout/no-confirmation must rollback; ProductionWrite refused until future enablement sprint; explicit high-risk approval required; live/runtime proof or waiver required.
+  - Remaining blocker: explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint
+  - Future enablement condition: A future sprint may only enable this row if frozen requirements remain true and explicit high-risk approval exists.
+
+## Excluded rows
+- Row: xwayland.enabled
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: xwayland.create_abstract_socket
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: opengl.nvidia_anti_flicker
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.direct_scanout
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.expand_undersized_textures
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.xp_mode
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.ctm_animation
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.cm_enabled
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.send_content_type
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.cm_auto_hdr
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.new_render_scheduling
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.non_shader_cm
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.cm_sdr_eotf
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.commit_timing_enabled
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.icc_vcgt_enabled
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.use_shader_blur_blend
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.use_fp16
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.keep_unmodified_copy
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.non_shader_cm_interop
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: render.fp16_sdr_tf
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: experimental.wp_cm_1_2
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: quirks.prefer_hdr
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: quirks.skip_non_kms_dmabuf_formats
+  - Bucket: display/render
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: displayRenderLiveProofFirst
+  - Why excluded: Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.
+  - Next concrete action: Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created.
+- Row: cursor.invisible
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.no_hardware_cursors
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.no_break_fs_vrr
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.min_refresh_rate
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.hotspot_padding
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.inactive_timeout
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.no_warps
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.persistent_warps
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.warp_on_change_workspace
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.warp_on_toggle_special
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.default_monitor
+  - Bucket: cursor/input
+  - Dry-run gate status: rejected-runtime-dynamic-oracle-missing
+  - Exclusion category: runtimeDynamic
+  - Why excluded: Excluded because dry-run gate rejects it without runtime monitor-name allowlist/readback oracle proof; it is explicitly runtime-dynamic.
+  - Next concrete action: Build runtime monitor-name oracle proof or explicit waiver before candidate review.
+- Row: cursor.zoom_factor
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.zoom_rigid
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.zoom_disable_aa
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.zoom_detached_camera
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.enable_hyprcursor
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.use_cpu_buffer
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: cursor.warp_back_after_non_mouse_input
+  - Bucket: cursor/input
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: cursorInputRecoveryConcern
+  - Why excluded: Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.
+  - Next concrete action: Review in a later cursor/input candidate batch after approval criteria are proven on the first batch.
+- Row: debug.overlay
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.damage_blink
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.gl_debugging
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.damage_tracking
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.manual_crash
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: intentionalCrashOrCrashAdjacent
+  - Why excluded: Excluded by hard rule because it is the manual crash row and intentional crash behavior cannot be first-batch candidate review.
+  - Next concrete action: Keep blocked until an explicit crash-safe proof or explicit do-not-enable decision exists.
+- Row: debug.suppress_errors
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.disable_scale_checks
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.error_limit
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.log_damage
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.pass
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.full_cm_proto
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.ds_handle_same_buffer
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.ds_handle_same_buffer_fifo
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.fifo_pending_workaround
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.render_solitary_wo_damage
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.vfr
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+- Row: debug.invalidate_fp16
+  - Bucket: debug/crash
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - Exclusion category: debugCrashDisruptionConcern
+  - Why excluded: Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.
+  - Next concrete action: Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected.
+
+## Frozen production gate requirements
+- Required confirmation: valid persisted recovery confirmation token; wrong or missing token rejects keep/apply.
+- Required rollback: backup before mutation plus rollback restore and parser reread proof.
+- Required timeout behavior: timeout or no confirmation selects rollback, not keep/apply.
+- Required persisted recovery plan: valid row, setting, bucket, target, backup, token, timeout, and live execution disabled during dry-run proof.
+- Required dry-run gate proof: ReportOnlyDryRun acceptance must remain true for selected candidates.
+- Required explicit approval: each row remains candidateForReview until a future explicit approval artifact exists.
+- Required live/runtime proof or waiver: live/runtime proof is missing and must be supplied or explicitly waived in a future approval sprint.
+
+## Projected next 3 steps
+1. Review the selected candidate batch for explicit high-risk approval.
+2. If approved, run a small enablement sprint that wires only the approved candidates into the production gate while keeping live safety boundaries intact.
+3. Keep excluded, runtime-dynamic, and live-proof-required rows blocked until their specific blocker is resolved.

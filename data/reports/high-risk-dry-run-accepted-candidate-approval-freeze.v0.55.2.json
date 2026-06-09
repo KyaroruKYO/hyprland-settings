@@ -1,0 +1,851 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "high-risk-dry-run-accepted-candidate-approval-freeze",
+  "generatedAt": "2026-06-09T01:18:43.386831Z",
+  "startingCommit": "02c5195e46ec675420307806faabf77b4a2f7395",
+  "rowsAnalyzed": 63,
+  "dryRunAcceptedRows": 62,
+  "dryRunRejectedRows": 1,
+  "selectedCandidateRows": [
+    "debug.disable_logs",
+    "debug.disable_time",
+    "debug.enable_stdout_logs",
+    "debug.colored_stdout_logs",
+    "debug.error_position"
+  ],
+  "excludedRows": [
+    "xwayland.enabled",
+    "xwayland.create_abstract_socket",
+    "opengl.nvidia_anti_flicker",
+    "render.direct_scanout",
+    "render.expand_undersized_textures",
+    "render.xp_mode",
+    "render.ctm_animation",
+    "render.cm_enabled",
+    "render.send_content_type",
+    "render.cm_auto_hdr",
+    "render.new_render_scheduling",
+    "render.non_shader_cm",
+    "render.cm_sdr_eotf",
+    "render.commit_timing_enabled",
+    "render.icc_vcgt_enabled",
+    "render.use_shader_blur_blend",
+    "render.use_fp16",
+    "render.keep_unmodified_copy",
+    "render.non_shader_cm_interop",
+    "render.fp16_sdr_tf",
+    "experimental.wp_cm_1_2",
+    "quirks.prefer_hdr",
+    "quirks.skip_non_kms_dmabuf_formats",
+    "cursor.invisible",
+    "cursor.no_hardware_cursors",
+    "cursor.no_break_fs_vrr",
+    "cursor.min_refresh_rate",
+    "cursor.hotspot_padding",
+    "cursor.inactive_timeout",
+    "cursor.no_warps",
+    "cursor.persistent_warps",
+    "cursor.warp_on_change_workspace",
+    "cursor.warp_on_toggle_special",
+    "cursor.default_monitor",
+    "cursor.zoom_factor",
+    "cursor.zoom_rigid",
+    "cursor.zoom_disable_aa",
+    "cursor.zoom_detached_camera",
+    "cursor.enable_hyprcursor",
+    "cursor.use_cpu_buffer",
+    "cursor.warp_back_after_non_mouse_input",
+    "debug.overlay",
+    "debug.damage_blink",
+    "debug.gl_debugging",
+    "debug.damage_tracking",
+    "debug.manual_crash",
+    "debug.suppress_errors",
+    "debug.disable_scale_checks",
+    "debug.error_limit",
+    "debug.log_damage",
+    "debug.pass",
+    "debug.full_cm_proto",
+    "debug.ds_handle_same_buffer",
+    "debug.ds_handle_same_buffer_fifo",
+    "debug.fifo_pending_workaround",
+    "debug.render_solitary_wo_damage",
+    "debug.vfr",
+    "debug.invalidate_fp16"
+  ],
+  "rowsEnabledThisSprint": 0,
+  "safeWritableRowsChanged": false,
+  "writeAllowlistChanged": false,
+  "countsBefore": {
+    "readable": 341,
+    "writable": 278,
+    "blocked": 63
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 278,
+    "blocked": 63
+  },
+  "selectionCriteria": {
+    "targetBatchSize": "3 to 8 rows",
+    "selectedBatchSize": 5,
+    "requiredProof": [
+      "official Hyprland source evidence exists",
+      "allowed values are source-backed",
+      "pre-enablement validator proof exists",
+      "invalid-value rejection proof exists",
+      "temp fixture write/reread/rollback proof exists",
+      "UI warning projection exists",
+      "persisted recovery scaffold proof exists",
+      "production gate dry-run proof is accepted",
+      "current allowlist still refuses production writes"
+    ],
+    "exclusionRules": [
+      "do not include cursor.default_monitor",
+      "do not include debug.manual_crash",
+      "do not include intentional crash rows",
+      "do not include runtime-dynamic rows",
+      "do not include display/render live-proof-first rows in this first candidate batch",
+      "do not include rows requiring real config access in this sprint",
+      "do not enable selected rows in this sprint"
+    ],
+    "preferredFirstBatchTraits": [
+      "dry-run accepted",
+      "boolean or finite-choice value shape",
+      "complete pre-enablement proof",
+      "complete persisted recovery scaffold proof",
+      "complete production gate dry-run proof",
+      "not runtime-dynamic",
+      "not intentional crash/debug disruption rows",
+      "reviewable through explicit high-risk approval before enablement"
+    ],
+    "batchJustification": "The batch is intentionally small and limited to debug logging/error presentation rows with simple values and complete non-live proof. It avoids display/render rows, cursor/input rows, runtime-dynamic rows, and intentional-crash rows for the first approval review."
+  },
+  "approvalModel": {
+    "allowedStatuses": [
+      "notApproved",
+      "candidateForReview",
+      "approvedForFutureEnablementSprint",
+      "rejected"
+    ],
+    "statusUsedThisSprint": "candidateForReview",
+    "nonMutating": true,
+    "doesNotEnableRows": true,
+    "approvalArtifactRequiredForFutureEnablement": "A future sprint must add explicit approval evidence before moving any candidate from candidateForReview to approvedForFutureEnablementSprint or writable."
+  },
+  "candidateRows": [
+    {
+      "rowId": "debug.disable_logs",
+      "bucket": "debug/crash",
+      "officialSetting": "debug.disable_logs",
+      "selectionReason": "Selected for the first small approval-review batch because existing reports prove official source support, source-backed allowed values, proof-only validator acceptance/rejection, temp fixture write/reread/rollback proof, UI warning projection, persisted recovery scaffold proof, and ReportOnlyDryRun gate acceptance; the row is a debug logging/error presentation setting, is not runtime-dynamic, and is not intentional crash behavior.",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "productionWriteStatus": "refused-production-write-disabled",
+      "currentAllowlistStatus": "notSafeWritable; is_safe_writable_setting=false; SAFE_WRITABLE_ROWS unchanged",
+      "approvalStatus": "candidateForReview",
+      "allowedValuesProof": "officialSourceBacked: true, false",
+      "validatorProof": "proof-only-source-backed-validator-added",
+      "invalidValueProof": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProof": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "uiWarningProof": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "persistedRecoveryScaffoldProof": "implemented-temp-only-and-tested",
+      "productionGateDryRunProof": "accepted-complete-temp-only-scaffold-proof",
+      "requiredConfirmation": "A future enablement path must require the persisted recovery confirmation token and must reject wrong or missing tokens before keep/apply.",
+      "requiredRollback": "A future enablement path must create a backup before mutation and prove rollback restore plus parser reread against the target path.",
+      "requiredTimeoutBehavior": "A future enablement path must choose rollback on timeout or no confirmation; keep/apply cannot occur after timeout without valid confirmation.",
+      "requiredFutureApproval": "explicit high-risk approval required; current status is candidateForReview only",
+      "liveRuntimeProofStatus": "missing-or-explicit-future-waiver-required",
+      "futureEnablementConditions": [
+        "All frozen proof fields in this report must remain true.",
+        "The row must receive explicit high-risk approval in a future non-mutating approval artifact.",
+        "Production gate integration must continue to require persisted recovery plan validation, backup proof, rollback parser reread proof, confirmation token proof, and timeout rollback behavior.",
+        "ProductionWrite must remain refused until the future enablement sprint intentionally wires only the approved candidate row.",
+        "Live/runtime proof must be supplied or explicitly waived by future approval; dry-run acceptance alone is insufficient.",
+        "Aggregate reports and counts must be updated in the future enablement sprint only if the row is actually enabled."
+      ],
+      "exactRemainingBlocker": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint"
+    },
+    {
+      "rowId": "debug.disable_time",
+      "bucket": "debug/crash",
+      "officialSetting": "debug.disable_time",
+      "selectionReason": "Selected for the first small approval-review batch because existing reports prove official source support, source-backed allowed values, proof-only validator acceptance/rejection, temp fixture write/reread/rollback proof, UI warning projection, persisted recovery scaffold proof, and ReportOnlyDryRun gate acceptance; the row is a debug logging/error presentation setting, is not runtime-dynamic, and is not intentional crash behavior.",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "productionWriteStatus": "refused-production-write-disabled",
+      "currentAllowlistStatus": "notSafeWritable; is_safe_writable_setting=false; SAFE_WRITABLE_ROWS unchanged",
+      "approvalStatus": "candidateForReview",
+      "allowedValuesProof": "officialSourceBacked: true, false",
+      "validatorProof": "proof-only-source-backed-validator-added",
+      "invalidValueProof": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProof": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "uiWarningProof": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "persistedRecoveryScaffoldProof": "implemented-temp-only-and-tested",
+      "productionGateDryRunProof": "accepted-complete-temp-only-scaffold-proof",
+      "requiredConfirmation": "A future enablement path must require the persisted recovery confirmation token and must reject wrong or missing tokens before keep/apply.",
+      "requiredRollback": "A future enablement path must create a backup before mutation and prove rollback restore plus parser reread against the target path.",
+      "requiredTimeoutBehavior": "A future enablement path must choose rollback on timeout or no confirmation; keep/apply cannot occur after timeout without valid confirmation.",
+      "requiredFutureApproval": "explicit high-risk approval required; current status is candidateForReview only",
+      "liveRuntimeProofStatus": "missing-or-explicit-future-waiver-required",
+      "futureEnablementConditions": [
+        "All frozen proof fields in this report must remain true.",
+        "The row must receive explicit high-risk approval in a future non-mutating approval artifact.",
+        "Production gate integration must continue to require persisted recovery plan validation, backup proof, rollback parser reread proof, confirmation token proof, and timeout rollback behavior.",
+        "ProductionWrite must remain refused until the future enablement sprint intentionally wires only the approved candidate row.",
+        "Live/runtime proof must be supplied or explicitly waived by future approval; dry-run acceptance alone is insufficient.",
+        "Aggregate reports and counts must be updated in the future enablement sprint only if the row is actually enabled."
+      ],
+      "exactRemainingBlocker": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint"
+    },
+    {
+      "rowId": "debug.enable_stdout_logs",
+      "bucket": "debug/crash",
+      "officialSetting": "debug.enable_stdout_logs",
+      "selectionReason": "Selected for the first small approval-review batch because existing reports prove official source support, source-backed allowed values, proof-only validator acceptance/rejection, temp fixture write/reread/rollback proof, UI warning projection, persisted recovery scaffold proof, and ReportOnlyDryRun gate acceptance; the row is a debug logging/error presentation setting, is not runtime-dynamic, and is not intentional crash behavior.",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "productionWriteStatus": "refused-production-write-disabled",
+      "currentAllowlistStatus": "notSafeWritable; is_safe_writable_setting=false; SAFE_WRITABLE_ROWS unchanged",
+      "approvalStatus": "candidateForReview",
+      "allowedValuesProof": "officialSourceBacked: true, false",
+      "validatorProof": "proof-only-source-backed-validator-added",
+      "invalidValueProof": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProof": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "uiWarningProof": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "persistedRecoveryScaffoldProof": "implemented-temp-only-and-tested",
+      "productionGateDryRunProof": "accepted-complete-temp-only-scaffold-proof",
+      "requiredConfirmation": "A future enablement path must require the persisted recovery confirmation token and must reject wrong or missing tokens before keep/apply.",
+      "requiredRollback": "A future enablement path must create a backup before mutation and prove rollback restore plus parser reread against the target path.",
+      "requiredTimeoutBehavior": "A future enablement path must choose rollback on timeout or no confirmation; keep/apply cannot occur after timeout without valid confirmation.",
+      "requiredFutureApproval": "explicit high-risk approval required; current status is candidateForReview only",
+      "liveRuntimeProofStatus": "missing-or-explicit-future-waiver-required",
+      "futureEnablementConditions": [
+        "All frozen proof fields in this report must remain true.",
+        "The row must receive explicit high-risk approval in a future non-mutating approval artifact.",
+        "Production gate integration must continue to require persisted recovery plan validation, backup proof, rollback parser reread proof, confirmation token proof, and timeout rollback behavior.",
+        "ProductionWrite must remain refused until the future enablement sprint intentionally wires only the approved candidate row.",
+        "Live/runtime proof must be supplied or explicitly waived by future approval; dry-run acceptance alone is insufficient.",
+        "Aggregate reports and counts must be updated in the future enablement sprint only if the row is actually enabled."
+      ],
+      "exactRemainingBlocker": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint"
+    },
+    {
+      "rowId": "debug.colored_stdout_logs",
+      "bucket": "debug/crash",
+      "officialSetting": "debug.colored_stdout_logs",
+      "selectionReason": "Selected for the first small approval-review batch because existing reports prove official source support, source-backed allowed values, proof-only validator acceptance/rejection, temp fixture write/reread/rollback proof, UI warning projection, persisted recovery scaffold proof, and ReportOnlyDryRun gate acceptance; the row is a debug logging/error presentation setting, is not runtime-dynamic, and is not intentional crash behavior.",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "productionWriteStatus": "refused-production-write-disabled",
+      "currentAllowlistStatus": "notSafeWritable; is_safe_writable_setting=false; SAFE_WRITABLE_ROWS unchanged",
+      "approvalStatus": "candidateForReview",
+      "allowedValuesProof": "officialSourceBacked: true, false",
+      "validatorProof": "proof-only-source-backed-validator-added",
+      "invalidValueProof": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProof": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "uiWarningProof": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "persistedRecoveryScaffoldProof": "implemented-temp-only-and-tested",
+      "productionGateDryRunProof": "accepted-complete-temp-only-scaffold-proof",
+      "requiredConfirmation": "A future enablement path must require the persisted recovery confirmation token and must reject wrong or missing tokens before keep/apply.",
+      "requiredRollback": "A future enablement path must create a backup before mutation and prove rollback restore plus parser reread against the target path.",
+      "requiredTimeoutBehavior": "A future enablement path must choose rollback on timeout or no confirmation; keep/apply cannot occur after timeout without valid confirmation.",
+      "requiredFutureApproval": "explicit high-risk approval required; current status is candidateForReview only",
+      "liveRuntimeProofStatus": "missing-or-explicit-future-waiver-required",
+      "futureEnablementConditions": [
+        "All frozen proof fields in this report must remain true.",
+        "The row must receive explicit high-risk approval in a future non-mutating approval artifact.",
+        "Production gate integration must continue to require persisted recovery plan validation, backup proof, rollback parser reread proof, confirmation token proof, and timeout rollback behavior.",
+        "ProductionWrite must remain refused until the future enablement sprint intentionally wires only the approved candidate row.",
+        "Live/runtime proof must be supplied or explicitly waived by future approval; dry-run acceptance alone is insufficient.",
+        "Aggregate reports and counts must be updated in the future enablement sprint only if the row is actually enabled."
+      ],
+      "exactRemainingBlocker": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint"
+    },
+    {
+      "rowId": "debug.error_position",
+      "bucket": "debug/crash",
+      "officialSetting": "debug.error_position",
+      "selectionReason": "Selected for the first small approval-review batch because existing reports prove official source support, source-backed allowed values, proof-only validator acceptance/rejection, temp fixture write/reread/rollback proof, UI warning projection, persisted recovery scaffold proof, and ReportOnlyDryRun gate acceptance; the row is a debug logging/error presentation setting, is not runtime-dynamic, and is not intentional crash behavior.",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "productionWriteStatus": "refused-production-write-disabled",
+      "currentAllowlistStatus": "notSafeWritable; is_safe_writable_setting=false; SAFE_WRITABLE_ROWS unchanged",
+      "approvalStatus": "candidateForReview",
+      "allowedValuesProof": "officialSourceBacked: 0, top, 1, bottom",
+      "validatorProof": "proof-only-source-backed-validator-added",
+      "invalidValueProof": "proof-validator-rejects invalid source-backed examples",
+      "fixtureWriteRereadProof": "temp-fixture-write-reread-and-rollback-proof-added-without-production-writer-or-real-config",
+      "uiWarningProof": "advanced/high-risk UI warning projection added; production enablement UI wiring remains future work",
+      "persistedRecoveryScaffoldProof": "implemented-temp-only-and-tested",
+      "productionGateDryRunProof": "accepted-complete-temp-only-scaffold-proof",
+      "requiredConfirmation": "A future enablement path must require the persisted recovery confirmation token and must reject wrong or missing tokens before keep/apply.",
+      "requiredRollback": "A future enablement path must create a backup before mutation and prove rollback restore plus parser reread against the target path.",
+      "requiredTimeoutBehavior": "A future enablement path must choose rollback on timeout or no confirmation; keep/apply cannot occur after timeout without valid confirmation.",
+      "requiredFutureApproval": "explicit high-risk approval required; current status is candidateForReview only",
+      "liveRuntimeProofStatus": "missing-or-explicit-future-waiver-required",
+      "futureEnablementConditions": [
+        "All frozen proof fields in this report must remain true.",
+        "The row must receive explicit high-risk approval in a future non-mutating approval artifact.",
+        "Production gate integration must continue to require persisted recovery plan validation, backup proof, rollback parser reread proof, confirmation token proof, and timeout rollback behavior.",
+        "ProductionWrite must remain refused until the future enablement sprint intentionally wires only the approved candidate row.",
+        "Live/runtime proof must be supplied or explicitly waived by future approval; dry-run acceptance alone is insufficient.",
+        "Aggregate reports and counts must be updated in the future enablement sprint only if the row is actually enabled."
+      ],
+      "exactRemainingBlocker": "explicit high-risk approval for enablement missing; production write integration still disabled; live/runtime proof or explicit waiver missing; not an enablement sprint"
+    }
+  ],
+  "excludedRowClassifications": [
+    {
+      "rowId": "xwayland.enabled",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "xwayland.create_abstract_socket",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "opengl.nvidia_anti_flicker",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.direct_scanout",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.expand_undersized_textures",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.xp_mode",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.ctm_animation",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.cm_enabled",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.send_content_type",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.cm_auto_hdr",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.new_render_scheduling",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.non_shader_cm",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.cm_sdr_eotf",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.commit_timing_enabled",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.icc_vcgt_enabled",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.use_shader_blur_blend",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.use_fp16",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.keep_unmodified_copy",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.non_shader_cm_interop",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "render.fp16_sdr_tf",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "experimental.wp_cm_1_2",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "quirks.prefer_hdr",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "quirks.skip_non_kms_dmabuf_formats",
+      "bucket": "display/render",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "displayRenderLiveProofFirst",
+      "reason": "Excluded from the first batch because display/render rows need live display/render proof or explicit waiver before first candidate review; safer non-display debug logging candidates exist.",
+      "nextConcreteAction": "Review only after the selected debug candidate batch policy is resolved or a display/render-specific approval plan is created."
+    },
+    {
+      "rowId": "cursor.invisible",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.no_hardware_cursors",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.no_break_fs_vrr",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.min_refresh_rate",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.hotspot_padding",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.inactive_timeout",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.no_warps",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.persistent_warps",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.warp_on_change_workspace",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.warp_on_toggle_special",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.default_monitor",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "rejected-runtime-dynamic-oracle-missing",
+      "exclusionCategory": "runtimeDynamic",
+      "reason": "Excluded because dry-run gate rejects it without runtime monitor-name allowlist/readback oracle proof; it is explicitly runtime-dynamic.",
+      "nextConcreteAction": "Build runtime monitor-name oracle proof or explicit waiver before candidate review."
+    },
+    {
+      "rowId": "cursor.zoom_factor",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.zoom_rigid",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.zoom_disable_aa",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.zoom_detached_camera",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.enable_hyprcursor",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.use_cpu_buffer",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "cursor.warp_back_after_non_mouse_input",
+      "bucket": "cursor/input",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "cursorInputRecoveryConcern",
+      "reason": "Excluded from the first batch because cursor/input rows require pointer-independent recovery review and safer debug logging candidates exist.",
+      "nextConcreteAction": "Review in a later cursor/input candidate batch after approval criteria are proven on the first batch."
+    },
+    {
+      "rowId": "debug.overlay",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.damage_blink",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.gl_debugging",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.damage_tracking",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.manual_crash",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "intentionalCrashOrCrashAdjacent",
+      "reason": "Excluded by hard rule because it is the manual crash row and intentional crash behavior cannot be first-batch candidate review.",
+      "nextConcreteAction": "Keep blocked until an explicit crash-safe proof or explicit do-not-enable decision exists."
+    },
+    {
+      "rowId": "debug.suppress_errors",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.disable_scale_checks",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.error_limit",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.log_damage",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.pass",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.full_cm_proto",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.ds_handle_same_buffer_fifo",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.fifo_pending_workaround",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.render_solitary_wo_damage",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.vfr",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    },
+    {
+      "rowId": "debug.invalidate_fp16",
+      "bucket": "debug/crash",
+      "dryRunGateStatus": "accepted-complete-temp-only-scaffold-proof",
+      "exclusionCategory": "debugCrashDisruptionConcern",
+      "reason": "Excluded from the first batch because this debug/crash row is not part of the narrow logging/error presentation subset or may affect debug/render/disruption behavior more directly.",
+      "nextConcreteAction": "Review in a later debug/crash batch after the first logging/error presentation candidates are approved or rejected."
+    }
+  ],
+  "frozenProductionGateRequirements": [
+    {
+      "rowId": "debug.disable_logs",
+      "officialSetting": "debug.disable_logs",
+      "requiredApproval": "explicit high-risk approval artifact required before enablement",
+      "requiredConfirmation": "A future enablement path must require the persisted recovery confirmation token and must reject wrong or missing tokens before keep/apply.",
+      "requiredRollback": "A future enablement path must create a backup before mutation and prove rollback restore plus parser reread against the target path.",
+      "requiredTimeoutBehavior": "A future enablement path must choose rollback on timeout or no confirmation; keep/apply cannot occur after timeout without valid confirmation.",
+      "requiredPersistedRecoveryPlan": "valid plan with row id, official setting, bucket, temp/test proof path in tests, target path, backup path, token, timeout, and live execution disabled during dry-run proof",
+      "requiredDryRunGateProof": "ReportOnlyDryRun must accept complete scaffold proof; ProductionWrite must remain refused until the enablement sprint explicitly changes behavior for the approved row",
+      "requiredProductionWriteRefusalUntilEnablementSprint": true,
+      "liveRuntimeProofStatus": "missing-or-explicit-future-waiver-required",
+      "waiverStatus": "notGranted",
+      "futureEnablementRule": "A future sprint may only enable this row if these exact requirements remain true and the row receives explicit high-risk approval."
+    },
+    {
+      "rowId": "debug.disable_time",
+      "officialSetting": "debug.disable_time",
+      "requiredApproval": "explicit high-risk approval artifact required before enablement",
+      "requiredConfirmation": "A future enablement path must require the persisted recovery confirmation token and must reject wrong or missing tokens before keep/apply.",
+      "requiredRollback": "A future enablement path must create a backup before mutation and prove rollback restore plus parser reread against the target path.",
+      "requiredTimeoutBehavior": "A future enablement path must choose rollback on timeout or no confirmation; keep/apply cannot occur after timeout without valid confirmation.",
+      "requiredPersistedRecoveryPlan": "valid plan with row id, official setting, bucket, temp/test proof path in tests, target path, backup path, token, timeout, and live execution disabled during dry-run proof",
+      "requiredDryRunGateProof": "ReportOnlyDryRun must accept complete scaffold proof; ProductionWrite must remain refused until the enablement sprint explicitly changes behavior for the approved row",
+      "requiredProductionWriteRefusalUntilEnablementSprint": true,
+      "liveRuntimeProofStatus": "missing-or-explicit-future-waiver-required",
+      "waiverStatus": "notGranted",
+      "futureEnablementRule": "A future sprint may only enable this row if these exact requirements remain true and the row receives explicit high-risk approval."
+    },
+    {
+      "rowId": "debug.enable_stdout_logs",
+      "officialSetting": "debug.enable_stdout_logs",
+      "requiredApproval": "explicit high-risk approval artifact required before enablement",
+      "requiredConfirmation": "A future enablement path must require the persisted recovery confirmation token and must reject wrong or missing tokens before keep/apply.",
+      "requiredRollback": "A future enablement path must create a backup before mutation and prove rollback restore plus parser reread against the target path.",
+      "requiredTimeoutBehavior": "A future enablement path must choose rollback on timeout or no confirmation; keep/apply cannot occur after timeout without valid confirmation.",
+      "requiredPersistedRecoveryPlan": "valid plan with row id, official setting, bucket, temp/test proof path in tests, target path, backup path, token, timeout, and live execution disabled during dry-run proof",
+      "requiredDryRunGateProof": "ReportOnlyDryRun must accept complete scaffold proof; ProductionWrite must remain refused until the enablement sprint explicitly changes behavior for the approved row",
+      "requiredProductionWriteRefusalUntilEnablementSprint": true,
+      "liveRuntimeProofStatus": "missing-or-explicit-future-waiver-required",
+      "waiverStatus": "notGranted",
+      "futureEnablementRule": "A future sprint may only enable this row if these exact requirements remain true and the row receives explicit high-risk approval."
+    },
+    {
+      "rowId": "debug.colored_stdout_logs",
+      "officialSetting": "debug.colored_stdout_logs",
+      "requiredApproval": "explicit high-risk approval artifact required before enablement",
+      "requiredConfirmation": "A future enablement path must require the persisted recovery confirmation token and must reject wrong or missing tokens before keep/apply.",
+      "requiredRollback": "A future enablement path must create a backup before mutation and prove rollback restore plus parser reread against the target path.",
+      "requiredTimeoutBehavior": "A future enablement path must choose rollback on timeout or no confirmation; keep/apply cannot occur after timeout without valid confirmation.",
+      "requiredPersistedRecoveryPlan": "valid plan with row id, official setting, bucket, temp/test proof path in tests, target path, backup path, token, timeout, and live execution disabled during dry-run proof",
+      "requiredDryRunGateProof": "ReportOnlyDryRun must accept complete scaffold proof; ProductionWrite must remain refused until the enablement sprint explicitly changes behavior for the approved row",
+      "requiredProductionWriteRefusalUntilEnablementSprint": true,
+      "liveRuntimeProofStatus": "missing-or-explicit-future-waiver-required",
+      "waiverStatus": "notGranted",
+      "futureEnablementRule": "A future sprint may only enable this row if these exact requirements remain true and the row receives explicit high-risk approval."
+    },
+    {
+      "rowId": "debug.error_position",
+      "officialSetting": "debug.error_position",
+      "requiredApproval": "explicit high-risk approval artifact required before enablement",
+      "requiredConfirmation": "A future enablement path must require the persisted recovery confirmation token and must reject wrong or missing tokens before keep/apply.",
+      "requiredRollback": "A future enablement path must create a backup before mutation and prove rollback restore plus parser reread against the target path.",
+      "requiredTimeoutBehavior": "A future enablement path must choose rollback on timeout or no confirmation; keep/apply cannot occur after timeout without valid confirmation.",
+      "requiredPersistedRecoveryPlan": "valid plan with row id, official setting, bucket, temp/test proof path in tests, target path, backup path, token, timeout, and live execution disabled during dry-run proof",
+      "requiredDryRunGateProof": "ReportOnlyDryRun must accept complete scaffold proof; ProductionWrite must remain refused until the enablement sprint explicitly changes behavior for the approved row",
+      "requiredProductionWriteRefusalUntilEnablementSprint": true,
+      "liveRuntimeProofStatus": "missing-or-explicit-future-waiver-required",
+      "waiverStatus": "notGranted",
+      "futureEnablementRule": "A future sprint may only enable this row if these exact requirements remain true and the row receives explicit high-risk approval."
+    }
+  ],
+  "proofUsed": [
+    "data/reports/high-risk-production-gate-dry-run.v0.55.2.json",
+    "data/reports/high-risk-production-gate-dry-run-tests.v0.55.2.json",
+    "data/reports/high-risk-production-gate-dry-run-blockers.v0.55.2.json",
+    "data/reports/high-risk-persisted-recovery-scaffold.v0.55.2.json",
+    "data/reports/all-blocked-rows-pre-enablement-proof.v0.55.2.json",
+    "data/reports/all-blocked-rows-official-evidence-matrix.v0.55.2.json",
+    "data/reports/all-blocked-rows-allowed-values-matrix.v0.55.2.json",
+    "src/blocked_row_pre_enablement.rs",
+    "src/high_risk_production_gate.rs",
+    "src/write_classification.rs::is_safe_writable_setting"
+  ],
+  "proofStillMissing": [
+    "explicit high-risk approval artifact for enablement",
+    "future production write integration for selected candidates",
+    "live/runtime proof or explicit future waiver for selected candidates",
+    "production unified-pipeline enablement tests for any future enabled row",
+    "runtime monitor-name allowlist/readback oracle proof for cursor.default_monitor"
+  ],
+  "nextRecommendedSprint": "High-risk candidate explicit approval review sprint"
+}

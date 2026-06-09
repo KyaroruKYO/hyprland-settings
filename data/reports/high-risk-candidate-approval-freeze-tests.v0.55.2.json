@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "high-risk-candidate-approval-freeze-tests",
+  "generatedAt": "2026-06-09T01:18:43.386831Z",
+  "startingCommit": "02c5195e46ec675420307806faabf77b4a2f7395",
+  "tests": [
+    {
+      "testName": "candidate_freeze_report_covers_all_rows_and_preserves_counts",
+      "proofTarget": "report row coverage and counts",
+      "rowsCovered": "63 rows",
+      "result": "passed",
+      "whatItProves": "all rows analyzed, 5 selected, 58 excluded, counts unchanged",
+      "whatItDoesNotProve": "live write safety"
+    },
+    {
+      "testName": "selected_candidate_batch_is_small_and_source_justified",
+      "proofTarget": "candidate batch constraints",
+      "rowsCovered": "5 selected rows",
+      "result": "passed",
+      "whatItProves": "batch size 3-8, all selected rows dry-run accepted, candidateForReview, no runtime/default/manual crash rows",
+      "whatItDoesNotProve": "approval or enablement"
+    },
+    {
+      "testName": "excluded_rows_have_exact_categories_and_reasons",
+      "proofTarget": "exclusion completeness",
+      "rowsCovered": "58 excluded rows",
+      "result": "passed",
+      "whatItProves": "every excluded row has category, reason, and next action",
+      "whatItDoesNotProve": "future safety of excluded rows"
+    },
+    {
+      "testName": "frozen_gate_requirements_are_present_for_each_candidate",
+      "proofTarget": "frozen requirements",
+      "rowsCovered": "5 selected rows",
+      "result": "passed",
+      "whatItProves": "each selected row freezes confirmation, rollback, timeout, approval, and ProductionWrite refusal requirements",
+      "whatItDoesNotProve": "future requirements still true unless rechecked"
+    },
+    {
+      "testName": "production_write_and_allowlist_remain_refused_for_all_63_rows",
+      "proofTarget": "production refusal invariants",
+      "rowsCovered": "63 rows",
+      "result": "passed",
+      "whatItProves": "is_safe_writable_setting remains false, SAFE_WRITABLE_ROWS remains 278, ProductionWrite is refused",
+      "whatItDoesNotProve": "enablement"
+    },
+    {
+      "testName": "aggregate_reports_link_to_candidate_approval_freeze",
+      "proofTarget": "aggregate links",
+      "rowsCovered": "aggregate reports",
+      "result": "passed",
+      "whatItProves": "aggregate reports link candidate approval/freeze reports",
+      "whatItDoesNotProve": "source behavior"
+    }
+  ],
+  "summary": {
+    "testsAdded": 6,
+    "sourceTestFile": "tests/high_risk_candidate_approval_freeze.rs",
+    "rowsAnalyzed": 63,
+    "selectedCandidateRows": 5,
+    "rowsEnabledThisSprint": 0
+  },
+  "nextRecommendedSprint": "High-risk candidate explicit approval review sprint"
+}
