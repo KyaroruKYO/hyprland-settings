@@ -17549,6 +17549,16 @@
     "highRiskPersistedRecoveryCursorDefaultMonitorSpecialCase": true,
     "highRiskPersistedRecoverySafeWritableRowsAfter": 278,
     "highRiskPersistedRecoveryWriteAllowlistChanged": false,
-    "highRiskPersistedRecoveryNextRecommendedSprint": "Integrate high-risk persisted recovery scaffold into production gate dry-run sprint"
+    "highRiskPersistedRecoveryNextRecommendedSprint": "Integrate high-risk persisted recovery scaffold into production gate dry-run sprint",
+    "highRiskProductionGateDryRunReport": "data/reports/high-risk-production-gate-dry-run.v0.55.2.json",
+    "highRiskProductionGateDryRunTestsReport": "data/reports/high-risk-production-gate-dry-run-tests.v0.55.2.json",
+    "highRiskProductionGateDryRunBlockersReport": "data/reports/high-risk-production-gate-dry-run-blockers.v0.55.2.json",
+    "highRiskProductionGateDryRunRowsAnalyzed": 63,
+    "highRiskProductionGateDryRunRowsAccepted": 62,
+    "highRiskProductionGateDryRunRowsRejected": 1,
+    "highRiskProductionGateProductionWriteRowsRefused": 63,
+    "highRiskProductionGateSourceModuleAdded": "src/high_risk_production_gate.rs",
+    "highRiskProductionGateTestsAdded": "tests/high_risk_production_gate_dry_run.rs",
+    "highRiskProductionGateDryRunNextRecommendedSprint": "Explicit high-risk dry-run accepted candidate approval and production gate requirements freeze sprint"
   }
 }

@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "high-risk-production-gate-dry-run-tests",
+  "generatedAt": "2026-06-09T00:54:14.962015Z",
+  "startingCommit": "0fa556e",
+  "tests": [
+    {
+      "testName": "dry_run_gate_evaluates_all_blocked_rows_and_preserves_bucket_counts",
+      "proofTarget": "63-row dry-run gate coverage and bucket counts",
+      "rowsCovered": "63",
+      "bucketCovered": "all",
+      "result": "passed in targeted test run before report generation",
+      "whatItProves": "all 63 rows are classified and ProductionWrite is refused",
+      "whatItDoesNotProve": "live write safety"
+    },
+    {
+      "testName": "complete_temp_only_scaffold_proof_is_accepted_for_non_runtime_dynamic_rows",
+      "proofTarget": "complete scaffold proof acceptance",
+      "rowsCovered": "62",
+      "bucketCovered": "all non-runtime-dynamic buckets",
+      "result": "passed in targeted test run before report generation",
+      "whatItProves": "ReportOnlyDryRun accepts complete temp-only scaffold proof for non-runtime-dynamic rows",
+      "whatItDoesNotProve": "production write approval"
+    },
+    {
+      "testName": "runtime_dynamic_default_monitor_can_only_accept_when_runtime_oracle_is_proven",
+      "proofTarget": "runtime dynamic special-case handling",
+      "rowsCovered": "1",
+      "bucketCovered": "cursor/input",
+      "result": "passed in targeted test run before report generation",
+      "whatItProves": "cursor.default_monitor needs runtime oracle proof for full dry-run acceptance",
+      "whatItDoesNotProve": "runtime monitor-name allowlist/readback safety"
+    },
+    {
+      "testName": "dry_run_gate_rejects_missing_or_incomplete_scaffold_proof",
+      "proofTarget": "missing scaffold proof rejection",
+      "rowsCovered": "1 sample row",
+      "bucketCovered": "debug/crash",
+      "result": "passed in targeted test run before report generation",
+      "whatItProves": "missing plan, backup, rollback, and confirmation proof reject",
+      "whatItDoesNotProve": "all possible malformed plans"
+    },
+    {
+      "testName": "dry_run_gate_rejects_bad_confirmation_and_timeout_keep_apply",
+      "proofTarget": "token and timeout rejection",
+      "rowsCovered": "1 sample row",
+      "bucketCovered": "debug/crash",
+      "result": "passed in targeted test run before report generation",
+      "whatItProves": "wrong token and timeout/no-confirmation reject keep/apply",
+      "whatItDoesNotProve": "live watchdog behavior"
+    },
+    {
+      "testName": "dry_run_gate_rejects_mismatched_row_setting_bucket_and_paths",
+      "proofTarget": "identity and path rejection",
+      "rowsCovered": "1 sample row",
+      "bucketCovered": "display/render",
+      "result": "passed in targeted test run before report generation",
+      "whatItProves": "row, official setting, bucket, and non-temp target mismatches reject",
+      "whatItDoesNotProve": "live path safety beyond refusal"
+    },
+    {
+      "testName": "dry_run_gate_rejects_live_execution_enabled",
+      "proofTarget": "live execution disabled rejection",
+      "rowsCovered": "1 sample row",
+      "bucketCovered": "cursor/input",
+      "result": "passed in targeted test run before report generation",
+      "whatItProves": "live execution enabled is rejected",
+      "whatItDoesNotProve": "actual live execution"
+    },
+    {
+      "testName": "production_write_mode_refuses_all_rows_even_with_complete_scaffold_proof",
+      "proofTarget": "ProductionWrite refusal",
+      "rowsCovered": "63",
+      "bucketCovered": "all",
+      "result": "passed in targeted test run before report generation",
+      "whatItProves": "ProductionWrite refuses all 63 even with complete scaffold proof",
+      "whatItDoesNotProve": "future explicit approval"
+    },
+    {
+      "testName": "current_write_allowlist_and_apply_path_still_refuse_all_blocked_rows",
+      "proofTarget": "current write allowlist/apply refusal",
+      "rowsCovered": "63",
+      "bucketCovered": "all",
+      "result": "passed in targeted test run before report generation",
+      "whatItProves": "is_safe_writable_setting remains false and apply path returns NotAllowlisted",
+      "whatItDoesNotProve": "write enablement"
+    },
+    {
+      "testName": "no_complete_dry_run_acceptance_touches_real_config_paths",
+      "proofTarget": "temp-only proof path boundary",
+      "rowsCovered": "1 sample row",
+      "bucketCovered": "display/render",
+      "result": "passed in targeted test run before report generation",
+      "whatItProves": "accepted proof uses temp target and backup paths only",
+      "whatItDoesNotProve": "all filesystem side effects outside temp path"
+    },
+    {
+      "testName": "screen_shader_track_remains_closed_by_default",
+      "proofTarget": "screen shader closure preservation",
+      "rowsCovered": "decoration.screen_shader",
+      "bucketCovered": "display/render",
+      "result": "passed in targeted test run before report generation",
+      "whatItProves": "screen shader track remains closed for now",
+      "whatItDoesNotProve": "future screen-shader work"
+    },
+    {
+      "testName": "aggregate_reports_link_to_high_risk_production_gate_dry_run_reports",
+      "proofTarget": "aggregate report linkage",
+      "rowsCovered": "aggregate reports",
+      "bucketCovered": "all",
+      "result": "expected to pass after report generation",
+      "whatItProves": "aggregate reports link dry-run proof artifacts",
+      "whatItDoesNotProve": "source behavior"
+    },
+    {
+      "testName": "dry_run_gate_reports_record_required_counts_and_blockers",
+      "proofTarget": "dry-run report structure",
+      "rowsCovered": "63",
+      "bucketCovered": "all",
+      "result": "expected to pass after report generation",
+      "whatItProves": "report records counts, blockers, bucket coverage, and cursor.default_monitor dynamic state",
+      "whatItDoesNotProve": "source behavior beyond generated evidence"
+    }
+  ],
+  "summary": {
+    "sourceTestFile": "tests/high_risk_production_gate_dry_run.rs",
+    "testsAdded": 13,
+    "rowsCovered": 63,
+    "productionWriteRowsRefused": 63,
+    "rowsEnabledThisSprint": 0
+  },
+  "nextRecommendedSprint": "Explicit high-risk dry-run accepted candidate approval and production gate requirements freeze sprint"
+}

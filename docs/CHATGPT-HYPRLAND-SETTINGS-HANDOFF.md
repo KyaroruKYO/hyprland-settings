@@ -1,5 +1,51 @@
 # Hyprland Settings ChatGPT Handoff
 
+State reviewed after the high-risk production gate dry-run sprint on branch `completion-sprint`.
+
+Latest reviewed implementation baseline before this sprint:
+
+- `0fa556e Implement high-risk persisted recovery scaffold`
+
+Latest sprint commit:
+
+- `Integrate high-risk production gate dry-run` (this commit; use `git log -1 --oneline` for the exact hash)
+
+Latest restore point and backups:
+
+- Restore tag: `pre-high-risk-production-gate-dry-run-20260608-174429`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-high-risk-production-gate-dry-run-backup_20260608_174429/`
+- AGS backup: `/home/kyo/Documents/ags-pre-high-risk-production-gate-dry-run-backup_20260608_174429`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-high-risk-production-gate-dry-run-20260608_174429`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-high-risk-production-gate-dry-run-backup_20260608_174429`
+
+Latest high-risk production gate dry-run status:
+
+- Rows analyzed: 63.
+- Rows dry-run accepted: 62.
+- Rows dry-run rejected: 1 (`cursor.default_monitor`, because runtime monitor-name allowlist/readback oracle proof remains missing).
+- Rows production-write refused: 63.
+- Rows enabled this sprint: 0.
+- Rows still blocked: 63.
+- Writable rows before/after: 278 / 278.
+- Blocked rows before/after: 63 / 63.
+- Final counts: 341 readable / 278 writable / 63 blocked.
+- Source module added: `src/high_risk_production_gate.rs`.
+- Tests added: `tests/high_risk_production_gate_dry_run.rs`.
+- Bucket coverage: 23 display/render, 18 cursor/input, 22 debug/crash.
+- Dry-run gate capabilities: accepts complete temp-only persisted recovery scaffold proof for 62 non-runtime-dynamic rows in `ReportOnlyDryRun`; rejects missing recovery plan, missing backup proof, missing rollback proof, missing confirmation proof, wrong token, timeout/no-confirmation keep/apply requests, row/setting/bucket mismatches, non-temp target paths, and live execution enabled; refuses `ProductionWrite` for all 63 rows; proves current allowlist and apply path still reject all 63 rows.
+- Dry-run gate limitations: report-only proof is not live Hyprland runtime safety proof; `ProductionWrite` remains disabled for all 63 rows; no rows were added to `SAFE_WRITABLE_ROWS` or the write allowlist; no live display/render, input/cursor, crash/debug, reload, eval, or runtime proof was run; explicit high-risk enablement approval remains missing.
+- `cursor.default_monitor` special-case status: runtime-dynamic; dry-run scaffold proof exists, but runtime monitor-name allowlist/readback oracle proof remains missing, so it is not eligible for enablement.
+- Review log path: `docs/HIGH-RISK-PRODUCTION-GATE-DRY-RUN-REVIEW-LOG.md` and `/home/kyo/.config/hypr/docs/HIGH-RISK-PRODUCTION-GATE-DRY-RUN-REVIEW-LOG.md`.
+- Blocker report path: `data/reports/high-risk-production-gate-dry-run-blockers.v0.55.2.json`.
+- Dry-run report path: `data/reports/high-risk-production-gate-dry-run.v0.55.2.json`.
+- Dry-run tests report path: `data/reports/high-risk-production-gate-dry-run-tests.v0.55.2.json`.
+- Next recommended sprint: `Explicit high-risk dry-run accepted candidate approval and production gate requirements freeze sprint`.
+- Projected next 3 steps: decide whether any dry-run accepted rows can be proposed for explicit high-risk approval; create a small high-risk enablement candidate batch with production gate requirements frozen; keep live/runtime-proof-required rows blocked until explicit live-safe proof or waiver exists.
+- Validation results: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `desktop-file-validate`, export validator, UI design validator, and schema validator passed. `appstreamcli validate --pedantic` produced only the expected non-blocking GitHub URL and releases-info warnings.
+- Hard boundaries preserved: yes. No push.
+
+---
+
 State reviewed after the high-risk persisted recovery scaffold sprint on branch `completion-sprint`.
 
 Latest reviewed implementation baseline before this sprint:

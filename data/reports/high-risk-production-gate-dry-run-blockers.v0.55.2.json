@@ -1,0 +1,1792 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "high-risk-production-gate-dry-run-blockers",
+  "generatedAt": "2026-06-09T00:54:14.962015Z",
+  "startingCommit": "0fa556e",
+  "blockerCategories": {
+    "missingProductionWriteIntegration": [
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "rejected-runtime-dynamic-oracle-missing; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "runtime monitor-name allowlist/readback oracle missing; production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Add runtime monitor-name oracle proof or an explicit future waiver before any enablement proposal."
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      }
+    ],
+    "missingLiveRuntimeProof": [
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "rejected-runtime-dynamic-oracle-missing; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "runtime monitor-name allowlist/readback oracle missing; production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Add runtime monitor-name oracle proof or an explicit future waiver before any enablement proposal."
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      }
+    ],
+    "missingExplicitApproval": [
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "rejected-runtime-dynamic-oracle-missing; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "runtime monitor-name allowlist/readback oracle missing; production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Add runtime monitor-name oracle proof or an explicit future waiver before any enablement proposal."
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      }
+    ],
+    "dynamicRuntimeState": [
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "rejected-runtime-dynamic-oracle-missing; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "runtime monitor-name allowlist/readback oracle missing; production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Add runtime monitor-name oracle proof or an explicit future waiver before any enablement proposal."
+      }
+    ],
+    "notYetEnablementSprint": [
+      {
+        "rowId": "xwayland.enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "xwayland.create_abstract_socket",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "opengl.nvidia_anti_flicker",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.direct_scanout",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.expand_undersized_textures",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.xp_mode",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.ctm_animation",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.cm_enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.send_content_type",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.cm_auto_hdr",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.new_render_scheduling",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.non_shader_cm",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.cm_sdr_eotf",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.commit_timing_enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.icc_vcgt_enabled",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.use_shader_blur_blend",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.use_fp16",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.keep_unmodified_copy",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.non_shader_cm_interop",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "render.fp16_sdr_tf",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "experimental.wp_cm_1_2",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "quirks.prefer_hdr",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "quirks.skip_non_kms_dmabuf_formats",
+        "bucket": "display/render",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.invisible",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.no_hardware_cursors",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.no_break_fs_vrr",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.min_refresh_rate",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.hotspot_padding",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.inactive_timeout",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.no_warps",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.persistent_warps",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.warp_on_change_workspace",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.warp_on_toggle_special",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.default_monitor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "rejected-runtime-dynamic-oracle-missing; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "runtime monitor-name allowlist/readback oracle missing; production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Add runtime monitor-name oracle proof or an explicit future waiver before any enablement proposal."
+      },
+      {
+        "rowId": "cursor.zoom_factor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.zoom_rigid",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.zoom_disable_aa",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.zoom_detached_camera",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.enable_hyprcursor",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.use_cpu_buffer",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "cursor.warp_back_after_non_mouse_input",
+        "bucket": "cursor/input",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.overlay",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.damage_blink",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.gl_debugging",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.disable_logs",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.disable_time",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.damage_tracking",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.enable_stdout_logs",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.manual_crash",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.suppress_errors",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.disable_scale_checks",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.error_limit",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.error_position",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.colored_stdout_logs",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.log_damage",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.pass",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.full_cm_proto",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.ds_handle_same_buffer_fifo",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.fifo_pending_workaround",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.render_solitary_wo_damage",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.vfr",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      },
+      {
+        "rowId": "debug.invalidate_fp16",
+        "bucket": "debug/crash",
+        "whatDryRunGateNowProves": "accepted-complete-temp-only-scaffold-proof; production write refused; current allowlist refuses real writes",
+        "whatStillBlocksEnablement": "production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint",
+        "nextConcreteAction": "Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen."
+      }
+    ]
+  },
+  "rowsStillBlocked": 63,
+  "rowsEnabledThisSprint": 0,
+  "nextRecommendedSprint": "Explicit high-risk dry-run accepted candidate approval and production gate requirements freeze sprint"
+}

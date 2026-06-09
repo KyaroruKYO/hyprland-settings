@@ -1,0 +1,709 @@
+# High-risk Production Gate Dry-run Review Log
+
+## Sprint summary
+- Rows analyzed: 63
+- Rows dry-run accepted: 62
+- Rows dry-run rejected: 1
+- Rows production-write refused: 63
+- Rows enabled: 0
+- Counts before: 341 readable / 278 writable / 63 blocked
+- Counts after: 341 readable / 278 writable / 63 blocked
+- Source module added: src/high_risk_production_gate.rs
+- Tests added: tests/high_risk_production_gate_dry_run.rs
+- Why this sprint did or did not enable rows: this sprint integrates report-only dry-run production gate evaluation. ProductionWrite mode is explicitly disabled for all 63 rows, live/runtime proof is still missing or requires future approval, and no row has explicit high-risk enablement approval.
+
+## What the dry-run production gate now proves
+- Complete scaffold proof acceptance: accepted for 62 non-runtime-dynamic rows in ReportOnlyDryRun mode.
+- Missing recovery plan rejection: proven by tests.
+- Missing backup proof rejection: proven by tests.
+- Missing rollback proof rejection: proven by tests.
+- Missing confirmation proof rejection: proven by tests.
+- Wrong token rejection: proven by tests.
+- Timeout/no-confirmation rejection for keep/apply: proven by tests.
+- Row mismatch rejection: proven by tests.
+- Bucket mismatch rejection: proven by tests.
+- Non-temp target rejection: proven by tests through recovery plan validation.
+- Live execution enabled rejection: proven by tests.
+- ProductionWrite refusal: proven for all 63 rows.
+- Current write allowlist refusal: proven for all 63 rows through is_safe_writable_setting and write-flow NotAllowlisted results.
+
+## Bucket: display/render
+### Recovery model
+display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+### Rows evaluated
+23
+### Dry-run proof added
+Complete temp-only scaffold proof is accepted in ReportOnlyDryRun mode for display/render rows except no live display proof is claimed.
+### Production refusal proof
+ProductionWrite mode refuses every display/render blocked row and the current write allowlist still rejects them.
+### Remaining blocker
+Live/runtime proof or explicit future waiver, explicit high-risk enablement approval, and future production write integration remain missing.
+### Next concrete action
+Choose a small dry-run accepted candidate batch for explicit high-risk approval review.
+
+## Bucket: cursor/input
+### Recovery model
+cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+### Rows evaluated
+18
+### Dry-run proof added
+Complete temp-only scaffold proof is accepted in ReportOnlyDryRun mode for non-runtime-dynamic cursor/input rows.
+### Runtime dynamic special cases
+cursor.default_monitor remains runtime-dynamic because runtime monitor-name allowlist/readback oracle proof is missing.
+### Production refusal proof
+ProductionWrite mode refuses every cursor/input blocked row and the current write allowlist still rejects them.
+### Remaining blocker
+Live/runtime proof or explicit future waiver, explicit high-risk enablement approval, production write integration, and cursor.default_monitor runtime oracle proof remain missing.
+### Next concrete action
+Keep cursor.default_monitor out of any candidate batch until runtime oracle proof or explicit waiver exists.
+
+## Bucket: debug/crash
+### Recovery model
+debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+### Rows evaluated
+22
+### Dry-run proof added
+Complete temp-only scaffold proof is accepted in ReportOnlyDryRun mode for debug/crash rows.
+### Production refusal proof
+ProductionWrite mode refuses every debug/crash blocked row and the current write allowlist still rejects them.
+### Remaining blocker
+Crash/debug live-safety proof or explicit future waiver, explicit high-risk enablement approval, and future production write integration remain missing.
+### Next concrete action
+Do not enable debug/crash rows until explicit gate approval handles disruption-prone behavior.
+
+## Row-by-row dry-run gate classification
+- Row: xwayland.enabled
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: xwayland.create_abstract_socket
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: opengl.nvidia_anti_flicker
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.direct_scanout
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.expand_undersized_textures
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.xp_mode
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.ctm_animation
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.cm_enabled
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.send_content_type
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.cm_auto_hdr
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.new_render_scheduling
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.non_shader_cm
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.cm_sdr_eotf
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.commit_timing_enabled
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.icc_vcgt_enabled
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.use_shader_blur_blend
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.use_fp16
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.keep_unmodified_copy
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.non_shader_cm_interop
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: render.fp16_sdr_tf
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: experimental.wp_cm_1_2
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: quirks.prefer_hdr
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: quirks.skip_non_kms_dmabuf_formats
+  - Bucket: display/render
+  - Recovery model: display-render-persisted-dead-man-watchdog-with-backup-rollback-and-output-independent-confirmation
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.invisible
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.no_hardware_cursors
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.no_break_fs_vrr
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.min_refresh_rate
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.hotspot_padding
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.inactive_timeout
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.no_warps
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.persistent_warps
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.warp_on_change_workspace
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.warp_on_toggle_special
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.default_monitor
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: rejected-runtime-dynamic-oracle-missing
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: true
+  - Enabled this sprint: false
+  - Exact remaining blocker: runtime monitor-name allowlist/readback oracle missing; production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Add runtime monitor-name oracle proof or an explicit future waiver before any enablement proposal.
+- Row: cursor.zoom_factor
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.zoom_rigid
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.zoom_disable_aa
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.zoom_detached_camera
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.enable_hyprcursor
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.use_cpu_buffer
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: cursor.warp_back_after_non_mouse_input
+  - Bucket: cursor/input
+  - Recovery model: cursor-input-persisted-dead-man-watchdog-with-keyboard-token-confirmation-and-pointer-independent-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.overlay
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.damage_blink
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.gl_debugging
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.disable_logs
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.disable_time
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.damage_tracking
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.enable_stdout_logs
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.manual_crash
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.suppress_errors
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.disable_scale_checks
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.error_limit
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.error_position
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.colored_stdout_logs
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.log_damage
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.pass
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.full_cm_proto
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.ds_handle_same_buffer
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.ds_handle_same_buffer_fifo
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.fifo_pending_workaround
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.render_solitary_wo_damage
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.vfr
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+- Row: debug.invalidate_fp16
+  - Bucket: debug/crash
+  - Recovery model: debug-crash-persisted-dead-man-watchdog-with-external-process-rollback
+  - Dry-run gate status: accepted-complete-temp-only-scaffold-proof
+  - ProductionWrite status: refused-production-write-disabled
+  - Current allowlist status: is_safe_writable_setting=false
+  - Runtime dynamic special case: false
+  - Enabled this sprint: false
+  - Exact remaining blocker: production write integration disabled; live/runtime safety proof or explicit future waiver missing; explicit high-risk enablement approval missing; not an enablement sprint
+  - Recommended next action: Decide whether this dry-run accepted row can enter a small explicit high-risk approval batch with production gate requirements frozen.
+
+## Projected next 3 steps
+1. Decide whether any dry-run accepted rows can be proposed for explicit high-risk approval.
+2. Create a small high-risk enablement candidate batch with production gate requirements frozen.
+3. Keep live/runtime-proof-required rows blocked until explicit live-safe proof or waiver exists.
