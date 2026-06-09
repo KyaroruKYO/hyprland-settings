@@ -676,14 +676,11 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
     row_box.set_margin_end(12);
 
     row_box.append(&body_label(&setting.label));
-    row_box.append(&small_label(&format!(
-        "{} · {} · {}",
-        setting.official_setting, setting.row_id, setting.subsection
-    )));
     if include_context {
         row_box.append(&small_label(&format!(
-            "{} · {}",
+            "In {} / {} · {}",
             setting.tab_label,
+            setting.subsection,
             search_rank_label(result.rank)
         )));
     }
@@ -691,41 +688,57 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
         row_box.append(&wrapped_small_label(&setting.description));
     }
 
-    let read_status = if setting
-        .read_support
-        .contains("current-value-read-allowlisted")
-    {
-        "read-allowlisted metadata"
-    } else {
-        "non-read classified metadata"
-    };
-    let report_status = if setting.report_only {
-        "report-only"
-    } else {
-        "not report-only"
-    };
-    let write_status = if setting.edit.editable {
-        "editable pilot"
-    } else if setting.is_write_candidate {
-        "write metadata present"
-    } else {
-        "not editable"
-    };
-
-    row_box.append(&small_label(&format!(
-        "{} · current: {} · {} · {} · {} · preview: {} · risk: {} · write support: {}",
-        read_status,
-        setting.current_value.status_label(),
-        setting.comparison.badge,
-        report_status,
-        write_status,
-        setting.preview_status,
-        setting.risk_class,
-        setting.write_support
-    )));
+    row_box.append(&small_label(&friendly_row_current_status(setting)));
+    if let Some(status) = friendly_row_attention_status(setting) {
+        row_box.append(&small_label(&status));
+    }
 
     row.set_child(Some(&row_box));
     row
+}
+
+fn friendly_row_current_status(setting: &crate::ui::model::UiSetting) -> String {
+    match setting.current_value.status {
+        CurrentValueSourceStatus::Configured => {
+            let value = setting
+                .current_value
+                .raw_value
+                .as_deref()
+                .map(friendly_current_value)
+                .unwrap_or_else(|| "Set".to_string());
+            format!("Current: {value}")
+        }
+        CurrentValueSourceStatus::NotConfigured => "Uses Hyprland default".to_string(),
+        CurrentValueSourceStatus::DuplicateConflict => "Needs attention".to_string(),
+        CurrentValueSourceStatus::ReadUnavailable => "Not available right now".to_string(),
+    }
+}
+
+fn friendly_current_value(value: &str) -> String {
+    match value.trim().to_ascii_lowercase().as_str() {
+        "1" | "true" | "yes" | "on" => "On".to_string(),
+        "0" | "false" | "no" | "off" => "Off".to_string(),
+        "" => "Empty".to_string(),
+        _ => value.to_string(),
+    }
+}
+
+fn friendly_row_attention_status(setting: &crate::ui::model::UiSetting) -> Option<String> {
+    if setting.current_value.status == CurrentValueSourceStatus::DuplicateConflict {
+        return None;
+    }
+
+    if setting.current_value.warning.is_some() {
+        return Some("Needs attention".to_string());
+    }
+
+    if high_risk_write_policy(&setting.row_id).is_some()
+        || setting.row_id == "decoration.screen_shader"
+    {
+        return Some("Extra care needed".to_string());
+    }
+
+    None
 }
 
 fn build_detail_panel() -> (gtk::ScrolledWindow, gtk::Box) {

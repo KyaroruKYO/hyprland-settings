@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "dashboard-card-navigation-row-list-copy-polish",
+  "generatedAt": "2026-06-09T08:48:56Z",
+  "startingCommit": "eb213c9",
+  "userVisibleProblem": "The normal settings row list still showed internal proof/debug labels such as read/write allowlist status, report-only state, preview status, raw risk class, and row identifiers.",
+  "rowListBefore": [
+    "Setting name",
+    "Official setting, internal row id, subsection",
+    "Description",
+    "read-allowlisted metadata / non-read classified metadata",
+    "current raw status, comparison badge, report-only state, editable pilot, preview state, raw risk class, write support"
+  ],
+  "rowListAfter": [
+    "Setting name",
+    "Search context only when searching",
+    "Short description",
+    "Friendly current-value status such as Current: On, Uses Hyprland default, Needs attention, or Not available right now",
+    "Friendly warning line only when needed, such as Extra care needed"
+  ],
+  "removedFromVisibleRows": [
+    "read support labels",
+    "write support labels",
+    "report-only status",
+    "editable pilot",
+    "preview status",
+    "risk class raw names",
+    "current metadata wording",
+    "official/internal row IDs",
+    "technical proof labels",
+    "not-write-allowlisted",
+    "current-value-read-allowlisted",
+    "read-allowlisted metadata",
+    "non-read classified metadata",
+    "not report-only",
+    "write metadata present"
+  ],
+  "movedToAdvancedDetails": [
+    "row id",
+    "official setting",
+    "read support raw label",
+    "write support raw label",
+    "report-only status",
+    "preview status",
+    "risk class raw label",
+    "source line and duplicate line metadata",
+    "proof and validation labels"
+  ],
+  "dashboardNavigationBehavior": {
+    "openButtonsNavigate": true,
+    "cardLevelClickBehavior": "deferred",
+    "mapping": {
+      "Appearance": "Appearance",
+      "Windows & Layout": "Windows & Layout",
+      "Input": "Input",
+      "Displays": "Display",
+      "Shortcuts": "Keyboard",
+      "Advanced": "System"
+    }
+  },
+  "dashboardCards": [
+    "Appearance",
+    "Windows & Layout",
+    "Input",
+    "Displays",
+    "Shortcuts",
+    "Advanced"
+  ],
+  "rowsSmokeReviewed": [
+    "appearance.blur.enabled",
+    "cursor.default_monitor",
+    "debug.manual_crash",
+    "decoration.screen_shader",
+    "render.direct_scanout",
+    "windows.snap.enabled"
+  ],
+  "filesChanged": [
+    "src/ui/window.rs",
+    "tests/dashboard_card_navigation_row_list_copy_polish.rs",
+    "data/reports/dashboard-card-navigation-row-list-copy-polish.v0.55.2.json",
+    "docs/DASHBOARD-CARD-NAVIGATION-ROW-LIST-COPY-POLISH-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/DASHBOARD-CARD-NAVIGATION-ROW-LIST-COPY-POLISH-REVIEW-LOG.md"
+  ],
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "testsAdded": [
+    "tests/dashboard_card_navigation_row_list_copy_polish.rs"
+  ],
+  "proofUsed": [
+    "src/ui/window.rs row-list rendering source",
+    "UiProjection detail projection for smoke-reviewed rows",
+    "Dashboard card source mapping and Open button connection",
+    "SAFE_WRITABLE_ROWS.len() remains 341",
+    "dashboard_card_navigation_row_list_copy_polish tests"
+  ],
+  "proofStillMissing": [
+    "Pixel-level screenshot verification was not added.",
+    "Whole-card click behavior is deferred; Open buttons remain the tested navigation mechanism."
+  ],
+  "nextRecommendedSprint": "Manual visual smoke pass for row-list copy in the running GTK app, followed by small interaction polish if whole-card navigation is desired."
+}
