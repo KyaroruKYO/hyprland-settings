@@ -236,6 +236,23 @@
     "highRiskProductionGateExplicitApprovalRequiredRows": 63,
     "highRiskProductionGateSafeWritableRowsAfter": 278,
     "highRiskProductionGateWriteAllowlistChanged": false,
-    "highRiskProductionGateNextRecommendedSprint": "Implement high-risk persisted recovery plan scaffold sprint"
+    "highRiskProductionGateNextRecommendedSprint": "Implement high-risk persisted recovery plan scaffold sprint",
+    "highRiskPersistedRecoveryScaffoldReport": "data/reports/high-risk-persisted-recovery-scaffold.v0.55.2.json",
+    "highRiskPersistedRecoveryScaffoldTestsReport": "data/reports/high-risk-persisted-recovery-scaffold-tests.v0.55.2.json",
+    "highRiskPersistedRecoveryScaffoldBlockersReport": "data/reports/high-risk-persisted-recovery-scaffold-blockers.v0.55.2.json",
+    "highRiskPersistedRecoveryRowsAnalyzed": 63,
+    "highRiskPersistedRecoveryRowsEnabledThisSprint": 0,
+    "highRiskPersistedRecoveryRowsStillBlocked": 63,
+    "highRiskPersistedRecoverySourceModuleAdded": "src/high_risk_persisted_recovery.rs",
+    "highRiskPersistedRecoveryTestsAdded": [
+      "tests/high_risk_persisted_recovery_scaffold.rs"
+    ],
+    "highRiskPersistedRecoveryDisplayRenderRowsCovered": 23,
+    "highRiskPersistedRecoveryCursorInputRowsCovered": 18,
+    "highRiskPersistedRecoveryDebugCrashRowsCovered": 22,
+    "highRiskPersistedRecoveryCursorDefaultMonitorSpecialCase": true,
+    "highRiskPersistedRecoverySafeWritableRowsAfter": 278,
+    "highRiskPersistedRecoveryWriteAllowlistChanged": false,
+    "highRiskPersistedRecoveryNextRecommendedSprint": "Integrate high-risk persisted recovery scaffold into production gate dry-run sprint"
   }
 }

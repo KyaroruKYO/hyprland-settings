@@ -1,5 +1,48 @@
 # Hyprland Settings ChatGPT Handoff
 
+State reviewed after the high-risk persisted recovery scaffold sprint on branch `completion-sprint`.
+
+Latest reviewed implementation baseline before this sprint:
+
+- `eca1514 Plan high-risk production gate recovery proof`
+
+Latest sprint commit:
+
+- `Implement high-risk persisted recovery scaffold` (this commit; use `git log -1 --oneline` for the exact hash)
+
+Latest restore point and backups:
+
+- Restore tag: `pre-high-risk-persisted-recovery-scaffold-20260608-172425`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-high-risk-persisted-recovery-scaffold-backup_20260608_172425/`
+- AGS backup: `/home/kyo/Documents/ags-pre-high-risk-persisted-recovery-scaffold-backup_20260608_172425`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-high-risk-persisted-recovery-scaffold-20260608_172425`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-high-risk-persisted-recovery-scaffold-backup_20260608_172425`
+
+Latest high-risk persisted recovery scaffold status:
+
+- Rows analyzed: 63.
+- Rows enabled this sprint: 0.
+- Rows still blocked: 63.
+- Writable rows before/after: 278 / 278.
+- Blocked rows before/after: 63 / 63.
+- Final counts: 341 readable / 278 writable / 63 blocked.
+- Source module added: `src/high_risk_persisted_recovery.rs`.
+- Tests added: `tests/high_risk_persisted_recovery_scaffold.rs`.
+- Bucket coverage: 23 display/render, 18 cursor/input, 22 debug/crash.
+- `cursor.default_monitor` special-case status: runtime-dynamic monitor-name allowlist/readback proof still missing.
+- Scaffold capabilities: temp-only persisted plan creation/validation/persistence/load, required-field rejection, mismatched row/bucket rejection, non-high-risk row rejection, non-temp target rejection, temp backup creation, temp rollback restore, parser reread after restore, correct token acceptance, wrong token rejection, timeout/no-confirmation rollback decision, confirmed keep/apply decision, and live-target refusal while live execution is disabled.
+- Scaffold limitations: not integrated into production write planning/apply flow, no live/runtime proof, no explicit high-risk enablement approval, no row enablement, no write allowlist change, no `SAFE_WRITABLE_ROWS` change.
+- Review log path: `docs/HIGH-RISK-PERSISTED-RECOVERY-SCAFFOLD-REVIEW-LOG.md` and `/home/kyo/.config/hypr/docs/HIGH-RISK-PERSISTED-RECOVERY-SCAFFOLD-REVIEW-LOG.md`.
+- Blocker report path: `data/reports/high-risk-persisted-recovery-scaffold-blockers.v0.55.2.json`.
+- Scaffold report path: `data/reports/high-risk-persisted-recovery-scaffold.v0.55.2.json`.
+- Scaffold tests report path: `data/reports/high-risk-persisted-recovery-scaffold-tests.v0.55.2.json`.
+- Next recommended sprint: `Integrate high-risk persisted recovery scaffold into production gate dry-run sprint`.
+- Projected next 3 steps: integrate the persisted recovery scaffold into a production gate in report-only/dry-run mode; enable fully proven low-risk high-risk-bucket candidates only after production gate acceptance/rejection tests pass; create explicit live/runtime approval plans only for rows that cannot be proven non-live.
+- Validation results: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `desktop-file-validate`, export validator, UI design validator, and schema validator passed. `appstreamcli validate --pedantic` produced only the expected non-blocking GitHub URL and releases-info warnings.
+- Hard boundaries preserved: yes. No push.
+
+---
+
 State reviewed after the high-risk production gate and recovery proof planning sprint on branch `completion-sprint`.
 
 Latest reviewed implementation baseline before this sprint:

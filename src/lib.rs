@@ -7,6 +7,7 @@ pub mod current_config;
 pub mod cursor_input_boundary;
 pub mod display_render_boundary;
 pub mod export;
+pub mod high_risk_persisted_recovery;
 pub mod high_risk_recovery;
 pub mod live_validation;
 pub mod metadata;
