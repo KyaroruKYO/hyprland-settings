@@ -88,11 +88,8 @@ pub fn show_main_window(
     settings_view.set_vexpand(true);
     content.append(&settings_view);
 
-    let diagnostics = build_status_diagnostics_expander(&model);
-    settings_view.append(&diagnostics);
-
     let search_entry = gtk::SearchEntry::new();
-    search_entry.set_placeholder_text(Some("Search export metadata"));
+    search_entry.set_placeholder_text(Some("Search settings"));
     settings_view.append(&search_entry);
 
     let tab_title = title_label("");
@@ -459,126 +456,6 @@ fn dashboard_needs_attention(model: &UiProjection) -> bool {
             .structured_families
             .iter()
             .any(|family| family.warning_count > 0))
-}
-
-fn build_status_diagnostics_expander(model: &UiProjection) -> gtk::Expander {
-    let summary = format!(
-        "Export validation passed · official scalar coverage: {} / {} · diagnostics",
-        model.summary.official_scalar_covered, model.summary.official_scalar_total
-    );
-    let expander = gtk::Expander::new(Some(&summary));
-    expander.set_expanded(false);
-    expander.set_tooltip_text(Some(
-        "Export and parser diagnostics are collapsed by default so setting details remain visible.",
-    ));
-
-    let diagnostics = build_summary_card(model);
-    let diagnostics_scroll = gtk::ScrolledWindow::builder()
-        .max_content_height(220)
-        .min_content_height(120)
-        .vexpand(false)
-        .hexpand(true)
-        .child(&diagnostics)
-        .build();
-    diagnostics_scroll.set_policy(gtk::PolicyType::Automatic, gtk::PolicyType::Automatic);
-    expander.set_child(Some(&diagnostics_scroll));
-    expander
-}
-
-fn build_summary_card(model: &UiProjection) -> gtk::Frame {
-    let frame = gtk::Frame::new(None);
-    let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
-    content.set_margin_top(12);
-    content.set_margin_bottom(12);
-    content.set_margin_start(12);
-    content.set_margin_end(12);
-
-    content.append(&title_label("Export validation passed"));
-    content.append(&body_label(&format!("Export path: {}", model.export_dir)));
-    content.append(&body_label(&format!(
-        "Hyprland {} · schema {}",
-        model.hyprland_version, model.schema_version
-    )));
-    content.append(&body_label(&format!(
-        "Inventory rows: {} · official scalar coverage: {} / {}",
-        model.summary.inventory_rows,
-        model.summary.official_scalar_covered,
-        model.summary.official_scalar_total
-    )));
-    content.append(&body_label(&format!(
-        "Read allowlist: {} · non-read: {} · preview/parser-needed: {} · report-only/high-risk: {}",
-        model.summary.read_allowlist_rows,
-        model.summary.non_read_rows,
-        model.summary.preview_parser_needed_rows,
-        model.summary.report_only_high_risk_rows
-    )));
-    content.append(&body_label(&format!(
-        "Safe parsed-preview: {} · warning-preview: {} · deferred parser rows: {}",
-        model.summary.safe_parsed_preview_candidates,
-        model.summary.warning_preview_candidates,
-        model.summary.deferred_parser_rows
-    )));
-    content.append(&body_label(&format!(
-        "Active write candidate: {} · structured families: {}",
-        model.summary.active_write_candidate_ids.join(", "),
-        model.summary.structured_family_count
-    )));
-    content.append(&body_label(
-        "Export metadata is bundled. Current values are parsed from hyprland.conf as plain text when available. AGS is not required at runtime.",
-    ));
-    content.append(&body_label(&model.config_discovery.summary()));
-    content.append(&small_label(model.config_discovery.live_read_status()));
-    content.append(&body_label(&model.current_config.summary()));
-    content.append(&body_label(&format!(
-        "Current-value rows: readable {} / {} · unreadable {} · configured {} · unconfigured {} · conflicts {} · parser warnings {}",
-        model.current_value_summary.readable_rows,
-        model.current_value_summary.total_rows,
-        model.current_value_summary.unreadable_rows,
-        model.current_value_summary.configured_rows,
-        model.current_value_summary.unconfigured_rows,
-        model.current_value_summary.duplicate_conflict_rows,
-        model.current_value_summary.parser_warning_rows
-    )));
-    content.append(&body_label(&model.current_config.structured_summary()));
-    append_structured_family_summary(model, &content);
-    content.append(&body_label(&write_safety_text(model)));
-
-    frame.set_child(Some(&content));
-    frame
-}
-
-fn append_structured_family_summary(model: &UiProjection, content: &gtk::Box) {
-    if model.structured_families.is_empty() {
-        return;
-    }
-
-    content.append(&body_label("Structured config entries"));
-    for family in &model.structured_families {
-        content.append(&small_label(&format!(
-            "{} ({}) · {} entries · warnings: {} · {}",
-            family.label,
-            family.family_id,
-            family.entries.len(),
-            family.warning_count,
-            family.edit_status
-        )));
-        for entry in family.entries.iter().take(3) {
-            content.append(&small_label(&format!(
-                "{}:{} · {} · {}",
-                entry.source_path, entry.line_number, entry.parser_status, entry.raw_line
-            )));
-            if let Some(warning) = &entry.warning {
-                content.append(&small_label(&format!("warning: {warning}")));
-            }
-        }
-        if family.entries.len() > 3 {
-            content.append(&small_label(&format!(
-                "{} more {} entries preserved read-only",
-                family.entries.len() - 3,
-                family.family_id
-            )));
-        }
-    }
 }
 
 fn render_dashboard_view(
@@ -1231,22 +1108,6 @@ fn search_rank_label(rank: Option<SearchRank>) -> &'static str {
         Some(SearchRank::Metadata) => "metadata match",
         None => "selected tab",
     }
-}
-
-fn write_safety_text(model: &UiProjection) -> String {
-    let mut parts = vec!["Write controls gated".to_string()];
-    for candidate in &model.active_write_candidates {
-        parts.push(format!(
-            "active candidate: {} · target mode: {} · executable: {} · command generation: {}",
-            candidate.row_id,
-            candidate.target_mode,
-            candidate.executable,
-            candidate.command_generation_allowed
-        ));
-    }
-    parts.push("first pilot requires backup and reread verification".to_string());
-    parts.push("no Hyprland reload command is run".to_string());
-    parts.join(" · ")
 }
 
 fn title_label(text: &str) -> gtk::Label {

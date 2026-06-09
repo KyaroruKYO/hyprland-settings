@@ -82,10 +82,10 @@ fn dashboard_source_hides_settings_work_area_and_omits_backend_counts() {
     let dashboard_start = source
         .find("fn build_dashboard_view")
         .expect("dashboard function should exist");
-    let diagnostics_start = source
-        .find("fn build_status_diagnostics_expander")
-        .expect("diagnostics function should exist");
-    let dashboard_source = &source[dashboard_start..diagnostics_start];
+    let render_start = source
+        .find("fn render_dashboard_view")
+        .expect("dashboard render function should exist");
+    let dashboard_source = &source[dashboard_start..render_start];
 
     for card in [
         "Appearance",

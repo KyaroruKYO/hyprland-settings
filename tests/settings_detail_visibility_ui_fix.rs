@@ -31,12 +31,14 @@ fn read_json(path: &str) -> serde_json::Value {
 }
 
 #[test]
-fn window_layout_uses_collapsed_diagnostics_and_split_work_area() {
+fn window_layout_hides_diagnostics_and_keeps_split_work_area() {
     let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
 
-    assert!(source.contains("build_status_diagnostics_expander"));
-    assert!(source.contains("expander.set_expanded(false)"));
-    assert!(source.contains(".max_content_height(220)"));
+    assert!(!source.contains("fn build_status_diagnostics_expander"));
+    assert!(!source.contains("fn build_summary_card"));
+    assert!(!source.contains("settings_view.append(&diagnostics)"));
+    assert!(!source.contains("Search export metadata"));
+    assert!(source.contains("Search settings"));
     assert!(source.contains("gtk::Paned::new(gtk::Orientation::Horizontal)"));
     assert!(source.contains("work_area.set_start_child(Some(&settings_scroll))"));
     assert!(source.contains("work_area.set_end_child(Some(&detail_panel))"));

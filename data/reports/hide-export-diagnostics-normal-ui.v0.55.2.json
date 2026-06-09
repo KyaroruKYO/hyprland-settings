@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "hide-export-diagnostics-normal-ui",
+  "generatedAt": "2026-06-09T09:06:13Z",
+  "startingCommit": "12d835a",
+  "userVisibleProblem": "Normal category pages still showed a development diagnostics expander above search with export validation, official scalar coverage, schema, inventory, parser, and write-safety metadata.",
+  "diagnosticsBefore": {
+    "visibleAboveSearch": true,
+    "summary": "Export validation passed · official scalar coverage: 341 / 341 · diagnostics",
+    "expandedContent": [
+      "Export validation passed",
+      "Export path",
+      "Hyprland version/schema",
+      "Inventory rows and official scalar coverage",
+      "Read allowlist and non-read counts",
+      "Parser diagnostics and structured entries",
+      "Write controls gated"
+    ]
+  },
+  "diagnosticsAfter": {
+    "visibleAboveSearch": false,
+    "dashboardVisibleDiagnostics": false,
+    "normalCategoryVisibleDiagnostics": false,
+    "codeHelpersPreserved": false,
+    "reportsAndTestsStillContainDiagnostics": true
+  },
+  "visibleUiRemoved": [
+    "Export validation passed diagnostics expander",
+    "official scalar coverage visible wording",
+    "schema/inventory/read-allowlist diagnostics card",
+    "parser diagnostics card",
+    "structured family diagnostics card",
+    "write controls gated diagnostics card"
+  ],
+  "searchPlaceholderChange": {
+    "before": "Search export metadata",
+    "after": "Search settings"
+  },
+  "filesChanged": [
+    "src/ui/window.rs",
+    "tests/settings_detail_visibility_ui_fix.rs",
+    "tests/hide_export_diagnostics_normal_ui.rs",
+    "data/reports/hide-export-diagnostics-normal-ui.v0.55.2.json",
+    "docs/HIDE-EXPORT-DIAGNOSTICS-NORMAL-UI-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/HIDE-EXPORT-DIAGNOSTICS-NORMAL-UI-REVIEW-LOG.md"
+  ],
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "testsAdded": [
+    "tests/hide_export_diagnostics_normal_ui.rs"
+  ],
+  "proofUsed": [
+    "src/ui/window.rs no longer instantiates, appends, or defines the diagnostics expander in normal UI construction",
+    "Search placeholder source now uses Search settings",
+    "Dashboard, sidebar, row-list copy, grouped detail sections, and advanced metadata source checks",
+    "SAFE_WRITABLE_ROWS.len() remains 341",
+    "hide_export_diagnostics_normal_ui tests"
+  ],
+  "proofStillMissing": [
+    "Pixel-level screenshot verification was not added."
+  ],
+  "nextRecommendedSprint": "Manual visual smoke pass in the running GTK app to confirm category pages start with search and no export diagnostics are visible."
+}
