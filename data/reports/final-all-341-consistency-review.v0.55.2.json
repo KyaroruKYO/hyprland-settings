@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "final-all-341-consistency-review",
+  "generatedAt": "2026-06-09T03:41:33.589729+00:00",
+  "startingCommit": "f54c88a Complete cursor default monitor oracle proof",
+  "finalCounts": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0,
+    "remainingBlockedRows": []
+  },
+  "sourceChecks": {
+    "safeWritableRowsLen": 341,
+    "cursorDefaultMonitorIncluded": true,
+    "cursorDefaultMonitorValueKind": "ScalarWriteValueKind::MonitorName",
+    "cursorDefaultMonitorHighRiskGated": true,
+    "allHighRiskRowsRequireProductionGateProof": true,
+    "missingHighRiskGateProofRejectsWrite": true,
+    "realConfigPathsNotTouchedInTests": true,
+    "screenShaderProductionGatePreserved": true
+  },
+  "reportChecks": {
+    "aggregateReportsChecked": [
+      "data/reports/all-341-unified-pipeline.v0.55.2.json",
+      "data/reports/scalar-read-write-coverage.v0.55.2.json",
+      "data/reports/deferred-validator-remaining-items.v0.55.2.json",
+      "data/reports/next-high-risk-bucket-readiness.v0.55.2.json",
+      "data/reports/writable-value-type-evidence-matrix.v0.55.2.json",
+      "data/reports/writable-value-type-gap-summary.v0.55.2.json",
+      "data/reports/final-341-writable-coverage.v0.55.2.json",
+      "data/reports/cursor-default-monitor-runtime-oracle-proof.v0.55.2.json"
+    ],
+    "allCurrentAggregateCountsAgree": true,
+    "expectedCounts": {
+      "readableRows": 341,
+      "writableRows": 341,
+      "blockedRows": 0
+    },
+    "remainingBlockedRows": []
+  },
+  "testChecks": {
+    "preMergeValidationStatus": "passed",
+    "postMergeValidationStatus": "pending",
+    "requiredCommands": [
+      "cargo fmt",
+      "cargo fmt --check",
+      "cargo check",
+      "cargo test",
+      "cargo build --release",
+      "desktop-file-validate data/applications/io.github.kyarorukyo.hyprlandsettings.desktop",
+      "appstreamcli validate --pedantic data/metainfo/io.github.kyarorukyo.hyprlandsettings.metainfo.xml || true",
+      "python /home/kyo/.config/hypr/ags/validate-hyprland-settings-export-v0552.py",
+      "python ~/.config/hypr/ags/validate-settings-ui-design-draft.py",
+      "python ~/.config/hypr/ags/validate-schema-draft.py"
+    ],
+    "preMergeValidationResults": {
+      "cargo fmt": "passed",
+      "cargo fmt --check": "passed",
+      "cargo check": "passed",
+      "cargo test": "passed",
+      "cargo build --release": "passed",
+      "desktop-file-validate": "passed",
+      "appstreamcli validate --pedantic": "passed-with-expected-non-blocking-releases-info-warning",
+      "export validator": "passed",
+      "ui design validator": "passed",
+      "schema draft validator": "passed"
+    }
+  },
+  "uiDocChecks": {
+    "readmeUpdated": true,
+    "projectStatusUpdated": true,
+    "handoffUpdateStatus": "updated-pre-merge-validation-passed",
+    "currentStatusWording": "Hyprland Settings is a Rust + GTK4/libadwaita settings app for Hyprland. The current model covers all 341 official scalar Hyprland settings: 341 readable, 341 writable, and 0 blocked. High-risk settings are protected by gated recovery/confirmation paths. Live runtime mutation/reload proof is not claimed; writes are modeled through the gated persistent config-write path.",
+    "liveRuntimeMutationClaimed": false
+  },
+  "staleStateSearch": {
+    "termsSearched": [
+      "278 writable",
+      "63 blocked",
+      "340 writable",
+      "1 blocked",
+      "cursor.default_monitor blocked",
+      "cursor.default_monitor remains blocked",
+      "rowsStillBlocked: 1",
+      "blockedRows: 1",
+      "dry-run accepted but not enabled",
+      "ProductionWrite refused for all 63",
+      "candidateForReview",
+      "not an enablement sprint",
+      "selected candidate batch",
+      "62 rows enabled but 1 blocked"
+    ],
+    "currentStateFilesUpdated": [
+      "README.md",
+      "docs/PROJECT-STATUS.md"
+    ],
+    "historicalReferencesPreserved": true,
+    "currentStateStaleReferencesRemoved": [
+      "README read-only/future-write wording"
+    ]
+  },
+  "githubUpdateStatus": {
+    "status": "pending-gh-auth-after-validation",
+    "releaseCreated": false
+  },
+  "mergeStatus": {
+    "mergedToMain": false,
+    "mainCommitAfterMerge": null,
+    "mergeCommand": null
+  },
+  "pushStatus": {
+    "pushedMain": false,
+    "forcePushUsed": false,
+    "pushCommand": null
+  },
+  "proofUsed": [
+    "Rust SAFE_WRITABLE_ROWS source and tests",
+    "final 341 writable coverage report",
+    "current aggregate reports",
+    "cursor.default_monitor runtime monitor-name oracle tests",
+    "high-risk production gate tests",
+    "README and project status docs review"
+  ],
+  "proofStillMissing": [
+    "live runtime mutation/reload proof is not claimed"
+  ],
+  "nextRecommendedSprint": "Final UI review and packaging readiness sprint"
+}

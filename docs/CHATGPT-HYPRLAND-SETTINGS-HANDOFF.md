@@ -1,5 +1,38 @@
 # Hyprland Settings ChatGPT Handoff
 
+State reviewed during the final all-341 consistency, main merge, and GitHub update sprint on branch `completion-sprint`.
+
+Latest commit before merge:
+
+- `f54c88a Complete cursor default monitor oracle proof`
+
+Latest main commit after merge:
+
+- Pending until merge completes.
+
+Latest restore point and backups:
+
+- Restore tag: `pre-final-all-341-main-merge-github-update-20260608-203656`
+- Project backup: `/home/kyo/Documents/hyprland-settings-pre-final-all-341-main-merge-github-update-backup_20260608_203656/`
+- AGS backup: `/home/kyo/Documents/ags-pre-final-all-341-main-merge-github-update-backup_20260608_203656`
+- Hypr config backup: `/home/kyo/hyprland-config-backups/hypr-pre-final-all-341-main-merge-github-update-20260608_203656`
+- Handoff backup: `/home/kyo/Documents/system-audit/next-agent-handoff-pre-final-all-341-main-merge-github-update-backup_20260608_203656`
+
+Latest final all-341 status:
+
+- Final counts: 341 readable / 341 writable / 0 blocked.
+- Consistency review result: passed pre-merge validation.
+- README/status doc updates: `README.md` updated; `docs/PROJECT-STATUS.md` created.
+- GitHub update status: pending validation and merge.
+- Merge status: pending.
+- Push status: pending.
+- Remaining limitations: live runtime mutation/reload proof is not claimed; packaging/release readiness remains future work.
+- Next recommended sprint: `Final UI review and packaging readiness sprint`.
+- Validation results: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `desktop-file-validate`, export validator, UI design validator, and schema validator passed. `appstreamcli validate --pedantic` produced only the expected non-blocking releases-info warning.
+- Hard boundaries preserved so far: yes. No real config/runtime mutation, Hyprland reload/eval/Lua, live display/input/crash proof, screen-shader work, release creation, force-push, or repo visibility changes.
+
+---
+
 State reviewed after the cursor.default_monitor runtime monitor-name oracle proof sprint on branch `completion-sprint`.
 
 Latest reviewed implementation baseline before this sprint:

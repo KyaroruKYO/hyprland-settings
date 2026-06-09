@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "github-project-update",
+  "generatedAt": "2026-06-09T03:41:33.589729+00:00",
+  "githubCliAvailable": null,
+  "githubAuthenticated": null,
+  "repoDetected": null,
+  "repoRemote": "https://github.com/KyaroruKYO/hyprland-settings.git",
+  "descriptionUpdated": false,
+  "topicsUpdated": false,
+  "readmeUpdated": true,
+  "projectPageUpdated": false,
+  "releaseCreated": false,
+  "issuesOrProjectsUpdated": false,
+  "commandsRun": [
+    "cargo fmt",
+    "cargo fmt --check",
+    "cargo check",
+    "cargo test",
+    "cargo build --release",
+    "desktop-file-validate data/applications/io.github.kyarorukyo.hyprlandsettings.desktop",
+    "appstreamcli validate --pedantic data/metainfo/io.github.kyarorukyo.hyprlandsettings.metainfo.xml || true",
+    "python /home/kyo/.config/hypr/ags/validate-hyprland-settings-export-v0552.py",
+    "python ~/.config/hypr/ags/validate-settings-ui-design-draft.py",
+    "python ~/.config/hypr/ags/validate-schema-draft.py"
+  ],
+  "errors": [],
+  "status": "pending-gh-auth-after-validation"
+}
