@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "configSelectionStatePickerScaffold",
+  "generatedAt": "2026-06-09T21:40:39-07:00",
+  "startingCommit": "e25c6db1a69f008dc13ab07eceb7689979d27eaa Add connected file detail UI",
+  "goal": "Add read-only config selection state and a manual config picker scaffold without activating file picking, persistence, profile switching, layered writes, or write-target changes.",
+  "filesChanged": [
+    "src/config_selection.rs",
+    "src/lib.rs",
+    "src/ui/window.rs",
+    "tests/config_selection_state.rs",
+    "tests/config_selection_ui.rs",
+    "tests/dashboard_config_page_scaffold.rs",
+    "data/reports/config-selection-state-picker-scaffold.v0.55.2.json",
+    "docs/CONFIG-SELECTION-STATE-PICKER-SCAFFOLD-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/CONFIG-SELECTION-STATE-PICKER-SCAFFOLD-REVIEW-LOG.md"
+  ],
+  "selectionStateModel": {
+    "module": "src/config_selection.rs",
+    "types": [
+      "ConfigSelectionState",
+      "ConfigSelectionSource",
+      "ConfigSelectionPreview",
+      "SourceFollowChoice",
+      "ManualConfigChoice",
+      "ConfigSelectionLifecycle"
+    ],
+    "behavior": [
+      "Represents auto-detected config.",
+      "Represents manual candidate selected for preview only.",
+      "Represents review-all, only-this-file, and cancel source-follow choices.",
+      "Represents cancelled and confirmed-for-future-review lifecycle states.",
+      "write_target_path returns only the auto-detected config and does not promote manual preview paths."
+    ]
+  },
+  "manualPickerScaffold": {
+    "active": false,
+    "behavior": "The Config page shows Choose Config File... (planned) as a disabled placeholder. No GTK file picker is opened in this sprint."
+  },
+  "sourceFollowScaffold": {
+    "active": false,
+    "choicesRepresentedInModel": [
+      "ReviewAllConnectedFiles",
+      "OnlySelectedFile",
+      "Cancel"
+    ],
+    "uiCopy": "Review connected files: Review all connected files / Only this file / Cancel."
+  },
+  "uiChanges": [
+    "Config file section now says auto-detection is a starting point.",
+    "Config file section says users will be able to choose another config file to review.",
+    "Config file section explicitly says this has not changed what the app will write.",
+    "Config file section says manual selection is preview-only and not saved yet.",
+    "Choose Config File button remains disabled and is labeled planned."
+  ],
+  "disabledOrPreviewOnlyControls": [
+    "Choose Config File... (planned)",
+    "Choose review mode (planned)",
+    "Profile switching planned"
+  ],
+  "writeFlowPreservation": {
+    "selectedConfigAffectsWrites": false,
+    "selectedConfigPersisted": false,
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "realConfigReloadFromSelectedPath": false
+  },
+  "testsAdded": [
+    "tests/config_selection_state.rs",
+    "tests/config_selection_ui.rs",
+    "Updated tests/dashboard_config_page_scaffold.rs for the planned Config picker label."
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "filePickerActive": false,
+    "profileSwitchingActive": false,
+    "layeredWritesActive": false,
+    "appWriteModelChanged": false
+  },
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitStatusShort": "passed with current sprint changes plus pre-existing untracked local audit/design artifacts intentionally left uncommitted"
+  },
+  "proofUsed": [
+    "src/config_selection.rs state model",
+    "src/ui/window.rs Config file scaffold copy",
+    "tests/config_selection_state.rs",
+    "tests/config_selection_ui.rs",
+    "data/reports/final-341-writable-coverage.v0.55.2.json for preserved final counts"
+  ],
+  "proofStillMissing": [
+    "Real GTK/libadwaita file picker is not implemented.",
+    "Manual config selection is not persisted.",
+    "Manual config selection does not reload app data.",
+    "Manual config selection does not affect write targets.",
+    "Profile switching and layered writes are not implemented."
+  ],
+  "nextRecommendedSprint": "Implement a harmless read-only file picker preview flow only after deciding how selected config previews should be displayed and cancelled without affecting writes."
+}

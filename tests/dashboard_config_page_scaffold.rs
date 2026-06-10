@@ -61,6 +61,11 @@ fn dashboard_and_sidebar_include_config_entry_point() {
 fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
     let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
     let config_source = source_slice(&source, "fn build_config_view", "fn config_path_summary");
+    let selection_source = source_slice(
+        &source,
+        "fn config_selection_scaffold_lines",
+        "fn config_graph_summary_lines",
+    );
     let graph_source = source_slice(
         &source,
         "fn config_graph_summary_lines",
@@ -70,9 +75,7 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
 
     for text in [
         "Config file",
-        "Using:",
-        "Choose Config File...",
-        "Auto-detection is a starting point",
+        "Choose Config File... (planned)",
         "Profiles",
         "Profile switching is not active yet.",
         "When a setting is controlled in more than one place",
@@ -80,6 +83,19 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
         assert!(
             config_source.contains(text),
             "missing Config page copy: {text}"
+        );
+    }
+
+    for text in [
+        "Using:",
+        "Auto-detection is a starting point.",
+        "Choose another config file to review.",
+        "This has not changed what the app will write.",
+        "Manual selection is preview-only and is not saved yet.",
+    ] {
+        assert!(
+            selection_source.contains(text),
+            "missing Config selection copy: {text}"
         );
     }
 
@@ -98,7 +114,7 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
         );
     }
 
-    assert!(config_source.contains("Some((\"Choose Config File...\", false))"));
+    assert!(config_source.contains("Some((\"Choose Config File... (planned)\", false))"));
     assert!(source.contains("gtk::Button::with_label(\"Choose review mode (planned)\")"));
     assert!(config_source.contains("Some((\"Profile switching planned\", false))"));
     assert!(source.contains("action.set_sensitive(active)"));

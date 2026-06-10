@@ -4,6 +4,7 @@ pub mod config_discovery;
 pub mod config_graph;
 pub mod config_parser;
 pub mod config_persistence_validation;
+pub mod config_selection;
 pub mod current_config;
 pub mod cursor_default_monitor_oracle;
 pub mod cursor_input_boundary;

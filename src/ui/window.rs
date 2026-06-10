@@ -495,12 +495,8 @@ fn build_config_view(model: &UiProjection) -> gtk::ScrolledWindow {
 
     content.append(&config_section(
         "Config file",
-        vec![
-            "Using:".to_string(),
-            config_path_summary(&model.config_discovery),
-            "Auto-detection is a starting point. You will be able to choose another config file before the app writes changes.".to_string(),
-        ],
-        Some(("Choose Config File...", false)),
+        config_selection_scaffold_lines(&model.config_discovery),
+        Some(("Choose Config File... (planned)", false)),
     ));
 
     content.append(&connected_files_review_section(&model.config_discovery));
@@ -545,6 +541,18 @@ fn config_path_summary(discovery: &ConfigDiscovery) -> String {
             format!("{} is not a regular file.", path.display())
         }
     }
+}
+
+fn config_selection_scaffold_lines(discovery: &ConfigDiscovery) -> Vec<String> {
+    vec![
+        "Using:".to_string(),
+        config_path_summary(discovery),
+        "Auto-detection is a starting point.".to_string(),
+        "Choose another config file to review.".to_string(),
+        "This has not changed what the app will write.".to_string(),
+        "Review connected files: Review all connected files / Only this file / Cancel.".to_string(),
+        "Manual selection is preview-only and is not saved yet.".to_string(),
+    ]
 }
 
 fn config_graph_summary_lines(discovery: &ConfigDiscovery) -> Vec<String> {
