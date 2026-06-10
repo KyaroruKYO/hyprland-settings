@@ -9,6 +9,7 @@ use crate::config_graph::{
     inspect_config_graph, ConfigGraphFile, ConfigGraphSummary, ConfigManagementHintKind,
     ConfigSourceReference,
 };
+use crate::config_selection::{ConfigSelectionState, SourceFollowChoice};
 use crate::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValueSourceStatus,
 };
@@ -88,7 +89,7 @@ pub fn show_main_window(
     let dashboard_view = build_dashboard_view(&model, &sidebar, &sidebar_items);
     content.append(&dashboard_view);
 
-    let config_view = build_config_view(&model);
+    let config_view = build_config_view(&model, &window);
     content.append(&config_view);
 
     let settings_view = gtk::Box::new(gtk::Orientation::Vertical, 12);
@@ -481,7 +482,7 @@ fn dashboard_needs_attention(model: &UiProjection) -> bool {
             .any(|family| family.warning_count > 0))
 }
 
-fn build_config_view(model: &UiProjection) -> gtk::ScrolledWindow {
+fn build_config_view(model: &UiProjection, window: &adw::ApplicationWindow) -> gtk::ScrolledWindow {
     let content = gtk::Box::new(gtk::Orientation::Vertical, 14);
     content.set_margin_top(4);
     content.set_margin_bottom(16);
@@ -493,10 +494,9 @@ fn build_config_view(model: &UiProjection) -> gtk::ScrolledWindow {
         "Review which Hyprland config the app is using before making changes.",
     ));
 
-    content.append(&config_section(
-        "Config file",
-        config_selection_scaffold_lines(&model.config_discovery),
-        Some(("Choose Config File... (planned)", false)),
+    content.append(&config_file_selection_section(
+        &model.config_discovery,
+        window,
     ));
 
     content.append(&connected_files_review_section(&model.config_discovery));
@@ -543,6 +543,130 @@ fn config_path_summary(discovery: &ConfigDiscovery) -> String {
     }
 }
 
+fn config_selection_state_for_discovery(discovery: &ConfigDiscovery) -> ConfigSelectionState {
+    match &discovery.status {
+        crate::config_discovery::ConfigDiscoveryStatus::Found { path, .. } => {
+            ConfigSelectionState::auto_detected(path)
+        }
+        _ => ConfigSelectionState::no_detected_config(),
+    }
+}
+
+fn config_file_selection_section(
+    discovery: &ConfigDiscovery,
+    window: &adw::ApplicationWindow,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    let box_content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    box_content.set_margin_top(12);
+    box_content.set_margin_bottom(12);
+    box_content.set_margin_start(12);
+    box_content.set_margin_end(12);
+
+    box_content.append(&title_label("Config file"));
+    for line in config_selection_scaffold_lines(discovery) {
+        box_content.append(&body_label(&line));
+    }
+
+    let selection_state = Rc::new(RefCell::new(config_selection_state_for_discovery(
+        discovery,
+    )));
+    let preview_box = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    preview_box.set_margin_top(8);
+    preview_box.set_visible(false);
+    preview_box.append(&body_label("Selected for review:"));
+    let selected_path_label = small_label("");
+    preview_box.append(&selected_path_label);
+    preview_box.append(&small_label(
+        "This has not changed what the app will write.",
+    ));
+    preview_box.append(&small_label("This selection is not saved yet."));
+    preview_box.append(&small_label("Review connected files"));
+
+    let follow_controls = gtk::Box::new(gtk::Orientation::Horizontal, 6);
+    for label in ["Review all connected files", "Only this file", "Cancel"] {
+        let button = gtk::Button::with_label(label);
+        button.set_sensitive(false);
+        follow_controls.append(&button);
+    }
+    preview_box.append(&follow_controls);
+
+    let clear_button = gtk::Button::with_label("Clear selected file");
+    {
+        let selection_state = Rc::clone(&selection_state);
+        let preview_box = preview_box.clone();
+        let selected_path_label = selected_path_label.clone();
+        clear_button.connect_clicked(move |_| {
+            let next_state = selection_state.borrow().clone().cancel_preview();
+            *selection_state.borrow_mut() = next_state;
+            update_config_selection_preview(
+                &selection_state.borrow(),
+                &preview_box,
+                &selected_path_label,
+            );
+        });
+    }
+    preview_box.append(&clear_button);
+
+    let choose_button = gtk::Button::with_label("Choose Config File...");
+    {
+        let window = window.clone();
+        let selection_state = Rc::clone(&selection_state);
+        let preview_box = preview_box.clone();
+        let selected_path_label = selected_path_label.clone();
+        choose_button.connect_clicked(move |_| {
+            let dialog = gtk::FileChooserNative::new(
+                Some("Choose Config File"),
+                Some(&window),
+                gtk::FileChooserAction::Open,
+                Some("Choose"),
+                Some("Cancel"),
+            );
+            let selection_state = Rc::clone(&selection_state);
+            let preview_box = preview_box.clone();
+            let selected_path_label = selected_path_label.clone();
+            dialog.connect_response(move |dialog, response| {
+                if response == gtk::ResponseType::Accept {
+                    if let Some(path) = dialog.file().and_then(|file| file.path()) {
+                        let next_state = selection_state.borrow().clone().preview_manual_config(
+                            path,
+                            SourceFollowChoice::ReviewAllConnectedFiles,
+                        );
+                        *selection_state.borrow_mut() = next_state;
+                        update_config_selection_preview(
+                            &selection_state.borrow(),
+                            &preview_box,
+                            &selected_path_label,
+                        );
+                    }
+                }
+                dialog.destroy();
+            });
+            dialog.show();
+        });
+    }
+
+    box_content.append(&choose_button);
+    box_content.append(&preview_box);
+    frame.set_child(Some(&box_content));
+    frame
+}
+
+fn update_config_selection_preview(
+    state: &ConfigSelectionState,
+    preview_box: &gtk::Box,
+    selected_path_label: &gtk::Label,
+) {
+    let preview = state.preview();
+    if let Some(path) = preview.selected_for_review {
+        selected_path_label.set_label(&path.display().to_string());
+        preview_box.set_visible(true);
+    } else {
+        selected_path_label.set_label("");
+        preview_box.set_visible(false);
+    }
+}
+
 fn config_selection_scaffold_lines(discovery: &ConfigDiscovery) -> Vec<String> {
     vec![
         "Using:".to_string(),
@@ -550,8 +674,7 @@ fn config_selection_scaffold_lines(discovery: &ConfigDiscovery) -> Vec<String> {
         "Auto-detection is a starting point.".to_string(),
         "Choose another config file to review.".to_string(),
         "This has not changed what the app will write.".to_string(),
-        "Review connected files: Review all connected files / Only this file / Cancel.".to_string(),
-        "Manual selection is preview-only and is not saved yet.".to_string(),
+        "The selected file is preview-only until a future review step.".to_string(),
     ]
 }
 

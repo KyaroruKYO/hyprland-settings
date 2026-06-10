@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "configPickerPreviewFlow",
+  "generatedAt": "2026-06-09T22:17:52-07:00",
+  "startingCommit": "75de6b1be57ac77d5850833d2d22e3798b700391 Add config selection scaffold",
+  "goal": "Enable a harmless read-only file picker preview flow on the Config page without making the selected file active, persistent, writable, or a source for app reloads.",
+  "filesChanged": [
+    "src/ui/window.rs",
+    "tests/config_picker_preview_ui.rs",
+    "tests/config_selection_ui.rs",
+    "tests/dashboard_config_page_scaffold.rs",
+    "data/reports/config-picker-preview-flow.v0.55.2.json",
+    "docs/CONFIG-PICKER-PREVIEW-FLOW-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/CONFIG-PICKER-PREVIEW-FLOW-REVIEW-LOG.md"
+  ],
+  "pickerPreviewBehavior": {
+    "buttonLabel": "Choose Config File...",
+    "buttonActive": true,
+    "selectedConfigAffectsWrites": false,
+    "selectedConfigPersisted": false,
+    "selectedConfigReloadsAppData": false,
+    "selectedConfigChangesConfigDiscovery": false,
+    "selectedConfigChangesCurrentConfigSnapshot": false
+  },
+  "filePickerImplementation": {
+    "api": "gtk::FileChooserNative",
+    "action": "gtk::FileChooserAction::Open",
+    "acceptResponse": "gtk::ResponseType::Accept",
+    "behavior": "Selected paths are stored only in local ConfigSelectionState preview state and displayed in the Config page."
+  },
+  "previewStateBehavior": [
+    "Selected file is shown under Selected for review.",
+    "Preview copy says this has not changed what the app will write.",
+    "Preview copy says the selection is not saved yet.",
+    "The selected path is not used to rebuild UiProjection, ConfigDiscovery, or CurrentConfigSnapshot."
+  ],
+  "clearPreviewBehavior": [
+    "Clear selected file calls ConfigSelectionState::cancel_preview.",
+    "Clear selected file hides the preview area and clears the selected path label.",
+    "No files, symlinks, runtime state, or app data sources are changed."
+  ],
+  "sourceFollowPreview": {
+    "shown": true,
+    "controls": [
+      "Review all connected files",
+      "Only this file",
+      "Cancel"
+    ],
+    "active": false,
+    "behavior": "Shown as disabled future controls only."
+  },
+  "uiChanges": [
+    "Choose Config File... is now an active preview-only button.",
+    "A selected path appears in a preview-only area.",
+    "The preview area includes clear/cancel behavior through Clear selected file.",
+    "Source-follow choices are visible but disabled.",
+    "The Config page still says selected previews do not change writes and are not saved."
+  ],
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedConfigPersisted": false,
+    "realConfigReloadFromSelectedPath": false,
+    "writeFlowSourceChanged": false
+  },
+  "testsAdded": [
+    "tests/config_picker_preview_ui.rs",
+    "Updated tests/config_selection_ui.rs",
+    "Updated tests/dashboard_config_page_scaffold.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredWritesActive": false,
+    "appWriteModelChanged": false
+  },
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitStatusShort": "passed; only current sprint files plus pre-existing untracked local audit/design artifacts were present before commit"
+  },
+  "proofUsed": [
+    "src/ui/window.rs picker preview implementation",
+    "src/config_selection.rs preview-only state model from prior sprint",
+    "tests/config_picker_preview_ui.rs",
+    "tests/config_selection_ui.rs",
+    "tests/dashboard_config_page_scaffold.rs",
+    "data/reports/final-341-writable-coverage.v0.55.2.json for preserved final counts"
+  ],
+  "proofStillMissing": [
+    "Manual config selection is not persisted.",
+    "Selected config previews do not reload app data.",
+    "Selected config previews do not affect write targets.",
+    "Profile switching and layered writes are not implemented."
+  ],
+  "nextRecommendedSprint": "Add a read-only preview inspection panel for the selected file, still without persistence, profile switching, app reload, or write-target selection."
+}

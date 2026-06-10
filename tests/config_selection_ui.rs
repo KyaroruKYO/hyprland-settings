@@ -26,9 +26,8 @@ fn config_page_shows_manual_selection_scaffold_copy() {
         "Auto-detection is a starting point.",
         "Choose another config file to review.",
         "This has not changed what the app will write.",
-        "Review connected files: Review all connected files / Only this file / Cancel.",
-        "Manual selection is preview-only and is not saved yet.",
-        "Choose Config File... (planned)",
+        "The selected file is preview-only until a future review step.",
+        "Choose Config File...",
     ] {
         assert!(
             source.contains(copy) || selection_source.contains(copy),
@@ -42,7 +41,7 @@ fn config_selection_ui_keeps_future_controls_disabled() {
     let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
     let config_source = source_slice(&source, "fn build_config_view", "fn config_path_summary");
 
-    assert!(config_source.contains("Some((\"Choose Config File... (planned)\", false))"));
+    assert!(source.contains("gtk::Button::with_label(\"Choose Config File...\")"));
     assert!(source.contains("gtk::Button::with_label(\"Choose review mode (planned)\")"));
     assert!(config_source.contains("Some((\"Profile switching planned\", false))"));
     assert!(
@@ -65,6 +64,7 @@ fn config_selection_ui_preserves_existing_config_routes_and_details() {
     assert!(source.contains("append_connected_file_details"));
     assert!(source.contains("connected_file_card(file, graph)"));
     assert!(source.contains("search_projection(model, selected_tab_id, query)"));
+    assert!(source.contains("apply_setting_change("));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 
