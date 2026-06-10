@@ -23,6 +23,8 @@ fn disabled_production_enablement_ui_scaffold_has_not_ready_copy() {
     );
     let readiness_source = fs::read_to_string("src/write_enablement_readiness.rs")
         .expect("readiness source should read");
+    let pilot_source =
+        fs::read_to_string("src/one_target_write_pilot.rs").expect("pilot source should read");
 
     for expected in [
         "Production write enablement",
@@ -33,9 +35,15 @@ fn disabled_production_enablement_ui_scaffold_has_not_ready_copy() {
         "Required before enabling",
         "Real write-target selection is not active yet.",
         "Production enablement is disabled",
+        "First production write pilot",
+        "Status: Not enabled",
+        "One existing scalar line in one normal config file",
+        "Real writing is not active yet.",
     ] {
         assert!(
-            section.contains(expected) || readiness_source.contains(expected),
+            section.contains(expected)
+                || readiness_source.contains(expected)
+                || pilot_source.contains(expected),
             "missing production enablement UI copy: {expected}"
         );
     }

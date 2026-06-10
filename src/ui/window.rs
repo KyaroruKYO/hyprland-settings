@@ -18,6 +18,7 @@ use crate::export::ExportBundle;
 use crate::guarded_write_review::{
     build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
 };
+use crate::one_target_write_pilot::minimum_one_target_write_pilot_design;
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::session_config_preview::build_session_config_preview;
 use crate::session_value_projection::{
@@ -1859,6 +1860,12 @@ fn append_pre_apply_review_scaffold(
         let enablement_button = gtk::Button::with_label("Production enablement is disabled");
         enablement_button.set_sensitive(false);
         content.append(&enablement_button);
+
+        let pilot = minimum_one_target_write_pilot_design();
+        content.append(&body_label("First production write pilot"));
+        for line in pilot.user_facing_lines() {
+            content.append(&small_label(&line));
+        }
 
         let review_button = gtk::Button::with_label("Review save location");
         review_button.set_sensitive(false);

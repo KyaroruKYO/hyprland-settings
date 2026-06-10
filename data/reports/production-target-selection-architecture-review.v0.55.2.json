@@ -1,0 +1,202 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "production-target-selection-architecture-review",
+  "generatedAt": "2026-06-10T08:55:42Z",
+  "startingCommit": "88e7fad7e604e7dad5f831af64ce31348e90cd15",
+  "goal": "Design the minimum architecture needed to eventually enable one fixture-proven production write-target selection path while keeping all production write gates false.",
+  "filesChanged": [
+    "data/reports/production-target-selection-architecture-review.v0.55.2.json",
+    "docs/PRODUCTION-TARGET-SELECTION-ARCHITECTURE-REVIEW-LOG.md",
+    "src/lib.rs",
+    "src/one_target_write_pilot.rs",
+    "src/production_target_selection_architecture.rs",
+    "src/ui/window.rs",
+    "tests/one_target_write_pilot.rs",
+    "tests/one_target_write_pilot_fixture.rs",
+    "tests/production_apply_integration_boundary.rs",
+    "tests/production_target_selection_apply_isolation.rs",
+    "tests/production_target_selection_architecture.rs",
+    "tests/production_write_gate_inventory.rs",
+    "tests/production_write_enablement_ui.rs",
+    "/home/kyo/.config/hypr/docs/PRODUCTION-TARGET-SELECTION-ARCHITECTURE-REVIEW-LOG.md"
+  ],
+  "minimumArchitectureReview": {
+    "module": "src/production_target_selection_architecture.rs",
+    "entryPoint": "Disabled setting-detail write review for a layered scalar setting",
+    "requiredInputModels": [
+      "LayeredSettingValues",
+      "WriteTargetCandidate",
+      "WriteTargetRecommendation",
+      "GuardedWriteTargetReview",
+      "WriteBackupPlan",
+      "WriteAdvancedConfirmation",
+      "WriteVerificationPlan"
+    ],
+    "targetCandidateSource": "One safe candidate generated from one existing scalar occurrence",
+    "applyIntegrationBoundary": "Production Apply may only call target selection after all gates pass and must not call fixture proof or walkthrough directly.",
+    "productionEnabled": false
+  },
+  "oneFixtureProvenTargetPath": {
+    "module": "src/one_target_write_pilot.rs",
+    "pilotName": "One normal scalar target pilot",
+    "targetType": "one existing scalar line in one normal config file",
+    "constraints": [
+      "one scalar setting",
+      "one existing scalar line",
+      "one target file",
+      "non-generated file",
+      "non-script-managed file",
+      "non-symlink-managed file",
+      "exact line number known",
+      "backup required",
+      "reread verification required",
+      "high-risk policy clear",
+      "fixture proof passed",
+      "production gate still false"
+    ],
+    "blockedConditions": [
+      "generated file",
+      "script-managed file",
+      "symlink-managed file",
+      "missing line number",
+      "structured block target",
+      "high-risk row",
+      "duplicate target requiring user choice",
+      "production gate false"
+    ],
+    "productionEnabled": false
+  },
+  "codeGateInventory": [
+    {
+      "gateName": "PRODUCTION_WRITE_TARGET_SELECTION_READY",
+      "module": "write_enablement_readiness",
+      "currentValue": false
+    },
+    {
+      "gateName": "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
+      "module": "guarded_write_review",
+      "currentValue": false
+    },
+    {
+      "gateName": "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
+      "module": "write_review_walkthrough",
+      "currentValue": false
+    },
+    {
+      "gateName": "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
+      "module": "one_target_write_pilot",
+      "currentValue": false
+    }
+  ],
+  "applyIntegrationBoundary": {
+    "productionApplyMayCallTargetSelectionAfterAllGates": false,
+    "productionApplyMustNotCallFixtureProof": true,
+    "productionApplyMustNotCallWalkthroughDirectly": true,
+    "productionApplyMustNotSkipBackup": true,
+    "productionApplyMustNotSkipRereadVerification": true,
+    "productionApplyMustNotBypassHighRiskPolicy": true
+  },
+  "disabledFutureUi": {
+    "added": true,
+    "section": "First production write pilot",
+    "copy": [
+      "Status: Not enabled",
+      "Candidate: One existing scalar line in one normal config file",
+      "Real writing is not active yet.",
+      "Apply behavior has not changed."
+    ],
+    "controlsEnabled": false
+  },
+  "fixturePilotProof": {
+    "usesTemporaryFilesOnly": true,
+    "proves": [
+      "fixture scalar target can be represented",
+      "fixture candidate is normal and safe",
+      "fixture backup plan exists",
+      "fixture advanced confirmation is not required",
+      "fixture verification plan exists",
+      "fixture write proof passes",
+      "unrelated lines are preserved",
+      "guarded review remains production disabled",
+      "pilot gate remains false"
+    ],
+    "realUserConfigTouched": false
+  },
+  "applyWriteIsolation": {
+    "writeFlowImportsArchitecture": false,
+    "writeFlowImportsPilot": false,
+    "writeFlowImportsWalkthrough": false,
+    "writeFlowImportsGuardedReview": false,
+    "writeFlowImportsFixtureProof": false,
+    "writeFlowImportsBackupPlan": false,
+    "writeFlowImportsVerificationPlan": false,
+    "applySettingChangeRemainsPresent": true
+  },
+  "uiChanges": [
+    "Added disabled first production write pilot copy beneath the existing production enablement section."
+  ],
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedSessionConfigPersisted": false,
+    "productionCurrentConfigSnapshotChanged": false,
+    "productionConfigDiscoveryChanged": false,
+    "productionUiProjectionChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/production_target_selection_architecture.rs",
+    "tests/one_target_write_pilot.rs",
+    "tests/production_write_gate_inventory.rs",
+    "tests/production_apply_integration_boundary.rs",
+    "tests/production_target_selection_apply_isolation.rs",
+    "tests/one_target_write_pilot_fixture.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with pre-existing untracked local audit/design artifacts left uncommitted"
+  },
+  "proofUsed": [
+    "Architecture model tests for minimum entry point, dependencies, Apply boundary, and disabled production status.",
+    "Pilot model tests for one normal scalar target and blocked generated/script/symlink/high-risk cases.",
+    "Gate inventory tests proving all production gates remain false.",
+    "Fixture-only pilot proof using temporary files only.",
+    "Source-level Apply/write isolation tests proving write_flow.rs does not import the new architecture or pilot modules."
+  ],
+  "proofStillMissing": [
+    "No production backup implementation is active.",
+    "No production reread verification is active.",
+    "No production rollback/recovery implementation is active.",
+    "No production advanced confirmation flow is active.",
+    "No real write-target selection is active."
+  ],
+  "nextRecommendedSprint": "Design the production backup and reread verification contracts for the one-target pilot while keeping the pilot gate false."
+}
