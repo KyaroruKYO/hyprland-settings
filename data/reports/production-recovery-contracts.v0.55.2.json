@@ -1,0 +1,220 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "production-recovery-contracts",
+  "generatedAt": "2026-06-10T09:33:07Z",
+  "startingCommit": "d7c9fef01bb980edeb73d8bbbb9b72291b2b63f3",
+  "goal": "Design rollback/recovery implementation details for the one-target pilot while keeping all production gates false.",
+  "filesChanged": [
+    "data/reports/production-recovery-contracts.v0.55.2.json",
+    "docs/PRODUCTION-RECOVERY-CONTRACTS-REVIEW-LOG.md",
+    "src/one_target_pilot_readiness.rs",
+    "src/production_recovery_contract.rs",
+    "tests/one_target_pilot_recovery_readiness.rs",
+    "tests/production_recovery_apply_isolation.rs",
+    "tests/production_recovery_fixture.rs",
+    "tests/production_recovery_result.rs",
+    "tests/production_recovery_restore_contract.rs",
+    "tests/production_recovery_trigger.rs",
+    "tests/production_recovery_ui.rs",
+    "tests/production_recovery_verification.rs",
+    "/home/kyo/.config/hypr/docs/PRODUCTION-RECOVERY-CONTRACTS-REVIEW-LOG.md"
+  ],
+  "recoveryTriggerModel": {
+    "module": "src/production_recovery_contract.rs",
+    "triggersThatRestore": [
+      "write failed after backup",
+      "write succeeded but reread verification failed",
+      "expected setting missing after write",
+      "expected value mismatch after write",
+      "target file unreadable after write"
+    ],
+    "triggersThatBlockBeforeWrite": [
+      "backup integrity missing before write"
+    ],
+    "triggersThatReportFailureOnly": [
+      "backup restore failed"
+    ],
+    "triggersThatSkipRestore": [
+      "manual/user cancellation before write"
+    ],
+    "productionEnabled": false,
+    "hyprlandReloadAllowed": false
+  },
+  "restoreOperationContract": {
+    "targetFile": "exact target file only",
+    "backupFile": "verified backup path",
+    "restoreBytes": "write exact backup bytes back to exact target path",
+    "otherFilePolicy": "restore must not modify any other file",
+    "symlinkPolicy": "first pilot does not follow symlink targets",
+    "blockedTargets": [
+      "generated target",
+      "script-managed target",
+      "symlink-managed target",
+      "non-temp path in fixture proof"
+    ],
+    "productionEnabled": false
+  },
+  "restoreVerificationContract": {
+    "rereadTarget": "reread exact restored target file",
+    "byteEquality": "restored target bytes must match backup bytes",
+    "scalarValue": "if original scalar value is known, parse restored file and verify it",
+    "statuses": [
+      "not run",
+      "planned",
+      "passed in fixture",
+      "failed in fixture",
+      "production disabled"
+    ],
+    "failureBehavior": "report failure clearly and leave backup available",
+    "productionEnabled": false
+  },
+  "recoveryResultModel": {
+    "statuses": [
+      "recovery attempted",
+      "recovery skipped",
+      "recovery succeeded",
+      "recovery failed",
+      "production disabled"
+    ],
+    "records": [
+      "trigger reason",
+      "backup path",
+      "target path",
+      "restore status",
+      "restore verification status",
+      "user-facing summary",
+      "safe next action"
+    ],
+    "productionEnabled": false
+  },
+  "fixtureRecoveryProof": {
+    "usesTemporaryFilesOnly": true,
+    "proves": [
+      "fixture backup exact copy is created",
+      "fixture write changes scalar value",
+      "fixture verification fails intentionally",
+      "recovery trigger requests restore",
+      "fixture restore writes backup bytes",
+      "restored bytes match backup bytes",
+      "restored scalar value matches original value",
+      "unrelated lines are restored",
+      "non-temp user config paths are rejected",
+      "production recovery gate remains false"
+    ],
+    "realUserConfigTouched": false
+  },
+  "oneTargetPilotReadinessMapping": {
+    "module": "src/one_target_pilot_readiness.rs",
+    "addedPrerequisites": [
+      "recovery trigger model complete",
+      "restore operation contract complete",
+      "restore verification contract complete",
+      "recovery result reporting complete",
+      "fixture recovery proof passed"
+    ],
+    "productionRecoveryGate": false,
+    "pilotGate": false,
+    "readyForProduction": false
+  },
+  "disabledFutureUi": {
+    "added": true,
+    "section": "Production backup and verification",
+    "copy": [
+      "Recovery",
+      "If verification fails in a future version, the app will restore the backup.",
+      "The app will reread the restored file before reporting recovery success.",
+      "The app will not reload Hyprland automatically.",
+      "If recovery fails, the app will report the failure and leave the backup available.",
+      "Production recovery is not active yet.",
+      "Real writing is not active yet.",
+      "Apply behavior has not changed."
+    ],
+    "controlsEnabled": false
+  },
+  "applyWriteIsolation": {
+    "writeFlowImportsProductionRecoveryContract": false,
+    "writeFlowImportsRestoreOperation": false,
+    "writeFlowImportsRecoveryResult": false,
+    "writeFlowImportsProductionBackupContract": false,
+    "writeFlowImportsProductionVerificationContract": false,
+    "writeFlowImportsFixtureProof": false,
+    "writeFlowCallsRestoreFunctions": false,
+    "writeFlowCallsFixtureBackupHelpers": false,
+    "writeFlowCallsFixtureVerificationHelpers": false,
+    "applySettingChangeRemainsPresent": true,
+    "applyScalarWritePlanRemainsPresent": true,
+    "allProductionGatesFalse": true
+  },
+  "uiChanges": [
+    "Added compact disabled recovery copy through the existing production backup and verification section."
+  ],
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedSessionConfigPersisted": false,
+    "productionCurrentConfigSnapshotChanged": false,
+    "productionConfigDiscoveryChanged": false,
+    "productionUiProjectionChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/production_recovery_trigger.rs",
+    "tests/production_recovery_restore_contract.rs",
+    "tests/production_recovery_verification.rs",
+    "tests/production_recovery_result.rs",
+    "tests/production_recovery_fixture.rs",
+    "tests/one_target_pilot_recovery_readiness.rs",
+    "tests/production_recovery_ui.rs",
+    "tests/production_recovery_apply_isolation.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "realBackupCreated": false,
+    "realRestoreAttempted": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with pre-existing untracked local audit/design artifacts left uncommitted"
+  },
+  "proofUsed": [
+    "Trigger classification tests for restore, block, report-only, and skipped paths.",
+    "Restore operation tests proving exact backup bytes are restored in temporary fixtures only.",
+    "Restore verification tests proving byte equality and restored scalar value checks.",
+    "Recovery result tests proving user-facing success, failure, and skipped reporting.",
+    "Fixture rollback/recovery proof using temporary files only.",
+    "Source-level Apply/write isolation tests proving write_flow.rs does not import recovery contracts or fixture helpers."
+  ],
+  "proofStillMissing": [
+    "No production restore implementation is active.",
+    "No production restore verification implementation is active.",
+    "No production recovery result reporting is connected to Apply.",
+    "No production backup/write/reread flow is active.",
+    "No real write-target selection is active."
+  ],
+  "nextRecommendedSprint": "Design production advanced-confirmation policy for generated, script-managed, and symlink-managed targets while keeping all production gates false."
+}
