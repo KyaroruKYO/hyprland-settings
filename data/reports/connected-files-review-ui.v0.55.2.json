@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "connectedFilesReviewUi",
+  "generatedAt": "2026-06-09T17:40:53-07:00",
+  "startingCommit": "df98f1fe0296ffa10b795b520ea8e97cd679f7ab Add read-only config graph detection",
+  "goal": "Add a read-only connected-files review list to the Config page using the existing config graph engine, without enabling file picking, profile switching, layered writes, or runtime/config mutation.",
+  "filesChanged": [
+    "src/ui/window.rs",
+    "tests/dashboard_config_page_scaffold.rs",
+    "tests/connected_files_review_ui.rs",
+    "data/reports/connected-files-review-ui.v0.55.2.json",
+    "docs/CONNECTED-FILES-REVIEW-UI-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/CONNECTED-FILES-REVIEW-UI-REVIEW-LOG.md"
+  ],
+  "uiChanges": [
+    "Replaced the previous Connected files summary-only section with a read-only connected-files review section.",
+    "The section still shows friendly graph summary copy.",
+    "Each detected connected file is shown as a read-only card with a role label, path, optional symlink target, readable state, and hint labels.",
+    "Unreadable files, cycles, unsupported source patterns, and generated/script-managed hints are shown as friendly warnings.",
+    "The connected-files future action remains disabled and is now labeled Choose review mode (planned)."
+  ],
+  "connectedFilesReviewSections": [
+    "Summary lines",
+    "Connected file cards",
+    "Missing or unreadable warnings",
+    "Cycle warning",
+    "Unsupported source pattern warning",
+    "Generated/script-managed caution"
+  ],
+  "friendlyHintLabels": [
+    "Main config",
+    "Current profile",
+    "Desktop profile",
+    "Gaming profile",
+    "Laptop profile",
+    "Performance profile",
+    "Theme profile",
+    "Host profile",
+    "Generated file",
+    "May be changed by scripts",
+    "Symlinked file",
+    "Profile file"
+  ],
+  "issueWarnings": [
+    "Some connected files could not be read.",
+    "Missing or unreadable:",
+    "Some connected files refer back to each other.",
+    "The app stopped following them to avoid looping.",
+    "Some connected file patterns are not shown yet.",
+    "Review carefully before editing these files in a future version."
+  ],
+  "disabledOrFutureControls": [
+    "Choose Config File...",
+    "Choose review mode (planned)",
+    "Profile switching planned"
+  ],
+  "graphEngineChanges": [
+    "No graph engine changes were required; the UI uses the existing read-only ConfigGraphSummary and ConfigGraphFile fields."
+  ],
+  "testsAdded": [
+    "tests/connected_files_review_ui.rs",
+    "Updated tests/dashboard_config_page_scaffold.rs for the renamed disabled connected-files future action."
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "filePickerActive": false,
+    "profileSwitchingActive": false,
+    "layeredWritesActive": false,
+    "appWriteModelChanged": false
+  },
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitStatusShort": "passed with current sprint changes plus pre-existing untracked local audit/design artifacts intentionally left uncommitted"
+  },
+  "proofUsed": [
+    "src/ui/window.rs connected-files review helpers",
+    "tests/connected_files_review_ui.rs source-level UI tests",
+    "tests/dashboard_config_page_scaffold.rs Config route/control tests",
+    "data/reports/final-341-writable-coverage.v0.55.2.json for preserved final counts"
+  ],
+  "proofStillMissing": [
+    "Real manual file picker UI is not implemented.",
+    "Profile switching is not implemented.",
+    "Layered write-target selection is not implemented.",
+    "Connected-files review is display-only and does not yet offer a detailed file browser or write target choices."
+  ],
+  "nextRecommendedSprint": "Add a read-only connected-file detail view or review mode that lets users inspect detected file roles, unreadable files, and management hints before implementing any file picker or write-target selection."
+}

@@ -73,7 +73,6 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
         "Using:",
         "Choose Config File...",
         "Auto-detection is a starting point",
-        "Connected files",
         "Profiles",
         "Profile switching is not active yet.",
         "When a setting is controlled in more than one place",
@@ -85,6 +84,7 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
     }
 
     for text in [
+        "Connected files",
         "config_graph_summary_lines",
         "This setup uses",
         "No connected config files were detected.",
@@ -99,7 +99,7 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
     }
 
     assert!(config_source.contains("Some((\"Choose Config File...\", false))"));
-    assert!(config_source.contains("Some((\"Review connected files (planned)\", false))"));
+    assert!(source.contains("gtk::Button::with_label(\"Choose review mode (planned)\")"));
     assert!(config_source.contains("Some((\"Profile switching planned\", false))"));
     assert!(source.contains("action.set_sensitive(active)"));
     assert!(render_source.contains("selected_tab_id == CONFIG_ID"));

@@ -5,7 +5,9 @@ use adw::prelude::*;
 use gtk4 as gtk;
 
 use crate::config_discovery::ConfigDiscovery;
-use crate::config_graph::{inspect_config_graph, ConfigGraphSummary};
+use crate::config_graph::{
+    inspect_config_graph, ConfigGraphFile, ConfigGraphSummary, ConfigManagementHintKind,
+};
 use crate::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValueSourceStatus,
 };
@@ -500,11 +502,7 @@ fn build_config_view(model: &UiProjection) -> gtk::ScrolledWindow {
         Some(("Choose Config File...", false)),
     ));
 
-    content.append(&config_section(
-        "Connected files",
-        config_graph_summary_lines(&model.config_discovery),
-        Some(("Review connected files (planned)", false)),
-    ));
+    content.append(&connected_files_review_section(&model.config_discovery));
 
     content.append(&config_section(
         "Profiles",
@@ -561,6 +559,45 @@ fn config_graph_summary_lines(discovery: &ConfigDiscovery) -> Vec<String> {
     friendly_config_graph_summary(&graph)
 }
 
+fn connected_files_review_section(discovery: &ConfigDiscovery) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    let box_content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    box_content.set_margin_top(12);
+    box_content.set_margin_bottom(12);
+    box_content.set_margin_start(12);
+    box_content.set_margin_end(12);
+
+    box_content.append(&title_label("Connected files"));
+    let graph = config_graph_for_discovery(discovery);
+    let summary_lines = graph
+        .as_ref()
+        .map(friendly_config_graph_summary)
+        .unwrap_or_else(|| config_graph_summary_lines(discovery));
+    for line in &summary_lines {
+        box_content.append(&body_label(line));
+    }
+
+    if let Some(graph) = &graph {
+        append_connected_files_review(&box_content, graph);
+        append_connected_file_issue_warnings(&box_content, graph);
+    }
+
+    let action = gtk::Button::with_label("Choose review mode (planned)");
+    action.set_sensitive(false);
+    box_content.append(&action);
+
+    frame.set_child(Some(&box_content));
+    frame
+}
+
+fn config_graph_for_discovery(discovery: &ConfigDiscovery) -> Option<ConfigGraphSummary> {
+    let crate::config_discovery::ConfigDiscoveryStatus::Found { path, .. } = &discovery.status
+    else {
+        return None;
+    };
+    Some(inspect_config_graph(path))
+}
+
 fn friendly_config_graph_summary(graph: &ConfigGraphSummary) -> Vec<String> {
     let mut lines = Vec::new();
     if graph.multi_file {
@@ -595,6 +632,136 @@ fn friendly_config_graph_summary(graph: &ConfigGraphSummary) -> Vec<String> {
     lines.push("Connected-file review is read-only right now.".to_string());
     lines.push("The app will review connected files before allowing changes.".to_string());
     lines
+}
+
+fn append_connected_files_review(parent: &gtk::Box, graph: &ConfigGraphSummary) {
+    if graph.files.is_empty() {
+        return;
+    }
+
+    for file in &graph.files {
+        parent.append(&connected_file_card(file));
+    }
+}
+
+fn connected_file_card(file: &ConfigGraphFile) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_margin_top(10);
+    content.set_margin_bottom(10);
+    content.set_margin_start(10);
+    content.set_margin_end(10);
+
+    content.append(&body_label(&connected_file_title(file)));
+    content.append(&small_label(&friendly_path(&file.path)));
+
+    if let Some(target) = &file.symlink_target {
+        content.append(&small_label(&format!(
+            "Points to: {}",
+            friendly_path(target)
+        )));
+    }
+
+    if !file.readable {
+        content.append(&small_label("Missing or unreadable"));
+    }
+
+    for line in connected_file_hint_lines(file) {
+        content.append(&small_label(&line));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn connected_file_title(file: &ConfigGraphFile) -> String {
+    if file.source_depth == 0 {
+        return "Main config".to_string();
+    }
+
+    for (kind, label) in [
+        (ConfigManagementHintKind::CurrentProfile, "Current profile"),
+        (ConfigManagementHintKind::DesktopProfile, "Desktop profile"),
+        (ConfigManagementHintKind::GamingProfile, "Gaming profile"),
+        (ConfigManagementHintKind::LaptopProfile, "Laptop profile"),
+        (
+            ConfigManagementHintKind::PerformanceProfile,
+            "Performance profile",
+        ),
+        (ConfigManagementHintKind::ThemeProfile, "Theme profile"),
+        (ConfigManagementHintKind::HostProfile, "Host profile"),
+        (ConfigManagementHintKind::GeneratedFile, "Generated file"),
+    ] {
+        if file.hints.iter().any(|hint| hint.kind == kind) {
+            return label.to_string();
+        }
+    }
+
+    "Connected config".to_string()
+}
+
+fn connected_file_hint_lines(file: &ConfigGraphFile) -> Vec<String> {
+    let mut lines = Vec::new();
+    for hint in &file.hints {
+        let label = friendly_config_hint_label(&hint.kind);
+        if !lines.iter().any(|line| line == label) {
+            lines.push(label.to_string());
+        }
+    }
+    lines
+}
+
+fn friendly_config_hint_label(kind: &ConfigManagementHintKind) -> &'static str {
+    match kind {
+        ConfigManagementHintKind::CurrentProfile => "Current profile",
+        ConfigManagementHintKind::DesktopProfile => "Desktop profile",
+        ConfigManagementHintKind::GamingProfile => "Gaming profile",
+        ConfigManagementHintKind::LaptopProfile => "Laptop profile",
+        ConfigManagementHintKind::PerformanceProfile => "Performance profile",
+        ConfigManagementHintKind::ModeProfile => "Profile file",
+        ConfigManagementHintKind::ThemeProfile => "Theme profile",
+        ConfigManagementHintKind::HostProfile => "Host profile",
+        ConfigManagementHintKind::GeneratedFile => "Generated file",
+        ConfigManagementHintKind::ScriptReferenced | ConfigManagementHintKind::ScriptManaged => {
+            "May be changed by scripts"
+        }
+        ConfigManagementHintKind::SymlinkManaged => "Symlinked file",
+    }
+}
+
+fn append_connected_file_issue_warnings(parent: &gtk::Box, graph: &ConfigGraphSummary) {
+    if !graph.unreadable_files.is_empty() {
+        parent.append(&small_label("Some connected files could not be read."));
+        parent.append(&small_label("Missing or unreadable:"));
+        for issue in &graph.unreadable_files {
+            parent.append(&small_label(&format!("- {}", friendly_path(&issue.path))));
+        }
+    }
+
+    if !graph.cycles.is_empty() {
+        parent.append(&small_label(
+            "Some connected files refer back to each other.",
+        ));
+        parent.append(&small_label(
+            "The app stopped following them to avoid looping.",
+        ));
+    }
+
+    if !graph.unsupported_sources.is_empty() {
+        parent.append(&small_label(
+            "Some connected file patterns are not shown yet.",
+        ));
+    }
+
+    if graph.has_generated_hints || graph.has_script_managed_hints {
+        parent.append(&small_label(
+            "Review carefully before editing these files in a future version.",
+        ));
+    }
+}
+
+fn friendly_path(path: &std::path::Path) -> String {
+    path.display().to_string()
 }
 
 fn config_section(title: &str, lines: Vec<String>, button: Option<(&str, bool)>) -> gtk::Frame {
