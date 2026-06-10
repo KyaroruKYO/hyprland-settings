@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "configPreviewLayeredWriteTargetFoundation",
+  "generatedAt": "2026-06-09T23:00:25-07:00",
+  "startingCommit": "06435635d5f666c3bcfc317a093a6c0bd8ca2ef9 Add config picker preview flow",
+  "goal": "Add read-only selected-file preview inspection, source-follow preview choices, session-selection state, layered value display, and fixture-only write-target candidate foundations without enabling real layered writes.",
+  "filesChanged": [
+    "src/config_graph.rs",
+    "src/config_selection.rs",
+    "src/config_layered_values.rs",
+    "src/write_target_candidate.rs",
+    "src/lib.rs",
+    "src/ui/window.rs",
+    "tests/config_picker_preview_inspection.rs",
+    "tests/config_source_follow_preview.rs",
+    "tests/session_config_selection.rs",
+    "tests/layered_current_values.rs",
+    "tests/write_target_candidates_fixture.rs",
+    "tests/config_graph.rs",
+    "tests/config_picker_preview_ui.rs",
+    "data/reports/config-preview-layered-write-target-foundation.v0.55.2.json",
+    "docs/CONFIG-PREVIEW-LAYERED-WRITE-TARGET-FOUNDATION-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/CONFIG-PREVIEW-LAYERED-WRITE-TARGET-FOUNDATION-REVIEW-LOG.md"
+  ],
+  "stagesImplemented": [
+    "selected-file preview inspection panel",
+    "source-follow preview behavior",
+    "session config selection state with disabled UI scaffold",
+    "read-only layered current value model and detail-page display",
+    "fixture-only write-target candidate model"
+  ],
+  "selectedFilePreviewInspection": {
+    "implemented": true,
+    "readOnly": true,
+    "usesConfigGraphEngine": true,
+    "summaryFields": [
+      "connected files found",
+      "unreadable files",
+      "profile-style files",
+      "script-managed hints",
+      "generated-file hints",
+      "cycles",
+      "unsupported patterns"
+    ],
+    "unreadableBehavior": "Shows friendly copy that the file could not be read for preview and no changes were made.",
+    "doesNotReloadUiProjection": true,
+    "doesNotReplaceConfigDiscovery": true,
+    "doesNotReplaceCurrentConfigSnapshot": true,
+    "doesNotEnableApply": true,
+    "doesNotPersistPath": true
+  },
+  "sourceFollowPreviewBehavior": {
+    "reviewAllConnectedFiles": "Preview graph follows source/include files read-only.",
+    "onlyThisFile": "Preview graph uses SourceFollowPolicy::OnlyRoot and says connected files are not included.",
+    "cancel": "Clears manual preview and hides the preview panel.",
+    "affectsActiveConfig": false,
+    "affectsWrites": false
+  },
+  "sessionConfigSelectionMode": {
+    "stateImplemented": true,
+    "uiBehavior": "Use for this session (planned) is visible but disabled.",
+    "sessionOnlyState": "ConfigSelectionLifecycle::SessionReadOnly can represent a read-only session selection.",
+    "persisted": false,
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "fullSessionRereadDeferred": true
+  },
+  "layeredCurrentValueDisplay": {
+    "model": "config_layered_values::LayeredSettingValues",
+    "ui": "Detail pane shows a read-only note and occurrence lines when a setting appears in more than one connected file.",
+    "structuredFalsePositivePolicy": "Structured records are ignored and do not become scalar layered values.",
+    "editable": false
+  },
+  "fixtureWriteTargetModel": {
+    "model": "write_target_candidate::WriteTargetCandidate",
+    "fixtureOnly": true,
+    "representedTargets": [
+      "Main config",
+      "Current profile",
+      "Desktop profile",
+      "Gaming profile",
+      "Theme profile",
+      "specific occurrence line"
+    ],
+    "generatedOrScriptManagedPolicy": "Flagged as not safe and requiring advanced confirmation in the fixture model.",
+    "realApplyPathChanged": false
+  },
+  "uiChanges": [
+    "Selected preview now includes read-only inspection summary.",
+    "Review all connected files and Only this file update only the preview summary.",
+    "Cancel and Clear selected file remove the preview.",
+    "Session-only use is represented as disabled/planned UI.",
+    "Setting details can show read-only layered value occurrences."
+  ],
+  "writeFlowPreservation": {
+    "applySettingChangeChanged": false,
+    "selectedConfigAffectsWrites": false,
+    "selectedConfigPersisted": false,
+    "realWriteTargetSelectionActive": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false
+  },
+  "testsAdded": [
+    "tests/config_picker_preview_inspection.rs",
+    "tests/config_source_follow_preview.rs",
+    "tests/session_config_selection.rs",
+    "tests/layered_current_values.rs",
+    "tests/write_target_candidates_fixture.rs",
+    "Updated tests/config_graph.rs",
+    "Updated tests/config_picker_preview_ui.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false,
+    "appWriteModelChanged": false
+  },
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "gitStatusShort": "passed; only current sprint files plus pre-existing untracked local audit/design artifacts were present before commit"
+  },
+  "proofUsed": [
+    "src/config_graph.rs SourceFollowPolicy",
+    "src/config_selection.rs SessionReadOnly state",
+    "src/config_layered_values.rs",
+    "src/write_target_candidate.rs",
+    "src/ui/window.rs read-only preview and layered display",
+    "fixture tests for source-follow, session state, layered values, and write-target candidates",
+    "data/reports/final-341-writable-coverage.v0.55.2.json for preserved final counts"
+  ],
+  "proofStillMissing": [
+    "Real manual config selection persistence remains unimplemented.",
+    "Full session reread from selected config remains deferred.",
+    "Profile switching remains unimplemented.",
+    "Real layered writes remain unimplemented.",
+    "Real write-target selection remains inactive."
+  ],
+  "nextRecommendedSprint": "Implement a read-only selected-config session reread preview that rebuilds current-value projections in an isolated preview model without affecting Apply, persistence, or real write targets."
+}

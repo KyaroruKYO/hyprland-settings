@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 
 use hyprland_settings::config_graph::{
     inspect_config_graph_with_options, ConfigDetectionConfidence, ConfigGraphOptions,
-    ConfigManagementHintKind,
+    ConfigManagementHintKind, SourceFollowPolicy,
 };
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 
@@ -35,6 +35,7 @@ fn inspect(
             home_dir: Some(home.to_path_buf()),
             script_dirs,
             max_depth: 16,
+            source_follow_policy: SourceFollowPolicy::ReviewAll,
         },
     )
 }

@@ -41,13 +41,17 @@ fn selected_preview_and_clear_copy_are_visible_in_source() {
 
     for copy in [
         "Selected for review:",
+        "Selected file preview",
+        "This file is only being reviewed.",
         "This has not changed what the app will write.",
         "This selection is not saved yet.",
-        "Review connected files",
+        "Choose how this preview should read connected files.",
         "Review all connected files",
         "Only this file",
         "Cancel",
         "Clear selected file",
+        "Use for this session (planned)",
+        "Session-only review is planned. Apply behavior has not changed.",
     ] {
         assert!(
             section_source.contains(copy),
@@ -55,7 +59,7 @@ fn selected_preview_and_clear_copy_are_visible_in_source() {
         );
     }
 
-    assert!(section_source.contains("button.set_sensitive(false)"));
+    assert!(section_source.contains("session_button.set_sensitive(false)"));
     assert!(section_source.contains("cancel_preview()"));
 }
 

@@ -6,9 +6,10 @@ use gtk4 as gtk;
 
 use crate::config_discovery::ConfigDiscovery;
 use crate::config_graph::{
-    inspect_config_graph, ConfigGraphFile, ConfigGraphSummary, ConfigManagementHintKind,
-    ConfigSourceReference,
+    inspect_config_graph, inspect_config_graph_with_options, ConfigGraphFile, ConfigGraphOptions,
+    ConfigGraphSummary, ConfigManagementHintKind, ConfigSourceReference, SourceFollowPolicy,
 };
+use crate::config_layered_values::layered_values_for_setting;
 use crate::config_selection::{ConfigSelectionState, SourceFollowChoice};
 use crate::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValueSourceStatus,
@@ -21,7 +22,7 @@ use crate::ui::model::{
 };
 use crate::validation::ValidationSummary;
 use crate::write_classification::{high_risk_write_policy, ScalarWriteValueKind};
-use crate::write_flow::{apply_setting_change, write_flow_value_kind};
+use crate::write_flow::{apply_setting_change, write_flow_config_setting, write_flow_value_kind};
 
 const DASHBOARD_ID: &str = "dashboard";
 const CONFIG_ID: &str = "config";
@@ -574,28 +575,45 @@ fn config_file_selection_section(
     let preview_box = gtk::Box::new(gtk::Orientation::Vertical, 6);
     preview_box.set_margin_top(8);
     preview_box.set_visible(false);
+    preview_box.append(&body_label("Selected file preview"));
     preview_box.append(&body_label("Selected for review:"));
     let selected_path_label = small_label("");
     preview_box.append(&selected_path_label);
+    preview_box.append(&small_label("This file is only being reviewed."));
     preview_box.append(&small_label(
         "This has not changed what the app will write.",
     ));
     preview_box.append(&small_label("This selection is not saved yet."));
-    preview_box.append(&small_label("Review connected files"));
+    preview_box.append(&small_label(
+        "Choose how this preview should read connected files.",
+    ));
 
     let follow_controls = gtk::Box::new(gtk::Orientation::Horizontal, 6);
-    for label in ["Review all connected files", "Only this file", "Cancel"] {
-        let button = gtk::Button::with_label(label);
-        button.set_sensitive(false);
-        follow_controls.append(&button);
-    }
+    let review_all_button = gtk::Button::with_label("Review all connected files");
+    let only_this_file_button = gtk::Button::with_label("Only this file");
+    let cancel_preview_button = gtk::Button::with_label("Cancel");
+    follow_controls.append(&review_all_button);
+    follow_controls.append(&only_this_file_button);
+    follow_controls.append(&cancel_preview_button);
     preview_box.append(&follow_controls);
+
+    let preview_summary_box = gtk::Box::new(gtk::Orientation::Vertical, 4);
+    preview_summary_box.set_margin_top(8);
+    preview_box.append(&preview_summary_box);
+
+    let session_button = gtk::Button::with_label("Use for this session (planned)");
+    session_button.set_sensitive(false);
+    preview_box.append(&session_button);
+    preview_box.append(&small_label(
+        "Session-only review is planned. Apply behavior has not changed.",
+    ));
 
     let clear_button = gtk::Button::with_label("Clear selected file");
     {
         let selection_state = Rc::clone(&selection_state);
         let preview_box = preview_box.clone();
         let selected_path_label = selected_path_label.clone();
+        let preview_summary_box = preview_summary_box.clone();
         clear_button.connect_clicked(move |_| {
             let next_state = selection_state.borrow().clone().cancel_preview();
             *selection_state.borrow_mut() = next_state;
@@ -603,10 +621,57 @@ fn config_file_selection_section(
                 &selection_state.borrow(),
                 &preview_box,
                 &selected_path_label,
+                &preview_summary_box,
             );
         });
     }
     preview_box.append(&clear_button);
+
+    for (button, choice) in [
+        (
+            review_all_button,
+            SourceFollowChoice::ReviewAllConnectedFiles,
+        ),
+        (only_this_file_button, SourceFollowChoice::OnlySelectedFile),
+    ] {
+        let selection_state = Rc::clone(&selection_state);
+        let preview_box = preview_box.clone();
+        let selected_path_label = selected_path_label.clone();
+        let preview_summary_box = preview_summary_box.clone();
+        button.connect_clicked(move |_| {
+            let Some(path) = selection_state.borrow().preview().selected_for_review else {
+                return;
+            };
+            let next_state = selection_state
+                .borrow()
+                .clone()
+                .preview_manual_config(path, choice);
+            *selection_state.borrow_mut() = next_state;
+            update_config_selection_preview(
+                &selection_state.borrow(),
+                &preview_box,
+                &selected_path_label,
+                &preview_summary_box,
+            );
+        });
+    }
+
+    {
+        let selection_state = Rc::clone(&selection_state);
+        let preview_box = preview_box.clone();
+        let selected_path_label = selected_path_label.clone();
+        let preview_summary_box = preview_summary_box.clone();
+        cancel_preview_button.connect_clicked(move |_| {
+            let next_state = selection_state.borrow().clone().cancel_preview();
+            *selection_state.borrow_mut() = next_state;
+            update_config_selection_preview(
+                &selection_state.borrow(),
+                &preview_box,
+                &selected_path_label,
+                &preview_summary_box,
+            );
+        });
+    }
 
     let choose_button = gtk::Button::with_label("Choose Config File...");
     {
@@ -614,6 +679,7 @@ fn config_file_selection_section(
         let selection_state = Rc::clone(&selection_state);
         let preview_box = preview_box.clone();
         let selected_path_label = selected_path_label.clone();
+        let preview_summary_box = preview_summary_box.clone();
         choose_button.connect_clicked(move |_| {
             let dialog = gtk::FileChooserNative::new(
                 Some("Choose Config File"),
@@ -625,6 +691,7 @@ fn config_file_selection_section(
             let selection_state = Rc::clone(&selection_state);
             let preview_box = preview_box.clone();
             let selected_path_label = selected_path_label.clone();
+            let preview_summary_box = preview_summary_box.clone();
             dialog.connect_response(move |dialog, response| {
                 if response == gtk::ResponseType::Accept {
                     if let Some(path) = dialog.file().and_then(|file| file.path()) {
@@ -637,6 +704,7 @@ fn config_file_selection_section(
                             &selection_state.borrow(),
                             &preview_box,
                             &selected_path_label,
+                            &preview_summary_box,
                         );
                     }
                 }
@@ -656,15 +724,97 @@ fn update_config_selection_preview(
     state: &ConfigSelectionState,
     preview_box: &gtk::Box,
     selected_path_label: &gtk::Label,
+    preview_summary_box: &gtk::Box,
 ) {
     let preview = state.preview();
     if let Some(path) = preview.selected_for_review {
         selected_path_label.set_label(&path.display().to_string());
+        clear_box(preview_summary_box);
+        for line in selected_file_preview_summary_lines(&path, preview.source_follow_choice) {
+            preview_summary_box.append(&small_label(&line));
+        }
         preview_box.set_visible(true);
     } else {
         selected_path_label.set_label("");
+        clear_box(preview_summary_box);
         preview_box.set_visible(false);
     }
+}
+
+fn selected_file_preview_summary_lines(
+    path: &std::path::Path,
+    source_follow_choice: SourceFollowChoice,
+) -> Vec<String> {
+    let source_follow_policy = match source_follow_choice {
+        SourceFollowChoice::ReviewAllConnectedFiles => SourceFollowPolicy::ReviewAll,
+        SourceFollowChoice::OnlySelectedFile | SourceFollowChoice::Cancel => {
+            SourceFollowPolicy::OnlyRoot
+        }
+    };
+    let graph = inspect_config_graph_with_options(
+        path,
+        ConfigGraphOptions {
+            source_follow_policy,
+            ..ConfigGraphOptions::from_env()
+        },
+    );
+
+    if graph.files.first().is_none_or(|file| !file.readable) {
+        return vec![
+            "This file could not be read for preview.".to_string(),
+            "No changes were made.".to_string(),
+        ];
+    }
+
+    let mut lines = vec![
+        format!("Connected files found: {}", graph.connected_file_count),
+        format!("Unreadable files: {}", graph.unreadable_file_count),
+        format!(
+            "Profile-style files: {}",
+            if graph.has_profile_hints || graph.has_mode_hints || graph.has_theme_hints {
+                "detected"
+            } else {
+                "not detected"
+            }
+        ),
+        format!(
+            "Script-managed hints: {}",
+            if graph.has_script_managed_hints {
+                "detected"
+            } else {
+                "not detected"
+            }
+        ),
+        format!(
+            "Generated-file hints: {}",
+            if graph.has_generated_hints {
+                "detected"
+            } else {
+                "not detected"
+            }
+        ),
+        format!(
+            "Cycles: {}",
+            if graph.cycles.is_empty() {
+                "not detected"
+            } else {
+                "detected"
+            }
+        ),
+        format!(
+            "Unsupported patterns: {}",
+            if graph.unsupported_sources.is_empty() {
+                "not detected"
+            } else {
+                "detected"
+            }
+        ),
+    ];
+
+    if source_follow_choice == SourceFollowChoice::OnlySelectedFile {
+        lines.push("Connected files are not included in this preview.".to_string());
+    }
+    lines
 }
 
 fn config_selection_scaffold_lines(discovery: &ConfigDiscovery) -> Vec<String> {
@@ -1285,6 +1435,7 @@ fn render_detail(model: &UiProjection, row_id: &str, detail_content: &gtk::Box) 
 
     append_detail_section(detail_content, "Current value", |section| {
         append_current_value_summary(&detail, section);
+        append_layered_value_summary(model, &detail, section);
     });
 
     append_detail_section(detail_content, "Edit", |section| {
@@ -1342,6 +1493,45 @@ fn append_current_value_summary(detail: &RowDetailProjection, section: &gtk::Box
     if let Some(warning) = &detail.current_value.warning {
         append_detail_line(section, "Warning", warning);
     }
+}
+
+fn append_layered_value_summary(
+    model: &UiProjection,
+    detail: &RowDetailProjection,
+    section: &gtk::Box,
+) {
+    let Some(graph) = config_graph_for_discovery(&model.config_discovery) else {
+        return;
+    };
+    let setting_id = write_flow_config_setting(&detail.row_id)
+        .unwrap_or(&detail.official_setting)
+        .to_string();
+    let layered = layered_values_for_setting(&graph, &setting_id);
+    if !layered.controlled_in_more_than_one_place {
+        return;
+    }
+
+    section.append(&body_label(
+        "This setting is controlled in more than one place.",
+    ));
+    for occurrence in &layered.occurrences {
+        append_detail_line(
+            section,
+            &occurrence.role_label,
+            &format!(
+                "{} ({}:{})",
+                occurrence.raw_value,
+                occurrence.file_path.display(),
+                occurrence.line_number
+            ),
+        );
+    }
+    if let Some(active) = &layered.currently_active_value {
+        append_detail_line(section, "Currently active", active);
+    }
+    section.append(&small_label(
+        "Choose where to save changes in a future version. This display is read-only.",
+    ));
 }
 
 fn append_user_facing_write_reason(detail: &RowDetailProjection, section: &gtk::Box) {

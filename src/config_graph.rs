@@ -11,6 +11,7 @@ pub struct ConfigGraphOptions {
     pub home_dir: Option<PathBuf>,
     pub script_dirs: Vec<PathBuf>,
     pub max_depth: usize,
+    pub source_follow_policy: SourceFollowPolicy,
 }
 
 impl ConfigGraphOptions {
@@ -25,8 +26,15 @@ impl ConfigGraphOptions {
             home_dir,
             script_dirs,
             max_depth: DEFAULT_MAX_DEPTH,
+            source_follow_policy: SourceFollowPolicy::ReviewAll,
         }
     }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SourceFollowPolicy {
+    ReviewAll,
+    OnlyRoot,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -233,8 +241,10 @@ impl ConfigGraphBuilder {
                 ParsedSource::Reference(reference) => {
                     let target = reference.resolved_target.clone();
                     self.summary.source_references.push(reference);
-                    if let Some(target) = target {
-                        self.visit(&target, depth + 1);
+                    if self.options.source_follow_policy == SourceFollowPolicy::ReviewAll {
+                        if let Some(target) = target {
+                            self.visit(&target, depth + 1);
+                        }
                     }
                 }
                 ParsedSource::Unsupported(issue) => {
