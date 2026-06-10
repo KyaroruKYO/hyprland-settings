@@ -17,6 +17,7 @@ use crate::current_config::{
 use crate::export::ExportBundle;
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::session_config_preview::build_session_config_preview;
+use crate::session_value_projection::compare_active_and_session_values;
 use crate::ui::model::{
     initial_screen_shader_advisory_ui_action, run_screen_shader_advisory_ui_action,
     RowDetailProjection, ScreenShaderAdvisoryUiActionRequest, UiProjection,
@@ -24,6 +25,8 @@ use crate::ui::model::{
 use crate::validation::ValidationSummary;
 use crate::write_classification::{high_risk_write_policy, ScalarWriteValueKind};
 use crate::write_flow::{apply_setting_change, write_flow_config_setting, write_flow_value_kind};
+use crate::write_target_candidate::write_target_candidates_for_layered_setting;
+use crate::write_target_recommendation::recommend_write_targets;
 
 const DASHBOARD_ID: &str = "dashboard";
 const CONFIG_ID: &str = "config";
@@ -72,6 +75,9 @@ pub fn show_main_window(
     root.append(&body);
 
     let sidebar_items = Rc::new(sidebar_items(&model));
+    let config_selection_state = Rc::new(RefCell::new(config_selection_state_for_discovery(
+        &model.config_discovery,
+    )));
     let sidebar = build_sidebar(&sidebar_items);
     let sidebar_scroll = gtk::ScrolledWindow::builder()
         .min_content_width(250)
@@ -91,7 +97,7 @@ pub fn show_main_window(
     let dashboard_view = build_dashboard_view(&model, &sidebar, &sidebar_items);
     content.append(&dashboard_view);
 
-    let config_view = build_config_view(&model, &window);
+    let config_view = build_config_view(&model, &window, &config_selection_state);
     content.append(&config_view);
 
     let settings_view = gtk::Box::new(gtk::Orientation::Vertical, 12);
@@ -141,6 +147,7 @@ pub fn show_main_window(
         &settings_list,
         &displayed_row_ids,
         &detail_content,
+        &config_selection_state,
     );
 
     {
@@ -155,6 +162,7 @@ pub fn show_main_window(
         let settings_list = settings_list.clone();
         let displayed_row_ids = Rc::clone(&displayed_row_ids);
         let detail_content = detail_content.clone();
+        let config_selection_state = Rc::clone(&config_selection_state);
         sidebar.connect_row_selected(move |_, row| {
             if let Some(row) = row {
                 if let Some(item) = sidebar_items.get(row.index() as usize) {
@@ -170,6 +178,7 @@ pub fn show_main_window(
                         &settings_list,
                         &displayed_row_ids,
                         &detail_content,
+                        &config_selection_state,
                     );
                 }
             }
@@ -187,6 +196,7 @@ pub fn show_main_window(
         let settings_list = settings_list.clone();
         let displayed_row_ids = Rc::clone(&displayed_row_ids);
         let detail_content = detail_content.clone();
+        let config_selection_state = Rc::clone(&config_selection_state);
         search_entry.connect_search_changed(move |entry| {
             *current_query.borrow_mut() = entry.text().to_string();
             render_main_view(
@@ -200,6 +210,7 @@ pub fn show_main_window(
                 &settings_list,
                 &displayed_row_ids,
                 &detail_content,
+                &config_selection_state,
             );
         });
     }
@@ -208,6 +219,7 @@ pub fn show_main_window(
         let model = Rc::clone(&model);
         let displayed_row_ids = Rc::clone(&displayed_row_ids);
         let detail_content = detail_content.clone();
+        let config_selection_state = Rc::clone(&config_selection_state);
         settings_list.connect_row_selected(move |_, row| {
             let Some(row) = row else {
                 render_empty_detail(&detail_content);
@@ -218,7 +230,7 @@ pub fn show_main_window(
                 .get(row.index() as usize)
                 .cloned();
             if let Some(row_id) = row_id {
-                render_detail(&model, &row_id, &detail_content);
+                render_detail(&model, &row_id, &detail_content, &config_selection_state);
             } else {
                 render_empty_detail(&detail_content);
             }
@@ -484,7 +496,11 @@ fn dashboard_needs_attention(model: &UiProjection) -> bool {
             .any(|family| family.warning_count > 0))
 }
 
-fn build_config_view(model: &UiProjection, window: &adw::ApplicationWindow) -> gtk::ScrolledWindow {
+fn build_config_view(
+    model: &UiProjection,
+    window: &adw::ApplicationWindow,
+    selection_state: &Rc<RefCell<ConfigSelectionState>>,
+) -> gtk::ScrolledWindow {
     let content = gtk::Box::new(gtk::Orientation::Vertical, 14);
     content.set_margin_top(4);
     content.set_margin_bottom(16);
@@ -499,6 +515,7 @@ fn build_config_view(model: &UiProjection, window: &adw::ApplicationWindow) -> g
     content.append(&config_file_selection_section(
         &model.config_discovery,
         window,
+        selection_state,
     ));
 
     content.append(&connected_files_review_section(&model.config_discovery));
@@ -557,6 +574,7 @@ fn config_selection_state_for_discovery(discovery: &ConfigDiscovery) -> ConfigSe
 fn config_file_selection_section(
     discovery: &ConfigDiscovery,
     window: &adw::ApplicationWindow,
+    selection_state: &Rc<RefCell<ConfigSelectionState>>,
 ) -> gtk::Frame {
     let frame = gtk::Frame::new(None);
     let box_content = gtk::Box::new(gtk::Orientation::Vertical, 8);
@@ -570,9 +588,6 @@ fn config_file_selection_section(
         box_content.append(&body_label(&line));
     }
 
-    let selection_state = Rc::new(RefCell::new(config_selection_state_for_discovery(
-        discovery,
-    )));
     let preview_box = gtk::Box::new(gtk::Orientation::Vertical, 6);
     preview_box.set_margin_top(8);
     preview_box.set_visible(false);
@@ -1322,6 +1337,7 @@ fn render_main_view(
     settings_list: &gtk::ListBox,
     displayed_row_ids: &Rc<RefCell<Vec<String>>>,
     detail_content: &gtk::Box,
+    config_selection_state: &Rc<RefCell<ConfigSelectionState>>,
 ) {
     if selected_tab_id == DASHBOARD_ID {
         dashboard_view.set_visible(true);
@@ -1360,6 +1376,7 @@ fn render_main_view(
         settings_list,
         displayed_row_ids,
         detail_content,
+        config_selection_state,
     );
 }
 
@@ -1371,6 +1388,7 @@ fn render_settings_view(
     settings_list: &gtk::ListBox,
     displayed_row_ids: &Rc<RefCell<Vec<String>>>,
     detail_content: &gtk::Box,
+    _config_selection_state: &Rc<RefCell<ConfigSelectionState>>,
 ) {
     settings_list.unselect_all();
     while let Some(child) = settings_list.first_child() {
@@ -1516,7 +1534,12 @@ fn render_empty_detail(detail_content: &gtk::Box) {
     ));
 }
 
-fn render_detail(model: &UiProjection, row_id: &str, detail_content: &gtk::Box) {
+fn render_detail(
+    model: &UiProjection,
+    row_id: &str,
+    detail_content: &gtk::Box,
+    config_selection_state: &Rc<RefCell<ConfigSelectionState>>,
+) {
     let Some(detail) = model.detail_for_row(row_id) else {
         render_empty_detail(detail_content);
         return;
@@ -1539,10 +1562,12 @@ fn render_detail(model: &UiProjection, row_id: &str, detail_content: &gtk::Box) 
     append_detail_section(detail_content, "Current value", |section| {
         append_current_value_summary(&detail, section);
         append_layered_value_summary(model, &detail, section);
+        append_session_value_projection_summary(model, &detail, section, config_selection_state);
     });
 
     append_detail_section(detail_content, "Edit", |section| {
         append_user_facing_write_reason(&detail, section);
+        append_pre_apply_review_scaffold(model, &detail, section);
         append_write_controls(model, &detail, section);
     });
 
@@ -1628,6 +1653,9 @@ fn append_layered_value_summary(
                 occurrence.line_number
             ),
         );
+        for note in occurrence.friendly_notes() {
+            section.append(&small_label(&note));
+        }
     }
     if let Some(active) = &layered.currently_active_value {
         append_detail_line(section, "Currently active", active);
@@ -1635,6 +1663,117 @@ fn append_layered_value_summary(
     section.append(&small_label(
         "Choose where to save changes in a future version. This display is read-only.",
     ));
+}
+
+fn append_session_value_projection_summary(
+    _model: &UiProjection,
+    detail: &RowDetailProjection,
+    section: &gtk::Box,
+    config_selection_state: &Rc<RefCell<ConfigSelectionState>>,
+) {
+    let preview = config_selection_state.borrow().preview();
+    if !preview.session_only {
+        return;
+    }
+    let Some(session_path) = preview.session_read_only_config else {
+        return;
+    };
+    let graph = inspect_config_graph_with_options(
+        &session_path,
+        ConfigGraphOptions {
+            source_follow_policy: source_follow_policy_for_choice(preview.source_follow_choice),
+            ..ConfigGraphOptions::from_env()
+        },
+    );
+    let setting_id = write_flow_config_setting(&detail.row_id)
+        .unwrap_or(&detail.official_setting)
+        .to_string();
+    let layered = layered_values_for_setting(&graph, &setting_id);
+    let projection = compare_active_and_session_values(
+        detail.row_id.clone(),
+        setting_id,
+        &detail.current_value,
+        &layered,
+    );
+
+    for line in projection.user_facing_lines() {
+        section.append(&small_label(&line));
+    }
+    if let (Some(path), Some(line)) = (
+        projection.session_source_path.as_ref(),
+        projection.session_source_line,
+    ) {
+        append_detail_line(
+            section,
+            "Session source",
+            &format!("{}:{line}", path.display()),
+        );
+    }
+}
+
+fn source_follow_policy_for_choice(choice: SourceFollowChoice) -> SourceFollowPolicy {
+    match choice {
+        SourceFollowChoice::ReviewAllConnectedFiles => SourceFollowPolicy::ReviewAll,
+        SourceFollowChoice::OnlySelectedFile | SourceFollowChoice::Cancel => {
+            SourceFollowPolicy::OnlyRoot
+        }
+    }
+}
+
+fn append_pre_apply_review_scaffold(
+    model: &UiProjection,
+    detail: &RowDetailProjection,
+    section: &gtk::Box,
+) {
+    let Some(graph) = config_graph_for_discovery(&model.config_discovery) else {
+        return;
+    };
+    let setting_id = write_flow_config_setting(&detail.row_id)
+        .unwrap_or(&detail.official_setting)
+        .to_string();
+    let layered = layered_values_for_setting(&graph, &setting_id);
+    if !layered.controlled_in_more_than_one_place {
+        return;
+    }
+
+    let candidates = write_target_candidates_for_layered_setting(&layered, &graph.files);
+    let recommendation = recommend_write_targets(&candidates);
+
+    let frame = gtk::Frame::new(None);
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label("Pre-apply review"));
+    content.append(&small_label(
+        "Before this setting can be changed, choose where the app should save it.",
+    ));
+    content.append(&small_label(
+        "The app will back up the exact file before saving changes.",
+    ));
+    content.append(&small_label(
+        "Generated or script-managed files may require advanced confirmation.",
+    ));
+    content.append(&small_label(
+        "Real write-target selection is not active yet.",
+    ));
+    content.append(&small_label("Apply behavior has not changed."));
+
+    content.append(&body_label("Save location"));
+    for line in recommendation.user_facing_lines() {
+        content.append(&small_label(&line));
+    }
+
+    for candidate in &candidates {
+        let button = gtk::CheckButton::with_label(&candidate.label);
+        button.set_sensitive(false);
+        content.append(&button);
+    }
+
+    frame.set_child(Some(&content));
+    section.append(&frame);
 }
 
 fn append_user_facing_write_reason(detail: &RowDetailProjection, section: &gtk::Box) {

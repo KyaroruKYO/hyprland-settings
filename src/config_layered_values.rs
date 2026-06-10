@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use crate::config_graph::{ConfigGraphFile, ConfigGraphSummary};
+use crate::config_graph::{ConfigGraphFile, ConfigGraphSummary, ConfigManagementHintKind};
 use crate::config_parser::{parse_hyprland_config_file, ParseStatus};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -22,6 +22,9 @@ impl LayeredSettingValues {
                 "{}: {}",
                 occurrence.role_label, occurrence.raw_value
             ));
+            for note in occurrence.friendly_notes() {
+                lines.push(format!("{} note: {}", occurrence.role_label, note));
+            }
         }
         if let Some(value) = &self.currently_active_value {
             lines.push(format!("Currently active: {value}"));
@@ -42,6 +45,21 @@ pub struct LayeredValueOccurrence {
     pub line_number: usize,
     pub role_label: String,
     pub read_only: bool,
+    pub generated_or_script_managed: bool,
+    pub symlink_managed: bool,
+}
+
+impl LayeredValueOccurrence {
+    pub fn friendly_notes(&self) -> Vec<String> {
+        let mut notes = Vec::new();
+        if self.generated_or_script_managed {
+            notes.push("This file may be changed by scripts or generated tooling.".to_string());
+        }
+        if self.symlink_managed {
+            notes.push("This file is symlinked.".to_string());
+        }
+        notes
+    }
 }
 
 pub fn layered_values_for_setting(
@@ -71,6 +89,8 @@ pub fn layered_values_for_setting(
                 line_number: record.line_number,
                 role_label: layered_file_role_label(file),
                 read_only: true,
+                generated_or_script_managed: file_generated_or_script_managed(file),
+                symlink_managed: file_symlink_managed(file),
             });
         }
     }
@@ -84,6 +104,25 @@ pub fn layered_values_for_setting(
         occurrences,
         currently_active_value,
     }
+}
+
+fn file_generated_or_script_managed(file: &ConfigGraphFile) -> bool {
+    file.hints.iter().any(|hint| {
+        matches!(
+            hint.kind,
+            ConfigManagementHintKind::GeneratedFile
+                | ConfigManagementHintKind::ScriptManaged
+                | ConfigManagementHintKind::ScriptReferenced
+        )
+    })
+}
+
+fn file_symlink_managed(file: &ConfigGraphFile) -> bool {
+    file.is_symlink
+        || file
+            .hints
+            .iter()
+            .any(|hint| hint.kind == ConfigManagementHintKind::SymlinkManaged)
 }
 
 pub fn layered_file_role_label(file: &ConfigGraphFile) -> String {

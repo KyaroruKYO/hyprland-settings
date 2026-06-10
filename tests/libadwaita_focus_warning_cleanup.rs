@@ -65,7 +65,8 @@ fn dashboard_sidebar_search_and_details_behaviors_remain_wired() {
     assert!(source.contains("sidebar.select_row(Some(&row))"));
     assert!(source.contains("connect_row_selected"));
     assert!(source.contains("Search settings"));
-    assert!(source.contains("render_detail(&model, &row_id, &detail_content)"));
+    assert!(source.contains("render_detail("));
+    assert!(source.contains("&config_selection_state"));
     assert!(source.contains("Source / advanced metadata"));
 }
 
