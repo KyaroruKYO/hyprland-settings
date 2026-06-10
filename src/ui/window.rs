@@ -16,6 +16,7 @@ use crate::current_config::{
 };
 use crate::export::ExportBundle;
 use crate::search::{search_projection, SearchRank, SearchResult};
+use crate::session_config_preview::build_session_config_preview;
 use crate::ui::model::{
     initial_screen_shader_advisory_ui_action, run_screen_shader_advisory_ui_action,
     RowDetailProjection, ScreenShaderAdvisoryUiActionRequest, UiProjection,
@@ -601,12 +602,23 @@ fn config_file_selection_section(
     preview_summary_box.set_margin_top(8);
     preview_box.append(&preview_summary_box);
 
-    let session_button = gtk::Button::with_label("Use for this session (planned)");
-    session_button.set_sensitive(false);
+    let session_button = gtk::Button::with_label("Use for this session preview");
     preview_box.append(&session_button);
     preview_box.append(&small_label(
-        "Session-only review is planned. Apply behavior has not changed.",
+        "Using this config for this app session only. This is not saved.",
     ));
+    preview_box.append(&small_label(
+        "This config is being reread for display only. Apply behavior has not changed.",
+    ));
+
+    let session_summary_box = gtk::Box::new(gtk::Orientation::Vertical, 4);
+    session_summary_box.set_margin_top(8);
+    session_summary_box.set_visible(false);
+    preview_box.append(&session_summary_box);
+
+    let clear_session_button = gtk::Button::with_label("Clear session preview");
+    clear_session_button.set_visible(false);
+    preview_box.append(&clear_session_button);
 
     let clear_button = gtk::Button::with_label("Clear selected file");
     {
@@ -614,6 +626,8 @@ fn config_file_selection_section(
         let preview_box = preview_box.clone();
         let selected_path_label = selected_path_label.clone();
         let preview_summary_box = preview_summary_box.clone();
+        let session_summary_box = session_summary_box.clone();
+        let clear_session_button = clear_session_button.clone();
         clear_button.connect_clicked(move |_| {
             let next_state = selection_state.borrow().clone().cancel_preview();
             *selection_state.borrow_mut() = next_state;
@@ -622,6 +636,8 @@ fn config_file_selection_section(
                 &preview_box,
                 &selected_path_label,
                 &preview_summary_box,
+                &session_summary_box,
+                &clear_session_button,
             );
         });
     }
@@ -638,20 +654,28 @@ fn config_file_selection_section(
         let preview_box = preview_box.clone();
         let selected_path_label = selected_path_label.clone();
         let preview_summary_box = preview_summary_box.clone();
+        let session_summary_box = session_summary_box.clone();
+        let clear_session_button = clear_session_button.clone();
         button.connect_clicked(move |_| {
-            let Some(path) = selection_state.borrow().preview().selected_for_review else {
+            let preview = selection_state.borrow().preview();
+            let Some(path) = preview.selected_for_review else {
                 return;
             };
-            let next_state = selection_state
+            let mut next_state = selection_state
                 .borrow()
                 .clone()
                 .preview_manual_config(path, choice);
+            if preview.session_only {
+                next_state = next_state.use_preview_for_session_read_only();
+            }
             *selection_state.borrow_mut() = next_state;
             update_config_selection_preview(
                 &selection_state.borrow(),
                 &preview_box,
                 &selected_path_label,
                 &preview_summary_box,
+                &session_summary_box,
+                &clear_session_button,
             );
         });
     }
@@ -661,6 +685,8 @@ fn config_file_selection_section(
         let preview_box = preview_box.clone();
         let selected_path_label = selected_path_label.clone();
         let preview_summary_box = preview_summary_box.clone();
+        let session_summary_box = session_summary_box.clone();
+        let clear_session_button = clear_session_button.clone();
         cancel_preview_button.connect_clicked(move |_| {
             let next_state = selection_state.borrow().clone().cancel_preview();
             *selection_state.borrow_mut() = next_state;
@@ -669,6 +695,54 @@ fn config_file_selection_section(
                 &preview_box,
                 &selected_path_label,
                 &preview_summary_box,
+                &session_summary_box,
+                &clear_session_button,
+            );
+        });
+    }
+
+    {
+        let selection_state = Rc::clone(&selection_state);
+        let preview_box = preview_box.clone();
+        let selected_path_label = selected_path_label.clone();
+        let preview_summary_box = preview_summary_box.clone();
+        let session_summary_box = session_summary_box.clone();
+        let clear_session_button = clear_session_button.clone();
+        session_button.connect_clicked(move |_| {
+            let next_state = selection_state
+                .borrow()
+                .clone()
+                .use_preview_for_session_read_only();
+            *selection_state.borrow_mut() = next_state;
+            update_config_selection_preview(
+                &selection_state.borrow(),
+                &preview_box,
+                &selected_path_label,
+                &preview_summary_box,
+                &session_summary_box,
+                &clear_session_button,
+            );
+        });
+    }
+
+    {
+        let selection_state = Rc::clone(&selection_state);
+        let preview_box = preview_box.clone();
+        let selected_path_label = selected_path_label.clone();
+        let preview_summary_box = preview_summary_box.clone();
+        let session_summary_box = session_summary_box.clone();
+        let clear_session_button = clear_session_button.clone();
+        let clear_session_button_for_signal = clear_session_button.clone();
+        clear_session_button_for_signal.connect_clicked(move |_| {
+            let next_state = selection_state.borrow().clone().cancel_preview();
+            *selection_state.borrow_mut() = next_state;
+            update_config_selection_preview(
+                &selection_state.borrow(),
+                &preview_box,
+                &selected_path_label,
+                &preview_summary_box,
+                &session_summary_box,
+                &clear_session_button,
             );
         });
     }
@@ -680,6 +754,8 @@ fn config_file_selection_section(
         let preview_box = preview_box.clone();
         let selected_path_label = selected_path_label.clone();
         let preview_summary_box = preview_summary_box.clone();
+        let session_summary_box = session_summary_box.clone();
+        let clear_session_button = clear_session_button.clone();
         choose_button.connect_clicked(move |_| {
             let dialog = gtk::FileChooserNative::new(
                 Some("Choose Config File"),
@@ -692,6 +768,8 @@ fn config_file_selection_section(
             let preview_box = preview_box.clone();
             let selected_path_label = selected_path_label.clone();
             let preview_summary_box = preview_summary_box.clone();
+            let session_summary_box = session_summary_box.clone();
+            let clear_session_button = clear_session_button.clone();
             dialog.connect_response(move |dialog, response| {
                 if response == gtk::ResponseType::Accept {
                     if let Some(path) = dialog.file().and_then(|file| file.path()) {
@@ -705,6 +783,8 @@ fn config_file_selection_section(
                             &preview_box,
                             &selected_path_label,
                             &preview_summary_box,
+                            &session_summary_box,
+                            &clear_session_button,
                         );
                     }
                 }
@@ -725,6 +805,8 @@ fn update_config_selection_preview(
     preview_box: &gtk::Box,
     selected_path_label: &gtk::Label,
     preview_summary_box: &gtk::Box,
+    session_summary_box: &gtk::Box,
+    clear_session_button: &gtk::Button,
 ) {
     let preview = state.preview();
     if let Some(path) = preview.selected_for_review {
@@ -733,10 +815,24 @@ fn update_config_selection_preview(
         for line in selected_file_preview_summary_lines(&path, preview.source_follow_choice) {
             preview_summary_box.append(&small_label(&line));
         }
+        clear_box(session_summary_box);
+        if preview.session_only {
+            for line in session_config_preview_summary_lines(&path, preview.source_follow_choice) {
+                session_summary_box.append(&small_label(&line));
+            }
+            session_summary_box.set_visible(true);
+            clear_session_button.set_visible(true);
+        } else {
+            session_summary_box.set_visible(false);
+            clear_session_button.set_visible(false);
+        }
         preview_box.set_visible(true);
     } else {
         selected_path_label.set_label("");
         clear_box(preview_summary_box);
+        clear_box(session_summary_box);
+        session_summary_box.set_visible(false);
+        clear_session_button.set_visible(false);
         preview_box.set_visible(false);
     }
 }
@@ -815,6 +911,13 @@ fn selected_file_preview_summary_lines(
         lines.push("Connected files are not included in this preview.".to_string());
     }
     lines
+}
+
+fn session_config_preview_summary_lines(
+    path: &std::path::Path,
+    source_follow_choice: SourceFollowChoice,
+) -> Vec<String> {
+    build_session_config_preview(path, source_follow_choice).user_facing_lines()
 }
 
 fn config_selection_scaffold_lines(discovery: &ConfigDiscovery) -> Vec<String> {

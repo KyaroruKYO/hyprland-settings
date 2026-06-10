@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "sessionConfigPreviewModel",
+  "generatedAt": "2026-06-09T23:19:09-07:00",
+  "startingCommit": "01959ad1e68579eba44fb36c6cdd1413b8eb2a53 Add config preview and layered target foundation",
+  "goal": "Implement an isolated read-only session preview model that rereads selected config values for display only without changing production write behavior, persistence, profile switching, or real write-target selection.",
+  "filesChanged": [
+    "src/session_config_preview.rs",
+    "src/lib.rs",
+    "src/ui/window.rs",
+    "tests/session_config_preview_model.rs",
+    "tests/session_config_preview_read.rs",
+    "tests/session_config_preview_ui.rs",
+    "tests/config_picker_preview_ui.rs",
+    "data/reports/session-config-preview-model.v0.55.2.json",
+    "docs/SESSION-CONFIG-PREVIEW-MODEL-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/SESSION-CONFIG-PREVIEW-MODEL-REVIEW-LOG.md"
+  ],
+  "sessionPreviewModel": {
+    "module": "src/session_config_preview.rs",
+    "sessionSelectedConfigRepresented": true,
+    "readOnly": true,
+    "clearable": true,
+    "persisted": false,
+    "affectsWrites": false,
+    "writeTargetChanged": false
+  },
+  "sessionReadBehavior": {
+    "selectedConfigParsedForDisplayOnly": true,
+    "graphSummaryProduced": true,
+    "valueReadCountProduced": true,
+    "settingsWithMultipleLocationsCountProduced": true,
+    "unreadableSelectedConfigFriendlyError": true,
+    "doesNotMutateConfigDiscovery": true,
+    "doesNotMutateProductionCurrentConfigSnapshot": true,
+    "doesNotRebuildProductionUiProjection": true,
+    "doesNotCallApplySettingChange": true
+  },
+  "sourceFollowBehavior": {
+    "reviewAllConnectedFiles": "Session preview graph follows source/include files read-only.",
+    "onlyThisFile": "Session preview graph uses only the selected root file and says connected files are not included.",
+    "affectsActiveAppConfig": false,
+    "affectsWrites": false
+  },
+  "layeredValuePreviewBehavior": {
+    "settingsWithMultipleLocationsCount": true,
+    "readOnly": true,
+    "editable": false,
+    "realWriteTargetControlsActive": false
+  },
+  "uiChanges": [
+    "Use for this session preview is active after a file is selected.",
+    "Session preview summary is shown inside the selected-file preview panel.",
+    "Clear session preview clears the session preview state.",
+    "User-facing copy states the session preview is not saved and Apply behavior has not changed."
+  ],
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedConfigPersisted": false,
+    "productionCurrentConfigSnapshotChanged": false,
+    "productionConfigDiscoveryChanged": false,
+    "productionUiProjectionChanged": false,
+    "realWriteTargetSelectionActive": false
+  },
+  "testsAdded": [
+    "tests/session_config_preview_model.rs",
+    "tests/session_config_preview_read.rs",
+    "tests/session_config_preview_ui.rs",
+    "Updated tests/config_picker_preview_ui.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false,
+    "appWriteModelChanged": false
+  },
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed; only current sprint files plus pre-existing untracked local audit/design artifacts were present before commit"
+  },
+  "proofUsed": [
+    "src/session_config_preview.rs",
+    "src/ui/window.rs session preview UI wiring",
+    "tests/session_config_preview_model.rs",
+    "tests/session_config_preview_read.rs",
+    "tests/session_config_preview_ui.rs",
+    "tests/config_picker_preview_ui.rs",
+    "data/reports/final-341-writable-coverage.v0.55.2.json for preserved counts"
+  ],
+  "proofStillMissing": [
+    "Session preview is not persisted.",
+    "Session preview is not a real write target.",
+    "Profile switching remains inactive.",
+    "Real layered writes remain inactive.",
+    "Real write-target selection remains inactive."
+  ],
+  "nextRecommendedSprint": "Add an isolated read-only session value projection for setting detail rows so users can compare active config values and session-preview values side by side without changing Apply behavior."
+}

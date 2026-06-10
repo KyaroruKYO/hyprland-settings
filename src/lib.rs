@@ -21,6 +21,7 @@ pub mod pending_change;
 pub mod scalar_write;
 pub mod screen_shader_advisory;
 pub mod search;
+pub mod session_config_preview;
 pub mod source_values;
 pub mod ui;
 pub mod validation;

@@ -50,8 +50,9 @@ fn selected_preview_and_clear_copy_are_visible_in_source() {
         "Only this file",
         "Cancel",
         "Clear selected file",
-        "Use for this session (planned)",
-        "Session-only review is planned. Apply behavior has not changed.",
+        "Use for this session preview",
+        "Using this config for this app session only. This is not saved.",
+        "This config is being reread for display only. Apply behavior has not changed.",
     ] {
         assert!(
             section_source.contains(copy),
@@ -59,7 +60,7 @@ fn selected_preview_and_clear_copy_are_visible_in_source() {
         );
     }
 
-    assert!(section_source.contains("session_button.set_sensitive(false)"));
+    assert!(!section_source.contains("session_button.set_sensitive(false)"));
     assert!(section_source.contains("cancel_preview()"));
 }
 
