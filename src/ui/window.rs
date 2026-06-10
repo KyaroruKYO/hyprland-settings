@@ -18,6 +18,7 @@ use crate::export::ExportBundle;
 use crate::guarded_write_review::{
     build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
 };
+use crate::one_target_pilot_readiness::current_one_target_pilot_readiness_mapping;
 use crate::one_target_write_pilot::minimum_one_target_write_pilot_design;
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::session_config_preview::build_session_config_preview;
@@ -1864,6 +1865,12 @@ fn append_pre_apply_review_scaffold(
         let pilot = minimum_one_target_write_pilot_design();
         content.append(&body_label("First production write pilot"));
         for line in pilot.user_facing_lines() {
+            content.append(&small_label(&line));
+        }
+
+        let pilot_readiness = current_one_target_pilot_readiness_mapping();
+        content.append(&body_label("Production backup and verification"));
+        for line in pilot_readiness.user_facing_lines() {
             content.append(&small_label(&line));
         }
 

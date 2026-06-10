@@ -1,0 +1,205 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "production-backup-verification-contracts",
+  "generatedAt": "2026-06-10T09:16:01Z",
+  "startingCommit": "2d3a0b758ca92011777cc05205d48c0536dd1921",
+  "goal": "Design production backup and reread verification contracts for the one-target pilot while keeping pilot and production write gates false.",
+  "filesChanged": [
+    "data/reports/production-backup-verification-contracts.v0.55.2.json",
+    "docs/PRODUCTION-BACKUP-VERIFICATION-CONTRACTS-REVIEW-LOG.md",
+    "src/lib.rs",
+    "src/one_target_pilot_readiness.rs",
+    "src/production_backup_contract.rs",
+    "src/production_recovery_contract.rs",
+    "src/production_verification_contract.rs",
+    "src/ui/window.rs",
+    "tests/one_target_pilot_readiness_mapping.rs",
+    "tests/production_backup_contract.rs",
+    "tests/production_backup_path_policy.rs",
+    "tests/production_backup_verification_apply_isolation.rs",
+    "tests/production_backup_verification_ui.rs",
+    "tests/production_recovery_contract.rs",
+    "tests/production_verification_contract.rs",
+    "tests/production_verification_fixture.rs",
+    "/home/kyo/.config/hypr/docs/PRODUCTION-BACKUP-VERIFICATION-CONTRACTS-REVIEW-LOG.md"
+  ],
+  "productionBackupContract": {
+    "module": "src/production_backup_contract.rs",
+    "targetPolicy": "Back up the exact target file before writing.",
+    "resolvedSymlinkPolicy": "Do not back up the resolved symlink target in the first pilot.",
+    "generatedScriptSymlinkPolicy": "Do not write to generated, script-managed, or symlink-managed targets in the first pilot.",
+    "metadataRecorded": [
+      "target path",
+      "resolved target path if any",
+      "original byte length",
+      "planned backup path",
+      "backup byte length",
+      "byte equality with original"
+    ],
+    "integrityRequirement": "Backup bytes must exactly match original bytes before any future write continues.",
+    "productionEnabled": false
+  },
+  "backupPathPolicy": {
+    "placement": "Same directory as the exact target file.",
+    "filename": "target filename plus timestamped .bak suffix",
+    "timestampPolicy": "UTC timestamp supplied by production write review.",
+    "collisionPolicy": "If a backup path already exists, append .1, .2, and so on before .bak.",
+    "fixtureProof": [
+      "fixed timestamp produces deterministic path",
+      "existing backup path produces unique collision path",
+      "fixture backup bytes match original bytes"
+    ]
+  },
+  "productionVerificationContract": {
+    "module": "src/production_verification_contract.rs",
+    "rereadPolicy": "Reread the exact target file after a future write and parse scalar records.",
+    "linePolicy": "Prefer exact line match when available, with setting-id fallback for fixture proof.",
+    "normalizationPolicy": "Use existing Hyprland scalar key normalization and compare the raw parsed value.",
+    "statuses": [
+      "not run",
+      "planned",
+      "passed in fixture",
+      "failed in fixture",
+      "production disabled",
+      "would require rollback"
+    ],
+    "failureBehavior": "If verification fails, do not claim success; future production must run rollback/recovery before reporting completion.",
+    "productionEnabled": false
+  },
+  "fixtureVerificationProof": {
+    "usesTemporaryFilesOnly": true,
+    "proves": [
+      "fixture write proof writes expected scalar value",
+      "fixture reread verification passes for expected value",
+      "fixture reread verification fails for wrong expected value",
+      "verification failure status can be represented",
+      "production verification gate remains false"
+    ],
+    "realUserConfigTouched": false
+  },
+  "recoveryPrerequisiteContract": {
+    "module": "src/production_recovery_contract.rs",
+    "requires": [
+      "backup exists",
+      "backup verified before write",
+      "restore exact backup bytes to exact target path",
+      "reread restored file",
+      "report rollback success or failure"
+    ],
+    "hyprlandReloadAllowed": false,
+    "productionEnabled": false
+  },
+  "oneTargetPilotReadinessMapping": {
+    "module": "src/one_target_pilot_readiness.rs",
+    "requiresBeforeEnablement": [
+      "production backup contract complete",
+      "backup collision policy complete",
+      "backup integrity check complete",
+      "production reread verification complete",
+      "verification failure behavior complete",
+      "rollback/recovery contract complete",
+      "advanced confirmation policy complete",
+      "manual smoke review complete",
+      "Apply integration boundary approved"
+    ],
+    "pilotGate": false,
+    "readyForProduction": false
+  },
+  "disabledFutureUi": {
+    "added": true,
+    "section": "Production backup and verification",
+    "copy": [
+      "The app will back up this exact file before saving changes.",
+      "The backup must match the original file before any write can continue.",
+      "The app will reread the file to confirm the value.",
+      "If verification fails, the app must not report the change as complete.",
+      "Rollback/recovery must be implemented before real writes.",
+      "Production backups are not active yet.",
+      "Production verification is not active yet.",
+      "Real writing is not active yet.",
+      "Apply behavior has not changed."
+    ],
+    "controlsEnabled": false
+  },
+  "applyWriteIsolation": {
+    "writeFlowImportsProductionBackupContract": false,
+    "writeFlowImportsProductionVerificationContract": false,
+    "writeFlowImportsProductionRecoveryContract": false,
+    "writeFlowImportsOneTargetPilot": false,
+    "writeFlowImportsProductionTargetSelectionArchitecture": false,
+    "writeFlowImportsFixtureProof": false,
+    "applySettingChangeRemainsPresent": true,
+    "applyScalarWritePlanRemainsPresent": true,
+    "allProductionGatesFalse": true
+  },
+  "uiChanges": [
+    "Added disabled production backup and verification copy below the existing first production write pilot section."
+  ],
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedSessionConfigPersisted": false,
+    "productionCurrentConfigSnapshotChanged": false,
+    "productionConfigDiscoveryChanged": false,
+    "productionUiProjectionChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/production_backup_contract.rs",
+    "tests/production_backup_path_policy.rs",
+    "tests/production_verification_contract.rs",
+    "tests/production_verification_fixture.rs",
+    "tests/production_recovery_contract.rs",
+    "tests/one_target_pilot_readiness_mapping.rs",
+    "tests/production_backup_verification_ui.rs",
+    "tests/production_backup_verification_apply_isolation.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "realBackupCreated": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with pre-existing untracked local audit/design artifacts left uncommitted"
+  },
+  "proofUsed": [
+    "Contract model tests for backup, verification, recovery, and pilot readiness.",
+    "Fixture-only backup path and byte-equality proof using temporary files only.",
+    "Fixture-only write and reread verification proof using temporary files only.",
+    "Source-level UI copy tests proving disabled future copy and no handlers.",
+    "Source-level Apply/write isolation tests proving write_flow.rs does not import the new contracts."
+  ],
+  "proofStillMissing": [
+    "No production backup implementation is active.",
+    "No production reread verification is active.",
+    "No production rollback/recovery implementation is active.",
+    "No production Apply integration is approved.",
+    "No real write-target selection is active."
+  ],
+  "nextRecommendedSprint": "Design rollback/recovery implementation details for the one-target pilot while keeping all production gates false."
+}
