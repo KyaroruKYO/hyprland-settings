@@ -5,6 +5,7 @@ use adw::prelude::*;
 use gtk4 as gtk;
 
 use crate::config_discovery::ConfigDiscovery;
+use crate::config_graph::{inspect_config_graph, ConfigGraphSummary};
 use crate::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValueSourceStatus,
 };
@@ -501,11 +502,7 @@ fn build_config_view(model: &UiProjection) -> gtk::ScrolledWindow {
 
     content.append(&config_section(
         "Connected files",
-        vec![
-            "This setup may use more than one config file.".to_string(),
-            "Connected-file review is planned and not active yet.".to_string(),
-            "The app will review connected files before allowing changes.".to_string(),
-        ],
+        config_graph_summary_lines(&model.config_discovery),
         Some(("Review connected files (planned)", false)),
     ));
 
@@ -549,6 +546,55 @@ fn config_path_summary(discovery: &ConfigDiscovery) -> String {
             format!("{} is not a regular file.", path.display())
         }
     }
+}
+
+fn config_graph_summary_lines(discovery: &ConfigDiscovery) -> Vec<String> {
+    let crate::config_discovery::ConfigDiscoveryStatus::Found { path, .. } = &discovery.status
+    else {
+        return vec![
+            "No connected config files were detected.".to_string(),
+            "Connected-file review is read-only right now.".to_string(),
+        ];
+    };
+
+    let graph = inspect_config_graph(path);
+    friendly_config_graph_summary(&graph)
+}
+
+fn friendly_config_graph_summary(graph: &ConfigGraphSummary) -> Vec<String> {
+    let mut lines = Vec::new();
+    if graph.multi_file {
+        lines.push(format!(
+            "This setup uses {} config files.",
+            graph.connected_file_count
+        ));
+        lines.push("Some files are connected through source lines.".to_string());
+    } else {
+        lines.push("No connected config files were detected.".to_string());
+    }
+
+    if graph.unreadable_file_count > 0 {
+        lines.push(format!(
+            "{} connected file(s) could not be read.",
+            graph.unreadable_file_count
+        ));
+    }
+
+    if graph.has_profile_hints || graph.has_mode_hints || graph.has_theme_hints {
+        lines.push("Profile-style config files were detected.".to_string());
+    }
+
+    if graph.has_script_managed_hints {
+        lines.push("Some files may be changed by scripts.".to_string());
+    }
+
+    if !graph.unsupported_sources.is_empty() {
+        lines.push("Some connected files may not be shown yet.".to_string());
+    }
+
+    lines.push("Connected-file review is read-only right now.".to_string());
+    lines.push("The app will review connected files before allowing changes.".to_string());
+    lines
 }
 
 fn config_section(title: &str, lines: Vec<String>, button: Option<(&str, bool)>) -> gtk::Frame {

@@ -61,6 +61,11 @@ fn dashboard_and_sidebar_include_config_entry_point() {
 fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
     let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
     let config_source = source_slice(&source, "fn build_config_view", "fn config_path_summary");
+    let graph_source = source_slice(
+        &source,
+        "fn config_graph_summary_lines",
+        "fn config_section",
+    );
     let render_source = source_slice(&source, "fn render_main_view", "fn render_settings_view");
 
     for text in [
@@ -69,8 +74,6 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
         "Choose Config File...",
         "Auto-detection is a starting point",
         "Connected files",
-        "This setup may use more than one config file.",
-        "Connected-file review is planned and not active yet.",
         "Profiles",
         "Profile switching is not active yet.",
         "When a setting is controlled in more than one place",
@@ -78,6 +81,20 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
         assert!(
             config_source.contains(text),
             "missing Config page copy: {text}"
+        );
+    }
+
+    for text in [
+        "config_graph_summary_lines",
+        "This setup uses",
+        "No connected config files were detected.",
+        "Connected-file review is read-only right now.",
+        "Some files may be changed by scripts.",
+        "Some connected files may not be shown yet.",
+    ] {
+        assert!(
+            source.contains(text) || graph_source.contains(text),
+            "missing Config graph copy or helper: {text}"
         );
     }
 
