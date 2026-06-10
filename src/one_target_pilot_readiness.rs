@@ -1,4 +1,5 @@
 use crate::guarded_write_review::PRODUCTION_WRITE_TARGET_REVIEW_ENABLED;
+use crate::one_target_pilot_pre_enable_audit::PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED;
 use crate::one_target_write_pilot::PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED;
 use crate::production_advanced_confirmation::PRODUCTION_ADVANCED_CONFIRMATION_ENABLED;
 use crate::production_backup_contract::PRODUCTION_BACKUP_CONTRACT_ENABLED;
@@ -32,8 +33,13 @@ pub struct OneTargetPilotReadinessMapping {
     pub high_risk_approval_state_model_complete: bool,
     pub high_risk_warning_copy_complete: bool,
     pub high_risk_first_pilot_exclusion_proof_complete: bool,
+    pub manual_smoke_checklist_model_complete: bool,
+    pub final_pre_enable_audit_model_complete: bool,
+    pub go_no_go_decision_model_complete: bool,
+    pub fixture_proof_summary_complete: bool,
     pub manual_smoke_review_complete: bool,
     pub apply_integration_boundary_approved: bool,
+    pub production_pre_enable_audit_passed: bool,
     pub production_backup_enabled: bool,
     pub production_verification_enabled: bool,
     pub production_recovery_enabled: bool,
@@ -69,8 +75,13 @@ impl OneTargetPilotReadinessMapping {
             && self.high_risk_approval_state_model_complete
             && self.high_risk_warning_copy_complete
             && self.high_risk_first_pilot_exclusion_proof_complete
+            && self.manual_smoke_checklist_model_complete
+            && self.final_pre_enable_audit_model_complete
+            && self.go_no_go_decision_model_complete
+            && self.fixture_proof_summary_complete
             && self.manual_smoke_review_complete
             && self.apply_integration_boundary_approved
+            && self.production_pre_enable_audit_passed
             && self.production_backup_enabled
             && self.production_verification_enabled
             && self.production_recovery_enabled
@@ -107,6 +118,10 @@ impl OneTargetPilotReadinessMapping {
             "Some settings need extra review before they can ever be written.".to_string(),
             "High-risk rows are excluded from the first production write pilot.".to_string(),
             "High-risk approval is not active yet.".to_string(),
+            "Final pre-enable audit".to_string(),
+            "The first write pilot is not ready yet.".to_string(),
+            "The app still needs a manual smoke review and final gate approval.".to_string(),
+            "All production write gates are still disabled.".to_string(),
             "Production backups are not active yet.".to_string(),
             "Production verification is not active yet.".to_string(),
             "Real writing is not active yet.".to_string(),
@@ -139,8 +154,13 @@ pub fn current_one_target_pilot_readiness_mapping() -> OneTargetPilotReadinessMa
         high_risk_approval_state_model_complete: false,
         high_risk_warning_copy_complete: false,
         high_risk_first_pilot_exclusion_proof_complete: false,
+        manual_smoke_checklist_model_complete: false,
+        final_pre_enable_audit_model_complete: false,
+        go_no_go_decision_model_complete: false,
+        fixture_proof_summary_complete: false,
         manual_smoke_review_complete: false,
         apply_integration_boundary_approved: false,
+        production_pre_enable_audit_passed: PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED,
         production_backup_enabled: PRODUCTION_BACKUP_CONTRACT_ENABLED,
         production_verification_enabled: PRODUCTION_VERIFICATION_CONTRACT_ENABLED,
         production_recovery_enabled: PRODUCTION_RECOVERY_CONTRACT_ENABLED,

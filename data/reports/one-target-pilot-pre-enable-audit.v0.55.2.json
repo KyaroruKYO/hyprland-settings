@@ -1,0 +1,205 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "one-target-pilot-pre-enable-audit",
+  "generatedAt": "2026-06-10T03:18:20-07:00",
+  "startingCommit": "6022cddea954dfd6533a4a10217d2791f9693556",
+  "goal": "Design the manual smoke checklist, final pre-enable audit, go/no-go decision, gate inventory snapshot, and fixture-proof summary for the one-target pilot while keeping every production gate false.",
+  "filesChanged": [
+    "src/lib.rs",
+    "src/one_target_pilot_pre_enable_audit.rs",
+    "src/one_target_pilot_readiness.rs",
+    "src/ui/window.rs",
+    "tests/one_target_pilot_manual_smoke_checklist.rs",
+    "tests/one_target_pilot_pre_enable_audit.rs",
+    "tests/one_target_pilot_go_no_go.rs",
+    "tests/one_target_pilot_gate_inventory.rs",
+    "tests/one_target_pilot_fixture_proof_summary.rs",
+    "tests/one_target_pilot_pre_enable_ui.rs",
+    "tests/one_target_pilot_pre_enable_apply_isolation.rs",
+    "data/reports/one-target-pilot-pre-enable-audit.v0.55.2.json",
+    "docs/ONE-TARGET-PILOT-PRE-ENABLE-AUDIT-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/ONE-TARGET-PILOT-PRE-ENABLE-AUDIT-REVIEW-LOG.md"
+  ],
+  "manualSmokeChecklist": {
+    "model": "OneTargetPilotManualSmokeChecklist",
+    "manualReviewCompleted": false,
+    "productionEnabled": false,
+    "coveredItems": [
+      "normal scalar row",
+      "normal config file",
+      "generated/script/symlink exclusions",
+      "high-risk exclusion",
+      "known line number",
+      "backup contract required",
+      "verification contract required",
+      "recovery contract required",
+      "advanced confirmation inactive",
+      "high-risk approval inactive",
+      "real writing inactive",
+      "Apply unchanged"
+    ]
+  },
+  "finalPreEnableAudit": {
+    "model": "OneTargetPilotPreEnableAudit",
+    "readiness": false,
+    "productionDisabled": true,
+    "categories": [
+      "target eligibility",
+      "target risk exclusions",
+      "high-risk exclusion",
+      "backup contract",
+      "backup path/collision policy",
+      "backup integrity",
+      "reread verification",
+      "verification failure behavior",
+      "recovery/rollback",
+      "advanced confirmation policy",
+      "high-risk approval boundary",
+      "manual smoke checklist",
+      "Apply/write isolation",
+      "UI disabled-state proof",
+      "fixture-only proof",
+      "real user config safety",
+      "production gate inventory"
+    ]
+  },
+  "goNoGoDecision": {
+    "go": false,
+    "fixtureProven": true,
+    "designComplete": true,
+    "productionDisabled": true,
+    "readyForManualReview": true,
+    "readyToFlipGate": false,
+    "reasons": [
+      "production gates are false",
+      "manual smoke review is not complete",
+      "production backup/write/reread/recovery are not active",
+      "Apply integration is not approved"
+    ]
+  },
+  "gateInventorySnapshot": {
+    "allGatesFalse": true,
+    "gates": [
+      "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED",
+      "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
+      "PRODUCTION_WRITE_TARGET_SELECTION_READY",
+      "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
+      "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
+      "PRODUCTION_BACKUP_CONTRACT_ENABLED",
+      "PRODUCTION_VERIFICATION_CONTRACT_ENABLED",
+      "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
+      "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
+      "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED"
+    ]
+  },
+  "fixtureProofSummary": {
+    "fixtureTargetPathOnly": true,
+    "normalScalarTargetProofExists": true,
+    "backupExactCopyProofExists": true,
+    "backupCollisionProofExists": true,
+    "fixtureWriteProofExists": true,
+    "rereadVerificationProofExists": true,
+    "verificationFailureProofExists": true,
+    "recoveryRestoreProofExists": true,
+    "restoreVerificationProofExists": true,
+    "advancedConfirmationExclusionProofExists": true,
+    "highRiskExclusionProofExists": true,
+    "realUserConfigTouched": false
+  },
+  "disabledFutureUi": {
+    "added": true,
+    "copy": [
+      "Final pre-enable audit",
+      "The first write pilot is not ready yet.",
+      "The app still needs a manual smoke review and final gate approval.",
+      "All production write gates are still disabled.",
+      "Real writing is not active yet.",
+      "Apply behavior has not changed."
+    ],
+    "activeControlsAdded": false
+  },
+  "applyWriteIsolation": {
+    "writeFlowImportsPreEnableAudit": false,
+    "writeFlowCallsAuditFunctions": false,
+    "writeFlowCallsGateFlipFunctions": false,
+    "writeFlowCallsFixtureProofHelpers": false,
+    "writeFlowContainsHighRiskPolicy": true,
+    "applySettingChangeUnchangedAsProductionEntry": true,
+    "applyScalarWritePlanUnchangedAsProductionPath": true
+  },
+  "uiChanges": {
+    "detailPaneCopyAdded": true,
+    "controlsEnabled": false,
+    "handlersAdded": false,
+    "realSelectionEnabled": false
+  },
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedSessionConfigPersisted": false,
+    "productionCurrentConfigSnapshotChanged": false,
+    "productionConfigDiscoveryChanged": false,
+    "productionUiProjectionChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/one_target_pilot_manual_smoke_checklist.rs",
+    "tests/one_target_pilot_pre_enable_audit.rs",
+    "tests/one_target_pilot_go_no_go.rs",
+    "tests/one_target_pilot_gate_inventory.rs",
+    "tests/one_target_pilot_fixture_proof_summary.rs",
+    "tests/one_target_pilot_pre_enable_ui.rs",
+    "tests/one_target_pilot_pre_enable_apply_isolation.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "realBackupCreated": false,
+    "realRestoreAttempted": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with pre-existing untracked local audit/design artifacts left uncommitted"
+  },
+  "proofUsed": [
+    "source-level models",
+    "source-level UI copy assertions",
+    "source-level Apply isolation assertions",
+    "fixture-proof summary of existing temporary-file proofs",
+    "SAFE_WRITABLE_ROWS.len() assertions"
+  ],
+  "proofStillMissing": [
+    "manual smoke review completion",
+    "explicit final gate approval",
+    "production backup implementation",
+    "production write implementation",
+    "production reread verification implementation",
+    "production recovery implementation",
+    "production Apply integration approval"
+  ],
+  "nextRecommendedSprint": "Run the represented manual smoke review and decide whether the first pilot is ready for a separate gate-flip proposal without enabling writes in this sprint."
+}

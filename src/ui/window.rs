@@ -18,6 +18,7 @@ use crate::export::ExportBundle;
 use crate::guarded_write_review::{
     build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
 };
+use crate::one_target_pilot_pre_enable_audit::disabled_pre_enable_audit_ui_lines;
 use crate::one_target_pilot_readiness::current_one_target_pilot_readiness_mapping;
 use crate::one_target_write_pilot::minimum_one_target_write_pilot_design;
 use crate::production_advanced_confirmation::disabled_advanced_confirmation_ui_lines;
@@ -1879,6 +1880,9 @@ fn append_pre_apply_review_scaffold(
             content.append(&small_label(&line));
         }
         for line in disabled_high_risk_approval_ui_lines() {
+            content.append(&small_label(&line));
+        }
+        for line in disabled_pre_enable_audit_ui_lines() {
             content.append(&small_label(&line));
         }
 
