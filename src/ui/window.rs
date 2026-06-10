@@ -7,6 +7,7 @@ use gtk4 as gtk;
 use crate::config_discovery::ConfigDiscovery;
 use crate::config_graph::{
     inspect_config_graph, ConfigGraphFile, ConfigGraphSummary, ConfigManagementHintKind,
+    ConfigSourceReference,
 };
 use crate::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValueSourceStatus,
@@ -640,11 +641,11 @@ fn append_connected_files_review(parent: &gtk::Box, graph: &ConfigGraphSummary) 
     }
 
     for file in &graph.files {
-        parent.append(&connected_file_card(file));
+        parent.append(&connected_file_card(file, graph));
     }
 }
 
-fn connected_file_card(file: &ConfigGraphFile) -> gtk::Frame {
+fn connected_file_card(file: &ConfigGraphFile, graph: &ConfigGraphSummary) -> gtk::Frame {
     let frame = gtk::Frame::new(None);
     let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
     content.set_margin_top(10);
@@ -670,8 +671,148 @@ fn connected_file_card(file: &ConfigGraphFile) -> gtk::Frame {
         content.append(&small_label(&line));
     }
 
+    append_connected_file_details(&content, file, graph);
+
     frame.set_child(Some(&content));
     frame
+}
+
+fn append_connected_file_details(
+    parent: &gtk::Box,
+    file: &ConfigGraphFile,
+    graph: &ConfigGraphSummary,
+) {
+    let expander = gtk::Expander::new(Some("Details"));
+    expander.set_expanded(false);
+
+    let details = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    details.set_margin_top(8);
+    details.set_margin_bottom(8);
+    details.set_margin_start(8);
+    details.set_margin_end(8);
+
+    append_detail_line(
+        &details,
+        "Why this file is listed",
+        &connected_file_reason(file),
+    );
+    append_detail_line(&details, "Role", &connected_file_title(file));
+    append_detail_line(&details, "Readable", &connected_file_readable_label(file));
+    append_detail_line(
+        &details,
+        "Symlink",
+        if file.is_symlink { "Yes" } else { "No" },
+    );
+
+    if let Some(target) = &file.symlink_target {
+        append_detail_line(&details, "Points to", &friendly_path(target));
+    }
+
+    append_detail_line(
+        &details,
+        "Connected from",
+        &connected_file_source_summary(file, graph),
+    );
+
+    let notes = connected_file_notes(file);
+    if notes.is_empty() {
+        append_detail_line(&details, "Notes", "No extra notes were detected.");
+    } else {
+        append_detail_line(&details, "Notes", &notes.join("; "));
+    }
+
+    expander.set_child(Some(&details));
+    parent.append(&expander);
+}
+
+fn connected_file_reason(file: &ConfigGraphFile) -> String {
+    if file.source_depth == 0 {
+        "This is the config file the app is currently reviewing.".to_string()
+    } else {
+        "This file is connected from another config file.".to_string()
+    }
+}
+
+fn connected_file_readable_label(file: &ConfigGraphFile) -> &'static str {
+    if file.readable {
+        "Yes"
+    } else {
+        "No"
+    }
+}
+
+fn connected_file_source_summary(file: &ConfigGraphFile, graph: &ConfigGraphSummary) -> String {
+    if file.source_depth == 0 {
+        return "This is the selected config root.".to_string();
+    }
+
+    let Some(source) = source_reference_for_file(file, graph) else {
+        return "The app found this file while reviewing connected configs.".to_string();
+    };
+
+    format!(
+        "{}, line {}",
+        friendly_path(&source.source_file),
+        source.line_number
+    )
+}
+
+fn source_reference_for_file<'a>(
+    file: &ConfigGraphFile,
+    graph: &'a ConfigGraphSummary,
+) -> Option<&'a ConfigSourceReference> {
+    graph.source_references.iter().find(|reference| {
+        reference
+            .resolved_target
+            .as_ref()
+            .is_some_and(|target| paths_match_file(target, file))
+    })
+}
+
+fn paths_match_file(path: &std::path::Path, file: &ConfigGraphFile) -> bool {
+    if path == file.path {
+        return true;
+    }
+    if let Some(resolved) = &file.resolved_path {
+        if path == resolved {
+            return true;
+        }
+    }
+    if let Some(target) = &file.symlink_target {
+        if path == target {
+            return true;
+        }
+    }
+    false
+}
+
+fn connected_file_notes(file: &ConfigGraphFile) -> Vec<String> {
+    let mut notes = Vec::new();
+    for hint in &file.hints {
+        let note = friendly_connected_file_note(&hint.kind);
+        if !notes.iter().any(|existing| existing == note) {
+            notes.push(note.to_string());
+        }
+    }
+    notes
+}
+
+fn friendly_connected_file_note(kind: &ConfigManagementHintKind) -> &'static str {
+    match kind {
+        ConfigManagementHintKind::GeneratedFile => "This file appears to be generated",
+        ConfigManagementHintKind::ScriptReferenced | ConfigManagementHintKind::ScriptManaged => {
+            "This file may be changed by scripts"
+        }
+        ConfigManagementHintKind::SymlinkManaged => "This file is symlinked",
+        ConfigManagementHintKind::CurrentProfile
+        | ConfigManagementHintKind::DesktopProfile
+        | ConfigManagementHintKind::GamingProfile
+        | ConfigManagementHintKind::LaptopProfile
+        | ConfigManagementHintKind::PerformanceProfile
+        | ConfigManagementHintKind::ModeProfile
+        | ConfigManagementHintKind::ThemeProfile
+        | ConfigManagementHintKind::HostProfile => "This file looks like a profile file",
+    }
 }
 
 fn connected_file_title(file: &ConfigGraphFile) -> String {

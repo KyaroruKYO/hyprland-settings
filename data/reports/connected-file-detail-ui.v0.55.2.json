@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "connectedFileDetailUi",
+  "generatedAt": "2026-06-09T18:03:59-07:00",
+  "startingCommit": "c0dbf70f25d768b8c1e5da3f797451b7a52c764d Add connected files review UI",
+  "goal": "Add a read-only connected-file detail view to the Config page so each detected file can explain why it is listed, what role it appears to have, whether it is readable, whether it is symlinked, how it was connected, and which friendly notes apply.",
+  "filesChanged": [
+    "src/ui/window.rs",
+    "tests/connected_file_detail_ui.rs",
+    "data/reports/connected-file-detail-ui.v0.55.2.json",
+    "docs/CONNECTED-FILE-DETAIL-UI-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/CONNECTED-FILE-DETAIL-UI-REVIEW-LOG.md"
+  ],
+  "uiChanges": [
+    "Added a collapsed Details expander inside each connected-file card.",
+    "The expander explains why each file is listed.",
+    "The expander shows role, readable state, symlink state, symlink target when present, connected-from summary, and notes.",
+    "The connected-from summary uses the existing source/include reference metadata when available.",
+    "The detail UI remains display-only and does not reveal raw config contents or raw script contents."
+  ],
+  "detailViewBehavior": {
+    "pattern": "GTK Expander inside each connected file card",
+    "rootFileExplanation": "This is the config file the app is currently reviewing.",
+    "sourceConnectedExplanation": "This file is connected from another config file.",
+    "fallbackExplanation": "The app found this file while reviewing connected configs.",
+    "readableState": "Yes or No",
+    "symlinkState": "Yes or No",
+    "notes": "Friendly generated, script-managed, symlinked, and profile-style notes"
+  },
+  "friendlyDetailLabels": [
+    "Why this file is listed",
+    "Role",
+    "Readable",
+    "Symlink",
+    "Points to",
+    "Connected from",
+    "Notes"
+  ],
+  "sourceRelationshipDisplay": {
+    "implemented": true,
+    "behavior": "Uses ConfigGraphSummary.source_references to show source file and line number when a connected file can be matched to a source/include target.",
+    "rawContentDisplayed": false
+  },
+  "disabledOrFutureControls": [
+    "Choose Config File...",
+    "Choose review mode (planned)",
+    "Profile switching planned"
+  ],
+  "graphEngineChanges": [
+    "No graph engine changes were required; the UI uses existing ConfigGraphFile and ConfigSourceReference data."
+  ],
+  "testsAdded": [
+    "tests/connected_file_detail_ui.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "filePickerActive": false,
+    "profileSwitchingActive": false,
+    "layeredWritesActive": false,
+    "appWriteModelChanged": false
+  },
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitStatusShort": "passed with current sprint changes plus pre-existing untracked local audit/design artifacts intentionally left uncommitted"
+  },
+  "proofUsed": [
+    "src/ui/window.rs connected-file detail helpers",
+    "tests/connected_file_detail_ui.rs source-level UI tests",
+    "data/reports/final-341-writable-coverage.v0.55.2.json for preserved final counts"
+  ],
+  "proofStillMissing": [
+    "Real manual file picker UI is not implemented.",
+    "Profile switching is not implemented.",
+    "Layered write-target selection is not implemented.",
+    "Connected-file details are display-only and do not yet provide a separate file browser or write target chooser."
+  ],
+  "nextRecommendedSprint": "Add a read-only connected-file detail pane or review mode with filtering/sorting if the inline expanders become too dense, still before any file picker or write-target implementation."
+}
