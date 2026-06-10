@@ -31,6 +31,7 @@ use crate::validation::ValidationSummary;
 use crate::write_advanced_confirmation::advanced_confirmation_for_candidate;
 use crate::write_backup_plan::build_exact_backup_plan;
 use crate::write_classification::{high_risk_write_policy, ScalarWriteValueKind};
+use crate::write_enablement_readiness::current_production_write_enablement_readiness;
 use crate::write_flow::{apply_setting_change, write_flow_config_setting, write_flow_value_kind};
 use crate::write_review_walkthrough::build_write_review_walkthrough;
 use crate::write_target_candidate::write_target_candidates_for_layered_setting;
@@ -1838,6 +1839,9 @@ fn append_pre_apply_review_scaffold(
 
         content.append(&body_label("Write review walkthrough"));
         content.append(&small_label(
+            "Shown when a setting is controlled in more than one place.",
+        ));
+        content.append(&small_label(
             "This walkthrough shows what the app would check before writing.",
         ));
         for line in walkthrough.user_facing_lines() {
@@ -1846,6 +1850,15 @@ fn append_pre_apply_review_scaffold(
         let decision_button = gtk::Button::with_label("Target decisions are preview-only");
         decision_button.set_sensitive(false);
         content.append(&decision_button);
+
+        let readiness = current_production_write_enablement_readiness();
+        content.append(&body_label("Production write enablement"));
+        for line in readiness.user_facing_lines() {
+            content.append(&small_label(&line));
+        }
+        let enablement_button = gtk::Button::with_label("Production enablement is disabled");
+        enablement_button.set_sensitive(false);
+        content.append(&enablement_button);
 
         let review_button = gtk::Button::with_label("Review save location");
         review_button.set_sensitive(false);

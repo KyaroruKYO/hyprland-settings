@@ -31,6 +31,7 @@ pub mod value;
 pub mod write_advanced_confirmation;
 pub mod write_backup_plan;
 pub mod write_classification;
+pub mod write_enablement_readiness;
 pub mod write_flow;
 pub mod write_pilot;
 pub mod write_review_walkthrough;

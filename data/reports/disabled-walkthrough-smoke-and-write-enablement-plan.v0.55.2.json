@@ -1,0 +1,161 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "disabled-walkthrough-smoke-and-write-enablement-plan",
+  "generatedAt": "2026-06-10T08:28:51Z",
+  "startingCommit": "27e57cf43f08623936f9a39ba206a396c0183000",
+  "goal": "Add manual smoke review support for the disabled write review walkthrough and design a gated production write-target selection readiness plan while keeping real writes disabled.",
+  "filesChanged": [
+    "data/reports/disabled-walkthrough-smoke-and-write-enablement-plan.v0.55.2.json",
+    "docs/DISABLED-WALKTHROUGH-SMOKE-AND-WRITE-ENABLEMENT-PLAN-REVIEW-LOG.md",
+    "src/lib.rs",
+    "src/ui/window.rs",
+    "src/write_enablement_readiness.rs",
+    "tests/production_write_enablement_apply_isolation.rs",
+    "tests/production_write_enablement_readiness.rs",
+    "tests/production_write_enablement_ui.rs",
+    "tests/write_review_manual_smoke_checklist.rs",
+    "tests/write_review_walkthrough_discoverability.rs",
+    "/home/kyo/.config/hypr/docs/DISABLED-WALKTHROUGH-SMOKE-AND-WRITE-ENABLEMENT-PLAN-REVIEW-LOG.md"
+  ],
+  "manualSmokeReview": {
+    "checklistAdded": true,
+    "whereToInspect": [
+      "Launch the app.",
+      "Open a normal settings category.",
+      "Select a setting controlled in more than one place.",
+      "Inspect the setting detail pane."
+    ],
+    "expectedUiCopy": [
+      "Write review walkthrough",
+      "Shown when a setting is controlled in more than one place.",
+      "This walkthrough shows what the app would check before writing.",
+      "Recommended save location",
+      "Backup planned",
+      "Verification planned",
+      "Target decisions are preview-only right now.",
+      "Real save-location selection is not active yet.",
+      "Real writing is not active yet.",
+      "Apply behavior has not changed."
+    ],
+    "disabledControls": [
+      "Target decisions are preview-only",
+      "Review save location",
+      "Production enablement is disabled"
+    ],
+    "screenshotAutomation": "Not added; source-level checklist and disabled UI proof were used for this sprint."
+  },
+  "walkthroughDiscoverability": {
+    "uiCopyAdded": [
+      "Shown when a setting is controlled in more than one place."
+    ],
+    "scope": "The walkthrough remains scoped to layered settings to avoid adding noisy UI to simple rows.",
+    "fallbackSimpleRowBehavior": "No global fallback note was added."
+  },
+  "productionEnablementReadiness": {
+    "module": "src/write_enablement_readiness.rs",
+    "status": "not ready",
+    "productionApplyIntegrationAllowed": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false,
+    "gates": [
+      "production_write_review_gate",
+      "target_selection_ui",
+      "exact_backup",
+      "backup_path_policy",
+      "generated_script_confirmation",
+      "symlink_target_policy",
+      "reread_verification",
+      "rollback_recovery",
+      "high_risk_policy",
+      "fixture_proof",
+      "manual_smoke_review",
+      "production_apply_integration"
+    ],
+    "allProductionEnablingGatesSatisfied": false
+  },
+  "disabledProductionEnablementUi": {
+    "section": "Production write enablement",
+    "statusCopy": "Status: Not ready",
+    "requiredBeforeEnablingCopy": true,
+    "controlsDisabled": true,
+    "selectionHandlersAdded": false
+  },
+  "applyWriteIsolation": {
+    "productionWriteTargetReviewGate": false,
+    "productionWalkthroughWriteGate": false,
+    "productionWriteTargetSelectionReady": false,
+    "writeFlowImportsReadiness": false,
+    "writeFlowImportsWalkthrough": false,
+    "writeFlowImportsGuardedReview": false,
+    "writeFlowImportsFixtureProof": false,
+    "writeFlowImportsBackupPlan": false,
+    "writeFlowImportsVerificationPlan": false,
+    "applySettingChangeRemainsProductionPath": true
+  },
+  "uiChanges": [
+    "Added a discoverability sentence to the disabled write review walkthrough.",
+    "Added disabled production write enablement status copy below the walkthrough.",
+    "Added a disabled Production enablement is disabled button."
+  ],
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedSessionConfigPersisted": false,
+    "productionCurrentConfigSnapshotChanged": false,
+    "productionConfigDiscoveryChanged": false,
+    "productionUiProjectionChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/write_review_manual_smoke_checklist.rs",
+    "tests/write_review_walkthrough_discoverability.rs",
+    "tests/production_write_enablement_readiness.rs",
+    "tests/production_write_enablement_ui.rs",
+    "tests/production_write_enablement_apply_isolation.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with pre-existing untracked local audit/design artifacts left uncommitted"
+  },
+  "proofUsed": [
+    "Source-level manual smoke checklist tests.",
+    "Source-level disabled UI discoverability and production enablement UI tests.",
+    "Readiness model tests proving all production gates remain false.",
+    "Apply/write isolation tests proving write_flow.rs does not import or call readiness, walkthrough, guarded review, backup, verification, or fixture proof modules.",
+    "SAFE_WRITABLE_ROWS length assertions remain 341."
+  ],
+  "proofStillMissing": [
+    "No automated GTK screenshots were captured.",
+    "No live runtime or config mutation proof was run by design.",
+    "Real production write-target selection remains disabled by design."
+  ],
+  "nextRecommendedSprint": "Prepare a gated production write-target selection architecture review that defines the minimum code changes needed to enable one fixture-proven target path, without enabling it by default."
+}
