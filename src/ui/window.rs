@@ -20,6 +20,7 @@ use crate::guarded_write_review::{
 };
 use crate::one_target_pilot_readiness::current_one_target_pilot_readiness_mapping;
 use crate::one_target_write_pilot::minimum_one_target_write_pilot_design;
+use crate::production_advanced_confirmation::disabled_advanced_confirmation_ui_lines;
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::session_config_preview::build_session_config_preview;
 use crate::session_value_projection::{
@@ -1871,6 +1872,9 @@ fn append_pre_apply_review_scaffold(
         let pilot_readiness = current_one_target_pilot_readiness_mapping();
         content.append(&body_label("Production backup and verification"));
         for line in pilot_readiness.user_facing_lines() {
+            content.append(&small_label(&line));
+        }
+        for line in disabled_advanced_confirmation_ui_lines() {
             content.append(&small_label(&line));
         }
 

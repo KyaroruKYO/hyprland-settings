@@ -1,3 +1,4 @@
+use crate::production_advanced_confirmation::recommendation_risk_explanation_for_candidate;
 use crate::write_target_candidate::WriteTargetCandidate;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -73,13 +74,23 @@ pub fn recommend_write_targets(candidates: &[WriteTargetCandidate]) -> WriteTarg
         if candidate.safe {
             safe.push(candidate.clone());
         } else {
+            let risk = recommendation_risk_explanation_for_candidate(
+                candidate,
+                false,
+                candidate.line_number.is_none(),
+                false,
+                true,
+            );
+            let mut reason = risk.blocked_reason;
+            if let Some(inactive) = risk.advanced_confirmation_inactive_reason {
+                reason = format!("{reason} {inactive}");
+            }
+            if let Some(hard_block) = risk.hard_block_reason {
+                reason = format!("{reason} {hard_block}");
+            }
             blocked.push(BlockedWriteTarget {
                 label: candidate.label.clone(),
-                reason: if candidate.generated_or_script_managed {
-                    "This file may be changed by scripts or generated tooling.".to_string()
-                } else {
-                    "This location is not safe for automatic writes yet.".to_string()
-                },
+                reason,
                 requires_advanced_confirmation: candidate.requires_advanced_confirmation,
             });
         }

@@ -87,6 +87,7 @@ fn minimum_target_constraints() -> Vec<String> {
         "non-generated file".to_string(),
         "non-script-managed file".to_string(),
         "non-symlink-managed file".to_string(),
+        "not symlink target".to_string(),
         "exact line number known".to_string(),
         "backup required".to_string(),
         "reread verification required".to_string(),
@@ -115,7 +116,9 @@ fn blocked_conditions() -> Vec<String> {
     vec![
         "generated file".to_string(),
         "script-managed file".to_string(),
+        "script-referenced file".to_string(),
         "symlink-managed file".to_string(),
+        "symlink target".to_string(),
         "missing line number".to_string(),
         "structured block target".to_string(),
         "high-risk row".to_string(),

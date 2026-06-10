@@ -1,4 +1,5 @@
 use crate::guarded_write_review::PRODUCTION_WRITE_TARGET_REVIEW_ENABLED;
+use crate::production_advanced_confirmation::PRODUCTION_ADVANCED_CONFIRMATION_ENABLED;
 use crate::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELECTION_READY;
 use crate::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE;
 
@@ -166,6 +167,15 @@ pub fn production_write_gate_inventory() -> Vec<ProductionWriteGateInventoryItem
             would_allow: "walkthrough-derived state to participate in writes",
             required_proof_before_flip:
                 "walkthrough state converted into a production-safe review contract",
+            must_remain_false_now: true,
+        },
+        ProductionWriteGateInventoryItem {
+            gate_name: "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
+            current_value: PRODUCTION_ADVANCED_CONFIRMATION_ENABLED,
+            module: "production_advanced_confirmation",
+            would_allow: "advanced confirmation policy to become available for risky target classes",
+            required_proof_before_flip:
+                "generated, script-managed, symlink-managed, hard-block, recovery, and high-risk policies proven",
             must_remain_false_now: true,
         },
         ProductionWriteGateInventoryItem {

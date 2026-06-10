@@ -21,6 +21,7 @@ pub mod monitor_name_oracle;
 pub mod one_target_pilot_readiness;
 pub mod one_target_write_pilot;
 pub mod pending_change;
+pub mod production_advanced_confirmation;
 pub mod production_backup_contract;
 pub mod production_recovery_contract;
 pub mod production_target_selection_architecture;
