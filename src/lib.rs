@@ -33,6 +33,7 @@ pub mod write_backup_plan;
 pub mod write_classification;
 pub mod write_flow;
 pub mod write_pilot;
+pub mod write_review_walkthrough;
 pub mod write_safety;
 pub mod write_target_candidate;
 pub mod write_target_fixture_proof;

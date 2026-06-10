@@ -20,7 +20,9 @@ use crate::guarded_write_review::{
 };
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::session_config_preview::build_session_config_preview;
-use crate::session_value_projection::compare_active_and_session_values;
+use crate::session_value_projection::{
+    compare_active_and_session_values, SessionValueComparisonStatus, SessionValueProjection,
+};
 use crate::ui::model::{
     initial_screen_shader_advisory_ui_action, run_screen_shader_advisory_ui_action,
     RowDetailProjection, ScreenShaderAdvisoryUiActionRequest, UiProjection,
@@ -30,6 +32,7 @@ use crate::write_advanced_confirmation::advanced_confirmation_for_candidate;
 use crate::write_backup_plan::build_exact_backup_plan;
 use crate::write_classification::{high_risk_write_policy, ScalarWriteValueKind};
 use crate::write_flow::{apply_setting_change, write_flow_config_setting, write_flow_value_kind};
+use crate::write_review_walkthrough::build_write_review_walkthrough;
 use crate::write_target_candidate::write_target_candidates_for_layered_setting;
 use crate::write_target_recommendation::recommend_write_targets;
 use crate::write_verification_plan::planned_reread_verification;
@@ -1799,6 +1802,17 @@ fn append_pre_apply_review_scaffold(
             high_risk_write_policy(&detail.row_id).is_none(),
             FixtureProofStatus::NotRun,
         );
+        let session_projection =
+            inactive_session_value_projection(detail, &guarded_review.official_setting_id);
+        let walkthrough = build_write_review_walkthrough(
+            Some(&session_projection),
+            Some(&layered),
+            Some(&recommendation),
+            Some(&guarded_review),
+            Some(&backup_plan),
+            Some(&advanced_confirmation),
+            Some(&verification_plan),
+        );
 
         content.append(&body_label("Write review"));
         for line in guarded_review.user_facing_lines() {
@@ -1822,6 +1836,17 @@ fn append_pre_apply_review_scaffold(
             "Real writing is not active yet."
         }));
 
+        content.append(&body_label("Write review walkthrough"));
+        content.append(&small_label(
+            "This walkthrough shows what the app would check before writing.",
+        ));
+        for line in walkthrough.user_facing_lines() {
+            content.append(&small_label(&line));
+        }
+        let decision_button = gtk::Button::with_label("Target decisions are preview-only");
+        decision_button.set_sensitive(false);
+        content.append(&decision_button);
+
         let review_button = gtk::Button::with_label("Review save location");
         review_button.set_sensitive(false);
         content.append(&review_button);
@@ -1829,6 +1854,29 @@ fn append_pre_apply_review_scaffold(
 
     frame.set_child(Some(&content));
     section.append(&frame);
+}
+
+fn inactive_session_value_projection(
+    detail: &RowDetailProjection,
+    official_setting_id: &str,
+) -> SessionValueProjection {
+    SessionValueProjection {
+        row_id: detail.row_id.clone(),
+        official_setting_id: official_setting_id.to_string(),
+        active_value: detail.current_value.raw_value.clone(),
+        session_preview_value: None,
+        comparison_status: if detail.current_value.raw_value.is_some() {
+            SessionValueComparisonStatus::MissingInSessionPreview
+        } else {
+            SessionValueComparisonStatus::Unknown
+        },
+        active_source_path: detail.current_value.source_path.clone(),
+        active_source_line: detail.current_value.line_number,
+        session_source_path: None,
+        session_source_line: None,
+        read_only: true,
+        affects_writes: false,
+    }
 }
 
 fn append_user_facing_write_reason(detail: &RowDetailProjection, section: &gtk::Box) {

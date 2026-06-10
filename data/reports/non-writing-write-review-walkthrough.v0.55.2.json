@@ -1,0 +1,173 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "non-writing-write-review-walkthrough",
+  "generatedAt": "2026-06-10T07:56:46Z",
+  "startingCommit": "00ed52f097a5ccff42e413b5942f3373e85aabeb",
+  "goal": "Add a disabled, non-writing end-to-end write review walkthrough for read-only session previews while preserving production Apply/write isolation.",
+  "filesChanged": [
+    "data/reports/non-writing-write-review-walkthrough.v0.55.2.json",
+    "docs/NON-WRITING-WRITE-REVIEW-WALKTHROUGH-REVIEW-LOG.md",
+    "src/lib.rs",
+    "src/ui/window.rs",
+    "src/write_review_walkthrough.rs",
+    "tests/write_review_target_decision_state.rs",
+    "tests/write_review_walkthrough_apply_isolation.rs",
+    "tests/write_review_walkthrough_fixture.rs",
+    "tests/write_review_walkthrough_model.rs",
+    "tests/write_review_walkthrough_ui.rs",
+    "/home/kyo/.config/hypr/docs/NON-WRITING-WRITE-REVIEW-WALKTHROUGH-REVIEW-LOG.md"
+  ],
+  "walkthroughModel": {
+    "module": "src/write_review_walkthrough.rs",
+    "steps": [
+      "session preview",
+      "setting comparison",
+      "layered occurrence review",
+      "target recommendation",
+      "backup plan",
+      "advanced confirmation warning",
+      "reread verification plan",
+      "production disabled gate"
+    ],
+    "stepStatuses": [
+      "not available",
+      "ready",
+      "review only",
+      "blocked",
+      "requires confirmation later",
+      "fixture proof only",
+      "production disabled"
+    ],
+    "safetyFlags": {
+      "readOnly": true,
+      "productionDisabled": true,
+      "affectsApply": false,
+      "affectsWrites": false,
+      "persistsSelection": false
+    }
+  },
+  "walkthroughBuilder": {
+    "composes": [
+      "SessionValueProjection",
+      "LayeredSettingValues",
+      "WriteTargetRecommendation",
+      "GuardedWriteTargetReview",
+      "WriteBackupPlan",
+      "WriteAdvancedConfirmation",
+      "WriteVerificationPlan"
+    ],
+    "missingDataBehavior": "Produces friendly not-available walkthrough steps without enabling writes."
+  },
+  "targetDecisionState": {
+    "decisionsRepresented": [
+      "recommended target accepted",
+      "alternate target requested",
+      "blocked target requested",
+      "advanced confirmation needed",
+      "decision not active"
+    ],
+    "decisionEnabled": false,
+    "productionDisabled": true,
+    "selectedTarget": null
+  },
+  "disabledUi": {
+    "section": "Write review walkthrough",
+    "behavior": "Rendered inside the existing pre-apply review scaffold for layered settings with labels and disabled controls only.",
+    "copy": [
+      "This walkthrough shows what the app would check before writing.",
+      "Target decisions are preview-only right now.",
+      "Real save-location selection is not active yet.",
+      "Real writing is not active yet.",
+      "Apply behavior has not changed."
+    ]
+  },
+  "fixtureWalkthroughProof": {
+    "usesTemporaryFilesOnly": true,
+    "proves": [
+      "fixture graph creation",
+      "layered value records",
+      "session value projection",
+      "target candidates",
+      "recommendation",
+      "guarded review",
+      "backup plan",
+      "advanced confirmation",
+      "verification plan",
+      "walkthrough model",
+      "fixture-only backup/write/reread proof"
+    ],
+    "realUserConfigTouched": false
+  },
+  "applyWriteIsolation": {
+    "productionGate": "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED remains false and PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE is false.",
+    "writeFlowImportsWalkthrough": false,
+    "writeFlowCallsWalkthroughBuilder": false,
+    "writeFlowCallsFixtureProof": false,
+    "applyBehaviorChanged": false
+  },
+  "uiChanges": [
+    "Added disabled write review walkthrough copy to the setting detail pre-apply scaffold.",
+    "Added disabled target decision button labeled Target decisions are preview-only.",
+    "Kept existing guarded write review, backup, verification, and safety copy."
+  ],
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedSessionConfigPersisted": false,
+    "productionCurrentConfigSnapshotChanged": false,
+    "productionConfigDiscoveryChanged": false,
+    "productionUiProjectionChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/write_review_walkthrough_model.rs",
+    "tests/write_review_target_decision_state.rs",
+    "tests/write_review_walkthrough_ui.rs",
+    "tests/write_review_walkthrough_fixture.rs",
+    "tests/write_review_walkthrough_apply_isolation.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with pre-existing untracked local audit/design artifacts left uncommitted"
+  },
+  "proofUsed": [
+    "Source-level tests for disabled UI and Apply/write isolation.",
+    "Model tests for walkthrough steps, statuses, safety flags, and disabled decision state.",
+    "Fixture tests using temporary files only for backup/write/reread proof composition.",
+    "SAFE_WRITABLE_ROWS length assertion remains 341."
+  ],
+  "proofStillMissing": [
+    "No live GTK screenshot automation was run.",
+    "No real config write-target flow is active by design.",
+    "No runtime Hyprland mutation proof was run by design."
+  ],
+  "nextRecommendedSprint": "Add optional visual/manual smoke review for the disabled walkthrough UI, then design the first gated production write-target selection enablement plan without activating writes."
+}
