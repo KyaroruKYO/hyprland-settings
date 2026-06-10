@@ -32,6 +32,7 @@ fn target(path: PathBuf, line_number: usize, generated: bool) -> WriteTargetCand
         line_number: Some(line_number),
         safe: !generated,
         generated_or_script_managed: generated,
+        symlink_managed: false,
         requires_advanced_confirmation: generated,
         backup_required: true,
         fixture_only: true,

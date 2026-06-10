@@ -15,6 +15,9 @@ use crate::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValueSourceStatus,
 };
 use crate::export::ExportBundle;
+use crate::guarded_write_review::{
+    build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
+};
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::session_config_preview::build_session_config_preview;
 use crate::session_value_projection::compare_active_and_session_values;
@@ -23,10 +26,13 @@ use crate::ui::model::{
     RowDetailProjection, ScreenShaderAdvisoryUiActionRequest, UiProjection,
 };
 use crate::validation::ValidationSummary;
+use crate::write_advanced_confirmation::advanced_confirmation_for_candidate;
+use crate::write_backup_plan::build_exact_backup_plan;
 use crate::write_classification::{high_risk_write_policy, ScalarWriteValueKind};
 use crate::write_flow::{apply_setting_change, write_flow_config_setting, write_flow_value_kind};
 use crate::write_target_candidate::write_target_candidates_for_layered_setting;
 use crate::write_target_recommendation::recommend_write_targets;
+use crate::write_verification_plan::planned_reread_verification;
 
 const DASHBOARD_ID: &str = "dashboard";
 const CONFIG_ID: &str = "config";
@@ -1770,6 +1776,55 @@ fn append_pre_apply_review_scaffold(
         let button = gtk::CheckButton::with_label(&candidate.label);
         button.set_sensitive(false);
         content.append(&button);
+    }
+
+    if let Some(candidate) = recommendation.recommended_target.clone() {
+        let proposed_value = detail
+            .edit
+            .proposed_value
+            .clone()
+            .unwrap_or_else(|| "future value".to_string());
+        let backup_plan = build_exact_backup_plan(&candidate);
+        let advanced_confirmation = advanced_confirmation_for_candidate(&candidate);
+        let verification_plan =
+            planned_reread_verification(&candidate, &setting_id, proposed_value.clone());
+        let guarded_review = build_guarded_write_target_review(
+            detail.row_id.clone(),
+            setting_id,
+            proposed_value,
+            detail.current_value.raw_value.clone(),
+            None,
+            &recommendation,
+            Some(candidate),
+            high_risk_write_policy(&detail.row_id).is_none(),
+            FixtureProofStatus::NotRun,
+        );
+
+        content.append(&body_label("Write review"));
+        for line in guarded_review.user_facing_lines() {
+            content.append(&small_label(&line));
+        }
+        content.append(&body_label("Backup"));
+        for line in backup_plan.user_facing_lines() {
+            content.append(&small_label(&line));
+        }
+        content.append(&body_label("Verification"));
+        for line in verification_plan.user_facing_lines() {
+            content.append(&small_label(&line));
+        }
+        content.append(&body_label("Safety"));
+        for line in advanced_confirmation.user_facing_lines() {
+            content.append(&small_label(&line));
+        }
+        content.append(&small_label(if PRODUCTION_WRITE_TARGET_REVIEW_ENABLED {
+            "Real write-target review is active."
+        } else {
+            "Real writing is not active yet."
+        }));
+
+        let review_button = gtk::Button::with_label("Review save location");
+        review_button.set_sensitive(false);
+        content.append(&review_button);
     }
 
     frame.set_child(Some(&content));

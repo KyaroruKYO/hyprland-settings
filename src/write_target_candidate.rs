@@ -11,6 +11,7 @@ pub struct WriteTargetCandidate {
     pub line_number: Option<usize>,
     pub safe: bool,
     pub generated_or_script_managed: bool,
+    pub symlink_managed: bool,
     pub requires_advanced_confirmation: bool,
     pub backup_required: bool,
     pub fixture_only: bool,
@@ -43,6 +44,7 @@ pub fn write_target_candidates_from_source_references(
                     line_number: Some(reference.line_number),
                     safe: true,
                     generated_or_script_managed: false,
+                    symlink_managed: false,
                     requires_advanced_confirmation: false,
                     backup_required: true,
                     fixture_only: true,
@@ -60,6 +62,7 @@ fn candidate_for_occurrence(
             || file.resolved_path.as_ref() == Some(&occurrence.file_path)
     });
     let generated_or_script_managed = file.is_some_and(file_has_advanced_hints);
+    let symlink_managed = occurrence.symlink_managed;
     WriteTargetCandidate {
         label: occurrence.role_label.clone(),
         file_path: occurrence.file_path.clone(),
@@ -67,7 +70,8 @@ fn candidate_for_occurrence(
         line_number: Some(occurrence.line_number),
         safe: !generated_or_script_managed,
         generated_or_script_managed,
-        requires_advanced_confirmation: generated_or_script_managed,
+        symlink_managed,
+        requires_advanced_confirmation: generated_or_script_managed || symlink_managed,
         backup_required: true,
         fixture_only: true,
     }

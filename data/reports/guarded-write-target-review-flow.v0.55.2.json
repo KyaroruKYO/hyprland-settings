@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "guarded-write-target-review-flow",
+  "generatedAt": "2026-06-10T00:21:39-07:00",
+  "startingCommit": "9c1b5ef5841a647075f0669ba5587df6fe4f3e90",
+  "goal": "Design and scaffold a guarded real write-target review flow while keeping real writes, real target selection, real layered writes, persistence, and production Apply integration disabled.",
+  "filesChanged": [
+    "src/lib.rs",
+    "src/guarded_write_review.rs",
+    "src/write_backup_plan.rs",
+    "src/write_advanced_confirmation.rs",
+    "src/write_verification_plan.rs",
+    "src/write_target_candidate.rs",
+    "src/ui/window.rs",
+    "tests/guarded_write_target_review.rs",
+    "tests/write_backup_plan.rs",
+    "tests/write_advanced_confirmation.rs",
+    "tests/write_verification_plan.rs",
+    "tests/guarded_fixture_review_proof.rs",
+    "tests/disabled_guarded_write_review_ui.rs",
+    "tests/write_review_apply_isolation.rs",
+    "tests/fixture_write_target_proof.rs",
+    "data/reports/guarded-write-target-review-flow.v0.55.2.json",
+    "docs/GUARDED-WRITE-TARGET-REVIEW-FLOW-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/GUARDED-WRITE-TARGET-REVIEW-FLOW-REVIEW-LOG.md"
+  ],
+  "guardedReviewModel": {
+    "implemented": true,
+    "module": "src/guarded_write_review.rs",
+    "productionGate": "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
+    "productionEnabled": false,
+    "reviewStatuses": [
+      "not available",
+      "ready for review",
+      "blocked",
+      "requires advanced confirmation",
+      "fixture proof only",
+      "production disabled"
+    ],
+    "requiredGates": [
+      "target selected",
+      "exact backup planned",
+      "generated/script-managed confirmation resolved",
+      "reread verification planned",
+      "high-risk policy satisfied",
+      "fixture proof passed",
+      "production write integration allowed"
+    ]
+  },
+  "backupPlanModel": {
+    "implemented": true,
+    "module": "src/write_backup_plan.rs",
+    "behavior": "Represents target file path, resolved target path, deterministic future backup path, backup naming policy, backup-required flag, fixture-only flag, and production-disabled flag.",
+    "createsRealBackups": false
+  },
+  "advancedConfirmationModel": {
+    "implemented": true,
+    "module": "src/write_advanced_confirmation.rs",
+    "behavior": "Represents generated-file, script-managed, and symlink-managed warnings plus disabled advanced confirmation state.",
+    "productionConfirmationEnabled": false
+  },
+  "verificationPlanModel": {
+    "implemented": true,
+    "module": "src/write_verification_plan.rs",
+    "behavior": "Represents target file, setting id, expected value, reread method, verification status, fixture-only flag, and production-disabled flag.",
+    "productionVerificationEnabled": false
+  },
+  "fixtureReviewProof": {
+    "implemented": true,
+    "test": "tests/guarded_fixture_review_proof.rs",
+    "behavior": "Temporary fixture tests build layered occurrences, candidates, recommendations, guarded review, exact backup plan, advanced confirmation, verification plan, fixture write proof, and fixture verification-passed state.",
+    "generatedScriptManagedTargetRequiresAdvancedFixtureApproval": true,
+    "touchesRealUserConfig": false
+  },
+  "disabledProductionUi": {
+    "implemented": true,
+    "location": "src/ui/window.rs::append_pre_apply_review_scaffold",
+    "behavior": "Shows disabled Write review, Backup, Verification, Safety, and Review save location UI for layered settings.",
+    "controlsEnabled": false,
+    "realWritingActive": false
+  },
+  "applyWriteIsolation": {
+    "productionApplyCallsGuardedReview": false,
+    "productionApplyCallsFixtureProof": false,
+    "productionApplyCallsBackupPlan": false,
+    "productionApplyCallsVerificationPlan": false,
+    "writeFlowImportsNewGuardedModules": false,
+    "test": "tests/write_review_apply_isolation.rs"
+  },
+  "uiChanges": [
+    "Extended disabled layered-setting pre-apply review scaffold with Write review, Backup, Verification, Safety, and disabled Review save location controls.",
+    "Added user-facing copy for exact backup, reread verification, advanced confirmation, and real-writing-disabled state.",
+    "No production target selection handlers were added."
+  ],
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedSessionConfigPersisted": false,
+    "productionCurrentConfigSnapshotChanged": false,
+    "productionConfigDiscoveryChanged": false,
+    "productionUiProjectionChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/guarded_write_target_review.rs",
+    "tests/write_backup_plan.rs",
+    "tests/write_advanced_confirmation.rs",
+    "tests/write_verification_plan.rs",
+    "tests/guarded_fixture_review_proof.rs",
+    "tests/disabled_guarded_write_review_ui.rs",
+    "tests/write_review_apply_isolation.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false,
+    "productionApplyIntegrationActive": false,
+    "releaseCreated": false,
+    "forcePushUsed": false
+  },
+  "countsBefore": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "countsAfter": {
+    "readableRows": 341,
+    "writableRows": 341,
+    "blockedRows": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with this sprint changes plus pre-existing untracked local audit/design artifacts"
+  },
+  "proofUsed": [
+    "Rust models for guarded review, backup planning, advanced confirmation, and verification planning.",
+    "Fixture-only end-to-end test composing layered occurrences, candidates, recommendations, backup plan, advanced confirmation, verification plan, fixture write proof, and guarded review.",
+    "Source-level tests proving disabled UI controls and no production write_flow integration."
+  ],
+  "proofStillMissing": [
+    "No real user config write-target selection is active.",
+    "No real layered writes are enabled.",
+    "No production backup/write/reread integration is enabled.",
+    "No profile switching is implemented.",
+    "No live Hyprland reload or runtime mutation proof is claimed."
+  ],
+  "nextRecommendedSprint": "Keep production guarded review disabled and add a non-writing end-to-end UI review walkthrough that exercises target review decisions against read-only session previews before any real write integration is considered."
+}
