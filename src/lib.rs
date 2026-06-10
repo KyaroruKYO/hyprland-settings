@@ -23,6 +23,7 @@ pub mod one_target_write_pilot;
 pub mod pending_change;
 pub mod production_advanced_confirmation;
 pub mod production_backup_contract;
+pub mod production_high_risk_approval;
 pub mod production_recovery_contract;
 pub mod production_target_selection_architecture;
 pub mod production_verification_contract;

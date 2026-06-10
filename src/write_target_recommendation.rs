@@ -85,6 +85,9 @@ pub fn recommend_write_targets(candidates: &[WriteTargetCandidate]) -> WriteTarg
             if let Some(inactive) = risk.advanced_confirmation_inactive_reason {
                 reason = format!("{reason} {inactive}");
             }
+            if let Some(inactive) = risk.high_risk_approval_inactive_reason {
+                reason = format!("{reason} {inactive}");
+            }
             if let Some(hard_block) = risk.hard_block_reason {
                 reason = format!("{reason} {hard_block}");
             }

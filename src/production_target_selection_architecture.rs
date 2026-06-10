@@ -1,5 +1,6 @@
 use crate::guarded_write_review::PRODUCTION_WRITE_TARGET_REVIEW_ENABLED;
 use crate::production_advanced_confirmation::PRODUCTION_ADVANCED_CONFIRMATION_ENABLED;
+use crate::production_high_risk_approval::PRODUCTION_HIGH_RISK_APPROVAL_ENABLED;
 use crate::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELECTION_READY;
 use crate::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE;
 
@@ -176,6 +177,15 @@ pub fn production_write_gate_inventory() -> Vec<ProductionWriteGateInventoryItem
             would_allow: "advanced confirmation policy to become available for risky target classes",
             required_proof_before_flip:
                 "generated, script-managed, symlink-managed, hard-block, recovery, and high-risk policies proven",
+            must_remain_false_now: true,
+        },
+        ProductionWriteGateInventoryItem {
+            gate_name: "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED",
+            current_value: PRODUCTION_HIGH_RISK_APPROVAL_ENABLED,
+            module: "production_high_risk_approval",
+            would_allow: "high-risk approval state to become available for future production target review",
+            required_proof_before_flip:
+                "first-pilot exclusions, recovery behavior, high-risk policy boundaries, and explicit approval persistence rules proven",
             must_remain_false_now: true,
         },
         ProductionWriteGateInventoryItem {

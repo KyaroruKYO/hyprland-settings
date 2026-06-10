@@ -375,6 +375,7 @@ pub struct RecommendationRiskExplanation {
     pub target_path: PathBuf,
     pub blocked_reason: String,
     pub advanced_confirmation_inactive_reason: Option<String>,
+    pub high_risk_approval_inactive_reason: Option<String>,
     pub hard_block_reason: Option<String>,
     pub real_target_selection_active: bool,
 }
@@ -406,6 +407,8 @@ pub fn recommendation_risk_explanation_for_candidate(
         advanced_confirmation_inactive_reason: classification
             .advanced_confirmation_can_help_later
             .then(|| "Advanced confirmation is not active yet.".to_string()),
+        high_risk_approval_inactive_reason: high_risk_setting
+            .then(|| "High-risk approval is not active yet.".to_string()),
         hard_block_reason: hard_block
             .hard_blocked
             .then(|| "Advanced confirmation cannot override this block.".to_string()),

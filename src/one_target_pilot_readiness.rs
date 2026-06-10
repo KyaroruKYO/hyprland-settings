@@ -2,6 +2,7 @@ use crate::guarded_write_review::PRODUCTION_WRITE_TARGET_REVIEW_ENABLED;
 use crate::one_target_write_pilot::PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED;
 use crate::production_advanced_confirmation::PRODUCTION_ADVANCED_CONFIRMATION_ENABLED;
 use crate::production_backup_contract::PRODUCTION_BACKUP_CONTRACT_ENABLED;
+use crate::production_high_risk_approval::PRODUCTION_HIGH_RISK_APPROVAL_ENABLED;
 use crate::production_recovery_contract::PRODUCTION_RECOVERY_CONTRACT_ENABLED;
 use crate::production_verification_contract::PRODUCTION_VERIFICATION_CONTRACT_ENABLED;
 use crate::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELECTION_READY;
@@ -26,12 +27,18 @@ pub struct OneTargetPilotReadinessMapping {
     pub first_pilot_exclusion_policy_complete: bool,
     pub risky_target_ui_copy_complete: bool,
     pub fixture_risk_policy_proof_passed: bool,
+    pub high_risk_approval_boundary_complete: bool,
+    pub high_risk_classification_integration_complete: bool,
+    pub high_risk_approval_state_model_complete: bool,
+    pub high_risk_warning_copy_complete: bool,
+    pub high_risk_first_pilot_exclusion_proof_complete: bool,
     pub manual_smoke_review_complete: bool,
     pub apply_integration_boundary_approved: bool,
     pub production_backup_enabled: bool,
     pub production_verification_enabled: bool,
     pub production_recovery_enabled: bool,
     pub production_advanced_confirmation_enabled: bool,
+    pub production_high_risk_approval_enabled: bool,
     pub pilot_gate_enabled: bool,
     pub target_selection_ready: bool,
     pub guarded_review_enabled: bool,
@@ -57,12 +64,18 @@ impl OneTargetPilotReadinessMapping {
             && self.first_pilot_exclusion_policy_complete
             && self.risky_target_ui_copy_complete
             && self.fixture_risk_policy_proof_passed
+            && self.high_risk_approval_boundary_complete
+            && self.high_risk_classification_integration_complete
+            && self.high_risk_approval_state_model_complete
+            && self.high_risk_warning_copy_complete
+            && self.high_risk_first_pilot_exclusion_proof_complete
             && self.manual_smoke_review_complete
             && self.apply_integration_boundary_approved
             && self.production_backup_enabled
             && self.production_verification_enabled
             && self.production_recovery_enabled
             && self.production_advanced_confirmation_enabled
+            && self.production_high_risk_approval_enabled
             && self.pilot_gate_enabled
             && self.target_selection_ready
             && self.guarded_review_enabled
@@ -90,6 +103,10 @@ impl OneTargetPilotReadinessMapping {
                 .to_string(),
             "These targets are excluded from the first production write pilot.".to_string(),
             "Advanced confirmation is not active yet.".to_string(),
+            "High-risk approval".to_string(),
+            "Some settings need extra review before they can ever be written.".to_string(),
+            "High-risk rows are excluded from the first production write pilot.".to_string(),
+            "High-risk approval is not active yet.".to_string(),
             "Production backups are not active yet.".to_string(),
             "Production verification is not active yet.".to_string(),
             "Real writing is not active yet.".to_string(),
@@ -117,12 +134,18 @@ pub fn current_one_target_pilot_readiness_mapping() -> OneTargetPilotReadinessMa
         first_pilot_exclusion_policy_complete: false,
         risky_target_ui_copy_complete: false,
         fixture_risk_policy_proof_passed: false,
+        high_risk_approval_boundary_complete: false,
+        high_risk_classification_integration_complete: false,
+        high_risk_approval_state_model_complete: false,
+        high_risk_warning_copy_complete: false,
+        high_risk_first_pilot_exclusion_proof_complete: false,
         manual_smoke_review_complete: false,
         apply_integration_boundary_approved: false,
         production_backup_enabled: PRODUCTION_BACKUP_CONTRACT_ENABLED,
         production_verification_enabled: PRODUCTION_VERIFICATION_CONTRACT_ENABLED,
         production_recovery_enabled: PRODUCTION_RECOVERY_CONTRACT_ENABLED,
         production_advanced_confirmation_enabled: PRODUCTION_ADVANCED_CONFIRMATION_ENABLED,
+        production_high_risk_approval_enabled: PRODUCTION_HIGH_RISK_APPROVAL_ENABLED,
         pilot_gate_enabled: PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED,
         target_selection_ready: PRODUCTION_WRITE_TARGET_SELECTION_READY,
         guarded_review_enabled: PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,

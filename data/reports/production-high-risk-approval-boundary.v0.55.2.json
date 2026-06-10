@@ -1,0 +1,213 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "production-high-risk-approval-boundary",
+  "generatedAt": "2026-06-10T10:00:44Z",
+  "startingCommit": "cbe41fb85a7d18cc356f5d6c0cfdf53c78e6db8b",
+  "goal": "Design production high-risk approval integration boundary for the one-target pilot while keeping all production gates false.",
+  "filesChanged": [
+    "data/reports/production-high-risk-approval-boundary.v0.55.2.json",
+    "docs/PRODUCTION-HIGH-RISK-APPROVAL-BOUNDARY-REVIEW-LOG.md",
+    "src/lib.rs",
+    "src/one_target_pilot_readiness.rs",
+    "src/production_advanced_confirmation.rs",
+    "src/production_high_risk_approval.rs",
+    "src/production_target_selection_architecture.rs",
+    "src/ui/window.rs",
+    "src/write_target_recommendation.rs",
+    "tests/first_pilot_high_risk_exclusion.rs",
+    "tests/high_risk_apply_isolation.rs",
+    "tests/high_risk_approval_state.rs",
+    "tests/high_risk_classification_integration.rs",
+    "tests/high_risk_readiness_mapping.rs",
+    "tests/high_risk_warning_ui.rs",
+    "tests/production_high_risk_approval_boundary.rs",
+    "tests/recommendation_high_risk_explanation.rs",
+    "/home/kyo/.config/hypr/docs/PRODUCTION-HIGH-RISK-APPROVAL-BOUNDARY-REVIEW-LOG.md"
+  ],
+  "highRiskApprovalBoundary": {
+    "module": "src/production_high_risk_approval.rs",
+    "gate": "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED",
+    "gateValue": false,
+    "normalRows": "not high-risk and can be first-pilot eligible only if the target is otherwise normal scalar",
+    "highRiskRows": "approval required, production approval unavailable, excluded from first pilot",
+    "fixtureOnly": true,
+    "affectsApply": false
+  },
+  "highRiskClassificationIntegration": {
+    "categories": [
+      "not high-risk",
+      "high-risk but theoretically approvable later",
+      "high-risk requiring separate policy",
+      "hard-blocked high-risk",
+      "unknown high-risk status"
+    ],
+    "firstPilotBehavior": "any high-risk row is excluded from the first production write pilot",
+    "hardBlockInteraction": "high-risk approval cannot override missing line, structured target, unreadable target, script/Lua required target, or unresolved duplicate ambiguity",
+    "productionEnabled": false
+  },
+  "highRiskApprovalState": {
+    "states": [
+      "not required",
+      "required but unavailable",
+      "requested but disabled",
+      "approved in fixture only",
+      "rejected",
+      "expired",
+      "production disabled"
+    ],
+    "canPersist": false,
+    "affectsApply": false,
+    "canMakeFirstPilotEligible": false,
+    "productionEnabled": false
+  },
+  "highRiskWarningCopy": {
+    "copy": [
+      "High-risk approval",
+      "Some settings need extra review before they can ever be written.",
+      "High-risk rows are excluded from the first production write pilot.",
+      "High-risk approval is not active yet.",
+      "Real writing is not active yet.",
+      "Apply behavior has not changed."
+    ],
+    "futureAcknowledgementText": [
+      "I understand this setting may affect session stability.",
+      "I understand this setting may require manual recovery if misconfigured.",
+      "I understand the app must back up, write, reread, verify, and recover safely.",
+      "I understand high-risk approval does not override hard blocks."
+    ]
+  },
+  "firstPilotHighRiskExclusion": {
+    "normalNonHighRiskScalarTarget": "can be eligible but production gate remains false",
+    "excludedTargets": [
+      "high-risk scalar target",
+      "high-risk generated target",
+      "high-risk script-managed target",
+      "high-risk symlink target"
+    ],
+    "hardBlockedTargets": [
+      "high-risk missing-line target",
+      "high-risk structured target",
+      "high-risk duplicate ambiguity"
+    ],
+    "productionGate": false
+  },
+  "recommendationHighRiskExplanation": {
+    "blockedReasons": [
+      "This setting needs separate high-risk approval.",
+      "High-risk approval is not active yet.",
+      "High-risk approval cannot override this block.",
+      "This target is not eligible for the first write pilot."
+    ],
+    "realTargetSelectionActive": false
+  },
+  "readinessMapping": {
+    "oneTargetPilotFieldsAdded": [
+      "high_risk_approval_boundary_complete",
+      "high_risk_classification_integration_complete",
+      "high_risk_approval_state_model_complete",
+      "high_risk_warning_copy_complete",
+      "high_risk_first_pilot_exclusion_proof_complete",
+      "production_high_risk_approval_enabled"
+    ],
+    "highRiskReadinessModel": "current_high_risk_readiness_mapping",
+    "productionHighRiskApprovalGate": false,
+    "pilotReadiness": false
+  },
+  "disabledFutureUi": {
+    "added": true,
+    "copy": [
+      "High-risk approval",
+      "Some settings need extra review before they can ever be written.",
+      "High-risk rows are excluded from the first production write pilot.",
+      "High-risk approval is not active yet.",
+      "Real writing is not active yet.",
+      "Apply behavior has not changed."
+    ],
+    "controlsEnabled": false
+  },
+  "applyWriteIsolation": {
+    "writeFlowImportsProductionHighRiskApprovalPolicy": false,
+    "writeFlowImportsHighRiskApprovalBoundary": false,
+    "writeFlowImportsHighRiskApprovalState": false,
+    "writeFlowCallsHighRiskApprovalFlow": false,
+    "writeFlowCallsApprovalPersistence": false,
+    "writeFlowBypassesHighRiskWritePolicy": false,
+    "writeFlowStillContainsHighRiskWritePolicy": true,
+    "applySettingChangeRemainsPresent": true,
+    "applyScalarWritePlanRemainsPresent": true,
+    "allProductionGatesFalse": true
+  },
+  "uiChanges": [
+    "Added disabled high-risk approval copy to the existing production review section.",
+    "No active approval controls, checkboxes, or handlers were added."
+  ],
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedSessionConfigPersisted": false,
+    "productionCurrentConfigSnapshotChanged": false,
+    "productionConfigDiscoveryChanged": false,
+    "productionUiProjectionChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/production_high_risk_approval_boundary.rs",
+    "tests/high_risk_classification_integration.rs",
+    "tests/high_risk_approval_state.rs",
+    "tests/high_risk_warning_ui.rs",
+    "tests/first_pilot_high_risk_exclusion.rs",
+    "tests/recommendation_high_risk_explanation.rs",
+    "tests/high_risk_readiness_mapping.rs",
+    "tests/high_risk_apply_isolation.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "realBackupCreated": false,
+    "realRestoreAttempted": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with pre-existing untracked local audit/design artifacts left uncommitted"
+  },
+  "proofUsed": [
+    "Boundary tests proving normal rows do not require high-risk approval and high-risk rows require unavailable production approval.",
+    "Classification tests covering not-high-risk, approvable-later, separate-policy, hard-blocked, and unknown categories.",
+    "Approval state tests proving every state is non-persistent, non-applying, and cannot make a first-pilot target eligible.",
+    "First-pilot exclusion tests proving high-risk and hard-blocked targets remain excluded.",
+    "Recommendation tests proving high-risk blocked reasons and inactive approval copy.",
+    "Source-level Apply/write isolation tests proving write_flow.rs does not import or call the high-risk approval boundary."
+  ],
+  "proofStillMissing": [
+    "No production high-risk approval UI is active.",
+    "No high-risk approval persistence exists.",
+    "No production write-target selection is active.",
+    "No production backup/write/reread/recovery flow is active.",
+    "No real writes are enabled."
+  ],
+  "nextRecommendedSprint": "Design production one-target pilot manual smoke checklist and final pre-enable audit while keeping all production gates false."
+}
