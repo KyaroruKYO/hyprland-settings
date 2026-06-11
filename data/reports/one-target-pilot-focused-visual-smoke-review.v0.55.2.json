@@ -1,0 +1,233 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "one-target-pilot-focused-visual-smoke-review",
+  "generatedAt": "2026-06-11T03:07:36-07:00",
+  "startingCommit": "3e784288aea773b3739aaa3a128ceda5afd28aff",
+  "goal": "Repeat a focused read-only visual smoke review and draft a separate gate-flip proposal only if the focused review passes, while keeping all production gates false.",
+  "filesChanged": [
+    "src/lib.rs",
+    "src/one_target_pilot_focused_visual_smoke.rs",
+    "tests/one_target_pilot_focused_visual_smoke_result.rs",
+    "tests/one_target_pilot_focused_visual_pass_criteria.rs",
+    "tests/one_target_pilot_focused_gate_flip_proposal.rs",
+    "tests/one_target_pilot_focused_visual_blockers.rs",
+    "tests/one_target_pilot_focused_visual_gate_false.rs",
+    "tests/one_target_pilot_focused_visual_ui.rs",
+    "tests/one_target_pilot_focused_visual_apply_isolation.rs",
+    "data/reports/one-target-pilot-focused-visual-smoke-review.v0.55.2.json",
+    "data/reports/one-target-pilot-gate-flip-proposal-draft.v0.55.2.json",
+    "docs/ONE-TARGET-PILOT-FOCUSED-VISUAL-SMOKE-REVIEW-LOG.md",
+    "docs/ONE-TARGET-PILOT-GATE-FLIP-PROPOSAL-DRAFT.md",
+    "/home/kyo/.config/hypr/docs/ONE-TARGET-PILOT-FOCUSED-VISUAL-SMOKE-REVIEW-LOG.md"
+  ],
+  "focusedVisualSmokePlan": {
+    "safeLaunchCommand": "bounded cargo run --quiet; no write subcommands",
+    "readOnlyMethod": "Navigate Dashboard, Config, a normal category, and one detail pane only; never click Apply.",
+    "appWindowEvidenceStrategy": "Use app-window-only evidence where possible; delete temporary screenshots containing local paths or unrelated desktop content.",
+    "screensToInspect": [
+      "Dashboard",
+      "Config page",
+      "Config file section",
+      "Connected files section",
+      "Profiles section",
+      "Future changes section",
+      "normal settings category",
+      "safe scalar row detail pane",
+      "production review section"
+    ],
+    "forbiddenActions": [
+      "Apply click",
+      "real write target selection",
+      "profile or mode switching",
+      "Hyprland reload",
+      "mutating hyprctl",
+      "user config backup or restore"
+    ]
+  },
+  "focusedVisualSmokeResult": {
+    "performed": true,
+    "appLaunched": true,
+    "status": "passed",
+    "reviewPassed": true,
+    "reviewFailed": false,
+    "reviewInconclusive": false,
+    "proposalAllowed": true,
+    "method": "live read-only app launch with AT-SPI accessibility inspection and temporary app-window crop",
+    "warningsObserved": [
+      "Adwaita warning about unsupported GtkSettings dark-theme flag",
+      "Vulkan driver conformance warning from the environment",
+      "AT-SPI dbind warning while querying accessibility tree; evidence was still obtained"
+    ]
+  },
+  "appWindowOnlyEvidence": {
+    "attempted": true,
+    "captured": true,
+    "retained": false,
+    "safeToCommit": false,
+    "reasonNotRetained": "The temporary app-window crop was useful for local review but included local config paths, so it was deleted and not committed.",
+    "unrelatedDesktopContentRetained": false
+  },
+  "screensInspected": {
+    "dashboard": "passed",
+    "configPage": "passed",
+    "configFileSection": "passed",
+    "connectedFilesSection": "passed",
+    "profilesSection": "passed",
+    "futureChangesSection": "passed",
+    "normalSettingsCategory": "passed",
+    "settingDetailPane": "passed",
+    "productionReviewSection": "passed"
+  },
+  "expectedCopyResults": {
+    "Write review walkthrough": "passed",
+    "Production write enablement": "passed",
+    "First production write pilot": "passed",
+    "Production backup and verification": "passed",
+    "Recovery": "passed",
+    "Advanced confirmation": "passed",
+    "High-risk approval": "passed",
+    "Final pre-enable audit": "passed",
+    "Manual smoke review": "passed",
+    "Live visual smoke review": "passed",
+    "Real writing is not active yet.": "passed",
+    "Apply behavior has not changed.": "passed"
+  },
+  "disabledControlResults": {
+    "Choose review mode": "passed; AT-SPI sensitive=false enabled=false",
+    "Profile switching planned": "passed; AT-SPI sensitive=false enabled=false",
+    "Review save location": "passed; AT-SPI sensitive=false enabled=false",
+    "Production enablement is disabled": "passed; AT-SPI sensitive=false enabled=false",
+    "target decisions preview-only": "passed; AT-SPI sensitive=false enabled=false"
+  },
+  "unsafeActionsAvoided": {
+    "applyClicked": false,
+    "realWriteTargetSelected": false,
+    "profileOrModeSwitchActivated": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "userConfigWritten": false,
+    "userConfigBackupCreated": false,
+    "userConfigRestoreAttempted": false
+  },
+  "gateFlipProposalReadiness": {
+    "readyForSeparateGateFlipProposal": true,
+    "productionActivationReady": false,
+    "reason": "Focused visual review passed, but the proposal must remain separate and production activation still requires an explicit future sprint."
+  },
+  "gateFlipProposalDraft": {
+    "created": true,
+    "draftOnly": true,
+    "notExecuted": true,
+    "noGateFlipped": true,
+    "requiresUserApproval": true,
+    "requiresSeparateSprint": true,
+    "paths": [
+      "docs/ONE-TARGET-PILOT-GATE-FLIP-PROPOSAL-DRAFT.md",
+      "data/reports/one-target-pilot-gate-flip-proposal-draft.v0.55.2.json"
+    ]
+  },
+  "remainingBlockers": [
+    "production backup inactive",
+    "production write inactive",
+    "production reread verification inactive",
+    "production recovery inactive",
+    "Apply integration not approved",
+    "all production gates false",
+    "gate-flip proposal draft not executed"
+  ],
+  "gateInventoryVerification": {
+    "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED": false,
+    "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED": false,
+    "PRODUCTION_WRITE_TARGET_SELECTION_READY": false,
+    "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED": false,
+    "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE": false,
+    "PRODUCTION_BACKUP_CONTRACT_ENABLED": false,
+    "PRODUCTION_VERIFICATION_CONTRACT_ENABLED": false,
+    "PRODUCTION_RECOVERY_CONTRACT_ENABLED": false,
+    "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED": false,
+    "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED": false
+  },
+  "disabledFutureUi": {
+    "uiAdded": false,
+    "reason": "Existing detail-pane production review copy is already dense; focused follow-up evidence is model/report/log only.",
+    "controlsAdded": false,
+    "handlersAdded": false
+  },
+  "applyWriteIsolation": {
+    "writeFlowImportsFocusedVisualSmoke": false,
+    "writeFlowImportsGateFlipProposalDraft": false,
+    "writeFlowCallsVisualReviewFunctions": false,
+    "writeFlowCallsGateProposalFunctions": false,
+    "writeFlowCallsGateFlipFunctions": false,
+    "writeFlowBypassesHighRiskPolicy": false,
+    "applySettingChangeStillPresent": true,
+    "applyScalarWritePlanStillPresent": true
+  },
+  "uiChanges": "No new UI was added in this sprint; existing disabled/future UI copy was visually confirmed.",
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedSessionConfigPersisted": false,
+    "productionCurrentConfigSnapshotChanged": false,
+    "productionConfigDiscoveryChanged": false,
+    "productionUiProjectionChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "one_target_pilot_focused_visual_smoke_result",
+    "one_target_pilot_focused_visual_pass_criteria",
+    "one_target_pilot_focused_gate_flip_proposal",
+    "one_target_pilot_focused_visual_blockers",
+    "one_target_pilot_focused_visual_gate_false",
+    "one_target_pilot_focused_visual_ui",
+    "one_target_pilot_focused_visual_apply_isolation"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "realBackupCreated": false,
+    "realRestoreAttempted": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false,
+    "anyGateFlipped": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed; only this sprint's files plus pre-existing untracked local audit artifacts were present before commit"
+  },
+  "proofUsed": [
+    "focused live read-only app launch",
+    "AT-SPI accessibility tree inspection",
+    "temporary app-window crop inspected and deleted",
+    "source-level isolation tests",
+    "gate inventory tests"
+  ],
+  "proofStillMissing": [
+    "future user-approved gate flip sprint",
+    "active production backup/write/reread/recovery implementation",
+    "approved Apply integration for the one-target path"
+  ],
+  "nextRecommendedSprint": "Run a separate user-approved gate-flip proposal review sprint; do not enable writes without explicit approval."
+}

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "one-target-pilot-gate-flip-proposal-draft",
+  "generatedAt": "2026-06-11T03:07:36-07:00",
+  "startingCommit": "3e784288aea773b3739aaa3a128ceda5afd28aff",
+  "draftOnly": true,
+  "notExecuted": true,
+  "noGateFlipped": true,
+  "requiresUserApproval": true,
+  "requiresSeparateSprint": true,
+  "proposalReason": "Focused live read-only visual smoke review passed, so a separate future proposal draft is justified. This artifact does not enable or execute the proposal.",
+  "exactGatesProposedForFutureReview": [
+    "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED",
+    "PRODUCTION_WRITE_TARGET_SELECTION_READY",
+    "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
+    "PRODUCTION_BACKUP_CONTRACT_ENABLED",
+    "PRODUCTION_VERIFICATION_CONTRACT_ENABLED",
+    "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
+    "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
+    "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE"
+  ],
+  "gatesExpectedToRemainFalseForFirstPilot": [
+    "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
+    "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED"
+  ],
+  "targetClassAllowed": "one existing non-high-risk scalar line in one normal config file with exact line number and no duplicate ambiguity",
+  "targetClassesExcluded": [
+    "generated targets",
+    "script-managed targets",
+    "script-referenced targets",
+    "symlink-managed targets",
+    "symlink targets",
+    "high-risk rows",
+    "structured targets",
+    "missing-line targets",
+    "duplicate or ambiguous targets"
+  ],
+  "requiredProofAlreadyPresent": [
+    "manual smoke review model",
+    "pre-enable audit model",
+    "focused live read-only visual smoke review passed",
+    "fixture-only backup/write/reread/recovery proof",
+    "advanced confirmation exclusion policy",
+    "high-risk exclusion policy",
+    "source-level Apply isolation tests",
+    "all production gates false"
+  ],
+  "proofStillMissing": [
+    "explicit user approval for a separate gate-flip sprint",
+    "production backup implementation activation",
+    "production write implementation activation",
+    "production reread verification activation",
+    "production recovery activation",
+    "approved Apply integration for the one-target path"
+  ],
+  "productionBackupWriteRereadRecoveryRequirements": [
+    "backup must be created before write",
+    "backup bytes must be verified before write",
+    "write must affect exactly one expected scalar line",
+    "reread verification must confirm expected value from the exact target file",
+    "failed verification must trigger the designed recovery path",
+    "restore verification must reread the restored file before reporting success"
+  ],
+  "manualSmokeEvidence": {
+    "focusedVisualReviewPassed": true,
+    "configPageConfirmed": true,
+    "connectedFilesConfirmed": true,
+    "normalCategoryConfirmed": true,
+    "detailPaneConfirmed": true,
+    "productionReviewCopyConfirmed": true,
+    "disabledProductionControlsConfirmed": true,
+    "applyAvoided": true
+  },
+  "applyIntegrationScope": "future proposal may only connect the narrow one-target pilot path after all listed production contracts are active and approved",
+  "stopConditions": [
+    "target is generated, script-managed, script-referenced, symlink-managed, symlink target, high-risk, structured, missing-line, or ambiguous",
+    "backup cannot be created and verified before write",
+    "write target is not one normal scalar line",
+    "reread verification fails",
+    "recovery restore or restore verification fails",
+    "Apply integration differs from approved one-target scope",
+    "any required gate remains false in the future sprint"
+  ],
+  "rollbackConditions": [
+    "write fails after backup",
+    "write succeeds but reread verification fails",
+    "expected setting is missing after write",
+    "expected value mismatches after write",
+    "target file is unreadable after write"
+  ],
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  }
+}
