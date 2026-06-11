@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "one-target-pilot-gate-flip-proposal-reviewed-draft",
+  "generatedAt": "2026-06-11T03:44:18-07:00",
+  "startingCommit": "744b3e89f980f5ebf0de7b7fd53c9e62e1e0ab66",
+  "draftOnly": true,
+  "notExecuted": true,
+  "noGateFlipped": true,
+  "writesEnabled": false,
+  "requiresExplicitUserApproval": true,
+  "requiresSeparateSprint": true,
+  "reviewResult": "suitable to present for explicit user approval in a later sprint",
+  "originalDraftRevisionsAddressed": [
+    "explicitly exclude unknown management state targets",
+    "explicitly exclude targets requiring script or Lua execution",
+    "explicitly require restored byte and scalar-value verification",
+    "present future gate flips as staged rather than simultaneous"
+  ],
+  "allowedTargetClass": "one existing non-high-risk scalar line in one normal config file with exact line number and no ambiguity",
+  "excludedTargetClasses": [
+    "generated targets",
+    "script-managed targets",
+    "script-referenced targets",
+    "symlink-managed targets",
+    "symlink targets",
+    "unknown management state targets",
+    "targets requiring script or Lua execution",
+    "high-risk rows",
+    "structured targets",
+    "missing-line targets",
+    "duplicate or ambiguous targets"
+  ],
+  "stagedFutureGates": [
+    "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED",
+    "PRODUCTION_BACKUP_CONTRACT_ENABLED",
+    "PRODUCTION_VERIFICATION_CONTRACT_ENABLED",
+    "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
+    "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
+    "PRODUCTION_WRITE_TARGET_SELECTION_READY",
+    "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
+    "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE"
+  ],
+  "gatesThatRemainFalseForFirstNormalPilot": [
+    "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
+    "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED"
+  ],
+  "backupVerificationRecoveryRequirements": [
+    "exact backup before write",
+    "backup byte equality proof before write",
+    "write only after backup proof",
+    "reread exact target after write",
+    "verify expected value after reread",
+    "restore exact backup bytes on write failure after backup",
+    "restore exact backup bytes on verification failure",
+    "reread restored file",
+    "verify restored bytes and restored scalar value",
+    "report recovery failure without hiding backup path"
+  ],
+  "applyIntegrationScope": [
+    "only approved one-target path",
+    "existing high_risk_write_policy remains enforced",
+    "blocked target classes remain blocked",
+    "session-selected config does not automatically affect writes",
+    "real write target must be normal scalar file occurrence",
+    "backup, verification, and recovery must wrap any write",
+    "errors must block write or report failure safely"
+  ],
+  "runtimeSafety": {
+    "automaticHyprlandReloadAllowed": false,
+    "mutatingHyprctlAllowed": false,
+    "scriptsOrLuaAllowed": false,
+    "profileOrModeSwitchAllowed": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  }
+}
