@@ -3,7 +3,7 @@ use crate::one_target_pilot_live_visual_smoke::{
     VisualGateFlipProposalDecision, VisualGateFlipProposalReadiness, VisualSmokeItemResult,
 };
 use crate::one_target_pilot_manual_review::{
-    all_production_gates_remain_false, one_target_pilot_remaining_blockers,
+    all_write_activation_gates_remain_false, one_target_pilot_remaining_blockers,
     OneTargetPilotRemainingBlocker,
 };
 use crate::one_target_pilot_pre_enable_audit::{
@@ -378,7 +378,7 @@ pub struct FocusedVisualPassCriteria {
     pub production_review_copy_confirmed: bool,
     pub disabled_production_controls_confirmed: bool,
     pub unsafe_actions_avoided: bool,
-    pub all_gates_remain_false: bool,
+    pub all_write_activation_gates_remain_false: bool,
 }
 
 impl FocusedVisualPassCriteria {
@@ -391,7 +391,7 @@ impl FocusedVisualPassCriteria {
             && self.production_review_copy_confirmed
             && self.disabled_production_controls_confirmed
             && self.unsafe_actions_avoided
-            && self.all_gates_remain_false
+            && self.all_write_activation_gates_remain_false
     }
 }
 
@@ -423,7 +423,7 @@ pub fn one_target_pilot_focused_visual_pass_criteria(
             .unsafe_actions_avoided
             .iter()
             .all(|item| item.result == VisualSmokeItemResult::Passed),
-        all_gates_remain_false: all_production_gates_remain_false(),
+        all_write_activation_gates_remain_false: all_write_activation_gates_remain_false(),
     }
 }
 
@@ -455,7 +455,7 @@ pub fn one_target_pilot_focused_visual_gate_flip_proposal_readiness(
             vec![
                 "focused visual smoke review did not satisfy every pass criterion",
                 "a proposal draft must not be created from failed or inconclusive visual evidence",
-                "all production gates remain false",
+                "all write activation gates remain false",
             ]
         },
         remaining_blockers: one_target_pilot_focused_visual_remaining_blockers(result),

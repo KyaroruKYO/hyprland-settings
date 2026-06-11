@@ -13,8 +13,8 @@ use hyprland_settings::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELEC
 use hyprland_settings::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE;
 
 #[test]
-fn focused_visual_review_keeps_all_production_gates_false() {
-    assert!(!PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
+fn focused_visual_review_keeps_write_activation_gates_false_after_pre_enable_approval() {
+    assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
     assert!(!PRODUCTION_WRITE_TARGET_SELECTION_READY);
     assert!(!PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);

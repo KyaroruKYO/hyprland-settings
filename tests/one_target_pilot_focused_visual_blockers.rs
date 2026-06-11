@@ -20,7 +20,7 @@ fn focused_visual_pass_removes_visual_blocker_but_keeps_production_activation_bl
     assert!(ids.contains(&"production-reread-verification-inactive"));
     assert!(ids.contains(&"production-recovery-inactive"));
     assert!(ids.contains(&"apply-integration-not-approved"));
-    assert!(ids.contains(&"all-production-gates-false"));
+    assert!(ids.contains(&"all-write-activation-gates-false"));
     assert!(ids.contains(&"gate-flip-proposal-draft-not-executed"));
     assert!(blockers
         .iter()

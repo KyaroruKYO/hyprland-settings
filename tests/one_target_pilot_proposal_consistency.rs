@@ -18,7 +18,7 @@ fn proposal_consistency_references_full_proof_chain_without_enabling_writes() {
     assert!(review.high_risk_boundary_proof_referenced);
     assert!(review.target_management_risk_policy_referenced);
     assert!(review.apply_isolation_proof_referenced);
-    assert!(review.all_gates_false_referenced);
+    assert!(review.staged_gate_state_referenced);
     assert!(!review.enables_writes_in_this_sprint);
     assert!(!review.treats_draft_as_gate_flip_approval);
     assert!(!review.changes_apply_behavior);

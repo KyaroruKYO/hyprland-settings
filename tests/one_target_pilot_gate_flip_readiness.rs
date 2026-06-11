@@ -19,7 +19,7 @@ fn gate_flip_proposal_readiness_is_a_no_go_without_flipping_gates() {
     assert!(!readiness.ready_for_gate_flip_proposal);
     assert!(!readiness.ready_for_production_implementation_sprint);
     assert!(!readiness.production_activation_ready);
-    assert!(!PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
+    assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
     assert!(!readiness.reasons.is_empty());
     assert!(!readiness.remaining_blockers.is_empty());
     assert!(readiness

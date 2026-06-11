@@ -12,7 +12,7 @@ use hyprland_settings::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELEC
 use hyprland_settings::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE;
 
 #[test]
-fn proposal_gate_list_is_future_only_staged_and_all_current_values_remain_false() {
+fn proposal_gate_list_is_future_only_staged_with_pre_enable_gate_approved() {
     let review = one_target_pilot_future_gate_list_review();
 
     assert!(review
@@ -28,15 +28,15 @@ fn proposal_gate_list_is_future_only_staged_and_all_current_values_remain_false(
         .gates_that_must_remain_false_now
         .contains(&"PRODUCTION_HIGH_RISK_APPROVAL_ENABLED"));
     assert_eq!(review.staged_flip_recommendation.len(), 8);
-    assert_eq!(review.gates_needing_more_proof_before_flip.len(), 8);
+    assert_eq!(review.gates_needing_more_proof_before_flip.len(), 7);
     assert_eq!(
         review
             .gates_that_should_not_flip_together_without_more_proof
             .len(),
-        8
+        7
     );
-    assert!(review.all_current_gate_values_false);
-    assert!(!PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
+    assert!(review.pre_enable_gate_true_and_write_gates_false);
+    assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
     assert!(!PRODUCTION_WRITE_TARGET_SELECTION_READY);
     assert!(!PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);

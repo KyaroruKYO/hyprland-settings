@@ -16,7 +16,7 @@ fn remaining_blocker_inventory_tracks_gate_flip_and_activation_blockers() {
         "production-reread-verification-inactive",
         "production-recovery-inactive",
         "apply-integration-not-approved",
-        "all-production-gates-false",
+        "all-write-activation-gates-false",
         "release-gate-flip-proposal-not-created",
     ] {
         assert!(ids.contains(&expected), "missing blocker: {expected}");

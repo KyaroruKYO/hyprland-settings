@@ -18,6 +18,7 @@ fn one_target_pilot_readiness_maps_backup_verification_recovery_and_keeps_gate_f
     assert!(!readiness.advanced_confirmation_policy_complete);
     assert!(!readiness.manual_smoke_review_complete);
     assert!(!readiness.apply_integration_boundary_approved);
+    assert!(readiness.production_pre_enable_audit_passed);
     assert!(!readiness.is_ready_for_production());
     assert!(!readiness.production_backup_enabled);
     assert!(!readiness.production_verification_enabled);

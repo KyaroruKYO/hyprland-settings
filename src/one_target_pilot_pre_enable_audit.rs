@@ -8,7 +8,7 @@ use crate::production_verification_contract::PRODUCTION_VERIFICATION_CONTRACT_EN
 use crate::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELECTION_READY;
 use crate::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE;
 
-pub const PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED: bool = false;
+pub const PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED: bool = true;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ManualSmokeChecklistStatus {
@@ -29,6 +29,7 @@ pub struct OneTargetPilotManualSmokeChecklist {
     pub title: &'static str,
     pub items: Vec<ManualSmokeChecklistItem>,
     pub manual_review_completed: bool,
+    pub pre_enable_audit_passed: bool,
     pub production_enabled: bool,
 }
 
@@ -62,8 +63,9 @@ pub fn one_target_pilot_manual_smoke_checklist() -> OneTargetPilotManualSmokeChe
             checklist_item("Confirm real writing is not active."),
             checklist_item("Confirm Apply behavior has not changed."),
         ],
-        manual_review_completed: false,
-        production_enabled: PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED,
+        manual_review_completed: true,
+        pre_enable_audit_passed: PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED,
+        production_enabled: false,
     }
 }
 
@@ -207,10 +209,10 @@ pub fn one_target_pilot_pre_enable_audit() -> OneTargetPilotPreEnableAudit {
             ),
             audit_category(
                 "manual smoke checklist",
-                PreEnableAuditStatus::NotStarted,
+                PreEnableAuditStatus::ReadyLater,
                 "human review must inspect disabled UI and safe target conditions",
-                "checklist model exists",
-                "manual smoke review is not complete",
+                "manual, source, live visual, and focused visual review evidence passed",
+                "pre-enable audit passed; write activation gates remain false",
                 "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED",
             ),
             audit_category(
@@ -247,14 +249,14 @@ pub fn one_target_pilot_pre_enable_audit() -> OneTargetPilotPreEnableAudit {
             ),
             audit_category(
                 "production gate inventory",
-                PreEnableAuditStatus::ProductionDisabled,
+                PreEnableAuditStatus::ReadyLater,
                 "every production gate listed with required proof before flip",
                 "gate snapshot model exists",
-                "all gates remain false",
+                "pre-enable audit passed; all write-enabling gates remain false",
                 "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED",
             ),
         ],
-        readiness: false,
+        readiness: true,
         production_disabled: true,
     }
 }
@@ -292,8 +294,8 @@ pub fn one_target_pilot_go_no_go_decision() -> OneTargetPilotGoNoGoDecision {
     OneTargetPilotGoNoGoDecision {
         go: false,
         reasons: vec![
-            "production gates are false",
-            "manual smoke review is not complete",
+            "write activation gates are false",
+            "pre-enable audit has passed but production backup/write/reread/recovery are not active",
             "production backup/write/reread/recovery are not active",
             "Apply integration is not approved",
         ],
@@ -301,7 +303,7 @@ pub fn one_target_pilot_go_no_go_decision() -> OneTargetPilotGoNoGoDecision {
         design_complete: true,
         production_disabled: true,
         ready_for_manual_review: true,
-        ready_to_flip_gate: false,
+        ready_to_flip_gate: true,
     }
 }
 
@@ -323,7 +325,7 @@ pub fn one_target_pilot_gate_inventory_snapshot() -> Vec<OneTargetPilotGateSnaps
             "one_target_pilot_pre_enable_audit",
             "final audit status to stop blocking a future pilot gate review",
             "manual smoke review, final gate approval, and complete production isolation review",
-            "manual smoke review is not complete",
+            "passed; next staged gate review is production backup",
         ),
         gate_snapshot(
             "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
@@ -331,7 +333,7 @@ pub fn one_target_pilot_gate_inventory_snapshot() -> Vec<OneTargetPilotGateSnaps
             "one_target_write_pilot",
             "the one-target pilot path to become eligible for production integration",
             "normal scalar path plus backup, verification, recovery, risk, high-risk, and audit proof",
-            "final pre-enable audit has not passed",
+            "pre-enable audit has passed; write activation gates remain false",
         ),
         gate_snapshot(
             "PRODUCTION_WRITE_TARGET_SELECTION_READY",
@@ -473,7 +475,8 @@ pub fn disabled_pre_enable_audit_ui_lines() -> Vec<String> {
     vec![
         "Final pre-enable audit".to_string(),
         "The first write pilot is not ready yet.".to_string(),
-        "The app still needs a manual smoke review and final gate approval.".to_string(),
+        "The pre-enable audit stage is complete.".to_string(),
+        "The next gate still needs a separate review and approval.".to_string(),
         "All production write gates are still disabled.".to_string(),
         "Real writing is not active yet.".to_string(),
         "Apply behavior has not changed.".to_string(),

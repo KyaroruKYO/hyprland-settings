@@ -14,10 +14,10 @@ use hyprland_settings::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELEC
 use hyprland_settings::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE;
 
 #[test]
-fn proposal_review_gate_inventory_keeps_all_production_gates_false() {
+fn proposal_review_gate_inventory_keeps_only_pre_enable_gate_true() {
     let gates = one_target_pilot_proposal_gate_inventory_verification();
 
-    assert!(!PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
+    assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
     assert!(!PRODUCTION_WRITE_TARGET_SELECTION_READY);
     assert!(!PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
@@ -27,9 +27,17 @@ fn proposal_review_gate_inventory_keeps_all_production_gates_false() {
     assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert!(!PRODUCTION_ADVANCED_CONFIRMATION_ENABLED);
     assert!(!PRODUCTION_HIGH_RISK_APPROVAL_ENABLED);
-    assert!(gates.iter().all(|gate| !gate.current_value
-        && !gate.required_proof_before_flip.is_empty()
-        && !gate.current_blocking_reason.is_empty()));
+    assert!(gates
+        .iter()
+        .all(|gate| !gate.required_proof_before_flip.is_empty()
+            && !gate.current_blocking_reason.is_empty()));
+    assert!(gates.iter().any(|gate| gate.gate_name
+        == "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
+        && gate.current_value));
+    assert!(gates
+        .iter()
+        .filter(|gate| gate.gate_name != "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED")
+        .all(|gate| !gate.current_value));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 

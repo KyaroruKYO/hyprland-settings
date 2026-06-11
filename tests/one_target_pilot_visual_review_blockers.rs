@@ -21,7 +21,7 @@ fn visual_review_blockers_keep_production_blockers_after_inconclusive_review() {
         "production-reread-verification-inactive",
         "production-recovery-inactive",
         "apply-integration-not-approved",
-        "all-production-gates-false",
+        "all-write-activation-gates-false",
     ] {
         assert!(ids.contains(&expected), "missing blocker: {expected}");
     }

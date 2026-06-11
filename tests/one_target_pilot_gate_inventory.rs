@@ -13,8 +13,8 @@ use hyprland_settings::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELEC
 use hyprland_settings::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE;
 
 #[test]
-fn gate_inventory_snapshot_lists_all_production_gates_as_false() {
-    assert!(!PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
+fn gate_inventory_snapshot_lists_pre_enable_passed_and_write_gates_false() {
+    assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
     assert!(!PRODUCTION_HIGH_RISK_APPROVAL_ENABLED);
     assert!(!PRODUCTION_ADVANCED_CONFIRMATION_ENABLED);
     assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
@@ -48,7 +48,13 @@ fn gate_inventory_snapshot_lists_all_production_gates_as_false() {
         );
     }
 
-    assert!(snapshot.iter().all(|gate| !gate.current_value));
+    assert!(snapshot.iter().any(|gate| gate.gate_name
+        == "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
+        && gate.current_value));
+    assert!(snapshot
+        .iter()
+        .filter(|gate| gate.gate_name != "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED")
+        .all(|gate| !gate.current_value));
     assert!(snapshot.iter().all(|gate| !gate.would_allow.is_empty()
         && !gate.required_proof_before_flip.is_empty()
         && !gate.current_blocking_reason.is_empty()));

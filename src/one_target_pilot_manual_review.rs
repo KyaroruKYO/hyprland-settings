@@ -316,7 +316,7 @@ pub fn one_target_pilot_gate_flip_proposal_readiness() -> GateFlipProposalReadin
             "manual smoke review remains source-only and partial",
             "production backup/write/reread/recovery are inactive",
             "Apply integration is not approved",
-            "all production gates remain false",
+            "all write activation gates remain false",
         ],
         remaining_blockers: blockers,
         recommended_next_sprint:
@@ -378,8 +378,8 @@ pub fn one_target_pilot_remaining_blockers() -> Vec<OneTargetPilotRemainingBlock
             "Explicit Apply integration boundary approval in a separate sprint.",
         ),
         blocker(
-            "all-production-gates-false",
-            "All production write gates remain false.",
+            "all-write-activation-gates-false",
+            "All production write activation gates remain false.",
             true,
             true,
             "Separate proposal documenting the exact gate set and proof for any flip.",
@@ -425,6 +425,26 @@ pub fn all_production_gates_remain_false() -> bool {
         && !PRODUCTION_RECOVERY_CONTRACT_ENABLED
         && !PRODUCTION_ADVANCED_CONFIRMATION_ENABLED
         && !PRODUCTION_HIGH_RISK_APPROVAL_ENABLED
+}
+
+pub fn all_write_activation_gates_remain_false() -> bool {
+    !PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED
+        && !PRODUCTION_WRITE_TARGET_SELECTION_READY
+        && !PRODUCTION_WRITE_TARGET_REVIEW_ENABLED
+        && !PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE
+        && !PRODUCTION_BACKUP_CONTRACT_ENABLED
+        && !PRODUCTION_VERIFICATION_CONTRACT_ENABLED
+        && !PRODUCTION_RECOVERY_CONTRACT_ENABLED
+        && !PRODUCTION_ADVANCED_CONFIRMATION_ENABLED
+        && !PRODUCTION_HIGH_RISK_APPROVAL_ENABLED
+}
+
+pub fn only_pre_enable_audit_gate_is_true() -> bool {
+    PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED && all_write_activation_gates_remain_false()
+}
+
+pub fn production_write_path_remains_disabled() -> bool {
+    all_write_activation_gates_remain_false()
 }
 
 pub fn disabled_manual_smoke_review_ui_lines() -> Vec<String> {

@@ -1,0 +1,171 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "one-target-pilot-pre-enable-gate-approval",
+  "generatedAt": "2026-06-11T00:00:00-07:00",
+  "startingCommit": "b08f3101019dab86a774497d953e973530ee058e",
+  "goal": "Approve only the one-target pilot pre-enable audit gate while keeping every write-enabling production gate false.",
+  "filesChanged": [
+    "src/one_target_pilot_pre_enable_audit.rs",
+    "src/one_target_pilot_manual_review.rs",
+    "src/one_target_pilot_focused_visual_smoke.rs",
+    "src/one_target_pilot_live_visual_smoke.rs",
+    "src/one_target_pilot_gate_flip_proposal_review.rs",
+    "src/one_target_pilot_readiness.rs",
+    "tests/one_target_pilot_pre_enable_gate_approval.rs",
+    "tests/one_target_pilot_single_gate_state.rs",
+    "tests/one_target_pilot_pre_enable_gate_apply_isolation.rs",
+    "tests/one_target_pilot_pre_enable_apply_isolation.rs",
+    "tests/one_target_pilot_focused_visual_blockers.rs",
+    "tests/one_target_pilot_focused_visual_gate_false.rs",
+    "tests/one_target_pilot_proposal_consistency.rs",
+    "tests/one_target_pilot_gate_flip_readiness.rs",
+    "tests/one_target_pilot_visual_review_decision.rs",
+    "tests/one_target_pilot_focused_visual_pass_criteria.rs",
+    "tests/one_target_pilot_proposal_gate_list.rs",
+    "tests/one_target_pilot_proposal_apply_isolation.rs",
+    "tests/one_target_pilot_gate_inventory.rs",
+    "tests/one_target_pilot_visual_review_gate_false.rs",
+    "tests/one_target_pilot_pre_enable_ui.rs",
+    "tests/one_target_pilot_manual_review_apply_isolation.rs",
+    "tests/one_target_pilot_gate_false_verification.rs",
+    "tests/one_target_pilot_manual_smoke_checklist.rs",
+    "tests/one_target_pilot_visual_review_apply_isolation.rs",
+    "tests/one_target_pilot_focused_visual_apply_isolation.rs",
+    "tests/one_target_pilot_go_no_go.rs",
+    "tests/one_target_pilot_pre_enable_audit.rs",
+    "tests/one_target_pilot_readiness_mapping.rs",
+    "tests/one_target_pilot_remaining_blockers.rs",
+    "tests/one_target_pilot_visual_review_blockers.rs",
+    "data/reports/one-target-pilot-pre-enable-gate-approval.v0.55.2.json",
+    "docs/ONE-TARGET-PILOT-PRE-ENABLE-GATE-APPROVAL-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/ONE-TARGET-PILOT-PRE-ENABLE-GATE-APPROVAL-REVIEW-LOG.md"
+  ],
+  "approvedGate": {
+    "name": "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED",
+    "previousValue": false,
+    "newValue": true,
+    "meaning": "The reviewed proposal, manual smoke review, focused visual smoke review, and proposal review are sufficient to mark the pre-enable audit stage complete.",
+    "doesNotAllow": [
+      "writes",
+      "Apply write integration",
+      "real target selection",
+      "production backup",
+      "production reread verification",
+      "production recovery",
+      "advanced confirmation activation",
+      "high-risk approval activation"
+    ]
+  },
+  "singleGateChange": {
+    "onlyAllowedGateChanged": true,
+    "allOtherGatesUnchanged": true,
+    "writesEnabled": false,
+    "realTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "gateInventoryAfter": {
+    "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED": true,
+    "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED": false,
+    "PRODUCTION_WRITE_TARGET_SELECTION_READY": false,
+    "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED": false,
+    "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE": false,
+    "PRODUCTION_BACKUP_CONTRACT_ENABLED": false,
+    "PRODUCTION_VERIFICATION_CONTRACT_ENABLED": false,
+    "PRODUCTION_RECOVERY_CONTRACT_ENABLED": false,
+    "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED": false,
+    "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED": false
+  },
+  "writeActivationGates": {
+    "allWriteActivationGatesRemainFalse": true,
+    "productionWritePathRemainsDisabled": true,
+    "nextGateCandidate": "PRODUCTION_BACKUP_CONTRACT_ENABLED"
+  },
+  "readinessChanges": {
+    "preEnableAuditStage": "passed",
+    "proposalReview": "passed_for_user_approval_request",
+    "focusedVisualSmoke": "passed",
+    "reviewedDraftExists": true,
+    "readyForNextStagedGateReview": true,
+    "readyForProductionActivation": false,
+    "writesEnabled": false
+  },
+  "proposalReviewReference": {
+    "reviewLog": "docs/ONE-TARGET-PILOT-GATE-FLIP-PROPOSAL-REVIEW-LOG.md",
+    "report": "data/reports/one-target-pilot-gate-flip-proposal-review.v0.55.2.json"
+  },
+  "reviewedDraftReference": {
+    "markdown": "docs/ONE-TARGET-PILOT-GATE-FLIP-PROPOSAL-REVIEWED-DRAFT.md",
+    "json": "data/reports/one-target-pilot-gate-flip-proposal-reviewed-draft.v0.55.2.json"
+  },
+  "applyWriteIsolation": {
+    "applySettingChangeChanged": false,
+    "applyScalarWritePlanChanged": false,
+    "writeFlowImportsPreEnableGateApproval": false,
+    "writeFlowImportsProposalReview": false,
+    "writeFlowImportsFocusedVisualSmoke": false,
+    "writeFlowCallsGateFlipHelpers": false,
+    "writeFlowCallsActivationHelpers": false,
+    "highRiskPolicyPreserved": true
+  },
+  "writeFlowPreservation": {
+    "writeFlowChanged": false,
+    "selectedSessionConfigAffectsWrites": false,
+    "selectedSessionConfigPersisted": false,
+    "appWriteModelChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/one_target_pilot_pre_enable_gate_approval.rs",
+    "tests/one_target_pilot_single_gate_state.rs",
+    "tests/one_target_pilot_pre_enable_gate_apply_isolation.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "realBackupCreated": false,
+    "realRestoreAttempted": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "runtimeMutationOccurred": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with expected sprint changes and pre-existing unrelated untracked audit artifacts"
+  },
+  "proofUsed": [
+    "Reviewed gate-flip proposal draft",
+    "Proposal review result",
+    "Focused visual smoke review result",
+    "Manual smoke review result",
+    "Pre-enable audit model",
+    "Source-level Apply/write isolation tests"
+  ],
+  "proofStillMissing": [
+    "production backup implementation proof",
+    "production reread verification implementation proof",
+    "production recovery implementation proof",
+    "Apply integration approval for the one-target path",
+    "future staged approval for every write-enabling gate"
+  ],
+  "nextRecommendedSprint": "Review and, only with explicit approval, stage the production backup contract gate while keeping writes and all remaining write activation gates disabled."
+}

@@ -1,6 +1,6 @@
 use hyprland_settings::guarded_write_review::PRODUCTION_WRITE_TARGET_REVIEW_ENABLED;
 use hyprland_settings::one_target_pilot_focused_visual_smoke::one_target_pilot_focused_visual_gate_inventory_verification;
-use hyprland_settings::one_target_pilot_manual_review::all_production_gates_remain_false;
+use hyprland_settings::one_target_pilot_manual_review::only_pre_enable_audit_gate_is_true;
 use hyprland_settings::one_target_pilot_pre_enable_audit::PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED;
 use hyprland_settings::one_target_write_pilot::PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED;
 use hyprland_settings::production_advanced_confirmation::PRODUCTION_ADVANCED_CONFIRMATION_ENABLED;
@@ -13,10 +13,10 @@ use hyprland_settings::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELEC
 use hyprland_settings::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE;
 
 #[test]
-fn focused_visual_review_gate_inventory_keeps_all_production_gates_false() {
+fn focused_visual_review_gate_inventory_keeps_only_pre_enable_gate_true() {
     let gates = one_target_pilot_focused_visual_gate_inventory_verification();
 
-    assert!(!PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
+    assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
     assert!(!PRODUCTION_WRITE_TARGET_SELECTION_READY);
     assert!(!PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
@@ -26,9 +26,17 @@ fn focused_visual_review_gate_inventory_keeps_all_production_gates_false() {
     assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert!(!PRODUCTION_ADVANCED_CONFIRMATION_ENABLED);
     assert!(!PRODUCTION_HIGH_RISK_APPROVAL_ENABLED);
-    assert!(all_production_gates_remain_false());
-    assert!(gates.iter().all(|gate| !gate.current_value
-        && !gate.required_proof_before_flip.is_empty()
-        && !gate.current_blocking_reason.is_empty()));
+    assert!(only_pre_enable_audit_gate_is_true());
+    assert!(gates
+        .iter()
+        .all(|gate| !gate.required_proof_before_flip.is_empty()
+            && !gate.current_blocking_reason.is_empty()));
+    assert!(gates.iter().any(|gate| gate.gate_name
+        == "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
+        && gate.current_value));
+    assert!(gates
+        .iter()
+        .filter(|gate| gate.gate_name != "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED")
+        .all(|gate| !gate.current_value));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

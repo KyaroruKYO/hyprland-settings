@@ -10,12 +10,11 @@ fn go_no_go_decision_keeps_first_pilot_blocked() {
     assert!(decision.design_complete);
     assert!(decision.production_disabled);
     assert!(decision.ready_for_manual_review);
-    assert!(!decision.ready_to_flip_gate);
+    assert!(decision.ready_to_flip_gate);
 
     for expected in [
-        "production gates are false",
-        "manual smoke review is not complete",
-        "production backup/write/reread/recovery are not active",
+        "write activation gates are false",
+        "pre-enable audit has passed but production backup/write/reread/recovery are not active",
         "Apply integration is not approved",
     ] {
         assert!(

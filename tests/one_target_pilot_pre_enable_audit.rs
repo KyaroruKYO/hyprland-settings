@@ -4,7 +4,7 @@ use hyprland_settings::one_target_pilot_pre_enable_audit::{
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 
 #[test]
-fn final_pre_enable_audit_tracks_all_required_categories_and_stays_not_ready() {
+fn final_pre_enable_audit_tracks_all_required_categories_and_marks_pre_enable_passed() {
     let audit = one_target_pilot_pre_enable_audit();
     let categories = audit.category_names();
 
@@ -33,23 +33,25 @@ fn final_pre_enable_audit_tracks_all_required_categories_and_stays_not_ready() {
         );
     }
 
-    assert!(!audit.readiness);
+    assert!(audit.readiness);
     assert!(audit.production_disabled);
     assert!(audit
         .categories
         .iter()
         .any(
             |category| category.category_name == "manual smoke checklist"
-                && category.status == PreEnableAuditStatus::NotStarted
-                && category.blocking_reason == "manual smoke review is not complete"
+                && category.status == PreEnableAuditStatus::ReadyLater
+                && category.blocking_reason
+                    == "pre-enable audit passed; write activation gates remain false"
         ));
     assert!(audit
         .categories
         .iter()
         .any(
             |category| category.category_name == "production gate inventory"
-                && category.status == PreEnableAuditStatus::ProductionDisabled
-                && category.blocking_reason == "all gates remain false"
+                && category.status == PreEnableAuditStatus::ReadyLater
+                && category.blocking_reason
+                    == "pre-enable audit passed; all write-enabling gates remain false"
         ));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

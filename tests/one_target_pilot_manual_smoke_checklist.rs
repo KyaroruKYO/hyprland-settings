@@ -36,9 +36,10 @@ fn manual_smoke_checklist_covers_safe_one_target_review_items() {
         );
     }
 
-    assert!(!checklist.manual_review_completed);
+    assert!(checklist.manual_review_completed);
+    assert!(checklist.pre_enable_audit_passed);
     assert!(!checklist.production_enabled);
-    assert!(!PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
+    assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
     assert!(checklist
         .items
         .iter()

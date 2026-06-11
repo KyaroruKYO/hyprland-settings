@@ -76,7 +76,7 @@ pub struct ProposalConsistencyReview {
     pub high_risk_boundary_proof_referenced: bool,
     pub target_management_risk_policy_referenced: bool,
     pub apply_isolation_proof_referenced: bool,
-    pub all_gates_false_referenced: bool,
+    pub staged_gate_state_referenced: bool,
     pub enables_writes_in_this_sprint: bool,
     pub treats_draft_as_gate_flip_approval: bool,
     pub changes_apply_behavior: bool,
@@ -94,7 +94,7 @@ pub fn one_target_pilot_proposal_consistency_review() -> ProposalConsistencyRevi
         high_risk_boundary_proof_referenced: true,
         target_management_risk_policy_referenced: true,
         apply_isolation_proof_referenced: true,
-        all_gates_false_referenced: true,
+        staged_gate_state_referenced: true,
         enables_writes_in_this_sprint: false,
         treats_draft_as_gate_flip_approval: false,
         changes_apply_behavior: false,
@@ -108,7 +108,7 @@ pub struct FutureGateListReview {
     pub staged_flip_recommendation: Vec<&'static str>,
     pub gates_needing_more_proof_before_flip: Vec<&'static str>,
     pub gates_that_should_not_flip_together_without_more_proof: Vec<&'static str>,
-    pub all_current_gate_values_false: bool,
+    pub pre_enable_gate_true_and_write_gates_false: bool,
 }
 
 pub fn one_target_pilot_future_gate_list_review() -> FutureGateListReview {
@@ -124,7 +124,6 @@ pub fn one_target_pilot_future_gate_list_review() -> FutureGateListReview {
     ];
     FutureGateListReview {
         gates_that_must_remain_false_now: vec![
-            "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED",
             "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
             "PRODUCTION_WRITE_TARGET_SELECTION_READY",
             "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
@@ -136,7 +135,7 @@ pub fn one_target_pilot_future_gate_list_review() -> FutureGateListReview {
             "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED",
         ],
         staged_flip_recommendation: vec![
-            "1. Review and approve PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED.",
+            "1. Pre-enable audit gate is already approved.",
             "2. Activate backup contract only after production backup implementation proof.",
             "3. Activate verification contract only after production reread implementation proof.",
             "4. Activate recovery contract only after production restore and restore-verification proof.",
@@ -145,10 +144,18 @@ pub fn one_target_pilot_future_gate_list_review() -> FutureGateListReview {
             "7. Enable the one-target pilot gate only after all prior stages pass.",
             "8. Allow walkthrough writes only after Apply integration is approved.",
         ],
-        gates_needing_more_proof_before_flip: proposed_future_gates.clone(),
-        gates_that_should_not_flip_together_without_more_proof: proposed_future_gates.clone(),
+        gates_needing_more_proof_before_flip: proposed_future_gates
+            .iter()
+            .copied()
+            .filter(|gate| *gate != "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED")
+            .collect(),
+        gates_that_should_not_flip_together_without_more_proof: proposed_future_gates
+            .iter()
+            .copied()
+            .filter(|gate| *gate != "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED")
+            .collect(),
         proposed_future_gates,
-        all_current_gate_values_false: true,
+        pre_enable_gate_true_and_write_gates_false: true,
     }
 }
 

@@ -22,6 +22,6 @@ fn visual_review_decision_blocks_proposal_when_review_is_inconclusive() {
         .reasons
         .iter()
         .any(|reason| reason.contains("inconclusive")));
-    assert!(!PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
+    assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
