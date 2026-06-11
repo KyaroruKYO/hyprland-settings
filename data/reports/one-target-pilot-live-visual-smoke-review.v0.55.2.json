@@ -1,0 +1,344 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "one-target-pilot-live-visual-smoke-review",
+  "generatedAt": "2026-06-11T02:24:03-07:00",
+  "startingCommit": "fc4dd4afe0e336385085194b6dd4dc250b7c37df",
+  "goal": "Run a controlled live read-only visual smoke review, decide whether a separate gate-flip proposal is justified, and keep all production gates false.",
+  "filesChanged": [
+    "src/lib.rs",
+    "src/one_target_pilot_live_visual_smoke.rs",
+    "src/ui/window.rs",
+    "tests/one_target_pilot_live_visual_smoke_result.rs",
+    "tests/one_target_pilot_visual_review_decision.rs",
+    "tests/one_target_pilot_gate_flip_proposal_draft.rs",
+    "tests/one_target_pilot_visual_review_blockers.rs",
+    "tests/one_target_pilot_visual_review_gate_false.rs",
+    "tests/one_target_pilot_visual_review_ui.rs",
+    "tests/one_target_pilot_visual_review_apply_isolation.rs",
+    "data/reports/one-target-pilot-live-visual-smoke-review.v0.55.2.json",
+    "docs/ONE-TARGET-PILOT-LIVE-VISUAL-SMOKE-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/ONE-TARGET-PILOT-LIVE-VISUAL-SMOKE-REVIEW-LOG.md"
+  ],
+  "liveVisualSmokeReviewPlan": {
+    "model": "LiveVisualSmokeReviewPlan",
+    "launchCommand": "timeout-bounded cargo run --quiet with no CLI write subcommand",
+    "screensToInspect": [
+      "Dashboard",
+      "Config page",
+      "Connected files section",
+      "Profiles section",
+      "Future changes section",
+      "normal settings category",
+      "setting detail pane",
+      "production review section if reachable"
+    ],
+    "settingsPathToInspect": "normal category, known safe scalar row, detail pane production review section",
+    "searchTerms": [
+      "general.layout",
+      "gaps",
+      "border"
+    ],
+    "expectedVisibleCopy": [
+      "Write review walkthrough",
+      "Production write enablement",
+      "First production write pilot",
+      "Production backup and verification",
+      "Recovery",
+      "Advanced confirmation",
+      "High-risk approval",
+      "Final pre-enable audit",
+      "Manual smoke review",
+      "Real writing is not active yet.",
+      "Apply behavior has not changed."
+    ],
+    "expectedDisabledControls": [
+      "Choose review mode",
+      "Profile switching planned",
+      "Review save location",
+      "Production enablement is disabled",
+      "target decisions preview-only"
+    ],
+    "forbiddenActions": [
+      "Do not click Apply.",
+      "Do not select or confirm a real write target.",
+      "Do not run mode-switch scripts.",
+      "Do not reload Hyprland.",
+      "Do not run mutating hyprctl.",
+      "Do not create backups or restores for user config files."
+    ],
+    "exitCleanupSteps": [
+      "Close or interrupt the app after inspection.",
+      "Delete any temporary screenshot that captures unrelated desktop content."
+    ]
+  },
+  "liveVisualSmokeReviewResult": {
+    "model": "LiveVisualSmokeReviewResult",
+    "visualReviewPerformed": true,
+    "appLaunched": true,
+    "status": "inconclusive",
+    "visualReviewPassed": false,
+    "visualReviewFailed": false,
+    "visualReviewInconclusive": true,
+    "screenshotRetained": false,
+    "evidence": "A bounded live launch showed the Dashboard window. A temporary screenshot was captured and then deleted because it included unrelated desktop content outside the app window. No screenshot was retained or committed.",
+    "warningsObserved": [
+      "Adwaita warning about unsupported GtkSettings dark-theme flag",
+      "Vulkan driver conformance warning from the environment"
+    ]
+  },
+  "screensInspected": [
+    {
+      "screen": "Dashboard",
+      "result": "passed",
+      "evidence": "Dashboard title and category cards were visible during the live launch."
+    },
+    {
+      "screen": "Config page",
+      "result": "not seen",
+      "blockingReason": "No safe interactive navigation evidence was captured for the Config page."
+    },
+    {
+      "screen": "Connected files section",
+      "result": "not seen",
+      "blockingReason": "Connected files section remains source-proven only in this sprint."
+    },
+    {
+      "screen": "Profiles section",
+      "result": "not seen",
+      "blockingReason": "Profile section was not visually confirmed and no profile action was triggered."
+    },
+    {
+      "screen": "Future changes section",
+      "result": "not seen",
+      "blockingReason": "Future changes section remains source-proven only in this sprint."
+    },
+    {
+      "screen": "normal settings category",
+      "result": "not seen",
+      "blockingReason": "Dashboard category cards were visible, but no category was opened."
+    },
+    {
+      "screen": "setting detail pane",
+      "result": "not seen",
+      "blockingReason": "No setting row was selected during the live review."
+    }
+  ],
+  "expectedCopyResults": {
+    "dashboardCopyVisible": true,
+    "productionReviewCopyVisible": false,
+    "manualSmokeReviewCopyVisible": false,
+    "realWritingInactiveCopyVisible": false,
+    "applyUnchangedCopyVisible": false,
+    "blockingReason": "The detail-pane production review section was not reached live."
+  },
+  "disabledControlResults": {
+    "reviewSaveLocationConfirmedDisabled": false,
+    "productionEnablementConfirmedDisabled": false,
+    "targetDecisionPreviewOnlyConfirmedDisabled": false,
+    "sourceProofStillPresent": true,
+    "blockingReason": "The disabled production review controls were not visually reached live."
+  },
+  "unsafeActionsAvoided": {
+    "applyClicked": false,
+    "realWriteTargetSelected": false,
+    "modeSwitchScriptsRun": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "userConfigBackupCreated": false,
+    "userConfigRestoreAttempted": false,
+    "temporaryScreenshotDeleted": true
+  },
+  "gateFlipProposalReadiness": {
+    "model": "VisualGateFlipProposalReadiness",
+    "decision": "not ready for separate gate-flip proposal",
+    "readyForSeparateGateFlipProposal": false,
+    "productionActivationReady": false,
+    "reasons": [
+      "live visual smoke review was inconclusive",
+      "detail-pane production review copy was not visually confirmed",
+      "disabled production controls were not visually confirmed",
+      "all production gates remain false"
+    ]
+  },
+  "gateFlipProposalDraft": {
+    "created": false,
+    "reason": "A proposal draft is created only if the live visual smoke review passes. This review was inconclusive.",
+    "draftOnly": true,
+    "noGateFlipped": true,
+    "requiresUserApproval": true,
+    "requiresSeparateSprint": true
+  },
+  "remainingBlockers": [
+    {
+      "blockerId": "live-visual-smoke-inconclusive",
+      "blocksGateFlipProposal": true,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Repeat read-only visual review with Config page, detail pane, expected copy, and disabled-control evidence."
+    },
+    {
+      "blockerId": "manual-smoke-source-only",
+      "blocksGateFlipProposal": true,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Controlled read-only visual inspection without clicking Apply."
+    },
+    {
+      "blockerId": "production-backup-inactive",
+      "blocksGateFlipProposal": false,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Production backup implementation and exact-byte verification proof."
+    },
+    {
+      "blockerId": "production-write-inactive",
+      "blocksGateFlipProposal": true,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Separate gate-flip proposal and production write integration review."
+    },
+    {
+      "blockerId": "production-reread-verification-inactive",
+      "blocksGateFlipProposal": false,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Production reread verification implementation proof."
+    },
+    {
+      "blockerId": "production-recovery-inactive",
+      "blocksGateFlipProposal": false,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Production exact-byte restore and restored-file verification proof."
+    },
+    {
+      "blockerId": "apply-integration-not-approved",
+      "blocksGateFlipProposal": true,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Explicit Apply integration boundary approval in a separate sprint."
+    },
+    {
+      "blockerId": "all-production-gates-false",
+      "blocksGateFlipProposal": true,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Separate proposal documenting the exact gate set and proof for any flip."
+    }
+  ],
+  "gateInventoryVerification": {
+    "allGatesFalse": true,
+    "gates": [
+      "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED",
+      "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
+      "PRODUCTION_WRITE_TARGET_SELECTION_READY",
+      "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
+      "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
+      "PRODUCTION_BACKUP_CONTRACT_ENABLED",
+      "PRODUCTION_VERIFICATION_CONTRACT_ENABLED",
+      "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
+      "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
+      "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED"
+    ]
+  },
+  "disabledFutureUi": {
+    "added": true,
+    "copy": [
+      "Live visual smoke review",
+      "The visual review is recorded, but this sprint does not enable writes.",
+      "A separate future proposal is still required before any gate can flip.",
+      "All production write gates are still disabled.",
+      "Real writing is not active yet.",
+      "Apply behavior has not changed."
+    ],
+    "activeControlsAdded": false
+  },
+  "applyWriteIsolation": {
+    "writeFlowImportsLiveVisualSmokeReview": false,
+    "writeFlowImportsGateFlipProposalDraft": false,
+    "writeFlowImportsVisualReviewResult": false,
+    "writeFlowCallsVisualReviewFunctions": false,
+    "writeFlowCallsGateProposalFunctions": false,
+    "writeFlowCallsGateFlipFunctions": false,
+    "writeFlowCallsFixtureProofHelpers": false,
+    "writeFlowBypassesHighRiskPolicy": false,
+    "writeFlowContainsHighRiskPolicy": true,
+    "applySettingChangePresent": true,
+    "applyScalarWritePlanPresent": true
+  },
+  "uiChanges": {
+    "liveVisualSmokeReviewCopyAdded": true,
+    "controlsEnabled": false,
+    "handlersAdded": false,
+    "realSelectionEnabled": false
+  },
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedSessionConfigPersisted": false,
+    "productionCurrentConfigSnapshotChanged": false,
+    "productionConfigDiscoveryChanged": false,
+    "productionUiProjectionChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/one_target_pilot_live_visual_smoke_result.rs",
+    "tests/one_target_pilot_visual_review_decision.rs",
+    "tests/one_target_pilot_gate_flip_proposal_draft.rs",
+    "tests/one_target_pilot_visual_review_blockers.rs",
+    "tests/one_target_pilot_visual_review_gate_false.rs",
+    "tests/one_target_pilot_visual_review_ui.rs",
+    "tests/one_target_pilot_visual_review_apply_isolation.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "realBackupCreated": false,
+    "realRestoreAttempted": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false,
+    "applyClicked": false,
+    "gateFlipped": false,
+    "releaseCreated": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with pre-existing untracked local audit/design artifacts left uncommitted"
+  },
+  "proofUsed": [
+    "bounded live app launch",
+    "manual observation that Dashboard rendered",
+    "temporary screenshot captured then deleted because it included unrelated desktop content",
+    "source-level disabled UI copy assertions",
+    "source-level Apply isolation assertions",
+    "production gate false assertions",
+    "SAFE_WRITABLE_ROWS.len() assertions"
+  ],
+  "proofStillMissing": [
+    "live visual confirmation of Config page",
+    "live visual confirmation of connected files section",
+    "live visual confirmation of setting detail pane production review copy",
+    "live visual confirmation of disabled production review controls",
+    "separate gate-flip proposal",
+    "production backup implementation",
+    "production write implementation",
+    "production reread verification implementation",
+    "production recovery implementation",
+    "production Apply integration approval"
+  ],
+  "nextRecommendedSprint": "Repeat a controlled read-only visual smoke review with focused app-window-only evidence for Config, detail pane, expected production copy, and disabled controls; draft a separate proposal only if that review passes."
+}
