@@ -1,0 +1,249 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "one-target-pilot-manual-smoke-review",
+  "generatedAt": "2026-06-11T01:57:48-07:00",
+  "startingCommit": "92d6dda1c0a492488278b7918a87f3a7d82af757",
+  "goal": "Run the represented one-target pilot manual smoke review from safe source/UI/report evidence, decide gate-flip proposal readiness, and keep all production write gates false.",
+  "filesChanged": [
+    "src/lib.rs",
+    "src/one_target_pilot_manual_review.rs",
+    "src/ui/window.rs",
+    "tests/one_target_pilot_manual_smoke_review_result.rs",
+    "tests/one_target_pilot_smoke_review_evidence.rs",
+    "tests/one_target_pilot_gate_flip_readiness.rs",
+    "tests/one_target_pilot_remaining_blockers.rs",
+    "tests/one_target_pilot_gate_false_verification.rs",
+    "tests/one_target_pilot_manual_review_ui.rs",
+    "tests/one_target_pilot_manual_review_apply_isolation.rs",
+    "data/reports/one-target-pilot-manual-smoke-review.v0.55.2.json",
+    "docs/ONE-TARGET-PILOT-MANUAL-SMOKE-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/ONE-TARGET-PILOT-MANUAL-SMOKE-REVIEW-LOG.md"
+  ],
+  "manualSmokeReviewResult": {
+    "model": "OneTargetPilotManualSmokeReviewResult",
+    "reviewMethod": "source/report review only; no live GTK visual smoke was launched in this sprint",
+    "liveGtkVisualSmokePerformed": false,
+    "gateFlipProposalReady": false,
+    "productionActivationReady": false,
+    "passedOrSourceProvenItems": [
+      "normal settings category remains wired",
+      "known safe scalar row requirement",
+      "one current scalar value requirement",
+      "normal target file requirement",
+      "generated/script/symlink exclusions",
+      "high-risk exclusion",
+      "known line number requirement",
+      "backup contract copy",
+      "verification contract copy",
+      "recovery contract copy",
+      "advanced confirmation inactive",
+      "high-risk approval inactive",
+      "real writing inactive",
+      "Apply unchanged"
+    ],
+    "fixtureProvenItems": [
+      "temporary-only backup/write/reread/recovery proof remains represented"
+    ],
+    "notReviewedItems": [
+      "live GTK app launch",
+      "rendered detail-pane visual inspection"
+    ],
+    "blockingResult": "Not ready for a separate gate-flip proposal because live visual smoke remains unperformed and all production implementation gates remain false."
+  },
+  "safeSmokeReviewEvidence": {
+    "normalScalarRow": "one-target pilot model constrains the path to one existing scalar line",
+    "normalFile": "target-risk classification marks only a normal non-generated, non-script, non-symlink file as safe for the first pilot",
+    "riskExclusions": "first-pilot exclusion policy blocks generated, script-managed, script-referenced, symlink-managed, and symlink targets",
+    "highRiskExclusion": "high-risk approval boundary excludes high-risk rows and keeps approval inactive",
+    "knownLine": "candidate eligibility requires a present line number",
+    "backup": "production backup contract and disabled UI copy require exact-file backup",
+    "verification": "production verification contract and disabled UI copy require reread verification",
+    "recovery": "production recovery contract and disabled UI copy require exact-byte restore and reread",
+    "advancedConfirmation": "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED remains false",
+    "highRiskApproval": "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED remains false",
+    "realWriting": "all production write gates remain false",
+    "applyBehavior": "write_flow.rs still contains apply_setting_change and apply_scalar_write_plan and does not import manual review models"
+  },
+  "gateFlipProposalReadiness": {
+    "model": "GateFlipProposalReadiness",
+    "decision": "not ready for gate-flip proposal",
+    "manualReviewCompletion": "partial",
+    "readyForSeparateGateFlipProposal": false,
+    "readyForProductionImplementationSprint": false,
+    "productionActivationReady": false,
+    "reasons": [
+      "live GTK visual smoke was not performed",
+      "manual smoke review remains source-only and partial",
+      "production backup/write/reread/recovery are inactive",
+      "Apply integration is not approved",
+      "all production gates remain false"
+    ],
+    "recommendedNextSprint": "Run a controlled live read-only visual smoke review and draft a separate gate-flip proposal only if that review passes."
+  },
+  "remainingBlockers": [
+    {
+      "blockerId": "manual-smoke-source-only",
+      "blocksGateFlipProposal": true,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Controlled read-only visual inspection without clicking Apply."
+    },
+    {
+      "blockerId": "production-backup-inactive",
+      "blocksGateFlipProposal": false,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Production backup implementation and exact-byte verification proof."
+    },
+    {
+      "blockerId": "production-write-inactive",
+      "blocksGateFlipProposal": true,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Separate gate-flip proposal and production write integration review."
+    },
+    {
+      "blockerId": "production-reread-verification-inactive",
+      "blocksGateFlipProposal": false,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Production reread verification implementation proof."
+    },
+    {
+      "blockerId": "production-recovery-inactive",
+      "blocksGateFlipProposal": false,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Production exact-byte restore and restored-file verification proof."
+    },
+    {
+      "blockerId": "apply-integration-not-approved",
+      "blocksGateFlipProposal": true,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Explicit Apply integration boundary approval in a separate sprint."
+    },
+    {
+      "blockerId": "all-production-gates-false",
+      "blocksGateFlipProposal": true,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "Separate proposal documenting the exact gate set and proof for any flip."
+    },
+    {
+      "blockerId": "release-gate-flip-proposal-not-created",
+      "blocksGateFlipProposal": true,
+      "blocksProductionActivation": true,
+      "requiredNextProof": "A dedicated proposal sprint that still does not combine gate flip with unrelated work."
+    }
+  ],
+  "gateInventoryVerification": {
+    "allGatesFalse": true,
+    "gates": [
+      "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED",
+      "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
+      "PRODUCTION_WRITE_TARGET_SELECTION_READY",
+      "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
+      "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
+      "PRODUCTION_BACKUP_CONTRACT_ENABLED",
+      "PRODUCTION_VERIFICATION_CONTRACT_ENABLED",
+      "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
+      "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
+      "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED"
+    ]
+  },
+  "disabledFutureUi": {
+    "added": true,
+    "copy": [
+      "Manual smoke review",
+      "Manual review is represented, but this sprint does not enable writes.",
+      "A separate future proposal is required before any gate can flip.",
+      "All production write gates are still disabled.",
+      "Real writing is not active yet.",
+      "Apply behavior has not changed."
+    ],
+    "activeControlsAdded": false
+  },
+  "applyWriteIsolation": {
+    "writeFlowImportsManualReviewResult": false,
+    "writeFlowImportsGateFlipReadiness": false,
+    "writeFlowImportsBlockerInventory": false,
+    "writeFlowCallsManualReviewFunctions": false,
+    "writeFlowCallsGateProposalFunctions": false,
+    "writeFlowCallsGateFlipFunctions": false,
+    "writeFlowCallsFixtureProofHelpers": false,
+    "writeFlowBypassesHighRiskPolicy": false,
+    "writeFlowContainsHighRiskPolicy": true,
+    "applySettingChangePresent": true,
+    "applyScalarWritePlanPresent": true
+  },
+  "uiChanges": {
+    "manualSmokeReviewCopyAdded": true,
+    "controlsEnabled": false,
+    "handlersAdded": false,
+    "realSelectionEnabled": false
+  },
+  "writeFlowPreservation": {
+    "writeTargetChanged": false,
+    "applyBehaviorChanged": false,
+    "selectedSessionConfigPersisted": false,
+    "productionCurrentConfigSnapshotChanged": false,
+    "productionConfigDiscoveryChanged": false,
+    "productionUiProjectionChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/one_target_pilot_manual_smoke_review_result.rs",
+    "tests/one_target_pilot_smoke_review_evidence.rs",
+    "tests/one_target_pilot_gate_flip_readiness.rs",
+    "tests/one_target_pilot_remaining_blockers.rs",
+    "tests/one_target_pilot_gate_false_verification.rs",
+    "tests/one_target_pilot_manual_review_ui.rs",
+    "tests/one_target_pilot_manual_review_apply_isolation.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "realBackupCreated": false,
+    "realRestoreAttempted": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with pre-existing untracked local audit/design artifacts left uncommitted"
+  },
+  "proofUsed": [
+    "source-level smoke review evidence",
+    "source-level disabled UI copy assertions",
+    "source-level Apply isolation assertions",
+    "fixture-proof summary from existing temporary-file proof models",
+    "production gate false assertions",
+    "SAFE_WRITABLE_ROWS.len() assertions"
+  ],
+  "proofStillMissing": [
+    "live GTK visual smoke review",
+    "separate gate-flip proposal",
+    "production backup implementation",
+    "production write implementation",
+    "production reread verification implementation",
+    "production recovery implementation",
+    "production Apply integration approval"
+  ],
+  "nextRecommendedSprint": "Run a controlled live read-only visual smoke review and draft a separate gate-flip proposal only if that review passes."
+}
