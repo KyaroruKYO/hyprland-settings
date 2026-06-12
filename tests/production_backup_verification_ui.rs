@@ -19,7 +19,7 @@ fn disabled_production_backup_and_verification_copy_exists_without_handlers() {
         "The app will reread the file to confirm the value.",
         "If verification fails, the app must not report the change as complete.",
         "Rollback/recovery must be implemented before real writes.",
-        "Production backups are not active yet.",
+        "Backup contract approval is staged; backup creation is still blocked until write execution gates are approved.",
         "Production verification is not active yet.",
         "Real writing is not active yet.",
         "Apply behavior has not changed.",

@@ -1,5 +1,5 @@
 use crate::one_target_pilot_manual_review::{
-    all_write_activation_gates_remain_false, one_target_pilot_remaining_blockers,
+    all_write_execution_gates_remain_false, one_target_pilot_remaining_blockers,
     OneTargetPilotRemainingBlocker,
 };
 use crate::one_target_pilot_pre_enable_audit::{
@@ -311,7 +311,7 @@ pub fn one_target_pilot_visual_gate_flip_proposal_readiness(
 ) -> VisualGateFlipProposalReadiness {
     let ready = result.status == LiveVisualSmokeReviewStatus::Passed
         && result.visual_review_passed
-        && all_write_activation_gates_remain_false();
+        && all_write_execution_gates_remain_false();
     VisualGateFlipProposalReadiness {
         decision: if ready {
             VisualGateFlipProposalDecision::ReadyForSeparateGateFlipProposal

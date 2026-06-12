@@ -19,6 +19,6 @@ fn backup_contract_maturity_requires_exact_verified_fixture_only_backup() {
     assert!(!review.backup_contract_implies_verification_activation);
     assert!(!review.backup_contract_implies_recovery_activation);
     assert!(!review.user_config_backup_created);
-    assert!(!PRODUCTION_BACKUP_CONTRACT_ENABLED);
+    assert!(PRODUCTION_BACKUP_CONTRACT_ENABLED);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

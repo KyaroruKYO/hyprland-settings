@@ -1,10 +1,10 @@
 use hyprland_settings::one_target_pilot_manual_review::{
-    one_target_pilot_gate_inventory_verification, only_pre_enable_audit_gate_is_true,
+    one_target_pilot_gate_inventory_verification, pre_enable_and_backup_gates_are_true,
 };
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 
 #[test]
-fn gate_inventory_verification_keeps_only_pre_enable_gate_true() {
+fn gate_inventory_verification_keeps_pre_enable_and_backup_gates_true() {
     let gates = one_target_pilot_gate_inventory_verification();
     let gate_names = gates.iter().map(|gate| gate.gate_name).collect::<Vec<_>>();
 
@@ -23,7 +23,7 @@ fn gate_inventory_verification_keeps_only_pre_enable_gate_true() {
         assert!(gate_names.contains(&expected), "missing gate: {expected}");
     }
 
-    assert!(only_pre_enable_audit_gate_is_true());
+    assert!(pre_enable_and_backup_gates_are_true());
     assert!(gates
         .iter()
         .all(|gate| !gate.required_proof_before_flip.is_empty()
@@ -33,7 +33,13 @@ fn gate_inventory_verification_keeps_only_pre_enable_gate_true() {
         && gate.current_value));
     assert!(gates
         .iter()
-        .filter(|gate| gate.gate_name != "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED")
+        .any(|gate| gate.gate_name == "PRODUCTION_BACKUP_CONTRACT_ENABLED" && gate.current_value));
+    assert!(gates
+        .iter()
+        .filter(|gate| !matches!(
+            gate.gate_name,
+            "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED" | "PRODUCTION_BACKUP_CONTRACT_ENABLED"
+        ))
         .all(|gate| !gate.current_value));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

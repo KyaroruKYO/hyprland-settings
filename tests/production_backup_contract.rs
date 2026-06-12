@@ -53,11 +53,11 @@ fn production_backup_contract_represents_exact_backup_requirements_disabled() {
         contract.fixture_only_proof_status,
         ProductionBackupFixtureProofStatus::NotRun
     );
-    assert!(!contract.production_enabled);
-    assert!(!PRODUCTION_BACKUP_CONTRACT_ENABLED);
+    assert!(contract.production_enabled);
+    assert!(PRODUCTION_BACKUP_CONTRACT_ENABLED);
     assert!(contract
         .user_facing_lines()
         .iter()
-        .any(|line| line == "Production backups are not active yet."));
+        .any(|line| line == "Backup contract approval is staged; backup creation is still blocked until write execution gates are approved."));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

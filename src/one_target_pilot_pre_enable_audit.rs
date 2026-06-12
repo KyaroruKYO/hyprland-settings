@@ -363,9 +363,9 @@ pub fn one_target_pilot_gate_inventory_snapshot() -> Vec<OneTargetPilotGateSnaps
             "PRODUCTION_BACKUP_CONTRACT_ENABLED",
             PRODUCTION_BACKUP_CONTRACT_ENABLED,
             "production_backup_contract",
-            "production exact-file backups",
+            "approval for the production exact-file backup contract prerequisite",
             "production implementation, collision handling, byte equality, and recovery boundary approval",
-            "production backups are not active",
+            "backup contract is approved; backup creation remains unreachable while write-execution gates are false",
         ),
         gate_snapshot(
             "PRODUCTION_VERIFICATION_CONTRACT_ENABLED",

@@ -5,13 +5,13 @@ use hyprland_settings::one_target_pilot_backup_gate_review::{
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 
 #[test]
-fn future_backup_gate_scope_allows_only_backup_gate_and_keeps_writes_disabled() {
+fn backup_gate_scope_records_approval_and_keeps_writes_disabled() {
     let scope = one_target_pilot_future_backup_gate_approval_scope();
 
     assert_eq!(scope.allowed_gate, "PRODUCTION_BACKUP_CONTRACT_ENABLED");
     assert_eq!(
         scope.only_allowed_gate_change,
-        "PRODUCTION_BACKUP_CONTRACT_ENABLED: false -> true"
+        "already approved in the backup gate sprint; no further backup gate change is pending"
     );
     for expected in [
         "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
@@ -38,7 +38,7 @@ fn future_backup_gate_scope_allows_only_backup_gate_and_keeps_writes_disabled() 
 }
 
 #[test]
-fn remaining_blockers_keep_production_activation_blocked_after_candidate_review() {
+fn remaining_blockers_keep_production_activation_blocked_after_backup_approval() {
     let blockers = one_target_pilot_backup_gate_remaining_blockers();
     let ids = blockers
         .iter()
@@ -47,7 +47,7 @@ fn remaining_blockers_keep_production_activation_blocked_after_candidate_review(
 
     for expected in [
         "explicit-user-approval-needed-for-backup-gate-sprint",
-        "production-backup-gate-not-approved",
+        "production-backup-gate-approved-but-non-executing",
         "production-backup-implementation-not-active",
         "production-verification-gate-not-approved",
         "production-recovery-gate-not-approved",

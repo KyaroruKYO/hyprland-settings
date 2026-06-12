@@ -11,7 +11,7 @@ use hyprland_settings::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHR
 
 #[test]
 fn production_backup_verification_and_pilot_gates_remain_false() {
-    assert!(!PRODUCTION_BACKUP_CONTRACT_ENABLED);
+    assert!(PRODUCTION_BACKUP_CONTRACT_ENABLED);
     assert!(!PRODUCTION_VERIFICATION_CONTRACT_ENABLED);
     assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);

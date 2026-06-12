@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 
 use crate::write_target_candidate::WriteTargetCandidate;
 
-pub const PRODUCTION_BACKUP_CONTRACT_ENABLED: bool = false;
+pub const PRODUCTION_BACKUP_CONTRACT_ENABLED: bool = true;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ProductionBackupContract {
@@ -25,7 +25,7 @@ impl ProductionBackupContract {
         vec![
             "The app will back up this exact file before saving changes.".to_string(),
             "The backup must match the original file before any write can continue.".to_string(),
-            "Production backups are not active yet.".to_string(),
+            "Backup contract approval is staged; backup creation is still blocked until write execution gates are approved.".to_string(),
         ]
     }
 }

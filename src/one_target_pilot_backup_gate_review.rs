@@ -64,11 +64,11 @@ pub fn one_target_pilot_backup_gate_candidate_review() -> BackupGateCandidateRev
         fixture_exact_copy_proof_exists: true,
         fixture_misuse_protection_exists: true,
         user_config_backup_created: false,
-        production_backup_active: PRODUCTION_BACKUP_CONTRACT_ENABLED,
+        production_backup_active: false,
         apply_connected: false,
         decision: BackupGateCandidateDecision::PassedForUserApprovalRequest,
-        ready_to_ask_user_for_explicit_approval: true,
-        gate_flipped: false,
+        ready_to_ask_user_for_explicit_approval: false,
+        gate_flipped: PRODUCTION_BACKUP_CONTRACT_ENABLED,
         writes_enabled: false,
     }
 }
@@ -161,7 +161,8 @@ pub struct FutureBackupGateApprovalScope {
 pub fn one_target_pilot_future_backup_gate_approval_scope() -> FutureBackupGateApprovalScope {
     FutureBackupGateApprovalScope {
         allowed_gate: "PRODUCTION_BACKUP_CONTRACT_ENABLED",
-        only_allowed_gate_change: "PRODUCTION_BACKUP_CONTRACT_ENABLED: false -> true",
+        only_allowed_gate_change:
+            "already approved in the backup gate sprint; no further backup gate change is pending",
         gates_that_must_remain_false: vec![
             "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
             "PRODUCTION_WRITE_TARGET_SELECTION_READY",
@@ -176,7 +177,7 @@ pub fn one_target_pilot_future_backup_gate_approval_scope() -> FutureBackupGateA
         apply_remains_disconnected: true,
         target_selection_remains_inactive: true,
         meaning_if_later_approved:
-            "The production backup contract may become active for the approved one-target path.",
+            "The production backup contract is approved as a prerequisite for the approved one-target path.",
         not_meaning_if_later_approved: vec![
             "writes are enabled",
             "Apply can write",
@@ -201,17 +202,17 @@ pub fn one_target_pilot_backup_gate_remaining_blockers() -> Vec<BackupGateRemain
     vec![
         blocker(
             "explicit-user-approval-needed-for-backup-gate-sprint",
-            "A separate user approval prompt is required before any backup gate approval sprint.",
-            true,
-            true,
-            "User explicitly approves a later single-gate backup approval sprint.",
-        ),
-        blocker(
-            "production-backup-gate-not-approved",
-            "The backup contract gate remains false in this review sprint.",
+            "The backup gate approval prompt has been completed.",
             false,
             true,
-            "Separate sprint may only change PRODUCTION_BACKUP_CONTRACT_ENABLED if approved.",
+            "No further user approval is needed for the backup gate itself; later gates still require separate approval.",
+        ),
+        blocker(
+            "production-backup-gate-approved-but-non-executing",
+            "The backup contract gate is approved, but no production backup creation is reachable while write-execution gates are false.",
+            false,
+            true,
+            "Verification, recovery, target review, target selection, and pilot gates remain separately staged.",
         ),
         blocker(
             "production-backup-implementation-not-active",
@@ -288,7 +289,7 @@ pub fn one_target_pilot_backup_gate_inventory_verification() -> Vec<OneTargetPil
 
 pub fn backup_gate_candidate_current_staged_state_is_preserved() -> bool {
     PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED
-        && !PRODUCTION_BACKUP_CONTRACT_ENABLED
+        && PRODUCTION_BACKUP_CONTRACT_ENABLED
         && !PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED
         && !PRODUCTION_WRITE_TARGET_SELECTION_READY
         && !PRODUCTION_WRITE_TARGET_REVIEW_ENABLED

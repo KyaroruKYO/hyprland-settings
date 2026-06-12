@@ -13,18 +13,21 @@ fn backup_gate_review_preserves_current_staged_gate_inventory() {
     assert!(backup_gate_candidate_current_staged_state_is_preserved());
     assert_eq!(
         gates.iter().filter(|gate| gate.current_value).count(),
-        1,
-        "only the pre-enable audit gate should be true"
+        2,
+        "only the pre-enable audit and backup gates should be true"
     );
     assert!(gates.iter().any(|gate| gate.gate_name
         == "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
         && gate.current_value));
     assert!(gates
         .iter()
-        .any(|gate| gate.gate_name == "PRODUCTION_BACKUP_CONTRACT_ENABLED" && !gate.current_value));
+        .any(|gate| gate.gate_name == "PRODUCTION_BACKUP_CONTRACT_ENABLED" && gate.current_value));
     assert!(gates
         .iter()
-        .filter(|gate| gate.gate_name != "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED")
+        .filter(|gate| !matches!(
+            gate.gate_name,
+            "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED" | "PRODUCTION_BACKUP_CONTRACT_ENABLED"
+        ))
         .all(|gate| !gate.current_value));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
