@@ -1,0 +1,183 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "one-target-pilot-backup-gate-candidate-review",
+  "generatedAt": "2026-06-12T00:00:00-07:00",
+  "startingCommit": "266d355cdcfa3a62ad0459186ba2e9370e13acab",
+  "goal": "Review PRODUCTION_BACKUP_CONTRACT_ENABLED as the next staged gate candidate without flipping it, enabling writes, or creating user config backups.",
+  "filesChanged": [
+    "src/lib.rs",
+    "src/one_target_pilot_backup_gate_review.rs",
+    "tests/one_target_pilot_backup_gate_candidate_review.rs",
+    "tests/one_target_pilot_backup_contract_maturity.rs",
+    "tests/one_target_pilot_backup_gate_safety_boundaries.rs",
+    "tests/one_target_pilot_backup_gate_future_scope.rs",
+    "tests/one_target_pilot_backup_gate_apply_isolation.rs",
+    "data/reports/one-target-pilot-backup-gate-candidate-review.v0.55.2.json",
+    "docs/ONE-TARGET-PILOT-BACKUP-GATE-CANDIDATE-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/ONE-TARGET-PILOT-BACKUP-GATE-CANDIDATE-REVIEW-LOG.md"
+  ],
+  "backupGateCandidateReview": {
+    "gate": "PRODUCTION_BACKUP_CONTRACT_ENABLED",
+    "currentValue": false,
+    "candidateGateRemainsFalse": true,
+    "preEnableAuditGateAlreadyTrue": true,
+    "backupContractExists": true,
+    "backupPathPolicyExists": true,
+    "collisionPolicyExists": true,
+    "fixtureExactCopyProofExists": true,
+    "fixtureMisuseProtectionExists": true,
+    "userConfigBackupCreated": false,
+    "productionBackupActive": false,
+    "applyConnected": false,
+    "decision": "passed_for_user_approval_request",
+    "readyToAskUserForExplicitApproval": true,
+    "gateFlipped": false,
+    "writesEnabled": false
+  },
+  "backupContractMaturityReview": {
+    "exactTargetFileBackupRequired": true,
+    "sameDirectoryPolicyRepresented": true,
+    "timestampedBackupPathRepresented": true,
+    "collisionSafeBackupPathRepresented": true,
+    "byteEqualityProofRepresented": true,
+    "backupBeforeWriteRequired": true,
+    "noWriteWithoutBackupProofRequired": true,
+    "fixtureOnlyProofHelpersRejectNonTempMisuse": true,
+    "targetExclusionsPreservedByBackupContract": true,
+    "backupContractImpliesWriteActivation": false,
+    "backupContractImpliesVerificationActivation": false,
+    "backupContractImpliesRecoveryActivation": false,
+    "userConfigBackupCreated": false
+  },
+  "backupSafetyBoundaryReview": {
+    "enablesApplyWrites": false,
+    "enablesRealTargetSelection": false,
+    "enablesOneTargetPilot": false,
+    "enablesRereadVerification": false,
+    "enablesRecovery": false,
+    "enablesAdvancedConfirmation": false,
+    "enablesHighRiskApproval": false,
+    "allowsHyprlandReload": false,
+    "allowsMutatingHyprctl": false,
+    "allowsScriptExecution": false,
+    "allowsLuaExecution": false,
+    "allowsProfileSwitching": false,
+    "allowsModeSwitching": false
+  },
+  "futureBackupGateApprovalScope": {
+    "onlyAllowedFutureGate": "PRODUCTION_BACKUP_CONTRACT_ENABLED",
+    "onlyAllowedFutureChange": "PRODUCTION_BACKUP_CONTRACT_ENABLED: false -> true",
+    "gatesThatMustRemainFalse": [
+      "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
+      "PRODUCTION_WRITE_TARGET_SELECTION_READY",
+      "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
+      "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
+      "PRODUCTION_VERIFICATION_CONTRACT_ENABLED",
+      "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
+      "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
+      "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED"
+    ],
+    "writesRemainDisabled": true,
+    "applyRemainsDisconnected": true,
+    "targetSelectionRemainsInactive": true
+  },
+  "remainingBlockers": [
+    "explicit user approval needed for a separate backup gate approval sprint",
+    "production backup gate not approved",
+    "production backup implementation not active",
+    "production verification gate not approved",
+    "production recovery gate not approved",
+    "production write target review not active",
+    "production target selection not active",
+    "one-target pilot not active",
+    "Apply integration not approved"
+  ],
+  "gateInventoryVerification": {
+    "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED": true,
+    "PRODUCTION_BACKUP_CONTRACT_ENABLED": false,
+    "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED": false,
+    "PRODUCTION_WRITE_TARGET_SELECTION_READY": false,
+    "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED": false,
+    "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE": false,
+    "PRODUCTION_VERIFICATION_CONTRACT_ENABLED": false,
+    "PRODUCTION_RECOVERY_CONTRACT_ENABLED": false,
+    "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED": false,
+    "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED": false
+  },
+  "applyWriteIsolation": {
+    "writeFlowImportsBackupGateReview": false,
+    "writeFlowCallsBackupActivationHelpers": false,
+    "writeFlowCallsFixtureBackupProofHelpers": false,
+    "writeFlowCallsGateFlipHelpers": false,
+    "writeFlowBypassesHighRiskPolicy": false,
+    "applySettingChangeRemainsPresent": true,
+    "applyScalarWritePlanRemainsPresent": true
+  },
+  "writeFlowPreservation": {
+    "writeFlowChanged": false,
+    "selectedSessionConfigAffectsWrites": false,
+    "selectedSessionConfigPersisted": false,
+    "appWriteModelChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/one_target_pilot_backup_gate_candidate_review.rs",
+    "tests/one_target_pilot_backup_contract_maturity.rs",
+    "tests/one_target_pilot_backup_gate_safety_boundaries.rs",
+    "tests/one_target_pilot_backup_gate_future_scope.rs",
+    "tests/one_target_pilot_backup_gate_apply_isolation.rs"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "realBackupCreated": false,
+    "realRestoreAttempted": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false,
+    "runtimeMutationOccurred": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with expected sprint changes and pre-existing unrelated untracked audit artifacts"
+  },
+  "proofUsed": [
+    "production backup contract model",
+    "backup path policy and collision tests",
+    "fixture exact-copy proof with non-temp misuse rejection",
+    "pre-enable gate approval report",
+    "proposal review report",
+    "source-level Apply/write isolation"
+  ],
+  "proofStillMissing": [
+    "explicit user approval for a separate backup gate approval sprint",
+    "PRODUCTION_BACKUP_CONTRACT_ENABLED remains false",
+    "production verification gate approval",
+    "production recovery gate approval",
+    "target review and target selection approvals",
+    "Apply integration approval",
+    "one-target pilot activation approval"
+  ],
+  "nextRecommendedSprint": "Ask the user whether to explicitly approve a separate single-gate backup approval sprint for PRODUCTION_BACKUP_CONTRACT_ENABLED, with writes and all other write-enabling gates still disabled."
+}
