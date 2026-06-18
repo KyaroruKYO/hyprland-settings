@@ -1,0 +1,209 @@
+{
+  "schemaVersion": "0.55.2",
+  "artifactKind": "one-target-pilot-verification-gate-approval",
+  "generatedAt": "2026-06-18T00:00:00-07:00",
+  "startingCommit": "cca42cc6cc1e42844c2dd5554b5553dec593f4b1",
+  "goal": "Approve exactly PRODUCTION_VERIFICATION_CONTRACT_ENABLED as a staged prerequisite while keeping writes, backup creation, verification execution, recovery, target selection, and Apply integration disabled.",
+  "filesChanged": [
+    "src/lib.rs",
+    "src/production_verification_contract.rs",
+    "src/one_target_pilot_manual_review.rs",
+    "src/one_target_pilot_pre_enable_audit.rs",
+    "src/one_target_pilot_backup_gate_approval.rs",
+    "src/one_target_pilot_backup_gate_review.rs",
+    "src/one_target_pilot_gate_flip_proposal_review.rs",
+    "src/one_target_pilot_readiness.rs",
+    "src/one_target_pilot_verification_gate_approval.rs",
+    "tests/one_target_pilot_verification_gate_approval.rs",
+    "tests/one_target_pilot_verification_single_gate_state.rs",
+    "tests/one_target_pilot_verification_gate_approval_apply_isolation.rs",
+    "tests/production_verification_contract.rs",
+    "tests/production_backup_verification_ui.rs",
+    "tests/production_verification_fixture.rs",
+    "tests/production_backup_verification_apply_isolation.rs",
+    "tests/production_recovery_apply_isolation.rs",
+    "tests/advanced_confirmation_apply_isolation.rs",
+    "tests/high_risk_apply_isolation.rs",
+    "tests/one_target_pilot_pre_enable_apply_isolation.rs",
+    "tests/one_target_pilot_visual_review_apply_isolation.rs",
+    "tests/one_target_pilot_focused_visual_apply_isolation.rs",
+    "tests/one_target_pilot_manual_review_apply_isolation.rs",
+    "tests/one_target_pilot_pre_enable_gate_approval.rs",
+    "tests/one_target_pilot_pre_enable_gate_apply_isolation.rs",
+    "tests/one_target_pilot_single_gate_state.rs",
+    "tests/one_target_pilot_gate_inventory.rs",
+    "tests/one_target_pilot_gate_false_verification.rs",
+    "tests/one_target_pilot_visual_review_gate_false.rs",
+    "tests/one_target_pilot_focused_visual_gate_false.rs",
+    "tests/one_target_pilot_focused_visual_pass_criteria.rs",
+    "tests/one_target_pilot_proposal_apply_isolation.rs",
+    "tests/one_target_pilot_proposal_gate_list.rs",
+    "tests/one_target_pilot_readiness_mapping.rs",
+    "tests/one_target_pilot_backup_gate_approval.rs",
+    "tests/one_target_pilot_backup_single_gate_state.rs",
+    "tests/one_target_pilot_backup_gate_apply_isolation.rs",
+    "tests/one_target_pilot_backup_gate_future_scope.rs",
+    "data/reports/one-target-pilot-verification-gate-approval.v0.55.2.json",
+    "docs/ONE-TARGET-PILOT-VERIFICATION-GATE-APPROVAL-REVIEW-LOG.md",
+    "/home/kyo/.config/hypr/docs/ONE-TARGET-PILOT-VERIFICATION-GATE-APPROVAL-REVIEW-LOG.md"
+  ],
+  "approvedGate": {
+    "name": "PRODUCTION_VERIFICATION_CONTRACT_ENABLED",
+    "previousValue": false,
+    "newValue": true,
+    "meaning": "The production reread verification contract stage is approved as a prerequisite for the future one-target pilot path."
+  },
+  "singleGateChange": {
+    "onlyGateChanged": "PRODUCTION_VERIFICATION_CONTRACT_ENABLED",
+    "preEnableAuditRemainsTrue": true,
+    "backupContractRemainsTrue": true,
+    "noOtherGateChanged": true,
+    "writesEnabled": false,
+    "productionBackupCreationReachable": false,
+    "productionVerificationExecutionReachable": false,
+    "productionVerificationRun": false
+  },
+  "gateInventoryAfter": {
+    "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED": true,
+    "PRODUCTION_BACKUP_CONTRACT_ENABLED": true,
+    "PRODUCTION_VERIFICATION_CONTRACT_ENABLED": true,
+    "PRODUCTION_RECOVERY_CONTRACT_ENABLED": false,
+    "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED": false,
+    "PRODUCTION_WRITE_TARGET_SELECTION_READY": false,
+    "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED": false,
+    "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE": false,
+    "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED": false,
+    "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED": false
+  },
+  "writeExecutionGates": {
+    "allRemainFalse": true,
+    "gates": [
+      "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
+      "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
+      "PRODUCTION_WRITE_TARGET_SELECTION_READY",
+      "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
+      "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
+      "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
+      "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED"
+    ],
+    "productionWritePathRemainsDisabled": true,
+    "productionBackupCreationReachable": false,
+    "productionVerificationExecutionReachable": false
+  },
+  "readinessChanges": {
+    "preEnableAuditGate": "passed",
+    "backupContractGate": "approved",
+    "verificationContractGate": "approved",
+    "verificationContract": "allowed as prerequisite",
+    "productionBackupCreation": "not reachable because write-execution gates are false",
+    "productionVerificationExecution": "not reachable because write-execution gates are false",
+    "recoveryGate": false,
+    "targetReviewGate": false,
+    "targetSelectionGate": false,
+    "oneTargetPilotGate": false,
+    "applyIntegration": "unchanged",
+    "writesEnabled": false
+  },
+  "verificationContractMeaning": "The production reread verification contract stage is approved as a prerequisite for the future one-target pilot path.",
+  "verificationNonMeaning": [
+    "writes are enabled",
+    "Apply can write",
+    "real verification is run",
+    "real backups are created",
+    "production backup creation is reachable",
+    "recovery is active",
+    "target selection is active",
+    "the one-target pilot is active",
+    "walkthrough can write",
+    "advanced confirmation is active",
+    "high-risk approval is active"
+  ],
+  "backupGateReference": {
+    "report": "data/reports/one-target-pilot-backup-gate-approval.v0.55.2.json",
+    "log": "docs/ONE-TARGET-PILOT-BACKUP-GATE-APPROVAL-REVIEW-LOG.md",
+    "backupContractGate": true,
+    "productionBackupCreationReachable": false
+  },
+  "preEnableGateReference": {
+    "report": "data/reports/one-target-pilot-pre-enable-gate-approval.v0.55.2.json",
+    "log": "docs/ONE-TARGET-PILOT-PRE-ENABLE-GATE-APPROVAL-REVIEW-LOG.md",
+    "preEnableAuditGate": true
+  },
+  "applyWriteIsolation": {
+    "applySettingChangeChanged": false,
+    "applyScalarWritePlanChanged": false,
+    "writeFlowImportsVerificationGateApproval": false,
+    "writeFlowCallsVerificationActivation": false,
+    "writeFlowCallsFixtureVerificationHelpers": false,
+    "writeFlowCallsRecoveryActivation": false,
+    "writeFlowCallsTargetSelectionActivation": false,
+    "writeFlowBypassesHighRiskPolicy": false,
+    "highRiskWritePolicyStillPresent": true
+  },
+  "writeFlowPreservation": {
+    "writeFlowChanged": false,
+    "selectedSessionConfigAffectsWrites": false,
+    "selectedSessionConfigPersisted": false,
+    "appWriteModelChanged": false,
+    "realWriteTargetSelectionActive": false,
+    "realLayeredWritesActive": false
+  },
+  "testsAdded": [
+    "tests/one_target_pilot_verification_gate_approval.rs",
+    "tests/one_target_pilot_verification_single_gate_state.rs",
+    "tests/one_target_pilot_verification_gate_approval_apply_isolation.rs"
+  ],
+  "testsUpdated": [
+    "production verification, staged gate inventory, readiness, proposal, backup-stage, and Apply isolation tests updated for verification gate approval"
+  ],
+  "safetyBoundaries": {
+    "realConfigEdited": false,
+    "realBackupCreated": false,
+    "realVerificationRun": false,
+    "realRestoreAttempted": false,
+    "symlinksChanged": false,
+    "scriptsRun": false,
+    "luaExecuted": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "profileSwitchingActive": false,
+    "layeredRealWritesActive": false,
+    "realWriteTargetSelectionActive": false
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed"
+  },
+  "proofUsed": [
+    "pre-enable gate approval report",
+    "backup gate approval report",
+    "production backup and verification contracts report",
+    "source-level gate inventory",
+    "source-level Apply/write isolation tests"
+  ],
+  "proofStillMissing": [
+    "production recovery gate approval",
+    "target review approval",
+    "target selection approval",
+    "one-target pilot approval",
+    "Apply integration approval",
+    "production write execution proof"
+  ],
+  "nextRecommendedSprint": "Ask user for explicit approval before recovery gate approval sprint."
+}

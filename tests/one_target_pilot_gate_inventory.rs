@@ -13,13 +13,14 @@ use hyprland_settings::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELEC
 use hyprland_settings::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE;
 
 #[test]
-fn gate_inventory_snapshot_lists_pre_enable_and_backup_passed_and_write_execution_gates_false() {
+fn gate_inventory_snapshot_lists_pre_enable_backup_and_verification_passed_and_write_execution_gates_false(
+) {
     assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
     assert!(!PRODUCTION_HIGH_RISK_APPROVAL_ENABLED);
     assert!(!PRODUCTION_ADVANCED_CONFIRMATION_ENABLED);
     assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert!(PRODUCTION_BACKUP_CONTRACT_ENABLED);
-    assert!(!PRODUCTION_VERIFICATION_CONTRACT_ENABLED);
+    assert!(PRODUCTION_VERIFICATION_CONTRACT_ENABLED);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
     assert!(!PRODUCTION_WRITE_TARGET_SELECTION_READY);
     assert!(!PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
@@ -54,11 +55,16 @@ fn gate_inventory_snapshot_lists_pre_enable_and_backup_passed_and_write_executio
     assert!(snapshot
         .iter()
         .any(|gate| gate.gate_name == "PRODUCTION_BACKUP_CONTRACT_ENABLED" && gate.current_value));
+    assert!(snapshot.iter().any(|gate| gate.gate_name
+        == "PRODUCTION_VERIFICATION_CONTRACT_ENABLED"
+        && gate.current_value));
     assert!(snapshot
         .iter()
         .filter(|gate| !matches!(
             gate.gate_name,
-            "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED" | "PRODUCTION_BACKUP_CONTRACT_ENABLED"
+            "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
+                | "PRODUCTION_BACKUP_CONTRACT_ENABLED"
+                | "PRODUCTION_VERIFICATION_CONTRACT_ENABLED"
         ))
         .all(|gate| !gate.current_value));
     assert!(snapshot.iter().all(|gate| !gate.would_allow.is_empty()

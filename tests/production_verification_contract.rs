@@ -47,12 +47,10 @@ fn production_verification_contract_represents_reread_requirements_disabled() {
         contract.fixture_only_proof_status,
         ProductionVerificationStatus::NotRun
     );
-    assert!(!contract.production_enabled);
-    assert!(!PRODUCTION_VERIFICATION_CONTRACT_ENABLED);
-    assert!(contract
-        .user_facing_lines()
-        .iter()
-        .any(|line| line == "Production verification is not active yet."));
+    assert!(contract.production_enabled);
+    assert!(PRODUCTION_VERIFICATION_CONTRACT_ENABLED);
+    assert!(contract.user_facing_lines().iter().any(|line| line
+        == "Verification approval is staged; real verification is still not active yet."));
 
     let statuses = all_production_verification_statuses();
     assert!(statuses.contains(&ProductionVerificationStatus::NotRun));

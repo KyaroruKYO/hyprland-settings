@@ -124,7 +124,7 @@ impl OneTargetPilotReadinessMapping {
             "The next gate still needs a separate review and approval.".to_string(),
             "All production write gates are still disabled.".to_string(),
             "Backup contract approval is staged; backup creation is still blocked until write execution gates are approved.".to_string(),
-            "Production verification is not active yet.".to_string(),
+            "Verification contract approval is staged; verification execution is still blocked until write execution gates are approved.".to_string(),
             "Real writing is not active yet.".to_string(),
             "Apply behavior has not changed.".to_string(),
         ]

@@ -79,7 +79,7 @@ fn fixture_reread_verification_passes_and_fails_without_real_files() {
         .expect_err("user config path must be rejected by fixture verification");
     assert_eq!(rejected, FixtureRereadVerificationError::NonFixturePath);
 
-    assert!(!PRODUCTION_VERIFICATION_CONTRACT_ENABLED);
+    assert!(PRODUCTION_VERIFICATION_CONTRACT_ENABLED);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 

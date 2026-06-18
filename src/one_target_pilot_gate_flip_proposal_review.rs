@@ -128,16 +128,14 @@ pub fn one_target_pilot_future_gate_list_review() -> FutureGateListReview {
             "PRODUCTION_WRITE_TARGET_SELECTION_READY",
             "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
             "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
-            "PRODUCTION_BACKUP_CONTRACT_ENABLED",
-            "PRODUCTION_VERIFICATION_CONTRACT_ENABLED",
             "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
             "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
             "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED",
         ],
         staged_flip_recommendation: vec![
             "1. Pre-enable audit gate is already approved.",
-            "2. Activate backup contract only after production backup implementation proof.",
-            "3. Activate verification contract only after production reread implementation proof.",
+            "2. Backup contract gate is already approved as a non-executing prerequisite.",
+            "3. Verification contract gate is already approved as a non-executing prerequisite.",
             "4. Activate recovery contract only after production restore and restore-verification proof.",
             "5. Activate write target review only after the normal scalar target path is proven.",
             "6. Mark target selection ready only for the approved normal scalar class.",
@@ -147,12 +145,26 @@ pub fn one_target_pilot_future_gate_list_review() -> FutureGateListReview {
         gates_needing_more_proof_before_flip: proposed_future_gates
             .iter()
             .copied()
-            .filter(|gate| *gate != "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED")
+            .filter(|gate| {
+                !matches!(
+                    *gate,
+                    "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
+                        | "PRODUCTION_BACKUP_CONTRACT_ENABLED"
+                        | "PRODUCTION_VERIFICATION_CONTRACT_ENABLED"
+                )
+            })
             .collect(),
         gates_that_should_not_flip_together_without_more_proof: proposed_future_gates
             .iter()
             .copied()
-            .filter(|gate| *gate != "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED")
+            .filter(|gate| {
+                !matches!(
+                    *gate,
+                    "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
+                        | "PRODUCTION_BACKUP_CONTRACT_ENABLED"
+                        | "PRODUCTION_VERIFICATION_CONTRACT_ENABLED"
+                )
+            })
             .collect(),
         proposed_future_gates,
         pre_enable_gate_true_and_write_gates_false: true,

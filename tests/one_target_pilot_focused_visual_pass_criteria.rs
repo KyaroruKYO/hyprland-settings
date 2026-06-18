@@ -2,7 +2,7 @@ use hyprland_settings::one_target_pilot_focused_visual_smoke::{
     one_target_pilot_focused_visual_pass_criteria, one_target_pilot_focused_visual_smoke_result,
 };
 use hyprland_settings::one_target_pilot_live_visual_smoke::VisualSmokeItemResult;
-use hyprland_settings::one_target_pilot_manual_review::pre_enable_and_backup_gates_are_true;
+use hyprland_settings::one_target_pilot_manual_review::pre_enable_backup_and_verification_gates_are_true;
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 
 #[test]
@@ -34,6 +34,6 @@ fn focused_visual_review_passes_only_when_all_required_criteria_are_confirmed() 
         }));
     }
 
-    assert!(pre_enable_and_backup_gates_are_true());
+    assert!(pre_enable_backup_and_verification_gates_are_true());
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

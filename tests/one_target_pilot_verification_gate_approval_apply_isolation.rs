@@ -6,27 +6,22 @@ use hyprland_settings::one_target_pilot_manual_review::{
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 
 #[test]
-fn write_flow_does_not_import_gate_approval_or_activation_helpers() {
+fn write_flow_does_not_import_or_call_verification_gate_approval_or_activation_helpers() {
     let write_flow =
         fs::read_to_string("src/write_flow.rs").expect("write flow source should read");
 
     for forbidden in [
-        "one_target_pilot_gate_flip_proposal_review",
-        "one_target_pilot_focused_visual_smoke",
-        "one_target_pilot_pre_enable_audit",
-        "one_target_pilot_proposal_decision_review",
-        "gate approval",
+        "one_target_pilot_verification_gate_approval",
+        "verification gate approval",
+        "production verification activation",
+        "fixture_reread_verify_expected_value",
+        "production_verification_contract_for_candidate",
+        "planned_reread_verification",
         "gate flip",
-        "proposal draft",
-        "backup contract activation",
-        "verification contract activation",
-        "recovery contract activation",
+        "recovery activation",
         "target selection activation",
-        "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED",
-        "PRODUCTION_BACKUP_CONTRACT_ENABLED = true",
-        "PRODUCTION_VERIFICATION_CONTRACT_ENABLED = true",
-        "PRODUCTION_RECOVERY_CONTRACT_ENABLED = true",
-        "PRODUCTION_WRITE_TARGET_SELECTION_READY = true",
+        "backup activation",
+        "PRODUCTION_VERIFICATION_CONTRACT_ENABLED",
     ] {
         assert!(
             !write_flow.contains(forbidden),

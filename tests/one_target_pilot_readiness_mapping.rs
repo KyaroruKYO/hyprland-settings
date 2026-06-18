@@ -6,7 +6,7 @@ use hyprland_settings::production_verification_contract::PRODUCTION_VERIFICATION
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 
 #[test]
-fn one_target_pilot_readiness_maps_backup_approved_and_keeps_write_execution_blocked() {
+fn one_target_pilot_readiness_maps_verification_approved_and_keeps_write_execution_blocked() {
     let readiness = current_one_target_pilot_readiness_mapping();
 
     assert!(!readiness.backup_contract_complete);
@@ -21,11 +21,11 @@ fn one_target_pilot_readiness_maps_backup_approved_and_keeps_write_execution_blo
     assert!(readiness.production_pre_enable_audit_passed);
     assert!(!readiness.is_ready_for_production());
     assert!(readiness.production_backup_enabled);
-    assert!(!readiness.production_verification_enabled);
+    assert!(readiness.production_verification_enabled);
     assert!(!readiness.production_recovery_enabled);
     assert!(!readiness.pilot_gate_enabled);
     assert!(PRODUCTION_BACKUP_CONTRACT_ENABLED);
-    assert!(!PRODUCTION_VERIFICATION_CONTRACT_ENABLED);
+    assert!(PRODUCTION_VERIFICATION_CONTRACT_ENABLED);
     assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
     assert!(readiness

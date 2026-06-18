@@ -371,9 +371,9 @@ pub fn one_target_pilot_gate_inventory_snapshot() -> Vec<OneTargetPilotGateSnaps
             "PRODUCTION_VERIFICATION_CONTRACT_ENABLED",
             PRODUCTION_VERIFICATION_CONTRACT_ENABLED,
             "production_verification_contract",
-            "production reread verification",
+            "approval for the production reread verification contract prerequisite",
             "production parser/reread implementation and failure-to-recovery proof",
-            "production verification is not active",
+            "verification contract is approved; verification execution remains unreachable while write-execution gates are false",
         ),
         gate_snapshot(
             "PRODUCTION_RECOVERY_CONTRACT_ENABLED",

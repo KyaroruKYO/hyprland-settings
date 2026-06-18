@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 use crate::config_parser::{parse_hyprland_config_file, ParseStatus};
 use crate::write_target_candidate::WriteTargetCandidate;
 
-pub const PRODUCTION_VERIFICATION_CONTRACT_ENABLED: bool = false;
+pub const PRODUCTION_VERIFICATION_CONTRACT_ENABLED: bool = true;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ProductionVerificationContract {
@@ -24,7 +24,8 @@ impl ProductionVerificationContract {
         vec![
             "The app will reread the file to confirm the value.".to_string(),
             "If verification fails, the app must not report the change as complete.".to_string(),
-            "Production verification is not active yet.".to_string(),
+            "Verification approval is staged; real verification is still not active yet."
+                .to_string(),
         ]
     }
 }

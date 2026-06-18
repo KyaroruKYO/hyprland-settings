@@ -2,7 +2,7 @@ use hyprland_settings::one_target_pilot_backup_gate_approval::{
     one_target_pilot_backup_gate_approval_state, one_target_pilot_backup_gate_meaning,
     one_target_pilot_backup_gate_readiness_change,
 };
-use hyprland_settings::one_target_pilot_manual_review::pre_enable_and_backup_gates_are_true;
+use hyprland_settings::one_target_pilot_manual_review::pre_enable_backup_and_verification_gates_are_true;
 use hyprland_settings::one_target_pilot_pre_enable_audit::PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED;
 use hyprland_settings::production_backup_contract::PRODUCTION_BACKUP_CONTRACT_ENABLED;
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
@@ -31,11 +31,11 @@ fn backup_gate_approval_represents_single_gate_change_without_write_enablement()
 
     assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
     assert!(PRODUCTION_BACKUP_CONTRACT_ENABLED);
-    assert!(pre_enable_and_backup_gates_are_true());
+    assert!(pre_enable_backup_and_verification_gates_are_true());
     assert!(readiness.backup_contract_allowed_as_prerequisite);
     assert_eq!(
         readiness.next_recommended_gate,
-        "PRODUCTION_VERIFICATION_CONTRACT_ENABLED"
+        "PRODUCTION_RECOVERY_CONTRACT_ENABLED"
     );
     assert!(meaning.meaning.contains("prerequisite"));
     for forbidden_meaning in [

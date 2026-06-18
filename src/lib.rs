@@ -26,6 +26,7 @@ pub mod one_target_pilot_live_visual_smoke;
 pub mod one_target_pilot_manual_review;
 pub mod one_target_pilot_pre_enable_audit;
 pub mod one_target_pilot_readiness;
+pub mod one_target_pilot_verification_gate_approval;
 pub mod one_target_write_pilot;
 pub mod pending_change;
 pub mod production_advanced_confirmation;
