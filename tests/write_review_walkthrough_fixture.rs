@@ -118,8 +118,9 @@ fn fixture_walkthrough_composes_full_review_and_stays_production_disabled() {
     assert!(!walkthrough.safety.affects_apply);
     assert_eq!(
         guarded.review_status,
-        GuardedWriteReviewStatus::ProductionDisabled
+        GuardedWriteReviewStatus::ReadyForReview
     );
+    assert!(guarded.production_enabled);
     assert_eq!(
         verification.verification_status,
         WriteVerificationStatus::PassedInFixture

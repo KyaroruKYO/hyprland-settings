@@ -5,7 +5,7 @@ use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 
 #[test]
 fn guarded_write_review_is_explicitly_disabled_for_production() {
-    assert!(!PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
+    assert!(PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 

@@ -11,9 +11,9 @@ fn one_target_pilot_readiness_tracks_specific_recovery_prerequisites() {
     assert!(!readiness.restore_verification_contract_complete);
     assert!(!readiness.recovery_result_reporting_complete);
     assert!(!readiness.fixture_recovery_proof_passed);
-    assert!(!readiness.production_recovery_enabled);
+    assert!(readiness.production_recovery_enabled);
     assert!(!readiness.pilot_gate_enabled);
     assert!(!readiness.is_ready_for_production());
-    assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
+    assert!(PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

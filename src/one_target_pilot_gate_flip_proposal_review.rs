@@ -125,10 +125,7 @@ pub fn one_target_pilot_future_gate_list_review() -> FutureGateListReview {
     FutureGateListReview {
         gates_that_must_remain_false_now: vec![
             "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
-            "PRODUCTION_WRITE_TARGET_SELECTION_READY",
-            "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
             "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
-            "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
             "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
             "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED",
         ],
@@ -136,9 +133,9 @@ pub fn one_target_pilot_future_gate_list_review() -> FutureGateListReview {
             "1. Pre-enable audit gate is already approved.",
             "2. Backup contract gate is already approved as a non-executing prerequisite.",
             "3. Verification contract gate is already approved as a non-executing prerequisite.",
-            "4. Activate recovery contract only after production restore and restore-verification proof.",
-            "5. Activate write target review only after the normal scalar target path is proven.",
-            "6. Mark target selection ready only for the approved normal scalar class.",
+            "4. Recovery contract gate is already approved as a non-executing prerequisite.",
+            "5. Write target review gate is already approved as a non-executing prerequisite.",
+            "6. Target selection readiness gate is already approved as a non-executing prerequisite.",
             "7. Enable the one-target pilot gate only after all prior stages pass.",
             "8. Allow walkthrough writes only after Apply integration is approved.",
         ],
@@ -151,6 +148,9 @@ pub fn one_target_pilot_future_gate_list_review() -> FutureGateListReview {
                     "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
                         | "PRODUCTION_BACKUP_CONTRACT_ENABLED"
                         | "PRODUCTION_VERIFICATION_CONTRACT_ENABLED"
+                        | "PRODUCTION_RECOVERY_CONTRACT_ENABLED"
+                        | "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED"
+                        | "PRODUCTION_WRITE_TARGET_SELECTION_READY"
                 )
             })
             .collect(),
@@ -163,6 +163,9 @@ pub fn one_target_pilot_future_gate_list_review() -> FutureGateListReview {
                     "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
                         | "PRODUCTION_BACKUP_CONTRACT_ENABLED"
                         | "PRODUCTION_VERIFICATION_CONTRACT_ENABLED"
+                        | "PRODUCTION_RECOVERY_CONTRACT_ENABLED"
+                        | "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED"
+                        | "PRODUCTION_WRITE_TARGET_SELECTION_READY"
                 )
             })
             .collect(),

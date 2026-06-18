@@ -16,7 +16,7 @@ fn recovery_trigger_model_classifies_restore_block_report_and_cancel_paths() {
         let decision = recovery_trigger_decision(condition);
         assert_eq!(decision.action, RecoveryTriggerAction::ShouldRestoreBackup);
         assert!(decision.should_restore_backup());
-        assert!(!decision.production_enabled);
+        assert!(decision.production_enabled);
         assert!(decision.fixture_only_recovery_allowed);
         assert!(!decision.hyprland_reload_allowed);
     }
@@ -35,6 +35,6 @@ fn recovery_trigger_model_classifies_restore_block_report_and_cancel_paths() {
         RecoveryTriggerAction::ShouldNotRestoreBackup
     );
     assert_eq!(all_recovery_trigger_decisions().len(), 8);
-    assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
+    assert!(PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

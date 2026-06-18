@@ -12,8 +12,8 @@ fn gate_inventory_has_three_true_prerequisite_gates_and_all_write_execution_gate
     assert!(all_write_execution_gates_remain_false());
     assert_eq!(
         gates.iter().filter(|gate| gate.current_value).count(),
-        3,
-        "only the pre-enable audit, backup, and verification gates may be true"
+        6,
+        "only the approved non-writing prerequisite gates may be true"
     );
     assert!(gates.iter().any(|gate| gate.gate_name
         == "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
@@ -31,6 +31,9 @@ fn gate_inventory_has_three_true_prerequisite_gates_and_all_write_execution_gate
             "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
                 | "PRODUCTION_BACKUP_CONTRACT_ENABLED"
                 | "PRODUCTION_VERIFICATION_CONTRACT_ENABLED"
+                | "PRODUCTION_RECOVERY_CONTRACT_ENABLED"
+                | "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED"
+                | "PRODUCTION_WRITE_TARGET_SELECTION_READY"
         ))
         .all(|gate| !gate.current_value));
     assert!(gates.iter().all(|gate| !gate.would_allow.is_empty()

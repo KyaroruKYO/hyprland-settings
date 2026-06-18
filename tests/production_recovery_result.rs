@@ -49,7 +49,8 @@ fn recovery_report_represents_success_failure_skip_and_backup_availability() {
     let skipped = recovery_report_for(&cancel, &restore, &verification);
     assert_eq!(skipped.status, RecoveryReportStatus::RecoverySkipped);
     assert!(skipped.recovery_skipped);
-    assert!(!skipped.production_enabled);
-    assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
+    assert!(!skipped.recovery_attempted);
+    assert!(skipped.production_enabled);
+    assert!(PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

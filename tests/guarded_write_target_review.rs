@@ -24,7 +24,7 @@ fn candidate(label: &str, safe: bool) -> WriteTargetCandidate {
 }
 
 #[test]
-fn guarded_review_model_represents_candidates_gates_and_disabled_production() {
+fn guarded_review_model_represents_candidates_gates_and_nonwriting_approval() {
     let candidates = vec![
         candidate("Current profile", true),
         candidate("Generated file", false),
@@ -42,18 +42,18 @@ fn guarded_review_model_represents_candidates_gates_and_disabled_production() {
         FixtureProofStatus::Passed,
     );
 
-    assert!(!PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
+    assert!(PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
     assert_eq!(
         review.review_status,
-        GuardedWriteReviewStatus::ProductionDisabled
+        GuardedWriteReviewStatus::ReadyForReview
     );
     assert!(review.required_gates.target_selected);
     assert!(review.required_gates.exact_backup_planned);
     assert!(review.required_gates.reread_verification_planned);
     assert!(review.required_gates.high_risk_policy_satisfied);
     assert!(review.required_gates.fixture_proof_passed);
-    assert!(!review.required_gates.production_write_integration_allowed);
-    assert!(!review.production_enabled);
+    assert!(review.required_gates.production_write_integration_allowed);
+    assert!(review.production_enabled);
     assert_eq!(review.blocked_candidates.len(), 1);
     assert_eq!(review.active_value.as_deref(), Some("false"));
     assert_eq!(review.session_preview_value.as_deref(), Some("true"));
@@ -61,6 +61,10 @@ fn guarded_review_model_represents_candidates_gates_and_disabled_production() {
         .user_facing_lines()
         .iter()
         .any(|line| line == "Real writing is not active yet."));
+    assert!(review
+        .user_facing_lines()
+        .iter()
+        .any(|line| line == "Write review approval is staged; Apply still cannot write."));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 

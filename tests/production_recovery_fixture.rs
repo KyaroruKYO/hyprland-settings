@@ -99,6 +99,6 @@ fn fixture_rollback_recovery_restores_backup_after_failed_verification() {
         restore_verified.observed_restored_value.as_deref(),
         Some("dwindle")
     );
-    assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
+    assert!(PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

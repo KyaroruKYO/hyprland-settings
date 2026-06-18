@@ -92,7 +92,8 @@ pub fn one_target_pilot_verification_gate_readiness_change() -> VerificationGate
         one_target_pilot_gate_enabled: PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED,
         apply_integration_changed: false,
         writes_enabled: false,
-        next_recommended_gate: "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
+        next_recommended_gate:
+            "Manual approval boundary for the first real one-target write pilot.",
     }
 }
 
@@ -112,8 +113,8 @@ pub fn one_target_pilot_verification_gate_meaning() -> VerificationGateMeaning {
             "real verification is run",
             "real backups are created",
             "production backup creation is reachable",
-            "recovery is active",
-            "target selection is active",
+            "real recovery execution is active",
+            "real target selection executes writes",
             "the one-target pilot is active",
             "walkthrough can write",
             "advanced confirmation is active",
@@ -131,10 +132,10 @@ pub fn one_target_pilot_verification_gate_single_gate_state_is_preserved() -> bo
         && all_write_execution_gates_remain_false()
         && production_write_path_remains_disabled()
         && !PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED
-        && !PRODUCTION_WRITE_TARGET_SELECTION_READY
-        && !PRODUCTION_WRITE_TARGET_REVIEW_ENABLED
+        && PRODUCTION_WRITE_TARGET_SELECTION_READY
+        && PRODUCTION_WRITE_TARGET_REVIEW_ENABLED
         && !PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE
-        && !PRODUCTION_RECOVERY_CONTRACT_ENABLED
+        && PRODUCTION_RECOVERY_CONTRACT_ENABLED
         && !PRODUCTION_ADVANCED_CONFIRMATION_ENABLED
         && !PRODUCTION_HIGH_RISK_APPROVAL_ENABLED
 }

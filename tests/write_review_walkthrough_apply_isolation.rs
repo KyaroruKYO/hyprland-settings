@@ -6,7 +6,7 @@ use hyprland_settings::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHR
 
 #[test]
 fn production_walkthrough_gates_are_false() {
-    assert!(!PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
+    assert!(PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
     assert!(!PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

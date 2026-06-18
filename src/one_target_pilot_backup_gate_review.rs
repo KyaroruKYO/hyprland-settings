@@ -165,10 +165,7 @@ pub fn one_target_pilot_future_backup_gate_approval_scope() -> FutureBackupGateA
             "already approved in the backup gate sprint; no further backup gate change is pending",
         gates_that_must_remain_false: vec![
             "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
-            "PRODUCTION_WRITE_TARGET_SELECTION_READY",
-            "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
             "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
-            "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
             "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
             "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED",
         ],
@@ -182,8 +179,8 @@ pub fn one_target_pilot_future_backup_gate_approval_scope() -> FutureBackupGateA
             "Apply can write",
             "the one-target pilot is active",
             "verification execution is active",
-            "recovery is active",
-            "target selection is active",
+            "real recovery execution is active",
+            "real target selection executes writes",
         ],
     }
 }
@@ -228,25 +225,25 @@ pub fn one_target_pilot_backup_gate_remaining_blockers() -> Vec<BackupGateRemain
             "Recovery, target review, target selection, and pilot gates remain separately staged.",
         ),
         blocker(
-            "production-recovery-gate-not-approved",
-            "Production recovery remains inactive.",
+            "production-recovery-gate-approved-but-non-executing",
+            "The recovery contract gate is approved, but no production recovery execution is reachable while write-execution gates are false.",
             false,
             true,
-            "Separate recovery gate review and approval.",
+            "Pilot and Apply integration gates remain separately staged.",
         ),
         blocker(
-            "production-write-target-review-not-active",
-            "Guarded target review remains production-disabled.",
+            "production-write-target-review-approved-but-non-executing",
+            "Guarded target review is approved as a prerequisite, but cannot write while pilot and Apply gates are false.",
             false,
             true,
-            "Target review gate approval after backup, verification, and recovery gates.",
+            "Pilot and Apply integration approval in a separate later sprint.",
         ),
         blocker(
-            "production-target-selection-not-active",
-            "Real write-target selection remains inactive.",
+            "production-target-selection-approved-but-non-executing",
+            "Target selection readiness is approved as a prerequisite, but real selection cannot execute writes.",
             false,
             true,
-            "Target selection gate approval after all prerequisite contracts.",
+            "Pilot and Apply integration approval in a separate later sprint.",
         ),
         blocker(
             "one-target-pilot-not-active",
@@ -290,11 +287,11 @@ pub fn backup_gate_candidate_current_staged_state_is_preserved() -> bool {
     PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED
         && PRODUCTION_BACKUP_CONTRACT_ENABLED
         && !PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED
-        && !PRODUCTION_WRITE_TARGET_SELECTION_READY
-        && !PRODUCTION_WRITE_TARGET_REVIEW_ENABLED
+        && PRODUCTION_WRITE_TARGET_SELECTION_READY
+        && PRODUCTION_WRITE_TARGET_REVIEW_ENABLED
         && !PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE
         && PRODUCTION_VERIFICATION_CONTRACT_ENABLED
-        && !PRODUCTION_RECOVERY_CONTRACT_ENABLED
+        && PRODUCTION_RECOVERY_CONTRACT_ENABLED
         && !PRODUCTION_ADVANCED_CONFIRMATION_ENABLED
         && !PRODUCTION_HIGH_RISK_APPROVAL_ENABLED
         && production_write_path_remains_disabled()

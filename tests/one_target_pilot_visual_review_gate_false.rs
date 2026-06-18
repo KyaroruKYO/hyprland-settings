@@ -18,12 +18,12 @@ fn visual_review_gate_inventory_keeps_staged_prerequisite_gates_true() {
 
     assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
-    assert!(!PRODUCTION_WRITE_TARGET_SELECTION_READY);
-    assert!(!PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
+    assert!(PRODUCTION_WRITE_TARGET_SELECTION_READY);
+    assert!(PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
     assert!(!PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
     assert!(PRODUCTION_BACKUP_CONTRACT_ENABLED);
     assert!(PRODUCTION_VERIFICATION_CONTRACT_ENABLED);
-    assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
+    assert!(PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert!(!PRODUCTION_ADVANCED_CONFIRMATION_ENABLED);
     assert!(!PRODUCTION_HIGH_RISK_APPROVAL_ENABLED);
     assert!(pre_enable_backup_and_verification_gates_are_true());
@@ -47,6 +47,9 @@ fn visual_review_gate_inventory_keeps_staged_prerequisite_gates_true() {
             "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
                 | "PRODUCTION_BACKUP_CONTRACT_ENABLED"
                 | "PRODUCTION_VERIFICATION_CONTRACT_ENABLED"
+                | "PRODUCTION_RECOVERY_CONTRACT_ENABLED"
+                | "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED"
+                | "PRODUCTION_WRITE_TARGET_SELECTION_READY"
         ))
         .all(|gate| !gate.current_value));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);

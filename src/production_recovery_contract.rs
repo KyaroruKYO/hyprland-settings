@@ -5,7 +5,7 @@ use crate::config_parser::{parse_hyprland_config_file, ParseStatus};
 use crate::production_backup_contract::FixtureBackupContractProof;
 use crate::write_target_candidate::WriteTargetCandidate;
 
-pub const PRODUCTION_RECOVERY_CONTRACT_ENABLED: bool = false;
+pub const PRODUCTION_RECOVERY_CONTRACT_ENABLED: bool = true;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ProductionRecoveryContract {
@@ -30,7 +30,7 @@ impl ProductionRecoveryContract {
             "This pilot must never reload Hyprland automatically.".to_string(),
             "If recovery fails, the app will report the failure and leave the backup available."
                 .to_string(),
-            "Production recovery is not active yet.".to_string(),
+            "Recovery approval is staged; real recovery is still not active yet.".to_string(),
         ]
     }
 }
@@ -396,7 +396,7 @@ pub fn recovery_report_for(
             "Recovery was skipped because no write had started.".to_string()
         }
         RecoveryReportStatus::ProductionDisabled | RecoveryReportStatus::RecoveryAttempted => {
-            "Recovery is not active yet.".to_string()
+            "Recovery approval is staged; real recovery is still not active yet.".to_string()
         }
     };
     let safe_next_action = match status {

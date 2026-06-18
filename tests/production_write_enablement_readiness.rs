@@ -13,7 +13,7 @@ fn readiness_model_represents_all_required_gates_as_not_ready() {
     assert!(!readiness.production_apply_integration_allowed);
     assert!(!readiness.real_write_target_selection_active);
     assert!(!readiness.real_layered_writes_active);
-    assert!(!PRODUCTION_WRITE_TARGET_SELECTION_READY);
+    assert!(PRODUCTION_WRITE_TARGET_SELECTION_READY);
 
     let gate_ids = readiness
         .gates
@@ -51,7 +51,7 @@ fn readiness_copy_explains_preview_only_status() {
         .join("\n");
 
     for expected in [
-        "Production write-target selection is not ready yet.",
+        "Target-selection approval is staged; real selection is still not active yet.",
         "The app can preview the review flow, but cannot write through it.",
         "Before enabling writes, exact backup, reread verification, recovery, and advanced confirmation must be complete.",
         "Required before enabling: Exact backup implementation",

@@ -6,9 +6,9 @@ use hyprland_settings::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELEC
 use hyprland_settings::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE;
 
 #[test]
-fn code_gate_inventory_lists_every_target_selection_gate_as_false() {
-    assert!(!PRODUCTION_WRITE_TARGET_SELECTION_READY);
-    assert!(!PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
+fn code_gate_inventory_lists_prerequisite_selection_and_review_true_but_write_execution_false() {
+    assert!(PRODUCTION_WRITE_TARGET_SELECTION_READY);
+    assert!(PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
     assert!(!PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
 
@@ -28,8 +28,21 @@ fn code_gate_inventory_lists_every_target_selection_gate_as_false() {
             "missing gate inventory item: {gate}"
         );
     }
-    assert!(inventory.iter().all(|gate| !gate.current_value));
-    assert!(inventory.iter().all(|gate| gate.must_remain_false_now));
+    assert!(inventory.iter().any(|gate| gate.gate_name
+        == "PRODUCTION_WRITE_TARGET_SELECTION_READY"
+        && gate.current_value
+        && !gate.must_remain_false_now));
+    assert!(inventory.iter().any(|gate| gate.gate_name
+        == "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED"
+        && gate.current_value
+        && !gate.must_remain_false_now));
+    assert!(inventory
+        .iter()
+        .filter(|gate| !matches!(
+            gate.gate_name,
+            "PRODUCTION_WRITE_TARGET_SELECTION_READY" | "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED"
+        ))
+        .all(|gate| !gate.current_value && gate.must_remain_false_now));
     assert!(inventory
         .iter()
         .all(|gate| !gate.would_allow.is_empty() && !gate.required_proof_before_flip.is_empty()));

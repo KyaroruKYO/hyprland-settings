@@ -1,7 +1,7 @@
 use crate::write_target_candidate::WriteTargetCandidate;
 use crate::write_target_recommendation::{BlockedWriteTarget, WriteTargetRecommendation};
 
-pub const PRODUCTION_WRITE_TARGET_REVIEW_ENABLED: bool = false;
+pub const PRODUCTION_WRITE_TARGET_REVIEW_ENABLED: bool = true;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct GuardedWriteTargetReview {
@@ -26,6 +26,7 @@ impl GuardedWriteTargetReview {
             "Write review".to_string(),
             "Real writing is not active yet.".to_string(),
             "Apply behavior has not changed.".to_string(),
+            "Write review approval is staged; Apply still cannot write.".to_string(),
         ];
         if let Some(candidate) = &self.recommended_candidate {
             lines.push(format!("Recommended save location: {}", candidate.label));

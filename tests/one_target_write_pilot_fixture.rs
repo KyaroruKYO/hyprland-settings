@@ -107,7 +107,9 @@ fn one_target_pilot_fixture_proves_normal_scalar_path_without_real_files() {
     assert!(!proof.target_path.starts_with("/home/kyo/.config/hypr"));
     assert_eq!(
         guarded.review_status,
-        GuardedWriteReviewStatus::ProductionDisabled
+        GuardedWriteReviewStatus::ReadyForReview
     );
+    assert!(guarded.production_enabled);
+    assert!(guarded.required_gates.production_write_integration_allowed);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

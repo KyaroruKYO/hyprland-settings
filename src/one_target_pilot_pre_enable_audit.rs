@@ -341,7 +341,7 @@ pub fn one_target_pilot_gate_inventory_snapshot() -> Vec<OneTargetPilotGateSnaps
             "write_enablement_readiness",
             "production save-location readiness to become available",
             "all pilot contracts, UI disabled-state review, and Apply isolation proof",
-            "production target selection is not ready",
+            "target-selection readiness is approved as a prerequisite; real selection remains inactive while pilot and Apply gates are false",
         ),
         gate_snapshot(
             "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
@@ -349,7 +349,7 @@ pub fn one_target_pilot_gate_inventory_snapshot() -> Vec<OneTargetPilotGateSnaps
             "guarded_write_review",
             "guarded review to leave production-disabled status",
             "target selection, backup, verification, recovery, advanced confirmation, and high-risk proof",
-            "guarded review remains disabled",
+            "guarded review is approved as a prerequisite; Apply still cannot write while pilot and walkthrough gates are false",
         ),
         gate_snapshot(
             "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
@@ -379,9 +379,9 @@ pub fn one_target_pilot_gate_inventory_snapshot() -> Vec<OneTargetPilotGateSnaps
             "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
             PRODUCTION_RECOVERY_CONTRACT_ENABLED,
             "production_recovery_contract",
-            "production rollback/recovery",
+            "approval for the production recovery contract prerequisite",
             "exact-byte restore, restore verification, and reporting proof",
-            "production recovery is not active",
+            "recovery contract is approved; recovery execution remains unreachable while write-execution gates are false",
         ),
         gate_snapshot(
             "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",

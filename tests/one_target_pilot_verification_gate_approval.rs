@@ -41,7 +41,7 @@ fn verification_gate_approval_represents_single_gate_change_without_execution() 
     assert!(!readiness.production_verification_execution_reachable);
     assert_eq!(
         readiness.next_recommended_gate,
-        "PRODUCTION_RECOVERY_CONTRACT_ENABLED"
+        "Manual approval boundary for the first real one-target write pilot."
     );
     assert!(meaning.meaning.contains("prerequisite"));
     for forbidden_meaning in [
@@ -50,8 +50,8 @@ fn verification_gate_approval_represents_single_gate_change_without_execution() 
         "real verification is run",
         "real backups are created",
         "production backup creation is reachable",
-        "recovery is active",
-        "target selection is active",
+        "real recovery execution is active",
+        "real target selection executes writes",
     ] {
         assert!(meaning.non_meanings.contains(&forbidden_meaning));
     }

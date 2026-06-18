@@ -29,7 +29,7 @@ fn disabled_production_enablement_ui_scaffold_has_not_ready_copy() {
     for expected in [
         "Production write enablement",
         "Status: Not ready",
-        "Production write-target selection is not ready yet.",
+        "Target-selection approval is staged; real selection is still not active yet.",
         "The app can preview the review flow, but cannot write through it.",
         "Before enabling writes, exact backup, reread verification, recovery, and advanced confirmation must be complete.",
         "Required before enabling",

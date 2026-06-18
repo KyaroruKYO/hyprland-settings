@@ -21,17 +21,17 @@ fn pre_enable_backup_and_verification_gates_are_true_after_verification_approval
     assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
     assert!(PRODUCTION_BACKUP_CONTRACT_ENABLED);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
-    assert!(!PRODUCTION_WRITE_TARGET_SELECTION_READY);
-    assert!(!PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
+    assert!(PRODUCTION_WRITE_TARGET_SELECTION_READY);
+    assert!(PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
     assert!(!PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
     assert!(PRODUCTION_VERIFICATION_CONTRACT_ENABLED);
-    assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
+    assert!(PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert!(!PRODUCTION_ADVANCED_CONFIRMATION_ENABLED);
     assert!(!PRODUCTION_HIGH_RISK_APPROVAL_ENABLED);
     assert!(one_target_pilot_backup_gate_single_gate_state_is_preserved());
     assert_eq!(
         gates.iter().filter(|gate| gate.current_value).count(),
-        3,
+        6,
         "only pre-enable audit, backup contract, and verification contract gates may be true"
     );
     assert!(gates.iter().any(|gate| gate.gate_name
@@ -50,6 +50,9 @@ fn pre_enable_backup_and_verification_gates_are_true_after_verification_approval
             "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
                 | "PRODUCTION_BACKUP_CONTRACT_ENABLED"
                 | "PRODUCTION_VERIFICATION_CONTRACT_ENABLED"
+                | "PRODUCTION_RECOVERY_CONTRACT_ENABLED"
+                | "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED"
+                | "PRODUCTION_WRITE_TARGET_SELECTION_READY"
         ))
         .all(|gate| !gate.current_value));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);

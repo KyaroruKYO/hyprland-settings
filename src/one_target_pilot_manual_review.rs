@@ -433,10 +433,7 @@ pub fn all_write_activation_gates_remain_false() -> bool {
 
 pub fn all_write_execution_gates_remain_false() -> bool {
     !PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED
-        && !PRODUCTION_WRITE_TARGET_SELECTION_READY
-        && !PRODUCTION_WRITE_TARGET_REVIEW_ENABLED
         && !PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE
-        && !PRODUCTION_RECOVERY_CONTRACT_ENABLED
         && !PRODUCTION_ADVANCED_CONFIRMATION_ENABLED
         && !PRODUCTION_HIGH_RISK_APPROVAL_ENABLED
 }
@@ -457,6 +454,16 @@ pub fn pre_enable_backup_and_verification_gates_are_true() -> bool {
     PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED
         && PRODUCTION_BACKUP_CONTRACT_ENABLED
         && PRODUCTION_VERIFICATION_CONTRACT_ENABLED
+        && all_write_execution_gates_remain_false()
+}
+
+pub fn nonwriting_prerequisite_gates_are_true() -> bool {
+    PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED
+        && PRODUCTION_BACKUP_CONTRACT_ENABLED
+        && PRODUCTION_VERIFICATION_CONTRACT_ENABLED
+        && PRODUCTION_RECOVERY_CONTRACT_ENABLED
+        && PRODUCTION_WRITE_TARGET_REVIEW_ENABLED
+        && PRODUCTION_WRITE_TARGET_SELECTION_READY
         && all_write_execution_gates_remain_false()
 }
 

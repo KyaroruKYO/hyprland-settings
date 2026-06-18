@@ -120,8 +120,9 @@ fn walkthrough_model_has_all_steps_and_safety_flags() {
     assert!(!PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
     assert_eq!(
         guarded.review_status,
-        GuardedWriteReviewStatus::ProductionDisabled
+        GuardedWriteReviewStatus::ReadyForReview
     );
+    assert!(guarded.production_enabled);
     assert!(walkthrough
         .steps
         .iter()

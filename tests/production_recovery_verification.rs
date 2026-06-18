@@ -67,7 +67,7 @@ fn restore_verification_rereads_exact_file_bytes_and_scalar_value() {
     );
     assert!(verified.bytes_match_backup);
     assert_eq!(verified.observed_restored_value.as_deref(), Some("dwindle"));
-    assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
+    assert!(PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 

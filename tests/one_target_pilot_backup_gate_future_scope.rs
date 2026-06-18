@@ -15,10 +15,7 @@ fn backup_gate_scope_records_approval_and_keeps_writes_disabled() {
     );
     for expected in [
         "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
-        "PRODUCTION_WRITE_TARGET_SELECTION_READY",
-        "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
         "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
-        "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
         "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
         "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED",
     ] {
@@ -49,9 +46,9 @@ fn remaining_blockers_keep_production_activation_blocked_after_backup_approval()
         "production-backup-gate-approved-but-non-executing",
         "production-backup-implementation-not-active",
         "production-verification-gate-approved-but-non-executing",
-        "production-recovery-gate-not-approved",
-        "production-write-target-review-not-active",
-        "production-target-selection-not-active",
+        "production-recovery-gate-approved-but-non-executing",
+        "production-write-target-review-approved-but-non-executing",
+        "production-target-selection-approved-but-non-executing",
         "one-target-pilot-not-active",
         "apply-integration-not-approved",
     ] {

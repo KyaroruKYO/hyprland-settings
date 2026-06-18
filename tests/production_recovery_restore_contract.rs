@@ -76,7 +76,7 @@ fn restore_operation_contract_restores_exact_backup_bytes_in_fixture() {
         fs::read_to_string(&unrelated).expect("unrelated should read"),
         unrelated_before
     );
-    assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
+    assert!(PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 

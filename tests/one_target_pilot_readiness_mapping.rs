@@ -22,15 +22,15 @@ fn one_target_pilot_readiness_maps_verification_approved_and_keeps_write_executi
     assert!(!readiness.is_ready_for_production());
     assert!(readiness.production_backup_enabled);
     assert!(readiness.production_verification_enabled);
-    assert!(!readiness.production_recovery_enabled);
+    assert!(readiness.production_recovery_enabled);
     assert!(!readiness.pilot_gate_enabled);
     assert!(PRODUCTION_BACKUP_CONTRACT_ENABLED);
     assert!(PRODUCTION_VERIFICATION_CONTRACT_ENABLED);
-    assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
+    assert!(PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
     assert!(readiness
         .user_facing_lines()
         .iter()
-        .any(|line| line == "Rollback/recovery must be implemented before real writes."));
+        .any(|line| line == "Recovery contract approval is staged; recovery execution is still blocked until the pilot is approved."));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

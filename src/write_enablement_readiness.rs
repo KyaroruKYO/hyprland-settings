@@ -1,4 +1,4 @@
-pub const PRODUCTION_WRITE_TARGET_SELECTION_READY: bool = false;
+pub const PRODUCTION_WRITE_TARGET_SELECTION_READY: bool = true;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ManualSmokeReviewChecklist {
@@ -87,7 +87,8 @@ impl ProductionWriteEnablementReadiness {
         let mut lines = vec![
             "Production write enablement".to_string(),
             "Status: Not ready".to_string(),
-            "Production write-target selection is not ready yet.".to_string(),
+            "Target-selection approval is staged; real selection is still not active yet."
+                .to_string(),
             "The app can preview the review flow, but cannot write through it.".to_string(),
             "Before enabling writes, exact backup, reread verification, recovery, and advanced confirmation must be complete.".to_string(),
         ];

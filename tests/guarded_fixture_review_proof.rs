@@ -106,10 +106,10 @@ fn fixture_backed_review_proof_runs_end_to_end_without_real_config_paths() {
     assert!(!proof.target_path.starts_with("/home/kyo/.config/hypr"));
     assert_eq!(
         guarded_review.review_status,
-        GuardedWriteReviewStatus::ProductionDisabled
+        GuardedWriteReviewStatus::ReadyForReview
     );
     assert!(
-        !guarded_review
+        guarded_review
             .required_gates
             .production_write_integration_allowed
     );

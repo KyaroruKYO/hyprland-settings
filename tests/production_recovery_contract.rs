@@ -4,7 +4,7 @@ use hyprland_settings::production_recovery_contract::{
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 
 #[test]
-fn recovery_prerequisite_contract_requires_restore_without_reload_and_stays_disabled() {
+fn recovery_prerequisite_contract_requires_restore_without_reload_and_is_approved_nonexecuting() {
     let contract = production_recovery_prerequisite_contract();
 
     assert!(contract.backup_exists_required);
@@ -13,8 +13,8 @@ fn recovery_prerequisite_contract_requires_restore_without_reload_and_stays_disa
     assert!(contract.reread_restored_file_required);
     assert!(contract.report_rollback_success_or_failure_required);
     assert!(!contract.hyprland_reload_allowed);
-    assert!(!contract.production_enabled);
-    assert!(!PRODUCTION_RECOVERY_CONTRACT_ENABLED);
+    assert!(contract.production_enabled);
+    assert!(PRODUCTION_RECOVERY_CONTRACT_ENABLED);
     assert!(contract
         .user_facing_lines()
         .iter()

@@ -150,7 +150,7 @@ pub fn production_write_gate_inventory() -> Vec<ProductionWriteGateInventoryItem
             would_allow: "the target-selection UI readiness model to move toward production",
             required_proof_before_flip:
                 "exact backup, reread verification, recovery, advanced confirmation, and Apply boundary proof",
-            must_remain_false_now: true,
+            must_remain_false_now: false,
         },
         ProductionWriteGateInventoryItem {
             gate_name: "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
@@ -159,7 +159,7 @@ pub fn production_write_gate_inventory() -> Vec<ProductionWriteGateInventoryItem
             would_allow: "guarded target review to leave production-disabled status",
             required_proof_before_flip:
                 "all guarded review gates and high-risk policy integration proven",
-            must_remain_false_now: true,
+            must_remain_false_now: false,
         },
         ProductionWriteGateInventoryItem {
             gate_name: "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
