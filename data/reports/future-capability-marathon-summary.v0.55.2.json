@@ -27,10 +27,15 @@
   "phasesCompleted": [
     "missing_default_insertion_safe_env_proof",
     "duplicate_occurrence_model_and_safe_env_replacement_proof",
+    "disabled_duplicate_occurrence_selector_ui",
     "mock_high_risk_watchdog_state_machine",
+    "disabled_high_risk_recovery_review_model",
     "structured_family_read_only_editor_scaffold",
+    "structured_edit_candidate_validation",
     "profile_mode_safe_env_symlink_switch_proof",
+    "disabled_profile_switch_review_model",
     "runtime_dry_run_boundary",
+    "runtime_action_policy_scaffold",
     "hyprland_0554_disabled_migration_assessment"
   ],
   "phasesPartiallyCompleted": [],
@@ -57,7 +62,8 @@
   "testsAdded": [
     "tests/future_capability_marathon.rs",
     "tests/missing_default_insertion.rs",
-    "tests/future_capability_models.rs"
+    "tests/future_capability_models.rs",
+    "tests/future_capability_ui.rs"
   ],
   "validation": {
     "cargoFmt": "passed",
@@ -67,7 +73,8 @@
     "cargoBuildRelease": "passed",
     "jqReports": "passed",
     "gitDiffCheck": "passed",
-    "gtkSafeEnvMatrix": "not run; no UI behavior changed in this milestone"
+    "gtkSafeEnvMatrix": "passed",
+    "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_101038"
   },
   "nextRecommendedAction": "Wire disabled UI scaffolds to the new future_capability models, starting with duplicate occurrence selector and insertion review; keep all production writes blocked."
 }

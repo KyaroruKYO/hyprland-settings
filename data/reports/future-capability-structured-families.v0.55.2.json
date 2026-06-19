@@ -16,6 +16,7 @@
   "whatWasImplemented": [
     "Added a read-only structured-family model for preserved raw structured records.",
     "Added disabled editor scaffold fields for hl.bind and other structured families.",
+    "Added structured edit candidate validation that blocks invalid family prefixes and multiline input.",
     "Added fixture parser/model tests for key binding entries.",
     "Kept active safe-batch structured-family copy blocked.",
     "Identified read-only parser/display work as the safest next subset."
@@ -34,6 +35,7 @@
   "safetyBoundaries": {
     "readOnlyParserImprovementsAllowed": true,
     "disabledEditorScaffoldAllowed": true,
+    "invalidInputBlockingProofExists": true,
     "productionStructuredWritesEnabled": false
   },
   "validation": {

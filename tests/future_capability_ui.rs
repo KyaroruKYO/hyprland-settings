@@ -1,0 +1,69 @@
+use std::fs;
+
+use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
+
+fn source_slice<'a>(source: &'a str, start: &str, end: &str) -> &'a str {
+    let start = source
+        .find(start)
+        .expect("source start marker should exist");
+    let end = source[start..]
+        .find(end)
+        .map(|offset| start + offset)
+        .expect("source end marker should exist");
+    &source[start..end]
+}
+
+#[test]
+fn duplicate_occurrence_selector_is_visible_read_only_and_disabled() {
+    let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
+    let selector = source_slice(
+        &source,
+        "fn append_duplicate_occurrence_selector",
+        "fn append_session_value_projection_summary",
+    );
+
+    for expected in [
+        "hyprland-settings-duplicate-occurrence-selector-disabled",
+        "hyprland-settings-duplicate-occurrence-choice-disabled",
+        "Duplicate occurrences",
+        "The app will not auto-choose a duplicate line.",
+        "Duplicate writes stay blocked until manual occurrence selection is reviewed.",
+        "Choose this occurrence (planned)",
+        "File:",
+        "Line:",
+        "Value:",
+        "Source depth:",
+        "Raw line:",
+        "choose.set_sensitive(false)",
+    ] {
+        assert!(
+            selector.contains(expected),
+            "missing duplicate selector source: {expected}"
+        );
+    }
+
+    for forbidden in [
+        "execute_missing_default_insertion_plan",
+        "replace_duplicate_occurrence_safe_env",
+        "apply",
+        "hyprctl",
+        "reload",
+    ] {
+        assert!(
+            !selector.contains(forbidden),
+            "duplicate selector must not invoke production or runtime behavior: {forbidden}"
+        );
+    }
+}
+
+#[test]
+fn layered_occurrences_expose_raw_line_and_source_depth_for_selector() {
+    let source =
+        fs::read_to_string("src/config_layered_values.rs").expect("layered source should read");
+
+    assert!(source.contains("pub raw_line: String"));
+    assert!(source.contains("pub source_depth: usize"));
+    assert!(source.contains("raw_line: record.raw_line.clone()"));
+    assert!(source.contains("source_depth: file.source_depth"));
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
+}

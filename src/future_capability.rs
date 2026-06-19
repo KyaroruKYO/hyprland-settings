@@ -249,6 +249,40 @@ pub struct MockWatchdog {
     pub real_runtime_enabled: bool,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct HighRiskRecoveryReview {
+    pub setting_id: String,
+    pub state: MockWatchdogState,
+    pub production_write_enabled: bool,
+    pub real_runtime_enabled: bool,
+    pub review_lines: Vec<String>,
+}
+
+pub fn high_risk_recovery_review(
+    setting_id: &str,
+    watchdog: &MockWatchdog,
+) -> HighRiskRecoveryReview {
+    let state_line = match watchdog.state {
+        MockWatchdogState::Pending => "Recovery is pending confirmation or timeout.",
+        MockWatchdogState::Confirmed => "The user confirmed the mock recovery session.",
+        MockWatchdogState::TimedOut => "The mock recovery session timed out.",
+        MockWatchdogState::Reverted => "The mock recovery session reverted the fixture state.",
+        MockWatchdogState::RecoveryFailed => "The mock recovery session failed to recover.",
+    };
+    HighRiskRecoveryReview {
+        setting_id: setting_id.to_string(),
+        state: watchdog.state,
+        production_write_enabled: false,
+        real_runtime_enabled: false,
+        review_lines: vec![
+            "High-risk/display writes need a recovery path before production Apply can use them."
+                .to_string(),
+            state_line.to_string(),
+            "This review is non-mutating and does not reload Hyprland.".to_string(),
+        ],
+    }
+}
+
 impl MockWatchdog {
     pub fn arm(session_id: &str, confirmation_token: &str, deadline_tick: u64) -> Self {
         Self {
@@ -299,6 +333,59 @@ pub struct StructuredFamilyEntry {
     pub raw_value: String,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredEditCandidate {
+    pub family_id: String,
+    pub proposed_raw_line: String,
+    pub accepted: bool,
+    pub production_write_enabled: bool,
+    pub lossless_render_required: bool,
+    pub errors: Vec<String>,
+}
+
+pub fn validate_structured_edit_candidate(
+    family_id: &str,
+    proposed_raw_line: &str,
+) -> StructuredEditCandidate {
+    let trimmed = proposed_raw_line.trim();
+    let mut errors = Vec::new();
+    if trimmed.is_empty() {
+        errors.push("structured entries cannot be blank".to_string());
+    }
+    if proposed_raw_line.contains('\n') || proposed_raw_line.contains('\r') {
+        errors.push(
+            "structured entries must be single-line until a lossless editor exists".to_string(),
+        );
+    }
+    let expected_prefix = match family_id {
+        "hl.bind" => "bind",
+        "hl.monitor" => "monitor",
+        "hl.windowrule" => "windowrule",
+        "hl.animation" => "animation",
+        "hl.curve" => "bezier",
+        "hl.gesture" => "gesture",
+        "hl.permission" => "permission",
+        "hl.device" => "device",
+        _ => "",
+    };
+    if expected_prefix.is_empty() {
+        errors.push("unknown structured family".to_string());
+    } else if !trimmed.starts_with(expected_prefix) {
+        errors.push(format!(
+            "structured entry for {family_id} must start with {expected_prefix}"
+        ));
+    }
+
+    StructuredEditCandidate {
+        family_id: family_id.to_string(),
+        proposed_raw_line: proposed_raw_line.to_string(),
+        accepted: errors.is_empty(),
+        production_write_enabled: false,
+        lossless_render_required: true,
+        errors,
+    }
+}
+
 pub fn structured_family_model(
     path: impl AsRef<Path>,
     family_id: &str,
@@ -346,6 +433,35 @@ pub struct ProfileSwitchReport {
     pub real_config_touched: bool,
     pub runtime_touched: bool,
     pub errors: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProfileSwitchReview {
+    pub current_profile: Option<PathBuf>,
+    pub target_profile: PathBuf,
+    pub symlink_path: PathBuf,
+    pub production_switch_enabled: bool,
+    pub reload_after_switch_enabled: bool,
+    pub review_lines: Vec<String>,
+}
+
+pub fn disabled_profile_switch_review(
+    symlink_path: impl Into<PathBuf>,
+    current_profile: Option<PathBuf>,
+    target_profile: impl Into<PathBuf>,
+) -> ProfileSwitchReview {
+    ProfileSwitchReview {
+        current_profile,
+        target_profile: target_profile.into(),
+        symlink_path: symlink_path.into(),
+        production_switch_enabled: false,
+        reload_after_switch_enabled: false,
+        review_lines: vec![
+            "Profile switching is not active yet.".to_string(),
+            "The safe-env proof can switch and restore temp symlinks only.".to_string(),
+            "Real profile files, symlinks, scripts, and Hyprland reload stay blocked.".to_string(),
+        ],
+    }
 }
 
 #[cfg(unix)]
@@ -435,6 +551,34 @@ pub struct RuntimeDryRunExecutor {
     pub recorded_actions: Vec<RuntimeDryRunResult>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeActionPolicy {
+    pub action: RuntimeAction,
+    pub allowlisted_for_real_execution: bool,
+    pub dry_run_allowed: bool,
+    pub production_runtime_enabled: bool,
+    pub reason: String,
+}
+
+pub fn runtime_action_policy(action: RuntimeAction) -> RuntimeActionPolicy {
+    let reason = match &action {
+        RuntimeAction::Status { .. } => {
+            "Represented as read-only intent; this scaffold still does not execute hyprctl."
+        }
+        RuntimeAction::Reload => "Reload is mutating and remains disabled.",
+        RuntimeAction::Keyword { .. } => "Keyword changes mutate runtime and remain disabled.",
+        RuntimeAction::Dispatch { .. } => "Dispatch commands mutate runtime and remain disabled.",
+    }
+    .to_string();
+    RuntimeActionPolicy {
+        action,
+        allowlisted_for_real_execution: false,
+        dry_run_allowed: true,
+        production_runtime_enabled: false,
+        reason,
+    }
+}
+
 impl RuntimeDryRunExecutor {
     pub fn evaluate(&mut self, action: RuntimeAction) -> RuntimeDryRunResult {
         let would_mutate_runtime = !matches!(action, RuntimeAction::Status { .. });
@@ -467,6 +611,49 @@ pub struct VersionMigrationAssessment {
     pub production_default_changed: bool,
     pub status: String,
     pub blockers: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct VersionedDataBundle {
+    pub version: String,
+    pub readable_rows: usize,
+    pub writable_rows: usize,
+    pub blocked_rows: usize,
+    pub default_model: bool,
+    pub trusted_source: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DisabledMigrationReview {
+    pub current_default: VersionedDataBundle,
+    pub requested_version: String,
+    pub migration_enabled: bool,
+    pub review_lines: Vec<String>,
+}
+
+pub fn current_v0552_data_bundle() -> VersionedDataBundle {
+    VersionedDataBundle {
+        version: "0.55.2".to_string(),
+        readable_rows: 341,
+        writable_rows: 341,
+        blocked_rows: 0,
+        default_model: true,
+        trusted_source: true,
+    }
+}
+
+pub fn disabled_migration_review(requested_version: &str) -> DisabledMigrationReview {
+    DisabledMigrationReview {
+        current_default: current_v0552_data_bundle(),
+        requested_version: requested_version.to_string(),
+        migration_enabled: false,
+        review_lines: vec![
+            "The app still defaults to Hyprland v0.55.2 data/model.".to_string(),
+            "A newer runtime package is not enough to migrate app data.".to_string(),
+            "Trusted official exports and comparison tests are required before activation."
+                .to_string(),
+        ],
+    }
 }
 
 pub fn assess_hyprland_version_migration(

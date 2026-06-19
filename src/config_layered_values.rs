@@ -40,9 +40,11 @@ impl LayeredSettingValues {
 pub struct LayeredValueOccurrence {
     pub setting_id: String,
     pub raw_value: String,
+    pub raw_line: String,
     pub file_path: PathBuf,
     pub resolved_path: Option<PathBuf>,
     pub line_number: usize,
+    pub source_depth: usize,
     pub role_label: String,
     pub read_only: bool,
     pub generated_or_script_managed: bool,
@@ -84,9 +86,11 @@ pub fn layered_values_for_setting(
             occurrences.push(LayeredValueOccurrence {
                 setting_id: setting_id.to_string(),
                 raw_value: record.raw_value.clone().unwrap_or_default(),
+                raw_line: record.raw_line.clone(),
                 file_path: record.path.clone(),
                 resolved_path: file.resolved_path.clone(),
                 line_number: record.line_number,
+                source_depth: file.source_depth,
                 role_label: layered_file_role_label(file),
                 read_only: true,
                 generated_or_script_managed: file_generated_or_script_managed(file),

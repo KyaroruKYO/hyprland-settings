@@ -8,7 +8,10 @@
   "goal": "Implement or design explicit duplicate occurrence selection without auto-resolution.",
   "filesChanged": [
     "src/future_capability.rs",
+    "src/config_layered_values.rs",
+    "src/ui/window.rs",
     "tests/future_capability_models.rs",
+    "tests/future_capability_ui.rs",
     "tests/future_capability_marathon.rs",
     "data/reports/future-capability-duplicate-resolution.v0.55.2.json"
   ],
@@ -16,6 +19,9 @@
   "whatWasImplemented": [
     "Added a read-only duplicate occurrence model carrying file path, line number, raw line, raw value, and source depth.",
     "Added a disabled manual occurrence selector scaffold with production_write_enabled=false.",
+    "Wired a disabled duplicate occurrence selector surface into the setting detail pane.",
+    "The detail pane shows file path, line number, raw line, current value, and source depth for each occurrence.",
+    "Added disabled future action controls labeled Choose this occurrence (planned).",
     "Added safe-env duplicate occurrence replacement proof for exact selected line replacement.",
     "Added backup byte-equality, reread verification, and restore-on-failure proof for fixture duplicate replacement.",
     "Kept duplicate-conflict settings blocked in the active safe-batch path.",
@@ -28,6 +34,7 @@
   ],
   "testsAdded": [
     "tests/future_capability_models.rs",
+    "tests/future_capability_ui.rs",
     "tests/future_capability_marathon.rs"
   ],
   "reportsAdded": [
@@ -38,7 +45,9 @@
     "autoResolutionAllowed": false,
     "sameFileDuplicateFixtureProofExists": true,
     "sourceLayerDuplicateModelProofExists": true,
-    "productionDuplicateWritesEnabled": false
+    "productionDuplicateWritesEnabled": false,
+    "disabledOccurrenceSelectorUiExists": true,
+    "applyStillBlocked": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"

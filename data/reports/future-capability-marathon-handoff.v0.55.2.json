@@ -7,10 +7,15 @@
   "completedPhases": [
     "missing_default_insertion_safe_env_proof",
     "duplicate_occurrence_model_and_safe_env_replacement_proof",
+    "disabled_duplicate_occurrence_selector_ui",
     "mock_high_risk_watchdog_state_machine",
+    "disabled_high_risk_recovery_review_model",
     "structured_family_read_only_editor_scaffold",
+    "structured_edit_candidate_validation",
     "profile_mode_safe_env_symlink_switch_proof",
+    "disabled_profile_switch_review_model",
     "runtime_dry_run_boundary",
+    "runtime_action_policy_scaffold",
     "hyprland_0554_disabled_migration_assessment"
   ],
   "partialPhases": [],
@@ -39,8 +44,11 @@
     "docs/FUTURE-CAPABILITY-MARATHON-HANDOFF.md",
     "src/missing_default_insertion.rs",
     "src/future_capability.rs",
+    "src/config_layered_values.rs",
+    "src/ui/window.rs",
     "tests/missing_default_insertion.rs",
     "tests/future_capability_models.rs",
+    "tests/future_capability_ui.rs",
     "data/reports/future-capability-*.json"
   ],
   "testsPassing": [
@@ -50,10 +58,11 @@
     "cargo test",
     "cargo build --release",
     "jq empty data/reports/*.json",
-    "git diff --check"
+    "git diff --check",
+    "tools/live_scenario_harness/run_gtk_evidence_matrix.sh"
   ],
   "testsFailing": [],
-  "validationStatus": "passed",
+  "validationStatus": "passed; GTK safe-env evidence root /tmp/hyprland-settings-gtk-automation/20260619_101038",
   "knownRisks": [
     "Production insertion, duplicate resolution, structured writes, profile switching, runtime reload, and high-risk writes remain intentionally inactive despite safe-env/mock scaffolding.",
     "Hyprland 0.55.4 migration is not activated."

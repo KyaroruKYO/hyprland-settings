@@ -16,6 +16,7 @@
   "whatWasImplemented": [
     "Added a dry-run runtime action boundary with reload, keyword, dispatch, and status action types.",
     "Added a mock executor that records intent and never executes real commands.",
+    "Added runtime action policy scaffolding that keeps all real execution disabled.",
     "Added tests proving mutating runtime actions remain dry-run only.",
     "Kept real reload and mutating hyprctl outside active Apply behavior."
   ],
@@ -33,6 +34,7 @@
   "safetyBoundaries": {
     "dryRunRuntimeInterfaceAllowed": true,
     "dryRunRuntimeAdapterExists": true,
+    "runtimeActionPolicyExists": true,
     "readOnlyStatusChecksAllowed": true,
     "mutatingHyprctlAllowed": false,
     "hyprlandReloadAllowed": false

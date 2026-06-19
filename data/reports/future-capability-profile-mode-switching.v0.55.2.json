@@ -16,6 +16,8 @@
   "whatWasImplemented": [
     "Added safe-env-only profile symlink switching proof for temporary profile fixtures.",
     "Added restore verification for temp symlink switching.",
+    "Added disabled production profile switch review model.",
+    "Added forced restore failure test coverage.",
     "Recorded that real profile/mode switching remains disabled.",
     "Kept profile/mode safe-batch blocking asserted by deterministic tests.",
     "Defined safe-env symlink/profile switching as the next acceptable proof path."
@@ -34,6 +36,8 @@
   ],
   "safetyBoundaries": {
     "safeEnvProfileFixturesAllowed": true,
+    "disabledProfileSwitchReviewExists": true,
+    "forcedRestoreFailureProofExists": true,
     "realProfileSwitchingAllowed": false,
     "realSymlinkSwitchingAllowed": false,
     "reloadAfterSwitchAllowed": false

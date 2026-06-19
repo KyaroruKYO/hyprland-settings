@@ -1902,27 +1902,73 @@ fn append_layered_value_summary(
     section.append(&body_label(
         "This setting is controlled in more than one place.",
     ));
-    for occurrence in &layered.occurrences {
-        append_detail_line(
-            section,
-            &occurrence.role_label,
-            &format!(
-                "{} ({}:{})",
-                occurrence.raw_value,
-                occurrence.file_path.display(),
-                occurrence.line_number
-            ),
-        );
-        for note in occurrence.friendly_notes() {
-            section.append(&small_label(&note));
-        }
-    }
+    append_duplicate_occurrence_selector(&layered, section);
     if let Some(active) = &layered.currently_active_value {
         append_detail_line(section, "Currently active", active);
     }
     section.append(&small_label(
         "Choose where to save changes in a future version. This display is read-only.",
     ));
+}
+
+fn append_duplicate_occurrence_selector(
+    layered: &crate::config_layered_values::LayeredSettingValues,
+    section: &gtk::Box,
+) {
+    let selector = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    selector.set_widget_name("hyprland-settings-duplicate-occurrence-selector-disabled");
+    selector.set_tooltip_text(Some(
+        "Disabled duplicate occurrence selector. The app will not auto-choose a duplicate line.",
+    ));
+
+    selector.append(&body_label("Duplicate occurrences"));
+    selector.append(&small_label(
+        "The app will not auto-choose a duplicate line. Duplicate writes stay blocked until manual occurrence selection is reviewed.",
+    ));
+
+    for (index, occurrence) in layered.occurrences.iter().enumerate() {
+        let card = gtk::Box::new(gtk::Orientation::Vertical, 4);
+        card.set_widget_name(&format!(
+            "hyprland-settings-duplicate-occurrence-{}",
+            index + 1
+        ));
+        card.set_tooltip_text(Some(
+            "Read-only duplicate occurrence detail. Choosing this occurrence is planned but disabled.",
+        ));
+        card.append(&body_label(&format!(
+            "Occurrence {} · {}",
+            index + 1,
+            occurrence.role_label
+        )));
+        card.append(&small_label(&format!(
+            "File: {}",
+            occurrence.file_path.display()
+        )));
+        card.append(&small_label(&format!("Line: {}", occurrence.line_number)));
+        card.append(&small_label(&format!("Value: {}", occurrence.raw_value)));
+        card.append(&small_label(&format!(
+            "Source depth: {}",
+            occurrence.source_depth
+        )));
+        card.append(&small_label(&format!("Raw line: {}", occurrence.raw_line)));
+        for note in occurrence.friendly_notes() {
+            card.append(&small_label(&note));
+        }
+
+        let choose = gtk::Button::with_label("Choose this occurrence (planned)");
+        choose.set_widget_name(&format!(
+            "hyprland-settings-duplicate-occurrence-choice-disabled-{}",
+            index + 1
+        ));
+        choose.set_tooltip_text(Some(
+            "Disabled future action. This does not write config or unblock Apply.",
+        ));
+        choose.set_sensitive(false);
+        card.append(&choose);
+        selector.append(&card);
+    }
+
+    section.append(&selector);
 }
 
 fn append_session_value_projection_summary(

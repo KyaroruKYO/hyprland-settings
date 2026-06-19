@@ -15,6 +15,7 @@
   "implementationStatus": "safe_env_only",
   "whatWasImplemented": [
     "Added a mock watchdog/recovery state machine with pending, confirmed, timeout, revert, and recovery-failure states.",
+    "Added a disabled high-risk recovery review model backed by the mock watchdog state.",
     "Added deterministic tests for confirmation, timeout revert, and timeout recovery failure.",
     "Recorded that high-risk/display-render production writes remain blocked.",
     "Preserved family-specific recovery requirement language through active blocked copy tests.",
@@ -34,6 +35,7 @@
   ],
   "safetyBoundaries": {
     "mockWatchdogAllowed": true,
+    "disabledRecoveryReviewModelExists": true,
     "realRuntimeMutationAllowed": false,
     "realDisplayRenderWritesAllowed": false,
     "highRiskProductionWritesEnabled": false

@@ -13,12 +13,12 @@
 
 ## Phase results
 - Missing/default insertion: safe-env-only planner/executor proof plus disabled production review scaffolding added; production remains blocked.
-- Duplicate setting resolution: read-only occurrence model plus safe-env exact-line replacement proof added; production remains blocked.
-- High-risk/display-render recovery: mock watchdog/recovery state machine added; real writes remain blocked.
-- Structured-family editors/writes: read-only disabled editor scaffold added for raw structured entries; writes remain blocked.
-- Profile/mode switching: safe-env temp symlink switch/restore proof added; real switching remains blocked.
-- Runtime mutation/reload: dry-run action boundary and mock executor added; real reload and mutating hyprctl remain blocked.
-- Hyprland 0.55.4 migration: disabled assessment scaffold added; app still defaults to v0.55.2 data/model.
+- Duplicate setting resolution: read-only occurrence model, safe-env exact-line replacement proof, and disabled occurrence selector UI added; production remains blocked.
+- High-risk/display-render recovery: mock watchdog/recovery state machine and disabled review model added; real writes remain blocked.
+- Structured-family editors/writes: read-only disabled editor scaffold and invalid-input candidate validation added for raw structured entries; writes remain blocked.
+- Profile/mode switching: safe-env temp symlink switch/restore proof, disabled review model, and forced restore-failure coverage added; real switching remains blocked.
+- Runtime mutation/reload: dry-run action boundary, mock executor, and runtime action policy scaffold added; real reload and mutating hyprctl remain blocked.
+- Hyprland 0.55.4 migration: disabled assessment scaffold, versioned data bundle model, and disabled migration review added; app still defaults to v0.55.2 data/model.
 
 ## Safety
 - Real user config edited: no
@@ -37,6 +37,7 @@
 - cargo build --release: passed
 - jq reports: passed
 - git diff --check: passed
+- GTK safe-env evidence matrix: passed (`/tmp/hyprland-settings-gtk-automation/20260619_101038`)
 
 ## Next recommended sprint
 Continue by wiring disabled duplicate occurrence selector UI to the read-only occurrence model, keeping production insertion and duplicate writes disabled until review.
