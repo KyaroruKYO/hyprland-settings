@@ -27,6 +27,18 @@ EXPECTED_TERMS = [
     "display",
 ]
 
+SAFE_NAVIGATION_TARGETS = {
+    "Dashboard",
+    "Config",
+    "Appearance",
+    "Display",
+    "Search",
+    "FirstSafeSettingRow",
+    "FirstBlockedSettingRow",
+    "FirstDuplicateOrBlockedRow",
+    "DetailPane",
+}
+
 
 def add_text(values, candidate):
     text = (candidate or "").strip()
@@ -87,6 +99,33 @@ def found_terms(values):
     return sorted(term for term in EXPECTED_TERMS if term in lowered)
 
 
+def node_text(node):
+    return "\n".join(accessible_text(node))
+
+
+def node_text_lower(node):
+    return node_text(node).lower()
+
+
+def has_apply_text(node):
+    return "apply" in node_text_lower(node)
+
+
+def safe_click_action(node):
+    if has_apply_text(node):
+        return False, "refused to click node containing Apply"
+    try:
+        action = node.queryAction()
+        for action_index in range(action.nActions):
+            name = action.getName(action_index).lower()
+            if name in {"click", "press", "activate"}:
+                action.doAction(action_index)
+                return True, f"performed {name} action"
+    except Exception as error:
+        return False, f"no safe click action: {error}"
+    return False, "no click/press/activate action available"
+
+
 def first_clickable_button(node):
     try:
         role = node.getRoleName()
@@ -113,11 +152,98 @@ def first_clickable_button(node):
     return None
 
 
-def click_named_card(app, target):
+def find_first_node(app, predicate, max_nodes=1500):
+    seen = set()
+
+    def recurse(node):
+        if len(seen) >= max_nodes:
+            return None
+        try:
+            key = hash(node)
+        except Exception:
+            key = id(node)
+        if key in seen:
+            return None
+        seen.add(key)
+        try:
+            if predicate(node):
+                return node
+        except Exception:
+            pass
+        try:
+            child_count = int(getattr(node, "childCount", 0))
+        except Exception:
+            child_count = 0
+        for child_index in range(min(child_count, 500)):
+            try:
+                found = recurse(node.getChildAtIndex(child_index))
+            except Exception:
+                found = None
+            if found is not None:
+                return found
+        return None
+
+    return recurse(app)
+
+
+def safe_row_candidate(node, blocked):
+    text = node_text_lower(node)
+    if not text:
+        return False
+    if "apply" in text:
+        return False
+    if "setting row:" in text:
+        has_blocked = any(
+            marker in text
+            for marker in [
+                "uses hyprland default",
+                "needs attention",
+                "extra care needed",
+                "blocked",
+                "duplicate",
+                "generated",
+                "script",
+                "symlink",
+                "high-risk",
+            ]
+        )
+        return has_blocked if blocked else not has_blocked
+    return False
+
+
+def click_named_target(app, target):
     if target.lower() == "apply":
         return False, "refused to navigate to Apply"
-    if target not in {"Dashboard", "Config", "Appearance", "Display"}:
+    if target not in SAFE_NAVIGATION_TARGETS:
         return False, f"unsupported navigation target: {target}"
+    if target == "Search":
+        node = find_first_node(
+            app,
+            lambda current: "search settings" in node_text_lower(current)
+            or "hyprland-settings-search" in node_text_lower(current),
+        )
+        return (node is not None), (
+            "Search field found" if node is not None else "Search field not found"
+        )
+    if target == "DetailPane":
+        node = find_first_node(
+            app,
+            lambda current: "setting details" in node_text_lower(current)
+            or "hyprland-settings-detail-pane" in node_text_lower(current),
+        )
+        return (node is not None), (
+            "Detail pane found" if node is not None else "Detail pane not found"
+        )
+    if target in {
+        "FirstSafeSettingRow",
+        "FirstBlockedSettingRow",
+        "FirstDuplicateOrBlockedRow",
+    }:
+        blocked = target != "FirstSafeSettingRow"
+        node = find_first_node(app, lambda current: safe_row_candidate(current, blocked))
+        if node is None:
+            return False, f"no safe row target found for {target}"
+        return safe_click_action(node)
 
     def recurse(node):
         values = accessible_text(node)
@@ -145,15 +271,7 @@ def click_named_card(app, target):
     button = recurse(app)
     if button is None:
         return False, f"no accessible Open button found for {target}"
-    try:
-        action = button.queryAction()
-        for action_index in range(action.nActions):
-            if action.getName(action_index) == "click":
-                action.doAction(action_index)
-                return True, f"clicked {target} Open button"
-    except Exception as error:
-        return False, f"click action failed for {target}: {error}"
-    return False, f"no click action available for {target}"
+    return safe_click_action(button)
 
 
 def main() -> int:
@@ -164,6 +282,18 @@ def main() -> int:
         "pyatspiAvailable": False,
         "gdbusAvailable": shutil.which("gdbus") is not None,
         "succeeded": False,
+        "applicationMatched": False,
+        "navigationAttempted": False,
+        "navigationTarget": None,
+        "navigationSucceeded": False,
+        "navigationMessage": None,
+        "applyRefused": True,
+        "textAfterNavigation": [],
+        "foundTerms": [],
+        "foundTermsAfterNavigation": [],
+        "detailPaneTextCollected": False,
+        "blockedReasonTextCollected": False,
+        "fallbackProofUsed": False,
         "text": [],
         "error": None,
     }
@@ -189,16 +319,15 @@ def main() -> int:
                     }
                 )
         result["applicationsMatched"] = len(matching_apps)
+        result["applicationMatched"] = bool(matching_apps)
         result["text"] = matching_apps[0]["text"] if matching_apps else []
         result["foundTerms"] = matching_apps[0]["foundTerms"] if matching_apps else []
         result["succeeded"] = bool(matching_apps and matching_apps[0]["text"])
         nav_target = os.environ.get("HYPR_SETTINGS_ATSPI_NAV_TARGET")
         result["navigationAttempted"] = bool(nav_target)
         result["navigationTarget"] = nav_target or None
-        result["navigationSucceeded"] = False
-        result["navigationMessage"] = None
         if nav_target and selected_app is not None:
-            ok, message = click_named_card(selected_app, nav_target)
+            ok, message = click_named_target(selected_app, nav_target)
             result["navigationSucceeded"] = ok
             result["navigationMessage"] = message
             if ok:
@@ -207,6 +336,22 @@ def main() -> int:
                 walk_accessible(selected_app, after, 1200, set())
                 result["textAfterNavigation"] = after
                 result["foundTermsAfterNavigation"] = found_terms(after)
+        all_text = "\n".join(result["text"] + result["textAfterNavigation"]).lower()
+        result["detailPaneTextCollected"] = "setting details" in all_text
+        result["blockedReasonTextCollected"] = any(
+            marker in all_text
+            for marker in [
+                "blocked",
+                "uses hyprland default",
+                "needs attention",
+                "extra care needed",
+                "duplicate",
+                "generated",
+                "script",
+                "symlink",
+                "high-risk",
+            ]
+        )
     except Exception as error:
         result["error"] = f"pyatspi unavailable or inaccessible: {error}"
         if result["gdbusAvailable"]:

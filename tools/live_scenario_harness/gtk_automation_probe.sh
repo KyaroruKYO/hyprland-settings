@@ -27,6 +27,7 @@ forced_kill="false"
 launch_succeeded="false"
 accessibility_attempted="false"
 accessibility_succeeded="false"
+app_binary_rebuilt_before_probe="false"
 
 cleanup() {
   if [ -n "$app_pid" ] && kill -0 "$app_pid" 2>/dev/null; then
@@ -46,6 +47,7 @@ cleanup() {
   "liveSwapModeUsed": false,
   "scenarioHome": "$scenario_home",
   "appPid": "${app_pid:-}",
+  "appBinaryRebuiltBeforeProbe": $app_binary_rebuilt_before_probe,
   "appLaunchAttempted": true,
   "appLaunchSucceeded": $launch_succeeded,
   "accessibilityInspectionAttempted": $accessibility_attempted,
@@ -55,9 +57,15 @@ cleanup() {
   "forcedKillUsed": $forced_kill,
   "applyClicked": false,
   "realConfigEdited": false,
+  "realBackupsCreated": false,
   "hyprlandReloaded": false,
   "mutatingHyprctlUsed": false,
-  "runtimeMutated": false
+  "runtimeMutated": false,
+  "scriptsExecuted": false,
+  "luaExecuted": false,
+  "agsTouched": false,
+  "waybarTouched": false,
+  "screenshotsCommitted": false
 }
 EOF
 }
@@ -65,13 +73,13 @@ trap cleanup EXIT INT TERM
 
 (
   cd /home/kyo/Projects/hyprland-settings
-  if [ ! -x target/debug/hyprland-settings ]; then
-    cargo build --quiet
-  fi
+  cargo build --quiet
+  app_binary_rebuilt_before_probe="true"
   HOME="$scenario_home" XDG_CONFIG_HOME="$scenario_home/.config" \
     timeout "$timeout_seconds" target/debug/hyprland-settings
 ) > "$evidence_dir/stdout.txt" 2> "$evidence_dir/stderr.txt" &
 app_pid="$!"
+app_binary_rebuilt_before_probe="true"
 
 sleep 3
 if kill -0 "$app_pid" 2>/dev/null; then

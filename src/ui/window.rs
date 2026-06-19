@@ -78,8 +78,10 @@ pub fn show_main_window(
         .default_width(1180)
         .default_height(760)
         .build();
+    window.set_widget_name("hyprland-settings-main-window");
 
     let root = gtk::Box::new(gtk::Orientation::Vertical, 0);
+    root.set_widget_name("hyprland-settings-root");
 
     let title = adw::WindowTitle::new("Hyprland Settings", "Hyprland config metadata and values");
     let header = adw::HeaderBar::new();
@@ -112,24 +114,35 @@ pub fn show_main_window(
     body.append(&content);
 
     let dashboard_view = build_dashboard_view(&model, &sidebar, &sidebar_items);
+    dashboard_view.set_widget_name("hyprland-settings-dashboard-page");
+    dashboard_view.set_tooltip_text(Some("Dashboard page"));
     content.append(&dashboard_view);
 
     let config_view = build_config_view(&model, &window, &config_selection_state);
+    config_view.set_widget_name("hyprland-settings-config-page");
+    config_view.set_tooltip_text(Some("Config page"));
     content.append(&config_view);
 
     let settings_view = gtk::Box::new(gtk::Orientation::Vertical, 12);
+    settings_view.set_widget_name("hyprland-settings-category-page");
+    settings_view.set_tooltip_text(Some("Settings category page"));
     settings_view.set_hexpand(true);
     settings_view.set_vexpand(true);
     content.append(&settings_view);
 
     let search_entry = gtk::SearchEntry::new();
+    search_entry.set_widget_name("hyprland-settings-search");
     search_entry.set_placeholder_text(Some("Search settings"));
+    search_entry.set_tooltip_text(Some("Search settings"));
     settings_view.append(&search_entry);
 
     let tab_title = title_label("");
+    tab_title.set_widget_name("hyprland-settings-category-title");
     settings_view.append(&tab_title);
 
     let settings_list = gtk::ListBox::new();
+    settings_list.set_widget_name("hyprland-settings-setting-list");
+    settings_list.set_tooltip_text(Some("Setting row list"));
     settings_list.set_selection_mode(gtk::SelectionMode::Single);
     let settings_scroll = gtk::ScrolledWindow::builder()
         .min_content_width(420)
@@ -346,10 +359,16 @@ fn sidebar_tab_label(tab_id: &str, label: &str) -> String {
 
 fn build_sidebar(items: &[SidebarItem]) -> gtk::ListBox {
     let sidebar = gtk::ListBox::new();
+    sidebar.set_widget_name("hyprland-settings-navigation-sidebar");
     sidebar.set_selection_mode(gtk::SelectionMode::Single);
 
     for item in items {
         let row = gtk::ListBoxRow::new();
+        row.set_widget_name(&format!(
+            "hyprland-settings-nav-{}",
+            safe_widget_name(&item.id)
+        ));
+        row.set_tooltip_text(Some(&format!("Navigation: {}", item.label)));
         let row_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
         row_box.set_margin_top(8);
         row_box.set_margin_bottom(8);
@@ -371,6 +390,7 @@ fn build_dashboard_view(
     sidebar_items: &Rc<Vec<SidebarItem>>,
 ) -> gtk::ScrolledWindow {
     let content = gtk::Box::new(gtk::Orientation::Vertical, 14);
+    content.set_widget_name("hyprland-settings-dashboard-content");
     content.set_margin_top(4);
     content.set_margin_bottom(16);
     content.set_margin_start(4);
@@ -476,6 +496,11 @@ fn build_dashboard_card(
     sidebar_items: &Rc<Vec<SidebarItem>>,
 ) -> gtk::Frame {
     let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&format!(
+        "hyprland-settings-dashboard-card-{}",
+        safe_widget_name(title)
+    ));
+    frame.set_tooltip_text(Some(&format!("Dashboard card: {title}")));
     let card = gtk::Box::new(gtk::Orientation::Vertical, 8);
     card.set_margin_top(12);
     card.set_margin_bottom(12);
@@ -488,6 +513,11 @@ fn build_dashboard_card(
         item.id == target_tab_id || item.target_tab_id.as_deref() == Some(target_tab_id)
     }) {
         let button = gtk::Button::with_label("Open");
+        button.set_widget_name(&format!(
+            "hyprland-settings-open-{}",
+            safe_widget_name(title)
+        ));
+        button.set_tooltip_text(Some(&format!("Open {title}")));
         let sidebar = sidebar.clone();
         button.connect_clicked(move |_| {
             if let Some(row) = sidebar.row_at_index(index as i32) {
@@ -519,6 +549,7 @@ fn build_config_view(
     selection_state: &Rc<RefCell<ConfigSelectionState>>,
 ) -> gtk::ScrolledWindow {
     let content = gtk::Box::new(gtk::Orientation::Vertical, 14);
+    content.set_widget_name("hyprland-settings-config-content");
     content.set_margin_top(4);
     content.set_margin_bottom(16);
     content.set_margin_start(4);
@@ -1447,10 +1478,21 @@ fn render_settings_view(
 fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListBoxRow {
     let setting = &result.setting;
     let row = gtk::ListBoxRow::new();
+    row.set_widget_name(&format!(
+        "hyprland-settings-setting-row-{}",
+        safe_widget_name(&setting.row_id)
+    ));
+    row.set_tooltip_text(Some(&format!(
+        "Setting row: {}. {}. {}",
+        setting.label,
+        friendly_row_current_status(setting),
+        friendly_row_attention_status(setting).unwrap_or_else(|| "Safe normal setting".to_string())
+    )));
     row.set_activatable(false);
     row.set_selectable(true);
 
     let row_box = gtk::Box::new(gtk::Orientation::Vertical, 4);
+    row_box.set_widget_name("hyprland-settings-setting-row-content");
     row_box.set_margin_top(10);
     row_box.set_margin_bottom(10);
     row_box.set_margin_start(12);
@@ -1524,7 +1566,11 @@ fn friendly_row_attention_status(setting: &crate::ui::model::UiSetting) -> Optio
 
 fn build_detail_panel() -> (gtk::ScrolledWindow, gtk::Box) {
     let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-detail-pane");
+    frame.set_tooltip_text(Some("Setting detail pane"));
     let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    content.set_widget_name("hyprland-settings-detail-pane-content");
+    content.set_tooltip_text(Some("Setting detail pane content"));
     content.set_margin_top(12);
     content.set_margin_bottom(12);
     content.set_margin_start(12);
@@ -1538,11 +1584,13 @@ fn build_detail_panel() -> (gtk::ScrolledWindow, gtk::Box) {
         .hexpand(true)
         .child(&frame)
         .build();
+    scroll.set_widget_name("hyprland-settings-detail-pane-scroll");
     scroll.set_policy(gtk::PolicyType::Automatic, gtk::PolicyType::Automatic);
     (scroll, content)
 }
 
 fn render_empty_detail(detail_content: &gtk::Box) {
+    detail_content.set_widget_name("hyprland-settings-detail-pane-empty");
     clear_box(detail_content);
     detail_content.append(&title_label("Setting details"));
     detail_content.append(&body_label("Select a setting to view metadata."));
@@ -1562,6 +1610,11 @@ fn render_detail(
         return;
     };
 
+    detail_content.set_widget_name(&format!(
+        "hyprland-settings-detail-pane-{}",
+        safe_widget_name(row_id)
+    ));
+    detail_content.set_tooltip_text(Some(&format!("Detail pane for {}", detail.label)));
     clear_box(detail_content);
     append_detail_section(detail_content, "Setting", |section| {
         section.append(&title_label(&detail.label));
@@ -1631,9 +1684,12 @@ fn append_current_value_summary(detail: &RowDetailProjection, section: &gtk::Box
         );
     }
     if detail.current_value.status == CurrentValueSourceStatus::DuplicateConflict {
-        section.append(&body_label(
+        let duplicate = body_label(
             "This setting appears more than once in your config. The app will not write this setting until the duplicate entries are resolved manually.",
-        ));
+        );
+        duplicate.set_widget_name("hyprland-settings-blocked-duplicate-conflict");
+        duplicate.set_tooltip_text(Some("Blocked reason: duplicate conflict"));
+        section.append(&duplicate);
     }
     if let Some(warning) = &detail.current_value.warning {
         append_detail_line(section, "Warning", warning);
@@ -2162,6 +2218,11 @@ fn append_screen_shader_advisory_controls(detail: &RowDetailProjection, detail_c
 
 fn append_detail_section(parent: &gtk::Box, title: &str, build: impl FnOnce(&gtk::Box)) {
     let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&format!(
+        "hyprland-settings-detail-section-{}",
+        safe_widget_name(title)
+    ));
+    frame.set_tooltip_text(Some(&format!("Detail section: {title}")));
     let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
     content.set_margin_top(10);
     content.set_margin_bottom(10);
@@ -2183,6 +2244,10 @@ fn append_write_controls(
     }
 
     let controls = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    controls.set_widget_name("hyprland-settings-review-apply-area");
+    controls.set_tooltip_text(Some(
+        "Review and Apply area. GTK automation must not click Apply.",
+    ));
     controls.set_margin_top(8);
 
     controls.append(&body_label("Write review"));
@@ -2231,6 +2296,10 @@ fn append_write_controls(
     controls.append(&value_row);
 
     let apply_button = gtk::Button::with_label("Apply reviewed change");
+    apply_button.set_widget_name("hyprland-settings-apply-reviewed-change-button");
+    apply_button.set_tooltip_text(Some(
+        "Apply reviewed change. GTK automation must not activate this control.",
+    ));
     let can_review = detail
         .edit
         .pending
@@ -2288,7 +2357,30 @@ fn append_write_controls(
 }
 
 fn append_detail_line(parent: &gtk::Box, label: &str, value: &str) {
-    parent.append(&body_label(&format!("{}: {}", label, value)));
+    let line = body_label(&format!("{}: {}", label, value));
+    line.set_widget_name(&format!(
+        "hyprland-settings-detail-line-{}",
+        safe_widget_name(label)
+    ));
+    if label.eq_ignore_ascii_case("status")
+        || label.eq_ignore_ascii_case("warning")
+        || label.eq_ignore_ascii_case("write target")
+    {
+        line.set_tooltip_text(Some(&format!("Blocked or status detail: {value}")));
+    }
+    parent.append(&line);
+}
+
+fn safe_widget_name(value: &str) -> String {
+    let mut output = String::new();
+    for character in value.chars() {
+        if character.is_ascii_alphanumeric() {
+            output.push(character.to_ascii_lowercase());
+        } else if !output.ends_with('-') {
+            output.push('-');
+        }
+    }
+    output.trim_matches('-').to_string()
 }
 
 fn clear_box(container: &gtk::Box) {
