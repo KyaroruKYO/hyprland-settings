@@ -72,6 +72,10 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "GeneratedBlockedDetail",
         "ScriptManagedBlockedDetail",
         "SymlinkManagedBlockedDetail",
+        "GeneratedConnectedFileDetail",
+        "ScriptManagedConnectedFileDetail",
+        "SymlinkConnectedFileDetail",
+        "ProfileModeDetail",
         "HighRiskDetail",
         "DisplayRenderRiskDetail",
         "ProfileModeSwitchDetail",
@@ -86,6 +90,13 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("blockedCategoryDetailNavigationSucceeded"));
     assert!(collector.contains("blockedCategoryReasonTextCollected"));
     assert!(collector.contains("blockedCategoryExpectedTextCollected"));
+    assert!(collector.contains("connectedFileDetailNavigationAttempted"));
+    assert!(collector.contains("connectedFileDetailNavigationSucceeded"));
+    assert!(collector.contains("connectedFileGeneratedDetailCollected"));
+    assert!(collector.contains("connectedFileScriptManagedDetailCollected"));
+    assert!(collector.contains("connectedFileSymlinkDetailCollected"));
+    assert!(collector.contains("profileModeDetailCollected"));
+    assert!(collector.contains("\"proofSurface\""));
     assert!(collector.contains("refused to navigate to Apply"));
     assert!(collector.contains("refused to click node containing Apply"));
     assert!(collector.contains("\"applyRefused\""));
@@ -103,6 +114,7 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
         "data/reports/gtk-safe-env-automation-summary.v0.55.2.json",
         "data/reports/gtk-safe-env-evidence-derived-matrix.v0.55.2.json",
         "data/reports/gtk-safe-env-blocked-category-detail-proof.v0.55.2.json",
+        "data/reports/gtk-safe-env-connected-file-detail-proof.v0.55.2.json",
     ];
     for path in report_paths {
         let text = fs::read_to_string(path).unwrap_or_else(|error| panic!("{path}: {error}"));
@@ -147,6 +159,7 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
         assert!(value["blockedCategoryReasonTextCollected"].is_boolean());
         assert!(value["proofLevelByUiArea"].is_object());
         assert!(value["proofLevelByBlockedCategory"].is_object());
+        assert!(value["proofSurfaceByBlockedCategory"].is_object());
         assert!(value["blockedCategoryResults"].is_object());
     }
 }
@@ -222,6 +235,39 @@ fn gtk_reports_use_explicit_proof_level_labels() {
             ),
             "{required} has unexpected proof level {level}"
         );
+    }
+
+    let surfaces = summary["proofSurfaceByBlockedCategory"]
+        .as_object()
+        .expect("proofSurfaceByBlockedCategory should be an object");
+    for (key, expected) in [
+        ("generatedBlockedCopy", "connected_file_detail"),
+        ("scriptManagedBlockedCopy", "connected_file_detail"),
+        ("symlinkCurrentProfileBlockedCopy", "connected_file_detail"),
+        ("profileModeSwitchBlockedCopy", "profile_detail"),
+    ] {
+        let surface = surfaces
+            .get(key)
+            .and_then(Value::as_str)
+            .unwrap_or_else(|| panic!("{key} proof surface missing"));
+        assert!(
+            matches!(
+                surface,
+                "connected_file_detail"
+                    | "profile_detail"
+                    | "setting_row_detail"
+                    | "config_page_text"
+                    | "source_model_fallback"
+                    | "not_proven"
+            ),
+            "{key} has unexpected proof surface {surface}"
+        );
+        if summary["proofLevelByBlockedCategory"][key] == "live_gtk_atspi_proof" {
+            assert_eq!(
+                surface, expected,
+                "{key} should use the dedicated detail surface"
+            );
+        }
     }
 }
 

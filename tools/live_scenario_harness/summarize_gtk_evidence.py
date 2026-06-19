@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 PROJECT_MODEL = "v0.55.2 / 341 readable / 341 writable / 0 blocked"
-STARTING_COMMIT = "0869731816cdf0e14237eb86b325a214bab60462"
+STARTING_COMMIT = "bde752644af44fd87577a2dfe029b4b2dca9a80d"
 PROOF_LEVELS = {
     "live_gtk_atspi_proof",
     "safe_env_model_proof",
@@ -32,20 +32,23 @@ BLOCKED_CATEGORY_PROOFS = {
     "generatedBlockedCopy": {
         "category": "generated_file",
         "scenario": "generated_config",
-        "target": "GeneratedBlockedDetail",
+        "target": "GeneratedConnectedFileDetail",
         "expectedText": "generated",
+        "expectedProofSurface": "connected_file_detail",
     },
     "scriptManagedBlockedCopy": {
         "category": "script_managed_file",
         "scenario": "script_managed_config",
-        "target": "ScriptManagedBlockedDetail",
+        "target": "ScriptManagedConnectedFileDetail",
         "expectedText": "script",
+        "expectedProofSurface": "connected_file_detail",
     },
     "symlinkCurrentProfileBlockedCopy": {
         "category": "symlink_current_profile",
         "scenario": "symlink_current_profile",
-        "target": "SymlinkManagedBlockedDetail",
+        "target": "SymlinkConnectedFileDetail",
         "expectedText": "symlink",
+        "expectedProofSurface": "connected_file_detail",
     },
     "highRiskBlockedCopy": {
         "category": "high_risk",
@@ -62,8 +65,9 @@ BLOCKED_CATEGORY_PROOFS = {
     "profileModeSwitchBlockedCopy": {
         "category": "profile_mode_switch",
         "scenario": "symlink_current_profile",
-        "target": "ProfileModeSwitchDetail",
+        "target": "ProfileModeDetail",
         "expectedText": "profile",
+        "expectedProofSurface": "profile_detail",
     },
 }
 
@@ -164,6 +168,23 @@ def run_summary(run_dir):
             "blockedCategorySelectionFallbackUsed": bool(
                 accessibility.get("blockedCategorySelectionFallbackUsed")
             ),
+            "connectedFileDetailNavigationAttempted": bool(
+                accessibility.get("connectedFileDetailNavigationAttempted")
+            ),
+            "connectedFileDetailNavigationSucceeded": bool(
+                accessibility.get("connectedFileDetailNavigationSucceeded")
+            ),
+            "connectedFileGeneratedDetailCollected": bool(
+                accessibility.get("connectedFileGeneratedDetailCollected")
+            ),
+            "connectedFileScriptManagedDetailCollected": bool(
+                accessibility.get("connectedFileScriptManagedDetailCollected")
+            ),
+            "connectedFileSymlinkDetailCollected": bool(
+                accessibility.get("connectedFileSymlinkDetailCollected")
+            ),
+            "profileModeDetailCollected": bool(accessibility.get("profileModeDetailCollected")),
+            "proofSurface": accessibility.get("proofSurface"),
             "duplicateConflictDetailNavigationAttempted": bool(
                 accessibility.get("duplicateConflictDetailNavigationAttempted")
             ),
@@ -182,6 +203,7 @@ def aggregate(runs):
         return any(predicate(run) for run in runs)
 
     by_blocked_category = proof_level_by_blocked_category(runs)
+    proof_surface_by_category = proof_surface_by_blocked_category(runs)
     by_area = {
         "Dashboard": proof(any_run(lambda run: "dashboard" in all_terms(run))),
         "Config": proof(any_run(lambda run: "config" in all_terms(run))),
@@ -250,6 +272,11 @@ def aggregate(runs):
         "proofLevelByUiArea": by_area,
         "proofLevelByBlockedCategory": by_blocked_category,
         "blockedCategoryResults": category_results,
+        "proofSurfaceByBlockedCategory": proof_surface_by_category,
+        "connectedFileDetailNavigationAttempted": any_run(lambda run: run["accessibility"]["connectedFileDetailNavigationAttempted"]),
+        "connectedFileDetailNavigationSucceeded": any_run(lambda run: run["accessibility"]["connectedFileDetailNavigationSucceeded"]),
+        "profileDetailNavigationAttempted": any_run(lambda run: run["accessibility"]["proofSurface"] == "profile_detail"),
+        "profileDetailNavigationSucceeded": any_run(lambda run: run["accessibility"]["proofSurface"] == "profile_detail" and run["accessibility"]["connectedFileDetailNavigationSucceeded"]),
         "fallbackProofUsed": any(level in {"source_model_fallback", "not_proven"} for level in by_area.values())
         or any(level in {"source_model_fallback", "not_proven"} for level in by_blocked_category.values()),
     }
@@ -286,6 +313,28 @@ def proof_level_by_blocked_category(runs):
     return levels
 
 
+def proof_surface_by_blocked_category(runs):
+    surfaces = {}
+    for key, spec in BLOCKED_CATEGORY_PROOFS.items():
+        run = matching_category_run(runs, spec)
+        if run is None:
+            surfaces[key] = "not_proven"
+            continue
+        surface = run["accessibility"].get("proofSurface")
+        if surface in {
+            "connected_file_detail",
+            "profile_detail",
+            "setting_row_detail",
+            "config_page_text",
+        }:
+            surfaces[key] = surface
+        elif key in {"defaultMissingBlockedCopy", "duplicateBlockedCopy", "highRiskBlockedCopy", "displayRenderRiskBlockedCopy"}:
+            surfaces[key] = "setting_row_detail"
+        else:
+            surfaces[key] = "not_proven"
+    return surfaces
+
+
 def blocked_category_results(runs, levels):
     results = {}
     for key, spec in BLOCKED_CATEGORY_PROOFS.items():
@@ -301,6 +350,7 @@ def blocked_category_results(runs, levels):
                 "rowDetailNavigationSucceeded": False,
                 "blockedReasonTextCollected": False,
                 "applyAvoided": True,
+                "proofSurface": "not_proven",
                 "issue": "No evidence run was found for this blocked category.",
             }
             continue
@@ -319,6 +369,13 @@ def blocked_category_results(runs, levels):
             "expectedTextCollected": run["accessibility"]["blockedCategoryExpectedTextCollected"]
             or run["accessibility"]["duplicateBlockedReasonTextCollected"],
             "selectionFallbackUsed": run["accessibility"]["blockedCategorySelectionFallbackUsed"],
+            "proofSurface": run["accessibility"].get("proofSurface")
+            or (
+                "setting_row_detail"
+                if levels[key] == "live_gtk_atspi_proof"
+                else "not_proven"
+            ),
+            "expectedProofSurface": spec.get("expectedProofSurface"),
             "applyAvoided": not run["probe"]["applyClicked"],
             "navigationMessage": run["accessibility"]["navigationMessage"],
         }
@@ -371,6 +428,10 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
         "blockedCategoryDetailNavigationAttempted": summary["blockedCategoryDetailNavigationAttempted"],
         "blockedCategoryDetailNavigationSucceeded": summary["blockedCategoryDetailNavigationSucceeded"],
         "blockedCategoryReasonTextCollected": summary["blockedCategoryReasonTextCollected"],
+        "connectedFileDetailNavigationAttempted": summary["connectedFileDetailNavigationAttempted"],
+        "connectedFileDetailNavigationSucceeded": summary["connectedFileDetailNavigationSucceeded"],
+        "profileDetailNavigationAttempted": summary["profileDetailNavigationAttempted"],
+        "profileDetailNavigationSucceeded": summary["profileDetailNavigationSucceeded"],
         "closeAttempted": bool(runs),
         "closeSucceeded": summary["closeSucceeded"],
         "scenarioResults": runs,
@@ -380,6 +441,7 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
         },
         "proofLevelByUiArea": summary["proofLevelByUiArea"],
         "proofLevelByBlockedCategory": summary["proofLevelByBlockedCategory"],
+        "proofSurfaceByBlockedCategory": summary["proofSurfaceByBlockedCategory"],
         "blockedCategoryResults": summary["blockedCategoryResults"],
         "fallbackProofUsed": summary["fallbackProofUsed"],
         "issuesFound": issues(summary),
@@ -497,6 +559,27 @@ def write_reports(reports_dir, evidence_root, evidence_summary, runs, summary):
                 "blockedCategoryResults": summary["blockedCategoryResults"],
                 "proofLevelByBlockedCategory": summary["proofLevelByBlockedCategory"],
                 "goal": "Expand live GTK/AT-SPI row-detail proof across representative blocked categories.",
+            },
+        ),
+        "gtk-safe-env-connected-file-detail-proof.v0.55.2.json": base_report(
+            "gtk_safe_env_connected_file_detail_proof",
+            evidence_root,
+            summary,
+            runs,
+            {
+                "connectedFileDetailResults": {
+                    key: value
+                    for key, value in summary["blockedCategoryResults"].items()
+                    if value.get("proofSurface") == "connected_file_detail"
+                },
+                "profileModeDetailResults": {
+                    key: value
+                    for key, value in summary["blockedCategoryResults"].items()
+                    if value.get("proofSurface") == "profile_detail"
+                },
+                "proofLevelByBlockedCategory": summary["proofLevelByBlockedCategory"],
+                "proofSurfaceByBlockedCategory": summary["proofSurfaceByBlockedCategory"],
+                "goal": "Prove connected-file and profile blocker detail surfaces through live GTK/AT-SPI safe-env automation.",
             },
         ),
     }

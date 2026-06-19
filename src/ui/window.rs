@@ -568,14 +568,7 @@ fn build_config_view(
 
     content.append(&connected_files_review_section(&model.config_discovery));
 
-    content.append(&config_section(
-        "Profiles",
-        vec![
-            "Profile switching is not active yet.".to_string(),
-            "Future versions may show desktop, gaming, theme, or host profiles here.".to_string(),
-        ],
-        Some(("Profile switching planned", false)),
-    ));
+    content.append(&profile_mode_detail_section());
 
     content.append(&config_section(
         "Future changes",
@@ -1094,6 +1087,11 @@ fn append_connected_files_review(parent: &gtk::Box, graph: &ConfigGraphSummary) 
 
 fn connected_file_card(file: &ConfigGraphFile, graph: &ConfigGraphSummary) -> gtk::Frame {
     let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&format!(
+        "hyprland-settings-connected-file-card-{}",
+        connected_file_accessibility_suffix(file)
+    ));
+    frame.set_tooltip_text(Some(&connected_file_accessibility_summary(file)));
     let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
     content.set_margin_top(10);
     content.set_margin_bottom(10);
@@ -1118,9 +1116,80 @@ fn connected_file_card(file: &ConfigGraphFile, graph: &ConfigGraphSummary) -> gt
         content.append(&small_label(&line));
     }
 
+    append_connected_file_blocker_detail_surfaces(&content, file);
     append_connected_file_details(&content, file, graph);
 
     frame.set_child(Some(&content));
+    frame
+}
+
+fn append_connected_file_blocker_detail_surfaces(parent: &gtk::Box, file: &ConfigGraphFile) {
+    if connected_file_has_hint(file, ConfigManagementHintKind::GeneratedFile) {
+        parent.append(&connected_file_blocker_detail_surface(
+            "hyprland-settings-connected-file-detail-generated",
+            "Generated file detail",
+            "This file may be generated. The app will not write it yet.",
+            "Generated connected-file blocker detail. This file may be generated. The app will not write it yet.",
+        ));
+    }
+
+    if connected_file_has_script_hint(file) {
+        parent.append(&connected_file_blocker_detail_surface(
+            "hyprland-settings-connected-file-detail-script-managed",
+            "Script-managed file detail",
+            "This file may be changed by a script. The app will not write it yet.",
+            "Script-managed connected-file blocker detail. This file may be changed by a script. The app will not write it yet.",
+        ));
+    }
+
+    if file.is_symlink || connected_file_has_hint(file, ConfigManagementHintKind::SymlinkManaged) {
+        parent.append(&connected_file_blocker_detail_surface(
+            "hyprland-settings-connected-file-detail-symlink-current-profile",
+            "Symlink/current-profile detail",
+            "This file may be a symlink or current-profile file. The app will not write it yet.",
+            "Symlink current-profile connected-file blocker detail. This file may be a symlink or current-profile file. The app will not write it yet.",
+        ));
+    }
+}
+
+fn connected_file_blocker_detail_surface(
+    widget_name: &str,
+    title: &str,
+    copy: &str,
+    tooltip: &str,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(widget_name);
+    frame.set_tooltip_text(Some(tooltip));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 4);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&body_label(title));
+    content.append(&small_label(copy));
+    content.append(&small_label(
+        "This is a read-only safety detail. It does not edit files, reload Hyprland, run scripts, or switch profiles.",
+    ));
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn profile_mode_detail_section() -> gtk::Frame {
+    let frame = config_section(
+        "Profiles",
+        vec![
+            "Profile switching is not active yet.".to_string(),
+            "Future versions may show desktop, gaming, theme, or host profiles here.".to_string(),
+        ],
+        Some(("Profile switching planned", false)),
+    );
+    frame.set_widget_name("hyprland-settings-profile-mode-detail");
+    frame.set_tooltip_text(Some(
+        "Profile mode detail. Profile switching is not active yet. The app will not change profile files or symlinks.",
+    ));
     frame
 }
 
@@ -1242,6 +1311,57 @@ fn connected_file_notes(file: &ConfigGraphFile) -> Vec<String> {
         }
     }
     notes
+}
+
+fn connected_file_has_hint(file: &ConfigGraphFile, kind: ConfigManagementHintKind) -> bool {
+    file.hints.iter().any(|hint| hint.kind == kind)
+}
+
+fn connected_file_has_script_hint(file: &ConfigGraphFile) -> bool {
+    file.hints.iter().any(|hint| {
+        matches!(
+            hint.kind,
+            ConfigManagementHintKind::ScriptManaged | ConfigManagementHintKind::ScriptReferenced
+        )
+    })
+}
+
+fn connected_file_accessibility_suffix(file: &ConfigGraphFile) -> &'static str {
+    if connected_file_has_hint(file, ConfigManagementHintKind::GeneratedFile) {
+        "generated"
+    } else if connected_file_has_script_hint(file) {
+        "script-managed"
+    } else if file.is_symlink
+        || connected_file_has_hint(file, ConfigManagementHintKind::SymlinkManaged)
+    {
+        "symlink-current-profile"
+    } else if file.source_depth == 0 {
+        "root"
+    } else {
+        "connected"
+    }
+}
+
+fn connected_file_accessibility_summary(file: &ConfigGraphFile) -> String {
+    let mut parts = vec![format!(
+        "Connected file card: {}",
+        connected_file_title(file)
+    )];
+    if connected_file_has_hint(file, ConfigManagementHintKind::GeneratedFile) {
+        parts.push("This file may be generated. The app will not write it yet.".to_string());
+    }
+    if connected_file_has_script_hint(file) {
+        parts.push(
+            "This file may be changed by a script. The app will not write it yet.".to_string(),
+        );
+    }
+    if file.is_symlink || connected_file_has_hint(file, ConfigManagementHintKind::SymlinkManaged) {
+        parts.push(
+            "This file may be a symlink or current-profile file. The app will not write it yet."
+                .to_string(),
+        );
+    }
+    parts.join(" ")
 }
 
 fn friendly_connected_file_note(kind: &ConfigManagementHintKind) -> &'static str {

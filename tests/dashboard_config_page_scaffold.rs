@@ -86,7 +86,9 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
         "When a setting is controlled in more than one place",
     ] {
         assert!(
-            config_source.contains(text) || config_file_source.contains(text),
+            config_source.contains(text)
+                || config_file_source.contains(text)
+                || source.contains(text),
             "missing Config page copy: {text}"
         );
     }
@@ -121,7 +123,9 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
 
     assert!(source.contains("gtk::Button::with_label(\"Choose Config File...\")"));
     assert!(source.contains("gtk::Button::with_label(\"Choose review mode (planned)\")"));
-    assert!(config_source.contains("Some((\"Profile switching planned\", false))"));
+    assert!(config_source.contains("profile_mode_detail_section()"));
+    assert!(source.contains("Some((\"Profile switching planned\", false))"));
+    assert!(source.contains("hyprland-settings-profile-mode-detail"));
     assert!(source.contains("action.set_sensitive(active)"));
     assert!(render_source.contains("selected_tab_id == CONFIG_ID"));
     assert!(render_source.contains("config_view.set_visible(true)"));

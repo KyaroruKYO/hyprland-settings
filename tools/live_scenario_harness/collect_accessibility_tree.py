@@ -45,6 +45,10 @@ SAFE_NAVIGATION_TARGETS = {
     "GeneratedBlockedDetail",
     "ScriptManagedBlockedDetail",
     "SymlinkManagedBlockedDetail",
+    "GeneratedConnectedFileDetail",
+    "ScriptManagedConnectedFileDetail",
+    "SymlinkConnectedFileDetail",
+    "ProfileModeDetail",
     "HighRiskDetail",
     "DisplayRenderRiskDetail",
     "ProfileModeSwitchDetail",
@@ -63,18 +67,66 @@ BLOCKED_CATEGORY_TARGETS = {
         "page": "Config",
         "terms": ["generated", "do not edit"],
         "row_terms": ["generated", "do not edit"],
+        "proof_surface": "config_page_text",
+    },
+    "GeneratedConnectedFileDetail": {
+        "category": "generated_file",
+        "page": "Config",
+        "terms": [
+            "generated file detail",
+            "this file may be generated",
+            "the app will not write it yet",
+        ],
+        "row_terms": [
+            "hyprland-settings-connected-file-detail-generated",
+            "generated connected-file blocker detail",
+            "generated file detail",
+        ],
+        "proof_surface": "connected_file_detail",
     },
     "ScriptManagedBlockedDetail": {
         "category": "script_managed_file",
         "page": "Config",
         "terms": ["script", "changed by a script", "script-managed"],
         "row_terms": ["script", "changed by scripts", "changed by a script"],
+        "proof_surface": "config_page_text",
+    },
+    "ScriptManagedConnectedFileDetail": {
+        "category": "script_managed_file",
+        "page": "Config",
+        "terms": [
+            "script-managed file detail",
+            "this file may be changed by a script",
+            "the app will not write it yet",
+        ],
+        "row_terms": [
+            "hyprland-settings-connected-file-detail-script-managed",
+            "script-managed connected-file blocker detail",
+            "script-managed file detail",
+        ],
+        "proof_surface": "connected_file_detail",
     },
     "SymlinkManagedBlockedDetail": {
         "category": "symlink_current_profile",
         "page": "Config",
         "terms": ["symlink", "current-profile", "current profile"],
         "row_terms": ["symlink", "current-profile", "current profile"],
+        "proof_surface": "config_page_text",
+    },
+    "SymlinkConnectedFileDetail": {
+        "category": "symlink_current_profile",
+        "page": "Config",
+        "terms": [
+            "symlink/current-profile detail",
+            "this file may be a symlink or current-profile file",
+            "the app will not write it yet",
+        ],
+        "row_terms": [
+            "hyprland-settings-connected-file-detail-symlink-current-profile",
+            "symlink current-profile connected-file blocker detail",
+            "symlink/current-profile detail",
+        ],
+        "proof_surface": "connected_file_detail",
     },
     "HighRiskDetail": {
         "category": "high_risk",
@@ -93,6 +145,22 @@ BLOCKED_CATEGORY_TARGETS = {
         "page": "Config",
         "terms": ["profile", "mode", "current-profile", "symlink"],
         "row_terms": ["profile", "mode", "current-profile", "symlink"],
+        "proof_surface": "config_page_text",
+    },
+    "ProfileModeDetail": {
+        "category": "profile_mode_switch",
+        "page": "Config",
+        "terms": [
+            "profile mode detail",
+            "profile switching is not active yet",
+            "the app will not change profile files or symlinks",
+        ],
+        "row_terms": [
+            "hyprland-settings-profile-mode-detail",
+            "profile mode detail",
+            "profile switching is not active yet",
+        ],
+        "proof_surface": "profile_detail",
     },
 }
 
@@ -495,6 +563,13 @@ def main() -> int:
         "blockedCategoryReasonTextCollected": False,
         "blockedCategoryExpectedTextCollected": False,
         "blockedCategorySelectionFallbackUsed": False,
+        "connectedFileDetailNavigationAttempted": False,
+        "connectedFileDetailNavigationSucceeded": False,
+        "connectedFileGeneratedDetailCollected": False,
+        "connectedFileScriptManagedDetailCollected": False,
+        "connectedFileSymlinkDetailCollected": False,
+        "profileModeDetailCollected": False,
+        "proofSurface": None,
         "duplicateConflictDetailNavigationAttempted": False,
         "duplicateConflictDetailNavigationSucceeded": False,
         "forbiddenApplyActionSeen": False,
@@ -533,8 +608,14 @@ def main() -> int:
         result["navigationTarget"] = nav_target or None
         if nav_target and selected_app is not None:
             if nav_target in BLOCKED_CATEGORY_TARGETS:
-                result["blockedCategory"] = BLOCKED_CATEGORY_TARGETS[nav_target]["category"]
+                spec = BLOCKED_CATEGORY_TARGETS[nav_target]
+                result["blockedCategory"] = spec["category"]
+                result["proofSurface"] = spec.get("proof_surface")
                 result["blockedCategoryDetailNavigationAttempted"] = True
+                result["connectedFileDetailNavigationAttempted"] = spec.get("proof_surface") in {
+                    "connected_file_detail",
+                    "profile_detail",
+                }
             result["duplicateConflictDetailNavigationAttempted"] = nav_target in {
                 "DuplicateConflictDetail",
                 "DuplicateConflictRow",
@@ -548,6 +629,12 @@ def main() -> int:
             )
             result["blockedCategoryDetailNavigationSucceeded"] = (
                 ok and nav_target in BLOCKED_CATEGORY_TARGETS
+            )
+            result["connectedFileDetailNavigationSucceeded"] = (
+                ok
+                and nav_target in BLOCKED_CATEGORY_TARGETS
+                and BLOCKED_CATEGORY_TARGETS[nav_target].get("proof_surface")
+                in {"connected_file_detail", "profile_detail"}
             )
             result["blockedCategorySelectionFallbackUsed"] = "selection fallback" in message
             if ok:
@@ -587,6 +674,25 @@ def main() -> int:
                 result["blockedCategoryExpectedTextCollected"]
                 or result["blockedReasonTextCollected"]
             )
+            category = result["blockedCategory"]
+            proof_surface = result["proofSurface"]
+            if proof_surface == "connected_file_detail":
+                result["connectedFileGeneratedDetailCollected"] = (
+                    category == "generated_file"
+                    and result["blockedCategoryExpectedTextCollected"]
+                )
+                result["connectedFileScriptManagedDetailCollected"] = (
+                    category == "script_managed_file"
+                    and result["blockedCategoryExpectedTextCollected"]
+                )
+                result["connectedFileSymlinkDetailCollected"] = (
+                    category == "symlink_current_profile"
+                    and result["blockedCategoryExpectedTextCollected"]
+                )
+            if proof_surface == "profile_detail":
+                result["profileModeDetailCollected"] = result[
+                    "blockedCategoryExpectedTextCollected"
+                ]
     except Exception as error:
         result["error"] = f"pyatspi unavailable or inaccessible: {error}"
         if result["gdbusAvailable"]:
