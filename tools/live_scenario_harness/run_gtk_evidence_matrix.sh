@@ -26,6 +26,13 @@ write_conf source_include_config \
 printf '%s\n' 'decoration:blur:enabled = true' > "$scenario_root/source_include_config/.config/hypr/appearance.conf"
 printf '%s\n' 'input:follow_mouse = 1' > "$scenario_root/source_include_config/.config/hypr/input.conf"
 
+write_conf nested_source_config \
+  'source = profiles/current.conf'
+mkdir -p "$scenario_root/nested_source_config/.config/hypr/profiles" \
+  "$scenario_root/nested_source_config/.config/hypr/appearance"
+printf '%s\n' 'source = ../appearance/theme.conf' > "$scenario_root/nested_source_config/.config/hypr/profiles/current.conf"
+printf '%s\n' 'decoration:blur:enabled = true' > "$scenario_root/nested_source_config/.config/hypr/appearance/theme.conf"
+
 write_conf duplicate_conflict \
   'decoration:blur:enabled = true' \
   'source = appearance.conf'
@@ -70,6 +77,7 @@ run_probe minimal_single_config Config
 run_probe minimal_single_config Appearance
 run_probe high_risk_display_risk Display
 run_probe source_include_config Config
+run_probe nested_source_config Config
 run_probe duplicate_conflict Appearance
 run_probe duplicate_conflict DuplicateConflictDetail
 run_probe missing_default_only Appearance

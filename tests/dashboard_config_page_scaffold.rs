@@ -108,8 +108,10 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
 
     for text in [
         "Connected files",
+        "hyprland-settings-connected-files-section",
         "config_graph_summary_lines",
         "This setup uses",
+        "Some files are connected through source/include lines.",
         "No connected config files were detected.",
         "Connected-file review is read-only right now.",
         "Some files may be changed by scripts.",

@@ -1002,6 +1002,10 @@ fn config_graph_summary_lines(discovery: &ConfigDiscovery) -> Vec<String> {
 
 fn connected_files_review_section(discovery: &ConfigDiscovery) -> gtk::Frame {
     let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-connected-files-section");
+    frame.set_tooltip_text(Some(
+        "Connected files section. This review is read-only and does not change files.",
+    ));
     let box_content = gtk::Box::new(gtk::Orientation::Vertical, 8);
     box_content.set_margin_top(12);
     box_content.set_margin_bottom(12);
@@ -1046,7 +1050,7 @@ fn friendly_config_graph_summary(graph: &ConfigGraphSummary) -> Vec<String> {
             "This setup uses {} config files.",
             graph.connected_file_count
         ));
-        lines.push("Some files are connected through source lines.".to_string());
+        lines.push("Some files are connected through source/include lines.".to_string());
     } else {
         lines.push("No connected config files were detected.".to_string());
     }

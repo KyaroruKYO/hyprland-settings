@@ -45,7 +45,9 @@ fn config_selection_ui_keeps_future_controls_disabled() {
     assert!(source.contains("gtk::Button::with_label(\"Choose review mode (planned)\")"));
     assert!(config_source.contains("profile_mode_detail_section()"));
     assert!(source.contains("Some((\"Profile switching planned\", false))"));
+    assert!(source.contains("hyprland-settings-connected-files-section"));
     assert!(source.contains("hyprland-settings-profile-mode-detail"));
+    assert!(source.contains("Some files are connected through source/include lines."));
     assert!(
         source.contains("action.set_sensitive(false)")
             || source.contains("action.set_sensitive(active)")

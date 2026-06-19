@@ -7,7 +7,27 @@
   "appBuildSucceeded": true,
   "appLaunchAttempted": true,
   "appLaunchSucceeded": true,
-  "artifactKind": "gtk_safe_env_blocked_category_detail_proof",
+  "artifactKind": "completion_readiness_audit",
+  "automationStatus": {
+    "blockedCategoryProof": {
+      "defaultMissingBlockedCopy": "live_gtk_atspi_proof",
+      "displayRenderRiskBlockedCopy": "live_gtk_atspi_proof",
+      "duplicateBlockedCopy": "live_gtk_atspi_proof",
+      "generatedBlockedCopy": "live_gtk_atspi_proof",
+      "highRiskBlockedCopy": "live_gtk_atspi_proof",
+      "profileModeSwitchBlockedCopy": "live_gtk_atspi_proof",
+      "scriptManagedBlockedCopy": "live_gtk_atspi_proof",
+      "symlinkCurrentProfileBlockedCopy": "live_gtk_atspi_proof"
+    },
+    "connectedFileProfileDetailProof": {
+      "generatedBlockedCopy": "connected_file_detail",
+      "profileModeSwitchBlockedCopy": "profile_detail",
+      "scriptManagedBlockedCopy": "connected_file_detail",
+      "symlinkCurrentProfileBlockedCopy": "connected_file_detail"
+    },
+    "rawAccessibilityDumpsCommitted": false,
+    "safeEnvMatrixPassed": true
+  },
   "blockedCategoryDetailNavigationAttempted": true,
   "blockedCategoryDetailNavigationSucceeded": true,
   "blockedCategoryReasonTextCollected": true,
@@ -143,19 +163,37 @@
   },
   "closeAttempted": true,
   "closeSucceeded": true,
+  "completionBlockers": [
+    "Missing/default insertion remains intentionally blocked until safe insertion is designed.",
+    "Duplicate conflicts remain intentionally blocked until manual or explicit duplicate-resolution design exists.",
+    "High-risk and display/render writes remain intentionally blocked until family-specific recovery proof is approved.",
+    "Profile/mode switching remains intentionally read-only and inactive.",
+    "Project data remains intentionally pinned to v0.55.2 despite the runtime package being 0.55.4-1."
+  ],
   "connectedFileDetailNavigationAttempted": true,
   "connectedFileDetailNavigationSucceeded": true,
   "countsAfter": "341 readable / 341 writable / 0 blocked",
   "countsBefore": "341 readable / 341 writable / 0 blocked",
+  "coverageModel": {
+    "blockedRows": 0,
+    "exportsUpdatedInThisSprint": false,
+    "projectDataVersion": "v0.55.2",
+    "readableRows": 341,
+    "safeWritableRowsLen": 341,
+    "status": "preserved",
+    "writableRows": 341
+  },
   "duplicateBlockedReasonTextCollected": true,
   "duplicateConflictDetailNavigationAttempted": true,
   "duplicateConflictDetailNavigationSucceeded": true,
   "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
   "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
   "fallbackProofUsed": false,
-  "generatedAt": "2026-06-19T06:19:11.281424+00:00",
-  "goal": "Expand live GTK/AT-SPI row-detail proof across representative blocked categories.",
+  "generatedAt": "2026-06-19T06:19:11.281445+00:00",
+  "goal": "Final completion-readiness audit for the v0.55.2 Hyprland Settings app model before app wrap-up work.",
+  "hyprlandPackageVersion": "0.55.4-1",
   "hyprlandReloaded": false,
+  "hyprlandRuntimeVersion": "unavailable through hyprctl in noninteractive shell; user session is reported as 0.55.4",
   "installedHyprlandPackageVersion": "0.55.4-1",
   "issuesFound": [],
   "liveSwapModeUsed": false,
@@ -163,6 +201,13 @@
   "mutatingHyprctlUsed": false,
   "navigationAttempted": true,
   "navigationSucceeded": true,
+  "packagingStatus": {
+    "appId": "io.github.kyarorukyo.hyprlandsettings",
+    "binaryName": "hyprland-settings",
+    "desktopMetainfoReviewed": "source/repo identity reviewed; no release created",
+    "releaseCreated": false,
+    "repoIdentity": "hyprland-settings"
+  },
   "profileDetailNavigationAttempted": true,
   "profileDetailNavigationSucceeded": true,
   "projectDataMigratedToHyprland0554": false,
@@ -232,14 +277,47 @@
     "symlinkCurrentProfileBlockedCopy": "connected_file_detail"
   },
   "pyatspiAvailable": true,
+  "readDiscoveryStatus": {
+    "configDiscovery": "reviewed and preserved",
+    "connectedFileDiagnostics": "read-only Config page diagnostics with stable connected-file/profile detail anchors",
+    "sourceAwareCurrentValueMapping": "preserved; no write eligibility expansion in this sprint",
+    "sourceIncludeGraph": "covered by source_include_config and nested_source_config safe-env scenarios",
+    "sourceIncludeScenarioCount": 2
+  },
   "realBackupsCreated": false,
   "realConfigEdited": false,
   "recommendedFixes": [
     "Keep expanding scenario-specific row-detail probes without enabling live-swap."
   ],
+  "recommendedNextSprint": "Actual app completion wrap-up: polish remaining user-facing copy, packaging metadata, and release checklist without expanding unsafe write scope.",
+  "remainingWork": [
+    "Missing/default insertion remains intentionally blocked until safe insertion is designed.",
+    "Duplicate conflicts remain intentionally blocked until manual or explicit duplicate-resolution design exists.",
+    "High-risk and display/render writes remain intentionally blocked until family-specific recovery proof is approved.",
+    "Profile/mode switching remains intentionally read-only and inactive.",
+    "Project data remains intentionally pinned to v0.55.2 despite the runtime package being 0.55.4-1."
+  ],
   "runningHyprlandVersion": "socket read unavailable in noninteractive shell; installed package is 0.55.4-1",
   "runtimeMutated": false,
   "safeEnvModeUsed": true,
+  "safeFixesMade": [
+    "Connected files section gained a stable accessibility anchor.",
+    "Config diagnostics now describe source/include connections in user-facing copy.",
+    "Safe-env GTK evidence matrix now includes a nested source/include scenario.",
+    "Completion-readiness and wrap-up reports are generated by the evidence summarizer."
+  ],
+  "safetyBoundaries": {
+    "hyprlandReloaded": false,
+    "liveSwapModeUsed": false,
+    "luaExecuted": false,
+    "mutatingHyprctlUsed": false,
+    "realBackupsCreated": false,
+    "realConfigEdited": false,
+    "runtimeMutated": false,
+    "safeEnvModeUsed": true,
+    "screenshotsCommitted": false,
+    "scriptsExecuted": false
+  },
   "scenarioResults": [
     {
       "accessibility": {
@@ -2497,7 +2575,47 @@
   "schemaVersion": 1,
   "screenshotsCommitted": false,
   "scriptsExecuted": false,
+  "sourceIncludeStatus": {
+    "connectedFiles": "reviewed through safe-env matrix",
+    "generatedFiles": "connected_file_detail",
+    "mutatingControlsAdded": false,
+    "nestedSourceFiles": "added to safe-env matrix",
+    "profileModeStatus": "profile_detail",
+    "rootConfig": "reviewed through safe-env matrix",
+    "scriptManagedFiles": "connected_file_detail",
+    "symlinkCurrentProfileFiles": "connected_file_detail"
+  },
   "startingCommit": "e0b6d1fe63bf7096183a8bd1ab6304003fa6a5b8",
+  "uiStatus": {
+    "appearance": "live_gtk_atspi_proof",
+    "blockedCategoryProof": {
+      "defaultMissingBlockedCopy": "live_gtk_atspi_proof",
+      "displayRenderRiskBlockedCopy": "live_gtk_atspi_proof",
+      "duplicateBlockedCopy": "live_gtk_atspi_proof",
+      "generatedBlockedCopy": "live_gtk_atspi_proof",
+      "highRiskBlockedCopy": "live_gtk_atspi_proof",
+      "profileModeSwitchBlockedCopy": "live_gtk_atspi_proof",
+      "scriptManagedBlockedCopy": "live_gtk_atspi_proof",
+      "symlinkCurrentProfileBlockedCopy": "live_gtk_atspi_proof"
+    },
+    "blockedReason": "live_gtk_atspi_proof",
+    "configPage": "live_gtk_atspi_proof",
+    "connectedFileDetailSurfaces": {
+      "defaultMissingBlockedCopy": "setting_row_detail",
+      "displayRenderRiskBlockedCopy": "setting_row_detail",
+      "duplicateBlockedCopy": "setting_row_detail",
+      "generatedBlockedCopy": "connected_file_detail",
+      "highRiskBlockedCopy": "setting_row_detail",
+      "profileModeSwitchBlockedCopy": "profile_detail",
+      "scriptManagedBlockedCopy": "connected_file_detail",
+      "symlinkCurrentProfileBlockedCopy": "connected_file_detail"
+    },
+    "dashboard": "live_gtk_atspi_proof",
+    "detailPane": "live_gtk_atspi_proof",
+    "display": "live_gtk_atspi_proof",
+    "oneTargetWordingUserFacingInActiveSafeBatchPath": false,
+    "search": "live_gtk_atspi_proof"
+  },
   "uiTextTreeCollected": true,
   "validation": {
     "bashScripts": "passed",
@@ -2511,5 +2629,16 @@
     "jqReports": "passed",
     "pythonPyCompile": "passed"
   },
-  "waybarTouched": false
+  "waybarTouched": false,
+  "writeSafetyStatus": {
+    "applyClicked": false,
+    "displayRenderRiskyWritesEnabled": false,
+    "duplicateConflictsStillBlock": true,
+    "generatedScriptSymlinkProfileWritesEnabled": false,
+    "highRiskWritesEnabled": false,
+    "missingDefaultInsertionStillBlocked": true,
+    "runtimeMutationEnabled": false,
+    "safeBatchWritePath": "guarded and preserved",
+    "structuredFamilyWritesEnabled": false
+  }
 }

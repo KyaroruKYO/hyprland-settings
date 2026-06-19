@@ -1,0 +1,73 @@
+{
+  "artifactKind": "completion_wrap_up_plan",
+  "countsAfter": "341 readable / 341 writable / 0 blocked",
+  "countsBefore": "341 readable / 341 writable / 0 blocked",
+  "generatedAt": "2026-06-19T06:19:11.281452+00:00",
+  "hyprlandReloaded": false,
+  "liveSwapModeUsed": false,
+  "mutatingHyprctlUsed": false,
+  "nextSprintPlan": "Actual app completion wrap-up: polish remaining user-facing copy, packaging metadata, final validation reports, and release checklist while preserving the current safety boundaries.",
+  "projectDataMigratedToHyprland0554": false,
+  "projectModel": "v0.55.2 / 341 readable / 341 writable / 0 blocked",
+  "realConfigEdited": false,
+  "releaseReadinessEstimate": "near-complete for guarded normal-scalar safe-batch scope, not release-ready for high-risk, insertion, duplicate-resolution, profile/mode, or Hyprland 0.55.4 migration scope",
+  "safeEnvModeUsed": true,
+  "schemaVersion": 1,
+  "startingCommit": "e0b6d1fe63bf7096183a8bd1ab6304003fa6a5b8",
+  "validation": {
+    "bashScripts": "passed",
+    "cargoBuildRelease": "passed",
+    "cargoCheck": "passed",
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoTest": "passed",
+    "gitDiffCheck": "passed",
+    "gitStatusShort": "passed with intended sprint changes and pre-existing unrelated untracked audit/design files",
+    "jqReports": "passed",
+    "pythonPyCompile": "passed"
+  },
+  "whatCanBeFinishedSafelyNext": [
+    "Polish remaining user-facing safe-batch and blocked-copy wording.",
+    "Review desktop/metainfo packaging files and app identity.",
+    "Run a final safe-env GTK matrix and deterministic validation sweep.",
+    "Prepare a release-readiness checklist without creating a release."
+  ],
+  "whatIsDone": [
+    "v0.55.2 app/export model remains at 341 readable / 341 writable / 0 blocked.",
+    "Safe-batch writes are guarded by exact target, backup, reread verification, and recovery paths.",
+    "High-risk, display/render, generated, script-managed, symlink/current-profile, duplicate, and missing/default paths remain blocked.",
+    "GTK safe-env automation launches the app, collects AT-SPI evidence, avoids Apply, and closes the app.",
+    "Connected-file and profile blocker detail surfaces have live GTK/AT-SPI proof in safe-env scenarios."
+  ],
+  "whatIsStillBlockedByDesign": [
+    "Missing/default insertion.",
+    "Duplicate auto-resolution.",
+    "High-risk and display/render real writes.",
+    "Structured-family writes.",
+    "Profile/mode switching.",
+    "Hyprland reload and runtime mutation.",
+    "Hyprland 0.55.4 data migration."
+  ],
+  "whatRequiresSeparateDesign": [
+    "Insertion of missing config lines.",
+    "Manual duplicate-resolution workflow.",
+    "Family-specific high-risk write approvals and recovery watchdogs.",
+    "Profile/mode switching and symlink management.",
+    "Hyprland 0.55.4 export/model migration."
+  ],
+  "whatRequiresUserApproval": [
+    "Any live-swap test.",
+    "Any real user config write.",
+    "Any high-risk/display-render write expansion.",
+    "Any profile/mode switching.",
+    "Any release creation.",
+    "Any migration from v0.55.2 to Hyprland 0.55.4 data."
+  ],
+  "whatShouldNotBeDoneBeforeRelease": [
+    "Do not silently expand write scope.",
+    "Do not create config insertion behavior without its own design and proof.",
+    "Do not auto-resolve duplicate conflicts.",
+    "Do not switch profiles or symlinks.",
+    "Do not reload Hyprland as part of Apply."
+  ]
+}

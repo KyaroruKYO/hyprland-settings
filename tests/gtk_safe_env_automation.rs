@@ -115,6 +115,7 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
         "data/reports/gtk-safe-env-evidence-derived-matrix.v0.55.2.json",
         "data/reports/gtk-safe-env-blocked-category-detail-proof.v0.55.2.json",
         "data/reports/gtk-safe-env-connected-file-detail-proof.v0.55.2.json",
+        "data/reports/completion-readiness-audit.v0.55.2.json",
     ];
     for path in report_paths {
         let text = fs::read_to_string(path).unwrap_or_else(|error| panic!("{path}: {error}"));
@@ -162,6 +163,19 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
         assert!(value["proofSurfaceByBlockedCategory"].is_object());
         assert!(value["blockedCategoryResults"].is_object());
     }
+}
+
+#[test]
+fn gtk_evidence_matrix_covers_source_include_and_nested_source_scenarios() {
+    let matrix = fs::read_to_string("tools/live_scenario_harness/run_gtk_evidence_matrix.sh")
+        .expect("matrix script should read");
+    assert!(matrix.contains("write_conf source_include_config"));
+    assert!(matrix.contains("write_conf nested_source_config"));
+    assert!(matrix.contains("source = profiles/current.conf"));
+    assert!(matrix.contains("source = ../appearance/theme.conf"));
+    assert!(matrix.contains("run_probe source_include_config Config"));
+    assert!(matrix.contains("run_probe nested_source_config Config"));
+    assert!(!matrix.contains("live-swap"));
 }
 
 #[test]
@@ -307,4 +321,61 @@ fn blocked_category_copy_is_not_overclaimed_without_evidence() {
 #[test]
 fn gtk_automation_preserves_safe_writable_row_count() {
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
+}
+
+#[test]
+fn completion_readiness_reports_exist_and_preserve_safety_boundaries() {
+    let audit: Value = serde_json::from_str(
+        &fs::read_to_string("data/reports/completion-readiness-audit.v0.55.2.json")
+            .expect("completion readiness report should read"),
+    )
+    .expect("completion readiness report should parse");
+    assert_eq!(audit["schemaVersion"], 1);
+    assert_eq!(audit["artifactKind"], "completion_readiness_audit");
+    assert_eq!(
+        audit["projectModel"],
+        "v0.55.2 / 341 readable / 341 writable / 0 blocked"
+    );
+    assert_eq!(audit["projectDataMigratedToHyprland0554"], false);
+    assert_eq!(audit["coverageModel"]["safeWritableRowsLen"], 341);
+    assert_eq!(audit["coverageModel"]["exportsUpdatedInThisSprint"], false);
+    assert_eq!(audit["writeSafetyStatus"]["highRiskWritesEnabled"], false);
+    assert_eq!(
+        audit["writeSafetyStatus"]["displayRenderRiskyWritesEnabled"],
+        false
+    );
+    assert_eq!(
+        audit["writeSafetyStatus"]["generatedScriptSymlinkProfileWritesEnabled"],
+        false
+    );
+    assert_eq!(
+        audit["writeSafetyStatus"]["duplicateConflictsStillBlock"],
+        true
+    );
+    assert_eq!(
+        audit["writeSafetyStatus"]["missingDefaultInsertionStillBlocked"],
+        true
+    );
+    assert_eq!(audit["safetyBoundaries"]["liveSwapModeUsed"], false);
+    assert_eq!(audit["safetyBoundaries"]["realConfigEdited"], false);
+    assert_eq!(audit["safetyBoundaries"]["hyprlandReloaded"], false);
+    assert_eq!(audit["packagingStatus"]["releaseCreated"], false);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
+
+    let wrap_up: Value = serde_json::from_str(
+        &fs::read_to_string("data/reports/completion-wrap-up-plan.v0.55.2.json")
+            .expect("completion wrap-up plan should read"),
+    )
+    .expect("completion wrap-up plan should parse");
+    assert_eq!(wrap_up["schemaVersion"], 1);
+    assert_eq!(wrap_up["artifactKind"], "completion_wrap_up_plan");
+    assert_eq!(
+        wrap_up["projectModel"],
+        "v0.55.2 / 341 readable / 341 writable / 0 blocked"
+    );
+    assert_eq!(wrap_up["projectDataMigratedToHyprland0554"], false);
+    assert_eq!(wrap_up["liveSwapModeUsed"], false);
+    assert_eq!(wrap_up["realConfigEdited"], false);
+    assert_eq!(wrap_up["hyprlandReloaded"], false);
+    assert_eq!(wrap_up["mutatingHyprctlUsed"], false);
 }
