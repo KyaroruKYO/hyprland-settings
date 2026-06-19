@@ -21,7 +21,10 @@
     "The comparison review requires trusted official exports, row-count diff, write-safety review, and GTK safe-env evidence before activation.",
     "Added tests proving 0.55.4 migration remains inactive without trusted official export data.",
     "Recorded that the app remains pinned to v0.55.2 data/model.",
-    "Recorded 0.55.4 migration as inactive until trusted export/source proof exists."
+    "Recorded 0.55.4 migration as inactive until trusted export/source proof exists.",
+    "Added trusted export requirement model for requested data bundles.",
+    "The model requires official export data, row-count diff, write-safety review, and safe-env GTK evidence before 0.55.4 can activate.",
+    "Added tests proving v0.55.2 can remain active without extra proof while 0.55.4 remains blocked until all trusted inputs exist."
   ],
   "whatWasNotImplemented": [
     "No v0.55.2 exports were replaced.",
@@ -44,14 +47,20 @@
     "trustedSourceRequirementModelExists": true,
     "dataModelMigrationAllowed": false,
     "releaseMetadataMigrationAllowed": false,
-    "safeWritableRowsChanged": false
+    "safeWritableRowsChanged": false,
+    "trustedExportRequirementModelExists": true,
+    "officialExportRequiredFor0554": true,
+    "rowCountDiffRequiredFor0554": true,
+    "writeSafetyReviewRequiredFor0554": true,
+    "safeEnvEvidenceRequiredFor0554": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"
   },
   "blockers": [
     "Needs trusted v0.55.4 source/export data and comparison tests.",
-    "Needs versioned data loading tests before changing the default app model."
+    "Needs row-count diff, write-safety review, and GTK safe-env evidence before changing the default app model.",
+    "v0.55.2 remains the active/default bundle."
   ],
   "nextRecommendedWork": "Acquire trusted official 0.55.4 export/source data, then compare row counts and write-safety classifications in a separate migration branch.",
   "whetherRealConfigTouched": false,

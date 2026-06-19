@@ -5,14 +5,18 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use hyprland_settings::future_capability::{
     assess_hyprland_version_migration, current_v0552_data_bundle, disabled_migration_review,
     disabled_missing_default_insertion_review, disabled_profile_switch_review,
-    disabled_profile_switch_selection_review, duplicate_occurrence_model,
-    duplicate_occurrence_review, high_risk_recovery_review, high_risk_recovery_workflow,
-    migration_comparison_review, replace_duplicate_occurrence_safe_env, runtime_action_policy,
-    runtime_action_review, structured_family_model, structured_family_review,
-    switch_profile_symlink_safe_env, validate_structured_edit_candidate,
+    disabled_profile_switch_selection_review, duplicate_occurrence_confirmation,
+    duplicate_occurrence_model, duplicate_occurrence_review, edit_structured_bind_safe_env,
+    high_risk_live_recovery_protocol, high_risk_recovery_review, high_risk_recovery_workflow,
+    migration_comparison_review, profile_target_approval_review, render_structured_entry_lossless,
+    replace_duplicate_occurrence_safe_env, runtime_action_policy, runtime_action_review,
+    runtime_command_risk, source_include_insertion_review, structured_family_model,
+    structured_family_review, switch_profile_symlink_safe_env, trusted_export_requirement,
+    validate_structured_edit_candidate, DuplicateOccurrenceApprovalState,
     DuplicateOccurrenceReviewState, DuplicateReplacementOptions, DuplicateReplacementRequest,
-    DuplicateReplacementStatus, MockWatchdog, MockWatchdogState, RuntimeAction,
-    RuntimeDryRunExecutor,
+    DuplicateReplacementStatus, HighRiskLiveReadinessStatus, MockWatchdog, MockWatchdogState,
+    ProfileTargetReadiness, RuntimeAction, RuntimeCommandRisk, RuntimeDryRunExecutor,
+    SourceIncludeInsertionReadiness, StructuredBindEditStatus,
 };
 use hyprland_settings::missing_default_insertion::{
     build_missing_default_insertion_plan, MissingDefaultInsertionRequest,
@@ -59,6 +63,44 @@ fn missing_default_review_scaffold_stays_disabled_for_production() {
         .required_gates
         .iter()
         .any(|gate| gate.contains("production UI approval")));
+}
+
+#[test]
+fn source_include_insertion_review_allows_only_single_root_and_blocks_target_selection() {
+    let root = temp_root("source-insertion-review");
+    let root_conf = root.join("hyprland.conf");
+    let sourced_conf = root.join("appearance.conf");
+
+    let single = source_include_insertion_review(
+        &root_conf,
+        vec![root_conf.clone()],
+        Some(root_conf.clone()),
+        false,
+    );
+    assert_eq!(
+        single.readiness,
+        SourceIncludeInsertionReadiness::SingleRootEligible
+    );
+    assert!(single.production_insertion_enabled);
+
+    let sourced = source_include_insertion_review(
+        &root_conf,
+        vec![root_conf.clone(), sourced_conf],
+        Some(root_conf.clone()),
+        false,
+    );
+    assert_eq!(
+        sourced.readiness,
+        SourceIncludeInsertionReadiness::SourceIncludeTargetSelectionRequired
+    );
+    assert!(!sourced.production_insertion_enabled);
+
+    let managed = source_include_insertion_review(&root_conf, vec![root_conf.clone()], None, true);
+    assert_eq!(
+        managed.readiness,
+        SourceIncludeInsertionReadiness::ManagedTargetBlocked
+    );
+    assert!(!managed.production_insertion_enabled);
 }
 
 #[test]
@@ -151,6 +193,58 @@ fn duplicate_occurrence_review_rejects_stale_selection_without_writing() {
     assert!(!review.production_write_enabled);
     assert!(!review.write_execution_attempted);
     assert!(review.selected_path.is_none());
+}
+
+#[test]
+fn duplicate_occurrence_confirmation_requires_matching_token_and_keeps_production_disabled() {
+    let root = temp_root("duplicate-confirmation");
+    let config = root.join("hyprland.conf");
+    write_file(&config, "decoration:blur:enabled = true\n");
+    let occurrence = duplicate_occurrence_model("decoration.blur.enabled", &[(config.clone(), 0)])
+        .expect("model should build")
+        .occurrences[0]
+        .clone();
+
+    let missing = duplicate_occurrence_confirmation(None, None, "token", false, false);
+    assert_eq!(
+        missing.approval_state,
+        DuplicateOccurrenceApprovalState::Missing
+    );
+    assert!(!missing.safe_env_replacement_allowed);
+    assert!(!missing.apply_enabled);
+
+    let pending =
+        duplicate_occurrence_confirmation(Some(&occurrence), Some("wrong"), "token", false, false);
+    assert_eq!(
+        pending.approval_state,
+        DuplicateOccurrenceApprovalState::Pending
+    );
+    assert!(!pending.token_matched);
+    assert!(!pending.safe_env_replacement_allowed);
+
+    let confirmed =
+        duplicate_occurrence_confirmation(Some(&occurrence), Some("token"), "token", false, false);
+    assert_eq!(
+        confirmed.approval_state,
+        DuplicateOccurrenceApprovalState::Confirmed
+    );
+    assert!(confirmed.token_matched);
+    assert!(confirmed.safe_env_replacement_allowed);
+    assert!(!confirmed.production_write_enabled);
+    assert!(!confirmed.apply_enabled);
+    assert!(confirmed
+        .occurrence_fingerprint
+        .as_deref()
+        .expect("fingerprint")
+        .contains("decoration:blur:enabled = true"));
+
+    let expired =
+        duplicate_occurrence_confirmation(Some(&occurrence), Some("token"), "token", false, true);
+    assert_eq!(
+        expired.approval_state,
+        DuplicateOccurrenceApprovalState::Expired
+    );
+    assert!(!expired.safe_env_replacement_allowed);
 }
 
 #[test]
@@ -280,6 +374,37 @@ fn high_risk_recovery_workflow_records_rollback_proof_without_runtime() {
 }
 
 #[test]
+fn high_risk_live_recovery_protocol_is_noop_and_refuses_real_paths_or_runtime() {
+    let root = temp_root("high-risk-live-protocol");
+    let temp_config = root.join("hyprland.conf");
+    write_file(&temp_config, "decoration:blur:enabled = true\n");
+
+    let ready =
+        high_risk_live_recovery_protocol("render.direct_scanout", &temp_config, true, false);
+    assert_eq!(
+        ready.status,
+        HighRiskLiveReadinessStatus::NoopReadyForReview
+    );
+    assert!(ready.no_op_harness);
+    assert!(!ready.accepts_real_config);
+    assert!(!ready.mutating_runtime_enabled);
+    assert!(!ready.live_write_enabled);
+
+    let real_path = PathBuf::from("/home/kyo/.config/hypr/hyprland.conf");
+    let real = high_risk_live_recovery_protocol("render.direct_scanout", real_path, true, false);
+    assert_eq!(real.status, HighRiskLiveReadinessStatus::RealConfigRefused);
+    assert!(!real.live_write_enabled);
+
+    let runtime =
+        high_risk_live_recovery_protocol("render.direct_scanout", &temp_config, true, true);
+    assert_eq!(
+        runtime.status,
+        HighRiskLiveReadinessStatus::RuntimeMutationRefused
+    );
+    assert!(!runtime.mutating_runtime_enabled);
+}
+
+#[test]
 fn structured_family_model_keeps_bind_entries_read_only() {
     let root = temp_root("structured");
     let config = root.join("hyprland.conf");
@@ -329,6 +454,78 @@ fn structured_family_review_keeps_repeated_bind_entries_disabled_and_lossless() 
         .invalid_input_reasons
         .iter()
         .any(|reason| reason.contains("must start with bind")));
+}
+
+#[test]
+fn structured_bind_lossless_render_and_safe_env_edit_proof_preserve_comments_and_order() {
+    let root = temp_root("structured-bind-edit");
+    let config = root.join("hyprland.conf");
+    write_file(
+        &config,
+        "# keep before\nbind = SUPER, Return, exec, foot\n# keep middle\nbind = SUPER, Q, killactive\n",
+    );
+    let model = structured_family_model(&config, "hl.bind").expect("model should build");
+    assert_eq!(
+        render_structured_entry_lossless(&model.entries[0]),
+        "bind = SUPER, Return, exec, foot"
+    );
+
+    let proof = edit_structured_bind_safe_env(
+        &config,
+        2,
+        "bind = SUPER, Return, exec, foot",
+        "bind = SUPER, Return, exec, kitty",
+    );
+    assert_eq!(proof.status, StructuredBindEditStatus::Succeeded);
+    assert!(proof.comments_and_order_preserved);
+    assert!(proof.reread_verified);
+    assert!(!proof.production_write_enabled);
+    assert!(!proof.real_config_touched);
+    let updated = fs::read_to_string(config).expect("config should read");
+    assert!(
+        updated.starts_with("# keep before\nbind = SUPER, Return, exec, kitty\n# keep middle\n")
+    );
+}
+
+#[test]
+fn structured_bind_safe_env_edit_blocks_stale_line_invalid_input_and_real_paths() {
+    let root = temp_root("structured-bind-blocked");
+    let config = root.join("hyprland.conf");
+    write_file(&config, "bind = SUPER, Return, exec, foot\n");
+
+    let stale = edit_structured_bind_safe_env(
+        &config,
+        1,
+        "bind = SUPER, Space, exec, wofi",
+        "bind = SUPER, Return, exec, kitty",
+    );
+    assert_eq!(stale.status, StructuredBindEditStatus::Blocked);
+    assert!(stale
+        .errors
+        .iter()
+        .any(|error| error.contains("no longer matches")));
+
+    let invalid = edit_structured_bind_safe_env(
+        &config,
+        1,
+        "bind = SUPER, Return, exec, foot",
+        "monitor = eDP-1,preferred,auto,1",
+    );
+    assert_eq!(invalid.status, StructuredBindEditStatus::Blocked);
+    assert!(invalid
+        .errors
+        .iter()
+        .any(|error| error.contains("must start with bind")));
+
+    let real_path = PathBuf::from("/home/kyo/.config/hypr/hyprland.conf");
+    let real = edit_structured_bind_safe_env(
+        real_path,
+        1,
+        "bind = SUPER, Return, exec, foot",
+        "bind = SUPER, Return, exec, kitty",
+    );
+    assert_eq!(real.status, StructuredBindEditStatus::Blocked);
+    assert!(!real.real_config_touched);
 }
 
 #[test]
@@ -453,6 +650,33 @@ fn profile_switch_selection_review_tracks_selected_target_but_keeps_disabled() {
     assert!(!selected.reload_after_switch_enabled);
 }
 
+#[cfg(unix)]
+#[test]
+fn profile_target_approval_review_blocks_missing_and_real_session_targets() {
+    let root = temp_root("profile-target-review");
+    let existing = root.join("profiles/gaming.conf");
+    write_file(&existing, "general:layout = master\n");
+
+    let none = profile_target_approval_review(&root, None);
+    assert_eq!(none.readiness, ProfileTargetReadiness::NoSelection);
+    assert!(!none.production_switch_enabled);
+
+    let missing = profile_target_approval_review(&root, Some(root.join("profiles/missing.conf")));
+    assert_eq!(missing.readiness, ProfileTargetReadiness::TargetMissing);
+    assert!(!missing.real_session_allowed);
+
+    let safe = profile_target_approval_review(&root, Some(existing));
+    assert_eq!(safe.readiness, ProfileTargetReadiness::SafeEnvReviewOnly);
+    assert!(!safe.production_switch_enabled);
+
+    let real = profile_target_approval_review(
+        &root,
+        Some(PathBuf::from("/home/kyo/.config/hypr/profiles/gaming.conf")),
+    );
+    assert_eq!(real.readiness, ProfileTargetReadiness::TargetOutsideSafeEnv);
+    assert!(!real.real_session_allowed);
+}
+
 #[test]
 fn runtime_boundary_is_dry_run_only_and_never_executes_commands() {
     let mut executor = RuntimeDryRunExecutor::default();
@@ -497,6 +721,33 @@ fn runtime_action_review_records_policy_and_log_without_execution() {
     assert!(!status_review.production_execution_enabled);
     assert!(!status_review.real_command_executed);
     assert!(!status_review.dry_run_result.real_command_executed);
+}
+
+#[test]
+fn runtime_command_risk_classifies_status_reload_keyword_and_dispatch_without_execution() {
+    assert_eq!(
+        runtime_command_risk(&RuntimeAction::Status {
+            query: "version".to_string()
+        }),
+        RuntimeCommandRisk::ReadOnlyStatus
+    );
+    assert_eq!(
+        runtime_command_risk(&RuntimeAction::Reload),
+        RuntimeCommandRisk::MutatingReload
+    );
+    assert_eq!(
+        runtime_command_risk(&RuntimeAction::Keyword {
+            key: "general:gaps_in".to_string(),
+            value: "4".to_string()
+        }),
+        RuntimeCommandRisk::MutatingKeyword
+    );
+    assert_eq!(
+        runtime_command_risk(&RuntimeAction::Dispatch {
+            command: "workspace 1".to_string()
+        }),
+        RuntimeCommandRisk::MutatingDispatch
+    );
 }
 
 #[test]
@@ -553,4 +804,25 @@ fn migration_comparison_review_keeps_0552_default_until_trusted_export_proof_exi
     assert!(!current.migration_enabled);
     assert!(!current.production_default_changed);
     assert!(current.missing_proof.is_empty());
+}
+
+#[test]
+fn trusted_export_requirement_blocks_0554_until_all_required_inputs_exist() {
+    let blocked = trusted_export_requirement("0.55.4", true, false, false, false);
+    assert!(!blocked.can_activate);
+    assert!(blocked
+        .missing_inputs
+        .iter()
+        .any(|input| input.contains("row-count diff")));
+    assert!(blocked
+        .missing_inputs
+        .iter()
+        .any(|input| input.contains("safe-env GTK evidence")));
+
+    let complete = trusted_export_requirement("0.55.4", true, true, true, true);
+    assert!(complete.can_activate);
+    assert!(complete.missing_inputs.is_empty());
+
+    let current = trusted_export_requirement("0.55.2", false, false, false, false);
+    assert!(current.can_activate);
 }

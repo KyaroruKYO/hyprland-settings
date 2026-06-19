@@ -16,6 +16,57 @@ pub struct DisabledInsertionReview {
     pub required_gates: Vec<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SourceIncludeInsertionReadiness {
+    SingleRootEligible,
+    SourceIncludeTargetSelectionRequired,
+    ManagedTargetBlocked,
+    DuplicateOrAmbiguousBlocked,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SourceIncludeInsertionReview {
+    pub root_path: PathBuf,
+    pub candidate_targets: Vec<PathBuf>,
+    pub selected_target: Option<PathBuf>,
+    pub readiness: SourceIncludeInsertionReadiness,
+    pub production_insertion_enabled: bool,
+    pub review_lines: Vec<String>,
+}
+
+pub fn source_include_insertion_review(
+    root_path: impl Into<PathBuf>,
+    candidate_targets: Vec<PathBuf>,
+    selected_target: Option<PathBuf>,
+    managed_or_ambiguous: bool,
+) -> SourceIncludeInsertionReview {
+    let root_path = root_path.into();
+    let readiness = if managed_or_ambiguous {
+        SourceIncludeInsertionReadiness::ManagedTargetBlocked
+    } else if candidate_targets.len() == 1 && selected_target.as_ref() == Some(&root_path) {
+        SourceIncludeInsertionReadiness::SingleRootEligible
+    } else if candidate_targets.len() > 1 || selected_target.is_some() {
+        SourceIncludeInsertionReadiness::SourceIncludeTargetSelectionRequired
+    } else {
+        SourceIncludeInsertionReadiness::DuplicateOrAmbiguousBlocked
+    };
+
+    SourceIncludeInsertionReview {
+        root_path,
+        candidate_targets,
+        selected_target,
+        readiness,
+        production_insertion_enabled: readiness == SourceIncludeInsertionReadiness::SingleRootEligible,
+        review_lines: vec![
+            "Missing/default insertion can write only a reviewed single-file root config today."
+                .to_string(),
+            "Source/include insertion needs explicit target selection before production activation."
+                .to_string(),
+            "Generated, script-managed, symlink/current-profile, duplicate, and ambiguous targets stay blocked.".to_string(),
+        ],
+    }
+}
+
 pub fn disabled_missing_default_insertion_review(
     plan: &MissingDefaultInsertionPlan,
 ) -> DisabledInsertionReview {
@@ -89,6 +140,31 @@ pub enum DuplicateOccurrenceReviewState {
     NoOccurrenceSelected,
     OccurrenceSelectedProductionDisabled,
     InvalidSelection,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum DuplicateOccurrenceApprovalState {
+    Missing,
+    Pending,
+    Confirmed,
+    Rejected,
+    Expired,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DuplicateOccurrenceConfirmation {
+    pub setting_id: String,
+    pub selected_path: Option<PathBuf>,
+    pub selected_line_number: Option<usize>,
+    pub selected_raw_line: Option<String>,
+    pub occurrence_fingerprint: Option<String>,
+    pub approval_state: DuplicateOccurrenceApprovalState,
+    pub token_required: bool,
+    pub token_matched: bool,
+    pub safe_env_replacement_allowed: bool,
+    pub production_write_enabled: bool,
+    pub apply_enabled: bool,
+    pub review_lines: Vec<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -170,6 +246,71 @@ pub fn duplicate_occurrence_review(
             "Production Apply still will not write duplicate settings.".to_string(),
             "Manual occurrence targeting needs a separate approval gate before activation."
                 .to_string(),
+        ],
+    }
+}
+
+pub fn duplicate_occurrence_confirmation(
+    occurrence: Option<&DuplicateOccurrence>,
+    provided_token: Option<&str>,
+    expected_token: &str,
+    rejected: bool,
+    expired: bool,
+) -> DuplicateOccurrenceConfirmation {
+    let Some(occurrence) = occurrence else {
+        return DuplicateOccurrenceConfirmation {
+            setting_id: String::new(),
+            selected_path: None,
+            selected_line_number: None,
+            selected_raw_line: None,
+            occurrence_fingerprint: None,
+            approval_state: DuplicateOccurrenceApprovalState::Missing,
+            token_required: true,
+            token_matched: false,
+            safe_env_replacement_allowed: false,
+            production_write_enabled: false,
+            apply_enabled: false,
+            review_lines: vec![
+                "No duplicate occurrence is selected for confirmation.".to_string(),
+                "Apply remains blocked.".to_string(),
+            ],
+        };
+    };
+
+    let token_matched = provided_token == Some(expected_token);
+    let approval_state = if expired {
+        DuplicateOccurrenceApprovalState::Expired
+    } else if rejected {
+        DuplicateOccurrenceApprovalState::Rejected
+    } else if token_matched {
+        DuplicateOccurrenceApprovalState::Confirmed
+    } else {
+        DuplicateOccurrenceApprovalState::Pending
+    };
+    let occurrence_fingerprint = format!(
+        "{}:{}:{}:{}",
+        occurrence.path.display(),
+        occurrence.line_number,
+        occurrence.raw_line,
+        occurrence.raw_value
+    );
+
+    DuplicateOccurrenceConfirmation {
+        setting_id: occurrence.setting_id.clone(),
+        selected_path: Some(occurrence.path.clone()),
+        selected_line_number: Some(occurrence.line_number),
+        selected_raw_line: Some(occurrence.raw_line.clone()),
+        occurrence_fingerprint: Some(occurrence_fingerprint),
+        approval_state,
+        token_required: true,
+        token_matched,
+        safe_env_replacement_allowed: approval_state == DuplicateOccurrenceApprovalState::Confirmed,
+        production_write_enabled: false,
+        apply_enabled: false,
+        review_lines: vec![
+            "Manual occurrence confirmation is required before a duplicate replacement proof can run.".to_string(),
+            "Production Apply remains disabled even after fixture confirmation.".to_string(),
+            "The selected path, line number, raw line, and old value must still match at write time.".to_string(),
         ],
     }
 }
@@ -369,6 +510,27 @@ pub struct HighRiskRecoveryWorkflow {
     pub review_lines: Vec<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum HighRiskLiveReadinessStatus {
+    NoopReadyForReview,
+    RealConfigRefused,
+    RuntimeMutationRefused,
+    RecoveryProofMissing,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct HighRiskLiveRecoveryProtocol {
+    pub setting_id: String,
+    pub target_path: PathBuf,
+    pub status: HighRiskLiveReadinessStatus,
+    pub accepts_real_config: bool,
+    pub mutating_runtime_enabled: bool,
+    pub live_write_enabled: bool,
+    pub no_op_harness: bool,
+    pub required_manual_steps: Vec<String>,
+    pub review_lines: Vec<String>,
+}
+
 pub fn high_risk_recovery_review(
     setting_id: &str,
     watchdog: &MockWatchdog,
@@ -391,6 +553,67 @@ pub fn high_risk_recovery_review(
             state_line.to_string(),
             "This review is non-mutating and does not reload Hyprland.".to_string(),
         ],
+    }
+}
+
+pub fn high_risk_live_recovery_protocol(
+    setting_id: &str,
+    target_path: impl Into<PathBuf>,
+    recovery_proof_available: bool,
+    runtime_mutation_requested: bool,
+) -> HighRiskLiveRecoveryProtocol {
+    let target_path = target_path.into();
+    let status = if runtime_mutation_requested {
+        HighRiskLiveReadinessStatus::RuntimeMutationRefused
+    } else if !target_path.starts_with(std::env::temp_dir()) {
+        HighRiskLiveReadinessStatus::RealConfigRefused
+    } else if !recovery_proof_available {
+        HighRiskLiveReadinessStatus::RecoveryProofMissing
+    } else {
+        HighRiskLiveReadinessStatus::NoopReadyForReview
+    };
+    HighRiskLiveRecoveryProtocol {
+        setting_id: setting_id.to_string(),
+        target_path,
+        status,
+        accepts_real_config: false,
+        mutating_runtime_enabled: false,
+        live_write_enabled: false,
+        no_op_harness: true,
+        required_manual_steps: vec![
+            "out-of-band recovery channel".to_string(),
+            "dead-man timeout confirmation".to_string(),
+            "verified backup restore path".to_string(),
+            "explicit user approval before any live mutation".to_string(),
+        ],
+        review_lines: vec![
+            "Live high-risk recovery proof is no-op only in this branch.".to_string(),
+            "Real config paths and runtime mutation are refused by default.".to_string(),
+            "A future sprint must prove recovery outside the graphical session before activation."
+                .to_string(),
+        ],
+    }
+}
+
+fn structured_bind_blocked(
+    target_path: PathBuf,
+    line_number: usize,
+    expected_old_line: &str,
+    proposed_new_line: &str,
+    error: &str,
+) -> StructuredBindEditProof {
+    StructuredBindEditProof {
+        status: StructuredBindEditStatus::Blocked,
+        target_path,
+        line_number,
+        expected_old_line: expected_old_line.to_string(),
+        proposed_new_line: proposed_new_line.to_string(),
+        rendered_line: None,
+        comments_and_order_preserved: false,
+        reread_verified: false,
+        production_write_enabled: false,
+        real_config_touched: false,
+        errors: vec![error.to_string()],
     }
 }
 
@@ -505,6 +728,28 @@ pub struct StructuredFamilyReview {
     pub review_lines: Vec<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredBindEditStatus {
+    Succeeded,
+    Blocked,
+    VerificationFailed,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredBindEditProof {
+    pub status: StructuredBindEditStatus,
+    pub target_path: PathBuf,
+    pub line_number: usize,
+    pub expected_old_line: String,
+    pub proposed_new_line: String,
+    pub rendered_line: Option<String>,
+    pub comments_and_order_preserved: bool,
+    pub reread_verified: bool,
+    pub production_write_enabled: bool,
+    pub real_config_touched: bool,
+    pub errors: Vec<String>,
+}
+
 pub fn validate_structured_edit_candidate(
     family_id: &str,
     proposed_raw_line: &str,
@@ -612,6 +857,122 @@ pub fn structured_family_review(
     }
 }
 
+pub fn render_structured_entry_lossless(entry: &StructuredFamilyEntry) -> String {
+    entry.raw_line.clone()
+}
+
+pub fn edit_structured_bind_safe_env(
+    target_path: impl AsRef<Path>,
+    line_number: usize,
+    expected_old_line: &str,
+    proposed_new_line: &str,
+) -> StructuredBindEditProof {
+    let target_path = target_path.as_ref().to_path_buf();
+    if !target_path.starts_with(std::env::temp_dir()) {
+        return structured_bind_blocked(
+            target_path,
+            line_number,
+            expected_old_line,
+            proposed_new_line,
+            "structured bind proof only accepts temp fixture paths",
+        );
+    }
+    let candidate = validate_structured_edit_candidate("hl.bind", proposed_new_line);
+    if !candidate.accepted {
+        return structured_bind_blocked(
+            target_path,
+            line_number,
+            expected_old_line,
+            proposed_new_line,
+            &candidate.errors.join("; "),
+        );
+    }
+    let original = match fs::read_to_string(&target_path) {
+        Ok(contents) => contents,
+        Err(error) => {
+            return structured_bind_blocked(
+                target_path,
+                line_number,
+                expected_old_line,
+                proposed_new_line,
+                &format!("read target failed: {error}"),
+            )
+        }
+    };
+    let mut lines: Vec<String> = original.lines().map(str::to_string).collect();
+    let Some(line) = lines.get_mut(line_number.saturating_sub(1)) else {
+        return structured_bind_blocked(
+            target_path,
+            line_number,
+            expected_old_line,
+            proposed_new_line,
+            "line number is outside target file",
+        );
+    };
+    if line.trim() != expected_old_line.trim() {
+        return structured_bind_blocked(
+            target_path,
+            line_number,
+            expected_old_line,
+            proposed_new_line,
+            "expected old structured line no longer matches",
+        );
+    }
+    *line = proposed_new_line.trim().to_string();
+    let mut updated = lines.join("\n");
+    if original.ends_with('\n') {
+        updated.push('\n');
+    }
+    if let Err(error) = fs::write(&target_path, updated.as_bytes()) {
+        return structured_bind_blocked(
+            target_path,
+            line_number,
+            expected_old_line,
+            proposed_new_line,
+            &format!("write target failed: {error}"),
+        );
+    }
+    let verified = parse_hyprland_config_file(&target_path)
+        .map(|parsed| {
+            parsed.records.iter().any(|record| {
+                record.line_number == line_number
+                    && record.status == ParseStatus::StructuredRaw
+                    && record.normalized_setting_id.as_deref() == Some("hl.bind")
+                    && record.raw_line.trim() == proposed_new_line.trim()
+            })
+        })
+        .unwrap_or(false);
+    if !verified {
+        return StructuredBindEditProof {
+            status: StructuredBindEditStatus::VerificationFailed,
+            target_path,
+            line_number,
+            expected_old_line: expected_old_line.to_string(),
+            proposed_new_line: proposed_new_line.to_string(),
+            rendered_line: None,
+            comments_and_order_preserved: false,
+            reread_verified: false,
+            production_write_enabled: false,
+            real_config_touched: false,
+            errors: vec!["structured bind reread verification failed".to_string()],
+        };
+    }
+
+    StructuredBindEditProof {
+        status: StructuredBindEditStatus::Succeeded,
+        target_path,
+        line_number,
+        expected_old_line: expected_old_line.to_string(),
+        proposed_new_line: proposed_new_line.to_string(),
+        rendered_line: Some(proposed_new_line.trim().to_string()),
+        comments_and_order_preserved: true,
+        reread_verified: true,
+        production_write_enabled: false,
+        real_config_touched: false,
+        errors: Vec::new(),
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ProfileSwitchStatus {
     Succeeded,
@@ -651,6 +1012,23 @@ pub struct ProfileSwitchSelectionReview {
     pub confirmation_enabled: bool,
     pub production_switch_enabled: bool,
     pub reload_after_switch_enabled: bool,
+    pub review_lines: Vec<String>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProfileTargetReadiness {
+    NoSelection,
+    TargetMissing,
+    TargetOutsideSafeEnv,
+    SafeEnvReviewOnly,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProfileTargetApprovalReview {
+    pub selected_target_profile: Option<PathBuf>,
+    pub readiness: ProfileTargetReadiness,
+    pub production_switch_enabled: bool,
+    pub real_session_allowed: bool,
     pub review_lines: Vec<String>,
 }
 
@@ -696,6 +1074,35 @@ pub fn disabled_profile_switch_selection_review(
             selected_copy.to_string(),
             "Profile switching remains disabled for the real session.".to_string(),
             "Safe-env proof may switch and restore temp symlinks only.".to_string(),
+        ],
+    }
+}
+
+pub fn profile_target_approval_review(
+    safe_env_root: impl AsRef<Path>,
+    selected_target_profile: Option<PathBuf>,
+) -> ProfileTargetApprovalReview {
+    let safe_env_root = safe_env_root.as_ref();
+    let readiness = match selected_target_profile.as_ref() {
+        None => ProfileTargetReadiness::NoSelection,
+        Some(path)
+            if !path.starts_with(safe_env_root)
+                || !safe_env_root.starts_with(std::env::temp_dir()) =>
+        {
+            ProfileTargetReadiness::TargetOutsideSafeEnv
+        }
+        Some(path) if !path.exists() => ProfileTargetReadiness::TargetMissing,
+        Some(_) => ProfileTargetReadiness::SafeEnvReviewOnly,
+    };
+    ProfileTargetApprovalReview {
+        selected_target_profile,
+        readiness,
+        production_switch_enabled: false,
+        real_session_allowed: false,
+        review_lines: vec![
+            "Profile target review is safe-env only.".to_string(),
+            "Real profile symlinks and scripts stay blocked.".to_string(),
+            "Hyprland reload is not part of this review.".to_string(),
         ],
     }
 }
@@ -796,6 +1203,14 @@ pub struct RuntimeActionPolicy {
     pub reason: String,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RuntimeCommandRisk {
+    ReadOnlyStatus,
+    MutatingReload,
+    MutatingKeyword,
+    MutatingDispatch,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RuntimeActionReview {
     pub action: RuntimeAction,
@@ -822,6 +1237,15 @@ pub fn runtime_action_policy(action: RuntimeAction) -> RuntimeActionPolicy {
         dry_run_allowed: true,
         production_runtime_enabled: false,
         reason,
+    }
+}
+
+pub fn runtime_command_risk(action: &RuntimeAction) -> RuntimeCommandRisk {
+    match action {
+        RuntimeAction::Status { .. } => RuntimeCommandRisk::ReadOnlyStatus,
+        RuntimeAction::Reload => RuntimeCommandRisk::MutatingReload,
+        RuntimeAction::Keyword { .. } => RuntimeCommandRisk::MutatingKeyword,
+        RuntimeAction::Dispatch { .. } => RuntimeCommandRisk::MutatingDispatch,
     }
 }
 
@@ -907,6 +1331,17 @@ pub struct DisabledMigrationReview {
     pub review_lines: Vec<String>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct TrustedExportRequirement {
+    pub requested_version: String,
+    pub has_official_export: bool,
+    pub has_row_count_diff: bool,
+    pub has_write_safety_review: bool,
+    pub has_safe_env_evidence: bool,
+    pub can_activate: bool,
+    pub missing_inputs: Vec<String>,
+}
+
 pub fn current_v0552_data_bundle() -> VersionedDataBundle {
     VersionedDataBundle {
         version: "0.55.2".to_string(),
@@ -929,6 +1364,37 @@ pub fn disabled_migration_review(requested_version: &str) -> DisabledMigrationRe
             "Trusted official exports and comparison tests are required before activation."
                 .to_string(),
         ],
+    }
+}
+
+pub fn trusted_export_requirement(
+    requested_version: &str,
+    has_official_export: bool,
+    has_row_count_diff: bool,
+    has_write_safety_review: bool,
+    has_safe_env_evidence: bool,
+) -> TrustedExportRequirement {
+    let mut missing_inputs = Vec::new();
+    if requested_version != "0.55.2" && !has_official_export {
+        missing_inputs.push("trusted official export".to_string());
+    }
+    if requested_version != "0.55.2" && !has_row_count_diff {
+        missing_inputs.push("row-count diff against v0.55.2".to_string());
+    }
+    if requested_version != "0.55.2" && !has_write_safety_review {
+        missing_inputs.push("write-safety review".to_string());
+    }
+    if requested_version != "0.55.2" && !has_safe_env_evidence {
+        missing_inputs.push("safe-env GTK evidence".to_string());
+    }
+    TrustedExportRequirement {
+        requested_version: requested_version.to_string(),
+        has_official_export,
+        has_row_count_diff,
+        has_write_safety_review,
+        has_safe_env_evidence,
+        can_activate: requested_version == "0.55.2" || missing_inputs.is_empty(),
+        missing_inputs,
     }
 }
 

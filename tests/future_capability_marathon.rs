@@ -82,12 +82,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "define source/include target-selection architecture if missing/default insertion should expand beyond the current single-root normal-scalar gate; otherwise choose one still-disabled future track for explicit approval"
+        "Connect source/include insertion target-selection review to disabled UI, or build the explicit duplicate production approval gate while keeping duplicate writes disabled by default."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("gated missing/default insertion implementation"));
+        .contains("duplicate confirmation"));
 }
 
 #[test]

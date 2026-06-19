@@ -19,7 +19,9 @@
     "Added runtime action policy scaffolding that keeps all real execution disabled.",
     "Added a runtime action review workflow that combines policy, dry-run result, and execution log while real_command_executed remains false.",
     "Added tests proving mutating runtime actions remain dry-run only.",
-    "Kept real reload and mutating hyprctl outside active Apply behavior."
+    "Kept real reload and mutating hyprctl outside active Apply behavior.",
+    "Added runtime command risk classification for status, reload, keyword, and dispatch actions.",
+    "Added deterministic tests proving status is read-only while reload, keyword, and dispatch are mutating classes that remain dry-run only."
   ],
   "whatWasNotImplemented": [
     "No real hyprctl keyword, dispatch, reload, or runtime mutation path was added.",
@@ -40,16 +42,20 @@
     "realCommandExecutedByReview": false,
     "readOnlyStatusChecksAllowed": true,
     "mutatingHyprctlAllowed": false,
-    "hyprlandReloadAllowed": false
+    "hyprlandReloadAllowed": false,
+    "runtimeCommandRiskClassificationExists": true,
+    "statusClassifiedReadOnly": true,
+    "reloadKeywordDispatchClassifiedMutating": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"
   },
   "blockers": [
     "Needs a production command approval model before any runtime adapter can be activated.",
-    "Production reload requires separate approval and recovery proof."
+    "Production reload requires separate approval and recovery proof.",
+    "Mutating hyprctl keyword and dispatch remain blocked."
   ],
-  "nextRecommendedWork": "Connect the dry-run runtime boundary to disabled UI copy and define command approval requirements.",
+  "nextRecommendedWork": "Connect command risk classification to disabled UI copy and define approval requirements for any future real runtime adapter.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

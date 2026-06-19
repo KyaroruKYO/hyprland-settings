@@ -21,7 +21,11 @@
     "Added structured edit candidate validation that blocks invalid family prefixes and multiline input.",
     "Added fixture parser/model tests for key binding entries.",
     "Kept active safe-batch structured-family copy blocked.",
-    "Identified read-only parser/display work as the safest next subset."
+    "Identified read-only parser/display work as the safest next subset.",
+    "Added lossless render proof for read-only hl.bind entries by preserving raw structured lines when no edit occurs.",
+    "Added safe-env-only hl.bind exact-line edit proof for temp fixture files.",
+    "The safe-env edit proof verifies stale-line blocking, invalid-input blocking, comment/order preservation, reread parse verification, and real-path refusal.",
+    "Production structured writes remain disabled despite fixture proof."
   ],
   "whatWasNotImplemented": [
     "No monitor, bind, window rule, workspace rule, device, gesture, permission, animation, or curve writer was enabled.",
@@ -42,16 +46,21 @@
     "commentsOrderPreservationRequired": true,
     "firstSafeEnvWriteCandidate": "hl.bind single-line replacement after lossless render proof",
     "invalidInputBlockingProofExists": true,
-    "productionStructuredWritesEnabled": false
+    "productionStructuredWritesEnabled": false,
+    "hlBindLosslessRenderProofExists": true,
+    "hlBindSafeEnvExactLineEditProofExists": true,
+    "staleLineBlockingProofExists": true,
+    "realPathStructuredEditRefused": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"
   },
   "blockers": [
-    "Structured records need lossless parse/edit/render proof before writes.",
-    "Each family needs preservation tests for comments, ordering, repeated records, and invalid input rejection."
+    "Structured production writes need an approved safe-batch integration gate after lossless parse/edit/render proof.",
+    "Each structured family still needs family-specific preservation tests for comments, ordering, repeated records, and invalid input rejection.",
+    "Only hl.bind has the new lossless safe-env exact-line edit proof; other structured families remain read-only scaffolds."
   ],
-  "nextRecommendedWork": "Add lossless render tests for one structured family before considering any safe-env write proof.",
+  "nextRecommendedWork": "Promote the hl.bind safe-env edit proof into a disabled structured write review surface with exact old line/new line/target file/line number before any production gate is considered.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

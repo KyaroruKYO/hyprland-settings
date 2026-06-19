@@ -22,7 +22,9 @@
     "Added forced restore failure test coverage.",
     "Recorded that real profile/mode switching remains disabled.",
     "Kept profile/mode safe-batch blocking asserted by deterministic tests.",
-    "Defined safe-env symlink/profile switching as the next acceptable proof path."
+    "Defined safe-env symlink/profile switching as the next acceptable proof path.",
+    "Added a profile target approval review model that distinguishes no selection, missing target, target outside safe-env, and safe-env-only review states.",
+    "Added deterministic tests proving real-session profile paths are refused as outside safe-env and production switching remains disabled."
   ],
   "whatWasNotImplemented": [
     "No real symlink was switched.",
@@ -44,16 +46,20 @@
     "forcedRestoreFailureProofExists": true,
     "realProfileSwitchingAllowed": false,
     "realSymlinkSwitchingAllowed": false,
-    "reloadAfterSwitchAllowed": false
+    "reloadAfterSwitchAllowed": false,
+    "profileTargetApprovalReviewExists": true,
+    "realSessionProfileTargetRefused": true,
+    "safeEnvTargetReviewOnly": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"
   },
   "blockers": [
-    "Needs backup/restore model for symlink targets and profile files.",
-    "Needs explicit user approval before any real session profile switch."
+    "Needs backup/restore model for symlink targets and profile files before any real switch can be considered.",
+    "Needs explicit user approval before any real session profile switch.",
+    "Real mode scripts, reload, AGS restart, and Waybar restart remain blocked."
   ],
-  "nextRecommendedWork": "Design the explicit user approval and live restore protocol required before any real profile or symlink switch can be proposed.",
+  "nextRecommendedWork": "Extend safe-env profile fixtures with invalid target and restore-failure cases, then define explicit approval requirements for real switching.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

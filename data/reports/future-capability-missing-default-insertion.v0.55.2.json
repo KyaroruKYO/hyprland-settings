@@ -25,7 +25,9 @@
     "Reused the safe-batch backup path, backup byte-equality proof, write path, reread verification, and restore-on-failure machinery for insertion changes.",
     "Added deterministic safe-batch insertion section rendering and exact reread verification for inserted setting/value/line.",
     "Updated live scenario harness coverage so the missing/default-only safe-env scenario proves the newly eligible single-root insertion path.",
-    "Kept unsafe missing/default layouts blocked, including managed, duplicate, multi-file/ambiguous, high-risk, structured, profile/mode, and runtime cases."
+    "Kept unsafe missing/default layouts blocked, including managed, duplicate, multi-file/ambiguous, high-risk, structured, profile/mode, and runtime cases.",
+    "Added a source/include insertion target-selection readiness model that allows only selected single-root targets and keeps multi-target or managed layouts disabled.",
+    "Added deterministic tests proving source/include and managed target selection remain blocked while the current single-root path stays eligible."
   ],
   "whatWasNotImplemented": [
     "No insertion into generated, script-managed, symlink/current-profile, profile/mode, multi-file, duplicate, high-risk, display/render-risk, structured, runtime-only, or missing target files was enabled.",
@@ -57,7 +59,10 @@
     "requiresRereadVerification": true,
     "requiresRestoreOnFailure": true,
     "productionInsertionEnabled": true,
-    "realConfigWritesAllowedInTests": false
+    "realConfigWritesAllowedInTests": false,
+    "sourceIncludeTargetSelectionReadinessModelExists": true,
+    "sourceIncludeInsertionProductionEnabled": false,
+    "managedTargetInsertionProductionEnabled": false
   },
   "validation": {
     "focusedSafeBatchWriteTests": "passed",
@@ -75,9 +80,10 @@
   },
   "blockers": [
     "Production insertion remains intentionally limited to single-file normal scalar targets.",
-    "Source/include insertion, managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
+    "Source/include insertion now has a readiness model but still needs explicit target-selection UI and safe-batch integration proof.",
+    "Managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
   ],
-  "nextRecommendedWork": "Run full validation, then review whether a future architecture sprint should add explicit target selection for source/include insertion without weakening the current single-root gate.",
+  "nextRecommendedWork": "Connect source/include target-selection readiness to disabled UI/review copy, then prove selected connected-file insertion in fixtures before considering production expansion.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": true
