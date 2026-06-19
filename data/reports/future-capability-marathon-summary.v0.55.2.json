@@ -60,7 +60,14 @@
     "tests/future_capability_models.rs"
   ],
   "validation": {
-    "status": "pending batch validation"
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "jqReports": "passed",
+    "gitDiffCheck": "passed",
+    "gtkSafeEnvMatrix": "not run; no UI behavior changed in this milestone"
   },
   "nextRecommendedAction": "Wire disabled UI scaffolds to the new future_capability models, starting with duplicate occurrence selector and insertion review; keep all production writes blocked."
 }

@@ -3,7 +3,7 @@
   "artifactKind": "future-capability-marathon-handoff",
   "currentBranch": "future-capability-marathon",
   "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
-  "latestCommit": null,
+  "latestCommit": "see branch HEAD after final handoff commit",
   "completedPhases": [
     "missing_default_insertion_safe_env_proof",
     "duplicate_occurrence_model_and_safe_env_replacement_proof",
@@ -43,9 +43,17 @@
     "tests/future_capability_models.rs",
     "data/reports/future-capability-*.json"
   ],
-  "testsPassing": null,
-  "testsFailing": null,
-  "validationStatus": "pending batch validation",
+  "testsPassing": [
+    "cargo fmt",
+    "cargo fmt --check",
+    "cargo check",
+    "cargo test",
+    "cargo build --release",
+    "jq empty data/reports/*.json",
+    "git diff --check"
+  ],
+  "testsFailing": [],
+  "validationStatus": "passed",
   "knownRisks": [
     "Production insertion, duplicate resolution, structured writes, profile switching, runtime reload, and high-risk writes remain intentionally inactive despite safe-env/mock scaffolding.",
     "Hyprland 0.55.4 migration is not activated."

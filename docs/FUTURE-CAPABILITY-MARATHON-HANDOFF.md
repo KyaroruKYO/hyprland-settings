@@ -3,7 +3,7 @@
 ## Current state
 - Branch: future-capability-marathon
 - Starting commit: 895b67281f7551789e5b4a07c0ea849db1eab622
-- Latest commit: pending commit on this branch
+- Latest commit: see branch HEAD after final handoff commit
 - Release artifacts preserved: `dist/v0.1.0`
 - v0.1.0 tag modified: no
 - Real config touched: no
@@ -35,7 +35,7 @@
 wire disabled duplicate occurrence selector UI to the read-only occurrence model
 
 ## Validation status
-Run `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `jq empty data/reports/*.json`, and `git diff --check` after this handoff is committed.
+Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `jq empty data/reports/*.json`, and `git diff --check`.
 
 ## Recommended next Codex prompt
 Continue on `future-capability-marathon` by wiring disabled duplicate occurrence selector UI to the read-only occurrence model; keep production insertion, duplicate writes, runtime actions, profile switching, and 0.55.4 migration blocked.

@@ -30,12 +30,13 @@
 - Release/tag/package touched: no
 
 ## Validation
-- cargo fmt: pending this branch validation
-- cargo fmt --check: pending this branch validation
-- cargo check: pending this branch validation
-- cargo test: pending this branch validation
-- jq reports: pending this branch validation
-- git diff --check: pending this branch validation
+- cargo fmt: passed
+- cargo fmt --check: passed
+- cargo check: passed
+- cargo test: passed
+- cargo build --release: passed
+- jq reports: passed
+- git diff --check: passed
 
 ## Next recommended sprint
 Continue by wiring disabled duplicate occurrence selector UI to the read-only occurrence model, keeping production insertion and duplicate writes disabled until review.
