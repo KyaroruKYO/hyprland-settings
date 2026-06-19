@@ -5,9 +5,12 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use hyprland_settings::future_capability::{
     assess_hyprland_version_migration, current_v0552_data_bundle, disabled_migration_review,
     disabled_missing_default_insertion_review, disabled_profile_switch_review,
-    duplicate_occurrence_model, high_risk_recovery_review, replace_duplicate_occurrence_safe_env,
-    runtime_action_policy, structured_family_model, switch_profile_symlink_safe_env,
-    validate_structured_edit_candidate, DuplicateReplacementOptions, DuplicateReplacementRequest,
+    disabled_profile_switch_selection_review, duplicate_occurrence_model,
+    duplicate_occurrence_review, high_risk_recovery_review, high_risk_recovery_workflow,
+    migration_comparison_review, replace_duplicate_occurrence_safe_env, runtime_action_policy,
+    runtime_action_review, structured_family_model, structured_family_review,
+    switch_profile_symlink_safe_env, validate_structured_edit_candidate,
+    DuplicateOccurrenceReviewState, DuplicateReplacementOptions, DuplicateReplacementRequest,
     DuplicateReplacementStatus, MockWatchdog, MockWatchdogState, RuntimeAction,
     RuntimeDryRunExecutor,
 };
@@ -83,6 +86,71 @@ fn duplicate_occurrence_model_lists_same_file_and_source_layer_occurrences() {
         .occurrences
         .iter()
         .any(|occurrence| occurrence.path == sourced_conf && occurrence.source_depth == 1));
+}
+
+#[test]
+fn duplicate_occurrence_review_tracks_no_selection_and_selected_disabled_state() {
+    let root = temp_root("duplicate-review");
+    let root_conf = root.join("hyprland.conf");
+    let sourced_conf = root.join("appearance.conf");
+    write_file(&root_conf, "decoration:blur:enabled = true\n");
+    write_file(&sourced_conf, "decoration:blur:enabled = false\n");
+    let model = duplicate_occurrence_model(
+        "decoration.blur.enabled",
+        &[(root_conf.clone(), 0), (sourced_conf.clone(), 1)],
+    )
+    .expect("duplicate model should build");
+
+    let no_selection = duplicate_occurrence_review(&model, None, Some("false".to_string()));
+    assert_eq!(
+        no_selection.state,
+        DuplicateOccurrenceReviewState::NoOccurrenceSelected
+    );
+    assert!(!no_selection.apply_enabled);
+    assert!(!no_selection.production_write_enabled);
+    assert!(!no_selection.write_execution_attempted);
+    assert!(no_selection
+        .review_lines
+        .iter()
+        .any(|line| line.contains("will not auto-choose")));
+
+    let selected = duplicate_occurrence_review(&model, Some(1), Some("true".to_string()));
+    assert_eq!(
+        selected.state,
+        DuplicateOccurrenceReviewState::OccurrenceSelectedProductionDisabled
+    );
+    assert_eq!(selected.selected_path.as_ref(), Some(&sourced_conf));
+    assert_eq!(selected.selected_line_number, Some(1));
+    assert_eq!(
+        selected.selected_raw_line.as_deref(),
+        Some("decoration:blur:enabled = false")
+    );
+    assert_eq!(selected.selected_current_value.as_deref(), Some("false"));
+    assert_eq!(selected.proposed_value.as_deref(), Some("true"));
+    assert_eq!(selected.source_depth, Some(1));
+    assert!(!selected.apply_enabled);
+    assert!(!selected.production_write_enabled);
+    assert!(!selected.write_execution_attempted);
+}
+
+#[test]
+fn duplicate_occurrence_review_rejects_stale_selection_without_writing() {
+    let root = temp_root("duplicate-review-invalid");
+    let config = root.join("hyprland.conf");
+    write_file(&config, "decoration:blur:enabled = true\n");
+    let model = duplicate_occurrence_model("decoration.blur.enabled", &[(config, 0)])
+        .expect("duplicate model should build");
+
+    let review = duplicate_occurrence_review(&model, Some(99), Some("false".to_string()));
+
+    assert_eq!(
+        review.state,
+        DuplicateOccurrenceReviewState::InvalidSelection
+    );
+    assert!(!review.apply_enabled);
+    assert!(!review.production_write_enabled);
+    assert!(!review.write_execution_attempted);
+    assert!(review.selected_path.is_none());
 }
 
 #[test]
@@ -183,6 +251,35 @@ fn high_risk_recovery_review_stays_non_mutating_and_disabled() {
 }
 
 #[test]
+fn high_risk_recovery_workflow_records_rollback_proof_without_runtime() {
+    let pending = MockWatchdog::arm("session", "token", 10);
+    let pending_workflow = high_risk_recovery_workflow("render.direct_scanout", &pending);
+    assert_eq!(pending_workflow.state, MockWatchdogState::Pending);
+    assert!(!pending_workflow.confirmation_enabled);
+    assert!(!pending_workflow.revert_enabled);
+    assert!(!pending_workflow.production_write_enabled);
+    assert!(!pending_workflow.real_runtime_enabled);
+    assert!(pending_workflow.rollback_proof.backup_before_write_required);
+    assert!(pending_workflow.rollback_proof.reread_after_write_required);
+    assert!(pending_workflow.rollback_proof.restore_on_timeout_required);
+    assert!(
+        pending_workflow
+            .rollback_proof
+            .reread_after_restore_required
+    );
+    assert!(!pending_workflow.rollback_proof.real_runtime_enabled);
+
+    let mut failed = MockWatchdog::arm("session-fail", "token", 10);
+    failed.tick(11, false);
+    let failed_workflow = high_risk_recovery_workflow("decoration.screen_shader", &failed);
+    assert_eq!(failed_workflow.state, MockWatchdogState::RecoveryFailed);
+    assert!(failed_workflow
+        .review_lines
+        .iter()
+        .any(|line| line.contains("recovery failure")));
+}
+
+#[test]
 fn structured_family_model_keeps_bind_entries_read_only() {
     let root = temp_root("structured");
     let config = root.join("hyprland.conf");
@@ -199,6 +296,39 @@ fn structured_family_model_keeps_bind_entries_read_only() {
     assert!(!model.editor_enabled);
     assert!(!model.production_write_enabled);
     assert!(!model.lossless_render_proven);
+}
+
+#[test]
+fn structured_family_review_keeps_repeated_bind_entries_disabled_and_lossless() {
+    let root = temp_root("structured-review");
+    let config = root.join("hyprland.conf");
+    write_file(
+        &config,
+        "# keep this comment before binds\nbind = SUPER, Return, exec, foot\nbind = SUPER, Q, killactive\n",
+    );
+    let model = structured_family_model(&config, "hl.bind").expect("model should build");
+
+    let review =
+        structured_family_review(&model, Some("bind = SUPER, Space, exec, wofi --show drun"));
+
+    assert_eq!(review.family_id, "hl.bind");
+    assert_eq!(review.entries.len(), 2);
+    assert!(review.proposed_edit.as_ref().expect("candidate").accepted);
+    assert!(!review.editor_enabled);
+    assert!(!review.production_write_enabled);
+    assert!(review.raw_line_preservation_required);
+    assert!(review.comments_order_preservation_required);
+    assert_eq!(
+        review.first_safe_env_write_candidate.as_deref(),
+        Some("hl.bind single-line replacement after lossless render proof")
+    );
+
+    let invalid = structured_family_review(&model, Some("monitor = eDP-1,preferred,auto,1"));
+    assert!(!invalid.proposed_edit.as_ref().expect("candidate").accepted);
+    assert!(invalid
+        .invalid_input_reasons
+        .iter()
+        .any(|reason| reason.contains("must start with bind")));
 }
 
 #[test]
@@ -289,6 +419,40 @@ fn profile_switch_review_and_forced_restore_failure_stay_disabled() {
     assert!(!report.runtime_touched);
 }
 
+#[cfg(unix)]
+#[test]
+fn profile_switch_selection_review_tracks_selected_target_but_keeps_disabled() {
+    let root = temp_root("profile-selection-review");
+    let symlink = root.join("profiles/current.conf");
+    let desktop = root.join("profiles/desktop.conf");
+    let gaming = root.join("profiles/gaming.conf");
+
+    let no_selection =
+        disabled_profile_switch_selection_review(&symlink, Some(desktop.clone()), None, None);
+    assert!(no_selection.selected_target_profile.is_none());
+    assert!(!no_selection.confirmation_enabled);
+    assert!(!no_selection.production_switch_enabled);
+    assert!(!no_selection.reload_after_switch_enabled);
+    assert!(no_selection
+        .review_lines
+        .iter()
+        .any(|line| line.contains("No target profile")));
+
+    let selected = disabled_profile_switch_selection_review(
+        &symlink,
+        Some(desktop.clone()),
+        Some(desktop.clone()),
+        Some(gaming.clone()),
+    );
+    assert_eq!(selected.symlink_path, symlink);
+    assert_eq!(selected.current_profile.as_ref(), Some(&desktop));
+    assert_eq!(selected.resolved_current_target.as_ref(), Some(&desktop));
+    assert_eq!(selected.selected_target_profile.as_ref(), Some(&gaming));
+    assert!(!selected.confirmation_enabled);
+    assert!(!selected.production_switch_enabled);
+    assert!(!selected.reload_after_switch_enabled);
+}
+
 #[test]
 fn runtime_boundary_is_dry_run_only_and_never_executes_commands() {
     let mut executor = RuntimeDryRunExecutor::default();
@@ -311,6 +475,28 @@ fn runtime_boundary_is_dry_run_only_and_never_executes_commands() {
     assert!(reload_policy.dry_run_allowed);
     assert!(!reload_policy.production_runtime_enabled);
     assert!(reload_policy.reason.contains("disabled"));
+}
+
+#[test]
+fn runtime_action_review_records_policy_and_log_without_execution() {
+    let reload_review = runtime_action_review(RuntimeAction::Reload);
+    assert!(!reload_review.policy.allowlisted_for_real_execution);
+    assert!(reload_review.policy.dry_run_allowed);
+    assert!(reload_review.dry_run_result.would_mutate_runtime);
+    assert!(!reload_review.production_execution_enabled);
+    assert!(!reload_review.real_command_executed);
+    assert!(!reload_review.dry_run_result.real_command_executed);
+    assert_eq!(reload_review.execution_log.len(), 1);
+
+    let status_review = runtime_action_review(RuntimeAction::Status {
+        query: "version".to_string(),
+    });
+    assert!(!status_review.policy.allowlisted_for_real_execution);
+    assert!(status_review.policy.dry_run_allowed);
+    assert!(!status_review.dry_run_result.would_mutate_runtime);
+    assert!(!status_review.production_execution_enabled);
+    assert!(!status_review.real_command_executed);
+    assert!(!status_review.dry_run_result.real_command_executed);
 }
 
 #[test]
@@ -340,4 +526,31 @@ fn hyprland_0554_migration_assessment_keeps_0552_default_without_trusted_export(
         .review_lines
         .iter()
         .any(|line| line.contains("newer runtime package is not enough")));
+}
+
+#[test]
+fn migration_comparison_review_keeps_0552_default_until_trusted_export_proof_exists() {
+    let blocked = migration_comparison_review("0.55.4", false);
+    assert_eq!(blocked.current_default.version, "0.55.2");
+    assert_eq!(blocked.requested_version, "0.55.4");
+    assert!(blocked.requested_bundle.is_none());
+    assert!(!blocked.trusted_source_requirement_met);
+    assert!(!blocked.migration_enabled);
+    assert!(!blocked.production_default_changed);
+    assert!(blocked
+        .missing_proof
+        .iter()
+        .any(|proof| proof.contains("trusted official export")));
+    assert!(blocked
+        .missing_proof
+        .iter()
+        .any(|proof| proof.contains("GTK safe-env evidence")));
+
+    let current = migration_comparison_review("0.55.2", true);
+    assert_eq!(current.current_default.version, "0.55.2");
+    assert!(current.requested_bundle.is_some());
+    assert!(current.trusted_source_requirement_met);
+    assert!(!current.migration_enabled);
+    assert!(!current.production_default_changed);
+    assert!(current.missing_proof.is_empty());
 }

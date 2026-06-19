@@ -28,15 +28,21 @@
     "missing_default_insertion_safe_env_proof",
     "duplicate_occurrence_model_and_safe_env_replacement_proof",
     "disabled_duplicate_occurrence_selector_ui",
+    "duplicate_occurrence_review_workflow",
     "mock_high_risk_watchdog_state_machine",
     "disabled_high_risk_recovery_review_model",
+    "high_risk_recovery_workflow_model",
     "structured_family_read_only_editor_scaffold",
     "structured_edit_candidate_validation",
+    "structured_family_review_workflow",
     "profile_mode_safe_env_symlink_switch_proof",
     "disabled_profile_switch_review_model",
+    "profile_switch_selection_review_model",
     "runtime_dry_run_boundary",
     "runtime_action_policy_scaffold",
-    "hyprland_0554_disabled_migration_assessment"
+    "runtime_action_review_workflow",
+    "hyprland_0554_disabled_migration_assessment",
+    "hyprland_0554_migration_comparison_review"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -76,5 +82,5 @@
     "gtkSafeEnvMatrix": "passed",
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_101038"
   },
-  "nextRecommendedAction": "Wire disabled UI scaffolds to the new future_capability models, starting with duplicate occurrence selector and insertion review; keep all production writes blocked."
+  "nextRecommendedAction": "All listed future tracks now have concrete disabled or safe-env review models; next work requires explicit approval/trusted data or new architecture before production activation."
 }

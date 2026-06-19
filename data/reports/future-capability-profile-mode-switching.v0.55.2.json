@@ -17,6 +17,8 @@
     "Added safe-env-only profile symlink switching proof for temporary profile fixtures.",
     "Added restore verification for temp symlink switching.",
     "Added disabled production profile switch review model.",
+    "Added a disabled profile switch selection review model with current profile, resolved target, selected target, and symlink path fields.",
+    "The selection review distinguishes no target selected from selected-target review while keeping confirmation, reload, and production switch disabled.",
     "Added forced restore failure test coverage.",
     "Recorded that real profile/mode switching remains disabled.",
     "Kept profile/mode safe-batch blocking asserted by deterministic tests.",
@@ -37,6 +39,8 @@
   "safetyBoundaries": {
     "safeEnvProfileFixturesAllowed": true,
     "disabledProfileSwitchReviewExists": true,
+    "disabledProfileSwitchSelectionReviewExists": true,
+    "confirmationEnabled": false,
     "forcedRestoreFailureProofExists": true,
     "realProfileSwitchingAllowed": false,
     "realSymlinkSwitchingAllowed": false,
@@ -49,7 +53,7 @@
     "Needs backup/restore model for symlink targets and profile files.",
     "Needs explicit user approval before any real session profile switch."
   ],
-  "nextRecommendedWork": "Add disabled profile switching UI around the safe-env proof, then define approval requirements for real profile switching.",
+  "nextRecommendedWork": "Design the explicit user approval and live restore protocol required before any real profile or symlink switch can be proposed.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

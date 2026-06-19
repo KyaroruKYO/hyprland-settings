@@ -17,6 +17,8 @@
     "Added disabled version migration assessment scaffolding.",
     "Added versioned data bundle model for the current v0.55.2 341/341/0 default.",
     "Added disabled migration review status copy for requested newer versions.",
+    "Added a side-by-side migration comparison review that keeps v0.55.2 active and records missing proof for requested newer bundles.",
+    "The comparison review requires trusted official exports, row-count diff, write-safety review, and GTK safe-env evidence before activation.",
     "Added tests proving 0.55.4 migration remains inactive without trusted official export data.",
     "Recorded that the app remains pinned to v0.55.2 data/model.",
     "Recorded 0.55.4 migration as inactive until trusted export/source proof exists."
@@ -38,6 +40,8 @@
     "migrationScaffoldExists": true,
     "versionedDataBundleModelExists": true,
     "disabledMigrationReviewExists": true,
+    "migrationComparisonReviewExists": true,
+    "trustedSourceRequirementModelExists": true,
     "dataModelMigrationAllowed": false,
     "releaseMetadataMigrationAllowed": false,
     "safeWritableRowsChanged": false
@@ -49,7 +53,7 @@
     "Needs trusted v0.55.4 source/export data and comparison tests.",
     "Needs versioned data loading tests before changing the default app model."
   ],
-  "nextRecommendedWork": "Create a disabled migration comparison scaffold that can load v0.55.2 and future v0.55.4 bundles side by side.",
+  "nextRecommendedWork": "Acquire trusted official 0.55.4 export/source data, then compare row counts and write-safety classifications in a separate migration branch.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

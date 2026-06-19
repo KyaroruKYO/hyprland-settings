@@ -8,15 +8,21 @@
     "missing_default_insertion_safe_env_proof",
     "duplicate_occurrence_model_and_safe_env_replacement_proof",
     "disabled_duplicate_occurrence_selector_ui",
+    "duplicate_occurrence_review_workflow",
     "mock_high_risk_watchdog_state_machine",
     "disabled_high_risk_recovery_review_model",
+    "high_risk_recovery_workflow_model",
     "structured_family_read_only_editor_scaffold",
     "structured_edit_candidate_validation",
+    "structured_family_review_workflow",
     "profile_mode_safe_env_symlink_switch_proof",
     "disabled_profile_switch_review_model",
+    "profile_switch_selection_review_model",
     "runtime_dry_run_boundary",
     "runtime_action_policy_scaffold",
-    "hyprland_0554_disabled_migration_assessment"
+    "runtime_action_review_workflow",
+    "hyprland_0554_disabled_migration_assessment",
+    "hyprland_0554_migration_comparison_review"
   ],
   "partialPhases": [],
   "blockedPhases": [
@@ -26,7 +32,7 @@
     },
     {
       "phase": "production_duplicate_resolution",
-      "reason": "requires disabled selector UI review before safe-env replacement proof can be wired to Apply"
+      "reason": "requires explicit production approval gate before the disabled review workflow and safe-env replacement proof can be wired to Apply"
     },
     {
       "phase": "high_risk_display_render_recovery",
@@ -37,7 +43,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "wire disabled duplicate occurrence selector UI to the read-only occurrence model",
+  "nextExactPhaseToContinue": "define approval gates and architecture for any production activation; no remaining safe implementation work is production-enableable without approval/trusted data",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -69,5 +75,5 @@
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "Continue on future-capability-marathon by wiring disabled duplicate occurrence selector UI to the read-only occurrence model; keep production insertion, duplicate writes, runtime actions, profile switching, and 0.55.4 migration blocked."
+  "recommendedNextCodexPrompt": "Review the future-capability-marathon branch and decide which blocked production activation track, if any, should receive explicit approval and a dedicated architecture sprint."
 }

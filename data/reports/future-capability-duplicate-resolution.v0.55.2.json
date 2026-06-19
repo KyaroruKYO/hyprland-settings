@@ -22,6 +22,8 @@
     "Wired a disabled duplicate occurrence selector surface into the setting detail pane.",
     "The detail pane shows file path, line number, raw line, current value, and source depth for each occurrence.",
     "Added disabled future action controls labeled Choose this occurrence (planned).",
+    "Added a duplicate occurrence review workflow model with no-selection, invalid-selection, and selected-but-production-disabled states.",
+    "The review workflow records selected occurrence path, line, raw line, current value, proposed value, and source depth without enabling Apply.",
     "Added safe-env duplicate occurrence replacement proof for exact selected line replacement.",
     "Added backup byte-equality, reread verification, and restore-on-failure proof for fixture duplicate replacement.",
     "Kept duplicate-conflict settings blocked in the active safe-batch path.",
@@ -47,6 +49,9 @@
     "sourceLayerDuplicateModelProofExists": true,
     "productionDuplicateWritesEnabled": false,
     "disabledOccurrenceSelectorUiExists": true,
+    "duplicateReviewWorkflowExists": true,
+    "selectedOccurrenceProductionDisabledStateExists": true,
+    "writeExecutionAttemptedByReview": false,
     "applyStillBlocked": true
   },
   "validation": {
@@ -56,7 +61,7 @@
     "Needs production UI confirmation for the selected occurrence before any write is possible.",
     "Needs explicit approval before safe-env duplicate replacement can be wired to Apply."
   ],
-  "nextRecommendedWork": "Add disabled duplicate occurrence selector UI and keep Apply blocked until manual occurrence confirmation is reviewed.",
+  "nextRecommendedWork": "Add a production-gate design for explicit manual occurrence confirmation, still without wiring duplicate replacement to Apply.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

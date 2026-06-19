@@ -16,6 +16,8 @@
   "whatWasImplemented": [
     "Added a read-only structured-family model for preserved raw structured records.",
     "Added disabled editor scaffold fields for hl.bind and other structured families.",
+    "Added a structured family review workflow for hl.bind candidates that keeps repeated entries read-only.",
+    "The review workflow exposes invalid input reasons, raw line preservation requirements, and comments/order preservation requirements.",
     "Added structured edit candidate validation that blocks invalid family prefixes and multiline input.",
     "Added fixture parser/model tests for key binding entries.",
     "Kept active safe-batch structured-family copy blocked.",
@@ -35,6 +37,10 @@
   "safetyBoundaries": {
     "readOnlyParserImprovementsAllowed": true,
     "disabledEditorScaffoldAllowed": true,
+    "structuredFamilyReviewWorkflowExists": true,
+    "rawLinePreservationRequired": true,
+    "commentsOrderPreservationRequired": true,
+    "firstSafeEnvWriteCandidate": "hl.bind single-line replacement after lossless render proof",
     "invalidInputBlockingProofExists": true,
     "productionStructuredWritesEnabled": false
   },

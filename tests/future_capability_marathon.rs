@@ -73,12 +73,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "wire disabled duplicate occurrence selector UI to the read-only occurrence model"
+        "define approval gates and architecture for any production activation; no remaining safe implementation work is production-enableable without approval/trusted data"
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("production insertion, duplicate writes, runtime actions"));
+        .contains("blocked production activation track"));
 }
 
 #[test]

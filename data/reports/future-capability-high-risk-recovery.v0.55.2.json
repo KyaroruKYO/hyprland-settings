@@ -16,6 +16,8 @@
   "whatWasImplemented": [
     "Added a mock watchdog/recovery state machine with pending, confirmed, timeout, revert, and recovery-failure states.",
     "Added a disabled high-risk recovery review model backed by the mock watchdog state.",
+    "Added a high-risk recovery workflow model with rollback proof requirements for backup, reread, timeout restore, and restore reread.",
+    "The recovery workflow records pending, confirmed, reverted, and recovery-failed states without enabling confirmation, revert, runtime, or writes.",
     "Added deterministic tests for confirmation, timeout revert, and timeout recovery failure.",
     "Recorded that high-risk/display-render production writes remain blocked.",
     "Preserved family-specific recovery requirement language through active blocked copy tests.",
@@ -36,6 +38,10 @@
   "safetyBoundaries": {
     "mockWatchdogAllowed": true,
     "disabledRecoveryReviewModelExists": true,
+    "recoveryWorkflowModelExists": true,
+    "rollbackProofRecordExists": true,
+    "confirmationEnabled": false,
+    "revertEnabled": false,
     "realRuntimeMutationAllowed": false,
     "realDisplayRenderWritesAllowed": false,
     "highRiskProductionWritesEnabled": false
@@ -47,7 +53,7 @@
     "Production high-risk writes require explicit user approval and live recovery proof.",
     "Display/render failures need out-of-band rollback proof before activation."
   ],
-  "nextRecommendedWork": "Connect the mock state machine to disabled high-risk review UI, then define the live recovery proof required for approval.",
+  "nextRecommendedWork": "Define the out-of-band/live recovery proof required before any high-risk/display production gate can be proposed.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

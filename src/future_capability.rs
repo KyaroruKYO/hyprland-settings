@@ -84,6 +84,96 @@ pub fn duplicate_occurrence_model(
     })
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum DuplicateOccurrenceReviewState {
+    NoOccurrenceSelected,
+    OccurrenceSelectedProductionDisabled,
+    InvalidSelection,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DuplicateOccurrenceReview {
+    pub setting_id: String,
+    pub state: DuplicateOccurrenceReviewState,
+    pub selected_path: Option<PathBuf>,
+    pub selected_line_number: Option<usize>,
+    pub selected_raw_line: Option<String>,
+    pub selected_current_value: Option<String>,
+    pub proposed_value: Option<String>,
+    pub source_depth: Option<usize>,
+    pub apply_enabled: bool,
+    pub production_write_enabled: bool,
+    pub write_execution_attempted: bool,
+    pub review_lines: Vec<String>,
+}
+
+pub fn duplicate_occurrence_review(
+    model: &DuplicateOccurrenceModel,
+    selected_index: Option<usize>,
+    proposed_value: Option<String>,
+) -> DuplicateOccurrenceReview {
+    let Some(selected_index) = selected_index else {
+        return DuplicateOccurrenceReview {
+            setting_id: model.setting_id.clone(),
+            state: DuplicateOccurrenceReviewState::NoOccurrenceSelected,
+            selected_path: None,
+            selected_line_number: None,
+            selected_raw_line: None,
+            selected_current_value: None,
+            proposed_value,
+            source_depth: None,
+            apply_enabled: false,
+            production_write_enabled: false,
+            write_execution_attempted: false,
+            review_lines: vec![
+                "No duplicate occurrence is selected.".to_string(),
+                "The app will not auto-choose a duplicate line.".to_string(),
+                "Apply remains blocked until manual occurrence targeting is approved.".to_string(),
+            ],
+        };
+    };
+
+    let Some(occurrence) = model.occurrences.get(selected_index) else {
+        return DuplicateOccurrenceReview {
+            setting_id: model.setting_id.clone(),
+            state: DuplicateOccurrenceReviewState::InvalidSelection,
+            selected_path: None,
+            selected_line_number: None,
+            selected_raw_line: None,
+            selected_current_value: None,
+            proposed_value,
+            source_depth: None,
+            apply_enabled: false,
+            production_write_enabled: false,
+            write_execution_attempted: false,
+            review_lines: vec![
+                "The selected duplicate occurrence is no longer available.".to_string(),
+                "Apply remains blocked.".to_string(),
+            ],
+        };
+    };
+
+    DuplicateOccurrenceReview {
+        setting_id: model.setting_id.clone(),
+        state: DuplicateOccurrenceReviewState::OccurrenceSelectedProductionDisabled,
+        selected_path: Some(occurrence.path.clone()),
+        selected_line_number: Some(occurrence.line_number),
+        selected_raw_line: Some(occurrence.raw_line.clone()),
+        selected_current_value: Some(occurrence.raw_value.clone()),
+        proposed_value,
+        source_depth: Some(occurrence.source_depth),
+        apply_enabled: false,
+        production_write_enabled: false,
+        write_execution_attempted: false,
+        review_lines: vec![
+            "A duplicate occurrence is selected for review only.".to_string(),
+            "Production Apply still will not write duplicate settings.".to_string(),
+            "Manual occurrence targeting needs a separate approval gate before activation."
+                .to_string(),
+        ],
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct DuplicateReplacementRequest {
     pub occurrence: DuplicateOccurrence,
@@ -258,6 +348,27 @@ pub struct HighRiskRecoveryReview {
     pub review_lines: Vec<String>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RollbackProofRecord {
+    pub backup_before_write_required: bool,
+    pub reread_after_write_required: bool,
+    pub restore_on_timeout_required: bool,
+    pub reread_after_restore_required: bool,
+    pub real_runtime_enabled: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct HighRiskRecoveryWorkflow {
+    pub setting_id: String,
+    pub state: MockWatchdogState,
+    pub confirmation_enabled: bool,
+    pub revert_enabled: bool,
+    pub production_write_enabled: bool,
+    pub real_runtime_enabled: bool,
+    pub rollback_proof: RollbackProofRecord,
+    pub review_lines: Vec<String>,
+}
+
 pub fn high_risk_recovery_review(
     setting_id: &str,
     watchdog: &MockWatchdog,
@@ -279,6 +390,43 @@ pub fn high_risk_recovery_review(
                 .to_string(),
             state_line.to_string(),
             "This review is non-mutating and does not reload Hyprland.".to_string(),
+        ],
+    }
+}
+
+pub fn high_risk_recovery_workflow(
+    setting_id: &str,
+    watchdog: &MockWatchdog,
+) -> HighRiskRecoveryWorkflow {
+    let state_copy = match watchdog.state {
+        MockWatchdogState::Pending => "A future high-risk Apply would wait for confirmation.",
+        MockWatchdogState::Confirmed => "The mock session was confirmed.",
+        MockWatchdogState::TimedOut => "The mock session timed out before confirmation.",
+        MockWatchdogState::Reverted => "The mock session restored the fixture state.",
+        MockWatchdogState::RecoveryFailed => {
+            "The mock session recorded a recovery failure that would block production activation."
+        }
+    };
+
+    HighRiskRecoveryWorkflow {
+        setting_id: setting_id.to_string(),
+        state: watchdog.state,
+        confirmation_enabled: false,
+        revert_enabled: false,
+        production_write_enabled: false,
+        real_runtime_enabled: false,
+        rollback_proof: RollbackProofRecord {
+            backup_before_write_required: true,
+            reread_after_write_required: true,
+            restore_on_timeout_required: true,
+            reread_after_restore_required: true,
+            real_runtime_enabled: false,
+        },
+        review_lines: vec![
+            "High-risk and display/render writes remain blocked.".to_string(),
+            state_copy.to_string(),
+            "This workflow records the recovery contract without writing config or reloading Hyprland."
+                .to_string(),
         ],
     }
 }
@@ -341,6 +489,20 @@ pub struct StructuredEditCandidate {
     pub production_write_enabled: bool,
     pub lossless_render_required: bool,
     pub errors: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyReview {
+    pub family_id: String,
+    pub entries: Vec<StructuredFamilyEntry>,
+    pub proposed_edit: Option<StructuredEditCandidate>,
+    pub editor_enabled: bool,
+    pub production_write_enabled: bool,
+    pub raw_line_preservation_required: bool,
+    pub comments_order_preservation_required: bool,
+    pub invalid_input_reasons: Vec<String>,
+    pub first_safe_env_write_candidate: Option<String>,
+    pub review_lines: Vec<String>,
 }
 
 pub fn validate_structured_edit_candidate(
@@ -415,6 +577,41 @@ pub fn structured_family_model(
     })
 }
 
+pub fn structured_family_review(
+    model: &StructuredFamilyModel,
+    proposed_raw_line: Option<&str>,
+) -> StructuredFamilyReview {
+    let proposed_edit = proposed_raw_line
+        .map(|raw_line| validate_structured_edit_candidate(&model.family_id, raw_line));
+    let invalid_input_reasons = proposed_edit
+        .as_ref()
+        .map(|candidate| candidate.errors.clone())
+        .unwrap_or_default();
+
+    StructuredFamilyReview {
+        family_id: model.family_id.clone(),
+        entries: model.entries.clone(),
+        proposed_edit,
+        editor_enabled: false,
+        production_write_enabled: false,
+        raw_line_preservation_required: true,
+        comments_order_preservation_required: true,
+        invalid_input_reasons,
+        first_safe_env_write_candidate: if model.family_id == "hl.bind" {
+            Some("hl.bind single-line replacement after lossless render proof".to_string())
+        } else {
+            None
+        },
+        review_lines: vec![
+            "Structured settings are shown read-only while lossless editing is designed."
+                .to_string(),
+            "Raw lines, comments, and ordering must be preserved before writes can be enabled."
+                .to_string(),
+            "Production structured writes remain blocked.".to_string(),
+        ],
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ProfileSwitchStatus {
     Succeeded,
@@ -445,6 +642,18 @@ pub struct ProfileSwitchReview {
     pub review_lines: Vec<String>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProfileSwitchSelectionReview {
+    pub symlink_path: PathBuf,
+    pub current_profile: Option<PathBuf>,
+    pub resolved_current_target: Option<PathBuf>,
+    pub selected_target_profile: Option<PathBuf>,
+    pub confirmation_enabled: bool,
+    pub production_switch_enabled: bool,
+    pub reload_after_switch_enabled: bool,
+    pub review_lines: Vec<String>,
+}
+
 pub fn disabled_profile_switch_review(
     symlink_path: impl Into<PathBuf>,
     current_profile: Option<PathBuf>,
@@ -460,6 +669,33 @@ pub fn disabled_profile_switch_review(
             "Profile switching is not active yet.".to_string(),
             "The safe-env proof can switch and restore temp symlinks only.".to_string(),
             "Real profile files, symlinks, scripts, and Hyprland reload stay blocked.".to_string(),
+        ],
+    }
+}
+
+pub fn disabled_profile_switch_selection_review(
+    symlink_path: impl Into<PathBuf>,
+    current_profile: Option<PathBuf>,
+    resolved_current_target: Option<PathBuf>,
+    selected_target_profile: Option<PathBuf>,
+) -> ProfileSwitchSelectionReview {
+    let selected_copy = if selected_target_profile.is_some() {
+        "A target profile is selected for review only."
+    } else {
+        "No target profile is selected."
+    };
+    ProfileSwitchSelectionReview {
+        symlink_path: symlink_path.into(),
+        current_profile,
+        resolved_current_target,
+        selected_target_profile,
+        confirmation_enabled: false,
+        production_switch_enabled: false,
+        reload_after_switch_enabled: false,
+        review_lines: vec![
+            selected_copy.to_string(),
+            "Profile switching remains disabled for the real session.".to_string(),
+            "Safe-env proof may switch and restore temp symlinks only.".to_string(),
         ],
     }
 }
@@ -560,6 +796,16 @@ pub struct RuntimeActionPolicy {
     pub reason: String,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeActionReview {
+    pub action: RuntimeAction,
+    pub policy: RuntimeActionPolicy,
+    pub dry_run_result: RuntimeDryRunResult,
+    pub execution_log: Vec<String>,
+    pub production_execution_enabled: bool,
+    pub real_command_executed: bool,
+}
+
 pub fn runtime_action_policy(action: RuntimeAction) -> RuntimeActionPolicy {
     let reason = match &action {
         RuntimeAction::Status { .. } => {
@@ -576,6 +822,24 @@ pub fn runtime_action_policy(action: RuntimeAction) -> RuntimeActionPolicy {
         dry_run_allowed: true,
         production_runtime_enabled: false,
         reason,
+    }
+}
+
+pub fn runtime_action_review(action: RuntimeAction) -> RuntimeActionReview {
+    let policy = runtime_action_policy(action.clone());
+    let mut executor = RuntimeDryRunExecutor::default();
+    let dry_run_result = executor.evaluate(action.clone());
+    RuntimeActionReview {
+        action,
+        policy,
+        execution_log: executor
+            .recorded_actions
+            .iter()
+            .map(|result| result.explanation.clone())
+            .collect(),
+        production_execution_enabled: false,
+        real_command_executed: false,
+        dry_run_result,
     }
 }
 
@@ -624,6 +888,18 @@ pub struct VersionedDataBundle {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+pub struct MigrationComparisonReview {
+    pub current_default: VersionedDataBundle,
+    pub requested_version: String,
+    pub requested_bundle: Option<VersionedDataBundle>,
+    pub trusted_source_requirement_met: bool,
+    pub missing_proof: Vec<String>,
+    pub migration_enabled: bool,
+    pub production_default_changed: bool,
+    pub review_lines: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct DisabledMigrationReview {
     pub current_default: VersionedDataBundle,
     pub requested_version: String,
@@ -652,6 +928,43 @@ pub fn disabled_migration_review(requested_version: &str) -> DisabledMigrationRe
             "A newer runtime package is not enough to migrate app data.".to_string(),
             "Trusted official exports and comparison tests are required before activation."
                 .to_string(),
+        ],
+    }
+}
+
+pub fn migration_comparison_review(
+    requested_version: &str,
+    trusted_export_available: bool,
+) -> MigrationComparisonReview {
+    let current_default = current_v0552_data_bundle();
+    let requested_bundle = if requested_version == current_default.version {
+        Some(current_default.clone())
+    } else {
+        None
+    };
+    let mut missing_proof = Vec::new();
+    if requested_version != current_default.version {
+        missing_proof.push("trusted official export for requested version".to_string());
+        missing_proof.push("row-count diff against v0.55.2".to_string());
+        missing_proof.push("write-safety classification review".to_string());
+        missing_proof.push("GTK safe-env evidence matrix for requested bundle".to_string());
+    }
+    if !trusted_export_available && requested_version != current_default.version {
+        missing_proof.push("trusted source confirmation".to_string());
+    }
+
+    MigrationComparisonReview {
+        current_default,
+        requested_version: requested_version.to_string(),
+        requested_bundle,
+        trusted_source_requirement_met: requested_version == "0.55.2" || trusted_export_available,
+        missing_proof,
+        migration_enabled: false,
+        production_default_changed: false,
+        review_lines: vec![
+            "Hyprland v0.55.2 remains the active app data bundle.".to_string(),
+            "Newer runtime/package versions are assessed side by side only.".to_string(),
+            "Migration cannot activate without trusted exports and comparison proof.".to_string(),
         ],
     }
 }
