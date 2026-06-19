@@ -1,0 +1,61 @@
+{
+  "artifactKind": "live_scenario_single_config",
+  "liveSwapModeUsed": false,
+  "realConfigTouched": false,
+  "safeEnvModeUsed": true,
+  "scenarios": [
+    {
+      "agsDisabledRestored": "not used",
+      "appLaunchResult": "not launched; noninteractive GTK close automation was not available, so source/model/discovery proof was used",
+      "appLaunched": false,
+      "applyAvailability": "available for executable temp safe-batch plan",
+      "blockedRows": 0,
+      "configDiscovered": true,
+      "eligibleRows": 1,
+      "failuresTested": [],
+      "hyprlandReloadUsed": false,
+      "issuesFound": [],
+      "mode": "safe-env",
+      "mutatingHyprctlUsed": false,
+      "realConfigTouched": false,
+      "recommendations": [
+        "Keep safe-env mode as the default scenario path.",
+        "Use live-swap only when a future test needs true real-path discovery and restore verification has passed."
+      ],
+      "restoreTested": false,
+      "safeBatchWritesAttemptedAgainstTempFiles": false,
+      "safeBatchWritesSucceeded": false,
+      "scenarioName": "minimal_single_config",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/minimal-home",
+      "screenshotsCaptured": false,
+      "waybarDisabledRestored": "not used"
+    },
+    {
+      "agsDisabledRestored": "not used",
+      "appLaunchResult": "not launched; noninteractive GTK close automation was not available, so source/model/discovery proof was used",
+      "appLaunched": false,
+      "applyAvailability": "available for executable temp safe-batch plan",
+      "blockedRows": 0,
+      "configDiscovered": true,
+      "eligibleRows": 2,
+      "failuresTested": [],
+      "hyprlandReloadUsed": false,
+      "issuesFound": [],
+      "mode": "safe-env",
+      "mutatingHyprctlUsed": false,
+      "realConfigTouched": false,
+      "recommendations": [
+        "Keep safe-env mode as the default scenario path.",
+        "Use live-swap only when a future test needs true real-path discovery and restore verification has passed."
+      ],
+      "restoreTested": false,
+      "safeBatchWritesAttemptedAgainstTempFiles": true,
+      "safeBatchWritesSucceeded": true,
+      "scenarioName": "large_single_config",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/flat-home",
+      "screenshotsCaptured": false,
+      "waybarDisabledRestored": "not used"
+    }
+  ],
+  "schemaVersion": 1
+}

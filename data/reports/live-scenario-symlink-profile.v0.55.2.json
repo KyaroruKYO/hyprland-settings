@@ -1,0 +1,32 @@
+{
+  "artifactKind": "live_scenario_symlink_profile",
+  "expectedBlocker": "blocked_symlink_managed",
+  "scenario": {
+    "agsDisabledRestored": "not used",
+    "appLaunchResult": "not launched; noninteractive GTK close automation was not available, so source/model/discovery proof was used",
+    "appLaunched": false,
+    "applyAvailability": "blocked",
+    "blockedRows": 1,
+    "configDiscovered": true,
+    "eligibleRows": 0,
+    "failuresTested": [],
+    "hyprlandReloadUsed": false,
+    "issuesFound": [],
+    "mode": "safe-env",
+    "mutatingHyprctlUsed": false,
+    "realConfigTouched": false,
+    "recommendations": [
+      "Keep safe-env mode as the default scenario path.",
+      "Use live-swap only when a future test needs true real-path discovery and restore verification has passed."
+    ],
+    "restoreTested": false,
+    "safeBatchWritesAttemptedAgainstTempFiles": false,
+    "safeBatchWritesSucceeded": false,
+    "scenarioName": "symlink_current_profile",
+    "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/symlink-home",
+    "screenshotsCaptured": false,
+    "waybarDisabledRestored": "not used"
+  },
+  "schemaVersion": 1,
+  "symlinksChangedInRealConfig": false
+}

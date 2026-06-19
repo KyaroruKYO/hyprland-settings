@@ -1,0 +1,14 @@
+{
+  "agsTouched": false,
+  "artifactKind": "live_scenario_restore_proof",
+  "liveSwapModeUsed": false,
+  "realConfigRestored": "not modified; current state verified against safety backup",
+  "restoreScript": "tools/live_scenario_harness/restore_desktop_state.sh",
+  "restoreScriptsCreated": true,
+  "restoreVerificationResult": "passed",
+  "restoreVerificationScript": "tools/live_scenario_harness/verify_restore.sh",
+  "safeEnvModeUsed": true,
+  "schemaVersion": 1,
+  "symlinksRestored": "not modified",
+  "waybarTouched": false
+}

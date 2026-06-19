@@ -1,0 +1,90 @@
+{
+  "artifactKind": "live_scenario_duplicate_missing_high_risk",
+  "expectedBlockers": [
+    "blocked_duplicate_conflict",
+    "blocked_missing_line",
+    "blocked_display_render_risk"
+  ],
+  "partialApplyOccurred": false,
+  "scenarios": [
+    {
+      "agsDisabledRestored": "not used",
+      "appLaunchResult": "not launched; noninteractive GTK close automation was not available, so source/model/discovery proof was used",
+      "appLaunched": false,
+      "applyAvailability": "blocked",
+      "blockedRows": 1,
+      "configDiscovered": true,
+      "eligibleRows": 0,
+      "failuresTested": [],
+      "hyprlandReloadUsed": false,
+      "issuesFound": [],
+      "mode": "safe-env",
+      "mutatingHyprctlUsed": false,
+      "realConfigTouched": false,
+      "recommendations": [
+        "Keep safe-env mode as the default scenario path.",
+        "Use live-swap only when a future test needs true real-path discovery and restore verification has passed."
+      ],
+      "restoreTested": false,
+      "safeBatchWritesAttemptedAgainstTempFiles": false,
+      "safeBatchWritesSucceeded": false,
+      "scenarioName": "duplicate_conflict",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/duplicate-home",
+      "screenshotsCaptured": false,
+      "waybarDisabledRestored": "not used"
+    },
+    {
+      "agsDisabledRestored": "not used",
+      "appLaunchResult": "not launched; noninteractive GTK close automation was not available, so source/model/discovery proof was used",
+      "appLaunched": false,
+      "applyAvailability": "blocked",
+      "blockedRows": 1,
+      "configDiscovered": true,
+      "eligibleRows": 0,
+      "failuresTested": [],
+      "hyprlandReloadUsed": false,
+      "issuesFound": [],
+      "mode": "safe-env",
+      "mutatingHyprctlUsed": false,
+      "realConfigTouched": false,
+      "recommendations": [
+        "Keep safe-env mode as the default scenario path.",
+        "Use live-swap only when a future test needs true real-path discovery and restore verification has passed."
+      ],
+      "restoreTested": false,
+      "safeBatchWritesAttemptedAgainstTempFiles": false,
+      "safeBatchWritesSucceeded": false,
+      "scenarioName": "missing_default_only",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/missing-home",
+      "screenshotsCaptured": false,
+      "waybarDisabledRestored": "not used"
+    },
+    {
+      "agsDisabledRestored": "not used",
+      "appLaunchResult": "not launched; noninteractive GTK close automation was not available, so source/model/discovery proof was used",
+      "appLaunched": false,
+      "applyAvailability": "blocked",
+      "blockedRows": 1,
+      "configDiscovered": true,
+      "eligibleRows": 0,
+      "failuresTested": [],
+      "hyprlandReloadUsed": false,
+      "issuesFound": [],
+      "mode": "safe-env",
+      "mutatingHyprctlUsed": false,
+      "realConfigTouched": false,
+      "recommendations": [
+        "Keep safe-env mode as the default scenario path.",
+        "Use live-swap only when a future test needs true real-path discovery and restore verification has passed."
+      ],
+      "restoreTested": false,
+      "safeBatchWritesAttemptedAgainstTempFiles": false,
+      "safeBatchWritesSucceeded": false,
+      "scenarioName": "high_risk_display_risk",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/high-risk-home",
+      "screenshotsCaptured": false,
+      "waybarDisabledRestored": "not used"
+    }
+  ],
+  "schemaVersion": 1
+}
