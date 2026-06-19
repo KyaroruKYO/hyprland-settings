@@ -1,5 +1,4 @@
 use crate::guarded_write_review::PRODUCTION_WRITE_TARGET_REVIEW_ENABLED;
-use crate::one_target_pilot_manual_review::production_write_path_remains_disabled;
 use crate::one_target_pilot_pre_enable_audit::{
     one_target_pilot_gate_inventory_snapshot, OneTargetPilotGateSnapshotItem,
     PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED,
@@ -289,10 +288,9 @@ pub fn backup_gate_candidate_current_staged_state_is_preserved() -> bool {
         && !PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED
         && PRODUCTION_WRITE_TARGET_SELECTION_READY
         && PRODUCTION_WRITE_TARGET_REVIEW_ENABLED
-        && !PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE
+        && PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE
         && PRODUCTION_VERIFICATION_CONTRACT_ENABLED
         && PRODUCTION_RECOVERY_CONTRACT_ENABLED
         && !PRODUCTION_ADVANCED_CONFIRMATION_ENABLED
         && !PRODUCTION_HIGH_RISK_APPROVAL_ENABLED
-        && production_write_path_remains_disabled()
 }

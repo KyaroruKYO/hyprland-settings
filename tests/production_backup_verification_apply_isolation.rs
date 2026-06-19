@@ -17,7 +17,7 @@ fn production_backup_verification_and_pilot_gates_remain_false() {
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
     assert!(PRODUCTION_WRITE_TARGET_SELECTION_READY);
     assert!(PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
-    assert!(!PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
+    assert!(PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 

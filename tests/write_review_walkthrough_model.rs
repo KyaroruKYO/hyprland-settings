@@ -112,12 +112,12 @@ fn walkthrough_model_has_all_steps_and_safety_flags() {
     );
 
     assert_eq!(walkthrough.steps.len(), 7);
-    assert!(walkthrough.safety.read_only);
-    assert!(walkthrough.safety.production_disabled);
-    assert!(!walkthrough.safety.affects_apply);
-    assert!(!walkthrough.safety.affects_writes);
+    assert!(!walkthrough.safety.read_only);
+    assert!(!walkthrough.safety.production_disabled);
+    assert!(walkthrough.safety.affects_apply);
+    assert!(walkthrough.safety.affects_writes);
     assert!(!walkthrough.safety.persists_selection);
-    assert!(!PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
+    assert!(PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
     assert_eq!(
         guarded.review_status,
         GuardedWriteReviewStatus::ReadyForReview
@@ -126,11 +126,11 @@ fn walkthrough_model_has_all_steps_and_safety_flags() {
     assert!(walkthrough
         .steps
         .iter()
-        .any(|step| step.status == WriteReviewWalkthroughStepStatus::ProductionDisabled));
+        .any(|step| step.status == WriteReviewWalkthroughStepStatus::Ready));
     assert!(walkthrough
         .user_facing_lines()
         .iter()
-        .any(|line| line == "Apply behavior has not changed."));
+        .any(|line| line == "Apply writes only when every selected setting has a safe target."));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 

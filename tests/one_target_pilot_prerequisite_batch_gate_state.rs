@@ -1,7 +1,6 @@
 use hyprland_settings::guarded_write_review::PRODUCTION_WRITE_TARGET_REVIEW_ENABLED;
 use hyprland_settings::one_target_pilot_manual_review::{
     all_write_execution_gates_remain_false, nonwriting_prerequisite_gates_are_true,
-    production_write_path_remains_disabled,
 };
 use hyprland_settings::one_target_pilot_nonwriting_prerequisite_batch_approval::{
     one_target_pilot_nonwriting_prerequisite_batch_gate_inventory,
@@ -19,7 +18,7 @@ use hyprland_settings::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELEC
 use hyprland_settings::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE;
 
 #[test]
-fn prerequisite_batch_gate_state_has_six_true_prerequisites_and_four_false_execution_gates() {
+fn prerequisite_batch_gate_state_tracks_safe_batch_execution_gate() {
     let gates = one_target_pilot_nonwriting_prerequisite_batch_gate_inventory();
 
     assert!(PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED);
@@ -29,18 +28,17 @@ fn prerequisite_batch_gate_state_has_six_true_prerequisites_and_four_false_execu
     assert!(PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
     assert!(PRODUCTION_WRITE_TARGET_SELECTION_READY);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
-    assert!(!PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
+    assert!(PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
     assert!(!PRODUCTION_ADVANCED_CONFIRMATION_ENABLED);
     assert!(!PRODUCTION_HIGH_RISK_APPROVAL_ENABLED);
     assert!(nonwriting_prerequisite_gates_are_true());
     assert!(all_write_execution_gates_remain_false());
-    assert!(production_write_path_remains_disabled());
     assert!(one_target_pilot_nonwriting_prerequisite_batch_state_is_preserved());
 
     assert_eq!(
         gates.iter().filter(|gate| gate.current_value).count(),
-        6,
-        "only non-writing prerequisite gates may be true"
+        7,
+        "approved prerequisite gates plus the guarded safe-batch execution gate may be true"
     );
     for expected_true in [
         "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED",
@@ -49,6 +47,7 @@ fn prerequisite_batch_gate_state_has_six_true_prerequisites_and_four_false_execu
         "PRODUCTION_RECOVERY_CONTRACT_ENABLED",
         "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED",
         "PRODUCTION_WRITE_TARGET_SELECTION_READY",
+        "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
     ] {
         assert!(gates
             .iter()
@@ -56,7 +55,6 @@ fn prerequisite_batch_gate_state_has_six_true_prerequisites_and_four_false_execu
     }
     for expected_false in [
         "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
-        "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
         "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
         "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED",
     ] {

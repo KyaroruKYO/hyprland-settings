@@ -41,7 +41,7 @@ fn write_file(path: &Path, content: &str) {
 }
 
 #[test]
-fn fixture_walkthrough_composes_full_review_and_stays_production_disabled() {
+fn fixture_walkthrough_composes_full_review_and_uses_safe_batch_gate() {
     let root = temp_fixture("full");
     let config = root.join("hyprland.conf");
     let profile = root.join("profiles/desktop.conf");
@@ -114,8 +114,8 @@ fn fixture_walkthrough_composes_full_review_and_stays_production_disabled() {
     );
 
     assert_eq!(walkthrough.steps.len(), 7);
-    assert!(walkthrough.safety.production_disabled);
-    assert!(!walkthrough.safety.affects_apply);
+    assert!(!walkthrough.safety.production_disabled);
+    assert!(walkthrough.safety.affects_apply);
     assert_eq!(
         guarded.review_status,
         GuardedWriteReviewStatus::ReadyForReview

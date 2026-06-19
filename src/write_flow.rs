@@ -17,6 +17,10 @@ use crate::pending_change::{
     stage_pending_change, stage_pending_change_with_sources, PendingChange,
     PendingChangeValidation, PendingChangeValueSources,
 };
+use crate::safe_batch_write::{
+    build_safe_batch_write_plan, execute_safe_batch_write_plan, SafeBatchChangeRequest,
+    SafeBatchExecutionOptions, SafeBatchWriteReport, SafeBatchWriteStatus,
+};
 use crate::scalar_write::apply_scalar_write_plan;
 use crate::source_values::{read_system_xkb_rules, MonitorSourceValue, XkbSourceValue};
 use crate::write_classification::{
@@ -28,6 +32,7 @@ use crate::write_safety::{
     review_screen_shader_gated_write_plan, review_write_plan, GatedWriteFailure, HighRiskGateProof,
     WriteGateFailure, WritePlanRequest, WriteResult,
 };
+use crate::{config_graph::inspect_config_graph, config_graph::ConfigGraphSummary};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SettingEditProjection {
@@ -71,6 +76,64 @@ pub struct ApplyOutcome {
 pub struct ApplyFailure {
     pub reason: String,
     pub failures: Vec<String>,
+}
+
+pub fn apply_safe_batch_setting_changes(
+    known_setting_ids: BTreeSet<String>,
+    discovery: &ConfigDiscovery,
+    current_config: &CurrentConfigSnapshot,
+    pending_changes: Vec<SafeBatchChangeRequest>,
+) -> Result<SafeBatchWriteReport, ApplyFailure> {
+    let target_path = detected_config_path(discovery).map_err(|reason| ApplyFailure {
+        reason,
+        failures: vec!["MissingCurrentSource".to_string()],
+    })?;
+    let graph = inspect_config_graph(target_path);
+    apply_safe_batch_setting_changes_with_graph_and_options(
+        known_setting_ids,
+        current_config,
+        &graph,
+        pending_changes,
+        SafeBatchExecutionOptions::default(),
+    )
+}
+
+pub fn apply_safe_batch_setting_changes_with_graph_and_options(
+    known_setting_ids: BTreeSet<String>,
+    current_config: &CurrentConfigSnapshot,
+    config_graph: &ConfigGraphSummary,
+    pending_changes: Vec<SafeBatchChangeRequest>,
+    options: SafeBatchExecutionOptions,
+) -> Result<SafeBatchWriteReport, ApplyFailure> {
+    let plan = build_safe_batch_write_plan(
+        "safe-batch-apply",
+        &known_setting_ids,
+        current_config,
+        config_graph,
+        pending_changes,
+        &options.backup_timestamp,
+    );
+    if !plan.can_execute {
+        return Err(ApplyFailure {
+            reason: "safe-batch write plan rejected".to_string(),
+            failures: plan
+                .blocked_changes
+                .iter()
+                .map(|blocked| format!("{}: {}", blocked.setting_id, blocked.reason.label()))
+                .chain(plan.cannot_execute_reasons.iter().cloned())
+                .collect(),
+        });
+    }
+
+    let report = execute_safe_batch_write_plan(&plan, &options);
+    if report.status == SafeBatchWriteStatus::Succeeded {
+        Ok(report)
+    } else {
+        Err(ApplyFailure {
+            reason: "safe-batch write did not complete successfully".to_string(),
+            failures: report.failures,
+        })
+    }
 }
 
 pub fn edit_projection_for_setting(

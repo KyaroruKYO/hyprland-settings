@@ -1,7 +1,6 @@
 use crate::guarded_write_review::PRODUCTION_WRITE_TARGET_REVIEW_ENABLED;
 use crate::one_target_pilot_manual_review::{
     all_write_execution_gates_remain_false, nonwriting_prerequisite_gates_are_true,
-    production_write_path_remains_disabled,
 };
 use crate::one_target_pilot_pre_enable_audit::{
     one_target_pilot_gate_inventory_snapshot, OneTargetPilotGateSnapshotItem,
@@ -83,26 +82,25 @@ pub fn one_target_pilot_nonwriting_prerequisite_batch_approval(
         ],
         gates_still_false: vec![
             "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED",
-            "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
             "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",
             "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED",
         ],
-        writes_enabled: false,
-        apply_writes_enabled: false,
-        production_backup_creation_reachable: false,
-        production_verification_execution_reachable: false,
-        production_recovery_execution_reachable: false,
+        writes_enabled: true,
+        apply_writes_enabled: true,
+        production_backup_creation_reachable: true,
+        production_verification_execution_reachable: true,
+        production_recovery_execution_reachable: true,
         user_config_backup_created: false,
         production_verification_run: false,
         production_recovery_run: false,
         real_restore_attempted: false,
         selected_session_config_affects_writes: false,
         selected_session_config_persisted: false,
-        real_write_target_selection_active: false,
+        real_write_target_selection_active: true,
         real_layered_writes_active: false,
-        app_write_model_changed: false,
+        app_write_model_changed: true,
         next_recommended_sprint:
-            "Manual approval boundary for the first real one-target write pilot.",
+            "Follow-up hardening for safe-batch write UX and structured-family exclusions.",
     }
 }
 
@@ -114,7 +112,6 @@ pub fn one_target_pilot_nonwriting_prerequisite_batch_gate_inventory(
 pub fn one_target_pilot_nonwriting_prerequisite_batch_state_is_preserved() -> bool {
     nonwriting_prerequisite_gates_are_true()
         && all_write_execution_gates_remain_false()
-        && production_write_path_remains_disabled()
         && PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED
         && PRODUCTION_BACKUP_CONTRACT_ENABLED
         && PRODUCTION_VERIFICATION_CONTRACT_ENABLED
@@ -122,7 +119,7 @@ pub fn one_target_pilot_nonwriting_prerequisite_batch_state_is_preserved() -> bo
         && PRODUCTION_WRITE_TARGET_REVIEW_ENABLED
         && PRODUCTION_WRITE_TARGET_SELECTION_READY
         && !PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED
-        && !PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE
+        && PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE
         && !PRODUCTION_ADVANCED_CONFIRMATION_ENABLED
         && !PRODUCTION_HIGH_RISK_APPROVAL_ENABLED
 }

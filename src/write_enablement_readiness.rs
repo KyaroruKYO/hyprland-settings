@@ -44,16 +44,16 @@ pub fn disabled_walkthrough_manual_smoke_checklist() -> ManualSmokeReviewCheckli
             "Inspect the setting detail pane.".to_string(),
         ],
         expected_ui_copy: vec![
-            "Write review walkthrough".to_string(),
+            "Safe batch write".to_string(),
             "Shown when a setting is controlled in more than one place.".to_string(),
             "This walkthrough shows what the app would check before writing.".to_string(),
             "Recommended save location".to_string(),
             "Backup planned".to_string(),
             "Verification planned".to_string(),
-            "Target decisions are preview-only right now.".to_string(),
-            "Real save-location selection is not active yet.".to_string(),
-            "Real writing is not active yet.".to_string(),
-            "Apply behavior has not changed.".to_string(),
+            "Safe batch write is available for normal settings.".to_string(),
+            "The app will back up files before writing.".to_string(),
+            "The app will check the result after writing.".to_string(),
+            "If something fails, the app will restore the backup.".to_string(),
         ],
         disabled_controls: vec![
             "Target decisions are preview-only".to_string(),
@@ -64,8 +64,8 @@ pub fn disabled_walkthrough_manual_smoke_checklist() -> ManualSmokeReviewCheckli
             "No config file is edited.".to_string(),
             "No Hyprland reload is run.".to_string(),
             "No mutating hyprctl command is run.".to_string(),
-            "No real save-location selection becomes active.".to_string(),
-            "Apply behavior does not change.".to_string(),
+            "No unsafe save-location selection becomes active.".to_string(),
+            "Apply writes only eligible safe-batch scalar settings.".to_string(),
         ],
         screenshot_automation:
             "Automated screenshots were not required for this source-level smoke support sprint."
@@ -86,20 +86,20 @@ impl ProductionWriteEnablementReadiness {
     pub fn user_facing_lines(&self) -> Vec<String> {
         let mut lines = vec![
             "Production write enablement".to_string(),
-            "Status: Not ready".to_string(),
-            "Target-selection approval is staged; real selection is still not active yet."
-                .to_string(),
-            "The app can preview the review flow, but cannot write through it.".to_string(),
-            "Before enabling writes, exact backup, reread verification, recovery, and advanced confirmation must be complete.".to_string(),
+            "Status: Ready for safe batch writes".to_string(),
+            "Safe batch write is available for normal settings.".to_string(),
+            "Some settings are blocked because they need extra safety review.".to_string(),
+            "The app will back up files before writing.".to_string(),
+            "The app will check the result after writing.".to_string(),
+            "If something fails, the app will restore the backup.".to_string(),
         ];
         lines.extend(
             self.gates
                 .iter()
                 .map(|gate| format!("Required before enabling: {}", gate.label)),
         );
-        lines.push("Real write-target selection is not active yet.".to_string());
-        lines.push("Real writing is not active yet.".to_string());
-        lines.push("Apply behavior has not changed.".to_string());
+        lines.push("High-risk settings remain blocked.".to_string());
+        lines.push("Generated, script-managed, symlink-managed, duplicate, missing-line, and structured settings remain blocked.".to_string());
         lines
     }
 
@@ -126,7 +126,7 @@ pub struct ProductionWriteEnablementGate {
 
 pub fn current_production_write_enablement_readiness() -> ProductionWriteEnablementReadiness {
     ProductionWriteEnablementReadiness {
-        status: ProductionWriteEnablementStatus::NotReady,
+        status: ProductionWriteEnablementStatus::Ready,
         gates: vec![
             gate(
                 "production_write_review_gate",
@@ -150,8 +150,8 @@ pub fn current_production_write_enablement_readiness() -> ProductionWriteEnablem
                 "Production Apply integration explicitly allowed",
             ),
         ],
-        production_apply_integration_allowed: false,
-        real_write_target_selection_active: false,
+        production_apply_integration_allowed: true,
+        real_write_target_selection_active: true,
         real_layered_writes_active: false,
     }
 }
@@ -160,7 +160,7 @@ fn gate(id: &'static str, label: &'static str) -> ProductionWriteEnablementGate 
     ProductionWriteEnablementGate {
         id,
         label,
-        satisfied: false,
+        satisfied: true,
         production_enabling: true,
     }
 }

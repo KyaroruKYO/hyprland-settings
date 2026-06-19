@@ -7,7 +7,7 @@ use crate::write_target_candidate::WriteTargetCandidate;
 use crate::write_target_recommendation::WriteTargetRecommendation;
 use crate::write_verification_plan::WriteVerificationPlan;
 
-pub const PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE: bool = false;
+pub const PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE: bool = true;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct WriteReviewWalkthrough {
@@ -19,8 +19,8 @@ pub struct WriteReviewWalkthrough {
 impl WriteReviewWalkthrough {
     pub fn user_facing_lines(&self) -> Vec<String> {
         let mut lines = vec![
-            "Write review walkthrough".to_string(),
-            "This walkthrough shows what the app would check before writing.".to_string(),
+            "Safe batch write review".to_string(),
+            "This review shows what the app checks before writing.".to_string(),
         ];
         for step in &self.steps {
             lines.push(format!("{}: {}", step.title, step.friendly_summary));
@@ -28,10 +28,11 @@ impl WriteReviewWalkthrough {
                 lines.push(detail.clone());
             }
         }
-        lines.push("Target decisions are preview-only right now.".to_string());
-        lines.push("Real save-location selection is not active yet.".to_string());
-        lines.push("Real writing is not active yet.".to_string());
-        lines.push("Apply behavior has not changed.".to_string());
+        lines.push("Safe batch write is available for normal settings.".to_string());
+        lines.push("Some settings are blocked because they need extra safety review.".to_string());
+        lines.push("The app will back up files before writing.".to_string());
+        lines.push("The app will check the result after writing.".to_string());
+        lines.push("If something fails, the app will restore the backup.".to_string());
         lines
     }
 }
@@ -164,10 +165,10 @@ pub fn build_write_review_walkthrough(
     WriteReviewWalkthrough {
         steps,
         safety: WriteReviewWalkthroughSafetyFlags {
-            read_only: true,
-            production_disabled: true,
-            affects_apply: false,
-            affects_writes: false,
+            read_only: false,
+            production_disabled: false,
+            affects_apply: true,
+            affects_writes: true,
             persists_selection: false,
         },
         target_decision: WriteReviewTargetDecisionState::disabled(
@@ -310,16 +311,16 @@ fn verification_step(plan: Option<&WriteVerificationPlan>) -> WriteReviewWalkthr
 
 fn production_gate_step(review: Option<&GuardedWriteTargetReview>) -> WriteReviewWalkthroughStep {
     let mut details = vec![
-        "Real writing is not active yet.".to_string(),
-        "Apply behavior has not changed.".to_string(),
+        "Safe batch writing is available for eligible normal settings.".to_string(),
+        "Apply writes only when every selected setting has a safe target.".to_string(),
     ];
     if let Some(review) = review {
         details.extend(review.user_facing_lines());
     }
     WriteReviewWalkthroughStep::new(
         "Status",
-        WriteReviewWalkthroughStepStatus::ProductionDisabled,
-        "Real writing is not active yet.",
+        WriteReviewWalkthroughStepStatus::Ready,
+        "Safe batch writing is guarded by backup, verification, and recovery checks.",
         details,
     )
 }

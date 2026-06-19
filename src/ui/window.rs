@@ -22,9 +22,9 @@ use crate::one_target_pilot_live_visual_smoke::disabled_live_visual_smoke_review
 use crate::one_target_pilot_manual_review::disabled_manual_smoke_review_ui_lines;
 use crate::one_target_pilot_pre_enable_audit::disabled_pre_enable_audit_ui_lines;
 use crate::one_target_pilot_readiness::current_one_target_pilot_readiness_mapping;
-use crate::one_target_write_pilot::minimum_one_target_write_pilot_design;
 use crate::production_advanced_confirmation::disabled_advanced_confirmation_ui_lines;
 use crate::production_high_risk_approval::disabled_high_risk_approval_ui_lines;
+use crate::safe_batch_write::safe_batch_write_user_facing_lines;
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::session_config_preview::build_session_config_preview;
 use crate::session_value_projection::{
@@ -1774,9 +1774,11 @@ fn append_pre_apply_review_scaffold(
         "Generated or script-managed files may require advanced confirmation.",
     ));
     content.append(&small_label(
-        "Real write-target selection is not active yet.",
+        "Safe batch writing is guarded by backup, verification, and recovery checks.",
     ));
-    content.append(&small_label("Apply behavior has not changed."));
+    content.append(&small_label(
+        "Apply writes only when every selected setting has a safe target.",
+    ));
 
     content.append(&body_label("Save location"));
     for line in recommendation.user_facing_lines() {
@@ -1839,17 +1841,17 @@ fn append_pre_apply_review_scaffold(
             content.append(&small_label(&line));
         }
         content.append(&small_label(if PRODUCTION_WRITE_TARGET_REVIEW_ENABLED {
-            "Real write-target review is active."
+            "Safe batch review is active."
         } else {
             "Real writing is not active yet."
         }));
 
-        content.append(&body_label("Write review walkthrough"));
+        content.append(&body_label("Safe batch write review"));
         content.append(&small_label(
             "Shown when a setting is controlled in more than one place.",
         ));
         content.append(&small_label(
-            "This walkthrough shows what the app would check before writing.",
+            "This review shows what the app checks before writing.",
         ));
         for line in walkthrough.user_facing_lines() {
             content.append(&small_label(&line));
@@ -1867,9 +1869,8 @@ fn append_pre_apply_review_scaffold(
         enablement_button.set_sensitive(false);
         content.append(&enablement_button);
 
-        let pilot = minimum_one_target_write_pilot_design();
-        content.append(&body_label("First production write pilot"));
-        for line in pilot.user_facing_lines() {
+        content.append(&body_label("Safe batch write"));
+        for line in safe_batch_write_user_facing_lines() {
             content.append(&small_label(&line));
         }
 

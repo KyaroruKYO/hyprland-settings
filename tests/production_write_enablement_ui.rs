@@ -14,7 +14,7 @@ fn source_slice<'a>(source: &'a str, start: &str, end: &str) -> &'a str {
 }
 
 #[test]
-fn disabled_production_enablement_ui_scaffold_has_not_ready_copy() {
+fn production_enablement_ui_scaffold_has_safe_batch_copy() {
     let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
     let section = source_slice(
         &source,
@@ -23,27 +23,26 @@ fn disabled_production_enablement_ui_scaffold_has_not_ready_copy() {
     );
     let readiness_source = fs::read_to_string("src/write_enablement_readiness.rs")
         .expect("readiness source should read");
-    let pilot_source =
-        fs::read_to_string("src/one_target_write_pilot.rs").expect("pilot source should read");
+    let safe_batch_source =
+        fs::read_to_string("src/safe_batch_write.rs").expect("safe batch source should read");
 
     for expected in [
         "Production write enablement",
-        "Status: Not ready",
-        "Target-selection approval is staged; real selection is still not active yet.",
-        "The app can preview the review flow, but cannot write through it.",
-        "Before enabling writes, exact backup, reread verification, recovery, and advanced confirmation must be complete.",
+        "Status: Ready for safe batch writes",
+        "Safe batch write",
+        "Safe batch write is available for normal settings.",
+        "Some settings are blocked because they need extra safety review.",
+        "The app will back up files before writing.",
+        "The app will check the result after writing.",
+        "If something fails, the app will restore the backup.",
         "Required before enabling",
-        "Real write-target selection is not active yet.",
-        "Production enablement is disabled",
-        "First production write pilot",
-        "Status: Not enabled",
-        "One existing scalar line in one normal config file",
-        "Real writing is not active yet.",
+        "High-risk settings remain blocked.",
+        "Generated, script-managed, symlink-managed, duplicate, missing-line, and structured settings remain blocked.",
     ] {
         assert!(
             section.contains(expected)
                 || readiness_source.contains(expected)
-                || pilot_source.contains(expected),
+                || safe_batch_source.contains(expected),
             "missing production enablement UI copy: {expected}"
         );
     }

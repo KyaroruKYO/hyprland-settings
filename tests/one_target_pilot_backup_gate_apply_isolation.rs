@@ -13,8 +13,8 @@ fn backup_gate_review_preserves_current_staged_gate_inventory() {
     assert!(backup_gate_candidate_current_staged_state_is_preserved());
     assert_eq!(
         gates.iter().filter(|gate| gate.current_value).count(),
-        6,
-        "only the approved non-writing prerequisite gates should be true"
+        7,
+        "approved prerequisites plus the safe-batch execution gate should be true"
     );
     assert!(gates.iter().any(|gate| gate.gate_name
         == "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED"
@@ -35,6 +35,7 @@ fn backup_gate_review_preserves_current_staged_gate_inventory() {
                 | "PRODUCTION_RECOVERY_CONTRACT_ENABLED"
                 | "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED"
                 | "PRODUCTION_WRITE_TARGET_SELECTION_READY"
+                | "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE"
         ))
         .all(|gate| !gate.current_value));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);

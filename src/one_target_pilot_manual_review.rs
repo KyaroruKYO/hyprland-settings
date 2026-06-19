@@ -433,9 +433,12 @@ pub fn all_write_activation_gates_remain_false() -> bool {
 
 pub fn all_write_execution_gates_remain_false() -> bool {
     !PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED
-        && !PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE
         && !PRODUCTION_ADVANCED_CONFIRMATION_ENABLED
         && !PRODUCTION_HIGH_RISK_APPROVAL_ENABLED
+}
+
+pub fn safe_batch_write_execution_gate_is_true() -> bool {
+    PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE
 }
 
 pub fn only_pre_enable_audit_gate_is_true() -> bool {
@@ -464,11 +467,12 @@ pub fn nonwriting_prerequisite_gates_are_true() -> bool {
         && PRODUCTION_RECOVERY_CONTRACT_ENABLED
         && PRODUCTION_WRITE_TARGET_REVIEW_ENABLED
         && PRODUCTION_WRITE_TARGET_SELECTION_READY
+        && safe_batch_write_execution_gate_is_true()
         && all_write_execution_gates_remain_false()
 }
 
 pub fn production_write_path_remains_disabled() -> bool {
-    all_write_execution_gates_remain_false()
+    false
 }
 
 pub fn disabled_manual_smoke_review_ui_lines() -> Vec<String> {

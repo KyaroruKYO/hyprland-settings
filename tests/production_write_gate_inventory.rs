@@ -6,10 +6,10 @@ use hyprland_settings::write_enablement_readiness::PRODUCTION_WRITE_TARGET_SELEC
 use hyprland_settings::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE;
 
 #[test]
-fn code_gate_inventory_lists_prerequisite_selection_and_review_true_but_write_execution_false() {
+fn code_gate_inventory_lists_safe_batch_gate_true_and_unsafe_gates_false() {
     assert!(PRODUCTION_WRITE_TARGET_SELECTION_READY);
     assert!(PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
-    assert!(!PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
+    assert!(PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
 
     let inventory = production_write_gate_inventory();
@@ -36,11 +36,18 @@ fn code_gate_inventory_lists_prerequisite_selection_and_review_true_but_write_ex
         == "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED"
         && gate.current_value
         && !gate.must_remain_false_now));
+    assert!(inventory.iter().any(|gate| gate.gate_name
+        == "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE"
+        && gate.current_value
+        && !gate.must_remain_false_now
+        && gate.would_allow.contains("safe-batch")));
     assert!(inventory
         .iter()
         .filter(|gate| !matches!(
             gate.gate_name,
-            "PRODUCTION_WRITE_TARGET_SELECTION_READY" | "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED"
+            "PRODUCTION_WRITE_TARGET_SELECTION_READY"
+                | "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED"
+                | "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE"
         ))
         .all(|gate| !gate.current_value && gate.must_remain_false_now));
     assert!(inventory

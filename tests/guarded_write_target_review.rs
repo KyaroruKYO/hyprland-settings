@@ -60,11 +60,11 @@ fn guarded_review_model_represents_candidates_gates_and_nonwriting_approval() {
     assert!(review
         .user_facing_lines()
         .iter()
-        .any(|line| line == "Real writing is not active yet."));
+        .any(|line| line == "Safe batch write is available for normal settings."));
     assert!(review
         .user_facing_lines()
         .iter()
-        .any(|line| line == "Write review approval is staged; Apply still cannot write."));
+        .any(|line| line == "Some settings are blocked because they need extra safety review."));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 

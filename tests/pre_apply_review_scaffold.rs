@@ -27,8 +27,8 @@ fn pre_apply_review_scaffold_has_backup_and_caution_copy() {
         "Before this setting can be changed, choose where the app should save it.",
         "The app will back up the exact file before saving changes.",
         "Generated or script-managed files may require advanced confirmation.",
-        "Real write-target selection is not active yet.",
-        "Apply behavior has not changed.",
+        "Safe batch writing is guarded by backup, verification, and recovery checks.",
+        "Apply writes only when every selected setting has a safe target.",
         "Save location",
     ] {
         assert!(section.contains(copy), "missing scaffold copy: {copy}");

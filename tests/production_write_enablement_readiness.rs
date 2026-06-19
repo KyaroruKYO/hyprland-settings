@@ -5,13 +5,13 @@ use hyprland_settings::write_enablement_readiness::{
 };
 
 #[test]
-fn readiness_model_represents_all_required_gates_as_not_ready() {
+fn readiness_model_represents_safe_batch_write_enablement() {
     let readiness = current_production_write_enablement_readiness();
 
-    assert_eq!(readiness.status, ProductionWriteEnablementStatus::NotReady);
-    assert!(!readiness.is_ready());
-    assert!(!readiness.production_apply_integration_allowed);
-    assert!(!readiness.real_write_target_selection_active);
+    assert_eq!(readiness.status, ProductionWriteEnablementStatus::Ready);
+    assert!(readiness.is_ready());
+    assert!(readiness.production_apply_integration_allowed);
+    assert!(readiness.real_write_target_selection_active);
     assert!(!readiness.real_layered_writes_active);
     assert!(PRODUCTION_WRITE_TARGET_SELECTION_READY);
 
@@ -39,27 +39,30 @@ fn readiness_model_represents_all_required_gates_as_not_ready() {
             "missing readiness gate: {expected}"
         );
     }
-    assert!(readiness.gates.iter().all(|gate| !gate.satisfied));
+    assert!(readiness.gates.iter().all(|gate| gate.satisfied));
     assert!(readiness.gates.iter().all(|gate| gate.production_enabling));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 
 #[test]
-fn readiness_copy_explains_preview_only_status() {
+fn readiness_copy_explains_safe_batch_status_and_exclusions() {
     let copy = current_production_write_enablement_readiness()
         .user_facing_lines()
         .join("\n");
 
     for expected in [
-        "Target-selection approval is staged; real selection is still not active yet.",
-        "The app can preview the review flow, but cannot write through it.",
-        "Before enabling writes, exact backup, reread verification, recovery, and advanced confirmation must be complete.",
+        "Status: Ready for safe batch writes",
+        "Safe batch write is available for normal settings.",
+        "Some settings are blocked because they need extra safety review.",
+        "The app will back up files before writing.",
+        "The app will check the result after writing.",
+        "If something fails, the app will restore the backup.",
         "Required before enabling: Exact backup implementation",
         "Required before enabling: Generated/script-managed confirmation",
         "Required before enabling: Reread verification",
         "Required before enabling: Rollback/recovery plan",
-        "Real write-target selection is not active yet.",
-        "Apply behavior has not changed.",
+        "High-risk settings remain blocked.",
+        "Generated, script-managed, symlink-managed, duplicate, missing-line, and structured settings remain blocked.",
     ] {
         assert!(copy.contains(expected), "missing readiness copy: {expected}");
     }

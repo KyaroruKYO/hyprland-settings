@@ -24,9 +24,11 @@ impl GuardedWriteTargetReview {
     pub fn user_facing_lines(&self) -> Vec<String> {
         let mut lines = vec![
             "Write review".to_string(),
-            "Real writing is not active yet.".to_string(),
-            "Apply behavior has not changed.".to_string(),
-            "Write review approval is staged; Apply still cannot write.".to_string(),
+            "Safe batch write is available for normal settings.".to_string(),
+            "Some settings are blocked because they need extra safety review.".to_string(),
+            "The app will back up files before writing.".to_string(),
+            "The app will check the result after writing.".to_string(),
+            "If something fails, the app will restore the backup.".to_string(),
         ];
         if let Some(candidate) = &self.recommended_candidate {
             lines.push(format!("Recommended save location: {}", candidate.label));

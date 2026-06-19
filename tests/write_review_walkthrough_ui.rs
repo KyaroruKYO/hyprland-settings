@@ -31,8 +31,8 @@ fn disabled_walkthrough_ui_has_screenshot_friendly_copy_and_no_handlers() {
         .expect("session projection source should read");
 
     for copy in [
-        "Write review walkthrough",
-        "This walkthrough shows what the app would check before writing.",
+        "Safe batch write review",
+        "This review shows what the app checks before writing.",
         "Active config value",
         "Session preview value",
         "Recommended save location",
@@ -40,10 +40,9 @@ fn disabled_walkthrough_ui_has_screenshot_friendly_copy_and_no_handlers() {
         "Blocked locations",
         "Backup planned",
         "Verification planned",
-        "Target decisions are preview-only right now.",
-        "Real save-location selection is not active yet.",
-        "Real writing is not active yet.",
-        "Apply behavior has not changed.",
+        "Target decisions are preview-only",
+        "Safe batch writing is available for eligible normal settings.",
+        "Apply writes only when every selected setting has a safe target.",
     ] {
         assert!(
             section.contains(copy)

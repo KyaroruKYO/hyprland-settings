@@ -22,9 +22,9 @@ fn walkthrough_discoverability_copy_is_scoped_to_layered_settings() {
         "fn append_user_facing_write_reason",
     );
 
-    assert!(section.contains("Write review walkthrough"));
+    assert!(section.contains("Safe batch write review"));
     assert!(section.contains("Shown when a setting is controlled in more than one place."));
-    assert!(section.contains("This walkthrough shows what the app would check before writing."));
+    assert!(section.contains("This review shows what the app checks before writing."));
     assert!(section.contains("if !layered.controlled_in_more_than_one_place"));
     assert!(section.contains("return;"));
     assert!(!section.contains("apply_setting_change("));

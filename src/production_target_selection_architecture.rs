@@ -165,10 +165,10 @@ pub fn production_write_gate_inventory() -> Vec<ProductionWriteGateInventoryItem
             gate_name: "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
             current_value: PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE,
             module: "write_review_walkthrough",
-            would_allow: "walkthrough-derived state to participate in writes",
+            would_allow: "guarded safe-batch write execution for eligible normal scalar settings",
             required_proof_before_flip:
-                "walkthrough state converted into a production-safe review contract",
-            must_remain_false_now: true,
+                "safe-batch plan, backup, reread verification, recovery, and blocked-category proof",
+            must_remain_false_now: false,
         },
         ProductionWriteGateInventoryItem {
             gate_name: "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED",

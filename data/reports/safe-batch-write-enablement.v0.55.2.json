@@ -1,0 +1,184 @@
+{
+  "schemaVersion": "1.0",
+  "artifactKind": "safe-batch-write-enablement-review",
+  "generatedAt": "2026-06-18T00:00:00-07:00",
+  "startingCommit": "e54a40d274f7a9c95848a7444333f0413c252461",
+  "goal": "Enable guarded safe-batch writes for multiple proven-safe normal scalar settings while preserving all unsafe target exclusions.",
+  "filesChanged": {
+    "source": [
+      "src/safe_batch_write.rs",
+      "src/lib.rs",
+      "src/write_flow.rs",
+      "src/write_review_walkthrough.rs",
+      "src/write_enablement_readiness.rs",
+      "src/guarded_write_review.rs",
+      "src/ui/window.rs",
+      "src/one_target_pilot_manual_review.rs",
+      "src/one_target_pilot_nonwriting_prerequisite_batch_approval.rs",
+      "src/one_target_pilot_backup_gate_approval.rs",
+      "src/one_target_pilot_backup_gate_review.rs",
+      "src/one_target_pilot_verification_gate_approval.rs",
+      "src/production_target_selection_architecture.rs"
+    ],
+    "tests": [
+      "tests/safe_batch_write.rs",
+      "tests/safe_batch_apply_integration.rs",
+      "tests/*gate* and write-review staged-state assertions updated for safe-batch execution"
+    ],
+    "reports": [
+      "data/reports/safe-batch-write-enablement.v0.55.2.json",
+      "docs/SAFE-BATCH-WRITE-ENABLEMENT-REVIEW-LOG.md",
+      "/home/kyo/.config/hypr/docs/SAFE-BATCH-WRITE-ENABLEMENT-REVIEW-LOG.md"
+    ]
+  },
+  "gatesBefore": {
+    "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED": true,
+    "PRODUCTION_BACKUP_CONTRACT_ENABLED": true,
+    "PRODUCTION_VERIFICATION_CONTRACT_ENABLED": true,
+    "PRODUCTION_RECOVERY_CONTRACT_ENABLED": true,
+    "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED": true,
+    "PRODUCTION_WRITE_TARGET_SELECTION_READY": true,
+    "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED": false,
+    "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE": false,
+    "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED": false,
+    "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED": false
+  },
+  "gatesAfter": {
+    "PRODUCTION_ONE_TARGET_PRE_ENABLE_AUDIT_PASSED": true,
+    "PRODUCTION_BACKUP_CONTRACT_ENABLED": true,
+    "PRODUCTION_VERIFICATION_CONTRACT_ENABLED": true,
+    "PRODUCTION_RECOVERY_CONTRACT_ENABLED": true,
+    "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED": true,
+    "PRODUCTION_WRITE_TARGET_SELECTION_READY": true,
+    "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE": true,
+    "PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED": false,
+    "PRODUCTION_ADVANCED_CONFIRMATION_ENABLED": false,
+    "PRODUCTION_HIGH_RISK_APPROVAL_ENABLED": false
+  },
+  "writeActivationChanged": {
+    "changed": true,
+    "gateChanged": "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE",
+    "meaning": "guarded safe-batch writes are enabled only for eligible normal scalar settings",
+    "legacyOneTargetPilotEnabled": false,
+    "advancedConfirmationEnabled": false,
+    "highRiskApprovalEnabled": false
+  },
+  "safeBatchEligibility": {
+    "eligible": "known writable normal scalar row with exact source path and line number, readable and writable normal target file, matching expected old value, no high-risk or display/render risk, no generated/script/symlink management, no duplicate conflict, no missing line, no structured family, no runtime-only or profile/mode behavior",
+    "supportsMultipleSettingsPerBatch": true,
+    "supportsMultipleFilesPerBatch": true,
+    "defaultBlockedChangeBehavior": "the whole batch is rejected if any selected change is blocked; blocked changes are not silently skipped"
+  },
+  "blockedCategories": [
+    "high-risk rows",
+    "display/render risky rows unless separately approved",
+    "generated files",
+    "script-managed files",
+    "symlink-managed files",
+    "ambiguous files",
+    "duplicate-conflicted settings",
+    "missing-line writes",
+    "structured-family settings",
+    "unknown targets",
+    "runtime-only settings",
+    "profile/mode switching"
+  ],
+  "backupBehavior": {
+    "requiredBeforeWrite": true,
+    "perTouchedFile": true,
+    "pathPolicy": "same-directory timestamped backup path with collision-safe naming",
+    "byteEqualityVerifiedBeforeWrite": true,
+    "realUserConfigBackupsCreatedByCodex": false
+  },
+  "verificationBehavior": {
+    "rereadAfterWrite": true,
+    "expectedScalarValueVerified": true,
+    "successRequiresEveryTargetToVerify": true,
+    "realProductionVerificationRunByCodex": false
+  },
+  "recoveryBehavior": {
+    "restoreOnWriteFailure": true,
+    "restoreOnVerificationFailure": true,
+    "rereadRestoredFiles": true,
+    "verifyRestoredBytesAndScalarValues": true,
+    "restoreFailureReportedClearly": true,
+    "realProductionRecoveryRunByCodex": false
+  },
+  "applyIntegration": {
+    "applyCanWriteEligibleNormalScalarSettings": true,
+    "guardFunction": "apply_safe_batch_setting_changes_with_graph_and_options",
+    "requiresExecutablePlan": true,
+    "cannotWriteHighRiskSettings": true,
+    "cannotWriteGeneratedScriptOrSymlinkManagedTargets": true,
+    "cannotWriteAmbiguousMissingLineOrDuplicateTargets": true,
+    "cannotWriteStructuredFamilySettings": true,
+    "cannotReportSuccessIfVerificationFails": true,
+    "cannotHideRestoreFailure": true
+  },
+  "uiChanges": {
+    "userFacingLanguage": "safe batch write",
+    "oldOneTargetWordingAdded": false,
+    "copy": [
+      "Safe batch write is available for normal settings.",
+      "Some settings are blocked because they need extra safety review.",
+      "The app will back up files before writing.",
+      "The app will check the result after writing.",
+      "If something fails, the app will restore the backup."
+    ]
+  },
+  "testsAdded": [
+    "tests/safe_batch_write.rs",
+    "tests/safe_batch_apply_integration.rs"
+  ],
+  "testsUpdated": [
+    "staged gate inventory tests now expect the safe-batch execution gate to be true",
+    "Apply isolation tests now prove unsafe categories remain blocked",
+    "write review and production enablement UI tests now use safe-batch wording"
+  ],
+  "safetyBoundaries": {
+    "realUserConfigEditedByCodex": false,
+    "realUserConfigBackupsCreatedByCodex": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "runtimeMutated": false,
+    "profileOrModeSwitching": false,
+    "luaExecuted": false,
+    "shellScriptsFromDetectionExecuted": false,
+    "testMutationScope": "fixtures and temporary files only"
+  },
+  "countsBefore": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "countsAfter": {
+    "readable": 341,
+    "writable": 341,
+    "blocked": 0
+  },
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "gitDiffCheck": "passed",
+    "jq": "passed",
+    "gitStatusShort": "passed with intended changes plus pre-existing unrelated untracked audit/design files"
+  },
+  "proofUsed": [
+    "safe-batch fixture tests for one-file and two-file batches",
+    "backup byte equality proof before write",
+    "reread expected-value verification after write",
+    "restore-on-write-failure and restore-on-verification-failure fixture proof",
+    "Apply isolation tests for blocked high-risk, generated, script-managed, symlink-managed, ambiguous, missing-line, duplicate, structured, runtime, and profile/mode categories"
+  ],
+  "proofStillMissing": [
+    "explicit user approval for display/render risky writes",
+    "explicit user approval for high-risk writes",
+    "structured-family write support",
+    "profile/mode switching support",
+    "runtime mutation and Hyprland reload support"
+  ],
+  "nextRecommendedSprint": "Observe safe-batch Apply behavior with user-selected eligible normal scalar settings, then separately review display/render risky and structured-family write paths."
+}

@@ -24,7 +24,7 @@ fn gate_inventory_snapshot_lists_pre_enable_backup_and_verification_passed_and_w
     assert!(!PRODUCTION_ONE_TARGET_WRITE_PILOT_ENABLED);
     assert!(PRODUCTION_WRITE_TARGET_SELECTION_READY);
     assert!(PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
-    assert!(!PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
+    assert!(PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
 
     let snapshot = one_target_pilot_gate_inventory_snapshot();
     let names = snapshot
@@ -68,6 +68,7 @@ fn gate_inventory_snapshot_lists_pre_enable_backup_and_verification_passed_and_w
                 | "PRODUCTION_RECOVERY_CONTRACT_ENABLED"
                 | "PRODUCTION_WRITE_TARGET_REVIEW_ENABLED"
                 | "PRODUCTION_WRITE_TARGET_SELECTION_READY"
+                | "PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE"
         ))
         .all(|gate| !gate.current_value));
     assert!(snapshot.iter().all(|gate| !gate.would_allow.is_empty()

@@ -31,8 +31,9 @@ fn disabled_production_write_review_ui_has_required_copy_and_disabled_controls()
         "The app will reread the file to confirm the value.",
         "Safety",
         "Advanced confirmation would be required before writing here.",
-        "Real writing is not active yet.",
-        "Apply behavior has not changed.",
+        "Safe batch writing is guarded by backup, verification, and recovery checks.",
+        "Apply writes only when every selected setting has a safe target.",
+        "Safe batch write is available for normal settings.",
         "Review save location",
     ] {
         assert!(

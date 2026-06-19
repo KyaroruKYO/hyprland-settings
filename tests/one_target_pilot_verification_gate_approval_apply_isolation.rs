@@ -1,7 +1,7 @@
 use std::fs;
 
 use hyprland_settings::one_target_pilot_manual_review::{
-    pre_enable_backup_and_verification_gates_are_true, production_write_path_remains_disabled,
+    all_write_execution_gates_remain_false, pre_enable_backup_and_verification_gates_are_true,
 };
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
 
@@ -33,6 +33,6 @@ fn write_flow_does_not_import_or_call_verification_gate_approval_or_activation_h
     assert!(write_flow.contains("apply_scalar_write_plan"));
     assert!(write_flow.contains("high_risk_write_policy"));
     assert!(pre_enable_backup_and_verification_gates_are_true());
-    assert!(production_write_path_remains_disabled());
+    assert!(all_write_execution_gates_remain_false());
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

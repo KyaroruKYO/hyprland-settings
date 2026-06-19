@@ -8,7 +8,7 @@ use hyprland_settings::write_review_walkthrough::PRODUCTION_WRITE_REVIEW_WALKTHR
 #[test]
 fn all_production_write_target_enablement_gates_remain_false() {
     assert!(PRODUCTION_WRITE_TARGET_REVIEW_ENABLED);
-    assert!(!PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
+    assert!(PRODUCTION_WRITE_REVIEW_WALKTHROUGH_CAN_WRITE);
     assert!(PRODUCTION_WRITE_TARGET_SELECTION_READY);
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
