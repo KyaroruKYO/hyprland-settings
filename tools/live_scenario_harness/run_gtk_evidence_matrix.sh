@@ -71,6 +71,7 @@ run_probe minimal_single_config Appearance
 run_probe high_risk_display_risk Display
 run_probe source_include_config Config
 run_probe duplicate_conflict Appearance
+run_probe duplicate_conflict DuplicateConflictDetail
 run_probe missing_default_only Appearance
 run_probe generated_config Config
 run_probe script_managed_config Config

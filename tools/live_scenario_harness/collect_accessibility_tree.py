@@ -36,6 +36,8 @@ SAFE_NAVIGATION_TARGETS = {
     "FirstSafeSettingRow",
     "FirstBlockedSettingRow",
     "FirstDuplicateOrBlockedRow",
+    "DuplicateConflictRow",
+    "DuplicateConflictDetail",
     "DetailPane",
 }
 
@@ -186,6 +188,40 @@ def find_first_node(app, predicate, max_nodes=1500):
     return recurse(app)
 
 
+def find_first_node_with_parent(app, predicate, max_nodes=1500):
+    seen = set()
+
+    def recurse(node, parent):
+        if len(seen) >= max_nodes:
+            return None, None
+        try:
+            key = hash(node)
+        except Exception:
+            key = id(node)
+        if key in seen:
+            return None, None
+        seen.add(key)
+        try:
+            if predicate(node):
+                return node, parent
+        except Exception:
+            pass
+        try:
+            child_count = int(getattr(node, "childCount", 0))
+        except Exception:
+            child_count = 0
+        for child_index in range(min(child_count, 500)):
+            try:
+                found, found_parent = recurse(node.getChildAtIndex(child_index), node)
+            except Exception:
+                found, found_parent = None, None
+            if found is not None:
+                return found, found_parent
+        return None, None
+
+    return recurse(app, None)
+
+
 def safe_row_candidate(node, blocked):
     text = node_text_lower(node)
     if not text:
@@ -211,6 +247,48 @@ def safe_row_candidate(node, blocked):
     return False
 
 
+def safe_select_node(node, parent):
+    ok, message = safe_click_action(node)
+    if ok:
+        return ok, message
+    if parent is None:
+        return False, f"{message}; no parent selection fallback available"
+    if has_apply_text(parent):
+        return False, "refused parent selection because parent contains Apply"
+    try:
+        selection = parent.querySelection()
+        index = node.getIndexInParent()
+        selection.selectChild(index)
+        return True, f"selected child {index} through parent selection fallback"
+    except Exception as error:
+        return False, f"{message}; parent selection fallback failed: {error}"
+
+
+def duplicate_row_candidate(node):
+    text = node_text_lower(node)
+    if not text or "apply" in text:
+        return False
+    return (
+        "duplicate conflict setting row" in text
+        or "this setting appears more than once in your config" in text
+        or ("appearance blur enabled" in text and "needs attention" in text)
+    )
+
+
+def open_duplicate_conflict_detail(app):
+    ok, message = click_named_target(app, "Appearance")
+    if not ok:
+        return False, f"could not open Appearance before duplicate detail: {message}"
+    time.sleep(1)
+    node, parent = find_first_node_with_parent(app, duplicate_row_candidate)
+    if node is None:
+        return False, "no duplicate-conflict setting row found"
+    ok, message = safe_select_node(node, parent)
+    if not ok:
+        return False, f"duplicate-conflict row activation failed: {message}"
+    return True, f"opened duplicate-conflict row detail: {message}"
+
+
 def click_named_target(app, target):
     if target.lower() == "apply":
         return False, "refused to navigate to Apply"
@@ -234,16 +312,32 @@ def click_named_target(app, target):
         return (node is not None), (
             "Detail pane found" if node is not None else "Detail pane not found"
         )
+    if target == "DuplicateConflictDetail":
+        return open_duplicate_conflict_detail(app)
+    if target == "DuplicateConflictRow":
+        node, parent = find_first_node_with_parent(app, duplicate_row_candidate)
+        if node is None:
+            return False, "no duplicate-conflict setting row found"
+        return safe_select_node(node, parent)
     if target in {
         "FirstSafeSettingRow",
         "FirstBlockedSettingRow",
         "FirstDuplicateOrBlockedRow",
     }:
         blocked = target != "FirstSafeSettingRow"
-        node = find_first_node(app, lambda current: safe_row_candidate(current, blocked))
+        if target == "FirstDuplicateOrBlockedRow":
+            node, parent = find_first_node_with_parent(app, duplicate_row_candidate)
+            if node is None:
+                node, parent = find_first_node_with_parent(
+                    app, lambda current: safe_row_candidate(current, True)
+                )
+        else:
+            node, parent = find_first_node_with_parent(
+                app, lambda current: safe_row_candidate(current, blocked)
+            )
         if node is None:
             return False, f"no safe row target found for {target}"
-        return safe_click_action(node)
+        return safe_select_node(node, parent)
 
     def recurse(node):
         values = accessible_text(node)
@@ -293,6 +387,10 @@ def main() -> int:
         "foundTermsAfterNavigation": [],
         "detailPaneTextCollected": False,
         "blockedReasonTextCollected": False,
+        "duplicateBlockedReasonTextCollected": False,
+        "duplicateConflictDetailNavigationAttempted": False,
+        "duplicateConflictDetailNavigationSucceeded": False,
+        "forbiddenApplyActionSeen": False,
         "fallbackProofUsed": False,
         "text": [],
         "error": None,
@@ -327,9 +425,17 @@ def main() -> int:
         result["navigationAttempted"] = bool(nav_target)
         result["navigationTarget"] = nav_target or None
         if nav_target and selected_app is not None:
+            result["duplicateConflictDetailNavigationAttempted"] = nav_target in {
+                "DuplicateConflictDetail",
+                "DuplicateConflictRow",
+                "FirstDuplicateOrBlockedRow",
+            }
             ok, message = click_named_target(selected_app, nav_target)
             result["navigationSucceeded"] = ok
             result["navigationMessage"] = message
+            result["duplicateConflictDetailNavigationSucceeded"] = (
+                ok and nav_target == "DuplicateConflictDetail"
+            )
             if ok:
                 time.sleep(1)
                 after = []
@@ -337,7 +443,12 @@ def main() -> int:
                 result["textAfterNavigation"] = after
                 result["foundTermsAfterNavigation"] = found_terms(after)
         all_text = "\n".join(result["text"] + result["textAfterNavigation"]).lower()
-        result["detailPaneTextCollected"] = "setting details" in all_text
+        duplicate_text_collected = (
+            "this setting appears more than once in your config" in all_text
+            and "will not write this setting until the duplicate entries are resolved manually"
+            in all_text
+        )
+        result["detailPaneTextCollected"] = "setting details" in all_text or duplicate_text_collected
         result["blockedReasonTextCollected"] = any(
             marker in all_text
             for marker in [
@@ -352,6 +463,7 @@ def main() -> int:
                 "high-risk",
             ]
         )
+        result["duplicateBlockedReasonTextCollected"] = duplicate_text_collected
     except Exception as error:
         result["error"] = f"pyatspi unavailable or inaccessible: {error}"
         if result["gdbusAvailable"]:

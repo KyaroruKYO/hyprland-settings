@@ -27,7 +27,11 @@ fn gtk_automation_scripts_exist_and_are_safe_env_by_default() {
     let launcher = fs::read_to_string("tools/live_scenario_harness/gtk_automation_probe.sh")
         .expect("probe should read");
     assert!(launcher.contains("cargo build --quiet"));
+    assert!(launcher.contains("appBuildAttempted"));
+    assert!(launcher.contains("appBuildSucceeded"));
     assert!(launcher.contains("appBinaryRebuiltBeforeProbe"));
+    assert!(launcher.contains("app_launch_attempted=\"false\""));
+    assert!(launcher.contains("exit 0"));
     assert!(!launcher.contains("if [ ! -x target/debug/hyprland-settings ]"));
     assert!(launcher.contains("HOME=\"$scenario_home\""));
     assert!(launcher.contains("XDG_CONFIG_HOME=\"$scenario_home/.config\""));
@@ -62,6 +66,8 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("pyatspi"));
     assert!(collector.contains("SAFE_NAVIGATION_TARGETS"));
     assert!(collector.contains("\"FirstBlockedSettingRow\""));
+    assert!(collector.contains("\"DuplicateConflictDetail\""));
+    assert!(collector.contains("duplicateBlockedReasonTextCollected"));
     assert!(collector.contains("refused to navigate to Apply"));
     assert!(collector.contains("refused to click node containing Apply"));
     assert!(collector.contains("\"applyRefused\""));
@@ -111,6 +117,12 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
             value["evidenceSummarySource"],
             "tools/live_scenario_harness/summarize_gtk_evidence.py"
         );
+        assert_eq!(value["appBuildAttempted"], true);
+        assert_eq!(value["appBuildSucceeded"], true);
+        assert_eq!(value["appBinaryRebuiltBeforeProbe"], true);
+        assert!(value["duplicateConflictDetailNavigationAttempted"].is_boolean());
+        assert!(value["duplicateConflictDetailNavigationSucceeded"].is_boolean());
+        assert!(value["duplicateBlockedReasonTextCollected"].is_boolean());
         assert!(value["proofLevelByUiArea"].is_object());
     }
 }
@@ -152,6 +164,26 @@ fn gtk_reports_use_explicit_proof_level_labels() {
             ),
             "{required} has unexpected proof level {level}"
         );
+    }
+}
+
+#[test]
+fn duplicate_blocked_copy_is_not_overclaimed_without_evidence() {
+    let summary: Value = serde_json::from_str(
+        &fs::read_to_string("data/reports/gtk-safe-env-automation-summary.v0.55.2.json")
+            .expect("summary report should read"),
+    )
+    .expect("summary report should parse");
+    let duplicate_level = summary["proofLevelByUiArea"]["duplicateBlockedCopy"]
+        .as_str()
+        .expect("duplicate proof level should be a string");
+    let duplicate_text_collected = summary["duplicateBlockedReasonTextCollected"]
+        .as_bool()
+        .expect("duplicateBlockedReasonTextCollected should be a boolean");
+    if duplicate_text_collected {
+        assert_eq!(duplicate_level, "live_gtk_atspi_proof");
+    } else {
+        assert_ne!(duplicate_level, "live_gtk_atspi_proof");
     }
 }
 

@@ -27,7 +27,10 @@ forced_kill="false"
 launch_succeeded="false"
 accessibility_attempted="false"
 accessibility_succeeded="false"
+app_build_attempted="false"
+app_build_succeeded="false"
 app_binary_rebuilt_before_probe="false"
+app_launch_attempted="false"
 
 cleanup() {
   if [ -n "$app_pid" ] && kill -0 "$app_pid" 2>/dev/null; then
@@ -47,8 +50,10 @@ cleanup() {
   "liveSwapModeUsed": false,
   "scenarioHome": "$scenario_home",
   "appPid": "${app_pid:-}",
+  "appBuildAttempted": $app_build_attempted,
+  "appBuildSucceeded": $app_build_succeeded,
   "appBinaryRebuiltBeforeProbe": $app_binary_rebuilt_before_probe,
-  "appLaunchAttempted": true,
+  "appLaunchAttempted": $app_launch_attempted,
   "appLaunchSucceeded": $launch_succeeded,
   "accessibilityInspectionAttempted": $accessibility_attempted,
   "accessibilityInspectionSucceeded": $accessibility_succeeded,
@@ -71,15 +76,23 @@ EOF
 }
 trap cleanup EXIT INT TERM
 
+app_build_attempted="true"
+if ! (cd /home/kyo/Projects/hyprland-settings && cargo build --quiet) > "$evidence_dir/build.stdout.txt" 2> "$evidence_dir/build.stderr.txt"; then
+  app_build_succeeded="false"
+  app_binary_rebuilt_before_probe="false"
+  app_launch_attempted="false"
+  exit 0
+fi
+app_build_succeeded="true"
+app_binary_rebuilt_before_probe="true"
+
 (
   cd /home/kyo/Projects/hyprland-settings
-  cargo build --quiet
-  app_binary_rebuilt_before_probe="true"
   HOME="$scenario_home" XDG_CONFIG_HOME="$scenario_home/.config" \
     timeout "$timeout_seconds" target/debug/hyprland-settings
 ) > "$evidence_dir/stdout.txt" 2> "$evidence_dir/stderr.txt" &
 app_pid="$!"
-app_binary_rebuilt_before_probe="true"
+app_launch_attempted="true"
 
 sleep 3
 if kill -0 "$app_pid" 2>/dev/null; then

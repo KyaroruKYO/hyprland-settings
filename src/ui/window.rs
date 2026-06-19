@@ -1488,7 +1488,13 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
         friendly_row_current_status(setting),
         friendly_row_attention_status(setting).unwrap_or_else(|| "Safe normal setting".to_string())
     )));
-    row.set_activatable(false);
+    if setting.current_value.status == CurrentValueSourceStatus::DuplicateConflict {
+        row.set_tooltip_text(Some(&format!(
+            "Duplicate conflict setting row: {}. This setting appears more than once in your config.",
+            setting.label
+        )));
+    }
+    row.set_activatable(true);
     row.set_selectable(true);
 
     let row_box = gtk::Box::new(gtk::Orientation::Vertical, 4);
@@ -1614,7 +1620,14 @@ fn render_detail(
         "hyprland-settings-detail-pane-{}",
         safe_widget_name(row_id)
     ));
-    detail_content.set_tooltip_text(Some(&format!("Detail pane for {}", detail.label)));
+    if detail.current_value.status == CurrentValueSourceStatus::DuplicateConflict {
+        detail_content.set_tooltip_text(Some(&format!(
+            "Duplicate conflict detail pane for {}. This setting appears more than once in your config.",
+            detail.label
+        )));
+    } else {
+        detail_content.set_tooltip_text(Some(&format!("Detail pane for {}", detail.label)));
+    }
     clear_box(detail_content);
     append_detail_section(detail_content, "Setting", |section| {
         section.append(&title_label(&detail.label));

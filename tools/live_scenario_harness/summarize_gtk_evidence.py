@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 PROJECT_MODEL = "v0.55.2 / 341 readable / 341 writable / 0 blocked"
-STARTING_COMMIT = "2338d9e1328320e60413e8e2625bd231d59cc4b3"
+STARTING_COMMIT = "ff552d8b507f9e6842874a3c146ae28deee23b68"
 PROOF_LEVELS = {
     "live_gtk_atspi_proof",
     "safe_env_model_proof",
@@ -67,6 +67,8 @@ def run_summary(run_dir):
         "scenario": scenario or name,
         "navigationTarget": target or accessibility.get("navigationTarget"),
         "probe": {
+            "appBuildAttempted": bool(probe.get("appBuildAttempted")),
+            "appBuildSucceeded": bool(probe.get("appBuildSucceeded")),
             "appLaunchSucceeded": bool(probe.get("appLaunchSucceeded")),
             "appBinaryRebuiltBeforeProbe": bool(probe.get("appBinaryRebuiltBeforeProbe")),
             "closeSucceeded": bool(probe.get("closeSucceeded")),
@@ -92,6 +94,16 @@ def run_summary(run_dir):
             "foundTermsAfterNavigation": accessibility.get("foundTermsAfterNavigation", []),
             "detailPaneTextCollected": bool(accessibility.get("detailPaneTextCollected")),
             "blockedReasonTextCollected": bool(accessibility.get("blockedReasonTextCollected")),
+            "duplicateBlockedReasonTextCollected": bool(
+                accessibility.get("duplicateBlockedReasonTextCollected")
+            ),
+            "duplicateConflictDetailNavigationAttempted": bool(
+                accessibility.get("duplicateConflictDetailNavigationAttempted")
+            ),
+            "duplicateConflictDetailNavigationSucceeded": bool(
+                accessibility.get("duplicateConflictDetailNavigationSucceeded")
+            ),
+            "forbiddenApplyActionSeen": bool(accessibility.get("forbiddenApplyActionSeen")),
             "pyatspiAvailable": bool(accessibility.get("pyatspiAvailable")),
         },
         "textSample": redact((accessibility.get("textAfterNavigation") or accessibility.get("text") or [])[:30]),
@@ -111,13 +123,15 @@ def aggregate(runs):
         "settingRow": proof(any_run(lambda run: "FirstBlockedSettingRow" in run["name"] and run["accessibility"]["navigationAttempted"]), fallback=True),
         "detailPane": proof(any_run(lambda run: run["accessibility"]["detailPaneTextCollected"])),
         "blockedReason": proof(any_run(lambda run: run["accessibility"]["blockedReasonTextCollected"])),
-        "duplicateBlockedCopy": proof(any_run(lambda run: run["scenario"] == "duplicate_conflict" and "duplicate" in all_terms(run)), fallback=True),
+        "duplicateBlockedCopy": proof(any_run(lambda run: run["scenario"] == "duplicate_conflict" and run["accessibility"]["duplicateBlockedReasonTextCollected"]), fallback=True),
         "generatedScriptSymlinkBlockedCopy": proof(any_run(lambda run: run["scenario"] in {"generated_config", "script_managed_config", "symlink_current_profile"} and any(term in all_terms(run) for term in ["generated", "script", "symlink"])), fallback=True),
         "highRiskDisplayRisk": proof(any_run(lambda run: run["scenario"] == "high_risk_display_risk" and ("display" in all_terms(run) or "high-risk" in all_terms(run))), fallback=True),
     }
 
     return {
         "appLaunchAttempted": bool(runs),
+        "appBuildAttempted": any_run(lambda run: run["probe"]["appBuildAttempted"]),
+        "appBuildSucceeded": all(run["probe"]["appBuildSucceeded"] for run in runs) if runs else False,
         "appLaunchSucceeded": any_run(lambda run: run["probe"]["appLaunchSucceeded"]),
         "appBinaryRebuiltBeforeProbe": all(run["probe"]["appBinaryRebuiltBeforeProbe"] for run in runs) if runs else False,
         "accessibilityInspectionAttempted": any_run(lambda run: run["accessibility"]["attempted"]),
@@ -125,6 +139,9 @@ def aggregate(runs):
         "uiTextTreeCollected": any_run(lambda run: bool(run["textSample"])),
         "navigationAttempted": any_run(lambda run: run["accessibility"]["navigationAttempted"]),
         "navigationSucceeded": any_run(lambda run: run["accessibility"]["navigationSucceeded"]),
+        "duplicateConflictDetailNavigationAttempted": any_run(lambda run: run["accessibility"]["duplicateConflictDetailNavigationAttempted"]),
+        "duplicateConflictDetailNavigationSucceeded": any_run(lambda run: run["accessibility"]["duplicateConflictDetailNavigationSucceeded"]),
+        "duplicateBlockedReasonTextCollected": any_run(lambda run: run["accessibility"]["duplicateBlockedReasonTextCollected"]),
         "closeSucceeded": all(run["probe"]["closeSucceeded"] for run in runs) if runs else False,
         "safeEnvModeUsed": all(run["probe"]["safeEnvModeUsed"] for run in runs) if runs else False,
         "liveSwapModeUsed": any_run(lambda run: run["probe"]["liveSwapModeUsed"]),
@@ -172,6 +189,8 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
         "screenshotsCommitted": False,
         "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
         "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
+        "appBuildAttempted": summary["appBuildAttempted"],
+        "appBuildSucceeded": summary["appBuildSucceeded"],
         "appLaunchAttempted": summary["appLaunchAttempted"],
         "appLaunchSucceeded": summary["appLaunchSucceeded"],
         "appBinaryRebuiltBeforeProbe": summary["appBinaryRebuiltBeforeProbe"],
@@ -180,6 +199,9 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
         "uiTextTreeCollected": summary["uiTextTreeCollected"],
         "navigationAttempted": summary["navigationAttempted"],
         "navigationSucceeded": summary["navigationSucceeded"],
+        "duplicateConflictDetailNavigationAttempted": summary["duplicateConflictDetailNavigationAttempted"],
+        "duplicateConflictDetailNavigationSucceeded": summary["duplicateConflictDetailNavigationSucceeded"],
+        "duplicateBlockedReasonTextCollected": summary["duplicateBlockedReasonTextCollected"],
         "closeAttempted": bool(runs),
         "closeSucceeded": summary["closeSucceeded"],
         "scenarioResults": runs,
@@ -241,6 +263,8 @@ def write_reports(reports_dir, evidence_root, evidence_summary, runs, summary):
             summary,
             runs,
             {
+                "appBuildAttempted": summary["appBuildAttempted"],
+                "appBuildSucceeded": summary["appBuildSucceeded"],
                 "appLaunchAttempted": summary["appLaunchAttempted"],
                 "appLaunchSucceeded": summary["appLaunchSucceeded"],
                 "appBinaryRebuiltBeforeProbe": summary["appBinaryRebuiltBeforeProbe"],
