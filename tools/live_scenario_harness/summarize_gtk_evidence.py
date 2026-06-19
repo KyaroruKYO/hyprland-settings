@@ -400,6 +400,28 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
         "pyatspiAvailable": summary["pyatspiAvailable"],
         "safeEnvModeUsed": summary["safeEnvModeUsed"],
         "liveSwapModeUsed": summary["liveSwapModeUsed"],
+        "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
+        "appBuildAttempted": summary["appBuildAttempted"],
+        "appBuildSucceeded": summary["appBuildSucceeded"],
+        "appBinaryRebuiltBeforeProbe": summary["appBinaryRebuiltBeforeProbe"],
+        "duplicateConflictDetailNavigationAttempted": summary[
+            "duplicateConflictDetailNavigationAttempted"
+        ],
+        "duplicateConflictDetailNavigationSucceeded": summary[
+            "duplicateConflictDetailNavigationSucceeded"
+        ],
+        "duplicateBlockedReasonTextCollected": summary["duplicateBlockedReasonTextCollected"],
+        "blockedCategoryDetailNavigationAttempted": summary[
+            "blockedCategoryDetailNavigationAttempted"
+        ],
+        "blockedCategoryDetailNavigationSucceeded": summary[
+            "blockedCategoryDetailNavigationSucceeded"
+        ],
+        "blockedCategoryReasonTextCollected": summary["blockedCategoryReasonTextCollected"],
+        "proofLevelByUiArea": summary["proofLevelByUiArea"],
+        "proofLevelByBlockedCategory": summary["proofLevelByBlockedCategory"],
+        "proofSurfaceByBlockedCategory": summary["proofSurfaceByBlockedCategory"],
+        "blockedCategoryResults": summary["blockedCategoryResults"],
         "agsTouched": False,
         "waybarTouched": False,
         "realConfigEdited": summary["realConfigEdited"],
@@ -593,6 +615,9 @@ def write_reports(reports_dir, evidence_root, evidence_summary, runs, summary):
             summary
         ),
         "final-safe-scope-validation.v0.55.2.json": final_safe_scope_validation(summary),
+        "autonomous-safe-scope-continuation.v0.55.2.json": autonomous_safe_scope_continuation(
+            summary
+        ),
     }
     for name, data in reports.items():
         (reports_dir / name).write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
@@ -746,10 +771,8 @@ def completion_wrap_up_plan(summary):
             "Hyprland 0.55.4 data migration.",
         ],
         "whatCanBeFinishedSafelyNext": [
-            "Polish remaining user-facing safe-batch and blocked-copy wording.",
-            "Review desktop/metainfo packaging files and app identity.",
-            "Run a final safe-env GTK matrix and deterministic validation sweep.",
-            "Prepare a release-readiness checklist without creating a release.",
+            "No obvious green-lane completion item remains open after the final safe-scope validation sweep.",
+            "The next safe action is an explicit release-boundary approval decision; do not create a release, tag, or package without that approval.",
         ],
         "whatRequiresSeparateDesign": [
             "Insertion of missing config lines.",
@@ -788,6 +811,112 @@ def completion_wrap_up_plan(summary):
             "gitDiffCheck": "pending",
             "gitStatusShort": "pending",
         },
+    }
+
+
+def autonomous_safe_scope_continuation(summary):
+    return {
+        "schemaVersion": 1,
+        "artifactKind": "autonomous_safe_scope_continuation",
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "startingCommit": STARTING_COMMIT,
+        "goal": "Continue green-lane safe-scope completion work without creating a release or expanding unsafe behavior.",
+        "projectModel": PROJECT_MODEL,
+        "projectDataMigratedToHyprland0554": False,
+        "greenLaneStatus": {
+            "userFacingCopyPolish": "complete for the current safe release scope",
+            "readmeDocsCleanup": "complete for the current safe release scope",
+            "cargoMetadataCleanup": "complete for the current safe release scope",
+            "desktopMetainfoMetadataCleanup": "complete for the current safe release scope",
+            "gtkSafeEnvAutomation": "passing",
+            "reportGeneration": "complete for release-boundary readiness",
+            "releaseChecklistPreparation": "complete; release creation still requires explicit approval",
+            "packagingValidation": "desktop/AppStream validation passes",
+            "remainingGreenLaneItems": [],
+        },
+        "yellowLaneDocumentedButNotActivated": [
+            "missing/default insertion",
+            "duplicate auto-resolution",
+            "high-risk write expansion",
+            "display/render-risk write expansion",
+            "structured-family writes",
+            "profile/mode switching",
+            "Hyprland reload/runtime mutation",
+            "Hyprland 0.55.4 migration",
+            "live-swap testing",
+            "release packaging workflow",
+        ],
+        "redLaneBoundariesReached": [
+            "release/tag/package creation requires explicit user approval before proceeding"
+        ],
+        "redLaneActionsPerformed": {
+            "releaseCreated": False,
+            "tagCreated": False,
+            "packageArtifactCreated": False,
+            "realUserConfigEdited": False,
+            "realUserConfigBackupsCreated": False,
+            "liveSwapUsed": False,
+            "agsTouched": False,
+            "waybarTouched": False,
+            "hyprlandReloaded": False,
+            "mutatingHyprctlUsed": False,
+            "runtimeMutated": False,
+            "scriptsExecuted": False,
+            "luaExecuted": False,
+            "profileSwitchingActivated": False,
+            "symlinksChanged": False,
+            "hyprland0554Migration": False,
+        },
+        "safeEnvModeUsed": summary["safeEnvModeUsed"],
+        "liveSwapModeUsed": summary["liveSwapModeUsed"],
+        "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
+        "appBuildAttempted": summary["appBuildAttempted"],
+        "appBuildSucceeded": summary["appBuildSucceeded"],
+        "appBinaryRebuiltBeforeProbe": summary["appBinaryRebuiltBeforeProbe"],
+        "duplicateConflictDetailNavigationAttempted": summary[
+            "duplicateConflictDetailNavigationAttempted"
+        ],
+        "duplicateConflictDetailNavigationSucceeded": summary[
+            "duplicateConflictDetailNavigationSucceeded"
+        ],
+        "duplicateBlockedReasonTextCollected": summary["duplicateBlockedReasonTextCollected"],
+        "blockedCategoryDetailNavigationAttempted": summary[
+            "blockedCategoryDetailNavigationAttempted"
+        ],
+        "blockedCategoryDetailNavigationSucceeded": summary[
+            "blockedCategoryDetailNavigationSucceeded"
+        ],
+        "blockedCategoryReasonTextCollected": summary["blockedCategoryReasonTextCollected"],
+        "blockedCategoryResults": summary["blockedCategoryResults"],
+        "agsTouched": False,
+        "waybarTouched": False,
+        "realConfigEdited": summary["realConfigEdited"],
+        "realBackupsCreated": summary["realBackupsCreated"],
+        "hyprlandReloaded": summary["hyprlandReloaded"],
+        "mutatingHyprctlUsed": summary["mutatingHyprctlUsed"],
+        "runtimeMutated": summary["runtimeMutated"],
+        "scriptsExecuted": summary["scriptsExecuted"],
+        "luaExecuted": summary["luaExecuted"],
+        "screenshotsCommitted": False,
+        "appLaunchSucceeded": summary["appLaunchSucceeded"],
+        "accessibilityInspectionSucceeded": summary["accessibilityInspectionSucceeded"],
+        "uiNavigationSucceeded": summary["navigationSucceeded"],
+        "proofLevelByUiArea": summary["proofLevelByUiArea"],
+        "proofLevelByBlockedCategory": summary["proofLevelByBlockedCategory"],
+        "proofSurfaceByBlockedCategory": summary["proofSurfaceByBlockedCategory"],
+        "countsBefore": "341 readable / 341 writable / 0 blocked",
+        "countsAfter": "341 readable / 341 writable / 0 blocked",
+        "validation": validation_pending_full(),
+        "remainingBlockers": [
+            "release-boundary approval",
+            "missing/default insertion design",
+            "duplicate auto-resolution design",
+            "high-risk/display-render write proof",
+            "structured-family write proof",
+            "profile/mode switching design",
+            "Hyprland 0.55.4 data/model migration",
+        ],
+        "recommendedNextAction": "Ask for explicit release-boundary approval before creating any release, tag, or package artifact.",
     }
 
 

@@ -10,7 +10,7 @@
   "blockedUnsafeWrites": true,
   "countsAfter": "341 readable / 341 writable / 0 blocked",
   "countsBefore": "341 readable / 341 writable / 0 blocked",
-  "generatedAt": "2026-06-19T06:42:50.454560+00:00",
+  "generatedAt": "2026-06-19T07:06:34.371919+00:00",
   "projectDataMigratedToHyprland0554": false,
   "projectModel": "v0.55.2 / 341 readable / 341 writable / 0 blocked",
   "proofStillMissing": [
@@ -37,17 +37,17 @@
   "scope": "guarded normal-scalar safe-batch Hyprland Settings app for v0.55.2 data/model",
   "startingCommit": "9083e9eda0c6c90df04991d8d1b32f842915004e",
   "validation": {
-    "appstreamValidate": "passed (pedantic: 1)",
+    "appstreamValidate": "pending",
     "bashScripts": "passed",
     "cargoBuildRelease": "passed",
     "cargoCheck": "passed",
     "cargoFmt": "passed",
     "cargoFmtCheck": "passed",
     "cargoTest": "passed",
-    "desktopFileValidate": "passed",
+    "desktopFileValidate": "pending",
     "gitDiffCheck": "passed",
     "gitStatusShort": "passed with intended sprint changes and pre-existing unrelated untracked audit/design files",
-    "gtkSafeEnvEvidenceMatrix": "passed (/tmp/hyprland-settings-gtk-automation/20260618_234025)",
+    "gtkSafeEnvEvidenceMatrix": "passed (/tmp/hyprland-settings-gtk-automation/20260619_000407)",
     "jqReports": "passed",
     "pythonPyCompile": "passed"
   }

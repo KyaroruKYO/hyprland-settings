@@ -117,6 +117,7 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
         "data/reports/gtk-safe-env-connected-file-detail-proof.v0.55.2.json",
         "data/reports/completion-readiness-audit.v0.55.2.json",
         "data/reports/final-app-completion-wrap-up.v0.55.2.json",
+        "data/reports/autonomous-safe-scope-continuation.v0.55.2.json",
     ];
     for path in report_paths {
         let text = fs::read_to_string(path).unwrap_or_else(|error| panic!("{path}: {error}"));
@@ -379,6 +380,10 @@ fn completion_readiness_reports_exist_and_preserve_safety_boundaries() {
     assert_eq!(wrap_up["realConfigEdited"], false);
     assert_eq!(wrap_up["hyprlandReloaded"], false);
     assert_eq!(wrap_up["mutatingHyprctlUsed"], false);
+    assert_eq!(
+        wrap_up["whatCanBeFinishedSafelyNext"][0],
+        "No obvious green-lane completion item remains open after the final safe-scope validation sweep."
+    );
 }
 
 #[test]
@@ -466,6 +471,55 @@ fn final_completion_reports_exist_and_validate_safe_scope() {
     assert_eq!(safe_scope["blockedRuntimeMutation"], true);
     assert_eq!(safe_scope["realConfigTouched"], false);
     assert_eq!(safe_scope["runtimeTouched"], false);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
+}
+
+#[test]
+fn autonomous_safe_scope_continuation_report_marks_green_lane_complete() {
+    let continuation: Value = serde_json::from_str(
+        &fs::read_to_string("data/reports/autonomous-safe-scope-continuation.v0.55.2.json")
+            .expect("autonomous continuation report should read"),
+    )
+    .expect("autonomous continuation report should parse");
+
+    assert_eq!(continuation["schemaVersion"], 1);
+    assert_eq!(
+        continuation["artifactKind"],
+        "autonomous_safe_scope_continuation"
+    );
+    assert_eq!(
+        continuation["projectModel"],
+        "v0.55.2 / 341 readable / 341 writable / 0 blocked"
+    );
+    assert_eq!(continuation["projectDataMigratedToHyprland0554"], false);
+    assert_eq!(
+        continuation["greenLaneStatus"]["remainingGreenLaneItems"]
+            .as_array()
+            .expect("remaining green-lane item list should exist")
+            .len(),
+        0
+    );
+    assert_eq!(
+        continuation["redLaneActionsPerformed"]["releaseCreated"],
+        false
+    );
+    assert_eq!(continuation["redLaneActionsPerformed"]["tagCreated"], false);
+    assert_eq!(
+        continuation["redLaneActionsPerformed"]["packageArtifactCreated"],
+        false
+    );
+    assert_eq!(
+        continuation["redLaneActionsPerformed"]["realUserConfigEdited"],
+        false
+    );
+    assert_eq!(
+        continuation["redLaneActionsPerformed"]["hyprland0554Migration"],
+        false
+    );
+    assert_eq!(
+        continuation["recommendedNextAction"],
+        "Ask for explicit release-boundary approval before creating any release, tag, or package artifact."
+    );
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 

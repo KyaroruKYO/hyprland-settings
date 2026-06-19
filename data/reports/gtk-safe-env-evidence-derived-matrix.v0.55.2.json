@@ -359,7 +359,7 @@
     },
     "artifactKind": "gtk_safe_env_redacted_evidence_summary",
     "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
-    "generatedAt": "2026-06-19T06:42:50.454104+00:00",
+    "generatedAt": "2026-06-19T07:06:34.371461+00:00",
     "proofLevelsAllowed": [
       "live_gtk_atspi_proof",
       "not_proven",
@@ -2626,7 +2626,7 @@
   },
   "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
   "fallbackProofUsed": false,
-  "generatedAt": "2026-06-19T06:42:50.454508+00:00",
+  "generatedAt": "2026-06-19T07:06:34.371866+00:00",
   "hyprlandReloaded": false,
   "installedHyprlandPackageVersion": "0.55.4-1",
   "issuesFound": [],
@@ -4982,7 +4982,7 @@
     "cargoTest": "passed",
     "gitDiffCheck": "passed",
     "gitStatusShort": "passed with intended sprint changes and pre-existing unrelated untracked audit/design files",
-    "gtkSafeEnvEvidenceMatrix": "passed (/tmp/hyprland-settings-gtk-automation/20260618_234025)",
+    "gtkSafeEnvEvidenceMatrix": "passed (/tmp/hyprland-settings-gtk-automation/20260619_000407)",
     "jqReports": "passed",
     "pythonPyCompile": "passed"
   },

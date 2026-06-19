@@ -203,7 +203,7 @@
   "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
   "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
   "fallbackProofUsed": false,
-  "generatedAt": "2026-06-19T06:42:50.454523+00:00",
+  "generatedAt": "2026-06-19T07:06:34.371881+00:00",
   "goal": "Prove connected-file and profile blocker detail surfaces through live GTK/AT-SPI safe-env automation.",
   "hyprlandReloaded": false,
   "installedHyprlandPackageVersion": "0.55.4-1",
@@ -2578,7 +2578,7 @@
     "cargoTest": "passed",
     "gitDiffCheck": "passed",
     "gitStatusShort": "passed with intended sprint changes and pre-existing unrelated untracked audit/design files",
-    "gtkSafeEnvEvidenceMatrix": "passed (/tmp/hyprland-settings-gtk-automation/20260618_234025)",
+    "gtkSafeEnvEvidenceMatrix": "passed (/tmp/hyprland-settings-gtk-automation/20260619_000407)",
     "jqReports": "passed",
     "pythonPyCompile": "passed"
   },

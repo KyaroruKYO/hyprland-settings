@@ -153,7 +153,7 @@
   "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
   "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
   "fallbackProofUsed": false,
-  "generatedAt": "2026-06-19T06:42:50.454515+00:00",
+  "generatedAt": "2026-06-19T07:06:34.371873+00:00",
   "goal": "Expand live GTK/AT-SPI row-detail proof across representative blocked categories.",
   "hyprlandReloaded": false,
   "installedHyprlandPackageVersion": "0.55.4-1",
@@ -2510,7 +2510,7 @@
     "cargoTest": "passed",
     "gitDiffCheck": "passed",
     "gitStatusShort": "passed with intended sprint changes and pre-existing unrelated untracked audit/design files",
-    "gtkSafeEnvEvidenceMatrix": "passed (/tmp/hyprland-settings-gtk-automation/20260618_234025)",
+    "gtkSafeEnvEvidenceMatrix": "passed (/tmp/hyprland-settings-gtk-automation/20260619_000407)",
     "jqReports": "passed",
     "pythonPyCompile": "passed"
   },
