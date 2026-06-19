@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "future-capability-phase-report",
+  "phase": "duplicate_resolution",
+  "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseStartingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseEndingCommit": null,
+  "goal": "Implement or design explicit duplicate occurrence selection without auto-resolution.",
+  "filesChanged": [
+    "tests/future_capability_marathon.rs",
+    "data/reports/future-capability-duplicate-resolution.v0.55.2.json"
+  ],
+  "implementationStatus": "design_only",
+  "whatWasImplemented": [
+    "Recorded manual occurrence selection as the only acceptable future resolution model.",
+    "Kept duplicate-conflict settings blocked in the active safe-batch path.",
+    "Added deterministic tests that assert duplicate blocked copy remains active."
+  ],
+  "whatWasNotImplemented": [
+    "No automatic duplicate choice was added.",
+    "No production duplicate write path was enabled.",
+    "No real config duplicate cleanup was attempted."
+  ],
+  "testsAdded": [
+    "tests/future_capability_marathon.rs"
+  ],
+  "reportsAdded": [
+    "data/reports/future-capability-duplicate-resolution.v0.55.2.json"
+  ],
+  "safetyBoundaries": {
+    "manualOccurrenceSelectionRequired": true,
+    "autoResolutionAllowed": false,
+    "sameFileDuplicateFixtureRequired": true,
+    "sourceLayerDuplicateFixtureRequired": true,
+    "productionDuplicateWritesEnabled": false
+  },
+  "validation": {
+    "phaseValidation": "pending batch validation"
+  },
+  "blockers": [
+    "Needs target occurrence data structure that carries file path, line number, raw line, and value.",
+    "Needs UI confirmation for the selected occurrence before any write is possible."
+  ],
+  "nextRecommendedWork": "Create read-only duplicate occurrence selector and fixture tests for same-file and source-layer duplicates.",
+  "whetherRealConfigTouched": false,
+  "whetherRuntimeTouched": false,
+  "whetherProductionBehaviorEnabled": false
+}

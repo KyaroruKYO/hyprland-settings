@@ -1,0 +1,96 @@
+use std::fs;
+
+use hyprland_settings::safe_batch_write::{
+    safe_batch_write_user_facing_lines, SafeBatchEligibility,
+};
+use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
+
+fn read_json(path: &str) -> serde_json::Value {
+    serde_json::from_slice(&fs::read(path).expect("report should exist"))
+        .expect("report should parse")
+}
+
+#[test]
+fn future_capability_reports_exist_and_keep_production_disabled() {
+    let reports = [
+        "data/reports/future-capability-missing-default-insertion.v0.55.2.json",
+        "data/reports/future-capability-duplicate-resolution.v0.55.2.json",
+        "data/reports/future-capability-high-risk-recovery.v0.55.2.json",
+        "data/reports/future-capability-structured-families.v0.55.2.json",
+        "data/reports/future-capability-profile-mode-switching.v0.55.2.json",
+        "data/reports/future-capability-runtime-reload.v0.55.2.json",
+        "data/reports/future-capability-hyprland-0554-migration.json",
+    ];
+
+    for report_path in reports {
+        let report = read_json(report_path);
+        assert_eq!(
+            report["startingCommit"],
+            "895b67281f7551789e5b4a07c0ea849db1eab622"
+        );
+        assert_eq!(report["whetherRealConfigTouched"], false);
+        assert_eq!(report["whetherRuntimeTouched"], false);
+        assert_eq!(report["whetherProductionBehaviorEnabled"], false);
+        assert_ne!(report["implementationStatus"], "implemented_and_enabled");
+    }
+}
+
+#[test]
+fn marathon_summary_attempts_all_tracks_and_preserves_release_scope() {
+    let summary = read_json("data/reports/future-capability-marathon-summary.v0.55.2.json");
+    assert_eq!(summary["branch"], "future-capability-marathon");
+    assert_eq!(
+        summary["startingCommit"],
+        "895b67281f7551789e5b4a07c0ea849db1eab622"
+    );
+    assert_eq!(summary["safeReleaseScopePreserved"], true);
+    assert_eq!(summary["v0552ModelPreserved"], true);
+    assert_eq!(summary["hyprland0554MigrationActivated"], false);
+    assert_eq!(summary["unsafeProductionBehaviorEnabled"], false);
+    assert_eq!(summary["distV010Modified"], false);
+
+    let phases = summary["phasesAttempted"]
+        .as_array()
+        .expect("phasesAttempted should be an array");
+    assert_eq!(phases.len(), 7);
+}
+
+#[test]
+fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
+    let handoff = read_json("data/reports/future-capability-marathon-handoff.v0.55.2.json");
+    assert_eq!(handoff["currentBranch"], "future-capability-marathon");
+    assert_eq!(handoff["runtimeTouched"], false);
+    assert_eq!(handoff["realConfigTouched"], false);
+    assert_eq!(
+        handoff["nextExactPhaseToContinue"],
+        "missing/default insertion disabled UI review or duplicate occurrence selector"
+    );
+    assert!(handoff["recommendedNextCodexPrompt"]
+        .as_str()
+        .expect("prompt should be text")
+        .contains("production insertion and duplicate writes blocked"));
+}
+
+#[test]
+fn active_safe_batch_copy_still_blocks_future_tracks() {
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
+    assert!(safe_batch_write_user_facing_lines()
+        .iter()
+        .any(|line| line.contains("Safe batch write")));
+    assert_eq!(
+        SafeBatchEligibility::BlockedMissingLine.user_facing_blocked_copy(),
+        "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+    );
+    assert!(SafeBatchEligibility::BlockedDuplicateConflict
+        .user_facing_blocked_copy()
+        .contains("appears in more than one place"));
+    assert!(SafeBatchEligibility::BlockedHighRisk
+        .user_facing_blocked_copy()
+        .contains("family-specific recovery path"));
+    assert!(SafeBatchEligibility::BlockedStructuredFamily
+        .user_facing_blocked_copy()
+        .contains("structured settings are not part"));
+    assert!(SafeBatchEligibility::BlockedProfileModeSwitch
+        .user_facing_blocked_copy()
+        .contains("profile and mode switching"));
+}

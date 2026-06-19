@@ -18,6 +18,7 @@ pub mod high_risk_production_gate;
 pub mod high_risk_recovery;
 pub mod live_validation;
 pub mod metadata;
+pub mod missing_default_insertion;
 pub mod monitor_name_oracle;
 pub mod one_target_pilot_backup_gate_approval;
 pub mod one_target_pilot_backup_gate_review;

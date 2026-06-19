@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "future-capability-phase-report",
+  "phase": "runtime_reload",
+  "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseStartingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseEndingCommit": null,
+  "goal": "Design or implement a safe runtime action boundary.",
+  "filesChanged": [
+    "tests/future_capability_marathon.rs",
+    "data/reports/future-capability-runtime-reload.v0.55.2.json"
+  ],
+  "implementationStatus": "design_only",
+  "whatWasImplemented": [
+    "Recorded dry-run runtime adapter as the acceptable next architecture.",
+    "Kept real reload and mutating hyprctl outside active Apply behavior."
+  ],
+  "whatWasNotImplemented": [
+    "No real hyprctl keyword, dispatch, reload, or runtime mutation path was added.",
+    "No production runtime adapter was enabled."
+  ],
+  "testsAdded": [
+    "tests/future_capability_marathon.rs"
+  ],
+  "reportsAdded": [
+    "data/reports/future-capability-runtime-reload.v0.55.2.json"
+  ],
+  "safetyBoundaries": {
+    "dryRunRuntimeInterfaceAllowed": true,
+    "readOnlyStatusChecksAllowed": true,
+    "mutatingHyprctlAllowed": false,
+    "hyprlandReloadAllowed": false
+  },
+  "validation": {
+    "phaseValidation": "pending batch validation"
+  },
+  "blockers": [
+    "Needs a command allowlist model and dry-run tests before any runtime adapter can be activated.",
+    "Production reload requires separate approval and recovery proof."
+  ],
+  "nextRecommendedWork": "Implement a mock runtime command adapter and tests proving no real command execution.",
+  "whetherRealConfigTouched": false,
+  "whetherRuntimeTouched": false,
+  "whetherProductionBehaviorEnabled": false
+}

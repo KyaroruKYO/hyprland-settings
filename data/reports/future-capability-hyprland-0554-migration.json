@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "future-capability-phase-report",
+  "phase": "hyprland_0554_migration",
+  "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseStartingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseEndingCommit": null,
+  "goal": "Assess and prepare migration to 0.55.4 without silently changing the release model.",
+  "filesChanged": [
+    "tests/future_capability_marathon.rs",
+    "data/reports/future-capability-hyprland-0554-migration.json"
+  ],
+  "implementationStatus": "blocked_requires_external_research",
+  "whatWasImplemented": [
+    "Recorded that the app remains pinned to v0.55.2 data/model.",
+    "Recorded 0.55.4 migration as inactive until trusted export/source proof exists."
+  ],
+  "whatWasNotImplemented": [
+    "No v0.55.2 exports were replaced.",
+    "No v0.55.4 support claim was added.",
+    "No release metadata was changed."
+  ],
+  "testsAdded": [
+    "tests/future_capability_marathon.rs"
+  ],
+  "reportsAdded": [
+    "data/reports/future-capability-hyprland-0554-migration.json"
+  ],
+  "safetyBoundaries": {
+    "readOnlyVersionAssessmentAllowed": true,
+    "dataModelMigrationAllowed": false,
+    "releaseMetadataMigrationAllowed": false,
+    "safeWritableRowsChanged": false
+  },
+  "validation": {
+    "phaseValidation": "pending batch validation"
+  },
+  "blockers": [
+    "Needs trusted v0.55.4 source/export data and comparison tests.",
+    "Needs versioned data loading tests before changing the default app model."
+  ],
+  "nextRecommendedWork": "Create a disabled migration comparison scaffold that can load v0.55.2 and future v0.55.4 bundles side by side.",
+  "whetherRealConfigTouched": false,
+  "whetherRuntimeTouched": false,
+  "whetherProductionBehaviorEnabled": false
+}

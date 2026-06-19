@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "future-capability-marathon-summary",
+  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "goal": "Attempt all remaining future capability tracks without activating unsafe production behavior.",
+  "safeReleaseScopePreserved": true,
+  "v0552ModelPreserved": true,
+  "countsBefore": "341 readable / 341 writable / 0 blocked",
+  "countsAfter": "341 readable / 341 writable / 0 blocked",
+  "distV010Modified": false,
+  "v010TagModified": false,
+  "hyprland0554MigrationActivated": false,
+  "unsafeProductionBehaviorEnabled": false,
+  "realConfigTouched": false,
+  "runtimeTouched": false,
+  "phasesAttempted": [
+    "missing_default_insertion",
+    "duplicate_resolution",
+    "high_risk_display_render_recovery",
+    "structured_families",
+    "profile_mode_switching",
+    "runtime_reload",
+    "hyprland_0554_migration"
+  ],
+  "phasesCompleted": [
+    "missing_default_insertion_safe_env_proof"
+  ],
+  "phasesPartiallyCompleted": [
+    "duplicate_resolution",
+    "high_risk_display_render_recovery",
+    "structured_families",
+    "profile_mode_switching",
+    "runtime_reload",
+    "hyprland_0554_migration"
+  ],
+  "phasesBlocked": [
+    "high_risk_display_render_recovery",
+    "hyprland_0554_migration"
+  ],
+  "reportsCreated": [
+    "data/reports/future-capability-missing-default-insertion.v0.55.2.json",
+    "data/reports/future-capability-duplicate-resolution.v0.55.2.json",
+    "data/reports/future-capability-high-risk-recovery.v0.55.2.json",
+    "data/reports/future-capability-structured-families.v0.55.2.json",
+    "data/reports/future-capability-profile-mode-switching.v0.55.2.json",
+    "data/reports/future-capability-runtime-reload.v0.55.2.json",
+    "data/reports/future-capability-hyprland-0554-migration.json",
+    "data/reports/future-capability-marathon-summary.v0.55.2.json",
+    "data/reports/future-capability-marathon-handoff.v0.55.2.json"
+  ],
+  "testsAdded": [
+    "tests/future_capability_marathon.rs",
+    "tests/missing_default_insertion.rs"
+  ],
+  "validation": {
+    "status": "pending batch validation"
+  },
+  "nextRecommendedAction": "Continue with safe-env missing/default insertion implementation and keep production insertion disabled."
+}

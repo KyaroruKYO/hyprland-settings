@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "future-capability-phase-report",
+  "phase": "missing_default_insertion",
+  "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseStartingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseEndingCommit": null,
+  "goal": "Implement or design safe insertion for eligible normal scalar settings that currently use Hyprland defaults.",
+  "filesChanged": [
+    "tests/future_capability_marathon.rs",
+    "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
+    "docs/FUTURE-CAPABILITY-MARATHON-HANDOFF.md",
+    "src/lib.rs",
+    "src/missing_default_insertion.rs",
+    "tests/missing_default_insertion.rs",
+    "data/reports/future-capability-missing-default-insertion.v0.55.2.json"
+  ],
+  "implementationStatus": "safe_env_only",
+  "whatWasImplemented": [
+    "Documented the safe insertion constraints for normal scalar settings only.",
+    "Added a safe-env-only missing/default insertion planner and executor.",
+    "The executor creates a backup, verifies backup bytes, appends a deterministic Hyprland Settings section, rereads the file, verifies the inserted value, and restores on forced write or verification failure.",
+    "Kept active safe-batch missing/default behavior blocked.",
+    "Added deterministic tests that assert missing/default insertion remains blocked in active copy."
+  ],
+  "whatWasNotImplemented": [
+    "No production insertion executor was enabled.",
+    "No real config insertion was attempted.",
+    "No UI control for insertion target selection was activated."
+  ],
+  "testsAdded": [
+    "tests/future_capability_marathon.rs",
+    "tests/missing_default_insertion.rs"
+  ],
+  "reportsAdded": [
+    "data/reports/future-capability-missing-default-insertion.v0.55.2.json"
+  ],
+  "safetyBoundaries": {
+    "allowedTarget": "future fixture-only normal scalar insertion planner",
+    "requiresExplicitTargetFile": true,
+    "requiresBackupBeforeInsertion": true,
+    "requiresRereadVerification": true,
+    "requiresRestoreOnFailure": true,
+    "safeEnvExecutorImplemented": true,
+    "productionInsertionEnabled": false,
+    "realConfigWritesAllowed": false
+  },
+  "validation": {
+    "phaseValidation": "pending batch validation"
+  },
+  "blockers": [
+    "Needs UI confirmation for production target selection.",
+    "Needs review before wiring insertion to Apply."
+  ],
+  "nextRecommendedWork": "Add disabled UI scaffolding for insertion target review, then review whether the safe-env executor can become a gated production path.",
+  "whetherRealConfigTouched": false,
+  "whetherRuntimeTouched": false,
+  "whetherProductionBehaviorEnabled": false
+}

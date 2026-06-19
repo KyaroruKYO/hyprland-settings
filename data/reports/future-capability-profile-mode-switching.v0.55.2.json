@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "future-capability-phase-report",
+  "phase": "profile_mode_switching",
+  "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseStartingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseEndingCommit": null,
+  "goal": "Implement safe design/scaffolding or safe-env-only profile switching proof.",
+  "filesChanged": [
+    "tests/future_capability_marathon.rs",
+    "data/reports/future-capability-profile-mode-switching.v0.55.2.json"
+  ],
+  "implementationStatus": "design_only",
+  "whatWasImplemented": [
+    "Recorded that real profile/mode switching remains disabled.",
+    "Kept profile/mode safe-batch blocking asserted by deterministic tests.",
+    "Defined safe-env symlink/profile switching as the next acceptable proof path."
+  ],
+  "whatWasNotImplemented": [
+    "No real symlink was switched.",
+    "No real mode script was run.",
+    "No profile switching UI control was activated."
+  ],
+  "testsAdded": [
+    "tests/future_capability_marathon.rs"
+  ],
+  "reportsAdded": [
+    "data/reports/future-capability-profile-mode-switching.v0.55.2.json"
+  ],
+  "safetyBoundaries": {
+    "safeEnvProfileFixturesAllowed": true,
+    "realProfileSwitchingAllowed": false,
+    "realSymlinkSwitchingAllowed": false,
+    "reloadAfterSwitchAllowed": false
+  },
+  "validation": {
+    "phaseValidation": "pending batch validation"
+  },
+  "blockers": [
+    "Needs backup/restore model for symlink targets and profile files.",
+    "Needs explicit user approval before any real session profile switch."
+  ],
+  "nextRecommendedWork": "Build safe-env profile fixture switching proof with traps and restore verification, production disabled.",
+  "whetherRealConfigTouched": false,
+  "whetherRuntimeTouched": false,
+  "whetherProductionBehaviorEnabled": false
+}
