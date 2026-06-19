@@ -7,12 +7,16 @@
   "phaseEndingCommit": null,
   "goal": "Design or implement a safe runtime action boundary.",
   "filesChanged": [
+    "src/future_capability.rs",
+    "tests/future_capability_models.rs",
     "tests/future_capability_marathon.rs",
     "data/reports/future-capability-runtime-reload.v0.55.2.json"
   ],
-  "implementationStatus": "design_only",
+  "implementationStatus": "implemented_but_disabled",
   "whatWasImplemented": [
-    "Recorded dry-run runtime adapter as the acceptable next architecture.",
+    "Added a dry-run runtime action boundary with reload, keyword, dispatch, and status action types.",
+    "Added a mock executor that records intent and never executes real commands.",
+    "Added tests proving mutating runtime actions remain dry-run only.",
     "Kept real reload and mutating hyprctl outside active Apply behavior."
   ],
   "whatWasNotImplemented": [
@@ -20,6 +24,7 @@
     "No production runtime adapter was enabled."
   ],
   "testsAdded": [
+    "tests/future_capability_models.rs",
     "tests/future_capability_marathon.rs"
   ],
   "reportsAdded": [
@@ -27,6 +32,7 @@
   ],
   "safetyBoundaries": {
     "dryRunRuntimeInterfaceAllowed": true,
+    "dryRunRuntimeAdapterExists": true,
     "readOnlyStatusChecksAllowed": true,
     "mutatingHyprctlAllowed": false,
     "hyprlandReloadAllowed": false
@@ -35,10 +41,10 @@
     "phaseValidation": "pending batch validation"
   },
   "blockers": [
-    "Needs a command allowlist model and dry-run tests before any runtime adapter can be activated.",
+    "Needs a production command approval model before any runtime adapter can be activated.",
     "Production reload requires separate approval and recovery proof."
   ],
-  "nextRecommendedWork": "Implement a mock runtime command adapter and tests proving no real command execution.",
+  "nextRecommendedWork": "Connect the dry-run runtime boundary to disabled UI copy and define command approval requirements.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

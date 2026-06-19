@@ -7,12 +7,17 @@
   "phaseEndingCommit": null,
   "goal": "Implement or design explicit duplicate occurrence selection without auto-resolution.",
   "filesChanged": [
+    "src/future_capability.rs",
+    "tests/future_capability_models.rs",
     "tests/future_capability_marathon.rs",
     "data/reports/future-capability-duplicate-resolution.v0.55.2.json"
   ],
-  "implementationStatus": "design_only",
+  "implementationStatus": "safe_env_only",
   "whatWasImplemented": [
-    "Recorded manual occurrence selection as the only acceptable future resolution model.",
+    "Added a read-only duplicate occurrence model carrying file path, line number, raw line, raw value, and source depth.",
+    "Added a disabled manual occurrence selector scaffold with production_write_enabled=false.",
+    "Added safe-env duplicate occurrence replacement proof for exact selected line replacement.",
+    "Added backup byte-equality, reread verification, and restore-on-failure proof for fixture duplicate replacement.",
     "Kept duplicate-conflict settings blocked in the active safe-batch path.",
     "Added deterministic tests that assert duplicate blocked copy remains active."
   ],
@@ -22,6 +27,7 @@
     "No real config duplicate cleanup was attempted."
   ],
   "testsAdded": [
+    "tests/future_capability_models.rs",
     "tests/future_capability_marathon.rs"
   ],
   "reportsAdded": [
@@ -30,18 +36,18 @@
   "safetyBoundaries": {
     "manualOccurrenceSelectionRequired": true,
     "autoResolutionAllowed": false,
-    "sameFileDuplicateFixtureRequired": true,
-    "sourceLayerDuplicateFixtureRequired": true,
+    "sameFileDuplicateFixtureProofExists": true,
+    "sourceLayerDuplicateModelProofExists": true,
     "productionDuplicateWritesEnabled": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"
   },
   "blockers": [
-    "Needs target occurrence data structure that carries file path, line number, raw line, and value.",
-    "Needs UI confirmation for the selected occurrence before any write is possible."
+    "Needs production UI confirmation for the selected occurrence before any write is possible.",
+    "Needs explicit approval before safe-env duplicate replacement can be wired to Apply."
   ],
-  "nextRecommendedWork": "Create read-only duplicate occurrence selector and fixture tests for same-file and source-layer duplicates.",
+  "nextRecommendedWork": "Add disabled duplicate occurrence selector UI and keep Apply blocked until manual occurrence confirmation is reviewed.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

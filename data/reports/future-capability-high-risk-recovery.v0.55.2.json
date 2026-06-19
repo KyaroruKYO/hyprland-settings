@@ -7,11 +7,15 @@
   "phaseEndingCommit": null,
   "goal": "Build recovery/watchdog proof or design enough of it to enable future approval.",
   "filesChanged": [
+    "src/future_capability.rs",
+    "tests/future_capability_models.rs",
     "tests/future_capability_marathon.rs",
     "data/reports/future-capability-high-risk-recovery.v0.55.2.json"
   ],
-  "implementationStatus": "blocked_requires_user_approval",
+  "implementationStatus": "safe_env_only",
   "whatWasImplemented": [
+    "Added a mock watchdog/recovery state machine with pending, confirmed, timeout, revert, and recovery-failure states.",
+    "Added deterministic tests for confirmation, timeout revert, and timeout recovery failure.",
     "Recorded that high-risk/display-render production writes remain blocked.",
     "Preserved family-specific recovery requirement language through active blocked copy tests.",
     "Referenced existing high-risk family architecture as the current non-live proof basis."
@@ -22,6 +26,7 @@
     "No live watchdog experiment was run."
   ],
   "testsAdded": [
+    "tests/future_capability_models.rs",
     "tests/future_capability_marathon.rs"
   ],
   "reportsAdded": [
@@ -40,7 +45,7 @@
     "Production high-risk writes require explicit user approval and live recovery proof.",
     "Display/render failures need out-of-band rollback proof before activation."
   ],
-  "nextRecommendedWork": "Add a mock watchdog state machine and fixture tests for confirm-or-revert behavior before any production gate discussion.",
+  "nextRecommendedWork": "Connect the mock state machine to disabled high-risk review UI, then define the live recovery proof required for approval.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

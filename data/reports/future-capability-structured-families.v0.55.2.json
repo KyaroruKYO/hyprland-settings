@@ -7,12 +7,16 @@
   "phaseEndingCommit": null,
   "goal": "Create the next realistic structured-family architecture and implement the safest subset possible.",
   "filesChanged": [
+    "src/future_capability.rs",
+    "tests/future_capability_models.rs",
     "tests/future_capability_marathon.rs",
     "data/reports/future-capability-structured-families.v0.55.2.json"
   ],
-  "implementationStatus": "design_only",
+  "implementationStatus": "implemented_but_disabled",
   "whatWasImplemented": [
-    "Recorded structured-family write expansion as disabled.",
+    "Added a read-only structured-family model for preserved raw structured records.",
+    "Added disabled editor scaffold fields for hl.bind and other structured families.",
+    "Added fixture parser/model tests for key binding entries.",
     "Kept active safe-batch structured-family copy blocked.",
     "Identified read-only parser/display work as the safest next subset."
   ],
@@ -21,6 +25,7 @@
     "No real structured config mutation was attempted."
   ],
   "testsAdded": [
+    "tests/future_capability_models.rs",
     "tests/future_capability_marathon.rs"
   ],
   "reportsAdded": [
@@ -38,7 +43,7 @@
     "Structured records need lossless parse/edit/render proof before writes.",
     "Each family needs preservation tests for comments, ordering, repeated records, and invalid input rejection."
   ],
-  "nextRecommendedWork": "Start with read-only structured family inventory and disabled editor scaffolding for one family.",
+  "nextRecommendedWork": "Add lossless render tests for one structured family before considering any safe-env write proof.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

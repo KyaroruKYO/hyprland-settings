@@ -25,18 +25,22 @@
     "hyprland_0554_migration"
   ],
   "phasesCompleted": [
-    "missing_default_insertion_safe_env_proof"
+    "missing_default_insertion_safe_env_proof",
+    "duplicate_occurrence_model_and_safe_env_replacement_proof",
+    "mock_high_risk_watchdog_state_machine",
+    "structured_family_read_only_editor_scaffold",
+    "profile_mode_safe_env_symlink_switch_proof",
+    "runtime_dry_run_boundary",
+    "hyprland_0554_disabled_migration_assessment"
   ],
-  "phasesPartiallyCompleted": [
-    "duplicate_resolution",
-    "high_risk_display_render_recovery",
-    "structured_families",
-    "profile_mode_switching",
-    "runtime_reload",
-    "hyprland_0554_migration"
-  ],
+  "phasesPartiallyCompleted": [],
   "phasesBlocked": [
+    "production_missing_default_insertion",
+    "production_duplicate_resolution",
     "high_risk_display_render_recovery",
+    "production_structured_family_writes",
+    "real_profile_mode_switching",
+    "real_runtime_reload",
     "hyprland_0554_migration"
   ],
   "reportsCreated": [
@@ -52,10 +56,11 @@
   ],
   "testsAdded": [
     "tests/future_capability_marathon.rs",
-    "tests/missing_default_insertion.rs"
+    "tests/missing_default_insertion.rs",
+    "tests/future_capability_models.rs"
   ],
   "validation": {
     "status": "pending batch validation"
   },
-  "nextRecommendedAction": "Continue with safe-env missing/default insertion implementation and keep production insertion disabled."
+  "nextRecommendedAction": "Wire disabled UI scaffolds to the new future_capability models, starting with duplicate occurrence selector and insertion review; keep all production writes blocked."
 }

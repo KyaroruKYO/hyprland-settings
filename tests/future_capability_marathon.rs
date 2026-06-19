@@ -53,6 +53,16 @@ fn marathon_summary_attempts_all_tracks_and_preserves_release_scope() {
         .as_array()
         .expect("phasesAttempted should be an array");
     assert_eq!(phases.len(), 7);
+    assert!(summary["phasesCompleted"]
+        .as_array()
+        .expect("phasesCompleted should be an array")
+        .iter()
+        .any(|phase| phase == "runtime_dry_run_boundary"));
+    assert!(summary["phasesBlocked"]
+        .as_array()
+        .expect("phasesBlocked should be an array")
+        .iter()
+        .any(|phase| phase == "production_duplicate_resolution"));
 }
 
 #[test]
@@ -63,12 +73,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "missing/default insertion disabled UI review or duplicate occurrence selector"
+        "wire disabled duplicate occurrence selector UI to the read-only occurrence model"
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("production insertion and duplicate writes blocked"));
+        .contains("production insertion, duplicate writes, runtime actions"));
 }
 
 #[test]

@@ -7,11 +7,15 @@
   "phaseEndingCommit": null,
   "goal": "Implement safe design/scaffolding or safe-env-only profile switching proof.",
   "filesChanged": [
+    "src/future_capability.rs",
+    "tests/future_capability_models.rs",
     "tests/future_capability_marathon.rs",
     "data/reports/future-capability-profile-mode-switching.v0.55.2.json"
   ],
-  "implementationStatus": "design_only",
+  "implementationStatus": "safe_env_only",
   "whatWasImplemented": [
+    "Added safe-env-only profile symlink switching proof for temporary profile fixtures.",
+    "Added restore verification for temp symlink switching.",
     "Recorded that real profile/mode switching remains disabled.",
     "Kept profile/mode safe-batch blocking asserted by deterministic tests.",
     "Defined safe-env symlink/profile switching as the next acceptable proof path."
@@ -22,6 +26,7 @@
     "No profile switching UI control was activated."
   ],
   "testsAdded": [
+    "tests/future_capability_models.rs",
     "tests/future_capability_marathon.rs"
   ],
   "reportsAdded": [
@@ -40,7 +45,7 @@
     "Needs backup/restore model for symlink targets and profile files.",
     "Needs explicit user approval before any real session profile switch."
   ],
-  "nextRecommendedWork": "Build safe-env profile fixture switching proof with traps and restore verification, production disabled.",
+  "nextRecommendedWork": "Add disabled profile switching UI around the safe-env proof, then define approval requirements for real profile switching.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

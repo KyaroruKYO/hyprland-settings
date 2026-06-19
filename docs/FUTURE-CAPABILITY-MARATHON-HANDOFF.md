@@ -11,14 +11,20 @@
 
 ## Completed phases
 - All seven future capability tracks were reviewed and recorded.
-- Missing/default insertion received safe-env-only planner/executor proof.
+- Missing/default insertion received safe-env-only planner/executor proof plus disabled production review scaffolding.
+- Duplicate resolution received a read-only occurrence model and safe-env exact-line replacement proof.
+- High-risk/display recovery received a mock watchdog state machine.
+- Structured families received read-only disabled editor scaffolding for raw structured entries.
+- Profile/mode switching received safe-env-only temp symlink switch/restore proof.
+- Runtime/reload received a dry-run action boundary and mock executor.
+- Hyprland 0.55.4 migration received disabled assessment scaffolding.
 - No production write expansion was enabled.
-- Deterministic tests were added to enforce report presence and disabled production status.
+- Deterministic tests were added for each concrete safe-env/mock model and disabled production status.
 
 ## Partial phases
 - Missing/default insertion has safe-env-only append-section insertion with backup, reread verification, and restore-on-failure.
-- Duplicate resolution has a manual occurrence-selection design but no active write path.
-- Runtime/reload and high-risk recovery have dry-run/watchdog designs only.
+- Duplicate resolution has no production write path despite safe-env exact-line proof.
+- Runtime/reload and high-risk recovery remain mock/dry-run only.
 
 ## Blocked phases
 - High-risk/display-render production writes require live recovery proof and explicit approval.
@@ -26,10 +32,10 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact phase to continue
-missing/default insertion disabled UI review or duplicate occurrence selector
+wire disabled duplicate occurrence selector UI to the read-only occurrence model
 
 ## Validation status
 Run `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `jq empty data/reports/*.json`, and `git diff --check` after this handoff is committed.
 
 ## Recommended next Codex prompt
-Continue on `future-capability-marathon` with disabled missing/default insertion UI review or duplicate occurrence selector; keep production insertion and duplicate writes blocked, and do not touch real config or runtime.
+Continue on `future-capability-marathon` by wiring disabled duplicate occurrence selector UI to the read-only occurrence model; keep production insertion, duplicate writes, runtime actions, profile switching, and 0.55.4 migration blocked.

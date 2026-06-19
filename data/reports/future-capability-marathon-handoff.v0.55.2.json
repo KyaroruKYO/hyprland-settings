@@ -5,17 +5,24 @@
   "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
   "latestCommit": null,
   "completedPhases": [
-    "missing_default_insertion_safe_env_proof"
+    "missing_default_insertion_safe_env_proof",
+    "duplicate_occurrence_model_and_safe_env_replacement_proof",
+    "mock_high_risk_watchdog_state_machine",
+    "structured_family_read_only_editor_scaffold",
+    "profile_mode_safe_env_symlink_switch_proof",
+    "runtime_dry_run_boundary",
+    "hyprland_0554_disabled_migration_assessment"
   ],
-  "partialPhases": [
-    "duplicate_resolution",
-    "high_risk_display_render_recovery",
-    "structured_families",
-    "profile_mode_switching",
-    "runtime_reload",
-    "hyprland_0554_migration"
-  ],
+  "partialPhases": [],
   "blockedPhases": [
+    {
+      "phase": "production_missing_default_insertion",
+      "reason": "requires production target-selection approval and UI gate before Apply can insert missing lines"
+    },
+    {
+      "phase": "production_duplicate_resolution",
+      "reason": "requires disabled selector UI review before safe-env replacement proof can be wired to Apply"
+    },
     {
       "phase": "high_risk_display_render_recovery",
       "reason": "requires explicit approval and live recovery proof before production writes"
@@ -25,23 +32,25 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "missing/default insertion disabled UI review or duplicate occurrence selector",
+  "nextExactPhaseToContinue": "wire disabled duplicate occurrence selector UI to the read-only occurrence model",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
     "docs/FUTURE-CAPABILITY-MARATHON-HANDOFF.md",
     "src/missing_default_insertion.rs",
+    "src/future_capability.rs",
     "tests/missing_default_insertion.rs",
+    "tests/future_capability_models.rs",
     "data/reports/future-capability-*.json"
   ],
   "testsPassing": null,
   "testsFailing": null,
   "validationStatus": "pending batch validation",
   "knownRisks": [
-    "Production insertion, duplicate resolution, structured writes, profile switching, runtime reload, and high-risk writes remain intentionally inactive.",
+    "Production insertion, duplicate resolution, structured writes, profile switching, runtime reload, and high-risk writes remain intentionally inactive despite safe-env/mock scaffolding.",
     "Hyprland 0.55.4 migration is not activated."
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "Continue on future-capability-marathon with disabled missing/default insertion UI review or duplicate occurrence selector; keep production insertion and duplicate writes blocked, and do not touch real config or runtime."
+  "recommendedNextCodexPrompt": "Continue on future-capability-marathon by wiring disabled duplicate occurrence selector UI to the read-only occurrence model; keep production insertion, duplicate writes, runtime actions, profile switching, and 0.55.4 migration blocked."
 }

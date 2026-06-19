@@ -11,6 +11,7 @@ pub mod cursor_default_monitor_oracle;
 pub mod cursor_input_boundary;
 pub mod display_render_boundary;
 pub mod export;
+pub mod future_capability;
 pub mod guarded_write_review;
 pub mod high_risk_family;
 pub mod high_risk_persisted_recovery;

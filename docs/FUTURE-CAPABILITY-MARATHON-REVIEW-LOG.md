@@ -12,13 +12,13 @@
 - Unsafe production behavior enabled: no
 
 ## Phase results
-- Missing/default insertion: safe-env-only planner/executor proof added; production remains blocked.
-- Duplicate setting resolution: design-only manual occurrence selection plan; production remains blocked.
-- High-risk/display-render recovery: design-only watchdog/recovery architecture; real writes remain blocked.
-- Structured-family editors/writes: design-only family matrix and low-risk parser/display path; writes remain blocked.
-- Profile/mode switching: design-only plus safe-env symlink/profile proof plan; real switching remains blocked.
-- Runtime mutation/reload: design-only dry-run adapter boundary; real reload and mutating hyprctl remain blocked.
-- Hyprland 0.55.4 migration: assessment-only; app still defaults to v0.55.2 data/model.
+- Missing/default insertion: safe-env-only planner/executor proof plus disabled production review scaffolding added; production remains blocked.
+- Duplicate setting resolution: read-only occurrence model plus safe-env exact-line replacement proof added; production remains blocked.
+- High-risk/display-render recovery: mock watchdog/recovery state machine added; real writes remain blocked.
+- Structured-family editors/writes: read-only disabled editor scaffold added for raw structured entries; writes remain blocked.
+- Profile/mode switching: safe-env temp symlink switch/restore proof added; real switching remains blocked.
+- Runtime mutation/reload: dry-run action boundary and mock executor added; real reload and mutating hyprctl remain blocked.
+- Hyprland 0.55.4 migration: disabled assessment scaffold added; app still defaults to v0.55.2 data/model.
 
 ## Safety
 - Real user config edited: no
@@ -38,4 +38,4 @@
 - git diff --check: pending this branch validation
 
 ## Next recommended sprint
-Continue with disabled insertion UI review or duplicate occurrence selector work, keeping production insertion and duplicate writes disabled until review.
+Continue by wiring disabled duplicate occurrence selector UI to the read-only occurrence model, keeping production insertion and duplicate writes disabled until review.
