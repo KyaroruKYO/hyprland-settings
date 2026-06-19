@@ -1,5 +1,4 @@
 use std::fs;
-use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
@@ -12,9 +11,6 @@ use hyprland_settings::ui::model::{
 };
 use hyprland_settings::write_classification::{is_safe_writable_setting, SAFE_WRITABLE_ROWS};
 use serde_json::Value;
-
-const TEX300: &str = "/tmp/Hyprland-v0.55.2-full/src/render/shaders/glsl/tex300.vert";
-const TEX320: &str = "/tmp/Hyprland-v0.55.2-full/src/render/shaders/glsl/tex320.vert";
 
 fn read_json(path: &str) -> Result<Value> {
     Ok(serde_json::from_str(&std::fs::read_to_string(path)?)?)
@@ -35,20 +31,27 @@ fn write_shader(path: &Path, source: &str) -> Result<()> {
     Ok(())
 }
 
-fn write_fake_tool(path: &Path, body: &str) -> Result<()> {
-    fs::write(path, body)?;
-    let mut permissions = fs::metadata(path)?.permissions();
-    permissions.set_mode(0o755);
-    fs::set_permissions(path, permissions)?;
-    Ok(())
-}
-
 fn base_helper_request(dir: &Path, shader: &Path, tool: &Path) -> ScreenShaderAdvisoryRequest {
+    let vertex_dir = dir.join("hyprland-source/src/render/shaders/glsl");
+    fs::create_dir_all(&vertex_dir).expect("test vertex fixture directory should be created");
+    let tex300_vertex_path = vertex_dir.join("tex300.vert");
+    let tex320_vertex_path = vertex_dir.join("tex320.vert");
+    fs::write(
+        &tex300_vertex_path,
+        "#version 300 es\nin vec2 pos;\nvoid main() { gl_Position = vec4(pos, 0.0, 1.0); }\n",
+    )
+    .expect("tex300 vertex fixture should be written");
+    fs::write(
+        &tex320_vertex_path,
+        "#version 320 es\nin vec2 pos;\nvoid main() { gl_Position = vec4(pos, 0.0, 1.0); }\n",
+    )
+    .expect("tex320 vertex fixture should be written");
+
     ScreenShaderAdvisoryRequest {
         selected_shader_path: shader.to_path_buf(),
         temp_root: dir.join("advisory-temp-root"),
-        tex300_vertex_path: PathBuf::from(TEX300),
-        tex320_vertex_path: PathBuf::from(TEX320),
+        tex300_vertex_path,
+        tex320_vertex_path,
         glslang_validator_path: tool.to_path_buf(),
         timeout: Duration::from_secs(2),
         explicit_user_consent: true,
@@ -183,8 +186,8 @@ fn screen_shader_ui_action_refuses_missing_consent_without_reading_shader() -> R
         helper_request: Some(ScreenShaderAdvisoryRequest {
             selected_shader_path: PathBuf::from("/tmp/nonexistent-screen-shader-user-file.frag"),
             temp_root: std::env::temp_dir().join("unused-screen-shader-ui-consent-proof"),
-            tex300_vertex_path: PathBuf::from(TEX300),
-            tex320_vertex_path: PathBuf::from(TEX320),
+            tex300_vertex_path: PathBuf::from("/tmp/unused-tex300.vert"),
+            tex320_vertex_path: PathBuf::from("/tmp/unused-tex320.vert"),
             glslang_validator_path: PathBuf::from("glslangValidator"),
             timeout: Duration::from_millis(25),
             explicit_user_consent: false,
@@ -209,15 +212,16 @@ fn screen_shader_ui_action_refuses_missing_consent_without_reading_shader() -> R
 fn screen_shader_ui_action_renders_pass_and_uses_only_temp_compiler_paths() -> Result<()> {
     let dir = temp_case("pass")?;
     let shader = dir.join("selected.frag");
-    let tool = dir.join("glslangValidator");
     write_shader(
         &shader,
         "#version 300 es\nprecision mediump float;\nin vec2 v_texcoord;\nlayout(location = 0) out vec4 fragColor;\nuniform sampler2D tex;\nvoid main() { fragColor = texture(tex, v_texcoord); }\n",
     )?;
-    write_fake_tool(&tool, "#!/bin/sh\nexit 0\n")?;
 
-    let render =
-        run_screen_shader_advisory_ui_action(ui_request(base_helper_request(&dir, &shader, &tool)));
+    let render = run_screen_shader_advisory_ui_action(ui_request(base_helper_request(
+        &dir,
+        &shader,
+        Path::new("true"),
+    )));
 
     assert_eq!(render.state, ScreenShaderAdvisoryUiResultState::Passed);
     assert!(render.helper_invoked);
@@ -239,12 +243,13 @@ fn screen_shader_ui_action_renders_pass_and_uses_only_temp_compiler_paths() -> R
 fn screen_shader_ui_action_renders_failure_as_warning_only() -> Result<()> {
     let dir = temp_case("fail")?;
     let shader = dir.join("selected.frag");
-    let tool = dir.join("glslangValidator");
     write_shader(&shader, "#version 300 es\nvoid main() {}\n")?;
-    write_fake_tool(&tool, "#!/bin/sh\necho bad >&2\nexit 2\n")?;
 
-    let render =
-        run_screen_shader_advisory_ui_action(ui_request(base_helper_request(&dir, &shader, &tool)));
+    let render = run_screen_shader_advisory_ui_action(ui_request(base_helper_request(
+        &dir,
+        &shader,
+        Path::new("false"),
+    )));
 
     assert_eq!(render.state, ScreenShaderAdvisoryUiResultState::Failed);
     assert!(render.compiler_invoked);
@@ -276,10 +281,9 @@ fn screen_shader_ui_action_renders_missing_tool_timeout_temp_copy_and_cleanup_st
 
     let timeout_dir = temp_case("timeout")?;
     let timeout_shader = timeout_dir.join("selected.frag");
-    let timeout_tool = timeout_dir.join("glslangValidator");
     write_shader(&timeout_shader, "#version 300 es\nvoid main() {}\n")?;
-    write_fake_tool(&timeout_tool, "#!/bin/sh\nsleep 2\nexit 0\n")?;
-    let mut timeout_request = base_helper_request(&timeout_dir, &timeout_shader, &timeout_tool);
+    let mut timeout_request = base_helper_request(&timeout_dir, &timeout_shader, Path::new("sh"));
+    fs::write(&timeout_request.tex300_vertex_path, "sleep 2\nexit 0\n")?;
     timeout_request.timeout = Duration::from_millis(25);
     let timed_out = run_screen_shader_advisory_ui_action(ui_request(timeout_request));
     assert_eq!(timed_out.state, ScreenShaderAdvisoryUiResultState::TimedOut);
@@ -288,12 +292,10 @@ fn screen_shader_ui_action_renders_missing_tool_timeout_temp_copy_and_cleanup_st
     fs::remove_dir_all(timeout_dir)?;
 
     let temp_copy_dir = temp_case("temp-copy-failed")?;
-    let temp_copy_tool = temp_copy_dir.join("glslangValidator");
-    write_fake_tool(&temp_copy_tool, "#!/bin/sh\nexit 0\n")?;
     let temp_copy_failed = run_screen_shader_advisory_ui_action(ui_request(base_helper_request(
         &temp_copy_dir,
         &temp_copy_dir.join("missing-selected.frag"),
-        &temp_copy_tool,
+        Path::new("true"),
     )));
     assert_eq!(
         temp_copy_failed.state,
@@ -308,10 +310,8 @@ fn screen_shader_ui_action_renders_missing_tool_timeout_temp_copy_and_cleanup_st
 
     let cleanup_dir = temp_case("cleanup-warning")?;
     let cleanup_shader = cleanup_dir.join("selected.frag");
-    let cleanup_tool = cleanup_dir.join("glslangValidator");
     write_shader(&cleanup_shader, "#version 300 es\nvoid main() {}\n")?;
-    write_fake_tool(&cleanup_tool, "#!/bin/sh\nexit 0\n")?;
-    let mut cleanup_request = base_helper_request(&cleanup_dir, &cleanup_shader, &cleanup_tool);
+    let mut cleanup_request = base_helper_request(&cleanup_dir, &cleanup_shader, Path::new("true"));
     cleanup_request.simulate_cleanup_failure = true;
     let cleanup_warning = run_screen_shader_advisory_ui_action(ui_request(cleanup_request));
     assert_eq!(

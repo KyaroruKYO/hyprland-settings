@@ -1,0 +1,66 @@
+{
+  "applyAvoided": true,
+  "artifactKind": "gtk_safe_env_ui_navigation",
+  "blockedCopy": [
+    "Uses Hyprland default was collected from Appearance and Display AT-SPI text.",
+    "Extra care needed was collected from Display AT-SPI text.",
+    "Duplicate/generated/script/symlink-specific detail copy remains source/model fallback because row details were not opened."
+  ],
+  "categoryPage": {
+    "appearance": "collected after Appearance navigation",
+    "display": "collected after Display navigation"
+  },
+  "collectedTerms": {
+    "appearanceNavigation": [
+      "appearance",
+      "config",
+      "dashboard",
+      "default",
+      "display",
+      "hyprland",
+      "settings"
+    ],
+    "configNavigation": [
+      "appearance",
+      "apply",
+      "config",
+      "dashboard",
+      "display",
+      "hyprland",
+      "settings"
+    ],
+    "displayNavigation": [
+      "appearance",
+      "config",
+      "dashboard",
+      "default",
+      "display",
+      "hyprland",
+      "settings"
+    ],
+    "initial": [
+      "appearance",
+      "config",
+      "dashboard",
+      "display",
+      "hyprland",
+      "settings"
+    ]
+  },
+  "configPage": "collected after Config navigation",
+  "dashboard": "collected from initial AT-SPI tree",
+  "detailPane": "placeholder text collected; specific row detail not opened through AT-SPI",
+  "generatedAt": "2026-06-18T21:15:00-07:00",
+  "liveSwapModeUsed": false,
+  "navigationAttempted": true,
+  "navigationSucceeded": true,
+  "projectModel": "v0.55.2 / 341 readable / 341 writable / 0 blocked",
+  "safeBatchCopy": [
+    "Config page AT-SPI text collected backup-before-save copy.",
+    "Full safe-batch wording remains source/model proof."
+  ],
+  "safeEnvModeUsed": true,
+  "schemaVersion": 1,
+  "search": "not proven through AT-SPI navigation in this sprint",
+  "startingCommit": "c8143b7e8b7abb3499f60d8e08b557257003f9b4"
+}

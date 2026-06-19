@@ -1,0 +1,17 @@
+{
+  "appCloseCleanly": true,
+  "applyAvoided": true,
+  "artifactKind": "gtk_safe_env_user_experience",
+  "blockedReasonsUnderstandable": "partially proven through AT-SPI for default/display-risk copy; deeper blocked reasons need stable detail-pane automation",
+  "currentUser": "read-only audit remains source-aware and blocked where unsafe; real config was not launched or mutated in this sprint.",
+  "generatedAt": "2026-06-18T21:15:00-07:00",
+  "generatedScriptManagedConfigUser": "source/model fallback: generated and script-managed configs stay blocked; GTK generated/script scenario was not rerun in this sprint.",
+  "newHyprlandUser": "GTK proof: simple config launches, Dashboard/Config/Appearance are discoverable, and default rows show Uses Hyprland default.",
+  "oneTargetWordingVisibleInSafeBatchPath": false,
+  "profileSymlinkUser": "source/model fallback: symlink/current-profile writes stay blocked; GTK symlink scenario was not rerun in this sprint.",
+  "projectModel": "v0.55.2 / 341 readable / 341 writable / 0 blocked",
+  "safeBatchWordingUnderstandable": true,
+  "schemaVersion": 1,
+  "sourcedConfigUser": "source/model fallback: connected files map exact source targets; GTK source/include scenario was not rerun in this sprint.",
+  "startingCommit": "c8143b7e8b7abb3499f60d8e08b557257003f9b4"
+}

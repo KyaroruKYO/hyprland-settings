@@ -1,0 +1,73 @@
+{
+  "accessibilityInspectionAttempted": true,
+  "accessibilityInspectionSucceeded": true,
+  "appLaunchAttempted": true,
+  "appLaunchSucceeded": true,
+  "applyClicked": false,
+  "artifactKind": "gtk_safe_env_scenario_matrix",
+  "closeAttempted": true,
+  "closeSucceeded": true,
+  "generatedAt": "2026-06-18T21:15:00-07:00",
+  "hyprlandReloaded": false,
+  "liveSwapModeUsed": false,
+  "mutatingHyprctlUsed": false,
+  "projectModel": "v0.55.2 / 341 readable / 341 writable / 0 blocked",
+  "realConfigEdited": false,
+  "safeEnvModeUsed": true,
+  "scenarioResults": {
+    "duplicate_conflict": {
+      "accessibilityTree": "passed",
+      "appearanceNavigation": "passed",
+      "duplicateSpecificText": "not exposed in row-list AT-SPI text",
+      "gtkLaunch": "passed"
+    },
+    "generated_config": {
+      "fallbackProof": "covered by previous safe-env harness/source model",
+      "gtkLaunch": "not rerun through GTK in this sprint"
+    },
+    "high_risk_display_risk": {
+      "accessibilityTree": "passed",
+      "displayNavigation": "passed",
+      "gtkLaunch": "passed",
+      "riskText": "Extra care needed collected"
+    },
+    "large_single_config": {
+      "fallbackProof": "covered by previous safe-env harness/source model",
+      "gtkLaunch": "not rerun through GTK in this sprint"
+    },
+    "minimal_single_config": {
+      "accessibilityTree": "passed",
+      "appearanceNavigation": "passed",
+      "close": "passed",
+      "configNavigation": "passed",
+      "dashboardText": "collected",
+      "gtkLaunch": "passed"
+    },
+    "missing_default_only": {
+      "defaultText": "collected",
+      "gtkLaunch": "represented by minimal config Appearance navigation"
+    },
+    "nested_source_config": {
+      "fallbackProof": "covered by previous safe-env harness/source-aware mapping tests",
+      "gtkLaunch": "not rerun through GTK in this sprint"
+    },
+    "real_current_config_readonly": {
+      "gtkLaunch": "not launched against real config in this sprint",
+      "safety": "real config not mutated"
+    },
+    "script_managed_config": {
+      "fallbackProof": "covered by previous safe-env harness/source model",
+      "gtkLaunch": "not rerun through GTK in this sprint"
+    },
+    "source_include_config": {
+      "fallbackProof": "covered by previous safe-env harness/source-aware mapping tests",
+      "gtkLaunch": "not rerun through GTK in this sprint"
+    },
+    "symlink_current_profile": {
+      "fallbackProof": "covered by previous safe-env harness/source model",
+      "gtkLaunch": "not rerun through GTK in this sprint"
+    }
+  },
+  "schemaVersion": 1,
+  "startingCommit": "c8143b7e8b7abb3499f60d8e08b557257003f9b4"
+}

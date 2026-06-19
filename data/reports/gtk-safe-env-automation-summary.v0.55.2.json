@@ -1,0 +1,121 @@
+{
+  "accessibilityInspectionAttempted": true,
+  "accessibilityInspectionSucceeded": true,
+  "agsTouched": false,
+  "appLaunchAttempted": true,
+  "appLaunchSucceeded": true,
+  "artifactKind": "gtk_safe_env_automation_summary",
+  "cargoCheckAfterSystemUpgrade": "passed",
+  "closeAttempted": true,
+  "closeSucceeded": true,
+  "countsAfter": "341 readable / 341 writable / 0 blocked",
+  "countsBefore": "341 readable / 341 writable / 0 blocked",
+  "fallbackProofUsed": true,
+  "generatedAt": "2026-06-18T21:15:00-07:00",
+  "hyprlandReloaded": false,
+  "installedHyprlandPackageVersion": "0.55.4-1",
+  "issuesFound": [
+    "Search and row-specific detail navigation need stable AT-SPI names/actions.",
+    "Duplicate/generated/script/symlink blocked copy was not collected from live UI detail panes in this sprint."
+  ],
+  "liveSwapModeUsed": false,
+  "luaExecuted": false,
+  "mutatingHyprctlUsed": false,
+  "navigationAttempted": true,
+  "navigationSucceeded": true,
+  "projectDataMigratedToHyprland0554": false,
+  "projectModel": "v0.55.2 / 341 readable / 341 writable / 0 blocked",
+  "pyatspiAvailable": true,
+  "realBackupsCreated": false,
+  "realConfigEdited": false,
+  "recommendedFixes": [
+    "Add accessible labels/actions for search, setting rows, and blocked-reason detail panes.",
+    "Extend collect_accessibility_tree.py with safe row-detail navigation that explicitly refuses Apply."
+  ],
+  "runningHyprlandVersion": "0.55.4",
+  "runtimeMutated": false,
+  "safeEnvModeUsed": true,
+  "scenarioResults": {
+    "duplicate_conflict": {
+      "accessibilityTree": "passed",
+      "appearanceNavigation": "passed",
+      "duplicateSpecificText": "not exposed in row-list AT-SPI text",
+      "gtkLaunch": "passed"
+    },
+    "generated_config": {
+      "fallbackProof": "covered by previous safe-env harness/source model",
+      "gtkLaunch": "not rerun through GTK in this sprint"
+    },
+    "high_risk_display_risk": {
+      "accessibilityTree": "passed",
+      "displayNavigation": "passed",
+      "gtkLaunch": "passed",
+      "riskText": "Extra care needed collected"
+    },
+    "large_single_config": {
+      "fallbackProof": "covered by previous safe-env harness/source model",
+      "gtkLaunch": "not rerun through GTK in this sprint"
+    },
+    "minimal_single_config": {
+      "accessibilityTree": "passed",
+      "appearanceNavigation": "passed",
+      "close": "passed",
+      "configNavigation": "passed",
+      "dashboardText": "collected",
+      "gtkLaunch": "passed"
+    },
+    "missing_default_only": {
+      "defaultText": "collected",
+      "gtkLaunch": "represented by minimal config Appearance navigation"
+    },
+    "nested_source_config": {
+      "fallbackProof": "covered by previous safe-env harness/source-aware mapping tests",
+      "gtkLaunch": "not rerun through GTK in this sprint"
+    },
+    "real_current_config_readonly": {
+      "gtkLaunch": "not launched against real config in this sprint",
+      "safety": "real config not mutated"
+    },
+    "script_managed_config": {
+      "fallbackProof": "covered by previous safe-env harness/source model",
+      "gtkLaunch": "not rerun through GTK in this sprint"
+    },
+    "source_include_config": {
+      "fallbackProof": "covered by previous safe-env harness/source-aware mapping tests",
+      "gtkLaunch": "not rerun through GTK in this sprint"
+    },
+    "symlink_current_profile": {
+      "fallbackProof": "covered by previous safe-env harness/source model",
+      "gtkLaunch": "not rerun through GTK in this sprint"
+    }
+  },
+  "schemaVersion": 1,
+  "screenshotsCommitted": false,
+  "scriptsExecuted": false,
+  "startingCommit": "c8143b7e8b7abb3499f60d8e08b557257003f9b4",
+  "uiEvidence": {
+    "appearanceCategory": "collected",
+    "blockedCopy": "default/display-risk partial AT-SPI plus source/model proof",
+    "configPage": "collected",
+    "dashboard": "collected",
+    "detailPane": "placeholder collected, row-specific details not opened",
+    "displayCategory": "collected",
+    "duplicateConflictCopy": "source/model fallback",
+    "generatedScriptSymlinkCopy": "source/model fallback",
+    "safeBatchCopy": "partial AT-SPI plus source/model proof",
+    "search": "not proven through AT-SPI navigation"
+  },
+  "uiTextTreeCollected": true,
+  "validation": {
+    "bashScripts": "passed",
+    "cargoBuildRelease": "passed",
+    "cargoCheck": "passed",
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoTest": "passed",
+    "gitDiffCheck": "passed",
+    "gitStatusShort": "passed with intended GTK automation files and pre-existing unrelated untracked audit/design files",
+    "jqReports": "passed"
+  },
+  "waybarTouched": false
+}

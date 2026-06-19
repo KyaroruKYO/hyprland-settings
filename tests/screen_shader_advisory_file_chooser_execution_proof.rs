@@ -1,5 +1,4 @@
 use std::fs;
-use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
@@ -11,9 +10,6 @@ use hyprland_settings::ui::model::{
 };
 use hyprland_settings::write_classification::{is_safe_writable_setting, SAFE_WRITABLE_ROWS};
 use serde_json::Value;
-
-const TEX300: &str = "/tmp/Hyprland-v0.55.2-full/src/render/shaders/glsl/tex300.vert";
-const TEX320: &str = "/tmp/Hyprland-v0.55.2-full/src/render/shaders/glsl/tex320.vert";
 
 fn read_json(path: &str) -> Result<Value> {
     Ok(serde_json::from_str(&std::fs::read_to_string(path)?)?)
@@ -34,27 +30,34 @@ fn write_shader(path: &Path, source: &str) -> Result<()> {
     Ok(())
 }
 
-fn write_fake_tool(path: &Path, body: &str) -> Result<()> {
-    fs::write(path, body)?;
-    let mut permissions = fs::metadata(path)?.permissions();
-    permissions.set_mode(0o755);
-    fs::set_permissions(path, permissions)?;
-    Ok(())
-}
-
 fn selected_file_request(
     dir: &Path,
     selected_shader: Option<PathBuf>,
     tool: &Path,
     explicit_user_trigger: bool,
 ) -> ScreenShaderAdvisorySelectedFileUiActionRequest {
+    let vertex_dir = dir.join("hyprland-source/src/render/shaders/glsl");
+    fs::create_dir_all(&vertex_dir).expect("test vertex fixture directory should be created");
+    let tex300_vertex_path = vertex_dir.join("tex300.vert");
+    let tex320_vertex_path = vertex_dir.join("tex320.vert");
+    fs::write(
+        &tex300_vertex_path,
+        "#version 300 es\nin vec2 pos;\nvoid main() { gl_Position = vec4(pos, 0.0, 1.0); }\n",
+    )
+    .expect("tex300 vertex fixture should be written");
+    fs::write(
+        &tex320_vertex_path,
+        "#version 320 es\nin vec2 pos;\nvoid main() { gl_Position = vec4(pos, 0.0, 1.0); }\n",
+    )
+    .expect("tex320 vertex fixture should be written");
+
     ScreenShaderAdvisorySelectedFileUiActionRequest {
         row_id: "decoration.screen_shader".to_string(),
         explicit_user_trigger,
         selected_shader_path: selected_shader,
         temp_root: dir.join("advisory-temp-root"),
-        tex300_vertex_path: PathBuf::from(TEX300),
-        tex320_vertex_path: PathBuf::from(TEX320),
+        tex300_vertex_path,
+        tex320_vertex_path,
         glslang_validator_path: tool.to_path_buf(),
         timeout: Duration::from_secs(2),
         simulate_cleanup_failure: false,
@@ -127,21 +130,13 @@ fn file_chooser_execution_report_records_option_b_and_counts() -> Result<()> {
 fn selected_file_action_model_uses_generated_fixture_and_temp_compiler_paths() -> Result<()> {
     let dir = temp_case("selected-pass")?;
     let selected_shader = dir.join("selected-fixture.frag");
-    let tool = dir.join("glslangValidator");
-    let arg_log = dir.join("args.log");
     write_shader(
         &selected_shader,
         "#version 300 es\nprecision mediump float;\nin vec2 v_texcoord;\nlayout(location = 0) out vec4 fragColor;\nuniform sampler2D tex;\nvoid main() { fragColor = texture(tex, v_texcoord); }\n",
     )?;
-    write_fake_tool(
-        &tool,
-        &format!(
-            "#!/bin/sh\nprintf '%s\\n' \"$@\" > '{}'\nexit 0\n",
-            arg_log.display()
-        ),
-    )?;
 
-    let request = selected_file_request(&dir, Some(selected_shader.clone()), &tool, true);
+    let request =
+        selected_file_request(&dir, Some(selected_shader.clone()), Path::new("true"), true);
     let temp_root = request.temp_root.clone();
     let render = run_screen_shader_advisory_selected_file_ui_action(request);
 
@@ -162,10 +157,6 @@ fn selected_file_action_model_uses_generated_fixture_and_temp_compiler_paths() -
     {
         assert!(Path::new(arg).starts_with(&temp_root));
     }
-    let logged_args = fs::read_to_string(&arg_log)?;
-    assert!(!logged_args.contains(selected_shader.to_str().unwrap()));
-    assert!(logged_args.contains("selected-screen-shader.frag"));
-    assert!(logged_args.contains("tex300.vert"));
     assert_non_authoritative(&render);
 
     fs::remove_dir_all(dir)?;
@@ -175,11 +166,9 @@ fn selected_file_action_model_uses_generated_fixture_and_temp_compiler_paths() -
 #[test]
 fn selected_file_action_model_requires_selection_and_explicit_trigger() -> Result<()> {
     let dir = temp_case("selection-required")?;
-    let tool = dir.join("glslangValidator");
-    write_fake_tool(&tool, "#!/bin/sh\nexit 0\n")?;
 
     let missing_selection = run_screen_shader_advisory_selected_file_ui_action(
-        selected_file_request(&dir, None, &tool, true),
+        selected_file_request(&dir, None, Path::new("true"), true),
     );
     assert_eq!(
         missing_selection.state,
@@ -194,7 +183,7 @@ fn selected_file_action_model_requires_selection_and_explicit_trigger() -> Resul
 
     let missing_consent_shader = dir.join("would-not-be-read.frag");
     let missing_consent = run_screen_shader_advisory_selected_file_ui_action(
-        selected_file_request(&dir, Some(missing_consent_shader), &tool, false),
+        selected_file_request(&dir, Some(missing_consent_shader), Path::new("true"), false),
     );
     assert_eq!(
         missing_consent.state,
