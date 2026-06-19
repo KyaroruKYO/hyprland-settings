@@ -1,0 +1,76 @@
+{
+  "appIdentity": {
+    "appId": "io.github.kyarorukyo.hyprlandsettings",
+    "appName": "Hyprland Settings",
+    "binaryName": "hyprland-settings",
+    "githubOwner": "KyaroruKYO",
+    "repoName": "hyprland-settings"
+  },
+  "archiveDirectory": "/home/kyo/Documents/system-audit/hyprland-settings-old-local-audits/20260619_002059",
+  "artifactKind": "release_boundary_approval_checklist",
+  "auditFilesArchived": [],
+  "auditFilesMissingBeforeArchive": [
+    "data/reports/current-hyprland-config-write-blocker-audit.v0.55.2.json",
+    "data/reports/mode-based-config-layering-investigation.v0.55.2.json",
+    "data/reports/smarter-config-detection-manual-picker-design.v0.55.2.json",
+    "docs/CURRENT-HYPRLAND-CONFIG-WRITE-BLOCKER-AUDIT-REVIEW-LOG.md",
+    "docs/MODE-BASED-CONFIG-LAYERING-INVESTIGATION-REVIEW-LOG.md",
+    "docs/SMARTER-CONFIG-DETECTION-MANUAL-PICKER-DESIGN-REVIEW-LOG.md"
+  ],
+  "branch": "main",
+  "currentCommit": "869a33eeb0ab5fb3cfefc65a29b7ac18aea981ca",
+  "doNotRunCommandsYet": true,
+  "generatedAt": "2026-06-19T00:21:05-07:00",
+  "knownLimitations": [
+    "missing/default insertion is not supported",
+    "duplicate auto-resolution is not supported",
+    "high-risk/display-render write expansion is not supported",
+    "structured-family writes are not supported",
+    "profile/mode switching is not supported",
+    "Hyprland reload/runtime mutation is not supported",
+    "Hyprland 0.55.4 data/model migration is not part of this release scope"
+  ],
+  "packageNotCreated": true,
+  "preReleaseChecksRecommended": [
+    "confirm release version and tag name",
+    "rerun cargo fmt --check",
+    "rerun cargo check",
+    "rerun cargo test",
+    "rerun cargo build --release",
+    "rerun tools/live_scenario_harness/run_gtk_evidence_matrix.sh",
+    "rerun jq empty data/reports/*.json",
+    "rerun desktop-file-validate for desktop metadata",
+    "rerun appstreamcli validate --no-net for AppStream metadata",
+    "review release notes before publishing"
+  ],
+  "projectDataVersion": "v0.55.2",
+  "projectModel": "341 readable / 341 writable / 0 blocked",
+  "publishNotPerformed": true,
+  "recommendedNextUserDecision": "Choose whether to approve source tag only, source tag plus GitHub release notes, source tag plus release notes and package artifact preparation, or no release yet.",
+  "releaseNotCreated": true,
+  "releaseScope": "guarded normal-scalar safe-batch Hyprland Settings app for v0.55.2 data/model",
+  "requiresExplicitUserApproval": [
+    "creating a git tag",
+    "creating a GitHub release",
+    "creating package artifacts",
+    "publishing release artifacts",
+    "expanding beyond the guarded normal-scalar safe-batch v0.55.2 release scope"
+  ],
+  "safeReleaseCommandsPreview": [
+    "git tag -a v0.1.0 -m \"Hyprland Settings v0.1.0\"",
+    "git push origin v0.1.0"
+  ],
+  "schemaVersion": 1,
+  "startingCommit": "869a33eeb0ab5fb3cfefc65a29b7ac18aea981ca",
+  "tagNotCreated": true,
+  "validationAlreadyKnown": {
+    "appstreamcli": "passed in prior safe-scope validation; rerun recommended before release",
+    "cargoBuildRelease": "passed in prior safe-scope validation; rerun recommended before release",
+    "cargoCheck": "passed at sprint preflight",
+    "cargoTest": "passed in prior safe-scope validation; rerun recommended before release",
+    "desktopFileValidate": "passed in prior safe-scope validation; rerun recommended before release",
+    "gtkSafeEnvEvidenceMatrix": "passed in prior safe-scope validation; rerun recommended before release",
+    "jqReports": "release-boundary checklist validated in this sprint"
+  },
+  "workingTreeStatusAfterAuditCleanup": "clean"
+}
