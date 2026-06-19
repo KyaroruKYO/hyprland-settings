@@ -1,0 +1,42 @@
+{
+  "appearanceBlurEnabledDuplicateBlocked": true,
+  "blocked": {
+    "blocked_display_render_risk": 26,
+    "blocked_duplicate_conflict": 5,
+    "blocked_high_risk": 47,
+    "blocked_missing_line": 261,
+    "blocked_profile_mode_switch": 1
+  },
+  "duplicateConflicts": [
+    "appearance.blur.enabled",
+    "appearance.blur.brightness",
+    "misc.disable_hyprland_logo",
+    "appearance.blur.passes",
+    "layout.selection"
+  ],
+  "eligibleSafeBatchWrites": 1,
+  "managedHints": [
+    {
+      "evidence": "file is a symlink",
+      "hint": "SymlinkManaged",
+      "path": "/home/kyo/.config/hypr/modes/current.conf"
+    },
+    {
+      "evidence": "referenced by /home/kyo/.config/hypr/scripts/hypr-desktop-autostart.sh, /home/kyo/.config/hypr/scripts/hypr-gamemode-toggle.sh, /home/kyo/.config/hypr/scripts/hypr-theme-switch.sh",
+      "hint": "ScriptReferenced",
+      "path": "/home/kyo/.config/hypr/modes/current.conf"
+    },
+    {
+      "evidence": "referenced by script text with mutation patterns: /home/kyo/.config/hypr/scripts/hypr-gamemode-toggle.sh, /home/kyo/.config/hypr/scripts/hypr-theme-switch.sh",
+      "hint": "ScriptManaged",
+      "path": "/home/kyo/.config/hypr/modes/current.conf"
+    }
+  ],
+  "performed": true,
+  "productionRecoveryRun": false,
+  "productionVerificationRun": false,
+  "realBackupsCreated": false,
+  "realUserConfigEdited": false,
+  "rootPath": "/home/kyo/.config/hypr/hyprland.conf",
+  "settingsWithGeneratedProposedValuesConsidered": 341
+}

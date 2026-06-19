@@ -1,0 +1,126 @@
+{
+  "artifactKind": "safe-batch-deep-harness-summary",
+  "blockedCategoryCoverage": {
+    "allBlockedCategoriesTested": true,
+    "blockedRowCount": 74
+  },
+  "classificationCoverage": {
+    "all341RowsClassified": true,
+    "all341RowsEnumerated": true,
+    "summary": {
+      "classifications": {
+        "blocked_display_render_risk": 26,
+        "blocked_high_risk": 47,
+        "blocked_profile_mode_switch": 1,
+        "eligible_safe_batch_scalar": 267
+      },
+      "total": 341,
+      "valueGeneration": {
+        "tested": 341
+      }
+    }
+  },
+  "failureRecoveryCoverage": {
+    "backupBeforeWriteTested": true,
+    "backupByteEqualityTested": true,
+    "rereadVerificationTested": true,
+    "restoreFailureReportingTested": true,
+    "restoreOnFailureTested": true
+  },
+  "filesChanged": [
+    "tests/support/safe_batch_harness.rs",
+    "tests/safe_batch_deep_harness.rs",
+    "data/reports/safe-batch-all-341-classification-matrix.v0.55.2.json",
+    "data/reports/safe-batch-value-generation-coverage.v0.55.2.json",
+    "data/reports/safe-batch-fixture-write-coverage.v0.55.2.json",
+    "data/reports/safe-batch-blocked-category-matrix.v0.55.2.json",
+    "data/reports/safe-batch-failure-recovery-matrix.v0.55.2.json",
+    "data/reports/safe-batch-ui-integration-review.v0.55.2.json",
+    "data/reports/safe-batch-real-config-readonly-audit.v0.55.2.json",
+    "data/reports/safe-batch-deep-harness-summary.v0.55.2.json",
+    "docs/SAFE-BATCH-DEEP-HARNESS-REVIEW-LOG.md"
+  ],
+  "fixtureWriteCoverage": {
+    "eligibleFixtureWriteRows": 267,
+    "multiFileSafeBatchWritesTested": true,
+    "targetFileCount": 4
+  },
+  "generatedAt": "2026-06-18T00:00:00-07:00",
+  "goal": "Build an automated deep test harness for guarded safe-batch writes across all 341 scalar settings.",
+  "harnessModules": [
+    "tests/support/safe_batch_harness.rs"
+  ],
+  "nextRecommendedSprint": "Review deep harness reports and fix any not-testable value generators or real-config blockers before broad safe-batch trust.",
+  "proofStillMissing": [
+    "manual review of generated matrices before broad trust",
+    "display/render risky approval remains separate",
+    "high-risk approval remains separate",
+    "structured-family writes remain separate"
+  ],
+  "proofUsed": [
+    "SAFE_WRITABLE_ROWS enumeration",
+    "safe-batch plan classification",
+    "fixture batch execution",
+    "blocked category matrix",
+    "forced backup/write/verification/restore failures",
+    "source-level UI/readiness wording checks",
+    "read-only real config graph audit"
+  ],
+  "realConfigReadonlyAudit": {
+    "backupsCreated": false,
+    "performedByHarness": true,
+    "writesAttempted": false
+  },
+  "recommendedFixesBeforeBroadTrust": [
+    "Review rows marked not_tested_value_generation_missing_fixture.",
+    "Review real-config duplicate and managed-file blockers before using Apply.",
+    "Keep display/render and high-risk rows behind separate approval paths."
+  ],
+  "reportsCreated": [
+    "safe-batch-all-341-classification-matrix.v0.55.2.json",
+    "safe-batch-value-generation-coverage.v0.55.2.json",
+    "safe-batch-fixture-write-coverage.v0.55.2.json",
+    "safe-batch-blocked-category-matrix.v0.55.2.json",
+    "safe-batch-failure-recovery-matrix.v0.55.2.json",
+    "safe-batch-ui-integration-review.v0.55.2.json",
+    "safe-batch-real-config-readonly-audit.v0.55.2.json",
+    "safe-batch-deep-harness-summary.v0.55.2.json"
+  ],
+  "safetyBoundaries": {
+    "fixtureWritesOnly": true,
+    "hyprlandReloaded": false,
+    "luaExecuted": false,
+    "mutatingHyprctlUsed": false,
+    "realUserConfigBackupsCreated": false,
+    "realUserConfigModified": false,
+    "runtimeMutated": false,
+    "scriptsExecuted": false
+  },
+  "schemaVersion": "1.0",
+  "startingCommit": "6af51b1969c5e6870e7b2a55e58e5991ee860d6e",
+  "testsAdded": [
+    "tests/safe_batch_deep_harness.rs"
+  ],
+  "testsUpdated": [],
+  "totalScalarRows": 341,
+  "uiIntegrationCoverage": {
+    "applyUiWordingTested": true,
+    "blockedCopyTested": true,
+    "safeBatchWordingTested": true
+  },
+  "validation": {
+    "cargoBuildRelease": "passed",
+    "cargoCheck": "passed",
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoTest": "passed",
+    "gitDiffCheck": "passed",
+    "gitStatusShort": "passed with intended harness/report files plus pre-existing unrelated untracked audit/design files",
+    "jqReports": "passed"
+  },
+  "valueGenerationCoverage": {
+    "notTestable": 0,
+    "notTestableRowsListedExplicitly": true,
+    "tested": 341
+  }
+}

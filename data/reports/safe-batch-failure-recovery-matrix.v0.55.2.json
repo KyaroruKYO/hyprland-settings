@@ -1,0 +1,138 @@
+{
+  "artifactKind": "safe-batch-failure-recovery-matrix",
+  "cases": [
+    {
+      "case": "backup byte-equality failure",
+      "report": {
+        "backupCount": 0,
+        "failures": [
+          "backup failed for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-793-1781831856624339766/safe-batch-0.conf: backup byte equality verification failed"
+        ],
+        "hyprlandReloadAttempted": false,
+        "mutatingHyprctlUsed": false,
+        "recoveryAttempted": false,
+        "recoverySucceeded": false,
+        "restoreVerificationSucceeded": false,
+        "runtimeMutated": false,
+        "status": "Blocked",
+        "verifiedChangeCount": 0
+      }
+    },
+    {
+      "case": "backup creation failure",
+      "report": {
+        "backupCount": 0,
+        "failures": [
+          "backup failed for /tmp/hyprland-settings-safe-batch-deep-backup-creation-failure-793-1781831856635342474/hyprland.conf: failed to write backup /tmp/hyprland-settings-safe-batch-deep-backup-creation-failure-793-1781831856635342474/hyprland.conf.deep-backup-creation-failure.bak"
+        ],
+        "hyprlandReloadAttempted": false,
+        "mutatingHyprctlUsed": false,
+        "recoveryAttempted": false,
+        "recoverySucceeded": false,
+        "restoreVerificationSucceeded": false,
+        "runtimeMutated": false,
+        "status": "Blocked",
+        "verifiedChangeCount": 0
+      }
+    },
+    {
+      "case": "write failure after first target file",
+      "report": {
+        "backupCount": 4,
+        "failures": [
+          "write failed after target replacement"
+        ],
+        "hyprlandReloadAttempted": false,
+        "mutatingHyprctlUsed": false,
+        "recoveryAttempted": true,
+        "recoverySucceeded": true,
+        "restoreVerificationSucceeded": true,
+        "runtimeMutated": false,
+        "status": "RecoveredFailure",
+        "verifiedChangeCount": 0
+      }
+    },
+    {
+      "case": "write failure after second target file",
+      "report": {
+        "backupCount": 4,
+        "failures": [
+          "write failed after target replacement"
+        ],
+        "hyprlandReloadAttempted": false,
+        "mutatingHyprctlUsed": false,
+        "recoveryAttempted": true,
+        "recoverySucceeded": true,
+        "restoreVerificationSucceeded": true,
+        "runtimeMutated": false,
+        "status": "RecoveredFailure",
+        "verifiedChangeCount": 0
+      }
+    },
+    {
+      "case": "reread verification failure",
+      "report": {
+        "backupCount": 4,
+        "failures": [
+          "verification failed: forced verification failure for appearance.dim.modal"
+        ],
+        "hyprlandReloadAttempted": false,
+        "mutatingHyprctlUsed": false,
+        "recoveryAttempted": true,
+        "recoverySucceeded": true,
+        "restoreVerificationSucceeded": true,
+        "runtimeMutated": false,
+        "status": "RecoveredFailure",
+        "verifiedChangeCount": 0
+      }
+    },
+    {
+      "case": "restore failure after write failure",
+      "report": {
+        "backupCount": 4,
+        "failures": [
+          "write failed after target replacement",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-793-1781831856624339766/safe-batch-0.conf",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-793-1781831856624339766/safe-batch-1.conf",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-793-1781831856624339766/safe-batch-2.conf",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-793-1781831856624339766/safe-batch-3.conf"
+        ],
+        "hyprlandReloadAttempted": false,
+        "mutatingHyprctlUsed": false,
+        "recoveryAttempted": true,
+        "recoverySucceeded": false,
+        "restoreVerificationSucceeded": false,
+        "runtimeMutated": false,
+        "status": "UnrecoveredFailure",
+        "verifiedChangeCount": 0
+      }
+    },
+    {
+      "case": "restore failure after verification failure",
+      "report": {
+        "backupCount": 4,
+        "failures": [
+          "write failed for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-793-1781831856624339766/safe-batch-0.conf: source line old value changed for appearance.dim.modal",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-793-1781831856624339766/safe-batch-0.conf",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-793-1781831856624339766/safe-batch-1.conf",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-793-1781831856624339766/safe-batch-2.conf",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-793-1781831856624339766/safe-batch-3.conf"
+        ],
+        "hyprlandReloadAttempted": false,
+        "mutatingHyprctlUsed": false,
+        "recoveryAttempted": true,
+        "recoverySucceeded": false,
+        "restoreVerificationSucceeded": false,
+        "runtimeMutated": false,
+        "status": "UnrecoveredFailure",
+        "verifiedChangeCount": 0
+      }
+    }
+  ],
+  "failureReportedClearly": true,
+  "generatedAt": "2026-06-18T00:00:00-07:00",
+  "multiFileRollbackRestoresEveryTouchedFile": true,
+  "restoreVerificationChecksBytesAndScalarValues": true,
+  "schemaVersion": "1.0",
+  "startingCommit": "6af51b1969c5e6870e7b2a55e58e5991ee860d6e"
+}

@@ -1,0 +1,15 @@
+{
+  "accessibilityBasedUiTests": "source-level accessibility-friendly text review; no screenshots used",
+  "artifactKind": "safe-batch-ui-integration-review",
+  "backupBeforeWriteCopyAppears": true,
+  "blockedCategoriesHaveUnderstandableCopy": true,
+  "duplicateConflictSettingsStillBlockApply": "Blocked: this setting appears in more than one place.",
+  "generatedAt": "2026-06-18T00:00:00-07:00",
+  "highRiskSettingsStillShowBlockedSafetyText": "Blocked: high-risk setting.",
+  "oneTargetPilotWordingAbsentFromNewSafeBatchModule": true,
+  "restoreBackupIfSomethingFailsCopyAppears": true,
+  "resultCheckedAfterWriteCopyAppears": true,
+  "safeBatchWordingAppears": true,
+  "schemaVersion": "1.0",
+  "startingCommit": "6af51b1969c5e6870e7b2a55e58e5991ee860d6e"
+}
