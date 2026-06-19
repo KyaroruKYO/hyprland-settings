@@ -63,6 +63,12 @@ impl ScenarioResult {
     }
 }
 
+fn safe_batch_actionable_rows(
+    plan: &hyprland_settings::safe_batch_write::SafeBatchWritePlan,
+) -> usize {
+    plan.eligible_changes.len() + plan.insertion_changes.len()
+}
+
 #[test]
 fn live_scenario_harness_runs_safe_env_scenarios_without_real_desktop_mutation() {
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
@@ -108,14 +114,7 @@ fn live_scenario_harness_runs_safe_env_scenarios_without_real_desktop_mutation()
         )],
     );
     let script_result = evaluate_script_managed_scenario(&script_managed);
-    let missing_result = evaluate_blocked_scenario(
-        "missing_default_only",
-        &missing,
-        vec![SafeBatchChangeRequest::new(
-            "appearance.blur.enabled",
-            "false",
-        )],
-    );
+    let missing_result = execute_missing_default_insertion_scenario(&missing);
     let high_risk_result = evaluate_blocked_scenario(
         "high_risk_display_risk",
         &high_risk,
@@ -195,7 +194,7 @@ fn live_scenario_harness_runs_safe_env_scenarios_without_real_desktop_mutation()
             "scenarios": [duplicate_result.to_json(), missing_result.to_json(), high_risk_result.to_json()],
             "expectedBlockers": [
                 "blocked_duplicate_conflict",
-                "blocked_missing_line",
+                "eligible_missing_default_single_root_insertion",
                 "blocked_display_render_risk"
             ],
             "partialApplyOccurred": false
@@ -233,8 +232,8 @@ fn live_scenario_harness_runs_safe_env_scenarios_without_real_desktop_mutation()
                 "scriptManaged": real_config["summary"]["scriptManagedHints"],
                 "symlinkManaged": real_config["summary"]["symlinkManagedHints"]
             },
-            "newHyprlandUserExperience": "minimal/default-like scenarios discover and explain safe-batch eligibility, while default-only settings stay blocked until insertion support exists",
-            "currentUserExperience": "current real config remains mostly blocked by missing/default, duplicate, high-risk, display-risk, and profile/mode blockers",
+            "newHyprlandUserExperience": "minimal/default-like scenarios discover and explain safe-batch eligibility, while eligible default-only normal scalar settings can be inserted into a reviewed single-file config",
+            "currentUserExperience": "current real config remains guarded by duplicate, high-risk, display-risk, profile/mode, managed-file, and unsafe missing/default blockers",
             "realConfigTouched": false
         }),
     );
@@ -486,7 +485,7 @@ fn evaluate_safe_env_scenario(name: &'static str, home: &Path) -> ScenarioResult
         mode: "safe-env",
         root: home.to_path_buf(),
         config_discovered,
-        eligible_rows: plan.eligible_changes.len(),
+        eligible_rows: safe_batch_actionable_rows(&plan),
         blocked_rows: plan.blocked_changes.len(),
         apply_available: plan.can_execute,
         safe_batch_writes_attempted: false,
@@ -520,7 +519,7 @@ fn execute_single_file_safe_batch(home: &Path) -> ScenarioResult {
         mode: "safe-env",
         root: home.to_path_buf(),
         config_discovered: true,
-        eligible_rows: plan.eligible_changes.len(),
+        eligible_rows: safe_batch_actionable_rows(&plan),
         blocked_rows: plan.blocked_changes.len(),
         apply_available: plan.can_execute,
         safe_batch_writes_attempted: true,
@@ -554,7 +553,42 @@ fn execute_multifile_safe_batch(home: &Path) -> ScenarioResult {
         mode: "safe-env",
         root: home.to_path_buf(),
         config_discovered: true,
-        eligible_rows: plan.eligible_changes.len(),
+        eligible_rows: safe_batch_actionable_rows(&plan),
+        blocked_rows: plan.blocked_changes.len(),
+        apply_available: plan.can_execute,
+        safe_batch_writes_attempted: true,
+        safe_batch_writes_succeeded: true,
+        failure_paths_tested: Vec::new(),
+        issues_found: Vec::new(),
+    }
+}
+
+fn execute_missing_default_insertion_scenario(home: &Path) -> ScenarioResult {
+    let graph = graph_for_home(home);
+    let current = current_config_from_graph(&graph);
+    let plan = build_safe_batch_write_plan(
+        "missing-default-insertion-safe-batch",
+        &known_settings(),
+        &current,
+        &graph,
+        vec![SafeBatchChangeRequest::new(
+            "appearance.blur.enabled",
+            "false",
+        )],
+        "live-scenario",
+    );
+    assert!(plan.can_execute, "{:?}", plan.cannot_execute_reasons);
+    assert_eq!(plan.insertion_changes.len(), 1);
+    let report = execute_safe_batch_write_plan(&plan, &SafeBatchExecutionOptions::default());
+    assert_eq!(report.status, SafeBatchWriteStatus::Succeeded);
+    assert_eq!(report.backups.len(), 1);
+    assert!(report.backups.iter().all(|backup| backup.bytes_equal));
+    ScenarioResult {
+        name: "missing_default_only",
+        mode: "safe-env",
+        root: home.to_path_buf(),
+        config_discovered: true,
+        eligible_rows: safe_batch_actionable_rows(&plan),
         blocked_rows: plan.blocked_changes.len(),
         apply_available: plan.can_execute,
         safe_batch_writes_attempted: true,

@@ -164,6 +164,49 @@ fn apply_can_write_only_when_safe_batch_plan_is_executable() {
 }
 
 #[test]
+fn apply_can_insert_missing_default_for_explicit_safe_root_config_only() {
+    let root = temp_root("missing-insertion-apply");
+    let config = root.join("hyprland.conf");
+    write_file(&config, "decoration:blur:enabled = true\n");
+    let current = snapshot(vec![(
+        "decoration.blur.enabled",
+        "true",
+        &config,
+        1,
+        "decoration:blur:enabled = true",
+        CurrentValueStatus::Configured,
+    )]);
+    let graph = graph_for(vec![graph_file(&config, Vec::new())], config.clone());
+
+    let report = apply_safe_batch_setting_changes_with_graph_and_options(
+        known_settings(),
+        &current,
+        &graph,
+        vec![SafeBatchChangeRequest::new(
+            "misc.disable_splash_rendering",
+            "true",
+        )],
+        SafeBatchExecutionOptions {
+            backup_timestamp: "apply-missing-insertion".to_string(),
+            ..SafeBatchExecutionOptions::default()
+        },
+    )
+    .expect("eligible missing/default insertion should apply");
+
+    assert_eq!(
+        report.verified_changes,
+        vec!["misc.disable_splash_rendering".to_string()]
+    );
+    assert_eq!(report.backups.len(), 1);
+    assert!(!report.hyprland_reload_attempted);
+    assert!(!report.mutating_hyprctl_used);
+    assert!(!report.runtime_mutated);
+    let updated = fs::read_to_string(&config).expect("config should read");
+    assert!(updated.contains("# Added by Hyprland Settings safe-batch missing/default insertion"));
+    assert!(updated.contains("misc:disable_splash_rendering = true"));
+}
+
+#[test]
 fn apply_blocks_high_risk_generated_ambiguous_missing_line_and_structured_targets() {
     let root = temp_root("blocked");
     let config = root.join("hyprland.conf");

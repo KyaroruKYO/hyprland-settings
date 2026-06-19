@@ -2,7 +2,7 @@
   "artifactKind": "live_scenario_real_config_readonly_final",
   "blockedRows": null,
   "blockerCounts": null,
-  "currentUserExperience": "current real config remains mostly blocked by missing/default, duplicate, high-risk, display-risk, and profile/mode blockers",
+  "currentUserExperience": "current real config remains guarded by duplicate, high-risk, display-risk, profile/mode, managed-file, and unsafe missing/default blockers",
   "duplicateConflicts": null,
   "eligibleRows": null,
   "managedFileHints": {
@@ -10,7 +10,7 @@
     "scriptManaged": null,
     "symlinkManaged": null
   },
-  "newHyprlandUserExperience": "minimal/default-like scenarios discover and explain safe-batch eligibility, while default-only settings stay blocked until insertion support exists",
+  "newHyprlandUserExperience": "minimal/default-like scenarios discover and explain safe-batch eligibility, while eligible default-only normal scalar settings can be inserted into a reviewed single-file config",
   "realConfigReadOnly": true,
   "realConfigTouched": false,
   "schemaVersion": 1

@@ -571,6 +571,7 @@ pub fn blocked_plan_for(reason: SafeBatchEligibility) -> (PathBuf, SafeBatchWrit
             SafeBatchChangeRequest::new("appearance.blur.enabled", "false")
         }
         SafeBatchEligibility::BlockedMissingLine => {
+            write_file(&config, "source = managed.conf\n");
             let current = CurrentConfigSnapshot {
                 status: CurrentConfigLoadStatus::Loaded {
                     path: config.clone(),
@@ -582,6 +583,7 @@ pub fn blocked_plan_for(reason: SafeBatchEligibility) -> (PathBuf, SafeBatchWrit
                 structured_records: Vec::new(),
                 unsupported_records: Vec::new(),
             };
+            files.push(graph_file(&managed, Vec::new()));
             let graph = graph_for(files, config.clone());
             let plan = plan_for(
                 "blocked-missing-line",

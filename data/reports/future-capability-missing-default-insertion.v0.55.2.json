@@ -3,62 +3,82 @@
   "artifactKind": "future-capability-phase-report",
   "phase": "missing_default_insertion",
   "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
-  "phaseStartingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseStartingCommit": "1ef26bf6afc68adfb11537e5c0e988910c93b8ac",
   "phaseEndingCommit": null,
-  "goal": "Implement or design safe insertion for eligible normal scalar settings that currently use Hyprland defaults.",
+  "goal": "Enable safe production insertion for eligible normal scalar settings that currently use Hyprland defaults, without expanding unsafe write classes.",
   "filesChanged": [
-    "tests/future_capability_marathon.rs",
-    "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
-    "docs/FUTURE-CAPABILITY-MARATHON-HANDOFF.md",
-    "src/lib.rs",
-    "src/missing_default_insertion.rs",
+    "src/safe_batch_write.rs",
     "src/future_capability.rs",
-    "tests/missing_default_insertion.rs",
+    "tests/safe_batch_write.rs",
+    "tests/safe_batch_apply_integration.rs",
+    "tests/live_scenario_harness.rs",
+    "tests/support/safe_batch_harness.rs",
+    "tests/future_capability_marathon.rs",
     "tests/future_capability_models.rs",
     "data/reports/future-capability-missing-default-insertion.v0.55.2.json"
   ],
-  "implementationStatus": "safe_env_only",
+  "implementationStatus": "implemented_and_enabled",
   "whatWasImplemented": [
-    "Documented the safe insertion constraints for normal scalar settings only.",
-    "Added a safe-env-only missing/default insertion planner and executor.",
-    "The executor creates a backup, verifies backup bytes, appends a deterministic Hyprland Settings section, rereads the file, verifies the inserted value, and restores on forced write or verification failure.",
-    "Added disabled production review scaffolding that lists required gates before Apply can add missing config lines.",
-    "Kept active safe-batch missing/default behavior blocked.",
-    "Added deterministic tests that assert missing/default insertion remains blocked in active copy."
+    "Wired missing/default insertion into the existing safe-batch planner and executor for the narrow approved production scope.",
+    "Added insertion-specific plan records that show the target file, official setting, normalized config key, proposed value, exact inserted line, and review copy.",
+    "Restricted production insertion to reviewed single-file normal scalar configs with an existing normal root file that is not a symlink, generated, script-managed, duplicate, high-risk, display/render-risk, structured, profile/mode, runtime-only, or ambiguous.",
+    "Reused the safe-batch backup path, backup byte-equality proof, write path, reread verification, and restore-on-failure machinery for insertion changes.",
+    "Added deterministic safe-batch insertion section rendering and exact reread verification for inserted setting/value/line.",
+    "Updated live scenario harness coverage so the missing/default-only safe-env scenario proves the newly eligible single-root insertion path.",
+    "Kept unsafe missing/default layouts blocked, including managed, duplicate, multi-file/ambiguous, high-risk, structured, profile/mode, and runtime cases."
   ],
   "whatWasNotImplemented": [
-    "No production insertion executor was enabled.",
-    "No real config insertion was attempted.",
-    "No UI control for insertion target selection was activated.",
-    "No production Apply integration was enabled."
+    "No insertion into generated, script-managed, symlink/current-profile, profile/mode, multi-file, duplicate, high-risk, display/render-risk, structured, runtime-only, or missing target files was enabled.",
+    "No real user config insertion was attempted.",
+    "No runtime reload or mutating hyprctl action was added.",
+    "No production duplicate, high-risk, structured, profile/mode, runtime, or Hyprland 0.55.4 migration behavior was enabled."
   ],
   "testsAdded": [
-    "tests/future_capability_marathon.rs",
-    "tests/missing_default_insertion.rs",
-    "tests/future_capability_models.rs"
+    "safe_batch_inserts_missing_default_normal_scalar_into_explicit_root_file",
+    "safe_batch_missing_default_insertion_restores_after_verification_failure",
+    "safe_batch_missing_default_insertion_blocks_managed_duplicate_and_ambiguous_targets",
+    "apply_can_insert_missing_default_for_explicit_safe_root_config_only"
   ],
   "reportsAdded": [
     "data/reports/future-capability-missing-default-insertion.v0.55.2.json"
   ],
   "safetyBoundaries": {
-    "allowedTarget": "future fixture-only normal scalar insertion planner",
-    "requiresExplicitTargetFile": true,
+    "allowedTarget": "eligible normal scalar missing/default setting in an explicit existing single-file root config",
+    "requiresSafeWritableRow": true,
+    "requiresNormalScalarConfigKey": true,
+    "requiresExplicitExistingRootFile": true,
+    "requiresNormalFileNotSymlink": true,
+    "requiresNoGeneratedScriptSymlinkProfileHints": true,
+    "requiresNoDuplicateAnywhereInSelectedContext": true,
+    "requiresNoHighRiskDisplayStructuredRuntimeProfileModeCategory": true,
     "requiresBackupBeforeInsertion": true,
+    "requiresBackupByteEquality": true,
+    "requiresDeterministicInsertionLocation": true,
     "requiresRereadVerification": true,
     "requiresRestoreOnFailure": true,
-    "safeEnvExecutorImplemented": true,
-    "productionInsertionEnabled": false,
-    "realConfigWritesAllowed": false
+    "productionInsertionEnabled": true,
+    "realConfigWritesAllowedInTests": false
   },
   "validation": {
-    "phaseValidation": "pending batch validation"
+    "focusedSafeBatchWriteTests": "passed",
+    "focusedSafeBatchApplyIntegrationTests": "passed",
+    "liveScenarioHarness": "passed",
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "cargoBuildRelease": "passed",
+    "jqReports": "passed",
+    "gitDiffCheck": "passed",
+    "gtkSafeEnvMatrix": "passed (/tmp/hyprland-settings-gtk-automation/20260619_113603)",
+    "pendingFullValidation": false
   },
   "blockers": [
-    "Needs UI confirmation for production target selection.",
-    "Needs review before wiring insertion to Apply."
+    "Production insertion remains intentionally limited to single-file normal scalar targets.",
+    "Source/include insertion, managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
   ],
-  "nextRecommendedWork": "Review disabled insertion UI copy and decide whether the safe-env executor can become a gated production path after target-selection approval.",
+  "nextRecommendedWork": "Run full validation, then review whether a future architecture sprint should add explicit target selection for source/include insertion without weakening the current single-root gate.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
-  "whetherProductionBehaviorEnabled": false
+  "whetherProductionBehaviorEnabled": true
 }

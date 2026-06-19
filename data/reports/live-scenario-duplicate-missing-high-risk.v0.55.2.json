@@ -2,7 +2,7 @@
   "artifactKind": "live_scenario_duplicate_missing_high_risk",
   "expectedBlockers": [
     "blocked_duplicate_conflict",
-    "blocked_missing_line",
+    "eligible_missing_default_single_root_insertion",
     "blocked_display_render_risk"
   ],
   "partialApplyOccurred": false,
@@ -29,7 +29,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": false,
       "safeBatchWritesSucceeded": false,
       "scenarioName": "duplicate_conflict",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/duplicate-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/duplicate-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     },
@@ -37,10 +37,10 @@
       "agsDisabledRestored": "not used",
       "appLaunchResult": "not launched; noninteractive GTK close automation was not available, so source/model/discovery proof was used",
       "appLaunched": false,
-      "applyAvailability": "blocked",
-      "blockedRows": 1,
+      "applyAvailability": "available for executable temp safe-batch plan",
+      "blockedRows": 0,
       "configDiscovered": true,
-      "eligibleRows": 0,
+      "eligibleRows": 1,
       "failuresTested": [],
       "hyprlandReloadUsed": false,
       "issuesFound": [],
@@ -52,10 +52,10 @@
         "Use live-swap only when a future test needs true real-path discovery and restore verification has passed."
       ],
       "restoreTested": false,
-      "safeBatchWritesAttemptedAgainstTempFiles": false,
-      "safeBatchWritesSucceeded": false,
+      "safeBatchWritesAttemptedAgainstTempFiles": true,
+      "safeBatchWritesSucceeded": true,
       "scenarioName": "missing_default_only",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/missing-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/missing-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     },
@@ -81,7 +81,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": false,
       "safeBatchWritesSucceeded": false,
       "scenarioName": "high_risk_display_risk",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/high-risk-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/high-risk-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     }

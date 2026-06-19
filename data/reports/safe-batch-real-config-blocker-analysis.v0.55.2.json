@@ -13,37 +13,37 @@
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.dim_modal",
       "rowId": "appearance.dim.modal",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.dim_inactive",
       "rowId": "appearance.dim.inactive",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.border_part_of_window",
       "rowId": "appearance.border_part_of_window",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_duplicate_conflict",
@@ -61,73 +61,73 @@
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.ignore_opacity",
       "rowId": "appearance.blur.ignore_opacity",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.new_optimizations",
       "rowId": "appearance.blur.new_optimizations",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.special",
       "rowId": "appearance.blur.special",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.popups",
       "rowId": "appearance.blur.popups",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.input_methods",
       "rowId": "appearance.blur.input_methods",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.size",
       "rowId": "appearance.blur.size",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_duplicate_conflict",
@@ -145,121 +145,121 @@
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.contrast",
       "rowId": "appearance.blur.contrast",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.fullscreen_opacity",
       "rowId": "appearance.fullscreen_opacity",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.xray",
       "rowId": "appearance.blur.xray",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.shadow.enabled",
       "rowId": "appearance.shadow.enabled",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.shadow.sharp",
       "rowId": "appearance.shadow.sharp",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.shadow.range",
       "rowId": "appearance.shadow.range",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.shadow.render_power",
       "rowId": "appearance.shadow.render_power",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.shadow.color",
       "rowId": "decoration.shadow.color",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.shadow.color_inactive",
       "rowId": "decoration.shadow.color_inactive",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.shadow.offset",
       "rowId": "decoration.shadow.offset",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_display_render_risk",
@@ -277,229 +277,229 @@
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.gaps_in",
       "rowId": "appearance.gaps_in",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.gaps_out",
       "rowId": "appearance.gaps_out",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.border_size",
       "rowId": "appearance.border_size",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.rounding",
       "rowId": "appearance.rounding",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.active_opacity",
       "rowId": "appearance.active_opacity",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.inactive_opacity",
       "rowId": "appearance.inactive_opacity",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "animations.enabled",
       "rowId": "animations.enabled",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "animations.workspace_wraparound",
       "rowId": "animations.workspace_wraparound",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.glow.enabled",
       "rowId": "appearance.glow.enabled",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.enabled",
       "rowId": "group.groupbar.enabled",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.gradients",
       "rowId": "group.groupbar.gradients",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.stacked",
       "rowId": "group.groupbar.stacked",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.render_titles",
       "rowId": "group.groupbar.render_titles",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.scrolling",
       "rowId": "group.groupbar.scrolling",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.middle_click_close",
       "rowId": "group.groupbar.middle_click_close",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.round_only_edges",
       "rowId": "group.groupbar.round_only_edges",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.gradient_round_only_edges",
       "rowId": "group.groupbar.gradient_round_only_edges",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.keep_upper_gap",
       "rowId": "group.groupbar.keep_upper_gap",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.blur",
       "rowId": "group.groupbar.blur",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_duplicate_conflict",
@@ -517,493 +517,493 @@
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.disable_splash_rendering",
       "rowId": "misc.disable_splash_rendering",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.name_vk_after_proc",
       "rowId": "misc.name_vk_after_proc",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.always_follow_on_dnd",
       "rowId": "misc.always_follow_on_dnd",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.layers_hog_keyboard_focus",
       "rowId": "misc.layers_hog_keyboard_focus",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.animate_manual_resizes",
       "rowId": "misc.animate_manual_resizes",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.animate_mouse_windowdragging",
       "rowId": "misc.animate_mouse_windowdragging",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.enable_swallow",
       "rowId": "misc.enable_swallow",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.mouse_move_focuses_monitor",
       "rowId": "misc.mouse_move_focuses_monitor",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.close_special_on_empty",
       "rowId": "misc.close_special_on_empty",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.middle_click_paste",
       "rowId": "misc.middle_click_paste",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.disable_xdg_env_checks",
       "rowId": "misc.disable_xdg_env_checks",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.disable_hyprland_guiutils_check",
       "rowId": "misc.disable_hyprland_guiutils_check",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.disable_watchdog_warning",
       "rowId": "misc.disable_watchdog_warning",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.enable_anr_dialog",
       "rowId": "misc.enable_anr_dialog",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.screencopy_force_8b",
       "rowId": "misc.screencopy_force_8b",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.disable_scale_notification",
       "rowId": "misc.disable_scale_notification",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.size_limits_tiled",
       "rowId": "misc.size_limits_tiled",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.vrr",
       "rowId": "misc.vrr",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.mouse_move_enables_dpms",
       "rowId": "misc.mouse_move_enables_dpms",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.key_press_enables_dpms",
       "rowId": "misc.key_press_enables_dpms",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.disable_autoreload",
       "rowId": "misc.disable_autoreload",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.focus_on_activate",
       "rowId": "misc.focus_on_activate",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.allow_session_lock_restore",
       "rowId": "misc.allow_session_lock_restore",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.session_lock_xray",
       "rowId": "misc.session_lock_xray",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.on_focus_under_fullscreen",
       "rowId": "misc.on_focus_under_fullscreen",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.exit_window_retains_fullscreen",
       "rowId": "misc.exit_window_retains_fullscreen",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.snap.enabled",
       "rowId": "windows.snap.enabled",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.allow_tearing",
       "rowId": "general.allow_tearing",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.locale",
       "rowId": "general.locale",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.snap.window_gap",
       "rowId": "windows.snap.window_gap",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.snap.monitor_gap",
       "rowId": "windows.snap.monitor_gap",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.col.inactive_border",
       "rowId": "general.col.inactive_border",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.col.active_border",
       "rowId": "general.col.active_border",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.col.nogroup_border",
       "rowId": "general.col.nogroup_border",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.col.nogroup_border_active",
       "rowId": "general.col.nogroup_border_active",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.kb_model",
       "rowId": "input.kb_model",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.kb_layout",
       "rowId": "input.kb_layout",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.kb_variant",
       "rowId": "input.kb_variant",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.kb_options",
       "rowId": "input.kb_options",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.kb_rules",
       "rowId": "input.kb_rules",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.sensitivity",
       "rowId": "input.pointer_sensitivity",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_profile_mode_switch",
@@ -1021,337 +1021,337 @@
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.scroll_points",
       "rowId": "input.scroll_points",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.kb_file",
       "rowId": "input.kb_file",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.tablet.region_position",
       "rowId": "input.tablet.region_position",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.tablet.region_size",
       "rowId": "input.tablet.region_size",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.tablet.active_area_size",
       "rowId": "input.tablet.active_area_size",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.tablet.active_area_position",
       "rowId": "input.tablet.active_area_position",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.glow.color",
       "rowId": "decoration.glow.color",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.glow.color_inactive",
       "rowId": "decoration.glow.color_inactive",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.text_color",
       "rowId": "group.groupbar.text_color",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.text_color_inactive",
       "rowId": "group.groupbar.text_color_inactive",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.text_color_locked_active",
       "rowId": "group.groupbar.text_color_locked_active",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.text_color_locked_inactive",
       "rowId": "group.groupbar.text_color_locked_inactive",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.font_family",
       "rowId": "group.groupbar.font_family",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.col.border_active",
       "rowId": "group.col.border_active",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.col.border_inactive",
       "rowId": "group.col.border_inactive",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.col.border_locked_inactive",
       "rowId": "group.col.border_locked_inactive",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.col.border_locked_active",
       "rowId": "group.col.border_locked_active",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.col.active",
       "rowId": "group.groupbar.col.active",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.col.inactive",
       "rowId": "group.groupbar.col.inactive",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.col.locked_active",
       "rowId": "group.groupbar.col.locked_active",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.col.locked_inactive",
       "rowId": "group.groupbar.col.locked_inactive",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.col.splash",
       "rowId": "misc.col.splash",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.background_color",
       "rowId": "misc.background_color",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.font_family",
       "rowId": "misc.font_family",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.splash_font_family",
       "rowId": "misc.splash_font_family",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.swallow_regex",
       "rowId": "misc.swallow_regex",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.swallow_exception_regex",
       "rowId": "misc.swallow_exception_regex",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "layout.single_window_aspect_ratio",
       "rowId": "layout.single_window_aspect_ratio",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_duplicate_conflict",
@@ -1369,169 +1369,169 @@
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.noise",
       "rowId": "appearance.blur.noise",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.shadow.scale",
       "rowId": "appearance.shadow.scale",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.rounding_power",
       "rowId": "appearance.rounding_power",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.dim_strength",
       "rowId": "appearance.dim.strength",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.dim_special",
       "rowId": "appearance.dim.special",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.dim_around",
       "rowId": "appearance.dim.around",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.vibrancy",
       "rowId": "appearance.blur.vibrancy",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.vibrancy_darkness",
       "rowId": "appearance.blur.vibrancy_darkness",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.popups_ignorealpha",
       "rowId": "appearance.blur.popups_ignorealpha",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.blur.input_methods_ignorealpha",
       "rowId": "appearance.blur.input_methods_ignorealpha",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.glow.range",
       "rowId": "appearance.glow.range",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "decoration.glow.render_power",
       "rowId": "appearance.glow.render_power",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.float_gaps",
       "rowId": "general.float_gaps",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.gaps_workspaces",
       "rowId": "general.gaps_workspaces",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_duplicate_conflict",
@@ -1549,1681 +1549,1681 @@
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.no_focus_fallback",
       "rowId": "general.no_focus_fallback",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.resize_on_border",
       "rowId": "general.resize_on_border",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.extend_border_grab_area",
       "rowId": "general.extend_border_grab_area",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.hover_icon_on_border",
       "rowId": "general.hover_icon_on_border",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.resize_corner",
       "rowId": "general.resize_corner",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.snap.border_overlap",
       "rowId": "general.snap.border_overlap",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.snap.respect_gaps",
       "rowId": "general.snap.respect_gaps",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "general.modal_parent_blocking",
       "rowId": "general.modal_parent_blocking",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.numlock_by_default",
       "rowId": "input.numlock_by_default",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.resolve_binds_by_sym",
       "rowId": "input.resolve_binds_by_sym",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.repeat_rate",
       "rowId": "input.repeat_rate",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.repeat_delay",
       "rowId": "input.repeat_delay",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.force_no_accel",
       "rowId": "input.force_no_accel",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.rotation",
       "rowId": "input.rotation",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.left_handed",
       "rowId": "input.left_handed",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.scroll_button",
       "rowId": "input.scroll_button",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.scroll_button_lock",
       "rowId": "input.scroll_button_lock",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.scroll_factor",
       "rowId": "input.scroll_factor",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.scroll_method",
       "rowId": "input.scroll_method",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.natural_scroll",
       "rowId": "input.natural_scroll",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.follow_mouse_threshold",
       "rowId": "input.follow_mouse_threshold",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.follow_mouse",
       "rowId": "input.follow_mouse",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.focus_on_close",
       "rowId": "input.focus_on_close",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.mouse_refocus",
       "rowId": "input.mouse_refocus",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.float_switch_override_focus",
       "rowId": "input.float_switch_override_focus",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.special_fallthrough",
       "rowId": "input.special_fallthrough",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.off_window_axis_events",
       "rowId": "input.off_window_axis_events",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.emulate_discrete_scroll",
       "rowId": "input.emulate_discrete_scroll",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.follow_mouse_shrink",
       "rowId": "input.follow_mouse_shrink",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchpad.disable_while_typing",
       "rowId": "input.touchpad.disable_while_typing",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchpad.natural_scroll",
       "rowId": "input.touchpad.natural_scroll",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchpad.scroll_factor",
       "rowId": "input.touchpad.scroll_factor",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchpad.middle_button_emulation",
       "rowId": "input.touchpad.middle_button_emulation",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchpad.clickfinger_behavior",
       "rowId": "input.touchpad.clickfinger_behavior",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchpad.tap-to-click",
       "rowId": "input.touchpad.tap-to-click",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchpad.drag_lock",
       "rowId": "input.touchpad.drag_lock",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchpad.tap_button_map",
       "rowId": "input.touchpad.tap_button_map",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchpad.tap-and-drag",
       "rowId": "input.touchpad.tap-and-drag",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchpad.flip_x",
       "rowId": "input.touchpad.flip_x",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchpad.flip_y",
       "rowId": "input.touchpad.flip_y",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchpad.drag_3fg",
       "rowId": "input.touchpad.drag_3fg",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchdevice.transform",
       "rowId": "input.touchdevice.transform",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchdevice.enabled",
       "rowId": "input.touchdevice.enabled",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.touchdevice.output",
       "rowId": "input.touchdevice.output",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.virtualkeyboard.share_states",
       "rowId": "input.virtualkeyboard.share_states",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.virtualkeyboard.release_pressed_on_close",
       "rowId": "input.virtualkeyboard.release_pressed_on_close",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.tablet.transform",
       "rowId": "input.tablet.transform",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.tablet.absolute_region_position",
       "rowId": "input.tablet.absolute_region_position",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.tablet.relative_input",
       "rowId": "input.tablet.relative_input",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.tablet.output",
       "rowId": "input.tablet.output",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "input.tablet.left_handed",
       "rowId": "input.tablet.left_handed",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.workspace_swipe_distance",
       "rowId": "gestures.workspace_swipe_distance",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.workspace_swipe_touch",
       "rowId": "gestures.workspace_swipe_touch",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.workspace_swipe_invert",
       "rowId": "gestures.workspace_swipe_invert",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.workspace_swipe_touch_invert",
       "rowId": "gestures.workspace_swipe_touch_invert",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.workspace_swipe_min_speed_to_force",
       "rowId": "gestures.workspace_swipe_min_speed_to_force",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.workspace_swipe_cancel_ratio",
       "rowId": "gestures.workspace_swipe_cancel_ratio",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.workspace_swipe_create_new",
       "rowId": "gestures.workspace_swipe_create_new",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.workspace_swipe_direction_lock",
       "rowId": "gestures.workspace_swipe_direction_lock",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.workspace_swipe_direction_lock_threshold",
       "rowId": "gestures.workspace_swipe_direction_lock_threshold",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.workspace_swipe_forever",
       "rowId": "gestures.workspace_swipe_forever",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.workspace_swipe_use_r",
       "rowId": "gestures.workspace_swipe_use_r",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.close_max_timeout",
       "rowId": "gestures.close_max_timeout",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.scrolling.move_snap_to_grid",
       "rowId": "gestures.scrolling.move_snap_to_grid",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "gestures.scrolling.move_snap_cursor",
       "rowId": "gestures.scrolling.move_snap_cursor",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.insert_after_current",
       "rowId": "group.insert_after_current",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.focus_removed_window",
       "rowId": "group.focus_removed_window",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.merge_groups_on_drag",
       "rowId": "group.merge_groups_on_drag",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.merge_groups_on_groupbar",
       "rowId": "group.merge_groups_on_groupbar",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.auto_group",
       "rowId": "group.auto_group",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.drag_into_group",
       "rowId": "group.drag_into_group",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.merge_floated_into_tiled_on_groupbar",
       "rowId": "group.merge_floated_into_tiled_on_groupbar",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.group_on_movetoworkspace",
       "rowId": "group.group_on_movetoworkspace",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.font_weight_active",
       "rowId": "group.groupbar.font_weight_active",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.font_weight_inactive",
       "rowId": "group.groupbar.font_weight_inactive",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.font_size",
       "rowId": "group.groupbar.font_size",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.height",
       "rowId": "group.groupbar.height",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.indicator_gap",
       "rowId": "group.groupbar.indicator_gap",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.indicator_height",
       "rowId": "group.groupbar.indicator_height",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.priority",
       "rowId": "group.groupbar.priority",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.rounding",
       "rowId": "group.groupbar.rounding",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.rounding_power",
       "rowId": "group.groupbar.rounding_power",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.gradient_rounding",
       "rowId": "group.groupbar.gradient_rounding",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.gradient_rounding_power",
       "rowId": "group.groupbar.gradient_rounding_power",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.gaps_out",
       "rowId": "group.groupbar.gaps_out",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.gaps_in",
       "rowId": "group.groupbar.gaps_in",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.text_offset",
       "rowId": "group.groupbar.text_offset",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "group.groupbar.text_padding",
       "rowId": "group.groupbar.text_padding",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.force_default_wallpaper",
       "rowId": "misc.force_default_wallpaper",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.initial_workspace_tracking",
       "rowId": "misc.initial_workspace_tracking",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.render_unfocused_fps",
       "rowId": "misc.render_unfocused_fps",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.lockdead_screen_delay",
       "rowId": "misc.lockdead_screen_delay",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "misc.anr_missed_pings",
       "rowId": "misc.anr_missed_pings",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.pass_mouse_when_bound",
       "rowId": "binds.pass_mouse_when_bound",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.workspace_back_and_forth",
       "rowId": "binds.workspace_back_and_forth",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.hide_special_on_workspace_change",
       "rowId": "binds.hide_special_on_workspace_change",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.allow_workspace_cycles",
       "rowId": "binds.allow_workspace_cycles",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.workspace_center_on",
       "rowId": "binds.workspace_center_on",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.focus_preferred_method",
       "rowId": "binds.focus_preferred_method",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.ignore_group_lock",
       "rowId": "binds.ignore_group_lock",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.movefocus_cycles_groupfirst",
       "rowId": "binds.movefocus_cycles_groupfirst",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.movefocus_cycles_fullscreen",
       "rowId": "binds.movefocus_cycles_fullscreen",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.disable_keybind_grabbing",
       "rowId": "binds.disable_keybind_grabbing",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.window_direction_monitor_fallback",
       "rowId": "binds.window_direction_monitor_fallback",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.drag_threshold",
       "rowId": "binds.drag_threshold",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "binds.allow_pin_fullscreen",
       "rowId": "binds.allow_pin_fullscreen",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "layout.single_window_aspect_ratio_tolerance",
       "rowId": "layout.single_window_aspect_ratio_tolerance",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "dwindle.force_split",
       "rowId": "dwindle.force_split",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "dwindle.preserve_split",
       "rowId": "dwindle.preserve_split",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "dwindle.smart_split",
       "rowId": "dwindle.smart_split",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "dwindle.smart_resizing",
       "rowId": "dwindle.smart_resizing",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "dwindle.permanent_direction_override",
       "rowId": "dwindle.permanent_direction_override",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "dwindle.special_scale_factor",
       "rowId": "dwindle.special_scale_factor",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "dwindle.split_width_multiplier",
       "rowId": "dwindle.split_width_multiplier",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "dwindle.use_active_for_splits",
       "rowId": "dwindle.use_active_for_splits",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "dwindle.default_split_ratio",
       "rowId": "dwindle.default_split_ratio",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "dwindle.split_bias",
       "rowId": "dwindle.split_bias",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "dwindle.precise_mouse_move",
       "rowId": "dwindle.precise_mouse_move",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.allow_small_split",
       "rowId": "master.allow_small_split",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.special_scale_factor",
       "rowId": "master.special_scale_factor",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.mfact",
       "rowId": "master.mfact",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.new_on_top",
       "rowId": "master.new_on_top",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.new_status",
       "rowId": "master.new_status",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.new_on_active",
       "rowId": "master.new_on_active",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.orientation",
       "rowId": "master.orientation",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.slave_count_for_center_master",
       "rowId": "master.slave_count_for_center_master",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.center_ignores_reserved",
       "rowId": "master.center_ignores_reserved",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.center_master_fallback",
       "rowId": "master.center_master_fallback",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.smart_resizing",
       "rowId": "master.smart_resizing",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.drop_at_cursor",
       "rowId": "master.drop_at_cursor",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "master.always_keep_position",
       "rowId": "master.always_keep_position",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "scrolling.column_width",
       "rowId": "scrolling.column_width",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "scrolling.focus_fit_method",
       "rowId": "scrolling.focus_fit_method",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "scrolling.follow_focus",
       "rowId": "scrolling.follow_focus",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "scrolling.follow_min_visible",
       "rowId": "scrolling.follow_min_visible",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "scrolling.explicit_column_widths",
       "rowId": "scrolling.explicit_column_widths",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "scrolling.wrap_focus",
       "rowId": "scrolling.wrap_focus",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "scrolling.wrap_swapcol",
       "rowId": "scrolling.wrap_swapcol",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "scrolling.direction",
       "rowId": "scrolling.direction",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_missing_line",
       "blockerSubtype": "not_configured_default_value",
       "currentStatus": "not configured",
-      "evidence": "not configured",
+      "evidence": "missing/default insertion is limited to a single explicit root config file",
       "graphOccurrenceCount": 0,
       "lineNumber": null,
       "officialSetting": "scrolling.fullscreen_on_one_column",
       "rowId": "scrolling.fullscreen_on_one_column",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "blockedReason": "blocked_high_risk",

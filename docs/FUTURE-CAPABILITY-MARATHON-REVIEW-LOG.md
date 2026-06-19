@@ -10,9 +10,10 @@
 - dist/v0.1.0 modified: no
 - v0.55.2 data/model preserved: yes
 - Unsafe production behavior enabled: no
+- Production missing/default insertion enabled: yes, only for reviewed single-root normal-scalar safe-batch targets
 
 ## Phase results
-- Missing/default insertion: safe-env-only planner/executor proof plus disabled production review scaffolding added; production remains blocked.
+- Missing/default insertion: safe-env-only planner/executor proof plus production single-root normal-scalar safe-batch insertion added; unsafe insertion layouts remain blocked.
 - Duplicate setting resolution: read-only occurrence model, safe-env exact-line replacement proof, disabled occurrence selector UI, and disabled occurrence review workflow added; production remains blocked.
 - High-risk/display-render recovery: mock watchdog/recovery state machine, disabled review model, and rollback proof workflow added; real writes remain blocked.
 - Structured-family editors/writes: read-only disabled editor scaffold, invalid-input candidate validation, and disabled `hl.bind` review workflow added; writes remain blocked.
@@ -40,4 +41,4 @@
 - GTK safe-env evidence matrix: passed (`/tmp/hyprland-settings-gtk-automation/20260619_101038`)
 
 ## Next recommended sprint
-Choose one blocked production activation track for an explicit approval/architecture sprint. No future-capability track should be enabled without that approval boundary, trusted data where required, and fresh validation.
+Review the gated missing/default insertion implementation, then choose whether to expand source/include insertion target selection or start an explicit approval/architecture sprint for one still-blocked future track.

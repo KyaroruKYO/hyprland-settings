@@ -95,7 +95,7 @@
       "filesWritten": false,
       "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_missing_line-13319-1781838095545707231",
       "partialApplyOccurred": false,
-      "userFacingCopy": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+      "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
     {
       "backupCreated": false,

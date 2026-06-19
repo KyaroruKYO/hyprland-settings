@@ -11,9 +11,8 @@ fn read_json(path: &str) -> serde_json::Value {
 }
 
 #[test]
-fn future_capability_reports_exist_and_keep_production_disabled() {
+fn future_capability_reports_exist_and_keep_unsafe_production_tracks_disabled() {
     let reports = [
-        "data/reports/future-capability-missing-default-insertion.v0.55.2.json",
         "data/reports/future-capability-duplicate-resolution.v0.55.2.json",
         "data/reports/future-capability-high-risk-recovery.v0.55.2.json",
         "data/reports/future-capability-structured-families.v0.55.2.json",
@@ -33,6 +32,16 @@ fn future_capability_reports_exist_and_keep_production_disabled() {
         assert_eq!(report["whetherProductionBehaviorEnabled"], false);
         assert_ne!(report["implementationStatus"], "implemented_and_enabled");
     }
+
+    let insertion =
+        read_json("data/reports/future-capability-missing-default-insertion.v0.55.2.json");
+    assert_eq!(insertion["implementationStatus"], "implemented_and_enabled");
+    assert_eq!(
+        insertion["safetyBoundaries"]["productionInsertionEnabled"],
+        true
+    );
+    assert_eq!(insertion["whetherRealConfigTouched"], false);
+    assert_eq!(insertion["whetherRuntimeTouched"], false);
 }
 
 #[test]
@@ -73,12 +82,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "define approval gates and architecture for any production activation; no remaining safe implementation work is production-enableable without approval/trusted data"
+        "define source/include target-selection architecture if missing/default insertion should expand beyond the current single-root normal-scalar gate; otherwise choose one still-disabled future track for explicit approval"
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("blocked production activation track"));
+        .contains("gated missing/default insertion implementation"));
 }
 
 #[test]
@@ -89,7 +98,7 @@ fn active_safe_batch_copy_still_blocks_future_tracks() {
         .any(|line| line.contains("Safe batch write")));
     assert_eq!(
         SafeBatchEligibility::BlockedMissingLine.user_facing_blocked_copy(),
-        "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+        "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     );
     assert!(SafeBatchEligibility::BlockedDuplicateConflict
         .user_facing_blocked_copy()

@@ -26,6 +26,7 @@
   ],
   "phasesCompleted": [
     "missing_default_insertion_safe_env_proof",
+    "production_missing_default_single_root_insertion",
     "duplicate_occurrence_model_and_safe_env_replacement_proof",
     "disabled_duplicate_occurrence_selector_ui",
     "duplicate_occurrence_review_workflow",
@@ -46,7 +47,6 @@
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
-    "production_missing_default_insertion",
     "production_duplicate_resolution",
     "high_risk_display_render_recovery",
     "production_structured_family_writes",
@@ -82,5 +82,5 @@
     "gtkSafeEnvMatrix": "passed",
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_101038"
   },
-  "nextRecommendedAction": "All listed future tracks now have concrete disabled or safe-env review models; next work requires explicit approval/trusted data or new architecture before production activation."
+  "nextRecommendedAction": "Missing/default insertion is now production-enabled only for the narrow single-root normal-scalar safe-batch scope. All other future tracks still require explicit approval, trusted data, or new architecture before production activation."
 }

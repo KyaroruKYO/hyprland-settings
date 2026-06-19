@@ -54,7 +54,7 @@ fn missing_default_review_scaffold_stays_disabled_for_production() {
     assert!(!review.production_apply_enabled);
     assert!(review
         .user_copy
-        .contains("does not add new config lines yet"));
+        .contains("limited to reviewed single-file safe-batch targets"));
     assert!(review
         .required_gates
         .iter()

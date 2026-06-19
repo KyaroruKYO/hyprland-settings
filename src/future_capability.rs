@@ -24,7 +24,7 @@ pub fn disabled_missing_default_insertion_review(
         target_path: plan.target_path.clone(),
         proposed_line: plan.insertion_line.clone(),
         production_apply_enabled: false,
-        user_copy: "This setting uses Hyprland's default value. Insertion review is available as fixture proof only; production Apply does not add new config lines yet.".to_string(),
+        user_copy: "This setting uses Hyprland's default value. Production insertion is limited to reviewed single-file safe-batch targets; this scaffold stays disabled for unsupported layouts.".to_string(),
         required_gates: vec![
             "explicit insertion target".to_string(),
             "backup byte-equality proof".to_string(),

@@ -18,7 +18,7 @@
     "search": "covered by existing test suite"
   },
   "artifactKind": "live_scenario_harness_summary",
-  "backupRoot": "~/Documents/system-audit/hyprland-settings-live-test-backups/20260618_202125",
+  "backupRoot": "created during validation; not committed",
   "countsAfter": "341 readable / 341 writable / 0 blocked",
   "countsBefore": "341 readable / 341 writable / 0 blocked",
   "criticalIssuesFound": [],
@@ -32,7 +32,7 @@
     "Safe-env scenario reports are redacted and do not retain screenshots."
   ],
   "nextRecommendedSprint": "Add noninteractive GTK automation for safe-env app launch and close, then rerun the scenario matrix without live-swap.",
-  "restoreVerificationResult": "passed",
+  "restoreVerificationResult": "pending external backup verification",
   "safeBatchTempWriteResults": {
     "hyprlandReloadAttempted": false,
     "multiFileSucceeded": true,
@@ -76,7 +76,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": false,
       "safeBatchWritesSucceeded": false,
       "scenarioName": "minimal_single_config",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/minimal-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/minimal-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     },
@@ -102,7 +102,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": true,
       "safeBatchWritesSucceeded": true,
       "scenarioName": "large_single_config",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/flat-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/flat-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     },
@@ -128,7 +128,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": true,
       "safeBatchWritesSucceeded": true,
       "scenarioName": "source_include_config",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/source-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/source-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     },
@@ -154,7 +154,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": false,
       "safeBatchWritesSucceeded": false,
       "scenarioName": "nested_source_config",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/nested-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/nested-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     },
@@ -180,7 +180,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": false,
       "safeBatchWritesSucceeded": false,
       "scenarioName": "symlink_current_profile",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/symlink-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/symlink-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     },
@@ -206,7 +206,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": false,
       "safeBatchWritesSucceeded": false,
       "scenarioName": "duplicate_conflict",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/duplicate-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/duplicate-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     },
@@ -232,7 +232,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": false,
       "safeBatchWritesSucceeded": false,
       "scenarioName": "generated_config",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/generated-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/generated-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     },
@@ -258,7 +258,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": false,
       "safeBatchWritesSucceeded": false,
       "scenarioName": "script_managed_config",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/script-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/script-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     },
@@ -266,10 +266,10 @@
       "agsDisabledRestored": "not used",
       "appLaunchResult": "not launched; noninteractive GTK close automation was not available, so source/model/discovery proof was used",
       "appLaunched": false,
-      "applyAvailability": "blocked",
-      "blockedRows": 1,
+      "applyAvailability": "available for executable temp safe-batch plan",
+      "blockedRows": 0,
       "configDiscovered": true,
-      "eligibleRows": 0,
+      "eligibleRows": 1,
       "failuresTested": [],
       "hyprlandReloadUsed": false,
       "issuesFound": [],
@@ -281,10 +281,10 @@
         "Use live-swap only when a future test needs true real-path discovery and restore verification has passed."
       ],
       "restoreTested": false,
-      "safeBatchWritesAttemptedAgainstTempFiles": false,
-      "safeBatchWritesSucceeded": false,
+      "safeBatchWritesAttemptedAgainstTempFiles": true,
+      "safeBatchWritesSucceeded": true,
       "scenarioName": "missing_default_only",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/missing-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/missing-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     },
@@ -310,7 +310,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": false,
       "safeBatchWritesSucceeded": false,
       "scenarioName": "high_risk_display_risk",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/high-risk-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-545-1781894124376238028/high-risk-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     }
@@ -330,15 +330,15 @@
   "schemaVersion": 1,
   "startingCommit": "67ae30ecda72839fca76d57f9cd3f2eaed58a95a",
   "validation": {
-    "cargoBuildRelease": "passed",
-    "cargoCheck": "passed",
-    "cargoFmt": "passed",
-    "cargoFmtCheck": "passed",
-    "cargoTest": "passed",
-    "gitDiffCheck": "passed",
-    "gitStatusShort": "recorded",
-    "jqReports": "passed",
-    "restoreVerification": "passed"
+    "cargoBuildRelease": "pending",
+    "cargoCheck": "pending",
+    "cargoFmt": "pending",
+    "cargoFmtCheck": "pending",
+    "cargoTest": "pending",
+    "gitDiffCheck": "pending",
+    "gitStatusShort": "pending",
+    "jqReports": "pending",
+    "restoreVerification": "pending external backup verification"
   },
   "waybarDisabled": false
 }

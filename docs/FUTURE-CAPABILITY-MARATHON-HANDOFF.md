@@ -11,7 +11,7 @@
 
 ## Completed phases
 - All seven future capability tracks were reviewed and recorded.
-- Missing/default insertion received safe-env-only planner/executor proof plus disabled production review scaffolding.
+- Missing/default insertion received safe-env-only planner/executor proof, disabled review scaffolding for unsupported layouts, and a production-enabled single-root normal-scalar safe-batch insertion path.
 - Duplicate resolution received a read-only occurrence model and safe-env exact-line replacement proof.
 - Duplicate detail UI now has a disabled occurrence selector showing file, line, raw line, value, and source depth.
 - Duplicate resolution now has a disabled review workflow for no selection, invalid selection, and selected-but-production-disabled states.
@@ -33,7 +33,7 @@
 - Deterministic tests were added for each concrete safe-env/mock model and disabled production status.
 
 ## Partial phases
-- Missing/default insertion has safe-env-only append-section insertion with backup, reread verification, and restore-on-failure.
+- Missing/default insertion is enabled only for reviewed single-file normal scalar safe-batch targets; source/include target selection and managed/duplicate/high-risk/structured/profile/runtime insertion remain blocked.
 - Duplicate resolution has no production write path despite safe-env exact-line proof.
 - Runtime/reload and high-risk recovery remain mock/dry-run only.
 
@@ -43,11 +43,11 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Define explicit approval gates and architecture for any production activation track. No remaining future-capability track has a safe production-enablement path without user approval, trusted external data, or new architecture.
+Define source/include target-selection architecture if missing/default insertion should expand beyond the current single-root normal-scalar gate; otherwise choose one still-disabled future track for explicit approval.
 
 ## Validation status
 Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `jq empty data/reports/*.json`, `git diff --check`, and `tools/live_scenario_harness/run_gtk_evidence_matrix.sh`.
 GTK evidence root: `/tmp/hyprland-settings-gtk-automation/20260619_101038`.
 
 ## Recommended next Codex prompt
-Review the `future-capability-marathon` branch and choose which blocked production activation track, if any, should receive explicit approval and a dedicated architecture sprint.
+Review the gated missing/default insertion implementation, then decide whether to expand source/include insertion target selection or choose another blocked production activation track for a dedicated architecture sprint.

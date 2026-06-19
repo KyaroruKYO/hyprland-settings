@@ -145,7 +145,7 @@ fn duplicate_missing_and_managed_blockers_explain_why_apply_is_blocked() {
     assert!(!missing_plan.can_execute);
     assert!(missing_plan.blocked_changes.iter().any(|change| change
         .user_facing_copy
-        .contains("does not add new config lines")));
+        .contains("not safe for automatic insertion")));
 
     for category in [
         SafeBatchEligibility::BlockedGeneratedFile,

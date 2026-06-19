@@ -6,6 +6,7 @@
   "latestCommit": "see branch HEAD after final handoff commit",
   "completedPhases": [
     "missing_default_insertion_safe_env_proof",
+    "production_missing_default_single_root_insertion",
     "duplicate_occurrence_model_and_safe_env_replacement_proof",
     "disabled_duplicate_occurrence_selector_ui",
     "duplicate_occurrence_review_workflow",
@@ -27,10 +28,6 @@
   "partialPhases": [],
   "blockedPhases": [
     {
-      "phase": "production_missing_default_insertion",
-      "reason": "requires production target-selection approval and UI gate before Apply can insert missing lines"
-    },
-    {
       "phase": "production_duplicate_resolution",
       "reason": "requires explicit production approval gate before the disabled review workflow and safe-env replacement proof can be wired to Apply"
     },
@@ -43,7 +40,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "define approval gates and architecture for any production activation; no remaining safe implementation work is production-enableable without approval/trusted data",
+  "nextExactPhaseToContinue": "define source/include target-selection architecture if missing/default insertion should expand beyond the current single-root normal-scalar gate; otherwise choose one still-disabled future track for explicit approval",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -70,10 +67,11 @@
   "testsFailing": [],
   "validationStatus": "passed; GTK safe-env evidence root /tmp/hyprland-settings-gtk-automation/20260619_101038",
   "knownRisks": [
-    "Production insertion, duplicate resolution, structured writes, profile switching, runtime reload, and high-risk writes remain intentionally inactive despite safe-env/mock scaffolding.",
+    "Missing/default insertion is production-enabled only for single-root normal-scalar safe-batch targets; source/include, managed, duplicate, high-risk, structured, profile/mode, runtime, and ambiguous insertion targets remain blocked.",
+    "Duplicate resolution, structured writes, profile switching, runtime reload, and high-risk writes remain intentionally inactive despite safe-env/mock scaffolding.",
     "Hyprland 0.55.4 migration is not activated."
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "Review the future-capability-marathon branch and decide which blocked production activation track, if any, should receive explicit approval and a dedicated architecture sprint."
+  "recommendedNextCodexPrompt": "Review the gated missing/default insertion implementation, then decide whether to expand source/include insertion target selection or choose another blocked production activation track for a dedicated architecture sprint."
 }
