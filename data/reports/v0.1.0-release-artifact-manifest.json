@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "artifactKind": "v0.1.0-release-artifact-manifest",
-  "generatedAt": "2026-06-19T00:31:37-07:00",
+  "generatedAt": "2026-06-19T00:33:42-07:00",
   "startingCommit": "58dfea0e5be9b576ac6cf604b1d70460c8d4cf79",
-  "releaseCommit": null,
+  "releaseCommit": "74efa283a3d7259b8e15b1c93cad43942d9f9a1a",
   "tagName": "v0.1.0",
   "releaseScope": "guarded normal-scalar safe-batch Hyprland Settings app for v0.55.2 data/model",
   "projectModel": "341 readable / 341 writable / 0 blocked",
@@ -30,19 +30,48 @@
       "appstreamValidate": "passed",
       "gitDiffCheck": "passed"
     },
-    "finalArtifactValidation": "pending until tag and artifacts are created"
+    "finalArtifactValidation": {
+      "tagCreated": "passed",
+      "tagPushed": "passed",
+      "sourceArchiveCreated": "passed",
+      "binaryArtifactCreated": "passed",
+      "checksumsCreated": "passed",
+      "githubDraftRelease": "skipped because gh token is invalid"
+    }
   },
   "releaseNotesPath": "docs/releases/v0.1.0.md",
-  "sourceArchivePath": null,
-  "binaryArtifactPath": null,
-  "checksumPath": null,
+  "sourceArchivePath": "dist/v0.1.0/hyprland-settings-v0.1.0-source.tar.gz",
+  "binaryArtifactPath": "dist/v0.1.0/hyprland-settings-v0.1.0-linux-x86_64.tar.gz",
+  "checksumPath": "dist/v0.1.0/SHA256SUMS",
   "githubDraftReleaseCreated": false,
   "githubDraftReleaseUrl": null,
-  "tagCreated": false,
-  "tagPushed": false,
+  "githubDraftReleaseSkippedReason": "gh is installed, but the configured token is invalid for account KyaroruKYO",
+  "githubDraftReleaseManualCommand": "gh release create v0.1.0 --draft --title \"Hyprland Settings v0.1.0\" --notes-file docs/releases/v0.1.0.md dist/v0.1.0/hyprland-settings-v0.1.0-source.tar.gz dist/v0.1.0/hyprland-settings-v0.1.0-linux-x86_64.tar.gz dist/v0.1.0/SHA256SUMS",
+  "tagCreated": true,
+  "tagPushed": true,
   "publicReleasePublished": false,
-  "packageArtifactCreated": false,
+  "packageArtifactCreated": true,
   "packageArtifactPublished": false,
+  "artifacts": {
+    "sourceArchive": {
+      "path": "dist/v0.1.0/hyprland-settings-v0.1.0-source.tar.gz",
+      "sha256": "f6eb75e14dba0836e1bb3aff94091d882e39e1cc556e88e3052582b30ea11a87"
+    },
+    "binaryArtifact": {
+      "path": "dist/v0.1.0/hyprland-settings-v0.1.0-linux-x86_64.tar.gz",
+      "sha256": "46aa92f1066c27eab3ccb51e0b52dacf6e2cf18d3143bfef4538dd1d02a3e27c",
+      "includedFiles": [
+        "hyprland-settings",
+        "README.md",
+        "LICENSE",
+        "data/applications/io.github.kyarorukyo.hyprlandsettings.desktop",
+        "data/metainfo/io.github.kyarorukyo.hyprlandsettings.metainfo.xml"
+      ]
+    },
+    "checksumFile": {
+      "path": "dist/v0.1.0/SHA256SUMS"
+    }
+  },
   "knownLimitations": [
     "missing/default insertion is not supported",
     "duplicate auto-resolution is not supported",
