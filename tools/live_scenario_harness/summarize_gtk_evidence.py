@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 PROJECT_MODEL = "v0.55.2 / 341 readable / 341 writable / 0 blocked"
-STARTING_COMMIT = "ff552d8b507f9e6842874a3c146ae28deee23b68"
+STARTING_COMMIT = "0869731816cdf0e14237eb86b325a214bab60462"
 PROOF_LEVELS = {
     "live_gtk_atspi_proof",
     "safe_env_model_proof",
@@ -15,6 +15,57 @@ PROOF_LEVELS = {
     "not_proven",
 }
 OLD_EVIDENCE_RE = re.compile(r"/tmp/hyprland-settings-gtk-automation/20260618_[0-9]+")
+
+BLOCKED_CATEGORY_PROOFS = {
+    "defaultMissingBlockedCopy": {
+        "category": "default_missing_line",
+        "scenario": "missing_default_only",
+        "target": "MissingDefaultDetail",
+        "expectedText": "Uses Hyprland default",
+    },
+    "duplicateBlockedCopy": {
+        "category": "duplicate_conflict",
+        "scenario": "duplicate_conflict",
+        "target": "DuplicateConflictDetail",
+        "expectedText": "This setting appears more than once in your config",
+    },
+    "generatedBlockedCopy": {
+        "category": "generated_file",
+        "scenario": "generated_config",
+        "target": "GeneratedBlockedDetail",
+        "expectedText": "generated",
+    },
+    "scriptManagedBlockedCopy": {
+        "category": "script_managed_file",
+        "scenario": "script_managed_config",
+        "target": "ScriptManagedBlockedDetail",
+        "expectedText": "script",
+    },
+    "symlinkCurrentProfileBlockedCopy": {
+        "category": "symlink_current_profile",
+        "scenario": "symlink_current_profile",
+        "target": "SymlinkManagedBlockedDetail",
+        "expectedText": "symlink",
+    },
+    "highRiskBlockedCopy": {
+        "category": "high_risk",
+        "scenario": "high_risk_display_risk",
+        "target": "HighRiskDetail",
+        "expectedText": "Extra care needed",
+    },
+    "displayRenderRiskBlockedCopy": {
+        "category": "display_render_risk",
+        "scenario": "high_risk_display_risk",
+        "target": "DisplayRenderRiskDetail",
+        "expectedText": "display/render",
+    },
+    "profileModeSwitchBlockedCopy": {
+        "category": "profile_mode_switch",
+        "scenario": "symlink_current_profile",
+        "target": "ProfileModeSwitchDetail",
+        "expectedText": "profile",
+    },
+}
 
 
 def read_json(path):
@@ -97,6 +148,22 @@ def run_summary(run_dir):
             "duplicateBlockedReasonTextCollected": bool(
                 accessibility.get("duplicateBlockedReasonTextCollected")
             ),
+            "blockedCategory": accessibility.get("blockedCategory"),
+            "blockedCategoryDetailNavigationAttempted": bool(
+                accessibility.get("blockedCategoryDetailNavigationAttempted")
+            ),
+            "blockedCategoryDetailNavigationSucceeded": bool(
+                accessibility.get("blockedCategoryDetailNavigationSucceeded")
+            ),
+            "blockedCategoryReasonTextCollected": bool(
+                accessibility.get("blockedCategoryReasonTextCollected")
+            ),
+            "blockedCategoryExpectedTextCollected": bool(
+                accessibility.get("blockedCategoryExpectedTextCollected")
+            ),
+            "blockedCategorySelectionFallbackUsed": bool(
+                accessibility.get("blockedCategorySelectionFallbackUsed")
+            ),
             "duplicateConflictDetailNavigationAttempted": bool(
                 accessibility.get("duplicateConflictDetailNavigationAttempted")
             ),
@@ -114,6 +181,7 @@ def aggregate(runs):
     def any_run(predicate):
         return any(predicate(run) for run in runs)
 
+    by_blocked_category = proof_level_by_blocked_category(runs)
     by_area = {
         "Dashboard": proof(any_run(lambda run: "dashboard" in all_terms(run))),
         "Config": proof(any_run(lambda run: "config" in all_terms(run))),
@@ -123,10 +191,32 @@ def aggregate(runs):
         "settingRow": proof(any_run(lambda run: "FirstBlockedSettingRow" in run["name"] and run["accessibility"]["navigationAttempted"]), fallback=True),
         "detailPane": proof(any_run(lambda run: run["accessibility"]["detailPaneTextCollected"])),
         "blockedReason": proof(any_run(lambda run: run["accessibility"]["blockedReasonTextCollected"])),
-        "duplicateBlockedCopy": proof(any_run(lambda run: run["scenario"] == "duplicate_conflict" and run["accessibility"]["duplicateBlockedReasonTextCollected"]), fallback=True),
-        "generatedScriptSymlinkBlockedCopy": proof(any_run(lambda run: run["scenario"] in {"generated_config", "script_managed_config", "symlink_current_profile"} and any(term in all_terms(run) for term in ["generated", "script", "symlink"])), fallback=True),
-        "highRiskDisplayRisk": proof(any_run(lambda run: run["scenario"] == "high_risk_display_risk" and ("display" in all_terms(run) or "high-risk" in all_terms(run))), fallback=True),
+        "defaultMissingBlockedCopy": by_blocked_category["defaultMissingBlockedCopy"],
+        "duplicateBlockedCopy": by_blocked_category["duplicateBlockedCopy"],
+        "generatedBlockedCopy": by_blocked_category["generatedBlockedCopy"],
+        "scriptManagedBlockedCopy": by_blocked_category["scriptManagedBlockedCopy"],
+        "symlinkCurrentProfileBlockedCopy": by_blocked_category["symlinkCurrentProfileBlockedCopy"],
+        "highRiskBlockedCopy": by_blocked_category["highRiskBlockedCopy"],
+        "displayRenderRiskBlockedCopy": by_blocked_category["displayRenderRiskBlockedCopy"],
+        "profileModeSwitchBlockedCopy": by_blocked_category["profileModeSwitchBlockedCopy"],
+        "generatedScriptSymlinkBlockedCopy": proof(
+            all(
+                by_blocked_category[key] == "live_gtk_atspi_proof"
+                for key in [
+                    "generatedBlockedCopy",
+                    "scriptManagedBlockedCopy",
+                    "symlinkCurrentProfileBlockedCopy",
+                ]
+            ),
+            fallback=True,
+        ),
+        "highRiskDisplayRisk": proof(
+            by_blocked_category["highRiskBlockedCopy"] == "live_gtk_atspi_proof"
+            and by_blocked_category["displayRenderRiskBlockedCopy"] == "live_gtk_atspi_proof",
+            fallback=True,
+        ),
     }
+    category_results = blocked_category_results(runs, by_blocked_category)
 
     return {
         "appLaunchAttempted": bool(runs),
@@ -142,6 +232,9 @@ def aggregate(runs):
         "duplicateConflictDetailNavigationAttempted": any_run(lambda run: run["accessibility"]["duplicateConflictDetailNavigationAttempted"]),
         "duplicateConflictDetailNavigationSucceeded": any_run(lambda run: run["accessibility"]["duplicateConflictDetailNavigationSucceeded"]),
         "duplicateBlockedReasonTextCollected": any_run(lambda run: run["accessibility"]["duplicateBlockedReasonTextCollected"]),
+        "blockedCategoryDetailNavigationAttempted": any_run(lambda run: run["accessibility"]["blockedCategoryDetailNavigationAttempted"]),
+        "blockedCategoryDetailNavigationSucceeded": any_run(lambda run: run["accessibility"]["blockedCategoryDetailNavigationSucceeded"]),
+        "blockedCategoryReasonTextCollected": any_run(lambda run: run["accessibility"]["blockedCategoryReasonTextCollected"]),
         "closeSucceeded": all(run["probe"]["closeSucceeded"] for run in runs) if runs else False,
         "safeEnvModeUsed": all(run["probe"]["safeEnvModeUsed"] for run in runs) if runs else False,
         "liveSwapModeUsed": any_run(lambda run: run["probe"]["liveSwapModeUsed"]),
@@ -155,8 +248,81 @@ def aggregate(runs):
         "luaExecuted": any_run(lambda run: run["probe"]["luaExecuted"]),
         "pyatspiAvailable": any_run(lambda run: run["accessibility"]["pyatspiAvailable"]),
         "proofLevelByUiArea": by_area,
-        "fallbackProofUsed": any(level in {"source_model_fallback", "not_proven"} for level in by_area.values()),
+        "proofLevelByBlockedCategory": by_blocked_category,
+        "blockedCategoryResults": category_results,
+        "fallbackProofUsed": any(level in {"source_model_fallback", "not_proven"} for level in by_area.values())
+        or any(level in {"source_model_fallback", "not_proven"} for level in by_blocked_category.values()),
     }
+
+
+def matching_category_run(runs, spec):
+    for run in runs:
+        if run["scenario"] == spec["scenario"] and run["navigationTarget"] == spec["target"]:
+            return run
+    return None
+
+
+def proof_level_by_blocked_category(runs):
+    levels = {}
+    for key, spec in BLOCKED_CATEGORY_PROOFS.items():
+        run = matching_category_run(runs, spec)
+        if run is None:
+            levels[key] = "not_proven"
+            continue
+        live = (
+            run["accessibility"]["succeeded"]
+            and run["accessibility"]["navigationAttempted"]
+            and run["accessibility"]["navigationSucceeded"]
+            and (
+                run["accessibility"]["blockedCategoryExpectedTextCollected"]
+                or run["accessibility"]["blockedCategoryReasonTextCollected"]
+                or (
+                    key == "duplicateBlockedCopy"
+                    and run["accessibility"]["duplicateBlockedReasonTextCollected"]
+                )
+            )
+        )
+        levels[key] = "live_gtk_atspi_proof" if live else "not_proven"
+    return levels
+
+
+def blocked_category_results(runs, levels):
+    results = {}
+    for key, spec in BLOCKED_CATEGORY_PROOFS.items():
+        run = matching_category_run(runs, spec)
+        if run is None:
+            results[key] = {
+                "category": spec["category"],
+                "scenario": spec["scenario"],
+                "navigationTarget": spec["target"],
+                "expectedBlockedReasonText": spec["expectedText"],
+                "proofLevel": levels[key],
+                "rowDetailNavigationAttempted": False,
+                "rowDetailNavigationSucceeded": False,
+                "blockedReasonTextCollected": False,
+                "applyAvoided": True,
+                "issue": "No evidence run was found for this blocked category.",
+            }
+            continue
+        results[key] = {
+            "category": spec["category"],
+            "scenario": run["scenario"],
+            "navigationTarget": run["navigationTarget"],
+            "expectedBlockedReasonText": spec["expectedText"],
+            "proofLevel": levels[key],
+            "rowDetailNavigationAttempted": run["accessibility"]["blockedCategoryDetailNavigationAttempted"]
+            or run["accessibility"]["duplicateConflictDetailNavigationAttempted"],
+            "rowDetailNavigationSucceeded": run["accessibility"]["blockedCategoryDetailNavigationSucceeded"]
+            or run["accessibility"]["duplicateConflictDetailNavigationSucceeded"],
+            "blockedReasonTextCollected": run["accessibility"]["blockedCategoryReasonTextCollected"]
+            or run["accessibility"]["duplicateBlockedReasonTextCollected"],
+            "expectedTextCollected": run["accessibility"]["blockedCategoryExpectedTextCollected"]
+            or run["accessibility"]["duplicateBlockedReasonTextCollected"],
+            "selectionFallbackUsed": run["accessibility"]["blockedCategorySelectionFallbackUsed"],
+            "applyAvoided": not run["probe"]["applyClicked"],
+            "navigationMessage": run["accessibility"]["navigationMessage"],
+        }
+    return results
 
 
 def all_terms(run):
@@ -202,6 +368,9 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
         "duplicateConflictDetailNavigationAttempted": summary["duplicateConflictDetailNavigationAttempted"],
         "duplicateConflictDetailNavigationSucceeded": summary["duplicateConflictDetailNavigationSucceeded"],
         "duplicateBlockedReasonTextCollected": summary["duplicateBlockedReasonTextCollected"],
+        "blockedCategoryDetailNavigationAttempted": summary["blockedCategoryDetailNavigationAttempted"],
+        "blockedCategoryDetailNavigationSucceeded": summary["blockedCategoryDetailNavigationSucceeded"],
+        "blockedCategoryReasonTextCollected": summary["blockedCategoryReasonTextCollected"],
         "closeAttempted": bool(runs),
         "closeSucceeded": summary["closeSucceeded"],
         "scenarioResults": runs,
@@ -210,6 +379,8 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
             for run in runs
         },
         "proofLevelByUiArea": summary["proofLevelByUiArea"],
+        "proofLevelByBlockedCategory": summary["proofLevelByBlockedCategory"],
+        "blockedCategoryResults": summary["blockedCategoryResults"],
         "fallbackProofUsed": summary["fallbackProofUsed"],
         "issuesFound": issues(summary),
         "recommendedFixes": recommended_fixes(summary),
@@ -237,9 +408,9 @@ def issues(summary):
     found = []
     if summary["proofLevelByUiArea"].get("Search") != "live_gtk_atspi_proof":
         found.append("Search field text was not proven through live AT-SPI.")
-    for key in ["duplicateBlockedCopy", "generatedScriptSymlinkBlockedCopy"]:
-        if summary["proofLevelByUiArea"].get(key) != "live_gtk_atspi_proof":
-            found.append(f"{key} still uses fallback proof or remains incomplete.")
+    for key, level in summary["proofLevelByBlockedCategory"].items():
+        if level != "live_gtk_atspi_proof":
+            found.append(f"{key} still lacks live blocked-category row-detail proof.")
     return found
 
 
@@ -249,6 +420,17 @@ def recommended_fixes(summary):
         fixes.append("Add a stronger non-Apply row activation action or widget role for setting rows.")
     if summary["proofLevelByUiArea"].get("detailPane") != "live_gtk_atspi_proof":
         fixes.append("Expose selected row detail pane text more consistently through AT-SPI.")
+    incomplete = [
+        key
+        for key, level in summary["proofLevelByBlockedCategory"].items()
+        if level != "live_gtk_atspi_proof"
+    ]
+    if incomplete:
+        fixes.append(
+            "Add stronger row/detail accessible names for blocked categories: "
+            + ", ".join(incomplete)
+            + "."
+        )
     if not fixes:
         fixes.append("Keep expanding scenario-specific row-detail probes without enabling live-swap.")
     return fixes
@@ -306,6 +488,17 @@ def write_reports(reports_dir, evidence_root, evidence_summary, runs, summary):
             **base_report("gtk_safe_env_evidence_derived_matrix", evidence_root, summary, runs),
             "evidenceSummary": evidence_summary,
         },
+        "gtk-safe-env-blocked-category-detail-proof.v0.55.2.json": base_report(
+            "gtk_safe_env_blocked_category_detail_proof",
+            evidence_root,
+            summary,
+            runs,
+            {
+                "blockedCategoryResults": summary["blockedCategoryResults"],
+                "proofLevelByBlockedCategory": summary["proofLevelByBlockedCategory"],
+                "goal": "Expand live GTK/AT-SPI row-detail proof across representative blocked categories.",
+            },
+        ),
     }
     for name, data in reports.items():
         (reports_dir / name).write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")

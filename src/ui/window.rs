@@ -1482,18 +1482,7 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
         "hyprland-settings-setting-row-{}",
         safe_widget_name(&setting.row_id)
     ));
-    row.set_tooltip_text(Some(&format!(
-        "Setting row: {}. {}. {}",
-        setting.label,
-        friendly_row_current_status(setting),
-        friendly_row_attention_status(setting).unwrap_or_else(|| "Safe normal setting".to_string())
-    )));
-    if setting.current_value.status == CurrentValueSourceStatus::DuplicateConflict {
-        row.set_tooltip_text(Some(&format!(
-            "Duplicate conflict setting row: {}. This setting appears more than once in your config.",
-            setting.label
-        )));
-    }
+    row.set_tooltip_text(Some(&setting_row_accessibility_text(setting)));
     row.set_activatable(true);
     row.set_selectable(true);
 
@@ -1570,6 +1559,44 @@ fn friendly_row_attention_status(setting: &crate::ui::model::UiSetting) -> Optio
     None
 }
 
+fn setting_row_accessibility_text(setting: &crate::ui::model::UiSetting) -> String {
+    let mut parts = vec![
+        format!("Setting row: {}", setting.label),
+        friendly_row_current_status(setting),
+    ];
+
+    match setting.current_value.status {
+        CurrentValueSourceStatus::NotConfigured => parts.push(
+            "Missing/default setting row. This setting is using Hyprland's default value."
+                .to_string(),
+        ),
+        CurrentValueSourceStatus::DuplicateConflict => parts.push(
+            "Duplicate conflict setting row. This setting appears more than once in your config."
+                .to_string(),
+        ),
+        CurrentValueSourceStatus::ReadUnavailable => {
+            parts.push("Current value unavailable setting row".to_string())
+        }
+        CurrentValueSourceStatus::Configured => {}
+    }
+
+    if setting.risk_class == "display_render_risk" || setting.row_id == "decoration.screen_shader" {
+        parts.push("Display/render risk setting row. Extra care needed.".to_string());
+    } else if high_risk_write_policy(&setting.row_id).is_some() {
+        parts.push("High-risk setting row. Extra care needed.".to_string());
+    } else if let Some(status) = friendly_row_attention_status(setting) {
+        parts.push(status);
+    } else {
+        parts.push("Safe normal setting".to_string());
+    }
+
+    if let Some(warning) = &setting.current_value.warning {
+        parts.push(format!("Blocked or warning detail: {warning}"));
+    }
+
+    parts.join(". ")
+}
+
 fn build_detail_panel() -> (gtk::ScrolledWindow, gtk::Box) {
     let frame = gtk::Frame::new(None);
     frame.set_widget_name("hyprland-settings-detail-pane");
@@ -1620,14 +1647,7 @@ fn render_detail(
         "hyprland-settings-detail-pane-{}",
         safe_widget_name(row_id)
     ));
-    if detail.current_value.status == CurrentValueSourceStatus::DuplicateConflict {
-        detail_content.set_tooltip_text(Some(&format!(
-            "Duplicate conflict detail pane for {}. This setting appears more than once in your config.",
-            detail.label
-        )));
-    } else {
-        detail_content.set_tooltip_text(Some(&format!("Detail pane for {}", detail.label)));
-    }
+    detail_content.set_tooltip_text(Some(&detail_pane_accessibility_text(&detail)));
     clear_box(detail_content);
     append_detail_section(detail_content, "Setting", |section| {
         section.append(&title_label(&detail.label));
@@ -1707,6 +1727,36 @@ fn append_current_value_summary(detail: &RowDetailProjection, section: &gtk::Box
     if let Some(warning) = &detail.current_value.warning {
         append_detail_line(section, "Warning", warning);
     }
+}
+
+fn detail_pane_accessibility_text(detail: &RowDetailProjection) -> String {
+    let mut parts = vec![format!("Detail pane for {}", detail.label)];
+
+    match detail.current_value.status {
+        CurrentValueSourceStatus::NotConfigured => parts.push(
+            "Missing/default detail. This setting is using Hyprland's default value.".to_string(),
+        ),
+        CurrentValueSourceStatus::DuplicateConflict => parts.push(
+            "Duplicate conflict detail pane. This setting appears more than once in your config."
+                .to_string(),
+        ),
+        CurrentValueSourceStatus::ReadUnavailable => {
+            parts.push("Current value unavailable detail".to_string())
+        }
+        CurrentValueSourceStatus::Configured => {}
+    }
+
+    if detail.risk_class == "display_render_risk" || detail.row_id == "decoration.screen_shader" {
+        parts.push("Display/render risk detail. Extra care needed.".to_string());
+    } else if high_risk_write_policy(&detail.row_id).is_some() {
+        parts.push("High-risk detail. Extra care needed.".to_string());
+    }
+
+    if let Some(warning) = &detail.current_value.warning {
+        parts.push(format!("Blocked or warning detail: {warning}"));
+    }
+
+    parts.join(". ")
 }
 
 fn append_layered_value_summary(

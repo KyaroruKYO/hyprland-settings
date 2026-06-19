@@ -67,7 +67,25 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("SAFE_NAVIGATION_TARGETS"));
     assert!(collector.contains("\"FirstBlockedSettingRow\""));
     assert!(collector.contains("\"DuplicateConflictDetail\""));
+    for target in [
+        "MissingDefaultDetail",
+        "GeneratedBlockedDetail",
+        "ScriptManagedBlockedDetail",
+        "SymlinkManagedBlockedDetail",
+        "HighRiskDetail",
+        "DisplayRenderRiskDetail",
+        "ProfileModeSwitchDetail",
+    ] {
+        assert!(
+            collector.contains(&format!("\"{target}\"")),
+            "collector should allowlist {target}"
+        );
+    }
     assert!(collector.contains("duplicateBlockedReasonTextCollected"));
+    assert!(collector.contains("blockedCategoryDetailNavigationAttempted"));
+    assert!(collector.contains("blockedCategoryDetailNavigationSucceeded"));
+    assert!(collector.contains("blockedCategoryReasonTextCollected"));
+    assert!(collector.contains("blockedCategoryExpectedTextCollected"));
     assert!(collector.contains("refused to navigate to Apply"));
     assert!(collector.contains("refused to click node containing Apply"));
     assert!(collector.contains("\"applyRefused\""));
@@ -84,6 +102,7 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
         "data/reports/gtk-safe-env-user-experience.v0.55.2.json",
         "data/reports/gtk-safe-env-automation-summary.v0.55.2.json",
         "data/reports/gtk-safe-env-evidence-derived-matrix.v0.55.2.json",
+        "data/reports/gtk-safe-env-blocked-category-detail-proof.v0.55.2.json",
     ];
     for path in report_paths {
         let text = fs::read_to_string(path).unwrap_or_else(|error| panic!("{path}: {error}"));
@@ -123,7 +142,12 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
         assert!(value["duplicateConflictDetailNavigationAttempted"].is_boolean());
         assert!(value["duplicateConflictDetailNavigationSucceeded"].is_boolean());
         assert!(value["duplicateBlockedReasonTextCollected"].is_boolean());
+        assert!(value["blockedCategoryDetailNavigationAttempted"].is_boolean());
+        assert!(value["blockedCategoryDetailNavigationSucceeded"].is_boolean());
+        assert!(value["blockedCategoryReasonTextCollected"].is_boolean());
         assert!(value["proofLevelByUiArea"].is_object());
+        assert!(value["proofLevelByBlockedCategory"].is_object());
+        assert!(value["blockedCategoryResults"].is_object());
     }
 }
 
@@ -146,9 +170,14 @@ fn gtk_reports_use_explicit_proof_level_labels() {
         "settingRow",
         "detailPane",
         "blockedReason",
+        "defaultMissingBlockedCopy",
         "duplicateBlockedCopy",
-        "generatedScriptSymlinkBlockedCopy",
-        "highRiskDisplayRisk",
+        "generatedBlockedCopy",
+        "scriptManagedBlockedCopy",
+        "symlinkCurrentProfileBlockedCopy",
+        "highRiskBlockedCopy",
+        "displayRenderRiskBlockedCopy",
+        "profileModeSwitchBlockedCopy",
     ] {
         let level = proof
             .get(required)
@@ -165,25 +194,67 @@ fn gtk_reports_use_explicit_proof_level_labels() {
             "{required} has unexpected proof level {level}"
         );
     }
+
+    let blocked = summary["proofLevelByBlockedCategory"]
+        .as_object()
+        .expect("proofLevelByBlockedCategory should be an object");
+    for required in [
+        "defaultMissingBlockedCopy",
+        "duplicateBlockedCopy",
+        "generatedBlockedCopy",
+        "scriptManagedBlockedCopy",
+        "symlinkCurrentProfileBlockedCopy",
+        "highRiskBlockedCopy",
+        "displayRenderRiskBlockedCopy",
+        "profileModeSwitchBlockedCopy",
+    ] {
+        let level = blocked
+            .get(required)
+            .and_then(Value::as_str)
+            .unwrap_or_else(|| panic!("{required} blocked category proof level missing"));
+        assert!(
+            matches!(
+                level,
+                "live_gtk_atspi_proof"
+                    | "safe_env_model_proof"
+                    | "source_model_fallback"
+                    | "not_proven"
+            ),
+            "{required} has unexpected proof level {level}"
+        );
+    }
 }
 
 #[test]
-fn duplicate_blocked_copy_is_not_overclaimed_without_evidence() {
+fn blocked_category_copy_is_not_overclaimed_without_evidence() {
     let summary: Value = serde_json::from_str(
         &fs::read_to_string("data/reports/gtk-safe-env-automation-summary.v0.55.2.json")
             .expect("summary report should read"),
     )
     .expect("summary report should parse");
-    let duplicate_level = summary["proofLevelByUiArea"]["duplicateBlockedCopy"]
-        .as_str()
-        .expect("duplicate proof level should be a string");
-    let duplicate_text_collected = summary["duplicateBlockedReasonTextCollected"]
-        .as_bool()
-        .expect("duplicateBlockedReasonTextCollected should be a boolean");
-    if duplicate_text_collected {
-        assert_eq!(duplicate_level, "live_gtk_atspi_proof");
-    } else {
-        assert_ne!(duplicate_level, "live_gtk_atspi_proof");
+    let blocked_levels = summary["proofLevelByBlockedCategory"]
+        .as_object()
+        .expect("proofLevelByBlockedCategory should be an object");
+    let blocked_results = summary["blockedCategoryResults"]
+        .as_object()
+        .expect("blockedCategoryResults should be an object");
+    for (key, level_value) in blocked_levels {
+        let level = level_value
+            .as_str()
+            .unwrap_or_else(|| panic!("{key} proof level should be a string"));
+        let result = blocked_results
+            .get(key)
+            .unwrap_or_else(|| panic!("{key} blocked category result missing"));
+        let expected_text_collected = result["expectedTextCollected"].as_bool().unwrap_or(false);
+        let reason_text_collected = result["blockedReasonTextCollected"]
+            .as_bool()
+            .unwrap_or(false);
+        if level == "live_gtk_atspi_proof" {
+            assert!(
+                expected_text_collected || reason_text_collected,
+                "{key} must not claim live proof without collected blocker text"
+            );
+        }
     }
 }
 

@@ -73,12 +73,19 @@ run_probe source_include_config Config
 run_probe duplicate_conflict Appearance
 run_probe duplicate_conflict DuplicateConflictDetail
 run_probe missing_default_only Appearance
+run_probe missing_default_only MissingDefaultDetail
 run_probe generated_config Config
+run_probe generated_config GeneratedBlockedDetail
 run_probe script_managed_config Config
+run_probe script_managed_config ScriptManagedBlockedDetail
 run_probe symlink_current_profile Config
+run_probe symlink_current_profile SymlinkManagedBlockedDetail
+run_probe symlink_current_profile ProfileModeSwitchDetail
 run_probe minimal_single_config Search
 run_probe minimal_single_config DetailPane
 run_probe minimal_single_config FirstBlockedSettingRow
+run_probe high_risk_display_risk HighRiskDetail
+run_probe high_risk_display_risk DisplayRenderRiskDetail
 
 "$repo_root/tools/live_scenario_harness/summarize_gtk_evidence.py" \
   "$evidence_root" \

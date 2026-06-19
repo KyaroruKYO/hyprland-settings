@@ -25,6 +25,9 @@ EXPECTED_TERMS = [
     "symlink",
     "high-risk",
     "display",
+    "render",
+    "profile",
+    "mode",
 ]
 
 SAFE_NAVIGATION_TARGETS = {
@@ -38,7 +41,59 @@ SAFE_NAVIGATION_TARGETS = {
     "FirstDuplicateOrBlockedRow",
     "DuplicateConflictRow",
     "DuplicateConflictDetail",
+    "MissingDefaultDetail",
+    "GeneratedBlockedDetail",
+    "ScriptManagedBlockedDetail",
+    "SymlinkManagedBlockedDetail",
+    "HighRiskDetail",
+    "DisplayRenderRiskDetail",
+    "ProfileModeSwitchDetail",
     "DetailPane",
+}
+
+BLOCKED_CATEGORY_TARGETS = {
+    "MissingDefaultDetail": {
+        "category": "default_missing_line",
+        "page": "Appearance",
+        "terms": ["missing/default", "uses hyprland default", "default value"],
+        "row_terms": ["missing/default setting row", "uses hyprland default"],
+    },
+    "GeneratedBlockedDetail": {
+        "category": "generated_file",
+        "page": "Config",
+        "terms": ["generated", "do not edit"],
+        "row_terms": ["generated", "do not edit"],
+    },
+    "ScriptManagedBlockedDetail": {
+        "category": "script_managed_file",
+        "page": "Config",
+        "terms": ["script", "changed by a script", "script-managed"],
+        "row_terms": ["script", "changed by scripts", "changed by a script"],
+    },
+    "SymlinkManagedBlockedDetail": {
+        "category": "symlink_current_profile",
+        "page": "Config",
+        "terms": ["symlink", "current-profile", "current profile"],
+        "row_terms": ["symlink", "current-profile", "current profile"],
+    },
+    "HighRiskDetail": {
+        "category": "high_risk",
+        "page": "Display",
+        "terms": ["high-risk", "extra care needed", "family-specific recovery"],
+        "row_terms": ["high-risk setting row", "extra care needed"],
+    },
+    "DisplayRenderRiskDetail": {
+        "category": "display_render_risk",
+        "page": "Display",
+        "terms": ["display/render", "screen shader", "render", "extra care needed"],
+        "row_terms": ["display/render risk setting row", "screen shader", "render"],
+    },
+    "ProfileModeSwitchDetail": {
+        "category": "profile_mode_switch",
+        "page": "Config",
+        "terms": ["profile", "mode", "current-profile", "symlink"],
+        "row_terms": ["profile", "mode", "current-profile", "symlink"],
+    },
 }
 
 
@@ -275,6 +330,24 @@ def duplicate_row_candidate(node):
     )
 
 
+def blocked_category_row_candidate(node, target):
+    spec = BLOCKED_CATEGORY_TARGETS.get(target)
+    if spec is None:
+        return False
+    text = node_text_lower(node)
+    if not text or "apply" in text:
+        return False
+    return any(term in text for term in spec["row_terms"])
+
+
+def blocked_category_text_collected(values, target):
+    spec = BLOCKED_CATEGORY_TARGETS.get(target)
+    if spec is None:
+        return False
+    text = "\n".join(values).lower()
+    return any(term in text for term in spec["terms"])
+
+
 def open_duplicate_conflict_detail(app):
     ok, message = click_named_target(app, "Appearance")
     if not ok:
@@ -287,6 +360,32 @@ def open_duplicate_conflict_detail(app):
     if not ok:
         return False, f"duplicate-conflict row activation failed: {message}"
     return True, f"opened duplicate-conflict row detail: {message}"
+
+
+def open_blocked_category_detail(app, target):
+    spec = BLOCKED_CATEGORY_TARGETS[target]
+    page = spec["page"]
+    ok, message = click_named_target(app, page)
+    if not ok:
+        return False, f"could not open {page} before {target}: {message}"
+    time.sleep(1)
+    node, parent = find_first_node_with_parent(
+        app, lambda current: blocked_category_row_candidate(current, target)
+    )
+    if node is None:
+        values = []
+        walk_accessible(app, values, 1200, set())
+        if blocked_category_text_collected(values, target):
+            return True, f"{target} blocker text found without row activation"
+        return False, f"no allowlisted blocked-category row found for {target}"
+    ok, message = safe_select_node(node, parent)
+    if not ok:
+        values = []
+        walk_accessible(app, values, 1200, set())
+        if blocked_category_text_collected(values, target):
+            return True, f"{target} blocker text found after safe row activation failed: {message}"
+        return False, f"{target} row activation failed: {message}"
+    return True, f"opened {target} row detail: {message}"
 
 
 def click_named_target(app, target):
@@ -314,6 +413,8 @@ def click_named_target(app, target):
         )
     if target == "DuplicateConflictDetail":
         return open_duplicate_conflict_detail(app)
+    if target in BLOCKED_CATEGORY_TARGETS:
+        return open_blocked_category_detail(app, target)
     if target == "DuplicateConflictRow":
         node, parent = find_first_node_with_parent(app, duplicate_row_candidate)
         if node is None:
@@ -388,6 +489,12 @@ def main() -> int:
         "detailPaneTextCollected": False,
         "blockedReasonTextCollected": False,
         "duplicateBlockedReasonTextCollected": False,
+        "blockedCategory": None,
+        "blockedCategoryDetailNavigationAttempted": False,
+        "blockedCategoryDetailNavigationSucceeded": False,
+        "blockedCategoryReasonTextCollected": False,
+        "blockedCategoryExpectedTextCollected": False,
+        "blockedCategorySelectionFallbackUsed": False,
         "duplicateConflictDetailNavigationAttempted": False,
         "duplicateConflictDetailNavigationSucceeded": False,
         "forbiddenApplyActionSeen": False,
@@ -425,6 +532,9 @@ def main() -> int:
         result["navigationAttempted"] = bool(nav_target)
         result["navigationTarget"] = nav_target or None
         if nav_target and selected_app is not None:
+            if nav_target in BLOCKED_CATEGORY_TARGETS:
+                result["blockedCategory"] = BLOCKED_CATEGORY_TARGETS[nav_target]["category"]
+                result["blockedCategoryDetailNavigationAttempted"] = True
             result["duplicateConflictDetailNavigationAttempted"] = nav_target in {
                 "DuplicateConflictDetail",
                 "DuplicateConflictRow",
@@ -436,6 +546,10 @@ def main() -> int:
             result["duplicateConflictDetailNavigationSucceeded"] = (
                 ok and nav_target == "DuplicateConflictDetail"
             )
+            result["blockedCategoryDetailNavigationSucceeded"] = (
+                ok and nav_target in BLOCKED_CATEGORY_TARGETS
+            )
+            result["blockedCategorySelectionFallbackUsed"] = "selection fallback" in message
             if ok:
                 time.sleep(1)
                 after = []
@@ -464,6 +578,15 @@ def main() -> int:
             ]
         )
         result["duplicateBlockedReasonTextCollected"] = duplicate_text_collected
+        if result["navigationTarget"] in BLOCKED_CATEGORY_TARGETS:
+            result["blockedCategoryExpectedTextCollected"] = blocked_category_text_collected(
+                result["text"] + result["textAfterNavigation"],
+                result["navigationTarget"],
+            )
+            result["blockedCategoryReasonTextCollected"] = (
+                result["blockedCategoryExpectedTextCollected"]
+                or result["blockedReasonTextCollected"]
+            )
     except Exception as error:
         result["error"] = f"pyatspi unavailable or inaccessible: {error}"
         if result["gdbusAvailable"]:
