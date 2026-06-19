@@ -4,9 +4,11 @@ use adw::prelude::*;
 use gtk4::glib;
 
 use crate::config_discovery::discover_hyprland_config;
+use crate::config_graph::inspect_config_graph;
 use crate::current_config::CurrentConfigSnapshot;
 use crate::export::ExportBundle;
 use crate::metadata::{resolve_metadata_path, MetadataPathResolution};
+use crate::source_aware_current_config::current_config_from_graph;
 use crate::ui::window::{show_error_window, show_main_window};
 use crate::validation::validate_bundle;
 
@@ -25,7 +27,7 @@ pub fn run() -> glib::ExitCode {
     app.connect_activate(move |app| {
         let cli_override = cli_override.clone();
         let config_discovery = discover_hyprland_config();
-        let current_config = CurrentConfigSnapshot::from_discovery(&config_discovery);
+        let current_config = source_aware_current_config_for_discovery(&config_discovery);
         match resolve_metadata_path(cli_override) {
             Ok(resolution) => match load_validated_bundle(&resolution) {
                 Ok((bundle, summary)) => {
@@ -46,6 +48,18 @@ pub fn run() -> glib::ExitCode {
     });
 
     app.run_with_args(&["hyprland-settings"])
+}
+
+fn source_aware_current_config_for_discovery(
+    discovery: &crate::config_discovery::ConfigDiscovery,
+) -> CurrentConfigSnapshot {
+    match &discovery.status {
+        crate::config_discovery::ConfigDiscoveryStatus::Found { path, .. } => {
+            let graph = inspect_config_graph(path);
+            current_config_from_graph(&graph)
+        }
+        _ => CurrentConfigSnapshot::from_discovery(discovery),
+    }
 }
 
 fn load_validated_bundle(

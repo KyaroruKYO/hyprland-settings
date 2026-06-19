@@ -22,6 +22,7 @@ use crate::safe_batch_write::{
     SafeBatchExecutionOptions, SafeBatchWriteReport, SafeBatchWriteStatus,
 };
 use crate::scalar_write::apply_scalar_write_plan;
+use crate::source_aware_current_config::current_config_from_graph;
 use crate::source_values::{read_system_xkb_rules, MonitorSourceValue, XkbSourceValue};
 use crate::write_classification::{
     finite_choice_options, high_risk_write_policy, is_high_risk_gated_writable_setting,
@@ -81,7 +82,7 @@ pub struct ApplyFailure {
 pub fn apply_safe_batch_setting_changes(
     known_setting_ids: BTreeSet<String>,
     discovery: &ConfigDiscovery,
-    current_config: &CurrentConfigSnapshot,
+    _current_config: &CurrentConfigSnapshot,
     pending_changes: Vec<SafeBatchChangeRequest>,
 ) -> Result<SafeBatchWriteReport, ApplyFailure> {
     let target_path = detected_config_path(discovery).map_err(|reason| ApplyFailure {
@@ -89,9 +90,10 @@ pub fn apply_safe_batch_setting_changes(
         failures: vec!["MissingCurrentSource".to_string()],
     })?;
     let graph = inspect_config_graph(target_path);
+    let source_aware_current_config = current_config_from_graph(&graph);
     apply_safe_batch_setting_changes_with_graph_and_options(
         known_setting_ids,
-        current_config,
+        &source_aware_current_config,
         &graph,
         pending_changes,
         SafeBatchExecutionOptions::default(),

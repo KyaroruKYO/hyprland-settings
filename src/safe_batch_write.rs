@@ -75,7 +75,9 @@ impl SafeBatchEligibility {
     pub fn user_facing_blocked_copy(self) -> &'static str {
         match self {
             Self::EligibleSafeBatchScalar => "Safe batch write is available for this setting.",
-            Self::BlockedHighRisk => "Blocked: high-risk setting.",
+            Self::BlockedHighRisk => {
+                "Blocked: this setting needs a family-specific recovery path before the app can write it."
+            }
             Self::BlockedDisplayRenderRisk => {
                 "Blocked: display/render settings need separate safety approval."
             }

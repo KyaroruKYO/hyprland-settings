@@ -20,6 +20,9 @@ use hyprland_settings::safe_batch_write::{
     build_safe_batch_write_plan, SafeBatchChangeRequest, SafeBatchEligibility, SafeBatchWritePlan,
     SafeBatchWriteReport,
 };
+use hyprland_settings::source_aware_current_config::{
+    current_config_from_graph, source_aware_mapping_report,
+};
 use hyprland_settings::source_values::read_system_xkb_rules;
 use hyprland_settings::write_classification::{
     config_key_from_official_setting, finite_choice_options, high_risk_write_policy,
@@ -657,9 +660,8 @@ pub fn real_config_readonly_audit() -> Value {
         });
     };
     let graph = inspect_config_graph(path);
-    let current = CurrentConfigSnapshot::from_parsed(
-        parse_hyprland_config_file(path).expect("read-only real config parse should succeed"),
-    );
+    let current = current_config_from_graph(&graph);
+    let source_aware_report = source_aware_mapping_report(&graph, &current);
     let graph_occurrences = graph_scalar_occurrences(&graph);
     let rows = harness_rows();
     let mut eligible = 0usize;
@@ -781,8 +783,18 @@ pub fn real_config_readonly_audit() -> Value {
     json!({
         "performed": true,
         "rootPath": redact_path(path),
+        "sourceAwareMapping": {
+            "rootFileMapped": source_aware_report.root_file_mapped,
+            "readableFilesMapped": source_aware_report.readable_files_mapped,
+            "unreadableFiles": source_aware_report.unreadable_files,
+            "scalarCount": source_aware_report.scalar_count,
+            "structuredCount": source_aware_report.structured_count,
+            "unsupportedCount": source_aware_report.unsupported_count,
+            "duplicateSettingCount": source_aware_report.duplicate_setting_count
+        },
         "settingsWithGeneratedProposedValuesConsidered": eligible + blocked.values().sum::<usize>(),
         "eligibleSafeBatchWrites": eligible,
+        "eligibleRowsWithExactTargets": newly_eligible_rows,
         "blocked": blocked,
         "blockerDetails": blocker_details,
         "missingLineSubtypes": missing_line_subtypes,
@@ -856,7 +868,7 @@ pub fn source_contains_safe_batch_ui_copy() -> bool {
         "The app will back up files before writing.",
         "The app will check the result after writing.",
         "If something fails, the app will restore the backup.",
-        "Blocked: high-risk setting.",
+        "Blocked: this setting needs a family-specific recovery path before the app can write it.",
         "Blocked: this setting appears in more than one place.",
     ]
     .iter()

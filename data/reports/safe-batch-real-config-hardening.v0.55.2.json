@@ -34,16 +34,11 @@
   },
   "filesChanged": [
     "src/safe_batch_write.rs",
-    "tests/support/mod.rs",
     "tests/support/safe_batch_harness.rs",
     "tests/safe_batch_real_config_hardening.rs",
-    "data/reports/safe-batch-blocked-category-matrix.v0.55.2.json",
-    "data/reports/safe-batch-failure-recovery-matrix.v0.55.2.json",
-    "data/reports/safe-batch-fixture-write-coverage.v0.55.2.json",
     "data/reports/safe-batch-real-config-readonly-audit.v0.55.2.json",
     "data/reports/safe-batch-real-config-blocker-analysis.v0.55.2.json",
     "data/reports/safe-batch-real-ui-readonly-smoke.v0.55.2.json",
-    "data/reports/safe-batch-ui-integration-review.v0.55.2.json",
     "data/reports/safe-batch-real-config-hardening.v0.55.2.json",
     "docs/SAFE-BATCH-REAL-CONFIG-HARDENING-REVIEW-LOG.md"
   ],
@@ -111,13 +106,13 @@
     "writesTriggered": false
   },
   "validation": {
-    "cargoBuildRelease": "passed",
-    "cargoCheck": "passed",
-    "cargoFmt": "passed",
-    "cargoFmtCheck": "passed",
-    "cargoTest": "passed",
-    "gitDiffCheck": "passed",
-    "gitStatusShort": "passed with intended hardening files plus pre-existing unrelated untracked audit/design files",
-    "jqReports": "passed"
+    "cargoBuildRelease": "pending",
+    "cargoCheck": "pending",
+    "cargoFmt": "pending",
+    "cargoFmtCheck": "pending",
+    "cargoTest": "pending",
+    "gitDiffCheck": "pending",
+    "gitStatusShort": "pending",
+    "jqReports": "pending"
   }
 }

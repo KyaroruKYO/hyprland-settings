@@ -3234,7 +3234,7 @@
       "officialSetting": "ecosystem.no_update_news",
       "rowId": "ecosystem.no_update_news",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3246,7 +3246,7 @@
       "officialSetting": "ecosystem.no_donation_nag",
       "rowId": "ecosystem.no_donation_nag",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3258,7 +3258,7 @@
       "officialSetting": "ecosystem.enforce_permissions",
       "rowId": "ecosystem.enforce_permissions",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_display_render_risk",
@@ -3294,7 +3294,7 @@
       "officialSetting": "cursor.sync_gsettings_theme",
       "rowId": "cursor.sync_gsettings_theme",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3306,7 +3306,7 @@
       "officialSetting": "cursor.hide_on_touch",
       "rowId": "cursor.hide_on_touch",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3318,7 +3318,7 @@
       "officialSetting": "cursor.hide_on_tablet",
       "rowId": "cursor.hide_on_tablet",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3330,7 +3330,7 @@
       "officialSetting": "cursor.hide_on_key_press",
       "rowId": "cursor.hide_on_key_press",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_display_render_risk",
@@ -3582,7 +3582,7 @@
       "officialSetting": "cursor.invisible",
       "rowId": "cursor.invisible",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3594,7 +3594,7 @@
       "officialSetting": "cursor.no_hardware_cursors",
       "rowId": "cursor.no_hardware_cursors",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3606,7 +3606,7 @@
       "officialSetting": "cursor.no_break_fs_vrr",
       "rowId": "cursor.no_break_fs_vrr",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3618,7 +3618,7 @@
       "officialSetting": "cursor.min_refresh_rate",
       "rowId": "cursor.min_refresh_rate",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3630,7 +3630,7 @@
       "officialSetting": "cursor.hotspot_padding",
       "rowId": "cursor.hotspot_padding",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3642,7 +3642,7 @@
       "officialSetting": "cursor.inactive_timeout",
       "rowId": "cursor.inactive_timeout",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3654,7 +3654,7 @@
       "officialSetting": "cursor.no_warps",
       "rowId": "cursor.no_warps",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3666,7 +3666,7 @@
       "officialSetting": "cursor.persistent_warps",
       "rowId": "cursor.persistent_warps",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3678,7 +3678,7 @@
       "officialSetting": "cursor.warp_on_change_workspace",
       "rowId": "cursor.warp_on_change_workspace",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3690,7 +3690,7 @@
       "officialSetting": "cursor.warp_on_toggle_special",
       "rowId": "cursor.warp_on_toggle_special",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3702,7 +3702,7 @@
       "officialSetting": "cursor.default_monitor",
       "rowId": "cursor.default_monitor",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3714,7 +3714,7 @@
       "officialSetting": "cursor.zoom_factor",
       "rowId": "cursor.zoom_factor",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3726,7 +3726,7 @@
       "officialSetting": "cursor.zoom_rigid",
       "rowId": "cursor.zoom_rigid",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3738,7 +3738,7 @@
       "officialSetting": "cursor.zoom_disable_aa",
       "rowId": "cursor.zoom_disable_aa",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3750,7 +3750,7 @@
       "officialSetting": "cursor.zoom_detached_camera",
       "rowId": "cursor.zoom_detached_camera",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3762,7 +3762,7 @@
       "officialSetting": "cursor.enable_hyprcursor",
       "rowId": "cursor.enable_hyprcursor",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3774,7 +3774,7 @@
       "officialSetting": "cursor.use_cpu_buffer",
       "rowId": "cursor.use_cpu_buffer",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3786,7 +3786,7 @@
       "officialSetting": "cursor.warp_back_after_non_mouse_input",
       "rowId": "cursor.warp_back_after_non_mouse_input",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3798,7 +3798,7 @@
       "officialSetting": "debug.overlay",
       "rowId": "debug.overlay",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3810,7 +3810,7 @@
       "officialSetting": "debug.damage_blink",
       "rowId": "debug.damage_blink",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3822,7 +3822,7 @@
       "officialSetting": "debug.gl_debugging",
       "rowId": "debug.gl_debugging",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3834,7 +3834,7 @@
       "officialSetting": "debug.disable_logs",
       "rowId": "debug.disable_logs",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3846,7 +3846,7 @@
       "officialSetting": "debug.disable_time",
       "rowId": "debug.disable_time",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3858,7 +3858,7 @@
       "officialSetting": "debug.damage_tracking",
       "rowId": "debug.damage_tracking",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3870,7 +3870,7 @@
       "officialSetting": "debug.enable_stdout_logs",
       "rowId": "debug.enable_stdout_logs",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3882,7 +3882,7 @@
       "officialSetting": "debug.manual_crash",
       "rowId": "debug.manual_crash",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3894,7 +3894,7 @@
       "officialSetting": "debug.suppress_errors",
       "rowId": "debug.suppress_errors",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3906,7 +3906,7 @@
       "officialSetting": "debug.disable_scale_checks",
       "rowId": "debug.disable_scale_checks",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3918,7 +3918,7 @@
       "officialSetting": "debug.error_limit",
       "rowId": "debug.error_limit",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3930,7 +3930,7 @@
       "officialSetting": "debug.error_position",
       "rowId": "debug.error_position",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3942,7 +3942,7 @@
       "officialSetting": "debug.colored_stdout_logs",
       "rowId": "debug.colored_stdout_logs",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3954,7 +3954,7 @@
       "officialSetting": "debug.log_damage",
       "rowId": "debug.log_damage",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3966,7 +3966,7 @@
       "officialSetting": "debug.pass",
       "rowId": "debug.pass",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3978,7 +3978,7 @@
       "officialSetting": "debug.full_cm_proto",
       "rowId": "debug.full_cm_proto",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -3990,7 +3990,7 @@
       "officialSetting": "debug.ds_handle_same_buffer",
       "rowId": "debug.ds_handle_same_buffer",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -4002,7 +4002,7 @@
       "officialSetting": "debug.ds_handle_same_buffer_fifo",
       "rowId": "debug.ds_handle_same_buffer_fifo",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -4014,7 +4014,7 @@
       "officialSetting": "debug.fifo_pending_workaround",
       "rowId": "debug.fifo_pending_workaround",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -4026,7 +4026,7 @@
       "officialSetting": "debug.render_solitary_wo_damage",
       "rowId": "debug.render_solitary_wo_damage",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -4038,7 +4038,7 @@
       "officialSetting": "debug.vfr",
       "rowId": "debug.vfr",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_high_risk",
@@ -4050,7 +4050,7 @@
       "officialSetting": "debug.invalidate_fp16",
       "rowId": "debug.invalidate_fp16",
       "sourcePath": null,
-      "userFacingCopy": "Blocked: high-risk setting."
+      "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
     {
       "blockedReason": "blocked_display_render_risk",
@@ -4204,6 +4204,21 @@
     "appearance.blur.passes",
     "layout.selection"
   ],
+  "eligibleRowsWithExactTargets": [
+    {
+      "duplicateConflicted": false,
+      "generated": false,
+      "lineNumber": 316,
+      "normalRisk": true,
+      "officialSetting": "binds.scroll_event_delay",
+      "oldValueMatched": true,
+      "rawLine": "<redacted; raw source line omitted from committed report>",
+      "rowId": "binds.scroll_event_delay",
+      "scriptManaged": false,
+      "symlinkManaged": false,
+      "targetPath": "<hypr-config>/hyprland.conf"
+    }
+  ],
   "eligibleSafeBatchWrites": 1,
   "managedHints": [
     {
@@ -4240,6 +4255,15 @@
   "realUserConfigEdited": false,
   "rootPath": "<hypr-config>/hyprland.conf",
   "settingsWithGeneratedProposedValuesConsidered": 341,
+  "sourceAwareMapping": {
+    "duplicateSettingCount": 6,
+    "readableFilesMapped": 2,
+    "rootFileMapped": true,
+    "scalarCount": 12,
+    "structuredCount": 60,
+    "unreadableFiles": 0,
+    "unsupportedCount": 197
+  },
   "trulyNotConfiguredDefaultRows": [
     "appearance.dim.modal",
     "appearance.dim.inactive",
