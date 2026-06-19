@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "v0.1.0-release-artifact-manifest",
+  "generatedAt": "2026-06-19T00:31:37-07:00",
+  "startingCommit": "58dfea0e5be9b576ac6cf604b1d70460c8d4cf79",
+  "releaseCommit": null,
+  "tagName": "v0.1.0",
+  "releaseScope": "guarded normal-scalar safe-batch Hyprland Settings app for v0.55.2 data/model",
+  "projectModel": "341 readable / 341 writable / 0 blocked",
+  "projectDataVersion": "v0.55.2",
+  "appIdentity": {
+    "appName": "Hyprland Settings",
+    "repoName": "hyprland-settings",
+    "binaryName": "hyprland-settings",
+    "appId": "io.github.kyarorukyo.hyprlandsettings",
+    "githubOwner": "KyaroruKYO"
+  },
+  "validation": {
+    "preReleaseValidation": {
+      "bashSyntax": "passed",
+      "pythonCompile": "passed",
+      "gtkSafeEnvEvidenceMatrix": "passed",
+      "cargoFmt": "passed",
+      "cargoFmtCheck": "passed",
+      "cargoCheck": "passed",
+      "cargoTest": "passed",
+      "cargoBuildRelease": "passed",
+      "jqReports": "passed",
+      "desktopFileValidate": "passed",
+      "appstreamValidate": "passed",
+      "gitDiffCheck": "passed"
+    },
+    "finalArtifactValidation": "pending until tag and artifacts are created"
+  },
+  "releaseNotesPath": "docs/releases/v0.1.0.md",
+  "sourceArchivePath": null,
+  "binaryArtifactPath": null,
+  "checksumPath": null,
+  "githubDraftReleaseCreated": false,
+  "githubDraftReleaseUrl": null,
+  "tagCreated": false,
+  "tagPushed": false,
+  "publicReleasePublished": false,
+  "packageArtifactCreated": false,
+  "packageArtifactPublished": false,
+  "knownLimitations": [
+    "missing/default insertion is not supported",
+    "duplicate auto-resolution is not supported",
+    "high-risk/display-render write expansion is not supported",
+    "structured-family writes are not supported",
+    "profile/mode switching is not supported",
+    "Hyprland reload/runtime mutation is not supported",
+    "Hyprland 0.55.4 data/model migration is not part of this release scope"
+  ],
+  "safetyBoundaries": {
+    "realUserConfigEdited": false,
+    "realUserConfigBackupsCreated": false,
+    "liveSwapUsed": false,
+    "agsDisabled": false,
+    "waybarDisabled": false,
+    "hyprlandReloaded": false,
+    "mutatingHyprctlUsed": false,
+    "discoveredScriptsExecuted": false,
+    "luaExecuted": false,
+    "runtimeMutated": false,
+    "projectDataMigratedToHyprland0554": false,
+    "safeWritableRowsChanged": false,
+    "appModelChanged": false,
+    "unsafeWriteScopeChanged": false,
+    "publicReleasePublished": false
+  }
+}
