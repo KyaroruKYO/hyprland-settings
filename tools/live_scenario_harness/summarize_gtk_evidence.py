@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 PROJECT_MODEL = "v0.55.2 / 341 readable / 341 writable / 0 blocked"
-STARTING_COMMIT = "e0b6d1fe63bf7096183a8bd1ab6304003fa6a5b8"
+STARTING_COMMIT = "9083e9eda0c6c90df04991d8d1b32f842915004e"
 PROOF_LEVELS = {
     "live_gtk_atspi_proof",
     "safe_env_model_proof",
@@ -586,6 +586,13 @@ def write_reports(reports_dir, evidence_root, evidence_summary, runs, summary):
             evidence_root, summary, runs
         ),
         "completion-wrap-up-plan.v0.55.2.json": completion_wrap_up_plan(summary),
+        "final-app-completion-wrap-up.v0.55.2.json": final_app_completion_wrap_up(
+            evidence_root, summary, runs
+        ),
+        "final-release-readiness-checklist.v0.55.2.json": final_release_readiness_checklist(
+            summary
+        ),
+        "final-safe-scope-validation.v0.55.2.json": final_safe_scope_validation(summary),
     }
     for name, data in reports.items():
         (reports_dir / name).write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
@@ -709,7 +716,7 @@ def completion_readiness_report(evidence_root, summary, runs):
             "completionBlockers": completion_blockers,
             "safeFixesMade": safe_fixes,
             "remainingWork": completion_blockers,
-            "recommendedNextSprint": "Actual app completion wrap-up: polish remaining user-facing copy, packaging metadata, and release checklist without expanding unsafe write scope.",
+            "recommendedNextSprint": "Final release-boundary review and explicit user approval decision for creating an actual release artifact.",
         },
     )
 
@@ -766,8 +773,8 @@ def completion_wrap_up_plan(summary):
             "Do not switch profiles or symlinks.",
             "Do not reload Hyprland as part of Apply.",
         ],
-        "releaseReadinessEstimate": "near-complete for guarded normal-scalar safe-batch scope, not release-ready for high-risk, insertion, duplicate-resolution, profile/mode, or Hyprland 0.55.4 migration scope",
-        "nextSprintPlan": "Actual app completion wrap-up: polish remaining user-facing copy, packaging metadata, final validation reports, and release checklist while preserving the current safety boundaries.",
+        "releaseReadinessEstimate": "ready for a release-boundary approval review for the guarded normal-scalar safe-batch scope; intentionally not ready for high-risk, insertion, duplicate-resolution, profile/mode, or Hyprland 0.55.4 migration scope",
+        "nextSprintPlan": "Final release-boundary review and explicit user approval decision for creating an actual release artifact.",
         "safeEnvModeUsed": summary["safeEnvModeUsed"],
         "liveSwapModeUsed": summary["liveSwapModeUsed"],
         "realConfigEdited": summary["realConfigEdited"],
@@ -781,6 +788,235 @@ def completion_wrap_up_plan(summary):
             "gitDiffCheck": "pending",
             "gitStatusShort": "pending",
         },
+    }
+
+
+def completion_scope_definition():
+    return {
+        "completeMeans": "The app is ready for guarded normal-scalar safe-batch use under the current v0.55.2 model, with clear UI copy, stable packaging metadata, final validation reports, and a release checklist.",
+        "completeDoesNotMean": [
+            "missing/default insertion",
+            "duplicate auto-resolution",
+            "high-risk/display-render writes",
+            "structured-family writes",
+            "profile switching",
+            "live-swap testing",
+            "Hyprland reload",
+            "runtime mutation",
+            "Hyprland 0.55.4 data migration",
+        ],
+    }
+
+
+def app_identity():
+    return {
+        "appName": "Hyprland Settings",
+        "repoName": "hyprland-settings",
+        "binaryName": "hyprland-settings",
+        "appId": "io.github.kyarorukyo.hyprlandsettings",
+        "githubOwner": "KyaroruKYO",
+        "homepage": "https://github.com/KyaroruKYO/hyprland-settings",
+    }
+
+
+def validation_pending_full():
+    return {
+        "bashScripts": "pending",
+        "pythonPyCompile": "pending",
+        "gtkSafeEnvEvidenceMatrix": "pending",
+        "cargoFmt": "pending",
+        "cargoFmtCheck": "pending",
+        "cargoCheck": "pending",
+        "cargoTest": "pending",
+        "cargoBuildRelease": "pending",
+        "jqReports": "pending",
+        "desktopFileValidate": "pending",
+        "appstreamValidate": "pending",
+        "gitDiffCheck": "pending",
+        "gitStatusShort": "pending",
+    }
+
+
+def final_app_completion_wrap_up(evidence_root, summary, runs):
+    return base_report(
+        "final_app_completion_wrap_up",
+        evidence_root,
+        summary,
+        runs,
+        {
+            "goal": "Wrap up the current guarded normal-scalar safe-batch Hyprland Settings app scope without expanding unsafe functionality.",
+            "completionScope": completion_scope_definition(),
+            "projectDataVersion": "v0.55.2",
+            "appIdentity": app_identity(),
+            "copyPolish": {
+                "readmeReviewed": True,
+                "cargoDescriptionUpdated": True,
+                "desktopCommentUpdated": True,
+                "metainfoReviewed": True,
+                "staleOneTargetPilotUserFacingWordingRemovedFromActiveSafeBatchPath": True,
+                "unsafeFeatureOverclaimsRemoved": True,
+            },
+            "configPagePolish": {
+                "connectedFilesExplained": True,
+                "sourceIncludeExplained": True,
+                "generatedScriptSymlinkProfileBlockersExplained": True,
+                "profileSwitchingInactiveExplained": True,
+                "mutatingControlsAdded": False,
+            },
+            "packagingMetadataReview": {
+                "appId": "io.github.kyarorukyo.hyprlandsettings",
+                "binaryName": "hyprland-settings",
+                "desktopName": "Hyprland Settings",
+                "repoIdentity": "KyaroruKYO/hyprland-settings",
+                "desktopFile": "data/applications/io.github.kyarorukyo.hyprlandsettings.desktop",
+                "metainfoFile": "data/metainfo/io.github.kyarorukyo.hyprlandsettings.metainfo.xml",
+                "metadataDoesNotClaimUnsupportedWrites": True,
+                "releaseArtifactsCreated": False,
+            },
+            "automationStatus": {
+                "gtkSafeEnvMatrixPassed": summary["appLaunchSucceeded"]
+                and summary["accessibilityInspectionSucceeded"]
+                and summary["navigationSucceeded"],
+                "proofLevelByUiArea": summary["proofLevelByUiArea"],
+                "proofLevelByBlockedCategory": summary["proofLevelByBlockedCategory"],
+                "proofSurfaceByBlockedCategory": summary["proofSurfaceByBlockedCategory"],
+                "fallbackProofUsed": summary["fallbackProofUsed"],
+                "rawAccessibilityDumpsCommitted": False,
+            },
+            "writeSafetyStatus": {
+                "safeBatchWritePath": "enabled only for eligible normal scalar settings",
+                "unsafeWritesExpanded": False,
+                "highRiskWritesEnabled": False,
+                "displayRenderRiskWritesEnabled": False,
+                "generatedScriptSymlinkProfileWritesEnabled": False,
+                "missingDefaultInsertionEnabled": False,
+                "duplicateAutoResolutionEnabled": False,
+                "structuredFamilyWritesEnabled": False,
+                "profileModeSwitchingEnabled": False,
+                "runtimeMutationEnabled": False,
+            },
+            "intentionalBlockers": [
+                "missing/default insertion",
+                "duplicate auto-resolution",
+                "high-risk/display-render writes",
+                "structured-family writes",
+                "profile/mode switching",
+                "Hyprland reload/runtime mutation",
+                "Hyprland 0.55.4 data migration",
+            ],
+            "safeFixesMade": [
+                "README safe-scope copy polished",
+                "Cargo package description updated",
+                "Desktop file comment updated",
+                "AppStream metadata updated to guarded safe-batch scope",
+                "Active detail copy changed from pilot wording to safe-batch wording",
+                "Final completion, release-readiness, and safe-scope reports added",
+            ],
+            "remainingWork": [
+                "Release-boundary approval before any tag/package/release artifact",
+                "Optional final packaging install docs",
+                "Separate design for intentionally blocked expansion areas",
+            ],
+            "releaseReadinessEstimate": "ready for release-boundary approval review for guarded normal-scalar safe-batch scope; no release created in this sprint",
+            "validation": validation_pending_full(),
+        },
+    )
+
+
+def final_release_readiness_checklist(summary):
+    return {
+        "schemaVersion": 1,
+        "artifactKind": "final_release_readiness_checklist",
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "startingCommit": STARTING_COMMIT,
+        "notARelease": True,
+        "releaseCreated": False,
+        "tagCreated": False,
+        "packageCreated": False,
+        "appId": "io.github.kyarorukyo.hyprlandsettings",
+        "binaryName": "hyprland-settings",
+        "repoIdentity": "KyaroruKYO/hyprland-settings",
+        "metadataValidated": "pending",
+        "desktopFileValidated": "pending",
+        "appstreamValidated": "pending",
+        "readmeReviewed": True,
+        "userFacingCopyReviewed": True,
+        "gtkAutomationPassed": summary["appLaunchSucceeded"]
+        and summary["accessibilityInspectionSucceeded"]
+        and summary["navigationSucceeded"],
+        "cargoValidationPassed": "pending",
+        "unsafeScopeStillBlocked": True,
+        "knownLimitations": [
+            "No missing/default insertion",
+            "No duplicate auto-resolution",
+            "No high-risk/display-render expansion",
+            "No structured-family writes",
+            "No profile/mode switching",
+            "No Hyprland reload/runtime mutation",
+            "No Hyprland 0.55.4 data migration",
+        ],
+        "beforeReleaseRequired": [
+            "User approval to create a release",
+            "Final tag/version decision",
+            "Packaging artifact decision",
+            "Release notes",
+        ],
+        "requiresUserApproval": [
+            "creating a release",
+            "creating a tag",
+            "creating a package artifact",
+            "expanding unsafe write scope",
+            "migrating data/model to Hyprland 0.55.4",
+        ],
+        "recommendedReleaseDecision": "Ready to ask for explicit release-boundary approval for the guarded normal-scalar safe-batch v0.55.2 scope.",
+        "projectModel": PROJECT_MODEL,
+        "projectDataMigratedToHyprland0554": False,
+        "countsBefore": "341 readable / 341 writable / 0 blocked",
+        "countsAfter": "341 readable / 341 writable / 0 blocked",
+        "validation": validation_pending_full(),
+    }
+
+
+def final_safe_scope_validation(summary):
+    return {
+        "schemaVersion": 1,
+        "artifactKind": "final_safe_scope_validation",
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+        "startingCommit": STARTING_COMMIT,
+        "scope": "guarded normal-scalar safe-batch Hyprland Settings app for v0.55.2 data/model",
+        "countsBefore": "341 readable / 341 writable / 0 blocked",
+        "countsAfter": "341 readable / 341 writable / 0 blocked",
+        "SAFE_WRITABLE_ROWS_len": 341,
+        "safeBatchWritePath": {
+            "eligibleNormalScalarWrites": True,
+            "backupBeforeWrite": True,
+            "rereadVerificationAfterWrite": True,
+            "restoreOnFailure": True,
+            "applyStillGuarded": True,
+        },
+        "blockedUnsafeWrites": True,
+        "blockedGeneratedScriptSymlinkProfile": True,
+        "blockedMissingDefaultInsertion": True,
+        "blockedDuplicateResolution": True,
+        "blockedHighRiskDisplayRender": True,
+        "blockedStructuredFamily": True,
+        "blockedRuntimeMutation": True,
+        "realConfigTouched": False,
+        "runtimeTouched": False,
+        "validation": validation_pending_full(),
+        "proofUsed": {
+            "cargoTest": "deterministic Rust tests",
+            "gtkSafeEnvEvidenceMatrix": "live GTK/AT-SPI safe-env scenarios",
+            "fixtureSafeBatchTests": "temporary fixture files only",
+            "reports": "redacted committed reports",
+        },
+        "proofStillMissing": [
+            "release-boundary approval",
+            "real release packaging proof",
+            "separate designs for intentionally blocked expansion areas",
+        ],
+        "projectModel": PROJECT_MODEL,
+        "projectDataMigratedToHyprland0554": False,
     }
 
 

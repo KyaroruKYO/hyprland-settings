@@ -1,0 +1,54 @@
+{
+  "SAFE_WRITABLE_ROWS_len": 341,
+  "artifactKind": "final_safe_scope_validation",
+  "blockedDuplicateResolution": true,
+  "blockedGeneratedScriptSymlinkProfile": true,
+  "blockedHighRiskDisplayRender": true,
+  "blockedMissingDefaultInsertion": true,
+  "blockedRuntimeMutation": true,
+  "blockedStructuredFamily": true,
+  "blockedUnsafeWrites": true,
+  "countsAfter": "341 readable / 341 writable / 0 blocked",
+  "countsBefore": "341 readable / 341 writable / 0 blocked",
+  "generatedAt": "2026-06-19T06:42:50.454560+00:00",
+  "projectDataMigratedToHyprland0554": false,
+  "projectModel": "v0.55.2 / 341 readable / 341 writable / 0 blocked",
+  "proofStillMissing": [
+    "release-boundary approval",
+    "real release packaging proof",
+    "separate designs for intentionally blocked expansion areas"
+  ],
+  "proofUsed": {
+    "cargoTest": "deterministic Rust tests",
+    "fixtureSafeBatchTests": "temporary fixture files only",
+    "gtkSafeEnvEvidenceMatrix": "live GTK/AT-SPI safe-env scenarios",
+    "reports": "redacted committed reports"
+  },
+  "realConfigTouched": false,
+  "runtimeTouched": false,
+  "safeBatchWritePath": {
+    "applyStillGuarded": true,
+    "backupBeforeWrite": true,
+    "eligibleNormalScalarWrites": true,
+    "rereadVerificationAfterWrite": true,
+    "restoreOnFailure": true
+  },
+  "schemaVersion": 1,
+  "scope": "guarded normal-scalar safe-batch Hyprland Settings app for v0.55.2 data/model",
+  "startingCommit": "9083e9eda0c6c90df04991d8d1b32f842915004e",
+  "validation": {
+    "appstreamValidate": "passed (pedantic: 1)",
+    "bashScripts": "passed",
+    "cargoBuildRelease": "passed",
+    "cargoCheck": "passed",
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoTest": "passed",
+    "desktopFileValidate": "passed",
+    "gitDiffCheck": "passed",
+    "gitStatusShort": "passed with intended sprint changes and pre-existing unrelated untracked audit/design files",
+    "gtkSafeEnvEvidenceMatrix": "passed (/tmp/hyprland-settings-gtk-automation/20260618_234025)",
+    "jqReports": "passed",
+    "pythonPyCompile": "passed"
+  }
+}

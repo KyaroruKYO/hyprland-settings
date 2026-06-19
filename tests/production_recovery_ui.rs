@@ -19,7 +19,7 @@ fn disabled_recovery_copy_exists_without_handlers() {
         "The app will reread the restored file before reporting recovery success.",
         "The app will not reload Hyprland automatically.",
         "If recovery fails, the app will report the failure and leave the backup available.",
-        "Recovery contract approval is staged; recovery execution is still blocked until the pilot is approved.",
+        "Recovery contract approval is staged; recovery execution stays limited to guarded safe-batch failure handling.",
     ] {
         assert!(
             readiness.contains(copy),

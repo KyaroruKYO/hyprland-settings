@@ -116,6 +116,7 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
         "data/reports/gtk-safe-env-blocked-category-detail-proof.v0.55.2.json",
         "data/reports/gtk-safe-env-connected-file-detail-proof.v0.55.2.json",
         "data/reports/completion-readiness-audit.v0.55.2.json",
+        "data/reports/final-app-completion-wrap-up.v0.55.2.json",
     ];
     for path in report_paths {
         let text = fs::read_to_string(path).unwrap_or_else(|error| panic!("{path}: {error}"));
@@ -378,4 +379,144 @@ fn completion_readiness_reports_exist_and_preserve_safety_boundaries() {
     assert_eq!(wrap_up["realConfigEdited"], false);
     assert_eq!(wrap_up["hyprlandReloaded"], false);
     assert_eq!(wrap_up["mutatingHyprctlUsed"], false);
+}
+
+#[test]
+fn final_completion_reports_exist_and_validate_safe_scope() {
+    let final_wrap: Value = serde_json::from_str(
+        &fs::read_to_string("data/reports/final-app-completion-wrap-up.v0.55.2.json")
+            .expect("final wrap-up report should read"),
+    )
+    .expect("final wrap-up report should parse");
+    assert_eq!(final_wrap["schemaVersion"], 1);
+    assert_eq!(final_wrap["artifactKind"], "final_app_completion_wrap_up");
+    assert_eq!(
+        final_wrap["projectModel"],
+        "v0.55.2 / 341 readable / 341 writable / 0 blocked"
+    );
+    assert_eq!(final_wrap["projectDataMigratedToHyprland0554"], false);
+    assert_eq!(
+        final_wrap["completionScope"]["completeMeans"],
+        "The app is ready for guarded normal-scalar safe-batch use under the current v0.55.2 model, with clear UI copy, stable packaging metadata, final validation reports, and a release checklist."
+    );
+    assert_eq!(final_wrap["appIdentity"]["appName"], "Hyprland Settings");
+    assert_eq!(final_wrap["appIdentity"]["repoName"], "hyprland-settings");
+    assert_eq!(final_wrap["appIdentity"]["binaryName"], "hyprland-settings");
+    assert_eq!(
+        final_wrap["appIdentity"]["appId"],
+        "io.github.kyarorukyo.hyprlandsettings"
+    );
+    assert_eq!(final_wrap["appIdentity"]["githubOwner"], "KyaroruKYO");
+    assert_eq!(
+        final_wrap["writeSafetyStatus"]["unsafeWritesExpanded"],
+        false
+    );
+    assert_eq!(
+        final_wrap["writeSafetyStatus"]["missingDefaultInsertionEnabled"],
+        false
+    );
+    assert_eq!(
+        final_wrap["writeSafetyStatus"]["duplicateAutoResolutionEnabled"],
+        false
+    );
+    assert_eq!(
+        final_wrap["writeSafetyStatus"]["highRiskWritesEnabled"],
+        false
+    );
+    assert_eq!(
+        final_wrap["writeSafetyStatus"]["displayRenderRiskWritesEnabled"],
+        false
+    );
+    assert_eq!(
+        final_wrap["writeSafetyStatus"]["profileModeSwitchingEnabled"],
+        false
+    );
+
+    let release: Value = serde_json::from_str(
+        &fs::read_to_string("data/reports/final-release-readiness-checklist.v0.55.2.json")
+            .expect("release checklist should read"),
+    )
+    .expect("release checklist should parse");
+    assert_eq!(release["schemaVersion"], 1);
+    assert_eq!(release["artifactKind"], "final_release_readiness_checklist");
+    assert_eq!(release["notARelease"], true);
+    assert_eq!(release["releaseCreated"], false);
+    assert_eq!(release["tagCreated"], false);
+    assert_eq!(release["packageCreated"], false);
+    assert_eq!(release["unsafeScopeStillBlocked"], true);
+    assert_eq!(
+        release["recommendedReleaseDecision"],
+        "Ready to ask for explicit release-boundary approval for the guarded normal-scalar safe-batch v0.55.2 scope."
+    );
+
+    let safe_scope: Value = serde_json::from_str(
+        &fs::read_to_string("data/reports/final-safe-scope-validation.v0.55.2.json")
+            .expect("safe scope validation report should read"),
+    )
+    .expect("safe scope validation report should parse");
+    assert_eq!(safe_scope["schemaVersion"], 1);
+    assert_eq!(safe_scope["artifactKind"], "final_safe_scope_validation");
+    assert_eq!(safe_scope["SAFE_WRITABLE_ROWS_len"], 341);
+    assert_eq!(safe_scope["blockedUnsafeWrites"], true);
+    assert_eq!(safe_scope["blockedGeneratedScriptSymlinkProfile"], true);
+    assert_eq!(safe_scope["blockedMissingDefaultInsertion"], true);
+    assert_eq!(safe_scope["blockedDuplicateResolution"], true);
+    assert_eq!(safe_scope["blockedHighRiskDisplayRender"], true);
+    assert_eq!(safe_scope["blockedStructuredFamily"], true);
+    assert_eq!(safe_scope["blockedRuntimeMutation"], true);
+    assert_eq!(safe_scope["realConfigTouched"], false);
+    assert_eq!(safe_scope["runtimeTouched"], false);
+    assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
+}
+
+#[test]
+fn public_metadata_matches_safe_scope_and_does_not_overclaim() {
+    let readme = fs::read_to_string("README.md").expect("README should read");
+    assert!(readme.contains("guarded safe-batch config writes"));
+    assert!(readme.contains("Hyprland `0.55.2`"));
+    assert!(readme.contains("Production Apply remains narrower"));
+    assert!(readme.contains("It does not add missing config lines yet."));
+    assert!(readme.contains("It does not auto-resolve duplicate settings."));
+    assert!(readme.contains("It does not switch profiles"));
+    assert!(readme.contains("It does not migrate this v0.55.2 data/model to Hyprland 0.55.4."));
+
+    let cargo = fs::read_to_string("Cargo.toml").expect("Cargo.toml should read");
+    assert!(cargo.contains("name = \"hyprland-settings\""));
+    assert!(cargo.contains("description = \"GTK4/libadwaita Hyprland settings app with guarded safe-batch config writes\""));
+
+    let desktop =
+        fs::read_to_string("data/applications/io.github.kyarorukyo.hyprlandsettings.desktop")
+            .expect("desktop file should read");
+    assert!(desktop.contains("Name=Hyprland Settings"));
+    assert!(desktop.contains("Exec=hyprland-settings"));
+    assert!(desktop.contains("Icon=io.github.kyarorukyo.hyprlandsettings"));
+    assert!(desktop.contains("guarded safe-batch"));
+
+    let metainfo =
+        fs::read_to_string("data/metainfo/io.github.kyarorukyo.hyprlandsettings.metainfo.xml")
+            .expect("metainfo should read");
+    assert!(metainfo.contains("<id>io.github.kyarorukyo.hyprlandsettings</id>"));
+    assert!(metainfo.contains("https://github.com/KyaroruKYO/hyprland-settings"));
+    assert!(metainfo.contains("guarded safe-batch writes"));
+    assert!(metainfo.contains("The bundled metadata targets Hyprland 0.55.2."));
+    assert!(!metainfo.contains("The current release is read-only."));
+    assert!(!metainfo.contains("does not read live Hyprland config files"));
+}
+
+#[test]
+fn active_user_facing_copy_uses_safe_batch_not_pilot_language() {
+    let model = fs::read_to_string("src/ui/model.rs").expect("ui model should read");
+    assert!(model.contains("guarded safe-batch writing"));
+    assert!(!model.contains("This row is the only active write pilot"));
+
+    let readiness = fs::read_to_string("src/one_target_pilot_readiness.rs")
+        .expect("readiness source should read");
+    assert!(readiness.contains("Final safe-batch readiness"));
+    assert!(readiness
+        .contains("Safe-batch writing is available only for eligible normal scalar settings."));
+    assert!(readiness.contains("High-risk rows remain blocked from safe-batch writing."));
+    assert!(readiness.contains("These targets remain blocked from safe-batch writing."));
+    assert!(!readiness.contains("The first write pilot is not ready yet."));
+    assert!(!readiness.contains("first production write pilot"));
+    assert!(!readiness.contains("recovery execution is still blocked until the pilot is approved"));
 }

@@ -1,0 +1,63 @@
+{
+  "appId": "io.github.kyarorukyo.hyprlandsettings",
+  "appstreamValidated": "passed (pedantic: 1)",
+  "artifactKind": "final_release_readiness_checklist",
+  "beforeReleaseRequired": [
+    "User approval to create a release",
+    "Final tag/version decision",
+    "Packaging artifact decision",
+    "Release notes"
+  ],
+  "binaryName": "hyprland-settings",
+  "cargoValidationPassed": true,
+  "countsAfter": "341 readable / 341 writable / 0 blocked",
+  "countsBefore": "341 readable / 341 writable / 0 blocked",
+  "desktopFileValidated": "passed",
+  "generatedAt": "2026-06-19T06:42:50.454557+00:00",
+  "gtkAutomationPassed": true,
+  "knownLimitations": [
+    "No missing/default insertion",
+    "No duplicate auto-resolution",
+    "No high-risk/display-render expansion",
+    "No structured-family writes",
+    "No profile/mode switching",
+    "No Hyprland reload/runtime mutation",
+    "No Hyprland 0.55.4 data migration"
+  ],
+  "metadataValidated": true,
+  "notARelease": true,
+  "packageCreated": false,
+  "projectDataMigratedToHyprland0554": false,
+  "projectModel": "v0.55.2 / 341 readable / 341 writable / 0 blocked",
+  "readmeReviewed": true,
+  "recommendedReleaseDecision": "Ready to ask for explicit release-boundary approval for the guarded normal-scalar safe-batch v0.55.2 scope.",
+  "releaseCreated": false,
+  "repoIdentity": "KyaroruKYO/hyprland-settings",
+  "requiresUserApproval": [
+    "creating a release",
+    "creating a tag",
+    "creating a package artifact",
+    "expanding unsafe write scope",
+    "migrating data/model to Hyprland 0.55.4"
+  ],
+  "schemaVersion": 1,
+  "startingCommit": "9083e9eda0c6c90df04991d8d1b32f842915004e",
+  "tagCreated": false,
+  "unsafeScopeStillBlocked": true,
+  "userFacingCopyReviewed": true,
+  "validation": {
+    "appstreamValidate": "passed (pedantic: 1)",
+    "bashScripts": "passed",
+    "cargoBuildRelease": "passed",
+    "cargoCheck": "passed",
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoTest": "passed",
+    "desktopFileValidate": "passed",
+    "gitDiffCheck": "passed",
+    "gitStatusShort": "passed with intended sprint changes and pre-existing unrelated untracked audit/design files",
+    "gtkSafeEnvEvidenceMatrix": "passed (/tmp/hyprland-settings-gtk-automation/20260618_234025)",
+    "jqReports": "passed",
+    "pythonPyCompile": "passed"
+  }
+}

@@ -19,10 +19,11 @@ fn disabled_production_backup_and_verification_copy_exists_without_handlers() {
         "The app will reread the file to confirm the value.",
         "If verification fails, the app must not report the change as complete.",
         "Rollback/recovery must be implemented before real writes.",
-        "Backup contract approval is staged; backup creation is still blocked until write execution gates are approved.",
-        "Verification contract approval is staged; verification execution is still blocked until write execution gates are approved.",
-        "Real writing is not active yet.",
-        "Apply behavior has not changed.",
+        "Backup creation is allowed only inside the guarded safe-batch write path.",
+        "Verification execution is allowed only inside the guarded safe-batch write path.",
+        "Safe-batch writing is available only for eligible normal scalar settings.",
+        "Unsafe writes remain blocked.",
+        "Apply remains blocked for missing/default, duplicate, high-risk, display/render, generated, script-managed, symlink/current-profile, structured, runtime, and profile/mode targets.",
     ] {
         assert!(
             model.contains(copy),

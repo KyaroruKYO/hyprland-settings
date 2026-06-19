@@ -31,6 +31,6 @@ fn one_target_pilot_readiness_maps_verification_approved_and_keeps_write_executi
     assert!(readiness
         .user_facing_lines()
         .iter()
-        .any(|line| line == "Recovery contract approval is staged; recovery execution is still blocked until the pilot is approved."));
+        .any(|line| line == "Recovery contract approval is staged; recovery execution stays limited to guarded safe-batch failure handling."));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }

@@ -943,7 +943,7 @@ impl RowDetailProjection {
         ];
         if setting.edit.editable {
             safety_notes.push(
-                "This row is the only active write pilot and requires review, backup, write, and reread verification."
+                "This row can use guarded safe-batch writing when review, backup, write, and reread verification checks pass."
                     .to_string(),
             );
             if let Some(reason) = review_block_reason(setting.current_value.status) {

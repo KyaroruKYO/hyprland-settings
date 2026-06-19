@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Hyprland Settings
-Comment=Explore Hyprland settings and metadata
+Comment=Review Hyprland settings and apply guarded safe-batch config changes
 Exec=hyprland-settings
 Icon=io.github.kyarorukyo.hyprlandsettings
 Terminal=false
