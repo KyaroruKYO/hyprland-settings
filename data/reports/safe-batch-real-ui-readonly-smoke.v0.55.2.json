@@ -1,0 +1,18 @@
+{
+  "applyClicked": false,
+  "artifactKind": "safe-batch-real-ui-readonly-smoke",
+  "duplicateConflictBlockedCopyVisible": "Blocked: this setting appears in more than one place. Resolve the duplicate entries manually before applying.",
+  "generatedAt": "2026-06-18T00:00:00-07:00",
+  "highRiskBlockedCopyVisible": "Blocked: high-risk setting.",
+  "liveUiSmokePerformed": false,
+  "missingLineDefaultBlockedCopyVisible": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet.",
+  "oneTargetWordingInNewSafeBatchPath": false,
+  "reasonLiveUiNotPerformed": "Source-level UI/accessibility wording proof was used to avoid any chance of interacting with Apply during blocker hardening.",
+  "safeBatchWriteStatusVisibleInSource": true,
+  "schemaVersion": "1.0",
+  "scriptManagedBlockedCopyVisible": "Blocked: this file may be changed by a script, so safe-batch writing is disabled.",
+  "sourceLevelUiSmokePerformed": true,
+  "startingCommit": "4249144f74e95c803e0bde3c2b4e55571aabe870",
+  "symlinkManagedBlockedCopyVisible": "Blocked: this file may be a symlink or current-profile file, so the app will not write it yet.",
+  "writesTriggered": false
+}

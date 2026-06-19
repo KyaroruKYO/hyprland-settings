@@ -79,15 +79,21 @@ impl SafeBatchEligibility {
             Self::BlockedDisplayRenderRisk => {
                 "Blocked: display/render settings need separate safety approval."
             }
-            Self::BlockedGeneratedFile => "Blocked: this file appears to be generated.",
-            Self::BlockedScriptManaged => "Blocked: this file may be managed by a script.",
-            Self::BlockedSymlinkManaged => "Blocked: this file is managed through a symlink.",
+            Self::BlockedGeneratedFile => {
+                "Blocked: this file appears to be generated, so the app will not write it yet."
+            }
+            Self::BlockedScriptManaged => {
+                "Blocked: this file may be changed by a script, so safe-batch writing is disabled."
+            }
+            Self::BlockedSymlinkManaged => {
+                "Blocked: this file may be a symlink or current-profile file, so the app will not write it yet."
+            }
             Self::BlockedAmbiguousFile => "Blocked: this file target is ambiguous.",
             Self::BlockedDuplicateConflict => {
-                "Blocked: this setting appears in more than one place."
+                "Blocked: this setting appears in more than one place. Resolve the duplicate entries manually before applying."
             }
             Self::BlockedMissingLine => {
-                "Blocked: this setting does not have a safe line target yet."
+                "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
             }
             Self::BlockedStructuredFamily => {
                 "Blocked: structured settings are not part of safe-batch writing yet."

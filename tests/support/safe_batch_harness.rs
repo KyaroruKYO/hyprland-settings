@@ -143,6 +143,16 @@ pub fn graph_for(files: Vec<ConfigGraphFile>, root_path: PathBuf) -> ConfigGraph
     }
 }
 
+pub fn redact_path(path: &Path) -> String {
+    let text = path.display().to_string();
+    redact_text(&text)
+}
+
+pub fn redact_text(text: &str) -> String {
+    text.replace("/home/kyo/.config/hypr", "<hypr-config>")
+        .replace("/home/kyo", "~")
+}
+
 pub fn snapshot(
     values: Vec<(&str, &str, &Path, usize, &str, CurrentValueStatus)>,
 ) -> CurrentConfigSnapshot {
@@ -609,6 +619,33 @@ pub fn blocked_plan_for(reason: SafeBatchEligibility) -> (PathBuf, SafeBatchWrit
     (root, plan)
 }
 
+fn graph_scalar_occurrences(graph: &ConfigGraphSummary) -> BTreeMap<String, Vec<Value>> {
+    let mut occurrences = BTreeMap::<String, Vec<Value>>::new();
+    for file in &graph.files {
+        if !file.readable {
+            continue;
+        }
+        let Ok(parsed) = parse_hyprland_config_file(&file.path) else {
+            continue;
+        };
+        for record in parsed.scalar_records() {
+            let Some(setting_id) = &record.normalized_setting_id else {
+                continue;
+            };
+            occurrences
+                .entry(setting_id.clone())
+                .or_default()
+                .push(json!({
+                    "path": redact_path(&record.path),
+                    "lineNumber": record.line_number,
+                    "rawValue": record.raw_value,
+                    "rawLine": "<redacted; raw source line omitted from committed report>"
+                }));
+        }
+    }
+    occurrences
+}
+
 pub fn real_config_readonly_audit() -> Value {
     let discovery = discover_hyprland_config();
     let ConfigDiscoveryStatus::Found { path, .. } = &discovery.status else {
@@ -623,10 +660,17 @@ pub fn real_config_readonly_audit() -> Value {
     let current = CurrentConfigSnapshot::from_parsed(
         parse_hyprland_config_file(path).expect("read-only real config parse should succeed"),
     );
+    let graph_occurrences = graph_scalar_occurrences(&graph);
     let rows = harness_rows();
     let mut eligible = 0usize;
     let mut blocked = BTreeMap::<String, usize>::new();
-    let mut duplicate_conflicts = Vec::new();
+    let mut duplicate_conflicts = Vec::<String>::new();
+    let mut duplicate_conflict_details = Vec::new();
+    let mut blocker_details = Vec::new();
+    let mut missing_line_subtypes = BTreeMap::<String, usize>::new();
+    let mut configured_but_unmapped = Vec::new();
+    let mut truly_not_configured = Vec::new();
+    let mut newly_eligible_rows = Vec::<Value>::new();
     let mut managed_hints = Vec::new();
 
     for row in rows.iter().filter(|row| row.value_pair.is_some()) {
@@ -644,13 +688,72 @@ pub fn real_config_readonly_audit() -> Value {
         );
         if plan.can_execute {
             eligible += 1;
+            if let Some(change) = plan.eligible_changes.first() {
+                newly_eligible_rows.push(json!({
+                    "rowId": row.row_id,
+                    "officialSetting": row.official_setting,
+                    "targetPath": redact_path(&change.target_path),
+                    "lineNumber": change.line_number,
+                    "oldValueMatched": true,
+                    "rawLine": "<redacted; raw source line omitted from committed report>",
+                    "normalRisk": true,
+                    "generated": false,
+                    "scriptManaged": false,
+                    "symlinkManaged": false,
+                    "duplicateConflicted": false
+                }));
+            }
         } else if let Some(blocked_change) = plan.blocked_changes.first() {
             *blocked
                 .entry(blocked_change.reason.label().to_string())
                 .or_default() += 1;
+            let current_value = current.value_for(&row.official_setting);
+            let graph_hits = graph_occurrences
+                .get(&row.official_setting)
+                .cloned()
+                .unwrap_or_default();
+            let mut subtype = "not_applicable";
             if blocked_change.reason == SafeBatchEligibility::BlockedDuplicateConflict {
                 duplicate_conflicts.push(row.row_id.clone());
+                duplicate_conflict_details.push(json!({
+                    "rowId": row.row_id,
+                    "officialSetting": row.official_setting,
+                    "occurrences": graph_hits.clone(),
+                    "currentActiveValue": current_value.raw_value,
+                    "whyApplyIsBlocked": "The same setting appears more than once, so safe-batch writing will not silently choose one target.",
+                    "manualResolution": "Remove or consolidate the duplicate entries manually, then rerun the read-only audit before applying."
+                }));
+                subtype = "duplicate_conflict";
+            } else if blocked_change.reason == SafeBatchEligibility::BlockedMissingLine {
+                if graph_hits.is_empty() {
+                    subtype = "not_configured_default_value";
+                    truly_not_configured.push(row.row_id.clone());
+                } else {
+                    subtype = "configured_in_graph_but_not_mapped_to_safe_current_source";
+                    configured_but_unmapped.push(json!({
+                        "rowId": row.row_id,
+                        "officialSetting": row.official_setting,
+                        "occurrences": graph_hits.clone(),
+                        "whyStillBlocked": "The connected graph has a scalar occurrence, but the current safe write source snapshot did not expose an exact eligible target for this row.",
+                        "safety": "This remains blocked until source/include-aware current value mapping is proven for Apply."
+                    }));
+                }
+                *missing_line_subtypes
+                    .entry(subtype.to_string())
+                    .or_default() += 1;
             }
+            blocker_details.push(json!({
+                "rowId": row.row_id,
+                "officialSetting": row.official_setting,
+                "blockedReason": blocked_change.reason.label(),
+                "blockerSubtype": subtype,
+                "evidence": redact_text(&blocked_change.evidence),
+                "userFacingCopy": blocked_change.user_facing_copy,
+                "currentStatus": current_value.status_label(),
+                "sourcePath": current_value.source_path.as_deref().map(redact_path),
+                "lineNumber": current_value.line_number,
+                "graphOccurrenceCount": graph_hits.len()
+            }));
         } else {
             *blocked.entry("not_executable".to_string()).or_default() += 1;
         }
@@ -666,9 +769,10 @@ pub fn real_config_readonly_audit() -> Value {
                     | ConfigManagementHintKind::SymlinkManaged
             ) {
                 managed_hints.push(json!({
-                    "path": file.path.display().to_string(),
+                    "path": redact_path(&file.path),
                     "hint": format!("{:?}", hint.kind),
-                    "evidence": hint.evidence
+                    "evidence": "<redacted; local script/profile evidence omitted from committed report>",
+                    "redactionReason": "local script paths and personal config layout are not needed for public proof"
                 }));
             }
         }
@@ -676,13 +780,23 @@ pub fn real_config_readonly_audit() -> Value {
 
     json!({
         "performed": true,
-        "rootPath": path.display().to_string(),
+        "rootPath": redact_path(path),
         "settingsWithGeneratedProposedValuesConsidered": eligible + blocked.values().sum::<usize>(),
         "eligibleSafeBatchWrites": eligible,
         "blocked": blocked,
+        "blockerDetails": blocker_details,
+        "missingLineSubtypes": missing_line_subtypes,
+        "configuredButNotMappedToSafeCurrentSource": configured_but_unmapped,
+        "trulyNotConfiguredDefaultRows": truly_not_configured,
         "duplicateConflicts": duplicate_conflicts,
+        "duplicateConflictDetails": duplicate_conflict_details,
         "managedHints": managed_hints,
         "appearanceBlurEnabledDuplicateBlocked": duplicate_conflicts.iter().any(|row| row == "appearance.blur.enabled"),
+        "privacy": {
+            "pathsRedacted": true,
+            "rawSourceLinesRedacted": true,
+            "localScriptEvidenceRedacted": true
+        },
         "realUserConfigEdited": false,
         "realBackupsCreated": false,
         "productionVerificationRun": false,

@@ -1,0 +1,123 @@
+{
+  "afterRealConfigEligibility": 1,
+  "artifactKind": "safe-batch-real-config-hardening",
+  "baselineRealConfigEligibility": 1,
+  "blockerCountsAfter": {
+    "blocked_display_render_risk": 26,
+    "blocked_duplicate_conflict": 5,
+    "blocked_high_risk": 47,
+    "blocked_missing_line": 261,
+    "blocked_profile_mode_switch": 1
+  },
+  "blockerCountsBefore": {
+    "blocked_display_render_risk": 26,
+    "blocked_duplicate_conflict": 5,
+    "blocked_high_risk": 47,
+    "blocked_missing_line": 261,
+    "blocked_profile_mode_switch": 1
+  },
+  "countsAfter": {
+    "blocked": 0,
+    "readable": 341,
+    "writable": 341
+  },
+  "countsBefore": {
+    "blocked": 0,
+    "readable": 341,
+    "writable": 341
+  },
+  "duplicateConflictImprovements": {
+    "allDuplicateRowsListed": true,
+    "applyStillBlocked": true,
+    "manualResolutionCopyAdded": true,
+    "occurrencesIncludeRedactedFileLineAndValue": true
+  },
+  "filesChanged": [
+    "src/safe_batch_write.rs",
+    "tests/support/mod.rs",
+    "tests/support/safe_batch_harness.rs",
+    "tests/safe_batch_real_config_hardening.rs",
+    "data/reports/safe-batch-blocked-category-matrix.v0.55.2.json",
+    "data/reports/safe-batch-failure-recovery-matrix.v0.55.2.json",
+    "data/reports/safe-batch-fixture-write-coverage.v0.55.2.json",
+    "data/reports/safe-batch-real-config-readonly-audit.v0.55.2.json",
+    "data/reports/safe-batch-real-config-blocker-analysis.v0.55.2.json",
+    "data/reports/safe-batch-real-ui-readonly-smoke.v0.55.2.json",
+    "data/reports/safe-batch-ui-integration-review.v0.55.2.json",
+    "data/reports/safe-batch-real-config-hardening.v0.55.2.json",
+    "docs/SAFE-BATCH-REAL-CONFIG-HARDENING-REVIEW-LOG.md"
+  ],
+  "generatedAt": "2026-06-18T00:00:00-07:00",
+  "goal": "Harden real-config safe-batch eligibility and blocker explanations before broad trust.",
+  "missingLineImprovements": {
+    "applyStillBlocked": true,
+    "defaultRowsSeparatedFromConfiguredButUnmapped": true,
+    "safeInsertionStillUnsupported": true,
+    "userFacingCopyAdded": true
+  },
+  "newlyEligibleRows": [],
+  "nextRecommendedSprint": "Design source/include-aware current-value mapping for safe-batch Apply, still without insertion or duplicate auto-resolution.",
+  "privacyReview": {
+    "deepHarnessSummaryContainsNoRawLocalPaths": true,
+    "localScriptEvidenceRedacted": true,
+    "rawSourceLinesOmittedFromCommittedRealConfigReports": true,
+    "realConfigReadonlyAuditRedacted": true
+  },
+  "proofStillMissing": [
+    "source/include-aware current-value mapping for Apply is still not proven",
+    "safe insertion for default-only settings is not designed",
+    "duplicate auto-resolution is intentionally not implemented",
+    "live GTK smoke was not run in this hardening sprint"
+  ],
+  "proofUsed": [
+    "read-only real config audit",
+    "safe-batch blocked-category execution tests",
+    "source-level UI wording smoke",
+    "redacted duplicate occurrence report"
+  ],
+  "safetyBoundaries": {
+    "applyClicked": false,
+    "displayRenderRiskyWritesEnabled": false,
+    "duplicateConflictsStillBlockApply": true,
+    "generatedScriptSymlinkManagedWritesEnabled": false,
+    "highRiskWritesEnabled": false,
+    "hyprlandReloaded": false,
+    "luaExecuted": false,
+    "missingLineDefaultSettingsStillBlockApply": true,
+    "mutatingHyprctlUsed": false,
+    "realUserConfigBackupsCreated": false,
+    "realUserConfigEdited": false,
+    "runtimeMutated": false,
+    "scriptsExecuted": false,
+    "structuredFamilyWritesEnabled": false
+  },
+  "schemaVersion": "1.0",
+  "scriptSymlinkManagedImprovements": {
+    "managedHintsRedacted": true,
+    "scriptManagedCopyExplainsNoWrite": true,
+    "symlinkManagedCopyExplainsNoWrite": true
+  },
+  "startingCommit": "4249144f74e95c803e0bde3c2b4e55571aabe870",
+  "testsAdded": [
+    "tests/safe_batch_real_config_hardening.rs"
+  ],
+  "testsUpdated": [
+    "tests/support/safe_batch_harness.rs"
+  ],
+  "uiSmokeReview": {
+    "applyClicked": false,
+    "liveUiSmokePerformed": false,
+    "sourceLevelUiSmokePerformed": true,
+    "writesTriggered": false
+  },
+  "validation": {
+    "cargoBuildRelease": "passed",
+    "cargoCheck": "passed",
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoTest": "passed",
+    "gitDiffCheck": "passed",
+    "gitStatusShort": "passed with intended hardening files plus pre-existing unrelated untracked audit/design files",
+    "jqReports": "passed"
+  }
+}

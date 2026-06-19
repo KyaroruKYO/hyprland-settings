@@ -3,7 +3,7 @@
   "artifactKind": "safe-batch-ui-integration-review",
   "backupBeforeWriteCopyAppears": true,
   "blockedCategoriesHaveUnderstandableCopy": true,
-  "duplicateConflictSettingsStillBlockApply": "Blocked: this setting appears in more than one place.",
+  "duplicateConflictSettingsStillBlockApply": "Blocked: this setting appears in more than one place. Resolve the duplicate entries manually before applying.",
   "generatedAt": "2026-06-18T00:00:00-07:00",
   "highRiskSettingsStillShowBlockedSafetyText": "Blocked: high-risk setting.",
   "oneTargetPilotWordingAbsentFromNewSafeBatchModule": true,
