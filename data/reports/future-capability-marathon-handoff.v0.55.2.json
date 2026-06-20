@@ -37,7 +37,15 @@
     "source_include_target_selection_fixture_proof",
     "disabled_duplicate_pre_apply_review_ui",
     "source_include_selected_target_dry_run_planner",
-    "controlled_live_test_guard_model"
+    "controlled_live_test_guard_model",
+    "source_include_selected_target_dry_run_preview_ui",
+    "source_include_guarded_temp_fixture_executor",
+    "duplicate_guarded_temp_fixture_executor",
+    "structured_bind_guarded_temp_fixture_executor",
+    "profile_switch_guarded_temp_fixture_executor",
+    "runtime_guarded_executor_model",
+    "high_risk_guarded_live_readiness_executor",
+    "hyprland_0554_local_evidence_collector"
   ],
   "partialPhases": [],
   "blockedPhases": [
@@ -54,7 +62,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "Wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths.",
+  "nextExactPhaseToContinue": "Run controlled copied-config-tree proof for source/include, duplicate, structured, profile, and runtime paths before considering any real config/runtime mutation.",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -68,16 +76,16 @@
     "tests/future_capability_ui.rs",
     "data/reports/future-capability-*.json"
   ],
-  "testsPassing": "Focused future_capability_models test passed after adding selected-target dry-run and controlled live-test guard tests; full validation pending.",
+  "testsPassing": "Focused future_capability_models and future_capability_ui tests passed after adding guarded temp-fixture executor tests and selected-target dry-run preview source tests; full validation pending.",
   "testsFailing": [],
   "validationStatus": "passed; GTK safe-env evidence root /tmp/hyprland-settings-gtk-automation/20260619_101038",
   "knownRisks": [
-    "No live/system mutation was run in this sprint; the new guard records prerequisites but does not execute changes.",
-    "Source/include insertion remains production-disabled until selected-target dry-run is wired into disabled UI and byte-exact guarded live proof is reviewed.",
+    "No real live/system mutation was run in this sprint; all executor proof ran against temp fixtures and restored original state.",
+    "Source/include insertion remains production-disabled until copied-config-tree and explicit production target approval are reviewed.",
     "High-risk/display mutation remains blocked until out-of-band recovery can be proven before any mutation.",
     "0.55.4 migration remains blocked without trusted official exports and row/write-safety review."
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "Wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths."
+  "recommendedNextCodexPrompt": "Run controlled copied-config-tree proof for source/include, duplicate, structured, profile, and runtime paths before considering any real config/runtime mutation."
 }

@@ -27,7 +27,8 @@
     "Added deterministic tests proving real-session profile paths are refused as outside safe-env and production switching remains disabled.",
     "No additional production-safe profile switching step was available this sprint without explicit real-session switching approval.",
     "This sprint rechecked profile/mode switching and found no safe production step without explicit real-session approval and restore protocol.",
-    "Controlled live-test guard requires original symlink targets before profile switching mutation."
+    "Controlled live-test guard requires original symlink targets before profile switching mutation.",
+    "Added a guarded temp-fixture profile switch executor that requires selected target, current symlink, original symlink snapshot, and guard approval, then switches, verifies, restores, and verifies the restored target."
   ],
   "whatWasNotImplemented": [
     "No real symlink was switched.",
@@ -57,7 +58,11 @@
     "safeEnvTargetReviewOnly": true,
     "profileSwitchControlledLiveGuardRequiresSymlinkSnapshot": true,
     "liveMutationExecutedThisSprint": false,
-    "restorationRequiredThisSprint": false
+    "restorationRequiredThisSprint": true,
+    "profileSwitchGuardedTempExecutorExists": true,
+    "profileSwitchGuardedTempExecutorRestoresSymlinkTarget": true,
+    "profileSwitchGuardedTempExecutorRequiresGuard": true,
+    "profileSwitchGuardedTempExecutorRefusesRealProfilePathByDefault": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"

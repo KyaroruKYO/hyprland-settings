@@ -82,12 +82,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths."
+        "Run controlled copied-config-tree proof for source/include, duplicate, structured, profile, and runtime paths before considering any real config/runtime mutation."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("source/include selected-target dry-run preview"));
+        .contains("copied-config-tree proof"));
 }
 
 #[test]

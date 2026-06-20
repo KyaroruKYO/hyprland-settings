@@ -28,7 +28,8 @@
     "Production structured writes remain disabled despite fixture proof.",
     "No additional production-safe structured write step was available this sprint without an approved structured write gate beyond the existing hl.bind fixture proof.",
     "This sprint rechecked structured writes and found no safe production step beyond existing hl.bind fixture proof without structured approval and safe-batch integration.",
-    "Controlled live-test guard records reversible structured-write prerequisites; production structured writes remain disabled."
+    "Controlled live-test guard records reversible structured-write prerequisites; production structured writes remain disabled.",
+    "Added a guarded hl.bind temp-fixture executor that validates candidates, edits one selected line, verifies the new raw line, preserves comments/order around the edit, restores original bytes, and verifies restored content fingerprint."
   ],
   "whatWasNotImplemented": [
     "No monitor, bind, window rule, workspace rule, device, gesture, permission, animation, or curve writer was enabled.",
@@ -58,7 +59,12 @@
     "realPathStructuredEditRefused": true,
     "structuredWriteControlledLiveGuardExists": true,
     "liveMutationExecutedThisSprint": false,
-    "restorationRequiredThisSprint": false
+    "restorationRequiredThisSprint": true,
+    "structuredBindGuardedTempExecutorExists": true,
+    "structuredBindGuardedTempExecutorRestoresBytes": true,
+    "structuredBindGuardedTempExecutorRefusesInvalidCandidate": true,
+    "structuredBindGuardedTempExecutorRefusesStaleOldLine": true,
+    "structuredBindGuardedTempExecutorRefusesNonTempTargets": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"
@@ -68,7 +74,7 @@
     "Each structured family still needs family-specific preservation tests for comments, ordering, repeated records, and invalid input rejection.",
     "Only hl.bind has the new lossless safe-env exact-line edit proof; other structured families remain read-only scaffolds."
   ],
-  "nextRecommendedWork": "Wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths.",
+  "nextRecommendedWork": "Run copied-config-tree hl.bind proof and define the production structured write approval gate before any Apply integration.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

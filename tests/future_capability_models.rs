@@ -7,20 +7,24 @@ use hyprland_settings::future_capability::{
     disabled_missing_default_insertion_review, disabled_profile_switch_review,
     disabled_profile_switch_selection_review, duplicate_occurrence_confirmation,
     duplicate_occurrence_model, duplicate_occurrence_review, duplicate_production_approval_gate,
-    edit_structured_bind_safe_env, high_risk_live_recovery_protocol, high_risk_recovery_review,
-    high_risk_recovery_workflow, migration_comparison_review, profile_target_approval_review,
-    render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
-    replace_duplicate_occurrence_with_confirmation_safe_env, runtime_action_policy,
-    runtime_action_review, runtime_command_risk, source_include_insertion_review,
-    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
-    structured_family_model, structured_family_review, switch_profile_symlink_safe_env,
+    edit_structured_bind_safe_env, execute_duplicate_replacement_guarded_temp,
+    execute_source_include_selected_target_guarded_temp, execute_structured_bind_guarded_temp,
+    high_risk_guarded_live_readiness_executor, high_risk_live_recovery_protocol,
+    high_risk_recovery_review, high_risk_recovery_workflow, local_hyprland_version_evidence,
+    migration_comparison_review, profile_target_approval_review, render_structured_entry_lossless,
+    replace_duplicate_occurrence_safe_env, replace_duplicate_occurrence_with_confirmation_safe_env,
+    runtime_action_policy, runtime_action_review, runtime_command_risk, runtime_guarded_executor,
+    source_include_insertion_review, source_include_selected_target_dry_run_plan,
+    source_include_target_selection_fixture_proof, structured_family_model,
+    structured_family_review, switch_profile_symlink_guarded_temp, switch_profile_symlink_safe_env,
     trusted_export_requirement, validate_structured_edit_candidate, ControlledLiveTestGuardRequest,
     ControlledLiveTestKind, DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
     DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
-    DuplicateReplacementStatus, HighRiskLiveReadinessStatus, MockWatchdog, MockWatchdogState,
-    ProfileTargetReadiness, RuntimeAction, RuntimeCommandRisk, RuntimeDryRunExecutor,
-    SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
-    SourceIncludeTargetCandidate, SourceIncludeTargetSelectionStatus, StructuredBindEditStatus,
+    DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
+    MockWatchdog, MockWatchdogState, ProfileTargetReadiness, RuntimeAction, RuntimeCommandRisk,
+    RuntimeDryRunExecutor, SourceIncludeInsertionReadiness,
+    SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
+    SourceIncludeTargetSelectionStatus, StructuredBindEditStatus,
 };
 use hyprland_settings::missing_default_insertion::{
     build_missing_default_insertion_plan, MissingDefaultInsertionRequest,
@@ -518,6 +522,134 @@ fn controlled_live_test_guard_has_category_specific_profile_runtime_and_migratio
 }
 
 #[test]
+fn source_include_guarded_executor_inserts_verifies_and_restores_temp_fixture() {
+    let root = temp_root("source-guarded-executor");
+    let root_conf = root.join("hyprland.conf");
+    let sourced_conf = root.join("appearance.conf");
+    write_file(&root_conf, "source = appearance.conf\n");
+    write_file(&sourced_conf, "decoration:blur:enabled = true\n");
+    let proof = source_include_target_selection_fixture_proof(
+        &root_conf,
+        vec![SourceIncludeTargetCandidate {
+            path: sourced_conf.clone(),
+            source_depth: 1,
+            generated_or_script_managed: false,
+            symlink_or_profile_managed: false,
+        }],
+        Some(sourced_conf.clone()),
+        false,
+    );
+    let plan = build_missing_default_insertion_plan(MissingDefaultInsertionRequest {
+        setting_id: "misc.disable_splash_rendering".to_string(),
+        proposed_value: "true".to_string(),
+        target_path: sourced_conf.clone(),
+        backup_stamp: "guarded-source".to_string(),
+    });
+    let dry_run = source_include_selected_target_dry_run_plan(&proof, &plan);
+    let guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::SourceIncludeInsertion,
+        complete_live_guard_request(sourced_conf.clone()),
+    );
+    let original = fs::read_to_string(&sourced_conf).expect("original should read");
+    let report =
+        execute_source_include_selected_target_guarded_temp(&proof, &dry_run, &guard, false, false);
+    assert_eq!(
+        report.status,
+        GuardedTempExecutionStatus::SucceededAndRestored
+    );
+    assert!(report.mutation_verified);
+    assert!(report.restore_succeeded);
+    assert_eq!(
+        fs::read_to_string(&sourced_conf).expect("restored should read"),
+        original
+    );
+    assert!(!report.production_write_enabled);
+    assert!(!report.real_config_touched);
+}
+
+#[test]
+fn source_include_guarded_executor_refuses_missing_guard_non_temp_and_restores_after_verify_failure(
+) {
+    let root = temp_root("source-guarded-blocks");
+    let config = root.join("hyprland.conf");
+    write_file(&config, "decoration:blur:enabled = true\n");
+    let proof = source_include_target_selection_fixture_proof(
+        &config,
+        vec![SourceIncludeTargetCandidate {
+            path: config.clone(),
+            source_depth: 0,
+            generated_or_script_managed: false,
+            symlink_or_profile_managed: false,
+        }],
+        Some(config.clone()),
+        false,
+    );
+    let plan = build_missing_default_insertion_plan(MissingDefaultInsertionRequest {
+        setting_id: "misc.disable_splash_rendering".to_string(),
+        proposed_value: "true".to_string(),
+        target_path: config.clone(),
+        backup_stamp: "guarded-source-blocked".to_string(),
+    });
+    let dry_run = source_include_selected_target_dry_run_plan(&proof, &plan);
+    let blocked_guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::SourceIncludeInsertion,
+        ControlledLiveTestGuardRequest {
+            explicit_live_flag: false,
+            ..complete_live_guard_request(config.clone())
+        },
+    );
+    let blocked = execute_source_include_selected_target_guarded_temp(
+        &proof,
+        &dry_run,
+        &blocked_guard,
+        false,
+        false,
+    );
+    assert_eq!(blocked.status, GuardedTempExecutionStatus::Blocked);
+
+    let guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::SourceIncludeInsertion,
+        complete_live_guard_request(config.clone()),
+    );
+    let original = fs::read_to_string(&config).expect("original should read");
+    let verify_failure =
+        execute_source_include_selected_target_guarded_temp(&proof, &dry_run, &guard, true, false);
+    assert_eq!(
+        verify_failure.status,
+        GuardedTempExecutionStatus::VerificationFailedRestored
+    );
+    assert_eq!(fs::read_to_string(&config).expect("restored"), original);
+
+    let non_temp_proof = source_include_target_selection_fixture_proof(
+        "/home/kyo/Documents/hyprland.conf",
+        vec![SourceIncludeTargetCandidate {
+            path: PathBuf::from("/home/kyo/Documents/hyprland.conf"),
+            source_depth: 0,
+            generated_or_script_managed: false,
+            symlink_or_profile_managed: false,
+        }],
+        Some(PathBuf::from("/home/kyo/Documents/hyprland.conf")),
+        false,
+    );
+    let non_temp_plan = build_missing_default_insertion_plan(MissingDefaultInsertionRequest {
+        setting_id: "misc.disable_splash_rendering".to_string(),
+        proposed_value: "true".to_string(),
+        target_path: PathBuf::from("/home/kyo/Documents/hyprland.conf"),
+        backup_stamp: "non-temp".to_string(),
+    });
+    let non_temp_dry_run =
+        source_include_selected_target_dry_run_plan(&non_temp_proof, &non_temp_plan);
+    let non_temp = execute_source_include_selected_target_guarded_temp(
+        &non_temp_proof,
+        &non_temp_dry_run,
+        &guard,
+        false,
+        false,
+    );
+    assert_eq!(non_temp.status, GuardedTempExecutionStatus::Blocked);
+}
+
+#[test]
 fn duplicate_occurrence_model_lists_same_file_and_source_layer_occurrences() {
     let root = temp_root("duplicate-model");
     let root_conf = root.join("hyprland.conf");
@@ -837,6 +969,65 @@ fn duplicate_replacement_restores_after_verification_failure() {
 }
 
 #[test]
+fn duplicate_guarded_executor_replaces_and_restores_confirmed_temp_fixture() {
+    let root = temp_root("duplicate-guarded");
+    let config = root.join("hyprland.conf");
+    let original =
+        "decoration:blur:enabled = true\nsource = appearance.conf\ndecoration:blur:enabled = false\n";
+    write_file(&config, original);
+    let model = duplicate_occurrence_model("decoration.blur.enabled", &[(config.clone(), 0)])
+        .expect("model should build");
+    let occurrence = model.occurrences[1].clone();
+    let confirmed =
+        duplicate_occurrence_confirmation(Some(&occurrence), Some("token"), "token", false, false);
+    let guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::DuplicateReplacement,
+        complete_live_guard_request(config.clone()),
+    );
+    let request = DuplicateReplacementRequest {
+        occurrence,
+        expected_old_value: "false".to_string(),
+        proposed_value: "true".to_string(),
+        backup_stamp: "guarded-duplicate".to_string(),
+    };
+    let report =
+        execute_duplicate_replacement_guarded_temp(&confirmed, &request, &guard, false, false);
+    assert_eq!(
+        report.status,
+        GuardedTempExecutionStatus::SucceededAndRestored
+    );
+    assert!(report.mutation_verified);
+    assert!(report.restore_succeeded);
+    assert_eq!(
+        fs::read_to_string(&config).expect("config should read"),
+        original
+    );
+    assert!(!report.production_write_enabled);
+
+    let pending = duplicate_occurrence_confirmation(
+        Some(&request.occurrence),
+        Some("wrong"),
+        "token",
+        false,
+        false,
+    );
+    let blocked =
+        execute_duplicate_replacement_guarded_temp(&pending, &request, &guard, false, false);
+    assert_eq!(blocked.status, GuardedTempExecutionStatus::Blocked);
+
+    let mut stale_request = request.clone();
+    stale_request.occurrence.raw_line = "decoration:blur:enabled = maybe".to_string();
+    let stale = execute_duplicate_replacement_guarded_temp(
+        &confirmed,
+        &stale_request,
+        &guard,
+        false,
+        false,
+    );
+    assert_eq!(stale.status, GuardedTempExecutionStatus::Blocked);
+}
+
+#[test]
 fn high_risk_mock_watchdog_handles_confirm_timeout_revert_and_failure() {
     let mut confirmed = MockWatchdog::arm("session", "token", 10);
     assert_eq!(confirmed.state, MockWatchdogState::Pending);
@@ -925,6 +1116,68 @@ fn high_risk_live_recovery_protocol_is_noop_and_refuses_real_paths_or_runtime() 
         HighRiskLiveReadinessStatus::RuntimeMutationRefused
     );
     assert!(!runtime.mutating_runtime_enabled);
+}
+
+#[test]
+fn high_risk_guarded_live_readiness_executor_requires_recovery_timeout_and_restore() {
+    let root = temp_root("high-risk-guarded-readiness");
+    let temp_config = root.join("hyprland.conf");
+    write_file(&temp_config, "render:direct_scanout = false\n");
+    let guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::HighRiskDisplayWrite,
+        complete_live_guard_request(temp_config.clone()),
+    );
+
+    let ready = high_risk_guarded_live_readiness_executor(
+        "render.direct_scanout",
+        &temp_config,
+        &guard,
+        true,
+        true,
+    );
+    assert_eq!(
+        ready.status,
+        HighRiskLiveReadinessStatus::NoopReadyForReview
+    );
+    assert!(ready.no_op_harness);
+    assert!(!ready.live_write_enabled);
+    assert!(!ready.mutating_runtime_enabled);
+
+    let missing_timeout = high_risk_guarded_live_readiness_executor(
+        "render.direct_scanout",
+        &temp_config,
+        &guard,
+        false,
+        true,
+    );
+    assert_eq!(
+        missing_timeout.status,
+        HighRiskLiveReadinessStatus::RecoveryProofMissing
+    );
+    assert!(missing_timeout
+        .required_manual_steps
+        .iter()
+        .any(|step| step.contains("dead-man timeout")));
+
+    let blocked_guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::HighRiskDisplayWrite,
+        ControlledLiveTestGuardRequest {
+            out_of_band_recovery_recorded: false,
+            ..complete_live_guard_request(temp_config)
+        },
+    );
+    let blocked = high_risk_guarded_live_readiness_executor(
+        "render.direct_scanout",
+        "/home/kyo/.config/hypr/hyprland.conf",
+        &blocked_guard,
+        true,
+        true,
+    );
+    assert_eq!(
+        blocked.status,
+        HighRiskLiveReadinessStatus::RealConfigRefused
+    );
+    assert!(!blocked.live_write_enabled);
 }
 
 #[test]
@@ -1052,6 +1305,72 @@ fn structured_bind_safe_env_edit_blocks_stale_line_invalid_input_and_real_paths(
 }
 
 #[test]
+fn structured_bind_guarded_executor_edits_and_restores_selected_line() {
+    let root = temp_root("structured-bind-guarded");
+    let config = root.join("hyprland.conf");
+    let original = "# keep before\nbind = SUPER, Return, exec, foot\n# keep middle\nbind = SUPER, Q, killactive\n";
+    write_file(&config, original);
+    let guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::StructuredWrite,
+        complete_live_guard_request(config.clone()),
+    );
+
+    let report = execute_structured_bind_guarded_temp(
+        &config,
+        2,
+        "bind = SUPER, Return, exec, foot",
+        "bind = SUPER, Return, exec, kitty",
+        &guard,
+        false,
+        false,
+    );
+    assert_eq!(
+        report.status,
+        GuardedTempExecutionStatus::SucceededAndRestored
+    );
+    assert!(report.mutation_verified);
+    assert!(report.restore_succeeded);
+    assert_eq!(
+        fs::read_to_string(&config).expect("config should read"),
+        original
+    );
+    assert!(!report.production_write_enabled);
+
+    let invalid = execute_structured_bind_guarded_temp(
+        &config,
+        2,
+        "bind = SUPER, Return, exec, foot",
+        "monitor = eDP-1,preferred,auto,1",
+        &guard,
+        false,
+        false,
+    );
+    assert_eq!(invalid.status, GuardedTempExecutionStatus::Blocked);
+
+    let stale = execute_structured_bind_guarded_temp(
+        &config,
+        2,
+        "bind = SUPER, Space, exec, wofi",
+        "bind = SUPER, Return, exec, kitty",
+        &guard,
+        false,
+        false,
+    );
+    assert_eq!(stale.status, GuardedTempExecutionStatus::Blocked);
+
+    let real = execute_structured_bind_guarded_temp(
+        "/home/kyo/.config/hypr/hyprland.conf",
+        1,
+        "bind = SUPER, Return, exec, foot",
+        "bind = SUPER, Return, exec, kitty",
+        &guard,
+        false,
+        false,
+    );
+    assert_eq!(real.status, GuardedTempExecutionStatus::Blocked);
+}
+
+#[test]
 fn structured_edit_candidate_blocks_invalid_input_and_keeps_production_disabled() {
     let accepted =
         validate_structured_edit_candidate("hl.bind", "bind = SUPER, Return, exec, foot");
@@ -1104,6 +1423,56 @@ fn profile_switch_safe_env_switches_and_restores_temp_symlink_only() {
     assert!(!report.production_switch_enabled);
     assert!(!report.real_config_touched);
     assert!(!report.runtime_touched);
+}
+
+#[cfg(unix)]
+#[test]
+fn profile_switch_guarded_temp_requires_guard_and_restores_symlink() {
+    use std::os::unix::fs::symlink;
+
+    let root = temp_root("profile-guarded-switch");
+    let profiles = root.join("profiles");
+    fs::create_dir_all(&profiles).expect("profiles should create");
+    let desktop = profiles.join("desktop.conf");
+    let gaming = profiles.join("gaming.conf");
+    write_file(&desktop, "general:layout = dwindle\n");
+    write_file(&gaming, "general:layout = master\n");
+    let current = profiles.join("current.conf");
+    symlink(&desktop, &current).expect("current symlink should create");
+
+    let blocked_guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::ProfileSwitch,
+        ControlledLiveTestGuardRequest {
+            symlink_targets_recorded: false,
+            ..complete_live_guard_request(current.clone())
+        },
+    );
+    let blocked =
+        switch_profile_symlink_guarded_temp(&root, &current, &gaming, &blocked_guard, false);
+    assert_eq!(
+        blocked.status,
+        hyprland_settings::future_capability::ProfileSwitchStatus::Blocked
+    );
+    assert_eq!(
+        fs::read_link(&current).expect("current should read"),
+        desktop
+    );
+
+    let guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::ProfileSwitch,
+        complete_live_guard_request(current.clone()),
+    );
+    let report = switch_profile_symlink_guarded_temp(&root, &current, &gaming, &guard, false);
+    assert_eq!(
+        report.status,
+        hyprland_settings::future_capability::ProfileSwitchStatus::Succeeded
+    );
+    assert_eq!(
+        fs::read_link(&current).expect("current should read"),
+        desktop
+    );
+    assert!(!report.production_switch_enabled);
+    assert!(!report.real_config_touched);
 }
 
 #[cfg(unix)]
@@ -1274,6 +1643,69 @@ fn runtime_command_risk_classifies_status_reload_keyword_and_dispatch_without_ex
 }
 
 #[test]
+fn runtime_guarded_executor_keeps_status_read_only_and_requires_restore_for_mutation() {
+    let root = temp_root("runtime-guarded");
+    let target = root.join("hyprland.conf");
+    write_file(&target, "general:gaps_in = 3\n");
+    let guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::RuntimeMutation,
+        complete_live_guard_request(target.clone()),
+    );
+
+    let status = runtime_guarded_executor(
+        RuntimeAction::Status {
+            query: "version".to_string(),
+        },
+        &guard,
+        None,
+    );
+    assert!(status.guard_allowed);
+    assert!(!status.real_command_executed);
+    assert!(!status.runtime_touched);
+
+    let keyword = runtime_guarded_executor(
+        RuntimeAction::Keyword {
+            key: "general:gaps_in".to_string(),
+            value: "6".to_string(),
+        },
+        &guard,
+        Some("3"),
+    );
+    assert!(keyword.guard_allowed);
+    assert_eq!(
+        keyword.restore_command.as_deref(),
+        Some("hyprctl keyword general:gaps_in 3")
+    );
+    assert!(!keyword.real_command_executed);
+    assert!(!keyword.runtime_touched);
+
+    let no_snapshot = runtime_guarded_executor(
+        RuntimeAction::Keyword {
+            key: "general:gaps_in".to_string(),
+            value: "6".to_string(),
+        },
+        &guard,
+        None,
+    );
+    assert!(!no_snapshot.guard_allowed);
+    assert!(no_snapshot
+        .errors
+        .iter()
+        .any(|error| error.contains("restore command")));
+
+    let blocked_guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::RuntimeMutation,
+        ControlledLiveTestGuardRequest {
+            read_only_runtime_snapshot_recorded: false,
+            ..complete_live_guard_request(target)
+        },
+    );
+    let blocked = runtime_guarded_executor(RuntimeAction::Reload, &blocked_guard, Some("snapshot"));
+    assert!(!blocked.guard_allowed);
+    assert!(!blocked.real_command_executed);
+}
+
+#[test]
 fn hyprland_0554_migration_assessment_keeps_0552_default_without_trusted_export() {
     let assessment = assess_hyprland_version_migration("0.55.4", false);
 
@@ -1348,4 +1780,63 @@ fn trusted_export_requirement_blocks_0554_until_all_required_inputs_exist() {
 
     let current = trusted_export_requirement("0.55.2", false, false, false, false);
     assert!(current.can_activate);
+}
+
+#[test]
+fn local_hyprland_0554_evidence_is_advisory_until_trusted_bundle_is_complete() {
+    let partial = local_hyprland_version_evidence(
+        "0.55.4",
+        Some("hyprland 0.55.4-1"),
+        Some("Hyprland 0.55.4"),
+        false,
+        false,
+        false,
+        false,
+        false,
+    );
+    assert!(!partial.activation_allowed);
+    assert!(!partial.production_default_changed);
+    assert!(partial
+        .missing_inputs
+        .iter()
+        .any(|input| input.contains("trusted official export")));
+    assert!(partial
+        .missing_inputs
+        .iter()
+        .any(|input| input.contains("explicit user approval")));
+    assert!(partial
+        .evidence_lines
+        .iter()
+        .any(|line| line.contains("advisory")));
+
+    let missing_local_versions =
+        local_hyprland_version_evidence("0.55.4", None, None, true, true, true, true, true);
+    assert!(!missing_local_versions.activation_allowed);
+    assert!(missing_local_versions
+        .missing_inputs
+        .iter()
+        .any(|input| input.contains("package version")));
+    assert!(missing_local_versions
+        .missing_inputs
+        .iter()
+        .any(|input| input.contains("runtime binary")));
+
+    let complete = local_hyprland_version_evidence(
+        "0.55.4",
+        Some("hyprland 0.55.4-1"),
+        Some("Hyprland 0.55.4"),
+        true,
+        true,
+        true,
+        true,
+        true,
+    );
+    assert!(complete.activation_allowed);
+    assert!(!complete.production_default_changed);
+
+    let current =
+        local_hyprland_version_evidence("0.55.2", None, None, false, false, false, false, false);
+    assert!(current.activation_allowed);
+    assert!(!current.production_default_changed);
+    assert!(current.missing_inputs.is_empty());
 }

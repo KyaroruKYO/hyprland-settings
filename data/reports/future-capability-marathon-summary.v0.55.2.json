@@ -57,7 +57,15 @@
     "source_include_target_selection_fixture_proof",
     "disabled_duplicate_pre_apply_review_ui",
     "source_include_selected_target_dry_run_planner",
-    "controlled_live_test_guard_model"
+    "controlled_live_test_guard_model",
+    "source_include_selected_target_dry_run_preview_ui",
+    "source_include_guarded_temp_fixture_executor",
+    "duplicate_guarded_temp_fixture_executor",
+    "structured_bind_guarded_temp_fixture_executor",
+    "profile_switch_guarded_temp_fixture_executor",
+    "runtime_guarded_executor_model",
+    "high_risk_guarded_live_readiness_executor",
+    "hyprland_0554_local_evidence_collector"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -94,19 +102,19 @@
     "jqReports": "passed",
     "gitDiffCheck": "passed",
     "gtkSafeEnvMatrix": "passed",
-    "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_101038"
+    "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_184829"
   },
-  "nextRecommendedAction": "Wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths.",
+  "nextRecommendedAction": "Run controlled copied-config-tree proof for source/include, duplicate, structured, profile, and runtime paths before considering any real config/runtime mutation.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "92-96%",
-      "after": "92-96%",
-      "evidence": "No visible UI change this sprint; existing disabled review surfaces preserved."
+      "after": "93-96%",
+      "evidence": "Source/include selected-target dry-run preview is now wired into the disabled detail UI with stable widget names and source tests."
     },
     "configDiscoverySourceAwareModel": {
       "before": "90-93%",
-      "after": "91-94%",
-      "evidence": "Added source/include selected-target dry-run planner using root path, selected target, source depth, and target preconditions."
+      "after": "92-95%",
+      "evidence": "Added disabled selected-target dry-run preview plus a temp-fixture guarded executor that consumes source/include target-selection proof."
     },
     "rowReadWriteModel": {
       "before": "90-95%",
@@ -115,8 +123,8 @@
     },
     "safeNormalScalarWrites": {
       "before": "92-96%",
-      "after": "93-96%",
-      "evidence": "Source/include selected-target dry-run now reuses existing missing/default insertion plan without enabling production source/include writes."
+      "after": "94-97%",
+      "evidence": "Source/include guarded temp executor proves backup, planned-line insertion, reread verification, byte-exact restore, and hash restoration for non-real fixture paths."
     },
     "releasePackagingTagArtifacts": {
       "before": "85-95%",
@@ -125,38 +133,38 @@
     },
     "missingDefaultInsertion": {
       "before": "87-92%",
-      "after": "89-93%",
-      "evidence": "Added selected-target source/include dry-run planner for root and sourced temp fixtures; production expansion still blocked."
+      "after": "91-94%",
+      "evidence": "Selected-target preview UI and guarded temp executor now prove source/include insertion can execute and restore in temp fixtures; production expansion still blocked."
     },
     "duplicateResolution": {
       "before": "73-81%",
-      "after": "74-82%",
-      "evidence": "Controlled live-test guard now models backup/hash/restore gates for duplicate replacement before any live mutation."
+      "after": "77-84%",
+      "evidence": "Duplicate guarded temp executor proves confirmed occurrence replacement, reread verification, and byte-exact restore while production Apply stays disabled."
     },
     "highRiskDisplayRecovery": {
       "before": "50-60%",
-      "after": "52-62%",
-      "evidence": "Controlled live-test guard now requires out-of-band recovery and read-only runtime snapshot before high-risk/display mutation."
+      "after": "54-64%",
+      "evidence": "High-risk guarded live-readiness executor proves no-op readiness only when recovery channel, dead-man timeout, and restore command evidence are present."
     },
     "structuredFamilyEditorsWrites": {
       "before": "48-58%",
-      "after": "50-60%",
-      "evidence": "Controlled live-test guard now models reversible structured-write prerequisites; production structured writes remain disabled."
+      "after": "53-63%",
+      "evidence": "hl.bind guarded temp executor proves exact-line edit, validation, reread verification, comment/order preservation, and byte-exact restore."
     },
     "profileModeSwitching": {
       "before": "50-60%",
-      "after": "52-62%",
-      "evidence": "Controlled live-test guard now requires recorded symlink targets before profile switching."
+      "after": "55-65%",
+      "evidence": "Profile guarded temp executor switches and restores temp symlinks with original-target verification while real profile paths remain refused."
     },
     "runtimeReloadIntegration": {
       "before": "45-55%",
-      "after": "47-57%",
-      "evidence": "Controlled live-test guard now requires read-only runtime snapshot before any runtime mutation."
+      "after": "50-60%",
+      "evidence": "Runtime guarded executor supports read-only status proof, mutation dry-run proof, restore-command generation, and no real command execution."
     },
     "hyprland0554Migration": {
       "before": "35-45%",
-      "after": "37-47%",
-      "evidence": "Controlled live-test guard now requires a trusted versioned data bundle before migration activation."
+      "after": "39-49%",
+      "evidence": "Local 0.55.4 evidence collector records package/runtime evidence as advisory and blocks activation until trusted exports, row diff, write-safety review, GTK evidence, and approval exist."
     }
   },
   "priorityTrackStatus": {
@@ -167,20 +175,28 @@
     "sourceIncludeFixtureTargetSelectionProof": "safe_env_only: fixture proof requires explicit selected target, blocks no-selection, generated/script-managed, symlink/profile, unknown, duplicate/ambiguous targets, and never enables production insertion.",
     "disabledDuplicatePreApplyUi": "implemented_but_disabled: setting detail duplicate selector now shows pre-Apply approval state, precondition fingerprint, block reason, and disabled confirmation action.",
     "sourceIncludeSelectedTargetDryRunPlanner": "safe_env_only: selected root and sourced fixture targets produce exact dry-run insertion previews through the existing missing/default insertion plan; no production source/include insertion is enabled.",
-    "controlledLiveTestGuard": "implemented_but_disabled: guard records backup, SHA256, symlink, runtime snapshot, restore, post-restore verification, out-of-band recovery, trusted-data, and explicit live flag requirements before any live mutation."
+    "sourceIncludeDryRunPreviewUi": "implemented_but_disabled: selected-target dry-run preview is visible in the disabled detail UI and shows root path, target path, source depth, planned line, status, and disabled planned execution action.",
+    "sourceIncludeGuardedExecutor": "tested_and_restored: temp-fixture guarded executor inserts the planned line, verifies it, restores original bytes, and verifies restored content fingerprint.",
+    "duplicateGuardedExecutor": "tested_and_restored: temp-fixture guarded executor requires confirmed matching occurrence and restores original file bytes after replacement proof.",
+    "structuredGuardedExecutor": "tested_and_restored: hl.bind temp-fixture guarded executor validates candidate, edits exact selected line, verifies new raw line, and restores original bytes.",
+    "profileModeGuardedExecutor": "tested_and_restored: temp-fixture guarded executor switches a symlink, verifies target, restores original target, and refuses real profile paths by default.",
+    "runtimeGuardedExecutor": "implemented_but_disabled: runtime executor records read-only/dry-run command proof and restore commands while real_command_executed remains false.",
+    "highRiskLiveReadinessExecutor": "implemented_but_disabled: no-op readiness executor requires recovery channel, dead-man timeout, and restore command evidence and refuses mutation by default.",
+    "hyprland0554LocalEvidenceCollector": "implemented_but_disabled: local package/runtime evidence is advisory only and cannot activate migration without trusted exports and review proof.",
+    "controlledLiveTestGuard": "implemented_but_disabled: guard records backup, content fingerprints, symlink, runtime snapshot, restore, post-restore verification, out-of-band recovery, trusted-data, and explicit live flag requirements before any live mutation."
   },
   "categoryCoverageThisSprint": {
-    "coreAppShellUiNavigation": "disabled duplicate pre-Apply review UI and source/include target-selection review UI are present with source tests",
-    "configDiscoverySourceAwareModel": "source/include selected-target dry-run planner models selected root/source targets and blocked managed/unknown/ambiguous targets",
+    "coreAppShellUiNavigation": "disabled duplicate pre-Apply review UI and source/include selected-target dry-run preview UI are present with source tests",
+    "configDiscoverySourceAwareModel": "source/include selected-target dry-run planner and guarded temp executor model selected root/source targets and blocked managed/unknown/ambiguous targets",
     "rowReadWriteModel": "future capability tests continue asserting SAFE_WRITABLE_ROWS remains 341; no row inventory changed",
     "safeNormalScalarWrites": "selected-target dry-run integrates with the existing missing/default insertion plan but does not write connected files",
     "releasePackagingTagArtifacts": "v0.1.0 tag and dist/v0.1.0 preserved; no release artifact mutation",
-    "missingDefaultInsertion": "source/include selected-target dry-run planner added; production source/include insertion remains blocked",
-    "duplicateResolution": "controlled live-test guard added for reversible duplicate replacement prerequisites; production duplicate writes remain blocked",
-    "highRiskDisplayRecovery": "controlled live-test guard added and requires out-of-band recovery before high-risk/display mutation",
-    "structuredFamilyEditorsWrites": "controlled live-test guard added for reversible structured write prerequisites; production structured writes remain blocked",
-    "profileModeSwitching": "controlled live-test guard added and requires recorded symlink targets before profile switch mutation",
-    "runtimeReloadIntegration": "controlled live-test guard added and requires read-only runtime snapshot before mutation",
-    "hyprland0554Migration": "controlled live-test guard added and requires trusted versioned bundle before migration activation"
+    "missingDefaultInsertion": "source/include dry-run preview UI and guarded temp executor added; production source/include insertion remains blocked",
+    "duplicateResolution": "guarded temp executor added for reversible duplicate replacement proof; production duplicate writes remain blocked",
+    "highRiskDisplayRecovery": "guarded no-op readiness executor added and requires out-of-band recovery before high-risk/display mutation",
+    "structuredFamilyEditorsWrites": "guarded hl.bind temp executor added for reversible structured write proof; production structured writes remain blocked",
+    "profileModeSwitching": "guarded temp symlink executor added and verifies restored target; real profile switching remains blocked",
+    "runtimeReloadIntegration": "guarded runtime executor records dry-run mutation and restore command proof while executing no real commands",
+    "hyprland0554Migration": "local evidence collector added; migration remains inactive until trusted bundle proof exists"
   }
 }

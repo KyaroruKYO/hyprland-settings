@@ -1,4 +1,6 @@
+use std::collections::hash_map::DefaultHasher;
 use std::fs;
+use std::hash::{Hash, Hasher};
 use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, Result};
@@ -227,6 +229,31 @@ pub struct SourceIncludeSelectedTargetDryRunPlan {
     pub review_lines: Vec<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum GuardedTempExecutionStatus {
+    SucceededAndRestored,
+    Blocked,
+    VerificationFailedRestored,
+    RestoreFailed,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct GuardedTempExecutionReport {
+    pub status: GuardedTempExecutionStatus,
+    pub target_path: PathBuf,
+    pub backup_path: Option<PathBuf>,
+    pub original_hash: Option<String>,
+    pub restored_hash: Option<String>,
+    pub planned_line: Option<String>,
+    pub mutation_verified: bool,
+    pub restore_attempted: bool,
+    pub restore_succeeded: bool,
+    pub production_write_enabled: bool,
+    pub real_config_touched: bool,
+    pub runtime_touched: bool,
+    pub errors: Vec<String>,
+}
+
 pub fn source_include_insertion_review(
     root_path: impl Into<PathBuf>,
     candidate_targets: Vec<PathBuf>,
@@ -326,6 +353,42 @@ pub fn source_include_target_selection_fixture_proof(
             "The app must not auto-select root, source, profile, or generated targets.".to_string(),
         ],
     }
+}
+
+pub fn execute_source_include_selected_target_guarded_temp(
+    proof: &SourceIncludeTargetSelectionProof,
+    dry_run: &SourceIncludeSelectedTargetDryRunPlan,
+    guard: &ControlledLiveTestGuardReview,
+    force_verification_failure: bool,
+    force_restore_failure: bool,
+) -> GuardedTempExecutionReport {
+    let target_path = dry_run.selected_target.clone().unwrap_or_default();
+    let Some(planned_line) = dry_run.insertion_line.clone() else {
+        return guarded_temp_blocked(target_path, "dry-run plan has no insertion line");
+    };
+    if !guard.live_mutation_allowed || !guard.real_config_touch_allowed {
+        return guarded_temp_blocked(
+            target_path,
+            "controlled live-test guard did not allow file mutation",
+        );
+    }
+    if dry_run.status != SourceIncludeSelectedTargetDryRunStatus::Planned
+        || !proof.fixture_plan_allowed
+    {
+        return guarded_temp_blocked(target_path, "selected source/include target is not planned");
+    }
+    execute_guarded_temp_line_mutation(
+        target_path,
+        planned_line.clone(),
+        format!("\n# Guarded source/include selected-target insertion proof\n{planned_line}\n"),
+        |contents| {
+            contents
+                .lines()
+                .any(|line| line.trim() == planned_line.trim())
+        },
+        force_verification_failure,
+        force_restore_failure,
+    )
 }
 
 pub fn source_include_selected_target_dry_run_plan(
@@ -968,6 +1031,48 @@ pub fn replace_duplicate_occurrence_with_confirmation_safe_env(
     replace_duplicate_occurrence_safe_env(request, options)
 }
 
+pub fn execute_duplicate_replacement_guarded_temp(
+    confirmation: &DuplicateOccurrenceConfirmation,
+    request: &DuplicateReplacementRequest,
+    guard: &ControlledLiveTestGuardReview,
+    force_verification_failure: bool,
+    force_restore_failure: bool,
+) -> GuardedTempExecutionReport {
+    if !guard.live_mutation_allowed || !guard.real_config_touch_allowed {
+        return guarded_temp_blocked(
+            request.occurrence.path.clone(),
+            "controlled live-test guard did not allow duplicate replacement",
+        );
+    }
+    let gate = duplicate_production_approval_gate(Some(&request.occurrence), Some(confirmation));
+    if gate.status != DuplicateProductionGateStatus::ConfirmedButProductionDisabled {
+        return guarded_temp_blocked(request.occurrence.path.clone(), &gate.block_reason);
+    }
+    let key = request
+        .occurrence
+        .raw_line
+        .split_once('=')
+        .map(|(key, _)| key.trim().to_string())
+        .unwrap_or_default();
+    if key.is_empty() || request.occurrence.raw_value.trim() != request.expected_old_value.trim() {
+        return guarded_temp_blocked(
+            request.occurrence.path.clone(),
+            "selected duplicate preconditions do not match",
+        );
+    }
+    let planned_line = format!("{key} = {}", request.proposed_value.trim());
+    let line_number = request.occurrence.line_number;
+    let expected_raw_line = request.occurrence.raw_line.clone();
+    execute_guarded_temp_line_replace(
+        request.occurrence.path.clone(),
+        line_number,
+        expected_raw_line,
+        planned_line,
+        force_verification_failure,
+        force_restore_failure,
+    )
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum MockWatchdogState {
     Pending,
@@ -1099,6 +1204,38 @@ pub fn high_risk_live_recovery_protocol(
                 .to_string(),
         ],
     }
+}
+
+pub fn high_risk_guarded_live_readiness_executor(
+    setting_id: &str,
+    target_path: impl Into<PathBuf>,
+    guard: &ControlledLiveTestGuardReview,
+    dead_man_timeout_recorded: bool,
+    restore_command_recorded: bool,
+) -> HighRiskLiveRecoveryProtocol {
+    let target_path = target_path.into();
+    let recovery_proof_available =
+        guard.live_mutation_allowed && dead_man_timeout_recorded && restore_command_recorded;
+    let runtime_mutation_requested = false;
+    let mut protocol = high_risk_live_recovery_protocol(
+        setting_id,
+        target_path,
+        recovery_proof_available,
+        runtime_mutation_requested,
+    );
+    if !dead_man_timeout_recorded {
+        protocol
+            .required_manual_steps
+            .push("dead-man timeout record".to_string());
+    }
+    if !restore_command_recorded {
+        protocol
+            .required_manual_steps
+            .push("restore command record".to_string());
+    }
+    protocol.live_write_enabled = false;
+    protocol.mutating_runtime_enabled = false;
+    protocol
 }
 
 fn structured_bind_blocked(
@@ -1479,6 +1616,220 @@ pub fn edit_structured_bind_safe_env(
     }
 }
 
+pub fn execute_structured_bind_guarded_temp(
+    target_path: impl AsRef<Path>,
+    line_number: usize,
+    expected_old_line: &str,
+    proposed_new_line: &str,
+    guard: &ControlledLiveTestGuardReview,
+    force_verification_failure: bool,
+    force_restore_failure: bool,
+) -> GuardedTempExecutionReport {
+    let target_path = target_path.as_ref().to_path_buf();
+    if !guard.live_mutation_allowed || !guard.real_config_touch_allowed {
+        return guarded_temp_blocked(
+            target_path,
+            "controlled live-test guard did not allow structured write",
+        );
+    }
+    let candidate = validate_structured_edit_candidate("hl.bind", proposed_new_line);
+    if !candidate.accepted {
+        return guarded_temp_blocked(target_path, &candidate.errors.join("; "));
+    }
+    execute_guarded_temp_line_replace(
+        target_path,
+        line_number,
+        expected_old_line.to_string(),
+        proposed_new_line.trim().to_string(),
+        force_verification_failure,
+        force_restore_failure,
+    )
+}
+
+fn execute_guarded_temp_line_mutation(
+    target_path: PathBuf,
+    planned_line: String,
+    appended_text: String,
+    verify: impl Fn(&str) -> bool,
+    force_verification_failure: bool,
+    force_restore_failure: bool,
+) -> GuardedTempExecutionReport {
+    if !target_path.starts_with(std::env::temp_dir()) {
+        return guarded_temp_blocked(
+            target_path,
+            "guarded executor accepts temp fixture paths only",
+        );
+    }
+    let original = match fs::read(&target_path) {
+        Ok(bytes) => bytes,
+        Err(error) => {
+            return guarded_temp_blocked(target_path, &format!("read target failed: {error}"))
+        }
+    };
+    let original_hash = content_fingerprint(&original);
+    let backup_path = target_path.with_extension("guarded-temp-backup");
+    if let Err(error) = fs::write(&backup_path, &original) {
+        return guarded_temp_blocked(target_path, &format!("backup write failed: {error}"));
+    }
+    let mut updated = String::from_utf8_lossy(&original).into_owned();
+    if !updated.ends_with('\n') {
+        updated.push('\n');
+    }
+    updated.push_str(&appended_text);
+    if let Err(error) = fs::write(&target_path, updated.as_bytes()) {
+        return guarded_temp_blocked(target_path, &format!("mutation write failed: {error}"));
+    }
+    let mutation_verified = !force_verification_failure
+        && fs::read_to_string(&target_path)
+            .map(|contents| verify(&contents))
+            .unwrap_or(false);
+    restore_guarded_temp(
+        target_path,
+        Some(backup_path),
+        original,
+        original_hash,
+        Some(planned_line),
+        mutation_verified,
+        force_restore_failure,
+    )
+}
+
+fn execute_guarded_temp_line_replace(
+    target_path: PathBuf,
+    line_number: usize,
+    expected_old_line: String,
+    planned_line: String,
+    force_verification_failure: bool,
+    force_restore_failure: bool,
+) -> GuardedTempExecutionReport {
+    if !target_path.starts_with(std::env::temp_dir()) {
+        return guarded_temp_blocked(
+            target_path,
+            "guarded executor accepts temp fixture paths only",
+        );
+    }
+    let original = match fs::read(&target_path) {
+        Ok(bytes) => bytes,
+        Err(error) => {
+            return guarded_temp_blocked(target_path, &format!("read target failed: {error}"))
+        }
+    };
+    let original_hash = content_fingerprint(&original);
+    let backup_path = target_path.with_extension("guarded-temp-backup");
+    if let Err(error) = fs::write(&backup_path, &original) {
+        return guarded_temp_blocked(target_path, &format!("backup write failed: {error}"));
+    }
+    let original_text = String::from_utf8_lossy(&original).into_owned();
+    let mut lines: Vec<String> = original_text.lines().map(str::to_string).collect();
+    let Some(line) = lines.get_mut(line_number.saturating_sub(1)) else {
+        return guarded_temp_blocked(target_path, "line number is outside target file");
+    };
+    if line.trim() != expected_old_line.trim() {
+        return guarded_temp_blocked(target_path, "expected old line no longer matches");
+    }
+    *line = planned_line.clone();
+    let mut updated = lines.join("\n");
+    if original_text.ends_with('\n') {
+        updated.push('\n');
+    }
+    if let Err(error) = fs::write(&target_path, updated.as_bytes()) {
+        return guarded_temp_blocked(target_path, &format!("mutation write failed: {error}"));
+    }
+    let mutation_verified = !force_verification_failure
+        && fs::read_to_string(&target_path)
+            .map(|contents| {
+                contents
+                    .lines()
+                    .nth(line_number.saturating_sub(1))
+                    .map(|line| line.trim() == planned_line.trim())
+                    .unwrap_or(false)
+            })
+            .unwrap_or(false);
+    restore_guarded_temp(
+        target_path,
+        Some(backup_path),
+        original,
+        original_hash,
+        Some(planned_line),
+        mutation_verified,
+        force_restore_failure,
+    )
+}
+
+fn restore_guarded_temp(
+    target_path: PathBuf,
+    backup_path: Option<PathBuf>,
+    original: Vec<u8>,
+    original_hash: String,
+    planned_line: Option<String>,
+    mutation_verified: bool,
+    force_restore_failure: bool,
+) -> GuardedTempExecutionReport {
+    let restore_attempted = true;
+    let restore_succeeded = if force_restore_failure {
+        false
+    } else {
+        fs::write(&target_path, &original)
+            .and_then(|_| fs::read(&target_path))
+            .map(|bytes| content_fingerprint(&bytes) == original_hash)
+            .unwrap_or(false)
+    };
+    let restored_hash = fs::read(&target_path)
+        .ok()
+        .map(|bytes| content_fingerprint(&bytes));
+    GuardedTempExecutionReport {
+        status: if restore_succeeded {
+            if mutation_verified {
+                GuardedTempExecutionStatus::SucceededAndRestored
+            } else {
+                GuardedTempExecutionStatus::VerificationFailedRestored
+            }
+        } else {
+            GuardedTempExecutionStatus::RestoreFailed
+        },
+        target_path,
+        backup_path,
+        original_hash: Some(original_hash),
+        restored_hash,
+        planned_line,
+        mutation_verified,
+        restore_attempted,
+        restore_succeeded,
+        production_write_enabled: false,
+        real_config_touched: false,
+        runtime_touched: false,
+        errors: if restore_succeeded {
+            Vec::new()
+        } else {
+            vec!["restore verification failed".to_string()]
+        },
+    }
+}
+
+fn guarded_temp_blocked(target_path: PathBuf, error: &str) -> GuardedTempExecutionReport {
+    GuardedTempExecutionReport {
+        status: GuardedTempExecutionStatus::Blocked,
+        target_path,
+        backup_path: None,
+        original_hash: None,
+        restored_hash: None,
+        planned_line: None,
+        mutation_verified: false,
+        restore_attempted: false,
+        restore_succeeded: false,
+        production_write_enabled: false,
+        real_config_touched: false,
+        runtime_touched: false,
+        errors: vec![error.to_string()],
+    }
+}
+
+fn content_fingerprint(bytes: &[u8]) -> String {
+    let mut hasher = DefaultHasher::new();
+    bytes.hash(&mut hasher);
+    format!("sha256-fixture-fingerprint:{:016x}", hasher.finish())
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ProfileSwitchStatus {
     Succeeded,
@@ -1677,6 +2028,22 @@ pub fn switch_profile_symlink_safe_env(
     }
 }
 
+#[cfg(unix)]
+pub fn switch_profile_symlink_guarded_temp(
+    root: impl AsRef<Path>,
+    current_symlink: impl AsRef<Path>,
+    target_profile: impl AsRef<Path>,
+    guard: &ControlledLiveTestGuardReview,
+    force_restore_failure: bool,
+) -> ProfileSwitchReport {
+    if !guard.live_mutation_allowed || !guard.real_config_touch_allowed {
+        return profile_switch_blocked(
+            "controlled live-test guard did not allow profile switching",
+        );
+    }
+    switch_profile_symlink_safe_env(root, current_symlink, target_profile, force_restore_failure)
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RuntimeAction {
     Reload,
@@ -1727,6 +2094,18 @@ pub struct RuntimeActionReview {
     pub real_command_executed: bool,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeGuardedExecutionReport {
+    pub action: RuntimeAction,
+    pub guard_allowed: bool,
+    pub restore_command: Option<String>,
+    pub real_command_executed: bool,
+    pub production_runtime_enabled: bool,
+    pub runtime_touched: bool,
+    pub execution_log: Vec<String>,
+    pub errors: Vec<String>,
+}
+
 pub fn runtime_action_policy(action: RuntimeAction) -> RuntimeActionPolicy {
     let reason = match &action {
         RuntimeAction::Status { .. } => {
@@ -1770,6 +2149,62 @@ pub fn runtime_action_review(action: RuntimeAction) -> RuntimeActionReview {
         production_execution_enabled: false,
         real_command_executed: false,
         dry_run_result,
+    }
+}
+
+pub fn runtime_guarded_executor(
+    action: RuntimeAction,
+    guard: &ControlledLiveTestGuardReview,
+    prior_value_snapshot: Option<&str>,
+) -> RuntimeGuardedExecutionReport {
+    let risk = runtime_command_risk(&action);
+    let mut executor = RuntimeDryRunExecutor::default();
+    let dry_run = executor.evaluate(action.clone());
+    if matches!(risk, RuntimeCommandRisk::ReadOnlyStatus) {
+        return RuntimeGuardedExecutionReport {
+            action,
+            guard_allowed: true,
+            restore_command: None,
+            real_command_executed: false,
+            production_runtime_enabled: false,
+            runtime_touched: false,
+            execution_log: executor
+                .recorded_actions
+                .iter()
+                .map(|result| result.explanation.clone())
+                .collect(),
+            errors: Vec::new(),
+        };
+    }
+
+    let restore_command = match (&action, prior_value_snapshot) {
+        (RuntimeAction::Keyword { key, .. }, Some(value)) => {
+            Some(format!("hyprctl keyword {key} {value}"))
+        }
+        (RuntimeAction::Reload, Some(_)) => {
+            Some("restore config backup before hyprctl reload".to_string())
+        }
+        (RuntimeAction::Dispatch { .. }, Some(_)) => {
+            Some("dispatch restore requires command-specific recovery plan".to_string())
+        }
+        _ => None,
+    };
+    let mut errors = Vec::new();
+    if !guard.live_mutation_allowed || !guard.runtime_mutation_allowed {
+        errors.push("controlled live-test guard did not allow runtime mutation".to_string());
+    }
+    if restore_command.is_none() {
+        errors.push("restore command must be generated before runtime mutation".to_string());
+    }
+    RuntimeGuardedExecutionReport {
+        action,
+        guard_allowed: errors.is_empty(),
+        restore_command,
+        real_command_executed: false,
+        production_runtime_enabled: false,
+        runtime_touched: false,
+        execution_log: vec![dry_run.explanation],
+        errors,
     }
 }
 
@@ -1848,6 +2283,22 @@ pub struct TrustedExportRequirement {
     pub missing_inputs: Vec<String>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct LocalHyprlandVersionEvidence {
+    pub requested_version: String,
+    pub installed_package_version: Option<String>,
+    pub runtime_binary_version: Option<String>,
+    pub official_export_available: bool,
+    pub row_count_diff_available: bool,
+    pub write_safety_review_available: bool,
+    pub safe_env_evidence_available: bool,
+    pub user_approval_recorded: bool,
+    pub activation_allowed: bool,
+    pub production_default_changed: bool,
+    pub evidence_lines: Vec<String>,
+    pub missing_inputs: Vec<String>,
+}
+
 pub fn current_v0552_data_bundle() -> VersionedDataBundle {
     VersionedDataBundle {
         version: "0.55.2".to_string(),
@@ -1856,6 +2307,68 @@ pub fn current_v0552_data_bundle() -> VersionedDataBundle {
         blocked_rows: 0,
         default_model: true,
         trusted_source: true,
+    }
+}
+
+pub fn local_hyprland_version_evidence(
+    requested_version: &str,
+    installed_package_version: Option<&str>,
+    runtime_binary_version: Option<&str>,
+    official_export_available: bool,
+    row_count_diff_available: bool,
+    write_safety_review_available: bool,
+    safe_env_evidence_available: bool,
+    user_approval_recorded: bool,
+) -> LocalHyprlandVersionEvidence {
+    let requirement = trusted_export_requirement(
+        requested_version,
+        official_export_available,
+        row_count_diff_available,
+        write_safety_review_available,
+        safe_env_evidence_available,
+    );
+    let mut missing_inputs = requirement.missing_inputs;
+    if requested_version != "0.55.2" && !user_approval_recorded {
+        missing_inputs.push("explicit user approval".to_string());
+    }
+    if requested_version != "0.55.2" && installed_package_version.is_none() {
+        missing_inputs.push("local installed package version evidence".to_string());
+    }
+    if requested_version != "0.55.2" && runtime_binary_version.is_none() {
+        missing_inputs.push("read-only runtime binary version evidence".to_string());
+    }
+
+    let activation_allowed = requested_version == "0.55.2" || missing_inputs.is_empty();
+    let mut evidence_lines = vec![
+        "Hyprland v0.55.2 remains the active/default app data bundle.".to_string(),
+        "Local package/runtime version evidence is advisory and cannot replace trusted exports."
+            .to_string(),
+    ];
+    if let Some(version) = installed_package_version {
+        evidence_lines.push(format!("Installed package version observed: {version}."));
+    }
+    if let Some(version) = runtime_binary_version {
+        evidence_lines.push(format!("Runtime binary version observed: {version}."));
+    }
+    if !activation_allowed {
+        evidence_lines.push(
+            "Requested migration stays inactive until every trusted input exists.".to_string(),
+        );
+    }
+
+    LocalHyprlandVersionEvidence {
+        requested_version: requested_version.to_string(),
+        installed_package_version: installed_package_version.map(ToOwned::to_owned),
+        runtime_binary_version: runtime_binary_version.map(ToOwned::to_owned),
+        official_export_available,
+        row_count_diff_available,
+        write_safety_review_available,
+        safe_env_evidence_available,
+        user_approval_recorded,
+        activation_allowed,
+        production_default_changed: false,
+        evidence_lines,
+        missing_inputs,
     }
 }
 

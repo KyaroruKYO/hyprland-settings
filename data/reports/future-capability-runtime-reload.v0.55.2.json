@@ -24,7 +24,8 @@
     "Added deterministic tests proving status is read-only while reload, keyword, and dispatch are mutating classes that remain dry-run only.",
     "No additional production-safe runtime/reload step was available this sprint without explicit runtime mutation approval.",
     "This sprint rechecked runtime/reload and found no safe production step without explicit runtime mutation approval.",
-    "Controlled live-test guard requires read-only runtime snapshot before runtime mutation."
+    "Controlled live-test guard requires read-only runtime snapshot before runtime mutation.",
+    "Added a guarded runtime executor model that supports read-only status proof, mutation dry-run proof, restore-command generation from prior snapshots, command logging, and default real_command_executed=false."
   ],
   "whatWasNotImplemented": [
     "No real hyprctl keyword, dispatch, reload, or runtime mutation path was added.",
@@ -53,7 +54,11 @@
     "reloadKeywordDispatchClassifiedMutating": true,
     "runtimeMutationControlledLiveGuardRequiresReadOnlySnapshot": true,
     "liveMutationExecutedThisSprint": false,
-    "restorationRequiredThisSprint": false
+    "restorationRequiredThisSprint": false,
+    "runtimeGuardedExecutorExists": true,
+    "runtimeGuardedExecutorExecutesRealCommands": false,
+    "runtimeGuardedExecutorRequiresPriorSnapshotForMutation": true,
+    "runtimeGuardedExecutorGeneratesRestoreCommand": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"

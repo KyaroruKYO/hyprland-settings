@@ -16,11 +16,16 @@ use crate::current_config::{
 };
 use crate::export::ExportBundle;
 use crate::future_capability::{
-    duplicate_production_approval_gate, source_include_insertion_review, DuplicateOccurrence,
-    DuplicateProductionGateStatus, SourceIncludeInsertionReadiness,
+    duplicate_production_approval_gate, source_include_insertion_review,
+    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
+    DuplicateOccurrence, DuplicateProductionGateStatus, SourceIncludeInsertionReadiness,
+    SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
 };
 use crate::guarded_write_review::{
     build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
+};
+use crate::missing_default_insertion::{
+    build_missing_default_insertion_plan, MissingDefaultInsertionRequest,
 };
 use crate::one_target_pilot_live_visual_smoke::disabled_live_visual_smoke_review_ui_lines;
 use crate::one_target_pilot_manual_review::disabled_manual_smoke_review_ui_lines;
@@ -2279,6 +2284,22 @@ fn append_source_include_insertion_target_review(
     }
 
     let candidate_targets: Vec<_> = graph.files.iter().map(|file| file.path.clone()).collect();
+    let target_candidates: Vec<_> = graph
+        .files
+        .iter()
+        .map(|file| SourceIncludeTargetCandidate {
+            path: file.path.clone(),
+            source_depth: file.source_depth,
+            generated_or_script_managed: connected_file_has_hint(
+                file,
+                ConfigManagementHintKind::GeneratedFile,
+            ) || connected_file_has_script_hint(file),
+            symlink_or_profile_managed: file.is_symlink
+                || connected_file_has_hint(file, ConfigManagementHintKind::CurrentProfile)
+                || connected_file_has_hint(file, ConfigManagementHintKind::ModeProfile)
+                || connected_file_has_hint(file, ConfigManagementHintKind::SymlinkManaged),
+        })
+        .collect::<Vec<_>>();
     let managed_or_ambiguous = graph.has_generated_hints
         || graph.has_script_managed_hints
         || graph.has_profile_hints
@@ -2329,6 +2350,94 @@ fn append_source_include_insertion_target_review(
         append_detail_line(&content, "Selected target", "none");
     }
 
+    let selected_target_proof = source_include_target_selection_fixture_proof(
+        graph.root_path.clone(),
+        target_candidates,
+        review.selected_target.clone(),
+        managed_or_ambiguous,
+    );
+    let preview_target = review
+        .selected_target
+        .clone()
+        .or_else(|| review.candidate_targets.first().cloned())
+        .unwrap_or_else(|| graph.root_path.clone());
+    let proposed_value = detail.edit.proposed_value.clone().unwrap_or_else(|| {
+        detail
+            .current_value
+            .raw_value
+            .clone()
+            .unwrap_or_else(|| "<proposed value required>".to_string())
+    });
+    let insertion_plan = build_missing_default_insertion_plan(MissingDefaultInsertionRequest {
+        setting_id: detail.row_id.clone(),
+        proposed_value: proposed_value.clone(),
+        target_path: preview_target,
+        backup_stamp: "ui-preview".to_string(),
+    });
+    let dry_run_preview =
+        source_include_selected_target_dry_run_plan(&selected_target_proof, &insertion_plan);
+    let preview = gtk::Box::new(gtk::Orientation::Vertical, 4);
+    preview.set_widget_name(
+        "hyprland-settings-source-include-selected-target-dry-run-preview-disabled",
+    );
+    preview.set_tooltip_text(Some(
+        "Disabled selected-target insertion dry-run preview. This does not write connected files.",
+    ));
+    preview.append(&body_label("Selected-target insertion dry-run preview"));
+    append_detail_line(&preview, "Root path", &friendly_path(&graph.root_path));
+    append_detail_line(
+        &preview,
+        "Selected target path",
+        dry_run_preview
+            .selected_target
+            .as_ref()
+            .map(|path| friendly_path(path))
+            .as_deref()
+            .unwrap_or("none"),
+    );
+    append_detail_line(
+        &preview,
+        "Source depth",
+        &dry_run_preview
+            .source_depth
+            .map(|depth| depth.to_string())
+            .unwrap_or_else(|| "not selected".to_string()),
+    );
+    append_detail_line(&preview, "Proposed value", &proposed_value);
+    append_detail_line(
+        &preview,
+        "Planned inserted line",
+        dry_run_preview
+            .insertion_line
+            .as_deref()
+            .unwrap_or(insertion_plan.insertion_line.as_str()),
+    );
+    append_detail_line(
+        &preview,
+        "Dry-run status",
+        source_include_dry_run_status_label(dry_run_preview.status),
+    );
+    if let Some(line) = &dry_run_preview.dry_run_preview {
+        preview.append(&small_label(line));
+    }
+    if !dry_run_preview.blocked_reasons.is_empty() {
+        preview.append(&small_label(&format!(
+            "Blocked: {}",
+            dry_run_preview.blocked_reasons.join("; ")
+        )));
+    }
+    preview.append(&small_label(
+        "Production source/include insertion remains disabled. This preview does not write files.",
+    ));
+    let run_selected = gtk::Button::with_label("Run selected-target insertion (planned)");
+    run_selected.set_widget_name("hyprland-settings-source-include-selected-target-run-disabled");
+    run_selected.set_tooltip_text(Some(
+        "Disabled future action. This does not run insertion or unblock Apply.",
+    ));
+    run_selected.set_sensitive(false);
+    preview.append(&run_selected);
+    content.append(&preview);
+
     content.append(&body_label("Candidate target files"));
     for (index, target) in review.candidate_targets.iter().enumerate() {
         let card = gtk::Box::new(gtk::Orientation::Vertical, 4);
@@ -2377,6 +2486,20 @@ fn source_include_readiness_label(readiness: SourceIncludeInsertionReadiness) ->
         SourceIncludeInsertionReadiness::ManagedTargetBlocked => "managed target blocked",
         SourceIncludeInsertionReadiness::DuplicateOrAmbiguousBlocked => {
             "duplicate or ambiguous target blocked"
+        }
+    }
+}
+
+fn source_include_dry_run_status_label(
+    status: SourceIncludeSelectedTargetDryRunStatus,
+) -> &'static str {
+    match status {
+        SourceIncludeSelectedTargetDryRunStatus::Planned => "planned for fixture dry-run",
+        SourceIncludeSelectedTargetDryRunStatus::SelectionBlocked => "selection blocked",
+        SourceIncludeSelectedTargetDryRunStatus::TargetMismatch => "target mismatch",
+        SourceIncludeSelectedTargetDryRunStatus::InsertionPlanBlocked => "insertion plan blocked",
+        SourceIncludeSelectedTargetDryRunStatus::NonFixtureTargetRefused => {
+            "non-fixture target refused"
         }
     }
 }
