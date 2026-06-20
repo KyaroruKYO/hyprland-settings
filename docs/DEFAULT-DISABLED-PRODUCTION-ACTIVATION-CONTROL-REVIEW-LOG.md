@@ -33,3 +33,7 @@ Scope: source/include insertion and duplicate replacement.
 - Config-page UI shows disabled source/include and duplicate activation control cards.
 - GTK safe-env screenshot plus AT-SPI assertions cover activation control headings, production-disabled text, executor unwired text, and disabled planned validation controls.
 - Report: `data/reports/default-disabled-production-activation-control.v0.55.2.json`.
+
+## Follow-up Form Layer
+
+The next review-only layer now exists in `data/reports/default-disabled-production-activation-form.v0.55.2.json`. It generates request and safety-plan data from explicit form state and validates through these controls while keeping source/include and duplicate executors `Unwired`.

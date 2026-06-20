@@ -85,7 +85,7 @@
     "hyprland0554MigrationActivated": false
   },
   "nextRequiredWork": [
-    "Use the explicit production activation control layer to validate complete request and safety-plan inputs without wiring executors.",
+    "Replace review-only activation form projections with real disabled GTK form fields if interactive collection is desired, keeping executors unwired.",
     "Add any future real-config activation proof only with byte-exact backup, restore, and post-restore verification."
   ],
   "activationPathReview": {
@@ -110,6 +110,21 @@
     },
     "duplicateReplacement": {
       "status": "ValidatedButExecutorUnwired",
+      "productionEnabled": false,
+      "executorWiringStatus": "Unwired"
+    }
+  },
+  "activationFormReview": {
+    "report": "data/reports/default-disabled-production-activation-form.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ValidatedForReviewOnly",
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "productionEnabled": false,
+      "executorWiringStatus": "Unwired"
+    },
+    "duplicateReplacement": {
+      "status": "ValidatedForReviewOnly",
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
       "productionEnabled": false,
       "executorWiringStatus": "Unwired"
     }

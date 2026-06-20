@@ -86,12 +86,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Design the final explicit activation form/state machine that can collect real user request data while keeping source/include and duplicate production executors unwired by default."
+        "Replace the review-only activation form projections with real disabled GTK form fields if interactive collection is desired, keeping source/include and duplicate production executors unwired by default."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("explicit activation form/state machine"));
+        .contains("real disabled GTK form fields"));
 }
 
 #[test]
@@ -601,6 +601,62 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         false
     );
 
+    let activation_form =
+        read_json("data/reports/default-disabled-production-activation-form.v0.55.2.json");
+    assert_eq!(activation_form["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        activation_form["implementation"]["activationFormStateMachineExists"],
+        true
+    );
+    assert_eq!(
+        activation_form["implementation"]["requestGenerationExists"],
+        true
+    );
+    assert_eq!(
+        activation_form["implementation"]["safetyPlanGenerationExists"],
+        true
+    );
+    assert_eq!(
+        activation_form["implementation"]["controlValidationFromFormExists"],
+        true
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_form["forms"][key]["status"],
+            "ValidatedForReviewOnly"
+        );
+        assert_eq!(
+            activation_form["forms"][key]["requestGenerationStatus"],
+            "ProductionActivationRequest generated for review only"
+        );
+        assert_eq!(
+            activation_form["forms"][key]["safetyPlanGenerationStatus"],
+            "ProductionActivationSafetyPlan generated for review only"
+        );
+        assert_eq!(
+            activation_form["forms"][key]["controlValidationStatus"],
+            "ValidatedButExecutorUnwired"
+        );
+        assert_eq!(
+            activation_form["forms"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(activation_form["forms"][key]["productionEnabled"], false);
+        assert_eq!(activation_form["forms"][key]["productionFlag"], false);
+        assert_eq!(activation_form["forms"][key]["executorWired"], false);
+        assert_eq!(activation_form["forms"][key]["reviewOnly"], true);
+        assert_eq!(activation_form["screenshotLevelAssertions"][key], true);
+    }
+    assert_eq!(
+        activation_form["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+    assert_eq!(
+        activation_form["safety"]["sourceIncludeExecutorWired"],
+        false
+    );
+    assert_eq!(activation_form["safety"]["duplicateExecutorWired"], false);
+
     let gtk_cards =
         read_json("data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json");
     assert_eq!(gtk_cards["projectDataVersion"], "v0.55.2");
@@ -675,6 +731,24 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         );
         assert_eq!(
             gtk_cards["activationControlResults"][key]["disabledActionProof"],
+            "live_gtk_atspi_proof"
+        );
+    }
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            gtk_cards["activationFormResults"][key]["headingProof"],
+            "live_gtk_atspi_proof"
+        );
+        assert_eq!(
+            gtk_cards["activationFormResults"][key]["productionDisabledProof"],
+            "live_gtk_atspi_proof"
+        );
+        assert_eq!(
+            gtk_cards["activationFormResults"][key]["executorWiringProof"],
+            "live_gtk_atspi_proof"
+        );
+        assert_eq!(
+            gtk_cards["activationFormResults"][key]["disabledActionProof"],
             "live_gtk_atspi_proof"
         );
     }

@@ -110,7 +110,7 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.",
+  "nextRecommendedWork": "Replace review-only activation form projections with real disabled GTK form fields if interactive collection is desired, keeping source/include and duplicate production executors unwired by default.",
   "activationDecisionReview": {
     "sourceIncludeInsertion": "ApprovedButDefaultDisabled",
     "duplicateReplacement": "ApprovedButDefaultDisabled",
@@ -145,6 +145,25 @@
       "requestValidationStatus": "Complete activation request",
       "safetyPlanValidationStatus": "Complete safety plan",
       "executorWiringStatus": "Unwired",
+      "productionEnabled": false,
+      "productionFlag": false
+    }
+  },
+  "activationFormReview": {
+    "report": "data/reports/default-disabled-production-activation-form.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ValidatedForReviewOnly",
+      "requestGenerated": true,
+      "safetyPlanGenerated": true,
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "productionEnabled": false,
+      "productionFlag": false
+    },
+    "duplicateReplacement": {
+      "status": "ValidatedForReviewOnly",
+      "requestGenerated": true,
+      "safetyPlanGenerated": true,
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
       "productionEnabled": false,
       "productionFlag": false
     }

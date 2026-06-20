@@ -66,7 +66,7 @@
 - cargo build --release: passed
 - jq reports: passed
 - git diff --check: passed
-- GTK safe-env evidence matrix: passed for the deep approval card data surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_000757`.
+- GTK safe-env evidence matrix: passed for the activation form/state-machine UI surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_131546`.
 
 ## Next recommended sprint
 Use the report-backed approval cards as the review source for future explicit production activation UX, starting with a still-default-disabled production activation decision model that can consume approval tokens without enabling production by default.
@@ -88,3 +88,7 @@ Use the report-backed approval cards as the review source for future explicit pr
 ## 2026-06-20 - Default-disabled activation controls
 
 Implemented final review-only production activation controls for source/include insertion and duplicate replacement. Both controls consume activation path reviews, validate complete activation request inputs, validate complete safety-plan inputs, require executor wiring to remain `Unwired`, and can reach `ValidatedButExecutorUnwired` while all production flags remain false. No source/include or duplicate production executor was wired, no real config was touched, no runtime mutation was run, and v0.55.2 remains the active/default model. Evidence is recorded in `data/reports/default-disabled-production-activation-control.v0.55.2.json`.
+
+## 2026-06-20 - Activation form state machine
+
+Added review-only activation form/state-machine coverage for source/include insertion and duplicate replacement. The form state collects scope, reason, explicit activation token, decision category, safety acknowledgements, backup/restore/reread/post-restore plans, dry-run summary, and touched-file list data. Complete form states generate `ProductionActivationRequest` and `ProductionActivationSafetyPlan` values, validate through the final activation controls as `ValidatedButExecutorUnwired`, and keep executors `Unwired`. No production source/include insertion, duplicate write, real config mutation, runtime mutation, reload, or migration activation was enabled.

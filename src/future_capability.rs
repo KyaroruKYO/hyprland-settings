@@ -4157,6 +4157,114 @@ impl ProductionActivationControlReview {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ProductionActivationFormStatus {
+    Empty,
+    MissingRequiredFields,
+    InvalidWrongScope,
+    InvalidWrongCategory,
+    BlockedExecutorWired,
+    BlockedProductionFlagTrue,
+    ValidatedForReviewOnly,
+}
+
+impl ProductionActivationFormStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::Empty => "Empty",
+            Self::MissingRequiredFields => "Missing required fields",
+            Self::InvalidWrongScope => "Invalid wrong scope",
+            Self::InvalidWrongCategory => "Invalid wrong category",
+            Self::BlockedExecutorWired => "Blocked because executor is wired",
+            Self::BlockedProductionFlagTrue => "Blocked because production flag is true",
+            Self::ValidatedForReviewOnly => "Validated for review only",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationFormState {
+    pub scope: Option<ProductionActivationRequestScope>,
+    pub user_facing_reason: String,
+    pub explicit_activation_token: String,
+    pub decision_category: String,
+    pub backup_plan_acknowledged: bool,
+    pub restore_plan_acknowledged: bool,
+    pub reread_plan_acknowledged: bool,
+    pub post_restore_verification_acknowledged: bool,
+    pub final_confirmation_acknowledged: bool,
+    pub backup_before_write_plan: String,
+    pub restore_plan: String,
+    pub post_write_reread_plan: String,
+    pub post_restore_verification_plan: String,
+    pub dry_run_summary: String,
+    pub files_that_would_be_touched: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationFormReview {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub disabled_action_widget_name: String,
+    pub heading: String,
+    pub status: ProductionActivationFormStatus,
+    pub missing_fields: Vec<String>,
+    pub request_preview: Vec<String>,
+    pub safety_plan_preview: Vec<String>,
+    pub control_validation_status: ProductionActivationControlStatus,
+    pub request_generation_status: String,
+    pub safety_plan_generation_status: String,
+    pub executor_wiring_status: ProductionExecutorWiringState,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_activation_enabled: bool,
+    pub category_production_enabled: bool,
+    pub disabled_action_label: String,
+}
+
+impl ProductionActivationFormReview {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        let mut lines = vec![
+            self.heading.clone(),
+            format!("Form status: {}", self.status.user_facing_label()),
+            format!("Request generation: {}", self.request_generation_status),
+            format!(
+                "Safety plan generation: {}",
+                self.safety_plan_generation_status
+            ),
+            format!(
+                "Control validation: {}",
+                self.control_validation_status.user_facing_label()
+            ),
+            format!(
+                "Executor wiring: {}",
+                self.executor_wiring_status.user_facing_label()
+            ),
+        ];
+        lines.extend(
+            self.missing_fields
+                .iter()
+                .map(|field| format!("Missing field: {field}")),
+        );
+        lines.extend(
+            self.request_preview
+                .iter()
+                .map(|field| format!("Request preview: {field}")),
+        );
+        lines.extend(
+            self.safety_plan_preview
+                .iter()
+                .map(|field| format!("Safety plan preview: {field}")),
+        );
+        lines.push(format!(
+            "{}: {}",
+            self.production_label, self.production_status
+        ));
+        lines.push(self.disabled_action_label.clone());
+        lines
+    }
+}
+
 const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
     "data/reports/disabled-approval-ui-cards.v0.55.2.json";
 const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
@@ -4482,6 +4590,111 @@ pub fn production_activation_control_reviews() -> Vec<ProductionActivationContro
     ]
 }
 
+pub fn production_activation_form_reviews() -> Vec<ProductionActivationFormReview> {
+    let paths = production_activation_path_reviews();
+    let source_path = paths
+        .iter()
+        .find(|path| path.widget_name.contains("source-include"));
+    let duplicate_path = paths
+        .iter()
+        .find(|path| path.widget_name.contains("duplicate"));
+    vec![
+        source_include_activation_form_review(
+            source_path,
+            production_activation_form_state(
+                ProductionActivationRequestScope::SourceIncludeInsertion,
+                "sourceIncludeInsertion",
+            ),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        ),
+        duplicate_activation_form_review(
+            duplicate_path,
+            production_activation_form_state(
+                ProductionActivationRequestScope::DuplicateReplacement,
+                "duplicateReplacement",
+            ),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        ),
+    ]
+}
+
+pub fn production_activation_form_state(
+    scope: ProductionActivationRequestScope,
+    decision_category: &str,
+) -> ProductionActivationFormState {
+    ProductionActivationFormState {
+        scope: Some(scope),
+        user_facing_reason: "review-only activation form validation".to_string(),
+        explicit_activation_token: "VALIDATE FORM ONLY - KEEP EXECUTOR UNWIRED".to_string(),
+        decision_category: decision_category.to_string(),
+        backup_plan_acknowledged: true,
+        restore_plan_acknowledged: true,
+        reread_plan_acknowledged: true,
+        post_restore_verification_acknowledged: true,
+        final_confirmation_acknowledged: true,
+        backup_before_write_plan: "create byte-exact backup before any future production write"
+            .to_string(),
+        restore_plan: "restore original bytes before any review completes".to_string(),
+        post_write_reread_plan: "reread target after any future write".to_string(),
+        post_restore_verification_plan: "verify restored hash after restore".to_string(),
+        dry_run_summary: "dry-run must show exact target, exact old state, and exact proposed line"
+            .to_string(),
+        files_that_would_be_touched: vec!["report-backed selected target only".to_string()],
+    }
+}
+
+pub fn source_include_activation_form_review(
+    path: Option<&ProductionActivationPathReview>,
+    form: ProductionActivationFormState,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+) -> ProductionActivationFormReview {
+    activation_form_review(
+        path,
+        form,
+        executor_wiring,
+        production_activation_flag,
+        ActivationFormSpec {
+            widget_name: "hyprland-settings-source-include-activation-form-disabled",
+            evidence_widget_name: "hyprland-settings-source-include-activation-form-evidence",
+            disabled_action_widget_name:
+                "hyprland-settings-source-include-activation-form-validate-disabled",
+            heading: "Source/include activation request form",
+            production_label: "Production source/include insertion",
+            disabled_action_label: "Validate source/include activation form (planned)",
+            expected_scope: ProductionActivationRequestScope::SourceIncludeInsertion,
+            expected_category: "sourceIncludeInsertion",
+        },
+    )
+}
+
+pub fn duplicate_activation_form_review(
+    path: Option<&ProductionActivationPathReview>,
+    form: ProductionActivationFormState,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+) -> ProductionActivationFormReview {
+    activation_form_review(
+        path,
+        form,
+        executor_wiring,
+        production_activation_flag,
+        ActivationFormSpec {
+            widget_name: "hyprland-settings-duplicate-activation-form-disabled",
+            evidence_widget_name: "hyprland-settings-duplicate-activation-form-evidence",
+            disabled_action_widget_name:
+                "hyprland-settings-duplicate-activation-form-validate-disabled",
+            heading: "Duplicate activation request form",
+            production_label: "Production duplicate writes",
+            disabled_action_label: "Validate duplicate activation form (planned)",
+            expected_scope: ProductionActivationRequestScope::DuplicateReplacement,
+            expected_category: "duplicateReplacement",
+        },
+    )
+}
+
 pub fn production_activation_control_request(
     scope: ProductionActivationRequestScope,
     decision_category: &str,
@@ -4569,6 +4782,291 @@ pub fn duplicate_activation_control_review(
             expected_category: "duplicateReplacement",
         },
     )
+}
+
+struct ActivationFormSpec {
+    widget_name: &'static str,
+    evidence_widget_name: &'static str,
+    disabled_action_widget_name: &'static str,
+    heading: &'static str,
+    production_label: &'static str,
+    disabled_action_label: &'static str,
+    expected_scope: ProductionActivationRequestScope,
+    expected_category: &'static str,
+}
+
+fn activation_form_review(
+    path: Option<&ProductionActivationPathReview>,
+    form: ProductionActivationFormState,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+    spec: ActivationFormSpec,
+) -> ProductionActivationFormReview {
+    let missing_fields = activation_form_missing_fields(&form);
+    let scope_status = form
+        .scope
+        .as_ref()
+        .map(|scope| scope == &spec.expected_scope)
+        .unwrap_or(false);
+    let category_status = form.decision_category == spec.expected_category;
+    let request = activation_form_request(&form);
+    let safety_plan = activation_form_safety_plan(&form);
+    let control = match spec.expected_scope {
+        ProductionActivationRequestScope::SourceIncludeInsertion => {
+            source_include_activation_control_review(
+                path,
+                request.as_ref(),
+                safety_plan.as_ref(),
+                executor_wiring,
+                production_activation_flag,
+            )
+        }
+        ProductionActivationRequestScope::DuplicateReplacement => {
+            duplicate_activation_control_review(
+                path,
+                request.as_ref(),
+                safety_plan.as_ref(),
+                executor_wiring,
+                production_activation_flag,
+            )
+        }
+    };
+
+    let status = if form_is_empty(&form) {
+        ProductionActivationFormStatus::Empty
+    } else if !scope_status {
+        ProductionActivationFormStatus::InvalidWrongScope
+    } else if !category_status {
+        ProductionActivationFormStatus::InvalidWrongCategory
+    } else if executor_wiring != ProductionExecutorWiringState::Unwired {
+        ProductionActivationFormStatus::BlockedExecutorWired
+    } else if production_activation_flag {
+        ProductionActivationFormStatus::BlockedProductionFlagTrue
+    } else if !missing_fields.is_empty() {
+        ProductionActivationFormStatus::MissingRequiredFields
+    } else {
+        ProductionActivationFormStatus::ValidatedForReviewOnly
+    };
+
+    let request_generation_status = if request.is_some() {
+        "ProductionActivationRequest generated for review only".to_string()
+    } else {
+        "ProductionActivationRequest not generated".to_string()
+    };
+    let safety_plan_generation_status = if safety_plan.is_some() {
+        "ProductionActivationSafetyPlan generated for review only".to_string()
+    } else {
+        "ProductionActivationSafetyPlan not generated".to_string()
+    };
+    let request_preview = activation_form_request_preview(&form);
+    let safety_plan_preview = activation_form_safety_plan_preview(&form);
+
+    ProductionActivationFormReview {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        disabled_action_widget_name: spec.disabled_action_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        status,
+        missing_fields,
+        request_preview,
+        safety_plan_preview,
+        control_validation_status: control.status,
+        request_generation_status,
+        safety_plan_generation_status,
+        executor_wiring_status: executor_wiring,
+        production_label: spec.production_label.to_string(),
+        production_status: control.production_status,
+        production_activation_enabled: false,
+        category_production_enabled: false,
+        disabled_action_label: spec.disabled_action_label.to_string(),
+    }
+}
+
+fn activation_form_request(
+    form: &ProductionActivationFormState,
+) -> Option<ProductionActivationRequest> {
+    if activation_form_missing_request_fields(form).is_empty() {
+        Some(ProductionActivationRequest {
+            scope: form.scope.clone()?,
+            user_facing_reason: form.user_facing_reason.clone(),
+            decision_category: form.decision_category.clone(),
+            explicit_activation_token: form.explicit_activation_token.clone(),
+            backup_plan_acknowledged: form.backup_plan_acknowledged,
+            restore_plan_acknowledged: form.restore_plan_acknowledged,
+            reread_plan_acknowledged: form.reread_plan_acknowledged,
+            final_confirmation_acknowledged: form.final_confirmation_acknowledged
+                && form.post_restore_verification_acknowledged,
+            one_shot_nonce: Some("review-only-form".to_string()),
+        })
+    } else {
+        None
+    }
+}
+
+fn activation_form_safety_plan(
+    form: &ProductionActivationFormState,
+) -> Option<ProductionActivationSafetyPlan> {
+    if activation_form_missing_safety_plan_fields(form).is_empty() {
+        Some(ProductionActivationSafetyPlan {
+            backup_before_write_plan: Some(form.backup_before_write_plan.clone()),
+            restore_plan: Some(form.restore_plan.clone()),
+            post_write_reread_plan: Some(form.post_write_reread_plan.clone()),
+            post_restore_verification_plan: Some(form.post_restore_verification_plan.clone()),
+            dry_run_summary: Some(form.dry_run_summary.clone()),
+            files_that_would_be_touched: form.files_that_would_be_touched.clone(),
+        })
+    } else {
+        None
+    }
+}
+
+fn activation_form_missing_fields(form: &ProductionActivationFormState) -> Vec<String> {
+    let mut fields = activation_form_missing_request_fields(form);
+    fields.extend(activation_form_missing_safety_plan_fields(form));
+    fields
+}
+
+fn activation_form_missing_request_fields(form: &ProductionActivationFormState) -> Vec<String> {
+    let mut missing = Vec::new();
+    if form.scope.is_none() {
+        missing.push("category/scope".to_string());
+    }
+    if form.user_facing_reason.trim().is_empty() {
+        missing.push("user-facing reason".to_string());
+    }
+    if form.explicit_activation_token.trim().is_empty() {
+        missing.push("explicit activation phrase/token".to_string());
+    }
+    if form.decision_category.trim().is_empty() {
+        missing.push("decision category".to_string());
+    }
+    if !form.backup_plan_acknowledged {
+        missing.push("backup-before-write acknowledgement".to_string());
+    }
+    if !form.restore_plan_acknowledged {
+        missing.push("restore-plan acknowledgement".to_string());
+    }
+    if !form.reread_plan_acknowledged {
+        missing.push("post-write reread acknowledgement".to_string());
+    }
+    if !form.post_restore_verification_acknowledged {
+        missing.push("post-restore verification acknowledgement".to_string());
+    }
+    if !form.final_confirmation_acknowledged {
+        missing.push("final confirmation acknowledgement".to_string());
+    }
+    missing
+}
+
+fn activation_form_missing_safety_plan_fields(form: &ProductionActivationFormState) -> Vec<String> {
+    let mut missing = Vec::new();
+    if form.backup_before_write_plan.trim().is_empty() {
+        missing.push("backup-before-write plan text".to_string());
+    }
+    if form.restore_plan.trim().is_empty() {
+        missing.push("restore plan text".to_string());
+    }
+    if form.post_write_reread_plan.trim().is_empty() {
+        missing.push("post-write reread plan text".to_string());
+    }
+    if form.post_restore_verification_plan.trim().is_empty() {
+        missing.push("post-restore verification plan text".to_string());
+    }
+    if form.dry_run_summary.trim().is_empty() {
+        missing.push("dry-run summary text".to_string());
+    }
+    if form.files_that_would_be_touched.is_empty() {
+        missing.push("files-that-would-be-touched list".to_string());
+    }
+    missing
+}
+
+fn activation_form_request_preview(form: &ProductionActivationFormState) -> Vec<String> {
+    vec![
+        format!(
+            "scope = {}",
+            form.scope
+                .as_ref()
+                .map(activation_scope_label)
+                .unwrap_or("missing")
+        ),
+        format!(
+            "decision category = {}",
+            missing_safe(&form.decision_category)
+        ),
+        format!("reason = {}", missing_safe(&form.user_facing_reason)),
+        format!(
+            "activation token = {}",
+            missing_safe(&form.explicit_activation_token)
+        ),
+        format!(
+            "backup/restore/reread/final acknowledgements = {}/{}/{}/{}",
+            form.backup_plan_acknowledged,
+            form.restore_plan_acknowledged,
+            form.reread_plan_acknowledged,
+            form.final_confirmation_acknowledged
+        ),
+    ]
+}
+
+fn activation_form_safety_plan_preview(form: &ProductionActivationFormState) -> Vec<String> {
+    vec![
+        format!(
+            "backup plan = {}",
+            missing_safe(&form.backup_before_write_plan)
+        ),
+        format!("restore plan = {}", missing_safe(&form.restore_plan)),
+        format!(
+            "post-write reread plan = {}",
+            missing_safe(&form.post_write_reread_plan)
+        ),
+        format!(
+            "post-restore verification plan = {}",
+            missing_safe(&form.post_restore_verification_plan)
+        ),
+        format!("dry-run summary = {}", missing_safe(&form.dry_run_summary)),
+        format!(
+            "files that would be touched = {}",
+            if form.files_that_would_be_touched.is_empty() {
+                "Missing from form".to_string()
+            } else {
+                form.files_that_would_be_touched.join(", ")
+            }
+        ),
+    ]
+}
+
+fn activation_scope_label(scope: &ProductionActivationRequestScope) -> &'static str {
+    match scope {
+        ProductionActivationRequestScope::SourceIncludeInsertion => "source/include",
+        ProductionActivationRequestScope::DuplicateReplacement => "duplicate",
+    }
+}
+
+fn missing_safe(value: &str) -> String {
+    if value.trim().is_empty() {
+        "Missing from form".to_string()
+    } else {
+        value.to_string()
+    }
+}
+
+fn form_is_empty(form: &ProductionActivationFormState) -> bool {
+    form.scope.is_none()
+        && form.user_facing_reason.is_empty()
+        && form.explicit_activation_token.is_empty()
+        && form.decision_category.is_empty()
+        && !form.backup_plan_acknowledged
+        && !form.restore_plan_acknowledged
+        && !form.reread_plan_acknowledged
+        && !form.post_restore_verification_acknowledged
+        && !form.final_confirmation_acknowledged
+        && form.backup_before_write_plan.is_empty()
+        && form.restore_plan.is_empty()
+        && form.post_write_reread_plan.is_empty()
+        && form.post_restore_verification_plan.is_empty()
+        && form.dry_run_summary.is_empty()
+        && form.files_that_would_be_touched.is_empty()
 }
 
 struct ActivationPathSpec {

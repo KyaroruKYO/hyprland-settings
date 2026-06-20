@@ -96,7 +96,8 @@
     "screenshot_level_disabled_approval_card_assertions",
     "default_disabled_production_activation_decision_review",
     "default_disabled_production_activation_path_review",
-    "default_disabled_production_activation_control_review"
+    "default_disabled_production_activation_control_review",
+    "default_disabled_production_activation_form_state_machine"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -136,7 +137,9 @@
     "data/reports/default-disabled-production-activation-path.v0.55.2.json",
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-PATH-REVIEW-LOG.md",
     "data/reports/default-disabled-production-activation-control.v0.55.2.json",
-    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-CONTROL-REVIEW-LOG.md"
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-CONTROL-REVIEW-LOG.md",
+    "data/reports/default-disabled-production-activation-form.v0.55.2.json",
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-FORM-REVIEW-LOG.md"
   ],
   "testsAdded": [
     "tests/future_capability_marathon.rs",
@@ -149,7 +152,9 @@
     "source/include and duplicate production activation path model tests",
     "GTK screenshot/accessibility assertions for source/include and duplicate activation path cards",
     "source/include and duplicate production activation control model tests",
-    "GTK screenshot/accessibility assertions for source/include and duplicate activation control cards"
+    "GTK screenshot/accessibility assertions for source/include and duplicate activation control cards",
+    "source/include and duplicate activation form/state-machine model tests",
+    "GTK screenshot/accessibility assertions for source/include and duplicate activation form cards"
   ],
   "validation": {
     "cargoFmt": "passed",
@@ -160,14 +165,14 @@
     "jqReports": "passed",
     "gitDiffCheck": "passed",
     "gtkSafeEnvMatrix": "passed",
-    "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260620_000757"
+    "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260620_131546"
   },
-  "nextRecommendedAction": "Design the final explicit activation form/state machine that can collect real user request data while keeping source/include and duplicate production executors unwired by default.",
+  "nextRecommendedAction": "Replace the review-only activation form projections with real disabled GTK form fields if interactive collection is desired, keeping source/include and duplicate production executors unwired by default.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "98-98%",
-      "after": "98-99%",
-      "evidence": "Added disabled Config-page production activation path and final control cards for source/include and duplicate, backed by GTK screenshot plus AT-SPI assertions."
+      "after": "99-99%",
+      "evidence": "Added disabled Config-page activation form cards for source/include and duplicate, backed by GTK screenshot plus AT-SPI assertions."
     },
     "configDiscoverySourceAwareModel": {
       "before": "90-93%",
@@ -191,13 +196,13 @@
     },
     "missingDefaultInsertion": {
       "before": "97-98%",
-      "after": "98-99%",
-      "evidence": "Source/include activation control validates complete request and safety-plan inputs, requires executor wiring to stay Unwired, and remains review-only with production flag false."
+      "after": "99-99%",
+      "evidence": "Source/include activation form/state machine collects review-only request and safety-plan fields, validates through the activation control as ValidatedButExecutorUnwired, keeps executor Unwired, and keeps production flag false."
     },
     "duplicateResolution": {
       "before": "88-92%",
-      "after": "90-93%",
-      "evidence": "Duplicate activation control validates complete request and safety-plan inputs, requires executor wiring to stay Unwired, and remains review-only with production flag false."
+      "after": "91-94%",
+      "evidence": "Duplicate activation form/state machine collects review-only request and safety-plan fields, validates through the activation control as ValidatedButExecutorUnwired, keeps executor Unwired, and keeps production flag false."
     },
     "highRiskDisplayRecovery": {
       "before": "61-70%",
@@ -249,17 +254,18 @@
     "controlledLiveTestGuard": "implemented_but_disabled: guard records backup, content fingerprints, symlink, runtime snapshot, restore, post-restore verification, out-of-band recovery, trusted-data, and explicit live flag requirements before any live mutation.",
     "defaultDisabledProductionGates": "ready_but_default_disabled: source/include, duplicate, structured hl.bind, and profile gates can review copied proof while keeping production disabled; runtime, high-risk, and 0.55.4 gates block on missing live/trusted evidence.",
     "explicitApprovalFlow": "implemented_but_disabled: approval scopes require exact target/command, copied or live proof, old/proposed state, restore plan, one-shot or expiry behavior, and never enable production by default.",
+    "activationFormStateMachine": "implemented_but_disabled: source/include and duplicate activation form states collect request data, safety acknowledgements, backup/restore/reread/post-restore plans, dry-run summary, and touched-file lists, then validate through the final controls as review-only with executors Unwired.",
     "runtimeSocketDiagnosis": "live_readonly_evidence: sandbox EPERM explains the prior timeout; outside-sandbox hyprctl version, monitors, and getoption queries succeeded.",
     "runtimeLiveRestoreProof": "live_restore_proven: prior gaps_in value 5 and temporary value 6 were prepared with restore command first; keyword and assignment eval failed before value change, then hl.config eval succeeded and restored readback to 5."
   },
   "categoryCoverageThisSprint": {
-    "coreAppShellUiNavigation": "disabled duplicate pre-Apply review UI and source/include selected-target dry-run preview UI are present with source tests",
+    "coreAppShellUiNavigation": "disabled activation form cards are present for source/include and duplicate with source tests and GTK screenshot/accessibility assertions",
     "configDiscoverySourceAwareModel": "source/include selected-target dry-run planner and guarded temp executor model selected root/source targets and blocked managed/unknown/ambiguous targets",
     "rowReadWriteModel": "future capability tests continue asserting SAFE_WRITABLE_ROWS remains 341; no row inventory changed",
     "safeNormalScalarWrites": "selected-target dry-run integrates with the existing missing/default insertion plan but does not write connected files",
     "releasePackagingTagArtifacts": "v0.1.0 tag and dist/v0.1.0 preserved; no release artifact mutation",
-    "missingDefaultInsertion": "source/include dry-run preview UI and guarded temp executor added; production source/include insertion remains blocked",
-    "duplicateResolution": "guarded temp executor added for reversible duplicate replacement proof; production duplicate writes remain blocked",
+    "missingDefaultInsertion": "source/include activation form/state machine produces review-only request and safety-plan data, validates through the control layer, and keeps production source/include insertion blocked",
+    "duplicateResolution": "duplicate activation form/state machine produces review-only request and safety-plan data, validates through the control layer, and keeps production duplicate writes blocked",
     "highRiskDisplayRecovery": "guarded no-op readiness executor added and requires out-of-band recovery before high-risk/display mutation",
     "structuredFamilyEditorsWrites": "guarded hl.bind temp executor added for reversible structured write proof; production structured writes remain blocked",
     "profileModeSwitching": "guarded temp symlink executor added and verifies restored target; real profile switching remains blocked",

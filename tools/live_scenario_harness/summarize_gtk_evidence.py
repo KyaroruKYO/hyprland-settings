@@ -240,6 +240,22 @@ def run_summary(run_dir):
             "activationControlsAllDisabledActionsFound": bool(
                 accessibility.get("activationControlsAllDisabledActionsFound")
             ),
+            "activationFormAssertionMethod": accessibility.get(
+                "activationFormAssertionMethod"
+            ),
+            "activationFormAssertions": accessibility.get("activationFormAssertions", {}),
+            "activationFormsAllHeadingsFound": bool(
+                accessibility.get("activationFormsAllHeadingsFound")
+            ),
+            "activationFormsAllProductionDisabledFound": bool(
+                accessibility.get("activationFormsAllProductionDisabledFound")
+            ),
+            "activationFormsAllExecutorUnwiredFound": bool(
+                accessibility.get("activationFormsAllExecutorUnwiredFound")
+            ),
+            "activationFormsAllDisabledActionsFound": bool(
+                accessibility.get("activationFormsAllDisabledActionsFound")
+            ),
             "duplicateConflictDetailNavigationAttempted": bool(
                 accessibility.get("duplicateConflictDetailNavigationAttempted")
             ),
@@ -298,6 +314,7 @@ def aggregate(runs):
     activation_decision_results = activation_decision_assertion_results(runs)
     activation_path_results = activation_path_assertion_results(runs)
     activation_control_results = activation_control_assertion_results(runs)
+    activation_form_results = activation_form_assertion_results(runs)
 
     return {
         "appLaunchAttempted": bool(runs),
@@ -395,6 +412,24 @@ def aggregate(runs):
         "activationControlsAllDisabledActionsFound": all(
             result["disabledActionProof"] == "live_gtk_atspi_proof"
             for result in activation_control_results.values()
+        ),
+        "activationFormAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationFormResults": activation_form_results,
+        "activationFormsAllHeadingsFound": all(
+            result["headingProof"] == "live_gtk_atspi_proof"
+            for result in activation_form_results.values()
+        ),
+        "activationFormsAllProductionDisabledFound": all(
+            result["productionDisabledProof"] == "live_gtk_atspi_proof"
+            for result in activation_form_results.values()
+        ),
+        "activationFormsAllExecutorUnwiredFound": all(
+            result["executorWiringProof"] == "live_gtk_atspi_proof"
+            for result in activation_form_results.values()
+        ),
+        "activationFormsAllDisabledActionsFound": all(
+            result["disabledActionProof"] == "live_gtk_atspi_proof"
+            for result in activation_form_results.values()
         ),
         "fallbackProofUsed": any(level in {"source_model_fallback", "not_proven"} for level in by_area.values())
         or any(level in {"source_model_fallback", "not_proven"} for level in by_blocked_category.values()),
@@ -671,6 +706,83 @@ def activation_control_assertion_results(runs):
     return results
 
 
+def activation_form_assertion_results(runs):
+    form_keys = [
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+    ]
+    results = {}
+    for key in form_keys:
+        heading_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("activationFormAssertions", {})
+                .get(key, {})
+                .get("headingFound")
+            ),
+            None,
+        )
+        production_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("activationFormAssertions", {})
+                .get(key, {})
+                .get("productionDisabledFound")
+            ),
+            None,
+        )
+        executor_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("activationFormAssertions", {})
+                .get(key, {})
+                .get("executorWiringFound")
+            ),
+            None,
+        )
+        action_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("activationFormAssertions", {})
+                .get(key, {})
+                .get("disabledActionFound")
+            ),
+            None,
+        )
+        sample = {}
+        for run in runs:
+            sample = run["accessibility"].get("activationFormAssertions", {}).get(key, {})
+            if sample:
+                break
+        results[key] = {
+            "heading": sample.get("heading"),
+            "headingProof": "live_gtk_atspi_proof" if heading_run else "not_proven",
+            "headingEvidenceRun": heading_run["name"] if heading_run else None,
+            "productionDisabledText": sample.get("productionDisabledText"),
+            "productionDisabledProof": "live_gtk_atspi_proof"
+            if production_run
+            else "not_proven",
+            "productionDisabledEvidenceRun": production_run["name"] if production_run else None,
+            "executorWiring": sample.get("executorWiring"),
+            "executorWiringProof": "live_gtk_atspi_proof" if executor_run else "not_proven",
+            "executorWiringEvidenceRun": executor_run["name"] if executor_run else None,
+            "disabledAction": sample.get("disabledAction"),
+            "disabledActionProof": "live_gtk_atspi_proof" if action_run else "not_proven",
+            "disabledActionEvidenceRun": action_run["name"] if action_run else None,
+            "widgetName": sample.get("widgetName"),
+            "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        }
+    return results
+
+
 def matching_category_run(runs, spec):
     for run in runs:
         if run["scenario"] == spec["scenario"] and run["navigationTarget"] == spec["target"]:
@@ -896,6 +1008,18 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
         "activationControlsAllDisabledActionsFound": summary[
             "activationControlsAllDisabledActionsFound"
         ],
+        "activationFormAssertionMethod": summary["activationFormAssertionMethod"],
+        "activationFormResults": summary["activationFormResults"],
+        "activationFormsAllHeadingsFound": summary["activationFormsAllHeadingsFound"],
+        "activationFormsAllProductionDisabledFound": summary[
+            "activationFormsAllProductionDisabledFound"
+        ],
+        "activationFormsAllExecutorUnwiredFound": summary[
+            "activationFormsAllExecutorUnwiredFound"
+        ],
+        "activationFormsAllDisabledActionsFound": summary[
+            "activationFormsAllDisabledActionsFound"
+        ],
         "fallbackProofUsed": summary["fallbackProofUsed"],
         "issuesFound": issues(summary),
         "recommendedFixes": recommended_fixes(summary),
@@ -1087,6 +1211,20 @@ def write_reports(reports_dir, evidence_root, evidence_summary, runs, summary):
                 ],
                 "activationControlsAllDisabledActionsFound": summary[
                     "activationControlsAllDisabledActionsFound"
+                ],
+                "activationFormAssertionMethod": summary["activationFormAssertionMethod"],
+                "activationFormResults": summary["activationFormResults"],
+                "activationFormsAllHeadingsFound": summary[
+                    "activationFormsAllHeadingsFound"
+                ],
+                "activationFormsAllProductionDisabledFound": summary[
+                    "activationFormsAllProductionDisabledFound"
+                ],
+                "activationFormsAllExecutorUnwiredFound": summary[
+                    "activationFormsAllExecutorUnwiredFound"
+                ],
+                "activationFormsAllDisabledActionsFound": summary[
+                    "activationFormsAllDisabledActionsFound"
                 ],
                 "safety": {
                     "runtimeMutated": False,

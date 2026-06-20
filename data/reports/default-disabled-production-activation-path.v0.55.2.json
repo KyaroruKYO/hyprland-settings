@@ -77,6 +77,16 @@
     "sourceIncludeInsertion": true,
     "duplicateReplacement": true
   },
+  "activationControlReview": {
+    "report": "data/reports/default-disabled-production-activation-control.v0.55.2.json",
+    "sourceIncludeInsertion": "ValidatedButExecutorUnwired; executor Unwired; production flag false",
+    "duplicateReplacement": "ValidatedButExecutorUnwired; executor Unwired; production flag false"
+  },
+  "activationFormReview": {
+    "report": "data/reports/default-disabled-production-activation-form.v0.55.2.json",
+    "sourceIncludeInsertion": "ValidatedForReviewOnly; request and safety plan generated; production flag false",
+    "duplicateReplacement": "ValidatedForReviewOnly; request and safety plan generated; production flag false"
+  },
   "safety": {
     "sourceIncludeProductionEnabled": false,
     "duplicateProductionEnabled": false,

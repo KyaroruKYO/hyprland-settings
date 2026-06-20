@@ -86,3 +86,7 @@ Use report-backed approval card data as the input for a future default-disabled 
 ## 2026-06-20 - Activation control readiness
 
 Production gate readiness now records the final source/include and duplicate activation controls. Both validate complete review-only request and safety-plan inputs, both require executor wiring to stay `Unwired`, and neither enables source/include insertion or duplicate writes.
+
+## 2026-06-20 - Activation form readiness
+
+Production gate readiness now records the source/include and duplicate activation form/state-machine layer. The form state can collect review-only request data and safety-plan acknowledgements, generate request and safety-plan values, and validate through the final activation controls. The controls remain `ValidatedButExecutorUnwired`; production flags remain false and executors remain unwired.

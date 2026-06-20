@@ -92,16 +92,16 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false.
+Replace the review-only activation form projections with real disabled GTK form fields if interactive collection is desired, keeping source/include and duplicate production executors unwired by default.
 
 ## Progress tracker
-- Core app shell / UI / navigation: 96-98% -> 97-98%
+- Core app shell / UI / navigation: 98-99% -> 99-99%
 - Config discovery / source-aware model: 90-93% -> 94-96%
 - 341-row read/write model: 90-95% -> 90-95%
 - Safe normal-scalar writes: 92-96% -> 95-97%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
-- Missing/default insertion: 95-97% -> 96-97%
-- Duplicate resolution: 86-91% -> 87-91%
+- Missing/default insertion: 98-99% -> 99-99%
+- Duplicate resolution: 90-93% -> 91-94%
 - High-risk/display recovery: 61-70% -> 62-70%
 - Structured-family editors/writes: 63-73% -> 64-73%
 - Profile/mode switching: 64-73% -> 65-73%
@@ -111,10 +111,10 @@ Use report-backed approval card data as the input for a future default-disabled 
 ## Validation status
 Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `jq empty data/reports/*.json`, and `git diff --check`.
 
-GTK matrix passed for the deep approval card data surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_000757`.
+GTK matrix passed for the activation form/state-machine UI surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_131546`.
 
 ## Recommended next Codex prompt
-Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false.
+Replace the review-only activation form projections with real disabled GTK form fields if interactive collection is desired, keeping source/include and duplicate production executors unwired by default.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 
@@ -133,3 +133,7 @@ Use report-backed approval card data as the input for a future default-disabled 
 ## 2026-06-20 - Activation control handoff
 
 The branch now includes final review-only activation controls for source/include and duplicate. The controls validate complete request and safety-plan inputs and require executor wiring to remain `Unwired`; both remain `ValidatedButExecutorUnwired`, with production source/include insertion and duplicate writes disabled. Next exact work: design the explicit activation form/state machine that can collect real user request data while keeping executors unwired by default.
+
+## 2026-06-20 - Activation form handoff
+
+The branch now includes review-only activation form/state-machine projections for source/include and duplicate. Complete form states collect request fields and safety-plan acknowledgements, generate `ProductionActivationRequest` and `ProductionActivationSafetyPlan` values, validate through the final controls as `ValidatedButExecutorUnwired`, and keep production executors `Unwired`. Next exact work: replace the review-only form projections with real disabled GTK form fields if interactive collection is desired, without wiring production executors.

@@ -18,11 +18,12 @@ use crate::export::ExportBundle;
 use crate::future_capability::{
     disabled_future_approval_card_projections, duplicate_production_approval_gate,
     production_activation_control_reviews, production_activation_decision_reviews,
-    production_activation_path_reviews, proven_runtime_approval_evidence_summary,
-    source_include_insertion_review, source_include_selected_target_dry_run_plan,
-    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
-    DuplicateOccurrence, DuplicateProductionGateStatus, ProductionActivationControlReview,
-    ProductionActivationDecisionReview, ProductionActivationPathReview,
+    production_activation_form_reviews, production_activation_path_reviews,
+    proven_runtime_approval_evidence_summary, source_include_insertion_review,
+    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
+    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
+    ProductionActivationControlReview, ProductionActivationDecisionReview,
+    ProductionActivationFormReview, ProductionActivationPathReview,
     SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
     SourceIncludeTargetCandidate,
 };
@@ -1414,6 +1415,7 @@ fn production_activation_path_reviews_section() -> gtk::Frame {
         content.append(&production_activation_path_review_card(&review));
     }
     content.append(&production_activation_control_reviews_section());
+    content.append(&production_activation_form_reviews_section());
 
     frame.set_child(Some(&content));
     frame
@@ -1564,6 +1566,104 @@ fn production_activation_control_review_card(
     validate.set_widget_name(&review.disabled_action_widget_name);
     validate.set_tooltip_text(Some(
         "Disabled planned validation control. This has no mutation handler.",
+    ));
+    validate.set_sensitive(false);
+    content.append(&validate);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_form_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-form-section");
+    frame.set_tooltip_text(Some(
+        "Review-only production activation forms. These collect request and safety-plan fields without wiring executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Review-only activation request forms"));
+    content.append(&small_label(
+        "These form projections collect activation request data for validation only. Production writes remain disabled.",
+    ));
+
+    for review in production_activation_form_reviews() {
+        content.append(&production_activation_form_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_form_review_card(review: &ProductionActivationFormReview) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled activation form. This review surface cannot run production executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Activation form evidence. Request and safety-plan values are review-only.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(&content, "Form status", review.status.user_facing_label());
+    append_detail_line(
+        &content,
+        "Request generation",
+        &review.request_generation_status,
+    );
+    append_detail_line(
+        &content,
+        "Safety plan generation",
+        &review.safety_plan_generation_status,
+    );
+    append_detail_line(
+        &content,
+        "Control validation",
+        review.control_validation_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    content.append(&body_label("Required fields"));
+    if review.missing_fields.is_empty() {
+        content.append(&small_label("All required form fields are present."));
+    } else {
+        for field in &review.missing_fields {
+            content.append(&small_label(field));
+        }
+    }
+    content.append(&body_label("Request preview"));
+    for field in &review.request_preview {
+        content.append(&small_label(field));
+    }
+    content.append(&body_label("Safety plan preview"));
+    for field in &review.safety_plan_preview {
+        content.append(&small_label(field));
+    }
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let validate = gtk::Button::with_label(&review.disabled_action_label);
+    validate.set_widget_name(&review.disabled_action_widget_name);
+    validate.set_tooltip_text(Some(
+        "Disabled planned form validation. This has no mutation handler.",
     ));
     validate.set_sensitive(false);
     content.append(&validate);

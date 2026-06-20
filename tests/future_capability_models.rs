@@ -9,9 +9,9 @@ use hyprland_settings::future_capability::{
     disabled_future_approval_card_projections, disabled_migration_review,
     disabled_missing_default_insertion_review, disabled_profile_switch_review,
     disabled_profile_switch_selection_review, duplicate_activation_control_review,
-    duplicate_activation_decision_review, duplicate_activation_path_review,
-    duplicate_approval_flow, duplicate_occurrence_confirmation, duplicate_occurrence_model,
-    duplicate_occurrence_review, duplicate_production_approval_gate,
+    duplicate_activation_decision_review, duplicate_activation_form_review,
+    duplicate_activation_path_review, duplicate_approval_flow, duplicate_occurrence_confirmation,
+    duplicate_occurrence_model, duplicate_occurrence_review, duplicate_production_approval_gate,
     duplicate_production_gate_review, edit_structured_bind_safe_env,
     execute_duplicate_replacement_guarded_temp,
     execute_source_include_selected_target_guarded_temp, execute_structured_bind_guarded_temp,
@@ -22,6 +22,7 @@ use hyprland_settings::future_capability::{
     local_hyprland_version_evidence, migration_comparison_review,
     production_activation_control_request, production_activation_control_reviews,
     production_activation_control_safety_plan, production_activation_decision_reviews,
+    production_activation_form_reviews, production_activation_form_state,
     production_activation_path_reviews, profile_approval_flow, profile_production_gate_review,
     profile_target_approval_review, proven_runtime_approval_evidence_summary,
     render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
@@ -31,19 +32,20 @@ use hyprland_settings::future_capability::{
     runtime_live_restore_attempt_review, runtime_live_restore_proof_review,
     runtime_production_gate_review, runtime_socket_diagnosis,
     source_include_activation_control_review, source_include_activation_decision_review,
-    source_include_activation_path_review, source_include_approval_flow,
-    source_include_insertion_review, source_include_production_gate_review,
-    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
-    structured_approval_flow, structured_family_model, structured_family_review,
-    structured_production_gate_review, switch_profile_symlink_guarded_temp,
-    switch_profile_symlink_safe_env, trusted_export_requirement,
-    validate_structured_edit_candidate, ApprovalCardReportLoadStatus, ApprovalEvidence,
-    ApprovalRequest, ApprovalScope, ApprovalStatus, ApprovalToken, ControlledLiveTestGuardRequest,
-    ControlledLiveTestKind, DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
-    DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
-    DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
-    HighRiskProductionGateStatus, HyprlandVersionActivationStatus, MockWatchdog, MockWatchdogState,
-    ProductionActivationControlStatus, ProductionActivationDecisionStatus,
+    source_include_activation_form_review, source_include_activation_path_review,
+    source_include_approval_flow, source_include_insertion_review,
+    source_include_production_gate_review, source_include_selected_target_dry_run_plan,
+    source_include_target_selection_fixture_proof, structured_approval_flow,
+    structured_family_model, structured_family_review, structured_production_gate_review,
+    switch_profile_symlink_guarded_temp, switch_profile_symlink_safe_env,
+    trusted_export_requirement, validate_structured_edit_candidate, ApprovalCardReportLoadStatus,
+    ApprovalEvidence, ApprovalRequest, ApprovalScope, ApprovalStatus, ApprovalToken,
+    ControlledLiveTestGuardRequest, ControlledLiveTestKind, DuplicateOccurrenceApprovalState,
+    DuplicateOccurrenceReviewState, DuplicateProductionGateStatus, DuplicateReplacementOptions,
+    DuplicateReplacementRequest, DuplicateReplacementStatus, GuardedTempExecutionStatus,
+    HighRiskLiveReadinessStatus, HighRiskProductionGateStatus, HyprlandVersionActivationStatus,
+    MockWatchdog, MockWatchdogState, ProductionActivationControlStatus,
+    ProductionActivationDecisionStatus, ProductionActivationFormStatus,
     ProductionActivationPathStatus, ProductionActivationRequest, ProductionActivationRequestScope,
     ProductionActivationSafetyPlan, ProductionExecutorWiringState, ProfileProductionGateStatus,
     ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction, RuntimeApprovalReviewStatus,
@@ -4622,6 +4624,396 @@ fn default_activation_control_reviews_validate_but_keep_production_unwired() {
             "Complete activation request"
         );
         assert_eq!(review.safety_plan_validation_status, "Complete safety plan");
+        assert_eq!(
+            review.executor_wiring_status,
+            ProductionExecutorWiringState::Unwired
+        );
+        assert_eq!(review.production_status, "Disabled");
+        assert!(!review.production_activation_enabled);
+        assert!(!review.category_production_enabled);
+    }
+}
+
+#[test]
+fn source_include_activation_form_validates_through_control_as_review_only() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    let source_card = report_backed
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("source-include"))
+        .expect("source/include card");
+    let decision = source_include_activation_decision_review(Some(source_card), "test-report");
+    let path = source_include_activation_path_review(
+        Some(&decision),
+        Some(source_card),
+        None,
+        None,
+        false,
+    );
+    let form = production_activation_form_state(
+        ProductionActivationRequestScope::SourceIncludeInsertion,
+        "sourceIncludeInsertion",
+    );
+    let review = source_include_activation_form_review(
+        Some(&path),
+        form,
+        ProductionExecutorWiringState::Unwired,
+        false,
+    );
+
+    assert_eq!(
+        review.status,
+        ProductionActivationFormStatus::ValidatedForReviewOnly
+    );
+    assert_eq!(
+        review.control_validation_status,
+        ProductionActivationControlStatus::ValidatedButExecutorUnwired
+    );
+    assert_eq!(
+        review.request_generation_status,
+        "ProductionActivationRequest generated for review only"
+    );
+    assert_eq!(
+        review.safety_plan_generation_status,
+        "ProductionActivationSafetyPlan generated for review only"
+    );
+    assert!(review.missing_fields.is_empty());
+    assert_eq!(
+        review.executor_wiring_status,
+        ProductionExecutorWiringState::Unwired
+    );
+    assert!(!review.production_activation_enabled);
+    assert!(!review.category_production_enabled);
+    let lines = review.user_facing_lines().join("\n");
+    for expected in [
+        "Source/include activation request form",
+        "Form status: Validated for review only",
+        "Request preview: scope = source/include",
+        "Safety plan preview: dry-run summary = dry-run must show exact target, exact old state, and exact proposed line",
+        "Control validation: Validated but executor unwired",
+        "Executor wiring: Unwired",
+        "Production source/include insertion: Disabled",
+    ] {
+        assert!(
+            lines.contains(expected),
+            "missing source/include activation form line: {expected}"
+        );
+    }
+}
+
+#[test]
+fn source_include_activation_form_blocks_empty_partial_wrong_scope_flags_and_wired_executor() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    let source_card = report_backed
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("source-include"))
+        .expect("source/include card");
+    let decision = source_include_activation_decision_review(Some(source_card), "test-report");
+    let path = source_include_activation_path_review(
+        Some(&decision),
+        Some(source_card),
+        None,
+        None,
+        false,
+    );
+    let mut empty = production_activation_form_state(
+        ProductionActivationRequestScope::SourceIncludeInsertion,
+        "sourceIncludeInsertion",
+    );
+    empty.scope = None;
+    empty.user_facing_reason.clear();
+    empty.explicit_activation_token.clear();
+    empty.decision_category.clear();
+    empty.backup_plan_acknowledged = false;
+    empty.restore_plan_acknowledged = false;
+    empty.reread_plan_acknowledged = false;
+    empty.post_restore_verification_acknowledged = false;
+    empty.final_confirmation_acknowledged = false;
+    empty.backup_before_write_plan.clear();
+    empty.restore_plan.clear();
+    empty.post_write_reread_plan.clear();
+    empty.post_restore_verification_plan.clear();
+    empty.dry_run_summary.clear();
+    empty.files_that_would_be_touched.clear();
+
+    assert_eq!(
+        source_include_activation_form_review(
+            Some(&path),
+            empty,
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationFormStatus::Empty
+    );
+
+    let mut partial = production_activation_form_state(
+        ProductionActivationRequestScope::SourceIncludeInsertion,
+        "sourceIncludeInsertion",
+    );
+    partial.restore_plan.clear();
+    let partial_review = source_include_activation_form_review(
+        Some(&path),
+        partial,
+        ProductionExecutorWiringState::Unwired,
+        false,
+    );
+    assert_eq!(
+        partial_review.status,
+        ProductionActivationFormStatus::MissingRequiredFields
+    );
+    assert!(partial_review
+        .missing_fields
+        .contains(&"restore plan text".to_string()));
+
+    let wrong_scope = production_activation_form_state(
+        ProductionActivationRequestScope::DuplicateReplacement,
+        "sourceIncludeInsertion",
+    );
+    assert_eq!(
+        source_include_activation_form_review(
+            Some(&path),
+            wrong_scope,
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationFormStatus::InvalidWrongScope
+    );
+
+    let wrong_category = production_activation_form_state(
+        ProductionActivationRequestScope::SourceIncludeInsertion,
+        "duplicateReplacement",
+    );
+    assert_eq!(
+        source_include_activation_form_review(
+            Some(&path),
+            wrong_category,
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationFormStatus::InvalidWrongCategory
+    );
+
+    let complete = production_activation_form_state(
+        ProductionActivationRequestScope::SourceIncludeInsertion,
+        "sourceIncludeInsertion",
+    );
+    assert_eq!(
+        source_include_activation_form_review(
+            Some(&path),
+            complete.clone(),
+            ProductionExecutorWiringState::Unwired,
+            true,
+        )
+        .status,
+        ProductionActivationFormStatus::BlockedProductionFlagTrue
+    );
+    assert_eq!(
+        source_include_activation_form_review(
+            Some(&path),
+            complete,
+            ProductionExecutorWiringState::WiredProduction,
+            false,
+        )
+        .status,
+        ProductionActivationFormStatus::BlockedExecutorWired
+    );
+}
+
+#[test]
+fn duplicate_activation_form_validates_through_control_as_review_only() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    let duplicate_card = report_backed
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("duplicate"))
+        .expect("duplicate card");
+    let decision = duplicate_activation_decision_review(Some(duplicate_card), "test-report");
+    let path =
+        duplicate_activation_path_review(Some(&decision), Some(duplicate_card), None, None, false);
+    let form = production_activation_form_state(
+        ProductionActivationRequestScope::DuplicateReplacement,
+        "duplicateReplacement",
+    );
+    let review = duplicate_activation_form_review(
+        Some(&path),
+        form,
+        ProductionExecutorWiringState::Unwired,
+        false,
+    );
+
+    assert_eq!(
+        review.status,
+        ProductionActivationFormStatus::ValidatedForReviewOnly
+    );
+    assert_eq!(
+        review.control_validation_status,
+        ProductionActivationControlStatus::ValidatedButExecutorUnwired
+    );
+    assert!(review.missing_fields.is_empty());
+    assert_eq!(
+        review.executor_wiring_status,
+        ProductionExecutorWiringState::Unwired
+    );
+    assert!(!review.production_activation_enabled);
+    assert!(!review.category_production_enabled);
+    let lines = review.user_facing_lines().join("\n");
+    for expected in [
+        "Duplicate activation request form",
+        "Form status: Validated for review only",
+        "Request preview: scope = duplicate",
+        "Control validation: Validated but executor unwired",
+        "Executor wiring: Unwired",
+        "Production duplicate writes: Disabled",
+    ] {
+        assert!(
+            lines.contains(expected),
+            "missing duplicate activation form line: {expected}"
+        );
+    }
+}
+
+#[test]
+fn duplicate_activation_form_blocks_empty_partial_wrong_scope_flags_and_wired_executor() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    let duplicate_card = report_backed
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("duplicate"))
+        .expect("duplicate card");
+    let decision = duplicate_activation_decision_review(Some(duplicate_card), "test-report");
+    let path =
+        duplicate_activation_path_review(Some(&decision), Some(duplicate_card), None, None, false);
+    let mut empty = production_activation_form_state(
+        ProductionActivationRequestScope::DuplicateReplacement,
+        "duplicateReplacement",
+    );
+    empty.scope = None;
+    empty.user_facing_reason.clear();
+    empty.explicit_activation_token.clear();
+    empty.decision_category.clear();
+    empty.backup_plan_acknowledged = false;
+    empty.restore_plan_acknowledged = false;
+    empty.reread_plan_acknowledged = false;
+    empty.post_restore_verification_acknowledged = false;
+    empty.final_confirmation_acknowledged = false;
+    empty.backup_before_write_plan.clear();
+    empty.restore_plan.clear();
+    empty.post_write_reread_plan.clear();
+    empty.post_restore_verification_plan.clear();
+    empty.dry_run_summary.clear();
+    empty.files_that_would_be_touched.clear();
+
+    assert_eq!(
+        duplicate_activation_form_review(
+            Some(&path),
+            empty,
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationFormStatus::Empty
+    );
+
+    let mut partial = production_activation_form_state(
+        ProductionActivationRequestScope::DuplicateReplacement,
+        "duplicateReplacement",
+    );
+    partial.files_that_would_be_touched.clear();
+    let partial_review = duplicate_activation_form_review(
+        Some(&path),
+        partial,
+        ProductionExecutorWiringState::Unwired,
+        false,
+    );
+    assert_eq!(
+        partial_review.status,
+        ProductionActivationFormStatus::MissingRequiredFields
+    );
+    assert!(partial_review
+        .missing_fields
+        .contains(&"files-that-would-be-touched list".to_string()));
+
+    let wrong_scope = production_activation_form_state(
+        ProductionActivationRequestScope::SourceIncludeInsertion,
+        "duplicateReplacement",
+    );
+    assert_eq!(
+        duplicate_activation_form_review(
+            Some(&path),
+            wrong_scope,
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationFormStatus::InvalidWrongScope
+    );
+
+    let wrong_category = production_activation_form_state(
+        ProductionActivationRequestScope::DuplicateReplacement,
+        "sourceIncludeInsertion",
+    );
+    assert_eq!(
+        duplicate_activation_form_review(
+            Some(&path),
+            wrong_category,
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationFormStatus::InvalidWrongCategory
+    );
+
+    let complete = production_activation_form_state(
+        ProductionActivationRequestScope::DuplicateReplacement,
+        "duplicateReplacement",
+    );
+    assert_eq!(
+        duplicate_activation_form_review(
+            Some(&path),
+            complete.clone(),
+            ProductionExecutorWiringState::Unwired,
+            true,
+        )
+        .status,
+        ProductionActivationFormStatus::BlockedProductionFlagTrue
+    );
+    assert_eq!(
+        duplicate_activation_form_review(
+            Some(&path),
+            complete,
+            ProductionExecutorWiringState::WiredForTestingOnly,
+            false,
+        )
+        .status,
+        ProductionActivationFormStatus::BlockedExecutorWired
+    );
+}
+
+#[test]
+fn default_activation_form_reviews_validate_but_keep_production_unwired() {
+    let reviews = production_activation_form_reviews();
+    assert_eq!(reviews.len(), 2);
+    for review in reviews {
+        assert_eq!(
+            review.status,
+            ProductionActivationFormStatus::ValidatedForReviewOnly
+        );
+        assert_eq!(
+            review.control_validation_status,
+            ProductionActivationControlStatus::ValidatedButExecutorUnwired
+        );
+        assert_eq!(
+            review.request_generation_status,
+            "ProductionActivationRequest generated for review only"
+        );
+        assert_eq!(
+            review.safety_plan_generation_status,
+            "ProductionActivationSafetyPlan generated for review only"
+        );
         assert_eq!(
             review.executor_wiring_status,
             ProductionExecutorWiringState::Unwired

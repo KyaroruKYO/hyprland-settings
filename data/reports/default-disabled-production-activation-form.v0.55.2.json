@@ -1,0 +1,116 @@
+{
+  "artifactKind": "default-disabled-production-activation-form",
+  "projectDataVersion": "v0.55.2",
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "branch": "future-capability-marathon",
+  "inputActivationControlReport": "data/reports/default-disabled-production-activation-control.v0.55.2.json",
+  "inputActivationPathReport": "data/reports/default-disabled-production-activation-path.v0.55.2.json",
+  "inputDecisionReport": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
+  "implementation": {
+    "activationFormStateMachineExists": true,
+    "sourceIncludeActivationFormExists": true,
+    "duplicateActivationFormExists": true,
+    "requestGenerationExists": true,
+    "safetyPlanGenerationExists": true,
+    "controlValidationFromFormExists": true,
+    "uiSurfaceExists": true,
+    "screenshotLevelAssertionsImplemented": true,
+    "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr"
+  },
+  "forms": {
+    "sourceIncludeInsertion": {
+      "widgetName": "hyprland-settings-source-include-activation-form-disabled",
+      "evidenceWidgetName": "hyprland-settings-source-include-activation-form-evidence",
+      "status": "ValidatedForReviewOnly",
+      "requestGenerationStatus": "ProductionActivationRequest generated for review only",
+      "safetyPlanGenerationStatus": "ProductionActivationSafetyPlan generated for review only",
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "executorWiringStatus": "Unwired",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "categoryProductionFlag": false,
+      "productionStatus": "Disabled",
+      "executorWired": false,
+      "requestPreview": {
+        "scope": "source/include",
+        "decisionCategory": "sourceIncludeInsertion",
+        "hasReason": true,
+        "hasExplicitActivationToken": true,
+        "backupPlanAcknowledged": true,
+        "restorePlanAcknowledged": true,
+        "rereadPlanAcknowledged": true,
+        "postRestoreVerificationAcknowledged": true,
+        "finalConfirmationAcknowledged": true
+      },
+      "safetyPlanPreview": {
+        "backupBeforeWritePlanPresent": true,
+        "restorePlanPresent": true,
+        "postWriteRereadPlanPresent": true,
+        "postRestoreVerificationPlanPresent": true,
+        "dryRunSummaryPresent": true,
+        "filesThatWouldBeTouchedPresent": true
+      },
+      "disabledAction": "Validate source/include activation form (planned)",
+      "reviewOnly": true,
+      "productionExecutorReady": false,
+      "productionWriteReady": false
+    },
+    "duplicateReplacement": {
+      "widgetName": "hyprland-settings-duplicate-activation-form-disabled",
+      "evidenceWidgetName": "hyprland-settings-duplicate-activation-form-evidence",
+      "status": "ValidatedForReviewOnly",
+      "requestGenerationStatus": "ProductionActivationRequest generated for review only",
+      "safetyPlanGenerationStatus": "ProductionActivationSafetyPlan generated for review only",
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "executorWiringStatus": "Unwired",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "categoryProductionFlag": false,
+      "productionStatus": "Disabled",
+      "executorWired": false,
+      "requestPreview": {
+        "scope": "duplicate",
+        "decisionCategory": "duplicateReplacement",
+        "hasReason": true,
+        "hasExplicitActivationToken": true,
+        "backupPlanAcknowledged": true,
+        "restorePlanAcknowledged": true,
+        "rereadPlanAcknowledged": true,
+        "postRestoreVerificationAcknowledged": true,
+        "finalConfirmationAcknowledged": true
+      },
+      "safetyPlanPreview": {
+        "backupBeforeWritePlanPresent": true,
+        "restorePlanPresent": true,
+        "postWriteRereadPlanPresent": true,
+        "postRestoreVerificationPlanPresent": true,
+        "dryRunSummaryPresent": true,
+        "filesThatWouldBeTouchedPresent": true
+      },
+      "disabledAction": "Validate duplicate activation form (planned)",
+      "reviewOnly": true,
+      "productionExecutorReady": false,
+      "productionWriteReady": false
+    }
+  },
+  "screenshotLevelAssertions": {
+    "sourceIncludeInsertion": true,
+    "duplicateReplacement": true
+  },
+  "safety": {
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "sourceIncludeExecutorWired": false,
+    "duplicateExecutorWired": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "realConfigTouched": false,
+    "runtimeMutatedThisSprint": false,
+    "hyprctlReloadRun": false,
+    "v0552DefaultPreserved": true,
+    "hyprland0554MigrationActivated": false
+  },
+  "nextRequiredWork": [
+    "Replace the review-only activation form projections with real disabled GTK field widgets if interactive collection is desired, while keeping executors unwired.",
+    "Do not wire source/include or duplicate production executors until byte-exact live backup, write, reread, restore, and final approval proof exists."
+  ]
+}
