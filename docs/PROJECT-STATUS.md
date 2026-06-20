@@ -50,21 +50,21 @@ The monitor-name oracle accepts names only from a current non-mutating snapshot 
 
 On `main`, the v0.1.0 safe release scope remains complete for guarded normal-scalar safe-batch use on the v0.55.2 model.
 
-On the `future-capability-marathon` branch, missing/default insertion is now production-enabled only for reviewed single-root normal-scalar safe-batch targets. Source/include insertion target selection has disabled UI plus fixture target-selection proof, and duplicate resolution has disabled pre-Apply approval UI around the production gate. Source/include insertion expansion, duplicate production writes, high-risk/display writes, structured-family writes, real profile/mode switching, runtime/reload mutation, and Hyprland 0.55.4 migration remain blocked or disabled pending explicit proof and approval.
+On the `future-capability-marathon` branch, missing/default insertion is now production-enabled only for reviewed single-root normal-scalar safe-batch targets. Source/include insertion target selection has disabled UI, fixture target-selection proof, and a selected-target dry-run planner. Duplicate resolution has disabled pre-Apply approval UI around the production gate. A controlled live-test guard records reversible backup/restore prerequisites for risky future tracks. Source/include insertion expansion, duplicate production writes, high-risk/display writes, structured-family writes, real profile/mode switching, runtime/reload mutation, and Hyprland 0.55.4 migration remain blocked or disabled pending explicit proof and approval.
 
 Current future-capability tracker:
 
 - Core app shell / UI / navigation: 92-96%
-- Config discovery / source-aware model: 90-93%
+- Config discovery / source-aware model: 91-94%
 - 341-row read/write model: 90-95%
-- Safe normal-scalar writes: 92-96%
+- Safe normal-scalar writes: 93-96%
 - Release packaging/tag/artifacts: 85-95%
-- Missing/default insertion: 87-92%
-- Duplicate resolution: 73-81%
-- High-risk/display recovery: 50-60%
-- Structured-family editors/writes: 48-58%
-- Profile/mode switching: 50-60%
-- Runtime/reload integration: 45-55%
-- Hyprland 0.55.4 migration: 35-45%
+- Missing/default insertion: 89-93%
+- Duplicate resolution: 74-82%
+- High-risk/display recovery: 52-62%
+- Structured-family editors/writes: 50-60%
+- Profile/mode switching: 52-62%
+- Runtime/reload integration: 47-57%
+- Hyprland 0.55.4 migration: 37-47%
 
-Next exact work item: add source/include selected-target safe-env insertion dry-run planner while production source/include insertion remains disabled.
+Next exact work item: wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths.

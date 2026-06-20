@@ -26,7 +26,8 @@
     "The model requires official export data, row-count diff, write-safety review, and safe-env GTK evidence before 0.55.4 can activate.",
     "Added tests proving v0.55.2 can remain active without extra proof while 0.55.4 remains blocked until all trusted inputs exist.",
     "No additional migration activation step was available this sprint without trusted official 0.55.4 exports/source data.",
-    "This sprint rechecked Hyprland 0.55.4 migration and found no safe activation path without trusted official export/source data."
+    "This sprint rechecked Hyprland 0.55.4 migration and found no safe activation path without trusted official export/source data.",
+    "Controlled live-test guard requires trusted versioned data bundle before migration activation."
   ],
   "whatWasNotImplemented": [
     "No v0.55.2 exports were replaced.",
@@ -35,7 +36,9 @@
   ],
   "testsAdded": [
     "tests/future_capability_models.rs",
-    "tests/future_capability_marathon.rs"
+    "tests/future_capability_marathon.rs",
+    "controlled_live_test_guard_requires_reversible_proof_before_any_mutation",
+    "controlled_live_test_guard_has_category_specific_profile_runtime_and_migration_gates"
   ],
   "reportsAdded": [
     "data/reports/future-capability-hyprland-0554-migration.json"
@@ -54,7 +57,10 @@
     "officialExportRequiredFor0554": true,
     "rowCountDiffRequiredFor0554": true,
     "writeSafetyReviewRequiredFor0554": true,
-    "safeEnvEvidenceRequiredFor0554": true
+    "safeEnvEvidenceRequiredFor0554": true,
+    "migrationControlledLiveGuardRequiresTrustedBundle": true,
+    "liveMutationExecutedThisSprint": false,
+    "restorationRequiredThisSprint": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"

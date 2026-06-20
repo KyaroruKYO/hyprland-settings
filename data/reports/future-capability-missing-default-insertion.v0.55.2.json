@@ -33,7 +33,10 @@
     "Added source-level UI tests proving the source/include target-selection review is visible, read-only, disabled, and does not invoke production write or runtime code.",
     "Added source/include fixture target-selection proof with selected target preconditions for root path, selected target, source depth, management hints, and candidate count.",
     "The fixture proof blocks no target selected, unknown target, generated/script-managed targets, symlink/profile targets, and duplicate/ambiguous layouts.",
-    "The fixture proof allows only temp-fixture planning readiness and never enables production source/include insertion."
+    "The fixture proof allows only temp-fixture planning readiness and never enables production source/include insertion.",
+    "Added source/include selected-target dry-run planner that consumes selected-target fixture proof and the existing missing/default insertion plan.",
+    "The dry-run planner shows exact selected target, source depth, inserted line, and preview copy without writing files.",
+    "The dry-run planner blocks no selection, managed/ambiguous selections, target mismatch, non-fixture targets, and insertion plans that are already blocked."
   ],
   "whatWasNotImplemented": [
     "No insertion into generated, script-managed, symlink/current-profile, profile/mode, multi-file, duplicate, high-risk, display/render-risk, structured, runtime-only, or missing target files was enabled.",
@@ -45,7 +48,9 @@
     "safe_batch_inserts_missing_default_normal_scalar_into_explicit_root_file",
     "safe_batch_missing_default_insertion_restores_after_verification_failure",
     "safe_batch_missing_default_insertion_blocks_managed_duplicate_and_ambiguous_targets",
-    "apply_can_insert_missing_default_for_explicit_safe_root_config_only"
+    "apply_can_insert_missing_default_for_explicit_safe_root_config_only",
+    "source_include_selected_target_dry_run_plans_only_explicit_fixture_targets",
+    "source_include_selected_target_dry_run_refuses_non_fixture_and_blocked_insertions"
   ],
   "reportsAdded": [
     "data/reports/future-capability-missing-default-insertion.v0.55.2.json"
@@ -75,7 +80,12 @@
     "sourceIncludeFixtureTargetSelectionProofExists": true,
     "sourceIncludeFixtureRequiresExplicitTarget": true,
     "sourceIncludeFixtureBlocksManagedTargets": true,
-    "sourceIncludeFixturePlanAllowed": true
+    "sourceIncludeFixturePlanAllowed": true,
+    "sourceIncludeSelectedTargetDryRunPlannerExists": true,
+    "sourceIncludeSelectedTargetDryRunWritesFiles": false,
+    "sourceIncludeSelectedTargetDryRunRequiresTempFixturePath": true,
+    "sourceIncludeSelectedTargetDryRunRequiresMatchingInsertionPlanTarget": true,
+    "sourceIncludeProductionInsertionEnabled": false
   },
   "validation": {
     "focusedSafeBatchWriteTests": "passed",
@@ -96,7 +106,7 @@
     "Source/include insertion now has readiness model, disabled UI, and fixture target-selection proof, but still needs selected-target safe-env insertion dry-run planner and safe-batch integration proof.",
     "Managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
   ],
-  "nextRecommendedWork": "Add source/include selected-target safe-env insertion dry-run planner while production source/include insertion remains disabled.",
+  "nextRecommendedWork": "Wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": true

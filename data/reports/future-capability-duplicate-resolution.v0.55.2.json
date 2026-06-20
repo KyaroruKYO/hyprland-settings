@@ -39,7 +39,8 @@
     "Added disabled duplicate pre-Apply approval review UI around the production approval gate.",
     "The UI shows approval state, selected occurrence path, line number, raw line, old value, source depth, precondition fingerprint, and block reason.",
     "The UI includes a disabled Confirm duplicate target (planned) action and continues to show duplicate Apply as blocked.",
-    "Added source-level UI tests proving the review surface exists and remains disabled."
+    "Added source-level UI tests proving the review surface exists and remains disabled.",
+    "Controlled live-test guard records backup/hash/restore prerequisites for duplicate replacement before any live mutation; production duplicate writes remain disabled."
   ],
   "whatWasNotImplemented": [
     "No automatic duplicate choice was added.",
@@ -49,7 +50,8 @@
   "testsAdded": [
     "tests/future_capability_models.rs",
     "tests/future_capability_ui.rs",
-    "tests/future_capability_marathon.rs"
+    "tests/future_capability_marathon.rs",
+    "controlled_live_test_guard_requires_reversible_proof_before_any_mutation"
   ],
   "reportsAdded": [
     "data/reports/future-capability-duplicate-resolution.v0.55.2.json"
@@ -75,7 +77,10 @@
     "fingerprintMismatchBlocksReplacement": true,
     "disabledDuplicatePreApplyReviewUiExists": true,
     "duplicatePreApplyUiShowsFingerprintAndBlockReason": true,
-    "duplicatePreApplyConfirmActionDisabled": true
+    "duplicatePreApplyConfirmActionDisabled": true,
+    "duplicateReplacementControlledLiveGuardExists": true,
+    "liveMutationExecutedThisSprint": false,
+    "restorationRequiredThisSprint": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"
@@ -85,7 +90,7 @@
     "Needs final production gate proving stale line, line mismatch, old-value mismatch, source-layer duplicate, and same-file duplicate preconditions in the real safe-batch path.",
     "Needs production safe-batch integration review that still refuses real config unless explicitly approved."
   ],
-  "nextRecommendedWork": "Add default-disabled duplicate production activation checklist/flag model while keeping production duplicate writes off.",
+  "nextRecommendedWork": "Wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

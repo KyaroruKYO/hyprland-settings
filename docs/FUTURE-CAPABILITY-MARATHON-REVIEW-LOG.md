@@ -14,27 +14,28 @@
 
 ## Phase results
 - Missing/default insertion: safe-env-only planner/executor proof plus production single-root normal-scalar safe-batch insertion added; unsafe insertion layouts remain blocked.
-- Source/include insertion: target-selection readiness model, disabled setting-detail target review UI, and fixture target-selection proof added; source/include production insertion remains blocked until selected-target dry-run and safe-batch proof exist.
+- Source/include insertion: target-selection readiness model, disabled setting-detail target review UI, fixture target-selection proof, and selected-target dry-run planner added; source/include production insertion remains blocked.
 - Duplicate setting resolution: read-only occurrence model, safe-env exact-line replacement proof, disabled occurrence selector UI, disabled pre-Apply approval review UI, disabled review workflow, confirmation token/fingerprint model, production approval gate scaffold, and confirmation-gated safe-env replacement wrapper added; production remains blocked.
 - High-risk/display-render recovery: mock watchdog/recovery state machine, disabled review model, rollback proof workflow, and no-op live-readiness protocol added; real writes remain blocked.
 - Structured-family editors/writes: read-only disabled editor scaffold, invalid-input candidate validation, disabled `hl.bind` review workflow, lossless render proof, and safe-env exact-line edit proof added; production writes remain blocked.
 - Profile/mode switching: safe-env temp symlink switch/restore proof, disabled review model, disabled selection review workflow, target approval review, and forced restore-failure coverage added; real switching remains blocked.
-- Runtime mutation/reload: dry-run action boundary, mock executor, runtime action policy scaffold, disabled action review workflow, and command risk classification added; real reload and mutating hyprctl remain blocked.
+- Runtime mutation/reload: dry-run action boundary, mock executor, runtime action policy scaffold, disabled action review workflow, command risk classification, and controlled live-test guard prerequisites added; real reload and mutating hyprctl remain blocked.
 - Hyprland 0.55.4 migration: disabled assessment scaffold, versioned data bundle model, disabled migration review, side-by-side comparison review, and trusted-export requirement model added; app still defaults to v0.55.2 data/model.
+- Controlled live/system testing: guard model added for source/include insertion, duplicate replacement, high-risk/display writes, structured writes, profile switching, runtime mutation, and migration activation; no live/system mutation was executed.
 
 ## Progress tracker
-- Core app shell / UI / navigation: 91-95% -> 92-96%
-- Config discovery / source-aware model: 89-92% -> 90-93%
+- Core app shell / UI / navigation: 92-96% -> 92-96%
+- Config discovery / source-aware model: 90-93% -> 91-94%
 - 341-row read/write model: 90-95% -> 90-95%
-- Safe normal-scalar writes: 92-96% -> 92-96%
+- Safe normal-scalar writes: 92-96% -> 93-96%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
-- Missing/default insertion: 86-91% -> 87-92%
-- Duplicate resolution: 70-78% -> 73-81%
-- High-risk/display recovery: 50-60% -> 50-60%
-- Structured-family editors/writes: 48-58% -> 48-58%
-- Profile/mode switching: 50-60% -> 50-60%
-- Runtime/reload integration: 45-55% -> 45-55%
-- Hyprland 0.55.4 migration: 35-45% -> 35-45%
+- Missing/default insertion: 87-92% -> 89-93%
+- Duplicate resolution: 73-81% -> 74-82%
+- High-risk/display recovery: 50-60% -> 52-62%
+- Structured-family editors/writes: 48-58% -> 50-60%
+- Profile/mode switching: 50-60% -> 52-62%
+- Runtime/reload integration: 45-55% -> 47-57%
+- Hyprland 0.55.4 migration: 35-45% -> 37-47%
 
 ## Safety
 - Real user config edited: no
@@ -56,4 +57,4 @@
 - GTK safe-env evidence matrix: passed (`/tmp/hyprland-settings-gtk-automation/20260619_101038`)
 
 ## Next recommended sprint
-Add source/include selected-target safe-env insertion dry-run planner while production source/include insertion remains disabled.
+Wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths.

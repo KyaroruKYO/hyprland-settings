@@ -17,6 +17,138 @@ pub struct DisabledInsertionReview {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ControlledLiveTestKind {
+    SourceIncludeInsertion,
+    DuplicateReplacement,
+    HighRiskDisplayWrite,
+    StructuredWrite,
+    ProfileSwitch,
+    RuntimeMutation,
+    HyprlandVersionMigration,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ControlledLiveTestGuardRequest {
+    pub test_id: String,
+    pub target_paths: Vec<PathBuf>,
+    pub backup_paths_recorded: bool,
+    pub original_hashes_recorded: bool,
+    pub symlink_targets_recorded: bool,
+    pub read_only_runtime_snapshot_recorded: bool,
+    pub restore_plan_recorded: bool,
+    pub post_restore_verification_planned: bool,
+    pub out_of_band_recovery_recorded: bool,
+    pub trusted_data_available: bool,
+    pub explicit_live_flag: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ControlledLiveTestGuardReview {
+    pub kind: ControlledLiveTestKind,
+    pub test_id: String,
+    pub live_mutation_allowed: bool,
+    pub restore_required: bool,
+    pub real_config_touch_allowed: bool,
+    pub runtime_mutation_allowed: bool,
+    pub blockers: Vec<String>,
+    pub review_lines: Vec<String>,
+}
+
+pub fn controlled_live_test_guard_review(
+    kind: ControlledLiveTestKind,
+    request: ControlledLiveTestGuardRequest,
+) -> ControlledLiveTestGuardReview {
+    let mut blockers = Vec::new();
+    if request.test_id.trim().is_empty() {
+        blockers.push("timestamped live-test id is required".to_string());
+    }
+    if !request.explicit_live_flag {
+        blockers.push("explicit live-test flag is required before mutation".to_string());
+    }
+    if request.target_paths.is_empty() {
+        blockers.push("at least one target path must be recorded".to_string());
+    }
+    if !request.backup_paths_recorded {
+        blockers.push("backup paths must be recorded before mutation".to_string());
+    }
+    if !request.original_hashes_recorded {
+        blockers.push("original SHA256 hashes must be recorded before mutation".to_string());
+    }
+    if !request.restore_plan_recorded {
+        blockers.push("restore plan must be prepared before mutation".to_string());
+    }
+    if !request.post_restore_verification_planned {
+        blockers.push("post-restore verification must be planned before mutation".to_string());
+    }
+
+    match kind {
+        ControlledLiveTestKind::HighRiskDisplayWrite => {
+            if !request.out_of_band_recovery_recorded {
+                blockers.push(
+                    "out-of-band recovery path is required before high-risk/display mutation"
+                        .to_string(),
+                );
+            }
+            if !request.read_only_runtime_snapshot_recorded {
+                blockers.push(
+                    "read-only runtime snapshot is required before high-risk/display mutation"
+                        .to_string(),
+                );
+            }
+        }
+        ControlledLiveTestKind::ProfileSwitch => {
+            if !request.symlink_targets_recorded {
+                blockers.push(
+                    "original symlink targets must be recorded before profile switching"
+                        .to_string(),
+                );
+            }
+        }
+        ControlledLiveTestKind::RuntimeMutation => {
+            if !request.read_only_runtime_snapshot_recorded {
+                blockers.push(
+                    "read-only runtime snapshot is required before runtime mutation".to_string(),
+                );
+            }
+        }
+        ControlledLiveTestKind::HyprlandVersionMigration => {
+            if !request.trusted_data_available {
+                blockers.push(
+                    "trusted versioned data bundle is required before migration activation"
+                        .to_string(),
+                );
+            }
+        }
+        ControlledLiveTestKind::SourceIncludeInsertion
+        | ControlledLiveTestKind::DuplicateReplacement
+        | ControlledLiveTestKind::StructuredWrite => {}
+    }
+
+    let live_mutation_allowed = blockers.is_empty();
+    ControlledLiveTestGuardReview {
+        kind,
+        test_id: request.test_id,
+        live_mutation_allowed,
+        restore_required: true,
+        real_config_touch_allowed: live_mutation_allowed
+            && !matches!(
+                kind,
+                ControlledLiveTestKind::RuntimeMutation
+                    | ControlledLiveTestKind::HyprlandVersionMigration
+            ),
+        runtime_mutation_allowed: live_mutation_allowed
+            && matches!(kind, ControlledLiveTestKind::RuntimeMutation),
+        blockers,
+        review_lines: vec![
+            "Controlled live tests require pre-snapshot, backup, restore, and verification."
+                .to_string(),
+            "The guard records approval readiness only; it does not execute commands.".to_string(),
+            "Every mutation must be restored before the sprint ends.".to_string(),
+        ],
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SourceIncludeInsertionReadiness {
     SingleRootEligible,
     SourceIncludeTargetSelectionRequired,
@@ -68,6 +200,30 @@ pub struct SourceIncludeTargetSelectionProof {
     pub fixture_plan_allowed: bool,
     pub production_insertion_enabled: bool,
     pub real_config_touched: bool,
+    pub review_lines: Vec<String>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SourceIncludeSelectedTargetDryRunStatus {
+    Planned,
+    SelectionBlocked,
+    TargetMismatch,
+    InsertionPlanBlocked,
+    NonFixtureTargetRefused,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SourceIncludeSelectedTargetDryRunPlan {
+    pub status: SourceIncludeSelectedTargetDryRunStatus,
+    pub root_path: Option<PathBuf>,
+    pub selected_target: Option<PathBuf>,
+    pub source_depth: Option<usize>,
+    pub insertion_line: Option<String>,
+    pub dry_run_preview: Option<String>,
+    pub blocked_reasons: Vec<String>,
+    pub production_insertion_enabled: bool,
+    pub real_config_touched: bool,
+    pub runtime_touched: bool,
     pub review_lines: Vec<String>,
 }
 
@@ -168,6 +324,116 @@ pub fn source_include_target_selection_fixture_proof(
             "Source/include target selection is fixture proof only.".to_string(),
             "Production source/include insertion remains disabled.".to_string(),
             "The app must not auto-select root, source, profile, or generated targets.".to_string(),
+        ],
+    }
+}
+
+pub fn source_include_selected_target_dry_run_plan(
+    proof: &SourceIncludeTargetSelectionProof,
+    insertion_plan: &MissingDefaultInsertionPlan,
+) -> SourceIncludeSelectedTargetDryRunPlan {
+    let Some(precondition) = proof.precondition.as_ref() else {
+        return source_include_dry_run_blocked(
+            SourceIncludeSelectedTargetDryRunStatus::SelectionBlocked,
+            None,
+            None,
+            None,
+            vec!["no explicit source/include target selected".to_string()],
+        );
+    };
+
+    if !proof.fixture_plan_allowed {
+        return source_include_dry_run_blocked(
+            SourceIncludeSelectedTargetDryRunStatus::SelectionBlocked,
+            Some(precondition.root_path.clone()),
+            Some(precondition.selected_target.clone()),
+            Some(precondition.source_depth),
+            vec!["selected source/include target is not eligible for fixture dry-run".to_string()],
+        );
+    }
+
+    if precondition.selected_target != insertion_plan.target_path {
+        return source_include_dry_run_blocked(
+            SourceIncludeSelectedTargetDryRunStatus::TargetMismatch,
+            Some(precondition.root_path.clone()),
+            Some(precondition.selected_target.clone()),
+            Some(precondition.source_depth),
+            vec!["selected target does not match the insertion plan target".to_string()],
+        );
+    }
+
+    if !precondition
+        .selected_target
+        .starts_with(std::env::temp_dir())
+    {
+        return source_include_dry_run_blocked(
+            SourceIncludeSelectedTargetDryRunStatus::NonFixtureTargetRefused,
+            Some(precondition.root_path.clone()),
+            Some(precondition.selected_target.clone()),
+            Some(precondition.source_depth),
+            vec![
+                "source/include selected-target dry-run accepts temp fixture paths only"
+                    .to_string(),
+            ],
+        );
+    }
+
+    if !insertion_plan.can_execute {
+        return source_include_dry_run_blocked(
+            SourceIncludeSelectedTargetDryRunStatus::InsertionPlanBlocked,
+            Some(precondition.root_path.clone()),
+            Some(precondition.selected_target.clone()),
+            Some(precondition.source_depth),
+            insertion_plan.blocked_reasons.clone(),
+        );
+    }
+
+    SourceIncludeSelectedTargetDryRunPlan {
+        status: SourceIncludeSelectedTargetDryRunStatus::Planned,
+        root_path: Some(precondition.root_path.clone()),
+        selected_target: Some(precondition.selected_target.clone()),
+        source_depth: Some(precondition.source_depth),
+        insertion_line: Some(insertion_plan.insertion_line.clone()),
+        dry_run_preview: Some(format!(
+            "Would insert `{}` into {} at source depth {}.",
+            insertion_plan.insertion_line,
+            precondition.selected_target.display(),
+            precondition.source_depth
+        )),
+        blocked_reasons: Vec::new(),
+        production_insertion_enabled: false,
+        real_config_touched: false,
+        runtime_touched: false,
+        review_lines: vec![
+            "Source/include selected-target insertion is dry-run proof only.".to_string(),
+            "The exact target file and inserted line are shown before any future activation."
+                .to_string(),
+            "Production source/include insertion remains disabled.".to_string(),
+        ],
+    }
+}
+
+fn source_include_dry_run_blocked(
+    status: SourceIncludeSelectedTargetDryRunStatus,
+    root_path: Option<PathBuf>,
+    selected_target: Option<PathBuf>,
+    source_depth: Option<usize>,
+    blocked_reasons: Vec<String>,
+) -> SourceIncludeSelectedTargetDryRunPlan {
+    SourceIncludeSelectedTargetDryRunPlan {
+        status,
+        root_path,
+        selected_target,
+        source_depth,
+        insertion_line: None,
+        dry_run_preview: None,
+        blocked_reasons,
+        production_insertion_enabled: false,
+        real_config_touched: false,
+        runtime_touched: false,
+        review_lines: vec![
+            "Source/include selected-target dry-run is blocked.".to_string(),
+            "Production source/include insertion remains disabled.".to_string(),
         ],
     }
 }

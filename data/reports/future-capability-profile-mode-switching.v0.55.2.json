@@ -26,7 +26,8 @@
     "Added a profile target approval review model that distinguishes no selection, missing target, target outside safe-env, and safe-env-only review states.",
     "Added deterministic tests proving real-session profile paths are refused as outside safe-env and production switching remains disabled.",
     "No additional production-safe profile switching step was available this sprint without explicit real-session switching approval.",
-    "This sprint rechecked profile/mode switching and found no safe production step without explicit real-session approval and restore protocol."
+    "This sprint rechecked profile/mode switching and found no safe production step without explicit real-session approval and restore protocol.",
+    "Controlled live-test guard requires original symlink targets before profile switching mutation."
   ],
   "whatWasNotImplemented": [
     "No real symlink was switched.",
@@ -35,7 +36,9 @@
   ],
   "testsAdded": [
     "tests/future_capability_models.rs",
-    "tests/future_capability_marathon.rs"
+    "tests/future_capability_marathon.rs",
+    "controlled_live_test_guard_requires_reversible_proof_before_any_mutation",
+    "controlled_live_test_guard_has_category_specific_profile_runtime_and_migration_gates"
   ],
   "reportsAdded": [
     "data/reports/future-capability-profile-mode-switching.v0.55.2.json"
@@ -51,7 +54,10 @@
     "reloadAfterSwitchAllowed": false,
     "profileTargetApprovalReviewExists": true,
     "realSessionProfileTargetRefused": true,
-    "safeEnvTargetReviewOnly": true
+    "safeEnvTargetReviewOnly": true,
+    "profileSwitchControlledLiveGuardRequiresSymlinkSnapshot": true,
+    "liveMutationExecutedThisSprint": false,
+    "restorationRequiredThisSprint": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"

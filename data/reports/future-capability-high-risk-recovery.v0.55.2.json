@@ -26,7 +26,8 @@
     "The protocol refuses real config paths, refuses runtime mutation requests, and records out-of-band recovery, dead-man timeout, verified restore, and explicit approval requirements.",
     "Added deterministic tests proving the live-readiness harness remains no-op and does not accept real config or runtime mutation.",
     "No additional production-safe high-risk/display step was available this sprint without crossing the live recovery proof and explicit approval boundary.",
-    "This sprint rechecked high-risk/display recovery and found no safe production step beyond the existing no-op protocol without explicit live recovery approval."
+    "This sprint rechecked high-risk/display recovery and found no safe production step beyond the existing no-op protocol without explicit live recovery approval.",
+    "Controlled live-test guard requires out-of-band recovery and read-only runtime snapshot before high-risk/display mutation."
   ],
   "whatWasNotImplemented": [
     "No real display/render writes were enabled.",
@@ -35,7 +36,9 @@
   ],
   "testsAdded": [
     "tests/future_capability_models.rs",
-    "tests/future_capability_marathon.rs"
+    "tests/future_capability_marathon.rs",
+    "controlled_live_test_guard_requires_reversible_proof_before_any_mutation",
+    "controlled_live_test_guard_has_category_specific_profile_runtime_and_migration_gates"
   ],
   "reportsAdded": [
     "data/reports/future-capability-high-risk-recovery.v0.55.2.json"
@@ -53,7 +56,10 @@
     "noopLiveRecoveryProtocolExists": true,
     "realConfigPathRefusedByLiveProtocol": true,
     "runtimeMutationRequestRefusedByLiveProtocol": true,
-    "liveWriteEnabled": false
+    "liveWriteEnabled": false,
+    "controlledLiveGuardRequiresOutOfBandRecovery": true,
+    "liveMutationExecutedThisSprint": false,
+    "restorationRequiredThisSprint": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"

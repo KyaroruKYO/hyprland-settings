@@ -15,6 +15,7 @@
 - Missing/default insertion now has a source/include target-selection readiness model; source/include production insertion remains blocked.
 - Missing/default insertion now has a disabled source/include target-selection review surface in the setting detail pane; it shows root config, candidate targets, selected target state, readiness state, and planned disabled actions.
 - Missing/default insertion now has source/include fixture target-selection proof; fixture plans require an explicit selected target and block no-selection, generated/script-managed, symlink/profile, unknown, duplicate, and ambiguous targets.
+- Missing/default insertion now has a source/include selected-target dry-run planner that previews the exact selected target and inserted line for root/source temp fixtures while keeping production source/include insertion disabled.
 - Duplicate resolution received a read-only occurrence model and safe-env exact-line replacement proof.
 - Duplicate detail UI now has a disabled occurrence selector showing file, line, raw line, value, and source depth.
 - Duplicate resolution now has a disabled review workflow for no selection, invalid selection, and selected-but-production-disabled states.
@@ -40,6 +41,7 @@
 - Hyprland 0.55.4 migration received disabled assessment scaffolding.
 - Hyprland 0.55.4 migration now has a side-by-side comparison review that keeps v0.55.2 active and records missing proof.
 - Hyprland 0.55.4 migration now has a trusted-export requirement model; 0.55.2 remains the active default bundle.
+- Controlled live-test guard model now records backup, SHA256, symlink, runtime snapshot, restore, post-restore verification, out-of-band recovery, trusted-data, and explicit live flag prerequisites before any live/system mutation can be considered.
 - No production write expansion was enabled.
 - Deterministic tests were added for each concrete safe-env/mock model and disabled production status.
 
@@ -55,25 +57,25 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Add source/include selected-target safe-env insertion dry-run planner while production source/include insertion remains disabled.
+Wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths.
 
 ## Progress tracker
-- Core app shell / UI / navigation: 91-95% -> 92-96%
-- Config discovery / source-aware model: 89-92% -> 90-93%
+- Core app shell / UI / navigation: 92-96% -> 92-96%
+- Config discovery / source-aware model: 90-93% -> 91-94%
 - 341-row read/write model: 90-95% -> 90-95%
-- Safe normal-scalar writes: 92-96% -> 92-96%
+- Safe normal-scalar writes: 92-96% -> 93-96%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
-- Missing/default insertion: 86-91% -> 87-92%
-- Duplicate resolution: 70-78% -> 73-81%
-- High-risk/display recovery: 50-60% -> 50-60%
-- Structured-family editors/writes: 48-58% -> 48-58%
-- Profile/mode switching: 50-60% -> 50-60%
-- Runtime/reload integration: 45-55% -> 45-55%
-- Hyprland 0.55.4 migration: 35-45% -> 35-45%
+- Missing/default insertion: 87-92% -> 89-93%
+- Duplicate resolution: 73-81% -> 74-82%
+- High-risk/display recovery: 50-60% -> 52-62%
+- Structured-family editors/writes: 48-58% -> 50-60%
+- Profile/mode switching: 50-60% -> 52-62%
+- Runtime/reload integration: 45-55% -> 47-57%
+- Hyprland 0.55.4 migration: 35-45% -> 37-47%
 
 ## Validation status
 Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `jq empty data/reports/*.json`, `git diff --check`, and `tools/live_scenario_harness/run_gtk_evidence_matrix.sh`.
 GTK evidence root: `/tmp/hyprland-settings-gtk-automation/20260619_101038`.
 
 ## Recommended next Codex prompt
-Add a source/include selected-target safe-env insertion dry-run planner that consumes the fixture target-selection proof while production source/include insertion remains disabled.
+Wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths.

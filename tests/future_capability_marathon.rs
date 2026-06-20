@@ -82,12 +82,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Add source/include selected-target safe-env insertion dry-run planner while production source/include insertion remains disabled."
+        "Wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("source/include selected-target safe-env insertion dry-run planner"));
+        .contains("source/include selected-target dry-run preview"));
 }
 
 #[test]

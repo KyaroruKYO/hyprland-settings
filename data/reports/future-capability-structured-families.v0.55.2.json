@@ -27,7 +27,8 @@
     "The safe-env edit proof verifies stale-line blocking, invalid-input blocking, comment/order preservation, reread parse verification, and real-path refusal.",
     "Production structured writes remain disabled despite fixture proof.",
     "No additional production-safe structured write step was available this sprint without an approved structured write gate beyond the existing hl.bind fixture proof.",
-    "This sprint rechecked structured writes and found no safe production step beyond existing hl.bind fixture proof without structured approval and safe-batch integration."
+    "This sprint rechecked structured writes and found no safe production step beyond existing hl.bind fixture proof without structured approval and safe-batch integration.",
+    "Controlled live-test guard records reversible structured-write prerequisites; production structured writes remain disabled."
   ],
   "whatWasNotImplemented": [
     "No monitor, bind, window rule, workspace rule, device, gesture, permission, animation, or curve writer was enabled.",
@@ -35,7 +36,9 @@
   ],
   "testsAdded": [
     "tests/future_capability_models.rs",
-    "tests/future_capability_marathon.rs"
+    "tests/future_capability_marathon.rs",
+    "controlled_live_test_guard_requires_reversible_proof_before_any_mutation",
+    "controlled_live_test_guard_has_category_specific_profile_runtime_and_migration_gates"
   ],
   "reportsAdded": [
     "data/reports/future-capability-structured-families.v0.55.2.json"
@@ -52,7 +55,10 @@
     "hlBindLosslessRenderProofExists": true,
     "hlBindSafeEnvExactLineEditProofExists": true,
     "staleLineBlockingProofExists": true,
-    "realPathStructuredEditRefused": true
+    "realPathStructuredEditRefused": true,
+    "structuredWriteControlledLiveGuardExists": true,
+    "liveMutationExecutedThisSprint": false,
+    "restorationRequiredThisSprint": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"
@@ -62,7 +68,7 @@
     "Each structured family still needs family-specific preservation tests for comments, ordering, repeated records, and invalid input rejection.",
     "Only hl.bind has the new lossless safe-env exact-line edit proof; other structured families remain read-only scaffolds."
   ],
-  "nextRecommendedWork": "Promote the hl.bind safe-env edit proof into a disabled structured write review surface with exact old line/new line/target file/line number before any production gate is considered.",
+  "nextRecommendedWork": "Wire source/include selected-target dry-run preview into the disabled detail UI and add a temp-fixture guarded live-test executor for non-real config paths.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false
