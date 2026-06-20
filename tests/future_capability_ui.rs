@@ -260,6 +260,12 @@ fn disabled_future_approval_cards_are_visible_and_non_mutating() {
     }
 
     for expected in [
+        "DISABLED_APPROVAL_CARDS_REPORT_JSON",
+        "load_disabled_approval_cards_from_reports",
+        "load_disabled_approval_cards_from_report_str",
+        "ReportBackedDisabledApprovalCardProjection",
+        "SerializedApprovalCardRecord",
+        "Missing from report",
         "hyprland-settings-source-include-approval-review-disabled",
         "hyprland-settings-source-include-approval-evidence",
         "hyprland-settings-source-include-approval-enable-disabled",

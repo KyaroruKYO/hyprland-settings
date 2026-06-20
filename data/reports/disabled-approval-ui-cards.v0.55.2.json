@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "artifactKind": "disabled-approval-ui-cards",
-  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "generatedAt": "2026-06-20T00:00:00-07:00",
   "branch": "future-capability-marathon",
   "startingCommit": "d23af73a07c7edcf541a17ad297dcd3db53c18fb",
   "projectDataVersion": "v0.55.2",
@@ -9,6 +9,10 @@
   "uiSurface": {
     "implemented": true,
     "deepDataImplemented": true,
+    "reportBackedDataImplemented": true,
+    "screenshotLevelAssertionsImplemented": true,
+    "reportSource": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+    "screenshotAssertionReport": "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
     "location": "Config page future approval reviews section",
     "sectionWidgetName": "hyprland-settings-disabled-approval-cards-section",
     "cardsAreReviewOnly": true,

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactKind": "deep-approval-card-data",
-  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "generatedAt": "2026-06-20T00:00:00-07:00",
   "branch": "future-capability-marathon",
   "startingCommit": "d23af73a07c7edcf541a17ad297dcd3db53c18fb",
   "projectDataVersion": "v0.55.2",
@@ -12,6 +12,9 @@
     "preconditionModelExists": true,
     "restoreEvidenceModelExists": true,
     "uiRendersProofRecords": true,
+    "uiRendersReportBackedProofRecords": true,
+    "reportBackedProjectionModelExists": true,
+    "screenshotLevelAssertionsExist": true,
     "stableWidgetNamesPreserved": true,
     "allCardsRemainDisabled": true
   },

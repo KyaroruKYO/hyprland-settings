@@ -32,7 +32,8 @@
     "Added copied-config-tree profile/mode proof that preserves a copied profile symlink, switches it to a copied target, restores the original copied symlink target, and verifies the real symlink remains untouched.",
     "Added a default-disabled profile/mode production gate review that requires selected target, current symlink path, original symlink target snapshot, copied-config-tree symlink proof, restore proof, and future real-session live proof.",
     "Connected profile/mode production gate review to the shared explicit approval-flow model; copied symlink proof can reach approved_but_default_disabled, never production enabled by default.",
-    "Added a disabled profile/mode approval review card on the Config page. It shows current symlink, original target, proposed target, copied symlink proof, restore proof, approval status, production-disabled state, blockers, and an insensitive planned enable action."
+    "Added a disabled profile/mode approval review card on the Config page. It shows current symlink, original target, proposed target, copied symlink proof, restore proof, approval status, production-disabled state, blockers, and an insensitive planned enable action.",
+    "The profile/mode approval card is now fed from serialized report data and covered by GTK safe-env screenshot plus AT-SPI accessibility-tree assertions."
   ],
   "whatWasNotImplemented": [
     "No real symlink was switched.",
@@ -47,7 +48,9 @@
   ],
   "reportsAdded": [
     "data/reports/future-capability-profile-mode-switching.v0.55.2.json",
-    "data/reports/explicit-approval-flow.v0.55.2.json"
+    "data/reports/explicit-approval-flow.v0.55.2.json",
+    "data/reports/report-backed-approval-card-data.v0.55.2.json",
+    "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "safeEnvProfileFixturesAllowed": true,

@@ -30,6 +30,51 @@ EXPECTED_TERMS = [
     "mode",
 ]
 
+APPROVAL_CARD_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include approval review",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "action": "Enable source/include insertion (planned)",
+        "widget": "hyprland-settings-source-include-approval-review-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate approval review",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "action": "Enable duplicate replacement (planned)",
+        "widget": "hyprland-settings-duplicate-approval-review-disabled",
+    },
+    "structuredHlBindWrite": {
+        "heading": "Structured hl.bind approval review",
+        "production": "Production structured writes",
+        "disabled": "Disabled",
+        "action": "Enable structured write (planned)",
+        "widget": "hyprland-settings-structured-approval-review-disabled",
+    },
+    "profileModeSwitch": {
+        "heading": "Profile/mode approval review",
+        "production": "Production profile switching",
+        "disabled": "Disabled",
+        "action": "Enable profile switching (planned)",
+        "widget": "hyprland-settings-profile-approval-review-disabled",
+    },
+    "highRiskDisplayWrite": {
+        "heading": "High-risk/display approval review",
+        "production": "Production high-risk/display writes",
+        "disabled": "Disabled",
+        "action": "Enable high-risk/display writes (planned)",
+        "widget": "hyprland-settings-high-risk-approval-review-disabled",
+    },
+    "hyprland0554Migration": {
+        "heading": "Hyprland 0.55.4 migration review",
+        "production": "Production migration activation",
+        "disabled": "Disabled",
+        "action": "Enable 0.55.4 migration (planned)",
+        "widget": "hyprland-settings-0554-approval-review-disabled",
+    },
+}
+
 SAFE_NAVIGATION_TARGETS = {
     "Dashboard",
     "Config",
@@ -222,6 +267,26 @@ def matches_expected_app(app, values):
 def found_terms(values):
     lowered = "\n".join(values).lower()
     return sorted(term for term in EXPECTED_TERMS if term in lowered)
+
+def approval_card_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in APPROVAL_CARD_ASSERTIONS.items():
+        heading_found = spec["heading"].lower() in text
+        production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
+        action_found = spec["action"].lower() in text
+        widget_found = spec["widget"].lower() in text
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": heading_found,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": production_found,
+            "disabledAction": spec["action"],
+            "disabledActionFound": action_found,
+            "widgetName": spec["widget"],
+            "widgetNameFound": widget_found,
+        }
+    return assertions
 
 
 def node_text(node):
@@ -574,6 +639,11 @@ def main() -> int:
         "duplicateConflictDetailNavigationSucceeded": False,
         "forbiddenApplyActionSeen": False,
         "fallbackProofUsed": False,
+        "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "approvalCardAssertions": {},
+        "approvalCardsAllHeadingsFound": False,
+        "approvalCardsAllProductionDisabledFound": False,
+        "approvalCardsAllDisabledActionsFound": False,
         "text": [],
         "error": None,
     }
@@ -644,6 +714,17 @@ def main() -> int:
                 result["textAfterNavigation"] = after
                 result["foundTermsAfterNavigation"] = found_terms(after)
         all_text = "\n".join(result["text"] + result["textAfterNavigation"]).lower()
+        approval_assertions = approval_card_assertions(result["text"] + result["textAfterNavigation"])
+        result["approvalCardAssertions"] = approval_assertions
+        result["approvalCardsAllHeadingsFound"] = all(
+            card["headingFound"] for card in approval_assertions.values()
+        )
+        result["approvalCardsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in approval_assertions.values()
+        )
+        result["approvalCardsAllDisabledActionsFound"] = all(
+            card["disabledActionFound"] for card in approval_assertions.values()
+        )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text
             and "will not write this setting until the duplicate entries are resolved manually"

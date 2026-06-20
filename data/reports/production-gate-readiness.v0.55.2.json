@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactKind": "production-gate-readiness",
-  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "generatedAt": "2026-06-20T00:00:00-07:00",
   "branch": "future-capability-marathon",
   "startingCommit": "35c96c4374e56327cc67224060d10227eda54a40",
   "projectDataVersion": "v0.55.2",
@@ -45,6 +45,14 @@
     "runtimeReloadEnabledByDefault": false,
     "highRiskDisplayWritesEnabledByDefault": false,
     "hyprland0554MigrationEnabledByDefault": false
+  },
+  "approvalCardEvidence": {
+    "reportBacked": true,
+    "sourceReport": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+    "reportBackedDataReport": "data/reports/report-backed-approval-card-data.v0.55.2.json",
+    "gtkScreenshotAssertionReport": "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
+    "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+    "allCardsRemainDisabled": true
   },
   "proofAvailable": {
     "tempFixtureExecutors": true,

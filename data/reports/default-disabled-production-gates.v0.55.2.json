@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactKind": "default-disabled-production-gates",
-  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "generatedAt": "2026-06-20T00:00:00-07:00",
   "branch": "future-capability-marathon",
   "startingCommit": "98e0a8c4cd101ebb509056b10251c42debc017d2",
   "projectDataVersion": "v0.55.2",
@@ -15,7 +15,9 @@
     "productionApplyEnabled": false,
     "approvalUiSurfaceExists": true,
     "approvalUiSurfaceWidgetName": "hyprland-settings-source-include-approval-review-disabled",
-    "approvalUiSurfaceEnabled": false
+    "approvalUiSurfaceEnabled": false,
+    "approvalUiDataSource": "serialized_report",
+    "screenshotLevelAssertion": true
   },
   "duplicateProductionGate": {
     "status": "ready_but_default_disabled",
@@ -26,7 +28,9 @@
     "productionApplyEnabled": false,
     "approvalUiSurfaceExists": true,
     "approvalUiSurfaceWidgetName": "hyprland-settings-duplicate-approval-review-disabled",
-    "approvalUiSurfaceEnabled": false
+    "approvalUiSurfaceEnabled": false,
+    "approvalUiDataSource": "serialized_report",
+    "screenshotLevelAssertion": true
   },
   "structuredHlBindProductionGate": {
     "status": "ready_but_default_disabled",
@@ -38,7 +42,9 @@
     "productionApplyEnabled": false,
     "approvalUiSurfaceExists": true,
     "approvalUiSurfaceWidgetName": "hyprland-settings-structured-approval-review-disabled",
-    "approvalUiSurfaceEnabled": false
+    "approvalUiSurfaceEnabled": false,
+    "approvalUiDataSource": "serialized_report",
+    "screenshotLevelAssertion": true
   },
   "profileModeProductionGate": {
     "status": "ready_but_default_disabled",
@@ -49,7 +55,9 @@
     "productionSwitchEnabled": false,
     "approvalUiSurfaceExists": true,
     "approvalUiSurfaceWidgetName": "hyprland-settings-profile-approval-review-disabled",
-    "approvalUiSurfaceEnabled": false
+    "approvalUiSurfaceEnabled": false,
+    "approvalUiDataSource": "serialized_report",
+    "screenshotLevelAssertion": true
   },
   "runtimeReloadProductionGate": {
     "status": "ready_but_default_disabled",
@@ -79,7 +87,9 @@
     "productionWriteEnabled": false,
     "approvalUiSurfaceExists": true,
     "approvalUiSurfaceWidgetName": "hyprland-settings-high-risk-approval-review-disabled",
-    "approvalUiSurfaceEnabled": false
+    "approvalUiSurfaceEnabled": false,
+    "approvalUiDataSource": "serialized_report",
+    "screenshotLevelAssertion": true
   },
   "hyprland0554ActivationGate": {
     "status": "blocked_missing_trusted_exports",

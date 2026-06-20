@@ -96,6 +96,28 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("connectedFileScriptManagedDetailCollected"));
     assert!(collector.contains("connectedFileSymlinkDetailCollected"));
     assert!(collector.contains("profileModeDetailCollected"));
+    assert!(collector.contains("APPROVAL_CARD_ASSERTIONS"));
+    assert!(collector.contains("approvalCardAssertionMethod"));
+    assert!(collector.contains("approvalCardAssertions"));
+    for expected in [
+        "Source/include approval review",
+        "Duplicate approval review",
+        "Structured hl.bind approval review",
+        "Profile/mode approval review",
+        "High-risk/display approval review",
+        "Hyprland 0.55.4 migration review",
+        "Production source/include insertion",
+        "Production duplicate writes",
+        "Production structured writes",
+        "Production profile switching",
+        "Production high-risk/display writes",
+        "Production migration activation",
+    ] {
+        assert!(
+            collector.contains(expected),
+            "collector should assert approval-card text: {expected}"
+        );
+    }
     assert!(collector.contains("\"proofSurface\""));
     assert!(collector.contains("refused to navigate to Apply"));
     assert!(collector.contains("refused to click node containing Apply"));
@@ -115,6 +137,7 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
         "data/reports/gtk-safe-env-evidence-derived-matrix.v0.55.2.json",
         "data/reports/gtk-safe-env-blocked-category-detail-proof.v0.55.2.json",
         "data/reports/gtk-safe-env-connected-file-detail-proof.v0.55.2.json",
+        "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
         "data/reports/completion-readiness-audit.v0.55.2.json",
         "data/reports/final-app-completion-wrap-up.v0.55.2.json",
         "data/reports/autonomous-safe-scope-continuation.v0.55.2.json",
@@ -164,6 +187,31 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
         assert!(value["proofLevelByBlockedCategory"].is_object());
         assert!(value["proofSurfaceByBlockedCategory"].is_object());
         assert!(value["blockedCategoryResults"].is_object());
+    }
+}
+
+#[test]
+fn gtk_harness_records_screenshot_level_disabled_approval_card_assertions() {
+    let summarizer = fs::read_to_string("tools/live_scenario_harness/summarize_gtk_evidence.py")
+        .expect("summarizer should read");
+    for expected in [
+        "approval_card_assertion_results",
+        "gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
+        "screenshot_plus_accessibility_tree_text_not_ocr",
+        "approvalCardsAllHeadingsFound",
+        "approvalCardsAllProductionDisabledFound",
+        "approvalCardsAllDisabledActionsFound",
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+        "structuredHlBindWrite",
+        "profileModeSwitch",
+        "highRiskDisplayWrite",
+        "hyprland0554Migration",
+    ] {
+        assert!(
+            summarizer.contains(expected),
+            "summarizer should preserve disabled approval card assertion evidence: {expected}"
+        );
     }
 }
 

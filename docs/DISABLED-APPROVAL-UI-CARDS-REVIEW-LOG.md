@@ -60,3 +60,9 @@ The v0.55.2 app model remains active and Hyprland 0.55.4 migration remains inact
 ## Next
 
 Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.
+# 2026-06-20 Report-Backed Card Data
+
+- Disabled approval cards now load through a typed serialized report adapter from `data/reports/disabled-approval-ui-cards.v0.55.2.json`.
+- The adapter preserves stable widget names and disabled planned actions while deriving proof source, proof status, proof fields, preconditions, restore evidence, production status, active model, and migration status from report records.
+- Missing or unavailable serialized fields render explicit `Missing from report` / `Report unavailable` copy.
+- GTK safe-env screenshot-level assertions now cover all six approval cards through screenshot capture plus AT-SPI accessibility-tree text; no OCR, clicking, runtime mutation, reload, or production activation is involved.

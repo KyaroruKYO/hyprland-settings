@@ -71,7 +71,9 @@
     "runtime_approval_live_restore_gate",
     "runtime_approval_ui_surface",
     "disabled_approval_ui_cards_for_remaining_gated_categories",
-    "deep_approval_card_data_for_remaining_gated_categories"
+    "deep_approval_card_data_for_remaining_gated_categories",
+    "report_backed_approval_card_data",
+    "screenshot_level_disabled_approval_card_assertions"
   ],
   "partialPhases": [],
   "blockedPhases": [
@@ -88,7 +90,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.",
+  "nextExactPhaseToContinue": "Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false.",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -109,23 +111,26 @@
     "data/reports/runtime-approval-ui-surface.v0.55.2.json",
     "data/reports/disabled-approval-ui-cards.v0.55.2.json",
     "data/reports/deep-approval-card-data.v0.55.2.json",
+    "data/reports/report-backed-approval-card-data.v0.55.2.json",
+    "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
+    "docs/REPORT-BACKED-APPROVAL-CARD-DATA-REVIEW-LOG.md",
     "docs/RUNTIME-APPROVAL-UI-SURFACE-REVIEW-LOG.md",
     "docs/DISABLED-APPROVAL-UI-CARDS-REVIEW-LOG.md",
     "docs/DEEP-APPROVAL-CARD-DATA-REVIEW-LOG.md"
   ],
-  "testsPassing": "cargo fmt, cargo fmt --check, cargo check, cargo test, jq empty data/reports/*.json, git diff --check, cargo build --release, and GTK safe-env matrix passed after runtime approval UI surface updates.",
+  "testsPassing": "cargo fmt, cargo fmt --check, cargo check, cargo test, jq empty data/reports/*.json, git diff --check, cargo build --release, and GTK safe-env matrix passed after report-backed approval card updates.",
   "testsFailing": [],
-  "validationStatus": "passed after runtime approval UI surface updates",
+  "validationStatus": "passed after report-backed approval card updates",
   "knownRisks": [
-    "No real live/system mutation was run in this sprint; copied-config-tree executor proof ran against temp copies and restored copied state.",
+    "No real live/system mutation was run in this sprint; approval-card work was report-backed UI/projection and GTK safe-env assertion work only.",
     "Sandboxed read-only hyprctl and direct socket probes fail because the sandbox cannot connect to the Hyprland Unix socket; outside-sandbox read-only hyprctl succeeds.",
     "Controlled general:gaps_in live restore proof succeeded with hl.config eval syntax after keyword and assignment eval failed before value change; that proof now feeds an approved_but_default_disabled runtime approval review and disabled UI evidence surface while production runtime/reload remains disabled.",
     "Source/include insertion remains production-disabled beyond single-root scope; the deep disabled approval card is review-only and has no production handler.",
-    "Deep approval card data now surfaces copied proof, preconditions, restore status, and original-unchanged proof, but it is still fixed projection data rather than serialized proof-record input.",
+    "Deep approval card data now loads through the serialized report-backed adapter, with Missing from report fallback copy for incomplete records.",
     "High-risk/display mutation remains blocked until out-of-band recovery can be proven before any mutation.",
     "0.55.4 migration remains blocked without trusted official exports and row/write-safety review."
   ],
   "realConfigTouched": false,
-  "runtimeTouched": true,
-  "recommendedNextCodexPrompt": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled."
+  "runtimeTouched": false,
+  "recommendedNextCodexPrompt": "Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false."
 }

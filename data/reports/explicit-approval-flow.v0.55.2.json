@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactKind": "explicit-approval-flow",
-  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "generatedAt": "2026-06-20T00:00:00-07:00",
   "branch": "future-capability-marathon",
   "projectDataVersion": "v0.55.2",
   "countsPreserved": "341 readable / 341 writable / 0 blocked",
@@ -74,6 +74,9 @@
     "runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled",
     "runtime_approval_review_surface_is_called_from_detail_edit_section",
     "disabled_future_approval_card_projections_cover_all_remaining_gates_without_enablement",
+    "report_backed_disabled_approval_cards_load_all_categories_without_enablement",
+    "report_backed_disabled_approval_cards_degrade_missing_fields_explicitly",
+    "gtk_harness_records_screenshot_level_disabled_approval_card_assertions",
     "disabled_future_approval_cards_are_visible_and_non_mutating",
     "deep_approval_card_data_report_records_proof_backed_fields_without_enablement"
   ],

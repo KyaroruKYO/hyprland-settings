@@ -33,7 +33,8 @@
     "Added copied-config-tree hl.bind proof that edits a selected copied bind line, verifies the copied raw line, restores copied bytes, and verifies original files unchanged.",
     "Added a default-disabled hl.bind production gate review that requires exact old line, exact new line, candidate validation, comments/order proof, copied-config-tree proof, and production flag before any production Apply integration.",
     "Connected structured hl.bind production gate review to the shared explicit approval-flow model; copied proof plus exact old/new line can reach approved_but_default_disabled, never production enabled by default.",
-    "Added a disabled structured hl.bind approval review card on the Config page. It shows target file, line number, old/new raw lines, candidate validation, comments/order preservation, copied proof status, approval status, production-disabled state, blockers, and an insensitive planned enable action."
+    "Added a disabled structured hl.bind approval review card on the Config page. It shows target file, line number, old/new raw lines, candidate validation, comments/order preservation, copied proof status, approval status, production-disabled state, blockers, and an insensitive planned enable action.",
+    "The structured hl.bind approval card is now fed from serialized report data and covered by GTK safe-env screenshot plus AT-SPI accessibility-tree assertions."
   ],
   "whatWasNotImplemented": [
     "No monitor, bind, window rule, workspace rule, device, gesture, permission, animation, or curve writer was enabled.",
@@ -47,7 +48,9 @@
   ],
   "reportsAdded": [
     "data/reports/future-capability-structured-families.v0.55.2.json",
-    "data/reports/explicit-approval-flow.v0.55.2.json"
+    "data/reports/explicit-approval-flow.v0.55.2.json",
+    "data/reports/report-backed-approval-card-data.v0.55.2.json",
+    "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "readOnlyParserImprovementsAllowed": true,

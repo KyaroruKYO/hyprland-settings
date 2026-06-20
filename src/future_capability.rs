@@ -1,9 +1,10 @@
-use std::collections::hash_map::DefaultHasher;
+use std::collections::{hash_map::DefaultHasher, BTreeMap};
 use std::fs;
 use std::hash::{Hash, Hasher};
 use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, Result};
+use serde::Deserialize;
 
 use crate::config_graph::{
     inspect_config_graph_with_options, ConfigGraphOptions, ConfigManagementHintKind,
@@ -3859,7 +3860,352 @@ impl DisabledApprovalCardProjection {
     }
 }
 
+const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
+    "data/reports/disabled-approval-ui-cards.v0.55.2.json";
+const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
+    include_str!("../data/reports/disabled-approval-ui-cards.v0.55.2.json");
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ApprovalCardReportLoadStatus {
+    Loaded,
+    ReportUnavailable(String),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ApprovalCardReportSource {
+    pub path: String,
+    pub load_status: ApprovalCardReportLoadStatus,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ReportBackedDisabledApprovalCardProjection {
+    pub source: ApprovalCardReportSource,
+    pub cards: Vec<DisabledApprovalCardProjection>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct SerializedDisabledApprovalCardsReport {
+    cards: SerializedApprovalCards,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+struct SerializedApprovalCards {
+    source_include_insertion: SerializedApprovalCardRecord,
+    duplicate_replacement: SerializedApprovalCardRecord,
+    structured_hl_bind_write: SerializedApprovalCardRecord,
+    profile_mode_switch: SerializedApprovalCardRecord,
+    high_risk_display_write: SerializedApprovalCardRecord,
+    hyprland0554_migration: SerializedApprovalCardRecord,
+}
+
+#[derive(Debug, Default, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SerializedApprovalCardRecord {
+    widget_name: Option<String>,
+    evidence_widget_name: Option<String>,
+    disabled_action_widget_name: Option<String>,
+    proof_source: Option<String>,
+    proof_status: Option<String>,
+    proof_fields: Option<BTreeMap<String, String>>,
+    preconditions: Option<BTreeMap<String, String>>,
+    restore_evidence: Option<BTreeMap<String, String>>,
+    production_status: Option<String>,
+    active_model: Option<String>,
+    migration_status: Option<String>,
+    approval_status: Option<String>,
+    blockers: Option<Vec<String>>,
+}
+
+pub fn load_disabled_approval_cards_from_reports() -> ReportBackedDisabledApprovalCardProjection {
+    load_disabled_approval_cards_from_report_str(
+        DISABLED_APPROVAL_CARDS_REPORT_PATH,
+        DISABLED_APPROVAL_CARDS_REPORT_JSON,
+    )
+}
+
+pub fn load_disabled_approval_cards_from_report_str(
+    path: &str,
+    report_json: &str,
+) -> ReportBackedDisabledApprovalCardProjection {
+    match serde_json::from_str::<SerializedDisabledApprovalCardsReport>(report_json) {
+        Ok(report) => ReportBackedDisabledApprovalCardProjection {
+            source: ApprovalCardReportSource {
+                path: path.to_string(),
+                load_status: ApprovalCardReportLoadStatus::Loaded,
+            },
+            cards: cards_from_serialized_report(report),
+        },
+        Err(error) => ReportBackedDisabledApprovalCardProjection {
+            source: ApprovalCardReportSource {
+                path: path.to_string(),
+                load_status: ApprovalCardReportLoadStatus::ReportUnavailable(error.to_string()),
+            },
+            cards: fallback_disabled_future_approval_card_projections()
+                .into_iter()
+                .map(mark_card_report_unavailable)
+                .collect(),
+        },
+    }
+}
+
 pub fn disabled_future_approval_card_projections() -> Vec<DisabledApprovalCardProjection> {
+    load_disabled_approval_cards_from_reports().cards
+}
+
+fn cards_from_serialized_report(
+    report: SerializedDisabledApprovalCardsReport,
+) -> Vec<DisabledApprovalCardProjection> {
+    let mut fallback = fallback_disabled_future_approval_card_projections().into_iter();
+    [
+        report.cards.source_include_insertion,
+        report.cards.duplicate_replacement,
+        report.cards.structured_hl_bind_write,
+        report.cards.profile_mode_switch,
+        report.cards.high_risk_display_write,
+        report.cards.hyprland0554_migration,
+    ]
+    .into_iter()
+    .map(|record| {
+        let fallback_card = fallback
+            .next()
+            .expect("fallback card inventory must match serialized report order");
+        card_from_serialized_record(record, fallback_card)
+    })
+    .collect()
+}
+
+fn card_from_serialized_record(
+    record: SerializedApprovalCardRecord,
+    mut fallback: DisabledApprovalCardProjection,
+) -> DisabledApprovalCardProjection {
+    let evidence_lines = serialized_evidence_lines(&record, &fallback);
+    fallback.widget_name = record.widget_name.unwrap_or(fallback.widget_name);
+    fallback.evidence_widget_name = record
+        .evidence_widget_name
+        .unwrap_or(fallback.evidence_widget_name);
+    fallback.disabled_action_widget_name = record
+        .disabled_action_widget_name
+        .unwrap_or(fallback.disabled_action_widget_name);
+    fallback.proof_record = ApprovalCardProofRecord {
+        source: record
+            .proof_source
+            .unwrap_or_else(|| "Missing from report".to_string()),
+        status: record
+            .proof_status
+            .unwrap_or_else(|| "Missing from report".to_string()),
+        fields: map_to_labeled_pairs(record.proof_fields),
+    };
+    fallback.evidence_lines = evidence_lines;
+    fallback.preconditions =
+        map_to_precondition_lines(record.preconditions, &fallback.preconditions);
+    fallback.restore_evidence = map_to_restore_evidence(record.restore_evidence);
+    fallback.blockers = record
+        .blockers
+        .filter(|blockers| !blockers.is_empty())
+        .unwrap_or_else(|| fallback.blockers.clone());
+    fallback.production_status = record
+        .production_status
+        .unwrap_or_else(|| "Missing from report".to_string());
+    fallback.production_enabled = false;
+    fallback
+}
+
+fn mark_card_report_unavailable(
+    mut card: DisabledApprovalCardProjection,
+) -> DisabledApprovalCardProjection {
+    card.proof_record.source = "Report unavailable".to_string();
+    card.proof_record.status = "Report unavailable".to_string();
+    card.evidence_lines.push((
+        "Report load status".to_string(),
+        "Report unavailable".to_string(),
+    ));
+    card.production_enabled = false;
+    card
+}
+
+fn serialized_evidence_lines(
+    record: &SerializedApprovalCardRecord,
+    fallback: &DisabledApprovalCardProjection,
+) -> Vec<(String, String)> {
+    let mut lines = Vec::new();
+    if let Some(fields) = &record.proof_fields {
+        lines.extend(
+            fields
+                .iter()
+                .map(|(key, value)| (labelize_key(key), value.clone())),
+        );
+    }
+    if let Some(preconditions) = &record.preconditions {
+        lines.extend(
+            preconditions
+                .iter()
+                .map(|(key, value)| (format!("{} status", labelize_key(key)), value.clone())),
+        );
+    }
+    if let Some(restore_evidence) = &record.restore_evidence {
+        lines.extend(
+            restore_evidence
+                .iter()
+                .map(|(key, value)| (format!("{} status", labelize_key(key)), value.clone())),
+        );
+    }
+    lines.push((
+        "Approval status".to_string(),
+        record
+            .approval_status
+            .clone()
+            .unwrap_or_else(|| approval_status_from_fallback(fallback)),
+    ));
+    if let Some(active_model) = &record.active_model {
+        lines.push(("Current active app model".to_string(), active_model.clone()));
+    }
+    if let Some(migration_status) = &record.migration_status {
+        lines.push(("Migration status".to_string(), migration_status.clone()));
+    }
+    lines.push((
+        production_label_for_widget(&fallback.widget_name),
+        record
+            .production_status
+            .clone()
+            .unwrap_or_else(|| "Missing from report".to_string()),
+    ));
+    if lines.is_empty() {
+        lines.push(("Report data".to_string(), "Missing from report".to_string()));
+    }
+    lines
+}
+
+fn approval_status_from_fallback(card: &DisabledApprovalCardProjection) -> String {
+    card.evidence_lines
+        .iter()
+        .find(|(label, _)| label == "Approval status")
+        .map(|(_, value)| value.clone())
+        .unwrap_or_else(|| "Missing from report".to_string())
+}
+
+fn production_label_for_widget(widget_name: &str) -> String {
+    if widget_name.contains("source-include") {
+        "Production source/include insertion".to_string()
+    } else if widget_name.contains("duplicate") {
+        "Production duplicate writes".to_string()
+    } else if widget_name.contains("structured") {
+        "Production structured writes".to_string()
+    } else if widget_name.contains("profile") {
+        "Production profile switching".to_string()
+    } else if widget_name.contains("high-risk") {
+        "Production high-risk/display writes".to_string()
+    } else if widget_name.contains("0554") {
+        "Production migration activation".to_string()
+    } else {
+        "Production status".to_string()
+    }
+}
+
+fn map_to_labeled_pairs(map: Option<BTreeMap<String, String>>) -> Vec<(String, String)> {
+    match map {
+        Some(values) if !values.is_empty() => values
+            .into_iter()
+            .map(|(key, value)| (labelize_key(&key), value))
+            .collect(),
+        _ => vec![("Report data".to_string(), "Missing from report".to_string())],
+    }
+}
+
+fn map_to_precondition_lines(
+    map: Option<BTreeMap<String, String>>,
+    fallback: &[ApprovalCardPreconditionLine],
+) -> Vec<ApprovalCardPreconditionLine> {
+    match map {
+        Some(values) if !values.is_empty() => values
+            .into_iter()
+            .map(|(key, status)| {
+                let label = labelize_key(&key);
+                let value = fallback
+                    .iter()
+                    .find(|line| line.label.eq_ignore_ascii_case(&label))
+                    .map(|line| line.value.clone())
+                    .unwrap_or_else(|| status.clone());
+                ApprovalCardPreconditionLine {
+                    label,
+                    value,
+                    status,
+                }
+            })
+            .collect(),
+        _ => vec![ApprovalCardPreconditionLine {
+            label: "Report data".to_string(),
+            value: "Missing from report".to_string(),
+            status: "Missing from report".to_string(),
+        }],
+    }
+}
+
+fn map_to_restore_evidence(
+    map: Option<BTreeMap<String, String>>,
+) -> Vec<ApprovalCardRestoreEvidence> {
+    match map {
+        Some(values) if !values.is_empty() => values
+            .into_iter()
+            .map(|(key, status)| ApprovalCardRestoreEvidence {
+                label: labelize_key(&key),
+                status,
+            })
+            .collect(),
+        _ => vec![ApprovalCardRestoreEvidence {
+            label: "Report data".to_string(),
+            status: "Missing from report".to_string(),
+        }],
+    }
+}
+
+fn labelize_key(key: &str) -> String {
+    match key {
+        "dryRunStatus" => return "dry-run status".to_string(),
+        "copiedReplacementStatus" => return "copied replacement status".to_string(),
+        "copiedEditStatus" => return "copied edit status".to_string(),
+        "commentOrderPreservation" => return "comment/order preservation".to_string(),
+        "outOfBandRecovery" => return "out-of-band recovery".to_string(),
+        "deadManTimeout" => return "dead-man timeout".to_string(),
+        "runtimeReadOnlyEvidence" => return "runtime read-only evidence".to_string(),
+        "lowRiskRuntimeLiveRestoreProof" => {
+            return "low-risk runtime live-restore proof".to_string()
+        }
+        "insufficiencyReason" => return "insufficiency reason".to_string(),
+        "packageMetadataEvidence" => return "package metadata evidence".to_string(),
+        "currentActiveAppModel" => return "current active app model".to_string(),
+        "official0554ExportBundle" => return "official 0.55.4 export bundle".to_string(),
+        "rowCountDiff" => return "row-count diff".to_string(),
+        "writeSafetyReview" => return "write-safety review".to_string(),
+        "safeEnvEvidence" => return "safe-env evidence".to_string(),
+        _ => {}
+    }
+    let mut label = String::new();
+    let mut previous_was_space = true;
+    for character in key.chars() {
+        if character == '_' || character == '-' {
+            label.push(' ');
+            previous_was_space = true;
+        } else if character.is_uppercase() {
+            if !previous_was_space {
+                label.push(' ');
+            }
+            label.push(character.to_ascii_lowercase());
+            previous_was_space = false;
+        } else {
+            label.push(character);
+            previous_was_space = false;
+        }
+    }
+    match label.as_str() {
+        "official0554 export bundle" => "official 0.55.4 export bundle".to_string(),
+        "hyprland0554 migration" => "Hyprland 0.55.4 migration".to_string(),
+        other => other.to_string(),
+    }
+}
+
+pub fn fallback_disabled_future_approval_card_projections() -> Vec<DisabledApprovalCardProjection> {
     vec![
         DisabledApprovalCardProjection {
             widget_name: "hyprland-settings-source-include-approval-review-disabled".to_string(),

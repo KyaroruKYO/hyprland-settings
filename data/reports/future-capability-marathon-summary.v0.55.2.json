@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactKind": "future-capability-marathon-summary",
-  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "generatedAt": "2026-06-20T00:00:00-07:00",
   "branch": "future-capability-marathon",
   "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
   "goal": "Attempt all remaining future capability tracks without activating unsafe production behavior.",
@@ -14,7 +14,7 @@
   "hyprland0554MigrationActivated": false,
   "unsafeProductionBehaviorEnabled": false,
   "realConfigTouched": false,
-  "runtimeTouched": true,
+  "runtimeTouched": false,
   "phasesAttempted": [
     "missing_default_insertion",
     "duplicate_resolution",
@@ -91,7 +91,9 @@
     "runtime_approval_live_restore_gate",
     "runtime_approval_ui_surface",
     "disabled_approval_ui_cards_for_remaining_gated_categories",
-    "deep_approval_card_data_for_remaining_gated_categories"
+    "deep_approval_card_data_for_remaining_gated_categories",
+    "report_backed_approval_card_data",
+    "screenshot_level_disabled_approval_card_assertions"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -122,6 +124,8 @@
     "data/reports/runtime-approval-ui-surface.v0.55.2.json",
     "data/reports/disabled-approval-ui-cards.v0.55.2.json",
     "data/reports/deep-approval-card-data.v0.55.2.json",
+    "data/reports/report-backed-approval-card-data.v0.55.2.json",
+    "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
     "data/reports/future-capability-marathon-summary.v0.55.2.json",
     "data/reports/future-capability-marathon-handoff.v0.55.2.json"
   ],
@@ -129,7 +133,8 @@
     "tests/future_capability_marathon.rs",
     "tests/missing_default_insertion.rs",
     "tests/future_capability_models.rs",
-    "tests/future_capability_ui.rs"
+    "tests/future_capability_ui.rs",
+    "tests/gtk_safe_env_automation.rs"
   ],
   "validation": {
     "cargoFmt": "passed",
@@ -142,12 +147,12 @@
     "gtkSafeEnvMatrix": "passed",
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260620_000757"
   },
-  "nextRecommendedAction": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.",
+  "nextRecommendedAction": "Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
-      "before": "92-96%",
-      "after": "96-98%",
-      "evidence": "Runtime approval review and six remaining future approval cards are wired into disabled UI with stable widget names, disabled planned actions, and deep proof/precondition/restore evidence rendered from structured projection records."
+      "before": "96-98%",
+      "after": "97-98%",
+      "evidence": "Six disabled approval cards now load from serialized report records and are covered by screenshot plus AT-SPI accessibility-tree assertions for headings, production-disabled copy, and disabled planned actions."
     },
     "configDiscoverySourceAwareModel": {
       "before": "90-93%",
@@ -170,29 +175,29 @@
       "evidence": "v0.1.0 tag and dist/v0.1.0 artifacts preserved."
     },
     "missingDefaultInsertion": {
-      "before": "87-92%",
-      "after": "95-97%",
-      "evidence": "Copied-config-tree selected-target source/include proof now feeds a default-disabled production gate review and deep disabled approval card fields for root, selected target, source depth, dry-run status, planned line, restore status, and original-unchanged proof; production expansion still disabled."
+      "before": "95-97%",
+      "after": "96-97%",
+      "evidence": "Source/include approval card fields now load from serialized report records and are screenshot/assertion covered while production source/include insertion remains disabled."
     },
     "duplicateResolution": {
-      "before": "73-81%",
-      "after": "86-91%",
-      "evidence": "Copied-config-tree duplicate proof now feeds a default-disabled production gate review, explicit approval flow, and deep disabled approval card fields for selected occurrence, path, source depth, line, raw line, old/proposed values, fingerprint status, copied replacement status, restore status, and original-unchanged proof."
+      "before": "86-91%",
+      "after": "87-91%",
+      "evidence": "Duplicate approval card fields now load from serialized report records and are screenshot/assertion covered while production duplicate writes remain disabled."
     },
     "highRiskDisplayRecovery": {
-      "before": "50-60%",
-      "after": "61-70%",
-      "evidence": "High-risk readiness now has runtime read-only evidence plus deep disabled approval card fields showing low-risk runtime restore is insufficient and recovery channel, dead-man timeout, restore command, backup, runtime snapshot, and approval remain required."
+      "before": "61-70%",
+      "after": "62-70%",
+      "evidence": "High-risk/display approval card fields now load from serialized report records and screenshot assertions show runtime proof is insufficient plus recovery blockers remain visible."
     },
     "structuredFamilyEditorsWrites": {
-      "before": "48-58%",
-      "after": "63-73%",
-      "evidence": "Copied-config-tree hl.bind proof now feeds a default-disabled production gate, explicit approval flow, and deep disabled approval card fields for target, source depth, line, old/new raw lines, candidate validation, comment/order preservation, copied edit status, restore status, and original-unchanged proof."
+      "before": "63-73%",
+      "after": "64-73%",
+      "evidence": "Structured hl.bind approval card fields now load from serialized report records and are screenshot/assertion covered while production structured writes remain disabled."
     },
     "profileModeSwitching": {
-      "before": "50-60%",
-      "after": "64-73%",
-      "evidence": "Copied-config-tree profile proof now feeds a default-disabled production gate, explicit approval flow, and deep disabled approval card fields for copied symlink, original target, proposed target, copied switch status, restore status, real symlink untouched proof, and future real-session proof."
+      "before": "64-73%",
+      "after": "65-73%",
+      "evidence": "Profile/mode approval card fields now load from serialized report records and are screenshot/assertion covered while real profile switching remains disabled."
     },
     "runtimeReloadIntegration": {
       "before": "45-55%",
@@ -200,9 +205,9 @@
       "evidence": "Runtime socket diagnosis identified sandbox EPERM as the timeout root cause; outside-sandbox read-only hyprctl succeeded. Controlled hl.config eval live restore changed gaps_in from 5 to 6, restored it to 5, feeds an approved_but_default_disabled runtime approval review, and is now displayed in a disabled detail UI surface while production runtime remains disabled."
     },
     "hyprland0554Migration": {
-      "before": "35-45%",
-      "after": "49-60%",
-      "evidence": "Runtime hyprctl version evidence confirms Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704, and the deep disabled migration approval card now records runtime/package evidence as advisory only plus missing official exports, row diff, write-safety review, safe-env evidence, approval, active v0.55.2 model, and inactive migration status."
+      "before": "49-60%",
+      "after": "50-60%",
+      "evidence": "Hyprland 0.55.4 migration approval card fields now load from serialized report records and screenshot assertions show advisory evidence, missing trusted data, active v0.55.2 model, and inactive migration."
     }
   },
   "priorityTrackStatus": {

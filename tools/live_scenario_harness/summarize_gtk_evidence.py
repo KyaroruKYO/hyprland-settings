@@ -185,6 +185,17 @@ def run_summary(run_dir):
             ),
             "profileModeDetailCollected": bool(accessibility.get("profileModeDetailCollected")),
             "proofSurface": accessibility.get("proofSurface"),
+            "approvalCardAssertionMethod": accessibility.get("approvalCardAssertionMethod"),
+            "approvalCardAssertions": accessibility.get("approvalCardAssertions", {}),
+            "approvalCardsAllHeadingsFound": bool(
+                accessibility.get("approvalCardsAllHeadingsFound")
+            ),
+            "approvalCardsAllProductionDisabledFound": bool(
+                accessibility.get("approvalCardsAllProductionDisabledFound")
+            ),
+            "approvalCardsAllDisabledActionsFound": bool(
+                accessibility.get("approvalCardsAllDisabledActionsFound")
+            ),
             "duplicateConflictDetailNavigationAttempted": bool(
                 accessibility.get("duplicateConflictDetailNavigationAttempted")
             ),
@@ -239,6 +250,7 @@ def aggregate(runs):
         ),
     }
     category_results = blocked_category_results(runs, by_blocked_category)
+    approval_card_results = approval_card_assertion_results(runs)
 
     return {
         "appLaunchAttempted": bool(runs),
@@ -277,9 +289,90 @@ def aggregate(runs):
         "connectedFileDetailNavigationSucceeded": any_run(lambda run: run["accessibility"]["connectedFileDetailNavigationSucceeded"]),
         "profileDetailNavigationAttempted": any_run(lambda run: run["accessibility"]["proofSurface"] == "profile_detail"),
         "profileDetailNavigationSucceeded": any_run(lambda run: run["accessibility"]["proofSurface"] == "profile_detail" and run["accessibility"]["connectedFileDetailNavigationSucceeded"]),
+        "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "approvalCardResults": approval_card_results,
+        "approvalCardsAllHeadingsFound": all(
+            result["headingProof"] == "live_gtk_atspi_proof"
+            for result in approval_card_results.values()
+        ),
+        "approvalCardsAllProductionDisabledFound": all(
+            result["productionDisabledProof"] == "live_gtk_atspi_proof"
+            for result in approval_card_results.values()
+        ),
+        "approvalCardsAllDisabledActionsFound": all(
+            result["disabledActionProof"] == "live_gtk_atspi_proof"
+            for result in approval_card_results.values()
+        ),
         "fallbackProofUsed": any(level in {"source_model_fallback", "not_proven"} for level in by_area.values())
         or any(level in {"source_model_fallback", "not_proven"} for level in by_blocked_category.values()),
     }
+
+
+def approval_card_assertion_results(runs):
+    card_keys = [
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+        "structuredHlBindWrite",
+        "profileModeSwitch",
+        "highRiskDisplayWrite",
+        "hyprland0554Migration",
+    ]
+    results = {}
+    for key in card_keys:
+        heading_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("approvalCardAssertions", {})
+                .get(key, {})
+                .get("headingFound")
+            ),
+            None,
+        )
+        production_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("approvalCardAssertions", {})
+                .get(key, {})
+                .get("productionDisabledFound")
+            ),
+            None,
+        )
+        action_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("approvalCardAssertions", {})
+                .get(key, {})
+                .get("disabledActionFound")
+            ),
+            None,
+        )
+        sample = {}
+        for run in runs:
+            sample = run["accessibility"].get("approvalCardAssertions", {}).get(key, {})
+            if sample:
+                break
+        results[key] = {
+            "heading": sample.get("heading"),
+            "headingProof": "live_gtk_atspi_proof" if heading_run else "not_proven",
+            "headingEvidenceRun": heading_run["name"] if heading_run else None,
+            "productionDisabledText": sample.get("productionDisabledText"),
+            "productionDisabledProof": "live_gtk_atspi_proof"
+            if production_run
+            else "not_proven",
+            "productionDisabledEvidenceRun": production_run["name"] if production_run else None,
+            "disabledAction": sample.get("disabledAction"),
+            "disabledActionProof": "live_gtk_atspi_proof" if action_run else "not_proven",
+            "disabledActionEvidenceRun": action_run["name"] if action_run else None,
+            "widgetName": sample.get("widgetName"),
+            "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        }
+    return results
 
 
 def matching_category_run(runs, spec):
@@ -390,6 +483,7 @@ def all_terms(run):
 def base_report(kind, evidence_root, summary, runs, extra=None):
     data = {
         "schemaVersion": 1,
+        "projectDataVersion": "v0.55.2",
         "artifactKind": kind,
         "generatedAt": datetime.now(timezone.utc).isoformat(),
         "startingCommit": STARTING_COMMIT,
@@ -465,6 +559,13 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
         "proofLevelByBlockedCategory": summary["proofLevelByBlockedCategory"],
         "proofSurfaceByBlockedCategory": summary["proofSurfaceByBlockedCategory"],
         "blockedCategoryResults": summary["blockedCategoryResults"],
+        "approvalCardAssertionMethod": summary["approvalCardAssertionMethod"],
+        "approvalCardResults": summary["approvalCardResults"],
+        "approvalCardsAllHeadingsFound": summary["approvalCardsAllHeadingsFound"],
+        "approvalCardsAllProductionDisabledFound": summary[
+            "approvalCardsAllProductionDisabledFound"
+        ],
+        "approvalCardsAllDisabledActionsFound": summary["approvalCardsAllDisabledActionsFound"],
         "fallbackProofUsed": summary["fallbackProofUsed"],
         "issuesFound": issues(summary),
         "recommendedFixes": recommended_fixes(summary),
@@ -602,6 +703,31 @@ def write_reports(reports_dir, evidence_root, evidence_summary, runs, summary):
                 "proofLevelByBlockedCategory": summary["proofLevelByBlockedCategory"],
                 "proofSurfaceByBlockedCategory": summary["proofSurfaceByBlockedCategory"],
                 "goal": "Prove connected-file and profile blocker detail surfaces through live GTK/AT-SPI safe-env automation.",
+            },
+        ),
+        "gtk-safe-env-disabled-approval-card-proof.v0.55.2.json": base_report(
+            "gtk_safe_env_disabled_approval_card_proof",
+            evidence_root,
+            summary,
+            runs,
+            {
+                "assertionMethod": summary["approvalCardAssertionMethod"],
+                "approvalCardResults": summary["approvalCardResults"],
+                "allHeadingsFound": summary["approvalCardsAllHeadingsFound"],
+                "allProductionDisabledTextFound": summary[
+                    "approvalCardsAllProductionDisabledFound"
+                ],
+                "allDisabledActionsFound": summary["approvalCardsAllDisabledActionsFound"],
+                "safety": {
+                    "runtimeMutated": False,
+                    "hyprlandReloaded": False,
+                    "realConfigTouched": False,
+                    "unsafeProductionBehaviorEnabled": False,
+                    "productionBehaviorEnabled": False,
+                    "v0552DefaultPreserved": True,
+                    "hyprland0554MigrationActivated": False,
+                },
+                "goal": "Prove disabled approval review cards through screenshot-level safe-env automation using screenshots plus AT-SPI accessibility-tree text, not OCR.",
             },
         ),
         "completion-readiness-audit.v0.55.2.json": completion_readiness_report(

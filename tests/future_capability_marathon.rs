@@ -82,16 +82,16 @@ fn marathon_summary_attempts_all_tracks_and_preserves_release_scope() {
 fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     let handoff = read_json("data/reports/future-capability-marathon-handoff.v0.55.2.json");
     assert_eq!(handoff["currentBranch"], "future-capability-marathon");
-    assert_eq!(handoff["runtimeTouched"], true);
+    assert_eq!(handoff["runtimeTouched"], false);
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled."
+        "Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("Feed disabled approval cards"));
+        .contains("report-backed approval card data"));
 }
 
 #[test]
@@ -434,4 +434,69 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     }
     assert_eq!(deep_cards["safety"]["runtimeMutatedThisSprint"], false);
     assert_eq!(deep_cards["safety"]["v0552DefaultPreserved"], true);
+
+    let report_backed = read_json("data/reports/report-backed-approval-card-data.v0.55.2.json");
+    assert_eq!(report_backed["projectDataVersion"], "v0.55.2");
+    assert_eq!(report_backed["implementation"]["typedAdapterExists"], true);
+    assert_eq!(
+        report_backed["implementation"]["cardsLoadedFromSerializedReport"],
+        true
+    );
+    assert_eq!(
+        report_backed["implementation"]["uiRendersReportBackedProjection"],
+        true
+    );
+    for key in [
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+        "structuredHlBindWrite",
+        "profileModeSwitch",
+        "highRiskDisplayWrite",
+        "hyprland0554Migration",
+    ] {
+        assert_eq!(report_backed["cards"][key]["reportBacked"], true);
+        assert_eq!(report_backed["cards"][key]["productionEnabled"], false);
+        assert_eq!(
+            report_backed["screenshotLevelAssertions"][key], true,
+            "{key} should have screenshot-level assertion coverage"
+        );
+    }
+    assert_eq!(
+        report_backed["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+
+    let gtk_cards =
+        read_json("data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json");
+    assert_eq!(gtk_cards["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        gtk_cards["assertionMethod"],
+        "screenshot_plus_accessibility_tree_text_not_ocr"
+    );
+    assert_eq!(gtk_cards["allHeadingsFound"], true);
+    assert_eq!(gtk_cards["allProductionDisabledTextFound"], true);
+    assert_eq!(gtk_cards["allDisabledActionsFound"], true);
+    for key in [
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+        "structuredHlBindWrite",
+        "profileModeSwitch",
+        "highRiskDisplayWrite",
+        "hyprland0554Migration",
+    ] {
+        assert_eq!(
+            gtk_cards["approvalCardResults"][key]["headingProof"],
+            "live_gtk_atspi_proof"
+        );
+        assert_eq!(
+            gtk_cards["approvalCardResults"][key]["productionDisabledProof"],
+            "live_gtk_atspi_proof"
+        );
+        assert_eq!(
+            gtk_cards["approvalCardResults"][key]["disabledActionProof"],
+            "live_gtk_atspi_proof"
+        );
+    }
+    assert_eq!(gtk_cards["safety"]["runtimeMutated"], false);
+    assert_eq!(gtk_cards["safety"]["hyprlandReloaded"], false);
 }

@@ -16,6 +16,7 @@ use hyprland_settings::future_capability::{
     high_risk_approval_flow, high_risk_guarded_live_readiness_executor,
     high_risk_live_recovery_protocol, high_risk_production_gate_review, high_risk_recovery_review,
     high_risk_recovery_workflow, hyprland_0554_approval_flow, hyprland_version_activation_gate,
+    load_disabled_approval_cards_from_report_str, load_disabled_approval_cards_from_reports,
     local_hyprland_version_evidence, migration_comparison_review, profile_approval_flow,
     profile_production_gate_review, profile_target_approval_review,
     proven_runtime_approval_evidence_summary, render_structured_entry_lossless,
@@ -29,9 +30,9 @@ use hyprland_settings::future_capability::{
     structured_approval_flow, structured_family_model, structured_family_review,
     structured_production_gate_review, switch_profile_symlink_guarded_temp,
     switch_profile_symlink_safe_env, trusted_export_requirement,
-    validate_structured_edit_candidate, ApprovalEvidence, ApprovalRequest, ApprovalScope,
-    ApprovalStatus, ApprovalToken, ControlledLiveTestGuardRequest, ControlledLiveTestKind,
-    DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
+    validate_structured_edit_candidate, ApprovalCardReportLoadStatus, ApprovalEvidence,
+    ApprovalRequest, ApprovalScope, ApprovalStatus, ApprovalToken, ControlledLiveTestGuardRequest,
+    ControlledLiveTestKind, DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
     DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
     DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
     HighRiskProductionGateStatus, HyprlandVersionActivationStatus, MockWatchdog, MockWatchdogState,
@@ -3254,6 +3255,107 @@ fn disabled_future_approval_card_projections_cover_all_remaining_gates_without_e
             all_lines.contains(expected),
             "missing disabled approval projection line: {expected}"
         );
+    }
+}
+
+#[test]
+fn report_backed_disabled_approval_cards_load_all_categories_without_enablement() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    assert_eq!(
+        report_backed.source.path,
+        "data/reports/disabled-approval-ui-cards.v0.55.2.json"
+    );
+    assert_eq!(
+        report_backed.source.load_status,
+        ApprovalCardReportLoadStatus::Loaded
+    );
+    assert_eq!(report_backed.cards.len(), 6);
+
+    let all_lines = report_backed
+        .cards
+        .iter()
+        .flat_map(|card| card.user_facing_lines())
+        .collect::<Vec<_>>()
+        .join("\n");
+
+    for expected in [
+        "Source/include approval review",
+        "Proof source: copied-config-tree proof",
+        "Proof dry-run status: selected target plan accepted for copied tree",
+        "Restore evidence copied target restore: restored byte-for-byte",
+        "Production source/include insertion: Disabled",
+        "Duplicate approval review",
+        "Proof copied replacement status: selected duplicate replaced and reread in copied tree",
+        "Precondition raw line: raw duplicate line from copied proof (matched fingerprint)",
+        "Production duplicate writes: Disabled",
+        "Structured hl.bind approval review",
+        "Proof copied edit status: selected hl.bind line edited and reread in copied tree",
+        "Proof comment/order preservation: comments and order preserved",
+        "Production structured writes: Disabled",
+        "Profile/mode approval review",
+        "Proof copied switch status: temp symlink switched to selected copied target",
+        "Restore evidence real symlink untouched: verified untouched",
+        "Production profile switching: Disabled",
+        "High-risk/display approval review",
+        "Proof runtime read-only evidence: succeeded outside sandbox",
+        "Proof low-risk runtime live-restore proof: general:gaps_in restored after hl.config eval proof",
+        "Proof insufficiency reason: low-risk runtime proof does not prove display recovery",
+        "Production high-risk/display writes: Disabled",
+        "Hyprland 0.55.4 migration review",
+        "Proof runtime version evidence: Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704",
+        "Proof package metadata evidence: hyprland 0.55.4-1",
+        "Current active app model: v0.55.2",
+        "Migration status: Inactive",
+        "Production migration activation: Disabled",
+    ] {
+        assert!(
+            all_lines.contains(expected),
+            "missing report-backed disabled approval card line: {expected}"
+        );
+    }
+
+    for card in report_backed.cards {
+        assert_eq!(card.production_status, "Disabled");
+        assert!(!card.production_enabled);
+        assert!(card.disabled_action_label.contains("(planned)"));
+    }
+}
+
+#[test]
+fn report_backed_disabled_approval_cards_degrade_missing_fields_explicitly() {
+    let minimal_report = r#"{
+      "cards": {
+        "sourceIncludeInsertion": {},
+        "duplicateReplacement": {},
+        "structuredHlBindWrite": {},
+        "profileModeSwitch": {},
+        "highRiskDisplayWrite": {},
+        "hyprland0554Migration": {}
+      }
+    }"#;
+
+    let report_backed =
+        load_disabled_approval_cards_from_report_str("inline-minimal-report.json", minimal_report);
+    assert_eq!(
+        report_backed.source.load_status,
+        ApprovalCardReportLoadStatus::Loaded
+    );
+    assert_eq!(report_backed.cards.len(), 6);
+    let all_lines = report_backed
+        .cards
+        .iter()
+        .flat_map(|card| card.user_facing_lines())
+        .collect::<Vec<_>>()
+        .join("\n");
+
+    assert!(all_lines.contains("Missing from report"));
+    for card in report_backed.cards {
+        assert_eq!(card.production_status, "Missing from report");
+        assert!(!card.production_enabled);
+        assert!(card
+            .user_facing_lines()
+            .iter()
+            .any(|line| line.contains("Missing from report")));
     }
 }
 

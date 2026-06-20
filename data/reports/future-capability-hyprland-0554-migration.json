@@ -35,7 +35,8 @@
     "Recorded runtime hyprctl version evidence: Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704. This remains advisory only and does not activate migration.",
     "Searched local project/config documentation for trusted 0.55.4 export artifacts; no official v0.55.4 export bundle was found locally.",
     "Recorded the proven low-risk runtime live-restore and approval review as advisory 0.55.4 runtime capability evidence; this does not activate migration without official exports, row diff, write-safety review, safe-env evidence, and approval.",
-    "Added a disabled Hyprland 0.55.4 migration approval review card on the Config page. It shows runtime/package evidence as advisory only, lists missing official export bundle, row-count diff, write-safety review, safe-env evidence, explicit approval, active v0.55.2 model, inactive migration status, production-disabled state, blockers, and an insensitive planned enable action."
+    "Added a disabled Hyprland 0.55.4 migration approval review card on the Config page. It shows runtime/package evidence as advisory only, lists missing official export bundle, row-count diff, write-safety review, safe-env evidence, explicit approval, active v0.55.2 model, inactive migration status, production-disabled state, blockers, and an insensitive planned enable action.",
+    "The Hyprland 0.55.4 migration approval card is now fed from serialized report data and covered by GTK safe-env screenshot plus AT-SPI accessibility-tree assertions."
   ],
   "whatWasNotImplemented": [
     "No v0.55.2 exports were replaced.",
@@ -51,7 +52,9 @@
   "reportsAdded": [
     "data/reports/future-capability-hyprland-0554-migration.json",
     "data/reports/explicit-approval-flow.v0.55.2.json",
-    "data/reports/runtime-socket-diagnosis.v0.55.2.json"
+    "data/reports/runtime-socket-diagnosis.v0.55.2.json",
+    "data/reports/report-backed-approval-card-data.v0.55.2.json",
+    "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "readOnlyVersionAssessmentAllowed": true,

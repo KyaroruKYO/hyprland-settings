@@ -43,3 +43,8 @@ No production source/include insertion, duplicate write, structured write, profi
 ## Next
 
 Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.
+# 2026-06-20 Report-Backed Projection Update
+
+- Deep approval cards now use the report-backed adapter path instead of fixed-only projection data.
+- The committed report `data/reports/report-backed-approval-card-data.v0.55.2.json` records the serialized source report, typed adapter, fallback behavior, and per-card screenshot-level assertion method.
+- Production behavior remains disabled for source/include insertion, duplicate replacement, structured `hl.bind`, profile/mode switching, high-risk/display writes, runtime/reload, and Hyprland 0.55.4 migration.

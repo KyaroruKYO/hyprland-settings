@@ -35,7 +35,8 @@
     "Recorded runtime read-only evidence as a stronger readiness input: outside-sandbox hyprctl version, monitors, and getoption queries succeeded. High-risk/display mutation was not attempted.",
     "Recorded low-risk runtime live-restore proof as additional readiness input: general:gaps_in changed from 5 to 6 using hl.config eval, then restored to 5. High-risk/display mutation still requires out-of-band recovery and dead-man restore proof.",
     "Recorded that the runtime live-restore proof now feeds an approved_but_default_disabled runtime approval review; this strengthens runtime confidence but is not enough to activate high-risk/display writes.",
-    "Added a disabled high-risk/display approval review card on the Config page. It states low-risk runtime restore proof is insufficient for high-risk activation and shows required out-of-band recovery, dead-man timeout, restore command, config backup, runtime snapshot, explicit approval, production-disabled state, blockers, and an insensitive planned enable action."
+    "Added a disabled high-risk/display approval review card on the Config page. It states low-risk runtime restore proof is insufficient for high-risk activation and shows required out-of-band recovery, dead-man timeout, restore command, config backup, runtime snapshot, explicit approval, production-disabled state, blockers, and an insensitive planned enable action.",
+    "The high-risk/display approval card is now fed from serialized report data and covered by GTK safe-env screenshot plus AT-SPI accessibility-tree assertions."
   ],
   "whatWasNotImplemented": [
     "No real display/render writes were enabled.",
@@ -51,7 +52,9 @@
   "reportsAdded": [
     "data/reports/future-capability-high-risk-recovery.v0.55.2.json",
     "data/reports/explicit-approval-flow.v0.55.2.json",
-    "data/reports/runtime-socket-diagnosis.v0.55.2.json"
+    "data/reports/runtime-socket-diagnosis.v0.55.2.json",
+    "data/reports/report-backed-approval-card-data.v0.55.2.json",
+    "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "mockWatchdogAllowed": true,

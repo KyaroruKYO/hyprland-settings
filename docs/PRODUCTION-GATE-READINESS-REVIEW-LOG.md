@@ -61,4 +61,10 @@
 - `pacman -Q hyprland`: `hyprland 0.55.4-1`.
 
 ## Next exact work
-Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.
+Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false.
+
+## 2026-06-20 Report-backed approval card evidence
+- Source/include, duplicate, structured `hl.bind`, profile/mode, high-risk/display, and Hyprland 0.55.4 approval cards now render from serialized report data.
+- `data/reports/report-backed-approval-card-data.v0.55.2.json` records the typed adapter, report source, missing-field fallback behavior, and per-card production-disabled state.
+- `data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json` records screenshot plus AT-SPI accessibility-tree assertions for each card heading, production-disabled line, and planned disabled action.
+- Production source/include insertion, duplicate writes, structured writes, profile switching, high-risk/display writes, runtime/reload, and 0.55.4 migration remain disabled.
