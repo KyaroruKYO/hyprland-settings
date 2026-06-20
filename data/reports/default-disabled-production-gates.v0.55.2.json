@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactKind": "default-disabled-production-gates",
-  "generatedAt": "2026-06-20T00:00:00-07:00",
+  "generatedAt": "2026-06-20T00:00:00Z",
   "branch": "future-capability-marathon",
   "startingCommit": "98e0a8c4cd101ebb509056b10251c42debc017d2",
   "projectDataVersion": "v0.55.2",
@@ -153,5 +153,10 @@
     "hyprland0554UsesRuntimePackageAndTrustedDataStatus": true,
     "productionBehaviorEnabled": false
   },
-  "nextRecommendedWork": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled."
+  "nextRecommendedWork": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.",
+  "activationDecisionReview": {
+    "report": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
+    "sourceIncludeInsertion": "ApprovedButDefaultDisabled; production flag false",
+    "duplicateReplacement": "ApprovedButDefaultDisabled; production flag false"
+  }
 }

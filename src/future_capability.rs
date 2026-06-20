@@ -3860,6 +3860,83 @@ impl DisabledApprovalCardProjection {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ProductionActivationDecisionStatus {
+    MissingReportBackedCard,
+    MissingProofSource,
+    MissingProofStatus,
+    MissingRequiredProofField,
+    MissingPrecondition,
+    MissingRestoreEvidence,
+    MissingOriginalUnchangedProof,
+    MissingApprovalStatus,
+    ProductionAlreadyEnabledError,
+    ReadyButDefaultDisabled,
+    ApprovedButDefaultDisabled,
+    Blocked,
+}
+
+impl ProductionActivationDecisionStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::MissingReportBackedCard => "Missing report-backed card",
+            Self::MissingProofSource => "Missing proof source",
+            Self::MissingProofStatus => "Missing proof status",
+            Self::MissingRequiredProofField => "Missing required proof field",
+            Self::MissingPrecondition => "Missing precondition",
+            Self::MissingRestoreEvidence => "Missing restore evidence",
+            Self::MissingOriginalUnchangedProof => "Missing original unchanged proof",
+            Self::MissingApprovalStatus => "Missing approval status",
+            Self::ProductionAlreadyEnabledError => "Production already enabled error",
+            Self::ReadyButDefaultDisabled => "Ready but default-disabled",
+            Self::ApprovedButDefaultDisabled => "Approved but default-disabled",
+            Self::Blocked => "Blocked",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationDecisionReview {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub disabled_action_widget_name: String,
+    pub heading: String,
+    pub input_source: String,
+    pub status: ProductionActivationDecisionStatus,
+    pub required_proof_summary: Vec<String>,
+    pub blockers: Vec<String>,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_enabled: bool,
+    pub disabled_action_label: String,
+}
+
+impl ProductionActivationDecisionReview {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        let mut lines = vec![
+            self.heading.clone(),
+            format!("Decision status: {}", self.status.user_facing_label()),
+            format!("Decision input source: {}", self.input_source),
+        ];
+        lines.extend(
+            self.required_proof_summary
+                .iter()
+                .map(|summary| format!("Required proof: {summary}")),
+        );
+        lines.extend(
+            self.blockers
+                .iter()
+                .map(|blocker| format!("Decision blocker: {blocker}")),
+        );
+        lines.push(format!(
+            "{}: {}",
+            self.production_label, self.production_status
+        ));
+        lines.push(self.disabled_action_label.clone());
+        lines
+    }
+}
+
 const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
     "data/reports/disabled-approval-ui-cards.v0.55.2.json";
 const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
@@ -3952,6 +4029,327 @@ pub fn load_disabled_approval_cards_from_report_str(
 
 pub fn disabled_future_approval_card_projections() -> Vec<DisabledApprovalCardProjection> {
     load_disabled_approval_cards_from_reports().cards
+}
+
+pub fn production_activation_decision_reviews() -> Vec<ProductionActivationDecisionReview> {
+    let report = load_disabled_approval_cards_from_reports();
+    let input_source = match &report.source.load_status {
+        ApprovalCardReportLoadStatus::Loaded => report.source.path.clone(),
+        ApprovalCardReportLoadStatus::ReportUnavailable(error) => {
+            format!("{} ({error})", report.source.path)
+        }
+    };
+    vec![
+        source_include_activation_decision_review(
+            report
+                .cards
+                .iter()
+                .find(|card| card.widget_name.contains("source-include")),
+            &input_source,
+        ),
+        duplicate_activation_decision_review(
+            report
+                .cards
+                .iter()
+                .find(|card| card.widget_name.contains("duplicate")),
+            &input_source,
+        ),
+    ]
+}
+
+pub fn source_include_activation_decision_review(
+    card: Option<&DisabledApprovalCardProjection>,
+    input_source: &str,
+) -> ProductionActivationDecisionReview {
+    activation_decision_review(
+        card,
+        input_source,
+        ActivationDecisionSpec {
+            widget_name: "hyprland-settings-source-include-activation-decision-disabled",
+            evidence_widget_name: "hyprland-settings-source-include-activation-decision-evidence",
+            disabled_action_widget_name:
+                "hyprland-settings-source-include-activation-decision-enable-disabled",
+            heading: "Source/include production activation decision",
+            production_label: "Production source/include insertion",
+            disabled_action_label: "Enable source/include production activation (planned)",
+            required_proof_fields: &[
+                "root config",
+                "selected target",
+                "source depth",
+                "dry-run status",
+            ],
+            required_preconditions: &["planned inserted line", "proposed value"],
+            required_restore_evidence: &["copied target restore"],
+            original_unchanged_label: "original real config unchanged",
+        },
+    )
+}
+
+pub fn duplicate_activation_decision_review(
+    card: Option<&DisabledApprovalCardProjection>,
+    input_source: &str,
+) -> ProductionActivationDecisionReview {
+    activation_decision_review(
+        card,
+        input_source,
+        ActivationDecisionSpec {
+            widget_name: "hyprland-settings-duplicate-activation-decision-disabled",
+            evidence_widget_name: "hyprland-settings-duplicate-activation-decision-evidence",
+            disabled_action_widget_name:
+                "hyprland-settings-duplicate-activation-decision-enable-disabled",
+            heading: "Duplicate production activation decision",
+            production_label: "Production duplicate writes",
+            disabled_action_label: "Enable duplicate production activation (planned)",
+            required_proof_fields: &[
+                "selected occurrence",
+                "target path",
+                "source depth",
+                "copied replacement status",
+            ],
+            required_preconditions: &["line number", "raw line", "old value", "proposed value"],
+            required_restore_evidence: &["copied target restore"],
+            original_unchanged_label: "original real config unchanged",
+        },
+    )
+}
+
+struct ActivationDecisionSpec {
+    widget_name: &'static str,
+    evidence_widget_name: &'static str,
+    disabled_action_widget_name: &'static str,
+    heading: &'static str,
+    production_label: &'static str,
+    disabled_action_label: &'static str,
+    required_proof_fields: &'static [&'static str],
+    required_preconditions: &'static [&'static str],
+    required_restore_evidence: &'static [&'static str],
+    original_unchanged_label: &'static str,
+}
+
+fn activation_decision_review(
+    card: Option<&DisabledApprovalCardProjection>,
+    input_source: &str,
+    spec: ActivationDecisionSpec,
+) -> ProductionActivationDecisionReview {
+    let Some(card) = card else {
+        return blocked_activation_decision_review(
+            input_source,
+            spec,
+            ProductionActivationDecisionStatus::MissingReportBackedCard,
+            vec!["report-backed approval card is missing".to_string()],
+        );
+    };
+
+    let mut blockers = Vec::new();
+    let mut status = ProductionActivationDecisionStatus::ReadyButDefaultDisabled;
+    if card.production_enabled {
+        status = ProductionActivationDecisionStatus::ProductionAlreadyEnabledError;
+        blockers.push("production_enabled was true in report-backed card data".to_string());
+    }
+    if missing_report_value(&card.proof_record.source) {
+        status = first_blocking_status(
+            status,
+            ProductionActivationDecisionStatus::MissingProofSource,
+        );
+        blockers.push("proof source is missing from report-backed card data".to_string());
+    }
+    if missing_report_value(&card.proof_record.status) {
+        status = first_blocking_status(
+            status,
+            ProductionActivationDecisionStatus::MissingProofStatus,
+        );
+        blockers.push("proof status is missing from report-backed card data".to_string());
+    }
+    for required in spec.required_proof_fields {
+        if missing_labeled_value(&card.proof_record.fields, required) {
+            status = first_blocking_status(
+                status,
+                ProductionActivationDecisionStatus::MissingRequiredProofField,
+            );
+            blockers.push(format!("required proof field missing: {required}"));
+        }
+    }
+    for required in spec.required_preconditions {
+        if missing_precondition(&card.preconditions, required) {
+            status = first_blocking_status(
+                status,
+                ProductionActivationDecisionStatus::MissingPrecondition,
+            );
+            blockers.push(format!("required precondition missing: {required}"));
+        }
+    }
+    for required in spec.required_restore_evidence {
+        if missing_restore_evidence(&card.restore_evidence, required) {
+            status = first_blocking_status(
+                status,
+                ProductionActivationDecisionStatus::MissingRestoreEvidence,
+            );
+            blockers.push(format!("required restore evidence missing: {required}"));
+        }
+    }
+    if missing_restore_evidence(&card.restore_evidence, spec.original_unchanged_label) {
+        status = first_blocking_status(
+            status,
+            ProductionActivationDecisionStatus::MissingOriginalUnchangedProof,
+        );
+        blockers.push(format!(
+            "required original unchanged proof missing: {}",
+            spec.original_unchanged_label
+        ));
+    }
+    let approval_status = card
+        .evidence_lines
+        .iter()
+        .find(|(label, _)| label.eq_ignore_ascii_case("Approval status"))
+        .map(|(_, value)| value.as_str());
+    if approval_status.is_none_or(missing_report_value) {
+        status = first_blocking_status(
+            status,
+            ProductionActivationDecisionStatus::MissingApprovalStatus,
+        );
+        blockers.push("approval status is missing from report-backed card data".to_string());
+    }
+    if !card.production_status.eq_ignore_ascii_case("Disabled") {
+        status = first_blocking_status(status, ProductionActivationDecisionStatus::Blocked);
+        blockers.push(format!(
+            "production status must be Disabled, got {}",
+            card.production_status
+        ));
+    }
+    if blockers.is_empty()
+        && approval_status
+            .map(|value| value.to_ascii_lowercase().contains("approved"))
+            .unwrap_or(false)
+    {
+        status = ProductionActivationDecisionStatus::ApprovedButDefaultDisabled;
+    }
+
+    ProductionActivationDecisionReview {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        disabled_action_widget_name: spec.disabled_action_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        input_source: input_source.to_string(),
+        status,
+        required_proof_summary: activation_required_proof_summary(card, &spec),
+        blockers,
+        production_label: spec.production_label.to_string(),
+        production_status: card.production_status.clone(),
+        production_enabled: false,
+        disabled_action_label: spec.disabled_action_label.to_string(),
+    }
+}
+
+fn blocked_activation_decision_review(
+    input_source: &str,
+    spec: ActivationDecisionSpec,
+    status: ProductionActivationDecisionStatus,
+    blockers: Vec<String>,
+) -> ProductionActivationDecisionReview {
+    ProductionActivationDecisionReview {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        disabled_action_widget_name: spec.disabled_action_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        input_source: input_source.to_string(),
+        status,
+        required_proof_summary: Vec::new(),
+        blockers,
+        production_label: spec.production_label.to_string(),
+        production_status: "Disabled".to_string(),
+        production_enabled: false,
+        disabled_action_label: spec.disabled_action_label.to_string(),
+    }
+}
+
+fn activation_required_proof_summary(
+    card: &DisabledApprovalCardProjection,
+    spec: &ActivationDecisionSpec,
+) -> Vec<String> {
+    let mut summary = vec![
+        format!("proof source = {}", card.proof_record.source),
+        format!("proof status = {}", card.proof_record.status),
+    ];
+    summary.extend(spec.required_proof_fields.iter().map(|label| {
+        format!(
+            "{label} = {}",
+            labeled_value(&card.proof_record.fields, label).unwrap_or("Missing from report")
+        )
+    }));
+    summary.extend(spec.required_preconditions.iter().map(|label| {
+        format!(
+            "{label} = {}",
+            precondition_status(&card.preconditions, label).unwrap_or("Missing from report")
+        )
+    }));
+    summary.extend(spec.required_restore_evidence.iter().map(|label| {
+        format!(
+            "{label} = {}",
+            restore_status(&card.restore_evidence, label).unwrap_or("Missing from report")
+        )
+    }));
+    summary.push(format!(
+        "{} = {}",
+        spec.original_unchanged_label,
+        restore_status(&card.restore_evidence, spec.original_unchanged_label)
+            .unwrap_or("Missing from report")
+    ));
+    summary
+}
+
+fn first_blocking_status(
+    current: ProductionActivationDecisionStatus,
+    next: ProductionActivationDecisionStatus,
+) -> ProductionActivationDecisionStatus {
+    match current {
+        ProductionActivationDecisionStatus::ReadyButDefaultDisabled
+        | ProductionActivationDecisionStatus::ApprovedButDefaultDisabled => next,
+        _ => current,
+    }
+}
+
+fn missing_report_value(value: &str) -> bool {
+    let value = value.trim();
+    value.is_empty()
+        || value.eq_ignore_ascii_case("Missing from report")
+        || value.eq_ignore_ascii_case("Report unavailable")
+        || value.eq_ignore_ascii_case("Not proven yet")
+}
+
+fn missing_labeled_value(values: &[(String, String)], label: &str) -> bool {
+    labeled_value(values, label).is_none_or(missing_report_value)
+}
+
+fn labeled_value<'a>(values: &'a [(String, String)], label: &str) -> Option<&'a str> {
+    values
+        .iter()
+        .find(|(candidate, _)| candidate.eq_ignore_ascii_case(label))
+        .map(|(_, value)| value.as_str())
+}
+
+fn missing_precondition(values: &[ApprovalCardPreconditionLine], label: &str) -> bool {
+    precondition_status(values, label).is_none_or(missing_report_value)
+}
+
+fn precondition_status<'a>(
+    values: &'a [ApprovalCardPreconditionLine],
+    label: &str,
+) -> Option<&'a str> {
+    values
+        .iter()
+        .find(|candidate| candidate.label.eq_ignore_ascii_case(label))
+        .map(|candidate| candidate.status.as_str())
+}
+
+fn missing_restore_evidence(values: &[ApprovalCardRestoreEvidence], label: &str) -> bool {
+    restore_status(values, label).is_none_or(missing_report_value)
+}
+
+fn restore_status<'a>(values: &'a [ApprovalCardRestoreEvidence], label: &str) -> Option<&'a str> {
+    values
+        .iter()
+        .find(|candidate| candidate.label.eq_ignore_ascii_case(label))
+        .map(|candidate| candidate.status.as_str())
 }
 
 fn cards_from_serialized_report(

@@ -46,7 +46,8 @@
     "Added a default-disabled duplicate production gate review that requires confirmed occurrence, matching fingerprint, path, line number, raw line, old value, source depth, copied-config-tree proof, and production flag before any production Apply integration.",
     "Connected duplicate production gate review to the shared explicit approval-flow model; copied proof plus confirmed occurrence can reach approved_but_default_disabled, never production enabled by default.",
     "Added a disabled duplicate approval review card on the Config page. It shows selected occurrence, target path, line number, raw line, old/proposed values, fingerprint/precondition status, copied proof status, approval status, production-disabled state, blockers, and an insensitive planned enable action.",
-    "The duplicate approval card is now fed from serialized report data and covered by GTK safe-env screenshot plus AT-SPI accessibility-tree assertions."
+    "The duplicate approval card is now fed from serialized report data and covered by GTK safe-env screenshot plus AT-SPI accessibility-tree assertions.",
+    "Duplicate activation decision review now consumes report-backed card data and reaches ApprovedButDefaultDisabled while production duplicate writes remain disabled."
   ],
   "whatWasNotImplemented": [
     "No automatic duplicate choice was added.",
@@ -63,7 +64,8 @@
     "data/reports/future-capability-duplicate-resolution.v0.55.2.json",
     "data/reports/explicit-approval-flow.v0.55.2.json",
     "data/reports/report-backed-approval-card-data.v0.55.2.json",
-    "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json"
+    "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-decision.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "manualOccurrenceSelectionRequired": true,
@@ -121,5 +123,12 @@
   "nextRecommendedWork": "Feed duplicate approval card data from serialized copied proof records while keeping production duplicate writes disabled by default.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
-  "whetherProductionBehaviorEnabled": false
+  "whetherProductionBehaviorEnabled": false,
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "duplicateActivationDecisionReview": {
+    "status": "ApprovedButDefaultDisabled",
+    "inputSource": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+    "productionEnabled": false,
+    "productionStatus": "Disabled"
+  }
 }

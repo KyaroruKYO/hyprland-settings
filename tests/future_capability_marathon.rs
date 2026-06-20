@@ -86,12 +86,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false."
+        "Design an explicit production activation path that can consume approved-but-default-disabled source/include and duplicate decisions while keeping production flags false by default."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("report-backed approval card data"));
+        .contains("approved-but-default-disabled source/include and duplicate decisions"));
 }
 
 #[test]
@@ -466,6 +466,37 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         false
     );
 
+    let activation_decision =
+        read_json("data/reports/default-disabled-production-activation-decision.v0.55.2.json");
+    assert_eq!(activation_decision["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        activation_decision["implementation"]["consumesReportBackedApprovalCardData"],
+        true
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_decision["decisions"][key]["status"],
+            "ApprovedButDefaultDisabled"
+        );
+        assert_eq!(
+            activation_decision["decisions"][key]["productionEnabled"],
+            false
+        );
+        assert_eq!(
+            activation_decision["decisions"][key]["productionFlag"],
+            false
+        );
+        assert_eq!(
+            activation_decision["decisions"][key]["productionStatus"],
+            "Disabled"
+        );
+        assert_eq!(activation_decision["screenshotLevelAssertions"][key], true);
+    }
+    assert_eq!(
+        activation_decision["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+
     let gtk_cards =
         read_json("data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json");
     assert_eq!(gtk_cards["projectDataVersion"], "v0.55.2");
@@ -494,6 +525,20 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         );
         assert_eq!(
             gtk_cards["approvalCardResults"][key]["disabledActionProof"],
+            "live_gtk_atspi_proof"
+        );
+    }
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            gtk_cards["activationDecisionResults"][key]["headingProof"],
+            "live_gtk_atspi_proof"
+        );
+        assert_eq!(
+            gtk_cards["activationDecisionResults"][key]["productionDisabledProof"],
+            "live_gtk_atspi_proof"
+        );
+        assert_eq!(
+            gtk_cards["activationDecisionResults"][key]["disabledActionProof"],
             "live_gtk_atspi_proof"
         );
     }

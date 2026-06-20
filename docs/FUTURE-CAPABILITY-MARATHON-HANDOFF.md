@@ -115,3 +115,10 @@ GTK matrix passed for the deep approval card data surface; evidence root: `/tmp/
 
 ## Recommended next Codex prompt
 Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false.
+
+## Default-Disabled Production Activation Decision Review - 2026-06-20
+
+- Added source/include and duplicate production activation decision reviews that consume report-backed approval card data.
+- Both decisions can reach ApprovedButDefaultDisabled only while production flags remain false.
+- Added disabled Config-page decision cards and GTK screenshot plus AT-SPI assertions for both cards.
+- No production source/include insertion, duplicate write, runtime mutation, reload, or real config mutation was enabled.

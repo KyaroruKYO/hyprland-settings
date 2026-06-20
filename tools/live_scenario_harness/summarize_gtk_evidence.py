@@ -196,6 +196,21 @@ def run_summary(run_dir):
             "approvalCardsAllDisabledActionsFound": bool(
                 accessibility.get("approvalCardsAllDisabledActionsFound")
             ),
+            "activationDecisionAssertionMethod": accessibility.get(
+                "activationDecisionAssertionMethod"
+            ),
+            "activationDecisionAssertions": accessibility.get(
+                "activationDecisionAssertions", {}
+            ),
+            "activationDecisionsAllHeadingsFound": bool(
+                accessibility.get("activationDecisionsAllHeadingsFound")
+            ),
+            "activationDecisionsAllProductionDisabledFound": bool(
+                accessibility.get("activationDecisionsAllProductionDisabledFound")
+            ),
+            "activationDecisionsAllDisabledActionsFound": bool(
+                accessibility.get("activationDecisionsAllDisabledActionsFound")
+            ),
             "duplicateConflictDetailNavigationAttempted": bool(
                 accessibility.get("duplicateConflictDetailNavigationAttempted")
             ),
@@ -251,6 +266,7 @@ def aggregate(runs):
     }
     category_results = blocked_category_results(runs, by_blocked_category)
     approval_card_results = approval_card_assertion_results(runs)
+    activation_decision_results = activation_decision_assertion_results(runs)
 
     return {
         "appLaunchAttempted": bool(runs),
@@ -302,6 +318,20 @@ def aggregate(runs):
         "approvalCardsAllDisabledActionsFound": all(
             result["disabledActionProof"] == "live_gtk_atspi_proof"
             for result in approval_card_results.values()
+        ),
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionResults": activation_decision_results,
+        "activationDecisionsAllHeadingsFound": all(
+            result["headingProof"] == "live_gtk_atspi_proof"
+            for result in activation_decision_results.values()
+        ),
+        "activationDecisionsAllProductionDisabledFound": all(
+            result["productionDisabledProof"] == "live_gtk_atspi_proof"
+            for result in activation_decision_results.values()
+        ),
+        "activationDecisionsAllDisabledActionsFound": all(
+            result["disabledActionProof"] == "live_gtk_atspi_proof"
+            for result in activation_decision_results.values()
         ),
         "fallbackProofUsed": any(level in {"source_model_fallback", "not_proven"} for level in by_area.values())
         or any(level in {"source_model_fallback", "not_proven"} for level in by_blocked_category.values()),
@@ -355,6 +385,69 @@ def approval_card_assertion_results(runs):
         sample = {}
         for run in runs:
             sample = run["accessibility"].get("approvalCardAssertions", {}).get(key, {})
+            if sample:
+                break
+        results[key] = {
+            "heading": sample.get("heading"),
+            "headingProof": "live_gtk_atspi_proof" if heading_run else "not_proven",
+            "headingEvidenceRun": heading_run["name"] if heading_run else None,
+            "productionDisabledText": sample.get("productionDisabledText"),
+            "productionDisabledProof": "live_gtk_atspi_proof"
+            if production_run
+            else "not_proven",
+            "productionDisabledEvidenceRun": production_run["name"] if production_run else None,
+            "disabledAction": sample.get("disabledAction"),
+            "disabledActionProof": "live_gtk_atspi_proof" if action_run else "not_proven",
+            "disabledActionEvidenceRun": action_run["name"] if action_run else None,
+            "widgetName": sample.get("widgetName"),
+            "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        }
+    return results
+
+
+def activation_decision_assertion_results(runs):
+    decision_keys = [
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+    ]
+    results = {}
+    for key in decision_keys:
+        heading_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("activationDecisionAssertions", {})
+                .get(key, {})
+                .get("headingFound")
+            ),
+            None,
+        )
+        production_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("activationDecisionAssertions", {})
+                .get(key, {})
+                .get("productionDisabledFound")
+            ),
+            None,
+        )
+        action_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("activationDecisionAssertions", {})
+                .get(key, {})
+                .get("disabledActionFound")
+            ),
+            None,
+        )
+        sample = {}
+        for run in runs:
+            sample = run["accessibility"].get("activationDecisionAssertions", {}).get(key, {})
             if sample:
                 break
         results[key] = {
@@ -566,6 +659,17 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
             "approvalCardsAllProductionDisabledFound"
         ],
         "approvalCardsAllDisabledActionsFound": summary["approvalCardsAllDisabledActionsFound"],
+        "activationDecisionAssertionMethod": summary["activationDecisionAssertionMethod"],
+        "activationDecisionResults": summary["activationDecisionResults"],
+        "activationDecisionsAllHeadingsFound": summary[
+            "activationDecisionsAllHeadingsFound"
+        ],
+        "activationDecisionsAllProductionDisabledFound": summary[
+            "activationDecisionsAllProductionDisabledFound"
+        ],
+        "activationDecisionsAllDisabledActionsFound": summary[
+            "activationDecisionsAllDisabledActionsFound"
+        ],
         "fallbackProofUsed": summary["fallbackProofUsed"],
         "issuesFound": issues(summary),
         "recommendedFixes": recommended_fixes(summary),
@@ -718,6 +822,19 @@ def write_reports(reports_dir, evidence_root, evidence_summary, runs, summary):
                     "approvalCardsAllProductionDisabledFound"
                 ],
                 "allDisabledActionsFound": summary["approvalCardsAllDisabledActionsFound"],
+                "activationDecisionAssertionMethod": summary[
+                    "activationDecisionAssertionMethod"
+                ],
+                "activationDecisionResults": summary["activationDecisionResults"],
+                "activationDecisionsAllHeadingsFound": summary[
+                    "activationDecisionsAllHeadingsFound"
+                ],
+                "activationDecisionsAllProductionDisabledFound": summary[
+                    "activationDecisionsAllProductionDisabledFound"
+                ],
+                "activationDecisionsAllDisabledActionsFound": summary[
+                    "activationDecisionsAllDisabledActionsFound"
+                ],
                 "safety": {
                     "runtimeMutated": False,
                     "hyprlandReloaded": False,

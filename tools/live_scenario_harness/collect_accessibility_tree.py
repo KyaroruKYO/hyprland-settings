@@ -75,6 +75,23 @@ APPROVAL_CARD_ASSERTIONS = {
     },
 }
 
+ACTIVATION_DECISION_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation decision",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "action": "Enable source/include production activation (planned)",
+        "widget": "hyprland-settings-source-include-activation-decision-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation decision",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "action": "Enable duplicate production activation (planned)",
+        "widget": "hyprland-settings-duplicate-activation-decision-disabled",
+    },
+}
+
 SAFE_NAVIGATION_TARGETS = {
     "Dashboard",
     "Config",
@@ -272,6 +289,27 @@ def approval_card_assertions(values):
     text = "\n".join(values).lower()
     assertions = {}
     for key, spec in APPROVAL_CARD_ASSERTIONS.items():
+        heading_found = spec["heading"].lower() in text
+        production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
+        action_found = spec["action"].lower() in text
+        widget_found = spec["widget"].lower() in text
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": heading_found,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": production_found,
+            "disabledAction": spec["action"],
+            "disabledActionFound": action_found,
+            "widgetName": spec["widget"],
+            "widgetNameFound": widget_found,
+        }
+    return assertions
+
+
+def activation_decision_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in ACTIVATION_DECISION_ASSERTIONS.items():
         heading_found = spec["heading"].lower() in text
         production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
         action_found = spec["action"].lower() in text
@@ -644,6 +682,11 @@ def main() -> int:
         "approvalCardsAllHeadingsFound": False,
         "approvalCardsAllProductionDisabledFound": False,
         "approvalCardsAllDisabledActionsFound": False,
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {},
+        "activationDecisionsAllHeadingsFound": False,
+        "activationDecisionsAllProductionDisabledFound": False,
+        "activationDecisionsAllDisabledActionsFound": False,
         "text": [],
         "error": None,
     }
@@ -715,6 +758,9 @@ def main() -> int:
                 result["foundTermsAfterNavigation"] = found_terms(after)
         all_text = "\n".join(result["text"] + result["textAfterNavigation"]).lower()
         approval_assertions = approval_card_assertions(result["text"] + result["textAfterNavigation"])
+        activation_assertions = activation_decision_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
         result["approvalCardAssertions"] = approval_assertions
         result["approvalCardsAllHeadingsFound"] = all(
             card["headingFound"] for card in approval_assertions.values()
@@ -724,6 +770,16 @@ def main() -> int:
         )
         result["approvalCardsAllDisabledActionsFound"] = all(
             card["disabledActionFound"] for card in approval_assertions.values()
+        )
+        result["activationDecisionAssertions"] = activation_assertions
+        result["activationDecisionsAllHeadingsFound"] = all(
+            card["headingFound"] for card in activation_assertions.values()
+        )
+        result["activationDecisionsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in activation_assertions.values()
+        )
+        result["activationDecisionsAllDisabledActionsFound"] = all(
+            card["disabledActionFound"] for card in activation_assertions.values()
         )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text

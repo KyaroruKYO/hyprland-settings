@@ -1,0 +1,91 @@
+{
+  "artifactKind": "default-disabled-production-activation-decision",
+  "projectDataVersion": "v0.55.2",
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "branch": "future-capability-marathon",
+  "inputSource": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+  "implementation": {
+    "decisionReviewModelExists": true,
+    "consumesReportBackedApprovalCardData": true,
+    "sourceIncludeDecisionReviewExists": true,
+    "duplicateDecisionReviewExists": true,
+    "uiSurfaceExists": true,
+    "screenshotLevelAssertionsImplemented": true,
+    "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr"
+  },
+  "decisions": {
+    "sourceIncludeInsertion": {
+      "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+      "evidenceWidgetName": "hyprland-settings-source-include-activation-decision-evidence",
+      "inputSource": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+      "inputCard": "hyprland-settings-source-include-approval-review-disabled",
+      "status": "ApprovedButDefaultDisabled",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "productionStatus": "Disabled",
+      "requiredProof": [
+        "proof source",
+        "proof status",
+        "root config",
+        "selected target",
+        "source depth",
+        "dry-run status",
+        "planned inserted line",
+        "proposed value",
+        "copied target restore",
+        "original real config unchanged",
+        "approval status"
+      ],
+      "blockers": [
+        "production source/include insertion remains disabled until a separate production activation path exists"
+      ]
+    },
+    "duplicateReplacement": {
+      "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+      "evidenceWidgetName": "hyprland-settings-duplicate-activation-decision-evidence",
+      "inputSource": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+      "inputCard": "hyprland-settings-duplicate-approval-review-disabled",
+      "status": "ApprovedButDefaultDisabled",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "productionStatus": "Disabled",
+      "requiredProof": [
+        "proof source",
+        "proof status",
+        "selected occurrence",
+        "target path",
+        "source depth",
+        "line number",
+        "raw line",
+        "old value",
+        "proposed value",
+        "fingerprint/precondition status",
+        "copied replacement status",
+        "copied target restore",
+        "original real config unchanged",
+        "approval status"
+      ],
+      "blockers": [
+        "production duplicate replacement remains disabled until a separate production activation path exists"
+      ]
+    }
+  },
+  "screenshotLevelAssertions": {
+    "sourceIncludeInsertion": true,
+    "duplicateReplacement": true
+  },
+  "safety": {
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "realConfigTouched": false,
+    "runtimeMutatedThisSprint": false,
+    "hyprctlReloadRun": false,
+    "v0552DefaultPreserved": true,
+    "hyprland0554MigrationActivated": false
+  },
+  "nextRequiredWork": [
+    "Design an explicit production activation path that can consume approved-but-default-disabled decisions without making the default production flags true.",
+    "Add any future real-config activation proof only with byte-exact backup, restore, and post-restore verification."
+  ]
+}

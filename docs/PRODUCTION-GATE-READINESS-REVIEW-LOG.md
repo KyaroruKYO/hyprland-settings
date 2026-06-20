@@ -68,3 +68,10 @@ Use report-backed approval card data as the input for a future default-disabled 
 - `data/reports/report-backed-approval-card-data.v0.55.2.json` records the typed adapter, report source, missing-field fallback behavior, and per-card production-disabled state.
 - `data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json` records screenshot plus AT-SPI accessibility-tree assertions for each card heading, production-disabled line, and planned disabled action.
 - Production source/include insertion, duplicate writes, structured writes, profile switching, high-risk/display writes, runtime/reload, and 0.55.4 migration remain disabled.
+
+## Default-Disabled Production Activation Decision Review - 2026-06-20
+
+- Added source/include and duplicate production activation decision reviews that consume report-backed approval card data.
+- Both decisions can reach ApprovedButDefaultDisabled only while production flags remain false.
+- Added disabled Config-page decision cards and GTK screenshot plus AT-SPI assertions for both cards.
+- No production source/include insertion, duplicate write, runtime mutation, reload, or real config mutation was enabled.

@@ -8,23 +8,26 @@ use hyprland_settings::future_capability::{
     copied_config_tree_report, copy_config_tree_for_proof, current_v0552_data_bundle,
     disabled_future_approval_card_projections, disabled_migration_review,
     disabled_missing_default_insertion_review, disabled_profile_switch_review,
-    disabled_profile_switch_selection_review, duplicate_approval_flow,
-    duplicate_occurrence_confirmation, duplicate_occurrence_model, duplicate_occurrence_review,
-    duplicate_production_approval_gate, duplicate_production_gate_review,
-    edit_structured_bind_safe_env, execute_duplicate_replacement_guarded_temp,
+    disabled_profile_switch_selection_review, duplicate_activation_decision_review,
+    duplicate_approval_flow, duplicate_occurrence_confirmation, duplicate_occurrence_model,
+    duplicate_occurrence_review, duplicate_production_approval_gate,
+    duplicate_production_gate_review, edit_structured_bind_safe_env,
+    execute_duplicate_replacement_guarded_temp,
     execute_source_include_selected_target_guarded_temp, execute_structured_bind_guarded_temp,
     high_risk_approval_flow, high_risk_guarded_live_readiness_executor,
     high_risk_live_recovery_protocol, high_risk_production_gate_review, high_risk_recovery_review,
     high_risk_recovery_workflow, hyprland_0554_approval_flow, hyprland_version_activation_gate,
     load_disabled_approval_cards_from_report_str, load_disabled_approval_cards_from_reports,
-    local_hyprland_version_evidence, migration_comparison_review, profile_approval_flow,
-    profile_production_gate_review, profile_target_approval_review,
-    proven_runtime_approval_evidence_summary, render_structured_entry_lossless,
-    replace_duplicate_occurrence_safe_env, replace_duplicate_occurrence_with_confirmation_safe_env,
-    runtime_action_policy, runtime_action_review, runtime_approval_flow, runtime_command_risk,
+    local_hyprland_version_evidence, migration_comparison_review,
+    production_activation_decision_reviews, profile_approval_flow, profile_production_gate_review,
+    profile_target_approval_review, proven_runtime_approval_evidence_summary,
+    render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
+    replace_duplicate_occurrence_with_confirmation_safe_env, runtime_action_policy,
+    runtime_action_review, runtime_approval_flow, runtime_command_risk,
     runtime_eval_syntax_evidence, runtime_guarded_executor, runtime_live_restore_approval_review,
     runtime_live_restore_attempt_review, runtime_live_restore_proof_review,
-    runtime_production_gate_review, runtime_socket_diagnosis, source_include_approval_flow,
+    runtime_production_gate_review, runtime_socket_diagnosis,
+    source_include_activation_decision_review, source_include_approval_flow,
     source_include_insertion_review, source_include_production_gate_review,
     source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
     structured_approval_flow, structured_family_model, structured_family_review,
@@ -36,15 +39,15 @@ use hyprland_settings::future_capability::{
     DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
     DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
     HighRiskProductionGateStatus, HyprlandVersionActivationStatus, MockWatchdog, MockWatchdogState,
-    ProfileProductionGateStatus, ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction,
-    RuntimeApprovalReviewStatus, RuntimeCommandRisk, RuntimeDirectIpcReadOnlyEvidence,
-    RuntimeDryRunExecutor, RuntimeEvalSyntaxEvidence, RuntimeLiveRestoreProof,
-    RuntimeLiveRestoreStatus, RuntimeMutationCommandPair, RuntimeMutationSyntaxCandidate,
-    RuntimeMutationSyntaxStatus, RuntimeProductionGateStatus, RuntimeReadOnlyEvidence,
-    RuntimeSocketCandidate, RuntimeSocketDiagnosisStatus, SourceIncludeInsertionReadiness,
-    SourceIncludeProductionGateStatus, SourceIncludeSelectedTargetDryRunStatus,
-    SourceIncludeTargetCandidate, SourceIncludeTargetSelectionStatus, StructuredBindEditStatus,
-    StructuredProductionGateStatus,
+    ProductionActivationDecisionStatus, ProfileProductionGateStatus, ProfileSwitchStatus,
+    ProfileTargetReadiness, RuntimeAction, RuntimeApprovalReviewStatus, RuntimeCommandRisk,
+    RuntimeDirectIpcReadOnlyEvidence, RuntimeDryRunExecutor, RuntimeEvalSyntaxEvidence,
+    RuntimeLiveRestoreProof, RuntimeLiveRestoreStatus, RuntimeMutationCommandPair,
+    RuntimeMutationSyntaxCandidate, RuntimeMutationSyntaxStatus, RuntimeProductionGateStatus,
+    RuntimeReadOnlyEvidence, RuntimeSocketCandidate, RuntimeSocketDiagnosisStatus,
+    SourceIncludeInsertionReadiness, SourceIncludeProductionGateStatus,
+    SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
+    SourceIncludeTargetSelectionStatus, StructuredBindEditStatus, StructuredProductionGateStatus,
 };
 use hyprland_settings::missing_default_insertion::{
     build_missing_default_insertion_plan, MissingDefaultInsertionRequest,
@@ -3357,6 +3360,203 @@ fn report_backed_disabled_approval_cards_degrade_missing_fields_explicitly() {
             .iter()
             .any(|line| line.contains("Missing from report")));
     }
+}
+
+#[test]
+fn source_include_activation_decision_consumes_report_backed_card_without_enablement() {
+    let reviews = production_activation_decision_reviews();
+    let source_review = reviews
+        .iter()
+        .find(|review| review.widget_name.contains("source-include"))
+        .expect("source/include activation decision review");
+
+    assert_eq!(
+        source_review.status,
+        ProductionActivationDecisionStatus::ApprovedButDefaultDisabled
+    );
+    assert_eq!(
+        source_review.input_source,
+        "data/reports/disabled-approval-ui-cards.v0.55.2.json"
+    );
+    assert_eq!(source_review.production_status, "Disabled");
+    assert!(!source_review.production_enabled);
+    let lines = source_review.user_facing_lines().join("\n");
+    for expected in [
+        "Source/include production activation decision",
+        "Decision status: Approved but default-disabled",
+        "Required proof: proof source = copied-config-tree proof",
+        "Required proof: selected target = copied source/include target fixture",
+        "Required proof: planned inserted line = matched copied proof",
+        "Required proof: copied target restore = restored byte-for-byte",
+        "Required proof: original real config unchanged = verified unchanged",
+        "Production source/include insertion: Disabled",
+    ] {
+        assert!(
+            lines.contains(expected),
+            "missing source/include activation decision line: {expected}"
+        );
+    }
+}
+
+#[test]
+fn source_include_activation_decision_blocks_missing_inputs_and_enabled_production() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    let source_card = report_backed
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("source-include"))
+        .expect("source/include card");
+
+    let mut missing_target = source_card.clone();
+    missing_target
+        .proof_record
+        .fields
+        .retain(|(label, _)| !label.eq_ignore_ascii_case("selected target"));
+    assert_eq!(
+        source_include_activation_decision_review(Some(&missing_target), "test-report").status,
+        ProductionActivationDecisionStatus::MissingRequiredProofField
+    );
+
+    let mut missing_restore = source_card.clone();
+    missing_restore
+        .restore_evidence
+        .retain(|evidence| !evidence.label.eq_ignore_ascii_case("copied target restore"));
+    assert_eq!(
+        source_include_activation_decision_review(Some(&missing_restore), "test-report").status,
+        ProductionActivationDecisionStatus::MissingRestoreEvidence
+    );
+
+    let mut missing_original = source_card.clone();
+    missing_original.restore_evidence.retain(|evidence| {
+        !evidence
+            .label
+            .eq_ignore_ascii_case("original real config unchanged")
+    });
+    assert_eq!(
+        source_include_activation_decision_review(Some(&missing_original), "test-report").status,
+        ProductionActivationDecisionStatus::MissingOriginalUnchangedProof
+    );
+
+    let mut enabled_status = source_card.clone();
+    enabled_status.production_status = "Enabled".to_string();
+    assert_eq!(
+        source_include_activation_decision_review(Some(&enabled_status), "test-report").status,
+        ProductionActivationDecisionStatus::Blocked
+    );
+
+    let mut enabled_flag = source_card.clone();
+    enabled_flag.production_enabled = true;
+    assert_eq!(
+        source_include_activation_decision_review(Some(&enabled_flag), "test-report").status,
+        ProductionActivationDecisionStatus::ProductionAlreadyEnabledError
+    );
+}
+
+#[test]
+fn duplicate_activation_decision_consumes_report_backed_card_without_enablement() {
+    let reviews = production_activation_decision_reviews();
+    let duplicate_review = reviews
+        .iter()
+        .find(|review| review.widget_name.contains("duplicate"))
+        .expect("duplicate activation decision review");
+
+    assert_eq!(
+        duplicate_review.status,
+        ProductionActivationDecisionStatus::ApprovedButDefaultDisabled
+    );
+    assert_eq!(duplicate_review.production_status, "Disabled");
+    assert!(!duplicate_review.production_enabled);
+    let lines = duplicate_review.user_facing_lines().join("\n");
+    for expected in [
+        "Duplicate production activation decision",
+        "Decision status: Approved but default-disabled",
+        "Required proof: proof source = copied-config-tree proof",
+        "Required proof: selected occurrence = confirmed copied occurrence",
+        "Required proof: line number = matched copied occurrence",
+        "Required proof: raw line = matched fingerprint",
+        "Required proof: copied replacement status = selected duplicate replaced and reread in copied tree",
+        "Required proof: copied target restore = restored byte-for-byte",
+        "Required proof: original real config unchanged = verified unchanged",
+        "Production duplicate writes: Disabled",
+    ] {
+        assert!(
+            lines.contains(expected),
+            "missing duplicate activation decision line: {expected}"
+        );
+    }
+}
+
+#[test]
+fn duplicate_activation_decision_blocks_missing_inputs_and_enabled_production() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    let duplicate_card = report_backed
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("duplicate"))
+        .expect("duplicate card");
+
+    let mut missing_occurrence = duplicate_card.clone();
+    missing_occurrence
+        .proof_record
+        .fields
+        .retain(|(label, _)| !label.eq_ignore_ascii_case("selected occurrence"));
+    assert_eq!(
+        duplicate_activation_decision_review(Some(&missing_occurrence), "test-report").status,
+        ProductionActivationDecisionStatus::MissingRequiredProofField
+    );
+
+    let mut missing_fingerprint = duplicate_card.clone();
+    missing_fingerprint
+        .preconditions
+        .retain(|precondition| !precondition.label.eq_ignore_ascii_case("raw line"));
+    assert_eq!(
+        duplicate_activation_decision_review(Some(&missing_fingerprint), "test-report").status,
+        ProductionActivationDecisionStatus::MissingPrecondition
+    );
+
+    let mut missing_replacement = duplicate_card.clone();
+    missing_replacement
+        .proof_record
+        .fields
+        .retain(|(label, _)| !label.eq_ignore_ascii_case("copied replacement status"));
+    assert_eq!(
+        duplicate_activation_decision_review(Some(&missing_replacement), "test-report").status,
+        ProductionActivationDecisionStatus::MissingRequiredProofField
+    );
+
+    let mut missing_restore = duplicate_card.clone();
+    missing_restore
+        .restore_evidence
+        .retain(|evidence| !evidence.label.eq_ignore_ascii_case("copied target restore"));
+    assert_eq!(
+        duplicate_activation_decision_review(Some(&missing_restore), "test-report").status,
+        ProductionActivationDecisionStatus::MissingRestoreEvidence
+    );
+
+    let mut missing_original = duplicate_card.clone();
+    missing_original.restore_evidence.retain(|evidence| {
+        !evidence
+            .label
+            .eq_ignore_ascii_case("original real config unchanged")
+    });
+    assert_eq!(
+        duplicate_activation_decision_review(Some(&missing_original), "test-report").status,
+        ProductionActivationDecisionStatus::MissingOriginalUnchangedProof
+    );
+
+    let mut enabled_status = duplicate_card.clone();
+    enabled_status.production_status = "Enabled".to_string();
+    assert_eq!(
+        duplicate_activation_decision_review(Some(&enabled_status), "test-report").status,
+        ProductionActivationDecisionStatus::Blocked
+    );
+
+    let mut enabled_flag = duplicate_card.clone();
+    enabled_flag.production_enabled = true;
+    assert_eq!(
+        duplicate_activation_decision_review(Some(&enabled_flag), "test-report").status,
+        ProductionActivationDecisionStatus::ProductionAlreadyEnabledError
+    );
 }
 
 #[test]

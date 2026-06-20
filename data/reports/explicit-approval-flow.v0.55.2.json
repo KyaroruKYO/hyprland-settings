@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactKind": "explicit-approval-flow",
-  "generatedAt": "2026-06-20T00:00:00-07:00",
+  "generatedAt": "2026-06-20T00:00:00Z",
   "branch": "future-capability-marathon",
   "projectDataVersion": "v0.55.2",
   "countsPreserved": "341 readable / 341 writable / 0 blocked",
@@ -102,5 +102,13 @@
     "remainingGatedApprovalUiCardsEnabled": false,
     "remainingGatedApprovalUiCardsHaveDeepProofData": true
   },
-  "nextRecommendedWork": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled."
+  "nextRecommendedWork": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.",
+  "testsAdded": [
+    "production activation decision review tests for source/include and duplicate default-disabled paths"
+  ],
+  "activationDecisionReview": {
+    "consumesApprovalCardData": true,
+    "productionFlagsRemainFalse": true,
+    "report": "data/reports/default-disabled-production-activation-decision.v0.55.2.json"
+  }
 }

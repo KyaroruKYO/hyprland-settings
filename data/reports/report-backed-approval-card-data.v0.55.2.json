@@ -4,7 +4,7 @@
   "projectDataVersion": "v0.55.2",
   "branch": "future-capability-marathon",
   "startingCommit": "77819a17b97282324198802d8efae3df162e4c5d",
-  "generatedAt": "2026-06-20",
+  "generatedAt": "2026-06-20T00:00:00Z",
   "sourceReport": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
   "implementation": {
     "typedAdapterExists": true,
@@ -12,7 +12,12 @@
     "fallbackAdapterExists": true,
     "missingFieldFallback": "Missing from report",
     "cardsLoadedFromSerializedReport": true,
-    "uiRendersReportBackedProjection": true
+    "uiRendersReportBackedProjection": true,
+    "activationDecisionReviewConsumesReportBackedCards": true,
+    "activationDecisionReviewScope": [
+      "sourceIncludeInsertion",
+      "duplicateReplacement"
+    ]
   },
   "cards": {
     "sourceIncludeInsertion": {
@@ -78,5 +83,18 @@
     "hyprctlReloadRun": false,
     "v0552DefaultPreserved": true
   },
-  "nextRecommendedWork": "Use report-backed approval card data as the handoff source for future explicit production activation UX, while keeping every production flag default-disabled until approval and restoration gates are complete."
+  "nextRecommendedWork": "Use report-backed approval card data as the handoff source for future explicit production activation UX, while keeping every production flag default-disabled until approval and restoration gates are complete.",
+  "activationDecisionReview": {
+    "report": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "inputCard": "hyprland-settings-source-include-approval-review-disabled",
+      "status": "ApprovedButDefaultDisabled",
+      "productionEnabled": false
+    },
+    "duplicateReplacement": {
+      "inputCard": "hyprland-settings-duplicate-approval-review-disabled",
+      "status": "ApprovedButDefaultDisabled",
+      "productionEnabled": false
+    }
+  }
 }

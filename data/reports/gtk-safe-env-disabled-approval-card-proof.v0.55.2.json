@@ -1,6 +1,38 @@
 {
   "accessibilityInspectionAttempted": true,
   "accessibilityInspectionSucceeded": true,
+  "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+  "activationDecisionResults": {
+    "duplicateReplacement": {
+      "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+      "disabledAction": "Enable duplicate production activation (planned)",
+      "disabledActionEvidenceRun": "generated_config_Config",
+      "disabledActionProof": "live_gtk_atspi_proof",
+      "heading": "Duplicate production activation decision",
+      "headingEvidenceRun": "generated_config_Config",
+      "headingProof": "live_gtk_atspi_proof",
+      "productionDisabledEvidenceRun": "generated_config_Config",
+      "productionDisabledProof": "live_gtk_atspi_proof",
+      "productionDisabledText": "Production duplicate writes: Disabled",
+      "widgetName": "hyprland-settings-duplicate-activation-decision-disabled"
+    },
+    "sourceIncludeInsertion": {
+      "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+      "disabledAction": "Enable source/include production activation (planned)",
+      "disabledActionEvidenceRun": "generated_config_Config",
+      "disabledActionProof": "live_gtk_atspi_proof",
+      "heading": "Source/include production activation decision",
+      "headingEvidenceRun": "generated_config_Config",
+      "headingProof": "live_gtk_atspi_proof",
+      "productionDisabledEvidenceRun": "generated_config_Config",
+      "productionDisabledProof": "live_gtk_atspi_proof",
+      "productionDisabledText": "Production source/include insertion: Disabled",
+      "widgetName": "hyprland-settings-source-include-activation-decision-disabled"
+    }
+  },
+  "activationDecisionsAllDisabledActionsFound": true,
+  "activationDecisionsAllHeadingsFound": true,
+  "activationDecisionsAllProductionDisabledFound": true,
   "agsTouched": false,
   "allDisabledActionsFound": true,
   "allHeadingsFound": true,
@@ -241,7 +273,7 @@
   "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
   "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
   "fallbackProofUsed": false,
-  "generatedAt": "2026-06-20T07:50:17.903340+00:00",
+  "generatedAt": "2026-06-20T08:27:27.966600+00:00",
   "goal": "Prove disabled approval review cards through screenshot-level safe-env automation using screenshots plus AT-SPI accessibility-tree text, not OCR.",
   "hyprlandReloaded": false,
   "installedHyprlandPackageVersion": "0.55.4-1",
@@ -341,6 +373,32 @@
   "scenarioResults": [
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Duplicate production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Source/include production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": false,
+        "activationDecisionsAllHeadingsFound": false,
+        "activationDecisionsAllProductionDisabledFound": false,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -511,6 +569,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Duplicate production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Source/include production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": false,
+        "activationDecisionsAllHeadingsFound": false,
+        "activationDecisionsAllProductionDisabledFound": false,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -690,6 +774,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Duplicate production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Source/include production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": true,
+        "activationDecisionsAllHeadingsFound": true,
+        "activationDecisionsAllProductionDisabledFound": true,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -865,6 +975,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Duplicate production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Source/include production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": true,
+        "activationDecisionsAllHeadingsFound": true,
+        "activationDecisionsAllProductionDisabledFound": true,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -1040,6 +1176,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Duplicate production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Source/include production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": false,
+        "activationDecisionsAllHeadingsFound": false,
+        "activationDecisionsAllProductionDisabledFound": false,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -1211,6 +1373,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Duplicate production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Source/include production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": false,
+        "activationDecisionsAllHeadingsFound": false,
+        "activationDecisionsAllProductionDisabledFound": false,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -1385,6 +1573,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Duplicate production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Source/include production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": false,
+        "activationDecisionsAllHeadingsFound": false,
+        "activationDecisionsAllProductionDisabledFound": false,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -1559,6 +1773,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Duplicate production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Source/include production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": false,
+        "activationDecisionsAllHeadingsFound": false,
+        "activationDecisionsAllProductionDisabledFound": false,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -1727,6 +1967,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Duplicate production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Source/include production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": true,
+        "activationDecisionsAllHeadingsFound": true,
+        "activationDecisionsAllProductionDisabledFound": true,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -1900,6 +2166,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Duplicate production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Source/include production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": false,
+        "activationDecisionsAllHeadingsFound": false,
+        "activationDecisionsAllProductionDisabledFound": false,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -2058,6 +2350,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Duplicate production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Source/include production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": false,
+        "activationDecisionsAllHeadingsFound": false,
+        "activationDecisionsAllProductionDisabledFound": false,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -2216,6 +2534,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Duplicate production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Source/include production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": false,
+        "activationDecisionsAllHeadingsFound": false,
+        "activationDecisionsAllProductionDisabledFound": false,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -2374,6 +2718,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Duplicate production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Source/include production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": false,
+        "activationDecisionsAllHeadingsFound": false,
+        "activationDecisionsAllProductionDisabledFound": false,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -2532,6 +2902,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Duplicate production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Source/include production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": false,
+        "activationDecisionsAllHeadingsFound": false,
+        "activationDecisionsAllProductionDisabledFound": false,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -2700,6 +3096,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Duplicate production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": false,
+            "heading": "Source/include production activation decision",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": false,
+        "activationDecisionsAllHeadingsFound": false,
+        "activationDecisionsAllProductionDisabledFound": false,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -2871,6 +3293,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Duplicate production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Source/include production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": true,
+        "activationDecisionsAllHeadingsFound": true,
+        "activationDecisionsAllProductionDisabledFound": true,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -3044,6 +3492,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Duplicate production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Source/include production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": true,
+        "activationDecisionsAllHeadingsFound": true,
+        "activationDecisionsAllProductionDisabledFound": true,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -3218,6 +3692,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Duplicate production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Source/include production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": true,
+        "activationDecisionsAllHeadingsFound": true,
+        "activationDecisionsAllProductionDisabledFound": true,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -3392,6 +3892,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Duplicate production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Source/include production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": true,
+        "activationDecisionsAllHeadingsFound": true,
+        "activationDecisionsAllProductionDisabledFound": true,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -3565,6 +4091,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Duplicate production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Source/include production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": true,
+        "activationDecisionsAllHeadingsFound": true,
+        "activationDecisionsAllProductionDisabledFound": true,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -3739,6 +4291,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Duplicate production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Source/include production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": true,
+        "activationDecisionsAllHeadingsFound": true,
+        "activationDecisionsAllProductionDisabledFound": true,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {
@@ -3913,6 +4491,32 @@
     },
     {
       "accessibility": {
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Enable duplicate production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Duplicate production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-decision-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Enable source/include production activation (planned)",
+            "disabledActionFound": true,
+            "heading": "Source/include production activation decision",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-decision-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationDecisionsAllDisabledActionsFound": true,
+        "activationDecisionsAllHeadingsFound": true,
+        "activationDecisionsAllProductionDisabledFound": true,
         "applicationMatched": true,
         "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "approvalCardAssertions": {

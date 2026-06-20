@@ -17,9 +17,10 @@ use crate::current_config::{
 use crate::export::ExportBundle;
 use crate::future_capability::{
     disabled_future_approval_card_projections, duplicate_production_approval_gate,
-    proven_runtime_approval_evidence_summary, source_include_insertion_review,
-    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
-    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
+    production_activation_decision_reviews, proven_runtime_approval_evidence_summary,
+    source_include_insertion_review, source_include_selected_target_dry_run_plan,
+    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
+    DuplicateOccurrence, DuplicateProductionGateStatus, ProductionActivationDecisionReview,
     SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
     SourceIncludeTargetCandidate,
 };
@@ -1233,6 +1234,7 @@ fn disabled_future_approval_cards_section() -> gtk::Frame {
     for card in disabled_future_approval_card_projections() {
         content.append(&disabled_future_approval_card(&card));
     }
+    content.append(&production_activation_decision_reviews_section());
 
     frame.set_child(Some(&content));
     frame
@@ -1293,6 +1295,93 @@ fn disabled_future_approval_card(card: &DisabledApprovalCardProjection) -> gtk::
     enable.set_widget_name(&card.disabled_action_widget_name);
     enable.set_tooltip_text(Some(
         "Disabled future action. This does not enable production behavior or run any executor.",
+    ));
+    enable.set_sensitive(false);
+    content.append(&enable);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_decision_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-decision-section");
+    frame.set_tooltip_text(Some(
+        "Default-disabled future production activation decision reviews. These consume report-backed card data but cannot enable production behavior.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label(
+        "Future production activation decision reviews",
+    ));
+    content.append(&small_label(
+        "These reviews use report-backed approval card data as input. Production flags stay disabled.",
+    ));
+
+    for review in production_activation_decision_reviews() {
+        content.append(&production_activation_decision_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_decision_review_card(
+    review: &ProductionActivationDecisionReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled production activation decision review. This is review-only and cannot run production executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Report-backed decision evidence. This review has no mutation handler.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(
+        &content,
+        "Decision status",
+        review.status.user_facing_label(),
+    );
+    append_detail_line(&content, "Decision input source", &review.input_source);
+    if !review.required_proof_summary.is_empty() {
+        content.append(&body_label("Required proof summary"));
+        for proof in &review.required_proof_summary {
+            content.append(&small_label(proof));
+        }
+    }
+    content.append(&body_label("Decision blockers"));
+    if review.blockers.is_empty() {
+        content.append(&small_label(
+            "No missing proof blockers; production remains disabled.",
+        ));
+    } else {
+        for blocker in &review.blockers {
+            content.append(&small_label(blocker));
+        }
+    }
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let enable = gtk::Button::with_label(&review.disabled_action_label);
+    enable.set_widget_name(&review.disabled_action_widget_name);
+    enable.set_tooltip_text(Some(
+        "Disabled planned activation. This does not enable production behavior.",
     ));
     enable.set_sensitive(false);
     content.append(&enable);

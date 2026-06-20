@@ -70,3 +70,10 @@
 
 ## Next recommended sprint
 Use the report-backed approval cards as the review source for future explicit production activation UX, starting with a still-default-disabled production activation decision model that can consume approval tokens without enabling production by default.
+
+## Default-Disabled Production Activation Decision Review - 2026-06-20
+
+- Added source/include and duplicate production activation decision reviews that consume report-backed approval card data.
+- Both decisions can reach ApprovedButDefaultDisabled only while production flags remain false.
+- Added disabled Config-page decision cards and GTK screenshot plus AT-SPI assertions for both cards.
+- No production source/include insertion, duplicate write, runtime mutation, reload, or real config mutation was enabled.

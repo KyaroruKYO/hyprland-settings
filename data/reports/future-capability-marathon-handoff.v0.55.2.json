@@ -73,7 +73,8 @@
     "disabled_approval_ui_cards_for_remaining_gated_categories",
     "deep_approval_card_data_for_remaining_gated_categories",
     "report_backed_approval_card_data",
-    "screenshot_level_disabled_approval_card_assertions"
+    "screenshot_level_disabled_approval_card_assertions",
+    "default_disabled_production_activation_decision_review"
   ],
   "partialPhases": [],
   "blockedPhases": [
@@ -90,7 +91,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false.",
+  "nextExactPhaseToContinue": "Design an explicit production activation path that can consume approved-but-default-disabled source/include and duplicate decisions while keeping production flags false by default.",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -116,11 +117,13 @@
     "docs/REPORT-BACKED-APPROVAL-CARD-DATA-REVIEW-LOG.md",
     "docs/RUNTIME-APPROVAL-UI-SURFACE-REVIEW-LOG.md",
     "docs/DISABLED-APPROVAL-UI-CARDS-REVIEW-LOG.md",
-    "docs/DEEP-APPROVAL-CARD-DATA-REVIEW-LOG.md"
+    "docs/DEEP-APPROVAL-CARD-DATA-REVIEW-LOG.md",
+    "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-DECISION-REVIEW-LOG.md"
   ],
-  "testsPassing": "cargo fmt, cargo fmt --check, cargo check, cargo test, jq empty data/reports/*.json, git diff --check, cargo build --release, and GTK safe-env matrix passed after report-backed approval card updates.",
+  "testsPassing": "cargo fmt, cargo fmt --check, cargo check, cargo test, jq empty data/reports/*.json, git diff --check, cargo build --release, and GTK safe-env matrix passed after default-disabled activation decision review updates.",
   "testsFailing": [],
-  "validationStatus": "passed after report-backed approval card updates",
+  "validationStatus": "passed after default-disabled activation decision review updates",
   "knownRisks": [
     "No real live/system mutation was run in this sprint; approval-card work was report-backed UI/projection and GTK safe-env assertion work only.",
     "Sandboxed read-only hyprctl and direct socket probes fail because the sandbox cannot connect to the Hyprland Unix socket; outside-sandbox read-only hyprctl succeeds.",
@@ -128,9 +131,17 @@
     "Source/include insertion remains production-disabled beyond single-root scope; the deep disabled approval card is review-only and has no production handler.",
     "Deep approval card data now loads through the serialized report-backed adapter, with Missing from report fallback copy for incomplete records.",
     "High-risk/display mutation remains blocked until out-of-band recovery can be proven before any mutation.",
-    "0.55.4 migration remains blocked without trusted official exports and row/write-safety review."
+    "0.55.4 migration remains blocked without trusted official exports and row/write-safety review.",
+    "Activation decision reviews are review-only; production flags remain false and no production executor is wired."
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false."
+  "recommendedNextCodexPrompt": "Design an explicit production activation path that can consume approved-but-default-disabled source/include and duplicate decisions while keeping production flags false by default.",
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "reportsAdded": [
+    "data/reports/default-disabled-production-activation-decision.v0.55.2.json"
+  ],
+  "summary": [
+    "Source/include and duplicate activation decisions now consume report-backed approval card data and remain ApprovedButDefaultDisabled."
+  ]
 }

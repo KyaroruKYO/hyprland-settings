@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactKind": "future-capability-marathon-summary",
-  "generatedAt": "2026-06-20T00:00:00-07:00",
+  "generatedAt": "2026-06-20T00:00:00Z",
   "branch": "future-capability-marathon",
   "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
   "goal": "Attempt all remaining future capability tracks without activating unsafe production behavior.",
@@ -93,7 +93,8 @@
     "disabled_approval_ui_cards_for_remaining_gated_categories",
     "deep_approval_card_data_for_remaining_gated_categories",
     "report_backed_approval_card_data",
-    "screenshot_level_disabled_approval_card_assertions"
+    "screenshot_level_disabled_approval_card_assertions",
+    "default_disabled_production_activation_decision_review"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -127,14 +128,18 @@
     "data/reports/report-backed-approval-card-data.v0.55.2.json",
     "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
     "data/reports/future-capability-marathon-summary.v0.55.2.json",
-    "data/reports/future-capability-marathon-handoff.v0.55.2.json"
+    "data/reports/future-capability-marathon-handoff.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-DECISION-REVIEW-LOG.md"
   ],
   "testsAdded": [
     "tests/future_capability_marathon.rs",
     "tests/missing_default_insertion.rs",
     "tests/future_capability_models.rs",
     "tests/future_capability_ui.rs",
-    "tests/gtk_safe_env_automation.rs"
+    "tests/gtk_safe_env_automation.rs",
+    "source/include and duplicate production activation decision review model tests",
+    "GTK screenshot/accessibility assertions for source/include and duplicate activation decision cards"
   ],
   "validation": {
     "cargoFmt": "passed",
@@ -147,12 +152,12 @@
     "gtkSafeEnvMatrix": "passed",
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260620_000757"
   },
-  "nextRecommendedAction": "Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false.",
+  "nextRecommendedAction": "Design an explicit production activation path that can consume approved-but-default-disabled source/include and duplicate decisions while keeping production flags false by default.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
-      "before": "96-98%",
-      "after": "97-98%",
-      "evidence": "Six disabled approval cards now load from serialized report records and are covered by screenshot plus AT-SPI accessibility-tree assertions for headings, production-disabled copy, and disabled planned actions."
+      "before": "97-98%",
+      "after": "98-98%",
+      "evidence": "Added disabled Config-page production activation decision review cards for source/include and duplicate paths, backed by GTK screenshot plus AT-SPI assertions."
     },
     "configDiscoverySourceAwareModel": {
       "before": "90-93%",
@@ -175,14 +180,14 @@
       "evidence": "v0.1.0 tag and dist/v0.1.0 artifacts preserved."
     },
     "missingDefaultInsertion": {
-      "before": "95-97%",
-      "after": "96-97%",
-      "evidence": "Source/include approval card fields now load from serialized report records and are screenshot/assertion covered while production source/include insertion remains disabled."
+      "before": "96-97%",
+      "after": "97-98%",
+      "evidence": "Source/include activation decision consumes report-backed approval card proof and reaches ApprovedButDefaultDisabled while production insertion remains disabled."
     },
     "duplicateResolution": {
-      "before": "86-91%",
-      "after": "87-91%",
-      "evidence": "Duplicate approval card fields now load from serialized report records and are screenshot/assertion covered while production duplicate writes remain disabled."
+      "before": "87-91%",
+      "after": "88-92%",
+      "evidence": "Duplicate activation decision consumes report-backed approval card proof and reaches ApprovedButDefaultDisabled while production duplicate writes remain disabled."
     },
     "highRiskDisplayRecovery": {
       "before": "61-70%",

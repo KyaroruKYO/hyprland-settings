@@ -43,7 +43,8 @@
     "Added a default-disabled source/include production gate review that requires explicit selected target, target-in-graph proof, matching dry-run plan, copied-config-tree proof, and production flag before any connected-file production expansion.",
     "Connected source/include production gate review to the shared explicit approval-flow model; copied proof plus exact selected target and inserted line can reach approved_but_default_disabled, never production enabled by default.",
     "Added a disabled source/include approval review card on the Config page. It shows copied-config-tree proof, selected-target/planned-line evidence, approval status, production-disabled state, blockers, and an insensitive planned enable action.",
-    "The source/include approval card is now fed from serialized report data and covered by GTK safe-env screenshot plus AT-SPI accessibility-tree assertions."
+    "The source/include approval card is now fed from serialized report data and covered by GTK safe-env screenshot plus AT-SPI accessibility-tree assertions.",
+    "Source/include activation decision review now consumes report-backed card data and reaches ApprovedButDefaultDisabled while production insertion remains disabled."
   ],
   "whatWasNotImplemented": [
     "No insertion into generated, script-managed, symlink/current-profile, profile/mode, multi-file, duplicate, high-risk, display/render-risk, structured, runtime-only, or missing target files was enabled.",
@@ -63,7 +64,8 @@
     "data/reports/future-capability-missing-default-insertion.v0.55.2.json",
     "data/reports/explicit-approval-flow.v0.55.2.json",
     "data/reports/report-backed-approval-card-data.v0.55.2.json",
-    "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json"
+    "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-decision.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "allowedTarget": "eligible normal scalar missing/default setting in an explicit existing single-file root config",
@@ -138,5 +140,12 @@
   "nextRecommendedWork": "Feed source/include approval card data from serialized copied proof records while keeping connected-file production insertion disabled by default.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
-  "whetherProductionBehaviorEnabled": true
+  "whetherProductionBehaviorEnabled": true,
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "sourceIncludeActivationDecisionReview": {
+    "status": "ApprovedButDefaultDisabled",
+    "inputSource": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+    "productionEnabled": false,
+    "productionStatus": "Disabled"
+  }
 }
