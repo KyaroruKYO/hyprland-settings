@@ -85,7 +85,7 @@
     "hyprland0554MigrationActivated": false
   },
   "nextRequiredWork": [
-    "Design an explicit production activation path that can consume approved-but-default-disabled decisions without making the default production flags true.",
+    "Use the explicit production activation control layer to validate complete request and safety-plan inputs without wiring executors.",
     "Add any future real-config activation proof only with byte-exact backup, restore, and post-restore verification."
   ],
   "activationPathReview": {
@@ -99,6 +99,19 @@
       "status": "ActivationPathNeedsExplicitProductionFlag",
       "productionEnabled": false,
       "productionFlag": false
+    }
+  },
+  "activationControlReview": {
+    "report": "data/reports/default-disabled-production-activation-control.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ValidatedButExecutorUnwired",
+      "productionEnabled": false,
+      "executorWiringStatus": "Unwired"
+    },
+    "duplicateReplacement": {
+      "status": "ValidatedButExecutorUnwired",
+      "productionEnabled": false,
+      "executorWiringStatus": "Unwired"
     }
   }
 }

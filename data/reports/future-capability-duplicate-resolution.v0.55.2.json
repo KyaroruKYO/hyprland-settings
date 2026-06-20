@@ -48,7 +48,8 @@
     "Added a disabled duplicate approval review card on the Config page. It shows selected occurrence, target path, line number, raw line, old/proposed values, fingerprint/precondition status, copied proof status, approval status, production-disabled state, blockers, and an insensitive planned enable action.",
     "The duplicate approval card is now fed from serialized report data and covered by GTK safe-env screenshot plus AT-SPI accessibility-tree assertions.",
     "Duplicate activation decision review now consumes report-backed card data and reaches ApprovedButDefaultDisabled while production duplicate writes remain disabled.",
-    "Duplicate activation path now consumes the ApprovedButDefaultDisabled decision and report-backed proof data, then stops at ActivationPathNeedsExplicitProductionFlag with production duplicate writes disabled."
+    "Duplicate activation path now consumes the ApprovedButDefaultDisabled decision and report-backed proof data, then stops at ActivationPathNeedsExplicitProductionFlag with production duplicate writes disabled.",
+    "Duplicate activation control now validates complete review-only request and safety-plan inputs, proves the executor is Unwired, reaches ValidatedButExecutorUnwired, and still keeps production duplicate writes disabled."
   ],
   "whatWasNotImplemented": [
     "No automatic duplicate choice was added.",
@@ -67,7 +68,8 @@
     "data/reports/report-backed-approval-card-data.v0.55.2.json",
     "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
     "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
-    "data/reports/default-disabled-production-activation-path.v0.55.2.json"
+    "data/reports/default-disabled-production-activation-path.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-control.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "manualOccurrenceSelectionRequired": true,
@@ -112,7 +114,11 @@
     "duplicateDeepApprovalCardDataExists": true,
     "duplicateDeepApprovalCardShowsFingerprintAndCopiedProof": true,
     "duplicateDeepApprovalCardShowsRestoreAndOriginalUnchanged": true,
-    "duplicateApprovalUiWidgetName": "hyprland-settings-duplicate-approval-review-disabled"
+    "duplicateApprovalUiWidgetName": "hyprland-settings-duplicate-approval-review-disabled",
+    "duplicateActivationControlExists": true,
+    "duplicateActivationControlStatus": "ValidatedButExecutorUnwired",
+    "duplicateActivationControlExecutorWiring": "Unwired",
+    "duplicateActivationControlProductionEnabled": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"
@@ -136,6 +142,15 @@
   "duplicateActivationPathReview": {
     "status": "ActivationPathNeedsExplicitProductionFlag",
     "inputDecisionStatus": "ApprovedButDefaultDisabled",
+    "productionEnabled": false,
+    "productionStatus": "Disabled"
+  },
+  "duplicateActivationControlReview": {
+    "status": "ValidatedButExecutorUnwired",
+    "inputPathStatus": "ActivationPathNeedsExplicitProductionFlag",
+    "requestValidationStatus": "Complete activation request",
+    "safetyPlanValidationStatus": "Complete safety plan",
+    "executorWiringStatus": "Unwired",
     "productionEnabled": false,
     "productionStatus": "Disabled"
   }

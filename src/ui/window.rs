@@ -17,10 +17,11 @@ use crate::current_config::{
 use crate::export::ExportBundle;
 use crate::future_capability::{
     disabled_future_approval_card_projections, duplicate_production_approval_gate,
-    production_activation_decision_reviews, production_activation_path_reviews,
-    proven_runtime_approval_evidence_summary, source_include_insertion_review,
-    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
-    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
+    production_activation_control_reviews, production_activation_decision_reviews,
+    production_activation_path_reviews, proven_runtime_approval_evidence_summary,
+    source_include_insertion_review, source_include_selected_target_dry_run_plan,
+    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
+    DuplicateOccurrence, DuplicateProductionGateStatus, ProductionActivationControlReview,
     ProductionActivationDecisionReview, ProductionActivationPathReview,
     SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
     SourceIncludeTargetCandidate,
@@ -1412,6 +1413,7 @@ fn production_activation_path_reviews_section() -> gtk::Frame {
     for review in production_activation_path_reviews() {
         content.append(&production_activation_path_review_card(&review));
     }
+    content.append(&production_activation_control_reviews_section());
 
     frame.set_child(Some(&content));
     frame
@@ -1467,6 +1469,104 @@ fn production_activation_path_review_card(review: &ProductionActivationPathRevie
     ));
     start.set_sensitive(false);
     content.append(&start);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_control_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-control-section");
+    frame.set_tooltip_text(Some(
+        "Default-disabled production activation controls. These validate request and safety-plan inputs but keep executors unwired.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Final production activation controls"));
+    content.append(&small_label(
+        "These controls validate complete inputs for review only. Production executors remain unwired.",
+    ));
+
+    for review in production_activation_control_reviews() {
+        content.append(&production_activation_control_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_control_review_card(
+    review: &ProductionActivationControlReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled production activation control. This card validates review inputs only and cannot run an executor.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Activation control evidence. Request and safety-plan validation are review-only.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(
+        &content,
+        "Input path status",
+        review.input_path_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Control status",
+        review.status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Request validation",
+        &review.request_validation_status,
+    );
+    append_detail_line(
+        &content,
+        "Safety plan validation",
+        &review.safety_plan_validation_status,
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    content.append(&body_label("Activation control blockers"));
+    if review.blockers.is_empty() {
+        content.append(&small_label(
+            "No review blockers; executor remains unwired and production remains disabled.",
+        ));
+    } else {
+        for blocker in &review.blockers {
+            content.append(&small_label(blocker));
+        }
+    }
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let validate = gtk::Button::with_label(&review.disabled_action_label);
+    validate.set_widget_name(&review.disabled_action_widget_name);
+    validate.set_tooltip_text(Some(
+        "Disabled planned validation control. This has no mutation handler.",
+    ));
+    validate.set_sensitive(false);
+    content.append(&validate);
 
     frame.set_child(Some(&content));
     frame

@@ -75,7 +75,8 @@
     "report_backed_approval_card_data",
     "screenshot_level_disabled_approval_card_assertions",
     "default_disabled_production_activation_decision_review",
-    "default_disabled_production_activation_path_review"
+    "default_disabled_production_activation_path_review",
+    "default_disabled_production_activation_control_review"
   ],
   "partialPhases": [],
   "blockedPhases": [
@@ -92,7 +93,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "Design final production activation controls that validate complete request and safety-plan inputs while keeping source/include and duplicate production executors unwired by default.",
+  "nextExactPhaseToContinue": "Design the final explicit activation form/state machine that can collect real user request data while keeping source/include and duplicate production executors unwired by default.",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -122,7 +123,9 @@
     "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-DECISION-REVIEW-LOG.md",
     "data/reports/default-disabled-production-activation-path.v0.55.2.json",
-    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-PATH-REVIEW-LOG.md"
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-PATH-REVIEW-LOG.md",
+    "data/reports/default-disabled-production-activation-control.v0.55.2.json",
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-CONTROL-REVIEW-LOG.md"
   ],
   "testsPassing": "cargo fmt, cargo fmt --check, cargo check, cargo test, jq empty data/reports/*.json, git diff --check, cargo build --release, and GTK safe-env matrix passed after activation path review updates.",
   "testsFailing": [],
@@ -136,18 +139,21 @@
     "High-risk/display mutation remains blocked until out-of-band recovery can be proven before any mutation.",
     "0.55.4 migration remains blocked without trusted official exports and row/write-safety review.",
     "Activation decision reviews are review-only; production flags remain false and no production executor is wired.",
-    "Activation path reviews remain review-only; production activation flags and executors are still false/unwired."
+    "Activation path reviews remain review-only; production activation flags and executors are still false/unwired.",
+    "Activation control reviews validate complete request and safety-plan inputs for source/include and duplicate, but require executors to remain Unwired and keep all production flags false."
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "Design final production activation controls that validate complete request and safety-plan inputs while keeping source/include and duplicate production executors unwired by default.",
+  "recommendedNextCodexPrompt": "Design the final explicit activation form/state machine that can collect real user request data while keeping source/include and duplicate production executors unwired by default.",
   "generatedAt": "2026-06-20T00:00:00Z",
   "reportsAdded": [
     "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
-    "data/reports/default-disabled-production-activation-path.v0.55.2.json"
+    "data/reports/default-disabled-production-activation-path.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-control.v0.55.2.json"
   ],
   "summary": [
     "Source/include and duplicate activation decisions now consume report-backed approval card data and remain ApprovedButDefaultDisabled.",
-    "Source/include and duplicate activation paths consume approved-but-default-disabled decisions and report-backed proof, then stop at explicit production flag false."
+    "Source/include and duplicate activation paths consume approved-but-default-disabled decisions and report-backed proof, then stop at explicit production flag false.",
+    "Source/include and duplicate activation controls validate complete review-only request and safety-plan inputs, prove executors remain unwired, and keep production disabled."
   ]
 }

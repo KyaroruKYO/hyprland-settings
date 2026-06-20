@@ -4046,6 +4046,117 @@ impl ProductionActivationPathReview {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionExecutorWiringState {
+    Unwired,
+    WiredForTestingOnly,
+    WiredProduction,
+}
+
+impl ProductionExecutorWiringState {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::Unwired => "Unwired",
+            Self::WiredForTestingOnly => "Wired for testing only",
+            Self::WiredProduction => "Wired for production",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ProductionActivationControlStatus {
+    MissingActivationPath,
+    MissingActivationRequest,
+    MissingSafetyPlan,
+    MissingBackupPlan,
+    MissingRestorePlan,
+    MissingRereadPlan,
+    MissingFinalConfirmation,
+    WrongScope,
+    WrongCategory,
+    ProductionFlagMustRemainFalse,
+    ExecutorMustRemainUnwired,
+    ValidatedButExecutorUnwired,
+    Blocked,
+}
+
+impl ProductionActivationControlStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::MissingActivationPath => "Missing activation path",
+            Self::MissingActivationRequest => "Missing activation request",
+            Self::MissingSafetyPlan => "Missing safety plan",
+            Self::MissingBackupPlan => "Missing backup plan",
+            Self::MissingRestorePlan => "Missing restore plan",
+            Self::MissingRereadPlan => "Missing reread plan",
+            Self::MissingFinalConfirmation => "Missing final confirmation",
+            Self::WrongScope => "Wrong scope",
+            Self::WrongCategory => "Wrong category",
+            Self::ProductionFlagMustRemainFalse => "Production flag must remain false",
+            Self::ExecutorMustRemainUnwired => "Executor must remain unwired",
+            Self::ValidatedButExecutorUnwired => "Validated but executor unwired",
+            Self::Blocked => "Blocked",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationControlReview {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub disabled_action_widget_name: String,
+    pub heading: String,
+    pub input_path_status: ProductionActivationPathStatus,
+    pub input_decision_status: ProductionActivationDecisionStatus,
+    pub status: ProductionActivationControlStatus,
+    pub request_validation_status: String,
+    pub safety_plan_validation_status: String,
+    pub executor_wiring_status: ProductionExecutorWiringState,
+    pub blockers: Vec<String>,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_activation_enabled: bool,
+    pub category_production_enabled: bool,
+    pub disabled_action_label: String,
+}
+
+impl ProductionActivationControlReview {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        let mut lines = vec![
+            self.heading.clone(),
+            format!(
+                "Input path status: {}",
+                self.input_path_status.user_facing_label()
+            ),
+            format!(
+                "Input decision: {}",
+                self.input_decision_status.user_facing_label()
+            ),
+            format!("Control status: {}", self.status.user_facing_label()),
+            format!("Request validation: {}", self.request_validation_status),
+            format!(
+                "Safety plan validation: {}",
+                self.safety_plan_validation_status
+            ),
+            format!(
+                "Executor wiring: {}",
+                self.executor_wiring_status.user_facing_label()
+            ),
+        ];
+        lines.extend(
+            self.blockers
+                .iter()
+                .map(|blocker| format!("Activation control blocker: {blocker}")),
+        );
+        lines.push(format!(
+            "{}: {}",
+            self.production_label, self.production_status
+        ));
+        lines.push(self.disabled_action_label.clone());
+        lines
+    }
+}
+
 const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
     "data/reports/disabled-approval-ui-cards.v0.55.2.json";
 const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
@@ -4312,6 +4423,154 @@ pub fn duplicate_activation_path_review(
     )
 }
 
+pub fn production_activation_control_reviews() -> Vec<ProductionActivationControlReview> {
+    let report = load_disabled_approval_cards_from_reports();
+    let input_source = match &report.source.load_status {
+        ApprovalCardReportLoadStatus::Loaded => report.source.path.clone(),
+        ApprovalCardReportLoadStatus::ReportUnavailable(error) => {
+            format!("{} ({error})", report.source.path)
+        }
+    };
+    let source_card = report
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("source-include"));
+    let duplicate_card = report
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("duplicate"));
+    let source_decision = source_include_activation_decision_review(source_card, &input_source);
+    let duplicate_decision = duplicate_activation_decision_review(duplicate_card, &input_source);
+    let source_request = production_activation_control_request(
+        ProductionActivationRequestScope::SourceIncludeInsertion,
+        "sourceIncludeInsertion",
+    );
+    let duplicate_request = production_activation_control_request(
+        ProductionActivationRequestScope::DuplicateReplacement,
+        "duplicateReplacement",
+    );
+    let safety_plan = production_activation_control_safety_plan();
+    let source_path = source_include_activation_path_review(
+        Some(&source_decision),
+        source_card,
+        Some(&source_request),
+        Some(&safety_plan),
+        false,
+    );
+    let duplicate_path = duplicate_activation_path_review(
+        Some(&duplicate_decision),
+        duplicate_card,
+        Some(&duplicate_request),
+        Some(&safety_plan),
+        false,
+    );
+    vec![
+        source_include_activation_control_review(
+            Some(&source_path),
+            Some(&source_request),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        ),
+        duplicate_activation_control_review(
+            Some(&duplicate_path),
+            Some(&duplicate_request),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        ),
+    ]
+}
+
+pub fn production_activation_control_request(
+    scope: ProductionActivationRequestScope,
+    decision_category: &str,
+) -> ProductionActivationRequest {
+    ProductionActivationRequest {
+        scope,
+        user_facing_reason: "final review-only production activation control validation"
+            .to_string(),
+        decision_category: decision_category.to_string(),
+        explicit_activation_token: "VALIDATE REVIEW ONLY - KEEP PRODUCTION DISABLED".to_string(),
+        backup_plan_acknowledged: true,
+        restore_plan_acknowledged: true,
+        reread_plan_acknowledged: true,
+        final_confirmation_acknowledged: true,
+        one_shot_nonce: Some("review-only-control".to_string()),
+    }
+}
+
+pub fn production_activation_control_safety_plan() -> ProductionActivationSafetyPlan {
+    ProductionActivationSafetyPlan {
+        backup_before_write_plan: Some(
+            "create byte-exact backup before any future production write".to_string(),
+        ),
+        restore_plan: Some("restore original bytes before any review completes".to_string()),
+        post_write_reread_plan: Some("reread target after any future write".to_string()),
+        post_restore_verification_plan: Some(
+            "verify restored hash or symlink target after restore".to_string(),
+        ),
+        dry_run_summary: Some(
+            "dry-run must show exact target, exact old state, and exact proposed line".to_string(),
+        ),
+        files_that_would_be_touched: vec!["report-backed selected target only".to_string()],
+    }
+}
+
+pub fn source_include_activation_control_review(
+    path: Option<&ProductionActivationPathReview>,
+    request: Option<&ProductionActivationRequest>,
+    safety_plan: Option<&ProductionActivationSafetyPlan>,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+) -> ProductionActivationControlReview {
+    activation_control_review(
+        path,
+        request,
+        safety_plan,
+        executor_wiring,
+        production_activation_flag,
+        ActivationControlSpec {
+            widget_name: "hyprland-settings-source-include-activation-control-disabled",
+            evidence_widget_name: "hyprland-settings-source-include-activation-control-evidence",
+            disabled_action_widget_name:
+                "hyprland-settings-source-include-activation-control-validate-disabled",
+            heading: "Source/include production activation control",
+            production_label: "Production source/include insertion",
+            disabled_action_label: "Validate source/include activation request (planned)",
+            expected_scope: ProductionActivationRequestScope::SourceIncludeInsertion,
+            expected_category: "sourceIncludeInsertion",
+        },
+    )
+}
+
+pub fn duplicate_activation_control_review(
+    path: Option<&ProductionActivationPathReview>,
+    request: Option<&ProductionActivationRequest>,
+    safety_plan: Option<&ProductionActivationSafetyPlan>,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+) -> ProductionActivationControlReview {
+    activation_control_review(
+        path,
+        request,
+        safety_plan,
+        executor_wiring,
+        production_activation_flag,
+        ActivationControlSpec {
+            widget_name: "hyprland-settings-duplicate-activation-control-disabled",
+            evidence_widget_name: "hyprland-settings-duplicate-activation-control-evidence",
+            disabled_action_widget_name:
+                "hyprland-settings-duplicate-activation-control-validate-disabled",
+            heading: "Duplicate production activation control",
+            production_label: "Production duplicate writes",
+            disabled_action_label: "Validate duplicate activation request (planned)",
+            expected_scope: ProductionActivationRequestScope::DuplicateReplacement,
+            expected_category: "duplicateReplacement",
+        },
+    )
+}
+
 struct ActivationPathSpec {
     widget_name: &'static str,
     evidence_widget_name: &'static str,
@@ -4502,6 +4761,277 @@ fn activation_path_status(
         return ProductionActivationPathStatus::ActivationPathNeedsFinalUserApproval;
     }
     ProductionActivationPathStatus::ActivationPathReadyButDefaultDisabled
+}
+
+struct ActivationControlSpec {
+    widget_name: &'static str,
+    evidence_widget_name: &'static str,
+    disabled_action_widget_name: &'static str,
+    heading: &'static str,
+    production_label: &'static str,
+    disabled_action_label: &'static str,
+    expected_scope: ProductionActivationRequestScope,
+    expected_category: &'static str,
+}
+
+fn activation_control_review(
+    path: Option<&ProductionActivationPathReview>,
+    request: Option<&ProductionActivationRequest>,
+    safety_plan: Option<&ProductionActivationSafetyPlan>,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+    spec: ActivationControlSpec,
+) -> ProductionActivationControlReview {
+    let mut blockers = Vec::new();
+    let input_path_status = path
+        .map(|path| path.status.clone())
+        .unwrap_or(ProductionActivationPathStatus::ActivationPathBlocked);
+    let input_decision_status = path
+        .map(|path| path.input_decision_status.clone())
+        .unwrap_or(ProductionActivationDecisionStatus::MissingReportBackedCard);
+    let production_status = path
+        .map(|path| path.production_status.clone())
+        .unwrap_or_else(|| "Disabled".to_string());
+
+    if path.is_none() {
+        blockers.push("activation path review is missing".to_string());
+    }
+    if input_decision_status != ProductionActivationDecisionStatus::ApprovedButDefaultDisabled {
+        blockers.push(format!(
+            "input decision must be ApprovedButDefaultDisabled, got {}",
+            input_decision_status.user_facing_label()
+        ));
+    }
+    if production_status != "Disabled" {
+        blockers.push(format!(
+            "production status must be Disabled, got {production_status}"
+        ));
+    }
+    if production_activation_flag
+        || path
+            .map(|path| path.production_activation_enabled || path.category_production_enabled)
+            .unwrap_or(false)
+    {
+        blockers
+            .push("production flags must remain false for final control validation".to_string());
+    }
+
+    let request_validation_status = validate_activation_control_request(
+        request,
+        &mut blockers,
+        &spec.expected_scope,
+        spec.expected_category,
+    );
+    let safety_plan_validation_status =
+        validate_activation_control_safety_plan(safety_plan, &mut blockers);
+
+    if executor_wiring != ProductionExecutorWiringState::Unwired {
+        blockers.push("production executor must remain unwired".to_string());
+    }
+
+    let status = activation_control_status(&blockers, request, safety_plan, executor_wiring);
+    ProductionActivationControlReview {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        disabled_action_widget_name: spec.disabled_action_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        input_path_status,
+        input_decision_status,
+        status,
+        request_validation_status,
+        safety_plan_validation_status,
+        executor_wiring_status: executor_wiring,
+        blockers,
+        production_label: spec.production_label.to_string(),
+        production_status,
+        production_activation_enabled: false,
+        category_production_enabled: false,
+        disabled_action_label: spec.disabled_action_label.to_string(),
+    }
+}
+
+fn validate_activation_control_request(
+    request: Option<&ProductionActivationRequest>,
+    blockers: &mut Vec<String>,
+    expected_scope: &ProductionActivationRequestScope,
+    expected_category: &str,
+) -> String {
+    let Some(request) = request else {
+        blockers.push("explicit activation request is missing".to_string());
+        return "Missing activation request".to_string();
+    };
+
+    let mut missing = Vec::new();
+    if &request.scope != expected_scope {
+        blockers.push("activation request scope does not match control category".to_string());
+        missing.push("wrong scope");
+    }
+    if request.decision_category != expected_category {
+        blockers.push("activation request decision category does not match control".to_string());
+        missing.push("wrong category");
+    }
+    if request.user_facing_reason.trim().is_empty() {
+        blockers.push("activation request reason is missing".to_string());
+        missing.push("reason");
+    }
+    if request.explicit_activation_token.trim().is_empty() {
+        blockers.push("activation token is missing".to_string());
+        missing.push("token");
+    }
+    if !request.backup_plan_acknowledged {
+        blockers.push("backup acknowledgement is missing".to_string());
+        missing.push("backup acknowledgement");
+    }
+    if !request.restore_plan_acknowledged {
+        blockers.push("restore acknowledgement is missing".to_string());
+        missing.push("restore acknowledgement");
+    }
+    if !request.reread_plan_acknowledged {
+        blockers.push("reread acknowledgement is missing".to_string());
+        missing.push("reread acknowledgement");
+    }
+    if !request.final_confirmation_acknowledged {
+        blockers.push("final confirmation acknowledgement is missing".to_string());
+        missing.push("final confirmation");
+    }
+
+    if missing.is_empty() {
+        "Complete activation request".to_string()
+    } else {
+        format!("Incomplete activation request: {}", missing.join(", "))
+    }
+}
+
+fn validate_activation_control_safety_plan(
+    safety_plan: Option<&ProductionActivationSafetyPlan>,
+    blockers: &mut Vec<String>,
+) -> String {
+    let Some(plan) = safety_plan else {
+        blockers.push("activation safety plan is missing".to_string());
+        return "Missing safety plan".to_string();
+    };
+
+    let mut missing = Vec::new();
+    if plan
+        .backup_before_write_plan
+        .as_deref()
+        .is_none_or(str::is_empty)
+    {
+        blockers.push("backup-before-write plan is missing".to_string());
+        missing.push("backup-before-write plan");
+    }
+    if plan.restore_plan.as_deref().is_none_or(str::is_empty) {
+        blockers.push("restore plan is missing".to_string());
+        missing.push("restore plan");
+    }
+    if plan
+        .post_write_reread_plan
+        .as_deref()
+        .is_none_or(str::is_empty)
+    {
+        blockers.push("post-write reread plan is missing".to_string());
+        missing.push("post-write reread plan");
+    }
+    if plan
+        .post_restore_verification_plan
+        .as_deref()
+        .is_none_or(str::is_empty)
+    {
+        blockers.push("post-restore verification plan is missing".to_string());
+        missing.push("post-restore verification plan");
+    }
+    if plan.dry_run_summary.as_deref().is_none_or(str::is_empty) {
+        blockers.push("dry-run summary is missing".to_string());
+        missing.push("dry-run summary");
+    }
+    if plan.files_that_would_be_touched.is_empty() {
+        blockers.push("files that would be touched list is missing".to_string());
+        missing.push("files that would be touched");
+    }
+
+    if missing.is_empty() {
+        "Complete safety plan".to_string()
+    } else {
+        format!("Incomplete safety plan: {}", missing.join(", "))
+    }
+}
+
+fn activation_control_status(
+    blockers: &[String],
+    request: Option<&ProductionActivationRequest>,
+    safety_plan: Option<&ProductionActivationSafetyPlan>,
+    executor_wiring: ProductionExecutorWiringState,
+) -> ProductionActivationControlStatus {
+    if blockers
+        .iter()
+        .any(|blocker| blocker.contains("activation path review is missing"))
+    {
+        return ProductionActivationControlStatus::MissingActivationPath;
+    }
+    if request.is_none() {
+        return ProductionActivationControlStatus::MissingActivationRequest;
+    }
+    if blockers
+        .iter()
+        .any(|blocker| blocker.contains("scope does not match"))
+    {
+        return ProductionActivationControlStatus::WrongScope;
+    }
+    if blockers
+        .iter()
+        .any(|blocker| blocker.contains("decision category does not match"))
+    {
+        return ProductionActivationControlStatus::WrongCategory;
+    }
+    if blockers
+        .iter()
+        .any(|blocker| blocker.contains("production flags must remain false"))
+    {
+        return ProductionActivationControlStatus::ProductionFlagMustRemainFalse;
+    }
+    if executor_wiring != ProductionExecutorWiringState::Unwired {
+        return ProductionActivationControlStatus::ExecutorMustRemainUnwired;
+    }
+    if safety_plan.is_none() {
+        return ProductionActivationControlStatus::MissingSafetyPlan;
+    }
+    if blockers.iter().any(|blocker| {
+        blocker.contains("backup acknowledgement")
+            || blocker.contains("backup-before-write plan is missing")
+    }) {
+        return ProductionActivationControlStatus::MissingBackupPlan;
+    }
+    if blockers.iter().any(|blocker| {
+        blocker.contains("restore acknowledgement") || blocker == "restore plan is missing"
+    }) {
+        return ProductionActivationControlStatus::MissingRestorePlan;
+    }
+    if blockers.iter().any(|blocker| {
+        blocker.contains("reread acknowledgement") || blocker.contains("reread plan is missing")
+    }) {
+        return ProductionActivationControlStatus::MissingRereadPlan;
+    }
+    if blockers.iter().any(|blocker| {
+        blocker.contains("final confirmation")
+            || blocker.contains("activation token")
+            || blocker.contains("reason is missing")
+    }) {
+        return ProductionActivationControlStatus::MissingFinalConfirmation;
+    }
+    if blockers.iter().any(|blocker| {
+        blocker.contains("post-restore verification")
+            || blocker.contains("dry-run summary")
+            || blocker.contains("files that would be touched")
+    }) {
+        return ProductionActivationControlStatus::MissingSafetyPlan;
+    }
+    if blockers.iter().any(|blocker| {
+        blocker.contains("input decision must be ApprovedButDefaultDisabled")
+            || blocker.contains("production status must be Disabled")
+    }) {
+        return ProductionActivationControlStatus::Blocked;
+    }
+    ProductionActivationControlStatus::ValidatedButExecutorUnwired
 }
 
 struct ActivationDecisionSpec {

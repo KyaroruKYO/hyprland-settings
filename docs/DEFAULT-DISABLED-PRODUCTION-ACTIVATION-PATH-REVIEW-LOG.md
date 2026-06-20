@@ -42,3 +42,7 @@ The path consumes the existing `ApprovedButDefaultDisabled` activation decisions
 - No reload was run.
 - v0.55.2 remains the active app model.
 - Hyprland 0.55.4 migration remains inactive.
+
+## 2026-06-20 - Activation control follow-up
+
+Activation path reviews now feed final activation controls for source/include and duplicate. The controls validate complete request and safety-plan inputs but intentionally stop at `ValidatedButExecutorUnwired`; production flags remain false and executors remain unwired.

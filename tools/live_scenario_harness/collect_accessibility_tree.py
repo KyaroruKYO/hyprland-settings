@@ -109,6 +109,25 @@ ACTIVATION_PATH_ASSERTIONS = {
     },
 }
 
+ACTIVATION_CONTROL_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation control",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "action": "Validate source/include activation request (planned)",
+        "widget": "hyprland-settings-source-include-activation-control-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation control",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "action": "Validate duplicate activation request (planned)",
+        "widget": "hyprland-settings-duplicate-activation-control-disabled",
+    },
+}
+
 SAFE_NAVIGATION_TARGETS = {
     "Dashboard",
     "Config",
@@ -357,6 +376,30 @@ def activation_path_assertions(values):
             "headingFound": heading_found,
             "productionDisabledText": spec["production"] + ": " + spec["disabled"],
             "productionDisabledFound": production_found,
+            "disabledAction": spec["action"],
+            "disabledActionFound": action_found,
+            "widgetName": spec["widget"],
+            "widgetNameFound": widget_found,
+        }
+    return assertions
+
+
+def activation_control_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in ACTIVATION_CONTROL_ASSERTIONS.items():
+        heading_found = spec["heading"].lower() in text
+        production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
+        executor_found = spec["executor"].lower() in text
+        action_found = spec["action"].lower() in text
+        widget_found = spec["widget"].lower() in text
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": heading_found,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": production_found,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": executor_found,
             "disabledAction": spec["action"],
             "disabledActionFound": action_found,
             "widgetName": spec["widget"],
@@ -805,6 +848,9 @@ def main() -> int:
             result["text"] + result["textAfterNavigation"]
         )
         path_assertions = activation_path_assertions(result["text"] + result["textAfterNavigation"])
+        control_assertions = activation_control_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
         result["approvalCardAssertions"] = approval_assertions
         result["approvalCardsAllHeadingsFound"] = all(
             card["headingFound"] for card in approval_assertions.values()
@@ -834,6 +880,19 @@ def main() -> int:
         )
         result["activationPathsAllDisabledActionsFound"] = all(
             card["disabledActionFound"] for card in path_assertions.values()
+        )
+        result["activationControlAssertions"] = control_assertions
+        result["activationControlsAllHeadingsFound"] = all(
+            card["headingFound"] for card in control_assertions.values()
+        )
+        result["activationControlsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in control_assertions.values()
+        )
+        result["activationControlsAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in control_assertions.values()
+        )
+        result["activationControlsAllDisabledActionsFound"] = all(
+            card["disabledActionFound"] for card in control_assertions.values()
         )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text

@@ -1,6 +1,45 @@
 {
   "accessibilityInspectionAttempted": true,
   "accessibilityInspectionSucceeded": true,
+  "activationControlAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+  "activationControlResults": {
+    "duplicateReplacement": {
+      "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+      "disabledAction": "Validate duplicate activation request (planned)",
+      "disabledActionEvidenceRun": "generated_config_Config",
+      "disabledActionProof": "live_gtk_atspi_proof",
+      "executorWiring": "Executor wiring: Unwired",
+      "executorWiringEvidenceRun": "generated_config_Config",
+      "executorWiringProof": "live_gtk_atspi_proof",
+      "heading": "Duplicate production activation control",
+      "headingEvidenceRun": "generated_config_Config",
+      "headingProof": "live_gtk_atspi_proof",
+      "productionDisabledEvidenceRun": "generated_config_Config",
+      "productionDisabledProof": "live_gtk_atspi_proof",
+      "productionDisabledText": "Production duplicate writes: Disabled",
+      "widgetName": "hyprland-settings-duplicate-activation-control-disabled"
+    },
+    "sourceIncludeInsertion": {
+      "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+      "disabledAction": "Validate source/include activation request (planned)",
+      "disabledActionEvidenceRun": "generated_config_Config",
+      "disabledActionProof": "live_gtk_atspi_proof",
+      "executorWiring": "Executor wiring: Unwired",
+      "executorWiringEvidenceRun": "generated_config_Config",
+      "executorWiringProof": "live_gtk_atspi_proof",
+      "heading": "Source/include production activation control",
+      "headingEvidenceRun": "generated_config_Config",
+      "headingProof": "live_gtk_atspi_proof",
+      "productionDisabledEvidenceRun": "generated_config_Config",
+      "productionDisabledProof": "live_gtk_atspi_proof",
+      "productionDisabledText": "Production source/include insertion: Disabled",
+      "widgetName": "hyprland-settings-source-include-activation-control-disabled"
+    }
+  },
+  "activationControlsAllDisabledActionsFound": true,
+  "activationControlsAllExecutorUnwiredFound": true,
+  "activationControlsAllHeadingsFound": true,
+  "activationControlsAllProductionDisabledFound": true,
   "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
   "activationDecisionResults": {
     "duplicateReplacement": {
@@ -305,7 +344,7 @@
   "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
   "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
   "fallbackProofUsed": false,
-  "generatedAt": "2026-06-20T08:53:48.859090+00:00",
+  "generatedAt": "2026-06-20T09:19:08.101903+00:00",
   "goal": "Prove disabled approval review cards through screenshot-level safe-env automation using screenshots plus AT-SPI accessibility-tree text, not OCR.",
   "hyprlandReloaded": false,
   "installedHyprlandPackageVersion": "0.55.4-1",
@@ -405,6 +444,37 @@
   "scenarioResults": [
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Duplicate production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Source/include production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": false,
+        "activationControlsAllExecutorUnwiredFound": false,
+        "activationControlsAllHeadingsFound": false,
+        "activationControlsAllProductionDisabledFound": false,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -627,6 +697,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Duplicate production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Source/include production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": false,
+        "activationControlsAllExecutorUnwiredFound": false,
+        "activationControlsAllHeadingsFound": false,
+        "activationControlsAllProductionDisabledFound": false,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -858,6 +959,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Duplicate production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Source/include production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": true,
+        "activationControlsAllExecutorUnwiredFound": true,
+        "activationControlsAllHeadingsFound": true,
+        "activationControlsAllProductionDisabledFound": true,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -1085,6 +1217,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Duplicate production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Source/include production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": true,
+        "activationControlsAllExecutorUnwiredFound": true,
+        "activationControlsAllHeadingsFound": true,
+        "activationControlsAllProductionDisabledFound": true,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -1312,6 +1475,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Duplicate production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Source/include production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": false,
+        "activationControlsAllExecutorUnwiredFound": false,
+        "activationControlsAllHeadingsFound": false,
+        "activationControlsAllProductionDisabledFound": false,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -1535,6 +1729,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Duplicate production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Source/include production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": false,
+        "activationControlsAllExecutorUnwiredFound": false,
+        "activationControlsAllHeadingsFound": false,
+        "activationControlsAllProductionDisabledFound": false,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -1761,6 +1986,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Duplicate production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Source/include production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": false,
+        "activationControlsAllExecutorUnwiredFound": false,
+        "activationControlsAllHeadingsFound": false,
+        "activationControlsAllProductionDisabledFound": false,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -1987,6 +2243,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Duplicate production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Source/include production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": false,
+        "activationControlsAllExecutorUnwiredFound": false,
+        "activationControlsAllHeadingsFound": false,
+        "activationControlsAllProductionDisabledFound": false,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -2207,6 +2494,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Duplicate production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Source/include production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": true,
+        "activationControlsAllExecutorUnwiredFound": true,
+        "activationControlsAllHeadingsFound": true,
+        "activationControlsAllProductionDisabledFound": true,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -2432,6 +2750,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Duplicate production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Source/include production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": false,
+        "activationControlsAllExecutorUnwiredFound": false,
+        "activationControlsAllHeadingsFound": false,
+        "activationControlsAllProductionDisabledFound": false,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -2642,6 +2991,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Duplicate production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Source/include production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": false,
+        "activationControlsAllExecutorUnwiredFound": false,
+        "activationControlsAllHeadingsFound": false,
+        "activationControlsAllProductionDisabledFound": false,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -2852,6 +3232,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Duplicate production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Source/include production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": false,
+        "activationControlsAllExecutorUnwiredFound": false,
+        "activationControlsAllHeadingsFound": false,
+        "activationControlsAllProductionDisabledFound": false,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -3062,6 +3473,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Duplicate production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Source/include production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": false,
+        "activationControlsAllExecutorUnwiredFound": false,
+        "activationControlsAllHeadingsFound": false,
+        "activationControlsAllProductionDisabledFound": false,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -3272,6 +3714,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Duplicate production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Source/include production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": false,
+        "activationControlsAllExecutorUnwiredFound": false,
+        "activationControlsAllHeadingsFound": false,
+        "activationControlsAllProductionDisabledFound": false,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -3492,6 +3965,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Duplicate production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": false,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": false,
+            "heading": "Source/include production activation control",
+            "headingFound": false,
+            "productionDisabledFound": false,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": false,
+        "activationControlsAllExecutorUnwiredFound": false,
+        "activationControlsAllHeadingsFound": false,
+        "activationControlsAllProductionDisabledFound": false,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -3715,6 +4219,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Duplicate production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Source/include production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": true,
+        "activationControlsAllExecutorUnwiredFound": true,
+        "activationControlsAllHeadingsFound": true,
+        "activationControlsAllProductionDisabledFound": true,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -3940,6 +4475,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Duplicate production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Source/include production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": true,
+        "activationControlsAllExecutorUnwiredFound": true,
+        "activationControlsAllHeadingsFound": true,
+        "activationControlsAllProductionDisabledFound": true,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -4166,6 +4732,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Duplicate production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Source/include production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": true,
+        "activationControlsAllExecutorUnwiredFound": true,
+        "activationControlsAllHeadingsFound": true,
+        "activationControlsAllProductionDisabledFound": true,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -4392,6 +4989,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Duplicate production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Source/include production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": true,
+        "activationControlsAllExecutorUnwiredFound": true,
+        "activationControlsAllHeadingsFound": true,
+        "activationControlsAllProductionDisabledFound": true,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -4617,6 +5245,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Duplicate production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Source/include production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": true,
+        "activationControlsAllExecutorUnwiredFound": true,
+        "activationControlsAllHeadingsFound": true,
+        "activationControlsAllProductionDisabledFound": true,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -4843,6 +5502,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Duplicate production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Source/include production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": true,
+        "activationControlsAllExecutorUnwiredFound": true,
+        "activationControlsAllHeadingsFound": true,
+        "activationControlsAllProductionDisabledFound": true,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {
@@ -5069,6 +5759,37 @@
     },
     {
       "accessibility": {
+        "activationControlAssertionMethod": null,
+        "activationControlAssertions": {
+          "duplicateReplacement": {
+            "disabledAction": "Validate duplicate activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Duplicate production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production duplicate writes: Disabled",
+            "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+            "widgetNameFound": false
+          },
+          "sourceIncludeInsertion": {
+            "disabledAction": "Validate source/include activation request (planned)",
+            "disabledActionFound": true,
+            "executorWiring": "Executor wiring: Unwired",
+            "executorWiringFound": true,
+            "heading": "Source/include production activation control",
+            "headingFound": true,
+            "productionDisabledFound": true,
+            "productionDisabledText": "Production source/include insertion: Disabled",
+            "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+            "widgetNameFound": false
+          }
+        },
+        "activationControlsAllDisabledActionsFound": true,
+        "activationControlsAllExecutorUnwiredFound": true,
+        "activationControlsAllHeadingsFound": true,
+        "activationControlsAllProductionDisabledFound": true,
         "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         "activationDecisionAssertions": {
           "duplicateReplacement": {

@@ -105,6 +105,9 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("ACTIVATION_PATH_ASSERTIONS"));
     assert!(collector.contains("activationPathAssertionMethod"));
     assert!(collector.contains("activationPathAssertions"));
+    assert!(collector.contains("ACTIVATION_CONTROL_ASSERTIONS"));
+    assert!(collector.contains("activationControlAssertions"));
+    assert!(collector.contains("activationControlsAllExecutorUnwiredFound"));
     for expected in [
         "Source/include approval review",
         "Duplicate approval review",
@@ -112,6 +115,9 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "Duplicate production activation decision",
         "Source/include production activation path",
         "Duplicate production activation path",
+        "Source/include production activation control",
+        "Duplicate production activation control",
+        "Executor wiring: Unwired",
         "Structured hl.bind approval review",
         "Profile/mode approval review",
         "High-risk/display approval review",
@@ -219,6 +225,11 @@ fn gtk_harness_records_screenshot_level_disabled_approval_card_assertions() {
         "activationPathsAllHeadingsFound",
         "activationPathsAllProductionDisabledFound",
         "activationPathsAllDisabledActionsFound",
+        "activation_control_assertion_results",
+        "activationControlsAllHeadingsFound",
+        "activationControlsAllProductionDisabledFound",
+        "activationControlsAllExecutorUnwiredFound",
+        "activationControlsAllDisabledActionsFound",
         "sourceIncludeInsertion",
         "duplicateReplacement",
         "structuredHlBindWrite",

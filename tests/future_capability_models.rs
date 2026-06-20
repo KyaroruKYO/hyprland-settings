@@ -8,9 +8,10 @@ use hyprland_settings::future_capability::{
     copied_config_tree_report, copy_config_tree_for_proof, current_v0552_data_bundle,
     disabled_future_approval_card_projections, disabled_migration_review,
     disabled_missing_default_insertion_review, disabled_profile_switch_review,
-    disabled_profile_switch_selection_review, duplicate_activation_decision_review,
-    duplicate_activation_path_review, duplicate_approval_flow, duplicate_occurrence_confirmation,
-    duplicate_occurrence_model, duplicate_occurrence_review, duplicate_production_approval_gate,
+    disabled_profile_switch_selection_review, duplicate_activation_control_review,
+    duplicate_activation_decision_review, duplicate_activation_path_review,
+    duplicate_approval_flow, duplicate_occurrence_confirmation, duplicate_occurrence_model,
+    duplicate_occurrence_review, duplicate_production_approval_gate,
     duplicate_production_gate_review, edit_structured_bind_safe_env,
     execute_duplicate_replacement_guarded_temp,
     execute_source_include_selected_target_guarded_temp, execute_structured_bind_guarded_temp,
@@ -19,37 +20,41 @@ use hyprland_settings::future_capability::{
     high_risk_recovery_workflow, hyprland_0554_approval_flow, hyprland_version_activation_gate,
     load_disabled_approval_cards_from_report_str, load_disabled_approval_cards_from_reports,
     local_hyprland_version_evidence, migration_comparison_review,
-    production_activation_decision_reviews, production_activation_path_reviews,
-    profile_approval_flow, profile_production_gate_review, profile_target_approval_review,
-    proven_runtime_approval_evidence_summary, render_structured_entry_lossless,
-    replace_duplicate_occurrence_safe_env, replace_duplicate_occurrence_with_confirmation_safe_env,
-    runtime_action_policy, runtime_action_review, runtime_approval_flow, runtime_command_risk,
+    production_activation_control_request, production_activation_control_reviews,
+    production_activation_control_safety_plan, production_activation_decision_reviews,
+    production_activation_path_reviews, profile_approval_flow, profile_production_gate_review,
+    profile_target_approval_review, proven_runtime_approval_evidence_summary,
+    render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
+    replace_duplicate_occurrence_with_confirmation_safe_env, runtime_action_policy,
+    runtime_action_review, runtime_approval_flow, runtime_command_risk,
     runtime_eval_syntax_evidence, runtime_guarded_executor, runtime_live_restore_approval_review,
     runtime_live_restore_attempt_review, runtime_live_restore_proof_review,
     runtime_production_gate_review, runtime_socket_diagnosis,
-    source_include_activation_decision_review, source_include_activation_path_review,
-    source_include_approval_flow, source_include_insertion_review,
-    source_include_production_gate_review, source_include_selected_target_dry_run_plan,
-    source_include_target_selection_fixture_proof, structured_approval_flow,
-    structured_family_model, structured_family_review, structured_production_gate_review,
-    switch_profile_symlink_guarded_temp, switch_profile_symlink_safe_env,
-    trusted_export_requirement, validate_structured_edit_candidate, ApprovalCardReportLoadStatus,
-    ApprovalEvidence, ApprovalRequest, ApprovalScope, ApprovalStatus, ApprovalToken,
-    ControlledLiveTestGuardRequest, ControlledLiveTestKind, DuplicateOccurrenceApprovalState,
-    DuplicateOccurrenceReviewState, DuplicateProductionGateStatus, DuplicateReplacementOptions,
-    DuplicateReplacementRequest, DuplicateReplacementStatus, GuardedTempExecutionStatus,
-    HighRiskLiveReadinessStatus, HighRiskProductionGateStatus, HyprlandVersionActivationStatus,
-    MockWatchdog, MockWatchdogState, ProductionActivationDecisionStatus,
+    source_include_activation_control_review, source_include_activation_decision_review,
+    source_include_activation_path_review, source_include_approval_flow,
+    source_include_insertion_review, source_include_production_gate_review,
+    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
+    structured_approval_flow, structured_family_model, structured_family_review,
+    structured_production_gate_review, switch_profile_symlink_guarded_temp,
+    switch_profile_symlink_safe_env, trusted_export_requirement,
+    validate_structured_edit_candidate, ApprovalCardReportLoadStatus, ApprovalEvidence,
+    ApprovalRequest, ApprovalScope, ApprovalStatus, ApprovalToken, ControlledLiveTestGuardRequest,
+    ControlledLiveTestKind, DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
+    DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
+    DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
+    HighRiskProductionGateStatus, HyprlandVersionActivationStatus, MockWatchdog, MockWatchdogState,
+    ProductionActivationControlStatus, ProductionActivationDecisionStatus,
     ProductionActivationPathStatus, ProductionActivationRequest, ProductionActivationRequestScope,
-    ProductionActivationSafetyPlan, ProfileProductionGateStatus, ProfileSwitchStatus,
-    ProfileTargetReadiness, RuntimeAction, RuntimeApprovalReviewStatus, RuntimeCommandRisk,
-    RuntimeDirectIpcReadOnlyEvidence, RuntimeDryRunExecutor, RuntimeEvalSyntaxEvidence,
-    RuntimeLiveRestoreProof, RuntimeLiveRestoreStatus, RuntimeMutationCommandPair,
-    RuntimeMutationSyntaxCandidate, RuntimeMutationSyntaxStatus, RuntimeProductionGateStatus,
-    RuntimeReadOnlyEvidence, RuntimeSocketCandidate, RuntimeSocketDiagnosisStatus,
-    SourceIncludeInsertionReadiness, SourceIncludeProductionGateStatus,
-    SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
-    SourceIncludeTargetSelectionStatus, StructuredBindEditStatus, StructuredProductionGateStatus,
+    ProductionActivationSafetyPlan, ProductionExecutorWiringState, ProfileProductionGateStatus,
+    ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction, RuntimeApprovalReviewStatus,
+    RuntimeCommandRisk, RuntimeDirectIpcReadOnlyEvidence, RuntimeDryRunExecutor,
+    RuntimeEvalSyntaxEvidence, RuntimeLiveRestoreProof, RuntimeLiveRestoreStatus,
+    RuntimeMutationCommandPair, RuntimeMutationSyntaxCandidate, RuntimeMutationSyntaxStatus,
+    RuntimeProductionGateStatus, RuntimeReadOnlyEvidence, RuntimeSocketCandidate,
+    RuntimeSocketDiagnosisStatus, SourceIncludeInsertionReadiness,
+    SourceIncludeProductionGateStatus, SourceIncludeSelectedTargetDryRunStatus,
+    SourceIncludeTargetCandidate, SourceIncludeTargetSelectionStatus, StructuredBindEditStatus,
+    StructuredProductionGateStatus,
 };
 use hyprland_settings::missing_default_insertion::{
     build_missing_default_insertion_plan, MissingDefaultInsertionRequest,
@@ -3949,6 +3954,681 @@ fn default_activation_path_reviews_are_visible_but_not_enabled() {
             .blockers
             .iter()
             .any(|blocker| blocker.contains("production activation flag is false")));
+    }
+}
+
+#[test]
+fn source_include_activation_control_validates_complete_inputs_but_keeps_executor_unwired() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    let source_card = report_backed
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("source-include"))
+        .expect("source/include card");
+    let decision = source_include_activation_decision_review(Some(source_card), "test-report");
+    let request = production_activation_control_request(
+        ProductionActivationRequestScope::SourceIncludeInsertion,
+        "sourceIncludeInsertion",
+    );
+    let safety_plan = production_activation_control_safety_plan();
+    let path = source_include_activation_path_review(
+        Some(&decision),
+        Some(source_card),
+        Some(&request),
+        Some(&safety_plan),
+        false,
+    );
+    let control = source_include_activation_control_review(
+        Some(&path),
+        Some(&request),
+        Some(&safety_plan),
+        ProductionExecutorWiringState::Unwired,
+        false,
+    );
+
+    assert_eq!(
+        control.input_path_status,
+        ProductionActivationPathStatus::ActivationPathNeedsExplicitProductionFlag
+    );
+    assert_eq!(
+        control.status,
+        ProductionActivationControlStatus::ValidatedButExecutorUnwired
+    );
+    assert_eq!(
+        control.request_validation_status,
+        "Complete activation request"
+    );
+    assert_eq!(
+        control.safety_plan_validation_status,
+        "Complete safety plan"
+    );
+    assert_eq!(
+        control.executor_wiring_status,
+        ProductionExecutorWiringState::Unwired
+    );
+    assert!(!control.production_activation_enabled);
+    assert!(!control.category_production_enabled);
+    let lines = control.user_facing_lines().join("\n");
+    for expected in [
+        "Source/include production activation control",
+        "Input path status: Activation path needs explicit production flag",
+        "Control status: Validated but executor unwired",
+        "Request validation: Complete activation request",
+        "Safety plan validation: Complete safety plan",
+        "Executor wiring: Unwired",
+        "Production source/include insertion: Disabled",
+    ] {
+        assert!(
+            lines.contains(expected),
+            "missing source/include activation control line: {expected}"
+        );
+    }
+}
+
+#[test]
+fn source_include_activation_control_blocks_missing_inputs_flags_and_wired_executor() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    let source_card = report_backed
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("source-include"))
+        .expect("source/include card");
+    let decision = source_include_activation_decision_review(Some(source_card), "test-report");
+    let request = production_activation_control_request(
+        ProductionActivationRequestScope::SourceIncludeInsertion,
+        "sourceIncludeInsertion",
+    );
+    let safety_plan = production_activation_control_safety_plan();
+    let path = source_include_activation_path_review(
+        Some(&decision),
+        Some(source_card),
+        Some(&request),
+        Some(&safety_plan),
+        false,
+    );
+
+    assert_eq!(
+        source_include_activation_control_review(
+            None,
+            Some(&request),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingActivationPath
+    );
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            None,
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingActivationRequest
+    );
+
+    let mut wrong_scope = request.clone();
+    wrong_scope.scope = ProductionActivationRequestScope::DuplicateReplacement;
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&wrong_scope),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::WrongScope
+    );
+
+    let mut wrong_category = request.clone();
+    wrong_category.decision_category = "duplicateReplacement".to_string();
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&wrong_category),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::WrongCategory
+    );
+
+    let mut missing_token = request.clone();
+    missing_token.explicit_activation_token.clear();
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&missing_token),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingFinalConfirmation
+    );
+
+    let mut missing_backup_ack = request.clone();
+    missing_backup_ack.backup_plan_acknowledged = false;
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&missing_backup_ack),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingBackupPlan
+    );
+
+    let mut missing_restore_ack = request.clone();
+    missing_restore_ack.restore_plan_acknowledged = false;
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&missing_restore_ack),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingRestorePlan
+    );
+
+    let mut missing_reread_ack = request.clone();
+    missing_reread_ack.reread_plan_acknowledged = false;
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&missing_reread_ack),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingRereadPlan
+    );
+
+    let mut missing_final = request.clone();
+    missing_final.final_confirmation_acknowledged = false;
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&missing_final),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingFinalConfirmation
+    );
+
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&request),
+            None,
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingSafetyPlan
+    );
+
+    let mut partial_plan = safety_plan.clone();
+    partial_plan.backup_before_write_plan = None;
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&partial_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingBackupPlan
+    );
+
+    let mut partial_plan = safety_plan.clone();
+    partial_plan.restore_plan = None;
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&partial_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingRestorePlan
+    );
+
+    let mut partial_plan = safety_plan.clone();
+    partial_plan.post_write_reread_plan = None;
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&partial_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingRereadPlan
+    );
+
+    let mut partial_plan = safety_plan.clone();
+    partial_plan.post_restore_verification_plan = None;
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&partial_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingSafetyPlan
+    );
+
+    let mut partial_plan = safety_plan.clone();
+    partial_plan.files_that_would_be_touched.clear();
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&partial_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingSafetyPlan
+    );
+
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            true,
+        )
+        .status,
+        ProductionActivationControlStatus::ProductionFlagMustRemainFalse
+    );
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::WiredForTestingOnly,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::ExecutorMustRemainUnwired
+    );
+    assert_eq!(
+        source_include_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::WiredProduction,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::ExecutorMustRemainUnwired
+    );
+}
+
+#[test]
+fn duplicate_activation_control_validates_complete_inputs_but_keeps_executor_unwired() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    let duplicate_card = report_backed
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("duplicate"))
+        .expect("duplicate card");
+    let decision = duplicate_activation_decision_review(Some(duplicate_card), "test-report");
+    let request = production_activation_control_request(
+        ProductionActivationRequestScope::DuplicateReplacement,
+        "duplicateReplacement",
+    );
+    let safety_plan = production_activation_control_safety_plan();
+    let path = duplicate_activation_path_review(
+        Some(&decision),
+        Some(duplicate_card),
+        Some(&request),
+        Some(&safety_plan),
+        false,
+    );
+    let control = duplicate_activation_control_review(
+        Some(&path),
+        Some(&request),
+        Some(&safety_plan),
+        ProductionExecutorWiringState::Unwired,
+        false,
+    );
+
+    assert_eq!(
+        control.status,
+        ProductionActivationControlStatus::ValidatedButExecutorUnwired
+    );
+    assert_eq!(
+        control.request_validation_status,
+        "Complete activation request"
+    );
+    assert_eq!(
+        control.safety_plan_validation_status,
+        "Complete safety plan"
+    );
+    assert_eq!(
+        control.executor_wiring_status,
+        ProductionExecutorWiringState::Unwired
+    );
+    assert!(!control.production_activation_enabled);
+    assert!(!control.category_production_enabled);
+    let lines = control.user_facing_lines().join("\n");
+    for expected in [
+        "Duplicate production activation control",
+        "Control status: Validated but executor unwired",
+        "Request validation: Complete activation request",
+        "Safety plan validation: Complete safety plan",
+        "Executor wiring: Unwired",
+        "Production duplicate writes: Disabled",
+    ] {
+        assert!(
+            lines.contains(expected),
+            "missing duplicate activation control line: {expected}"
+        );
+    }
+}
+
+#[test]
+fn duplicate_activation_control_blocks_missing_inputs_flags_and_wired_executor() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    let duplicate_card = report_backed
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("duplicate"))
+        .expect("duplicate card");
+    let decision = duplicate_activation_decision_review(Some(duplicate_card), "test-report");
+    let request = production_activation_control_request(
+        ProductionActivationRequestScope::DuplicateReplacement,
+        "duplicateReplacement",
+    );
+    let safety_plan = production_activation_control_safety_plan();
+    let path = duplicate_activation_path_review(
+        Some(&decision),
+        Some(duplicate_card),
+        Some(&request),
+        Some(&safety_plan),
+        false,
+    );
+
+    assert_eq!(
+        duplicate_activation_control_review(
+            None,
+            Some(&request),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingActivationPath
+    );
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            None,
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingActivationRequest
+    );
+
+    let mut wrong_scope = request.clone();
+    wrong_scope.scope = ProductionActivationRequestScope::SourceIncludeInsertion;
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&wrong_scope),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::WrongScope
+    );
+
+    let mut wrong_category = request.clone();
+    wrong_category.decision_category = "sourceIncludeInsertion".to_string();
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&wrong_category),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::WrongCategory
+    );
+
+    let mut missing_token = request.clone();
+    missing_token.explicit_activation_token.clear();
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&missing_token),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingFinalConfirmation
+    );
+
+    let mut missing_backup_ack = request.clone();
+    missing_backup_ack.backup_plan_acknowledged = false;
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&missing_backup_ack),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingBackupPlan
+    );
+
+    let mut missing_restore_ack = request.clone();
+    missing_restore_ack.restore_plan_acknowledged = false;
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&missing_restore_ack),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingRestorePlan
+    );
+
+    let mut missing_reread_ack = request.clone();
+    missing_reread_ack.reread_plan_acknowledged = false;
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&missing_reread_ack),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingRereadPlan
+    );
+
+    let mut missing_final = request.clone();
+    missing_final.final_confirmation_acknowledged = false;
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&missing_final),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingFinalConfirmation
+    );
+
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&request),
+            None,
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingSafetyPlan
+    );
+
+    let mut partial_plan = safety_plan.clone();
+    partial_plan.backup_before_write_plan = None;
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&partial_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingBackupPlan
+    );
+
+    let mut partial_plan = safety_plan.clone();
+    partial_plan.restore_plan = None;
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&partial_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingRestorePlan
+    );
+
+    let mut partial_plan = safety_plan.clone();
+    partial_plan.post_write_reread_plan = None;
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&partial_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingRereadPlan
+    );
+
+    let mut partial_plan = safety_plan.clone();
+    partial_plan.post_restore_verification_plan = None;
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&partial_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingSafetyPlan
+    );
+
+    let mut partial_plan = safety_plan.clone();
+    partial_plan.files_that_would_be_touched.clear();
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&partial_plan),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::MissingSafetyPlan
+    );
+
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::Unwired,
+            true,
+        )
+        .status,
+        ProductionActivationControlStatus::ProductionFlagMustRemainFalse
+    );
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::WiredForTestingOnly,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::ExecutorMustRemainUnwired
+    );
+    assert_eq!(
+        duplicate_activation_control_review(
+            Some(&path),
+            Some(&request),
+            Some(&safety_plan),
+            ProductionExecutorWiringState::WiredProduction,
+            false,
+        )
+        .status,
+        ProductionActivationControlStatus::ExecutorMustRemainUnwired
+    );
+}
+
+#[test]
+fn default_activation_control_reviews_validate_but_keep_production_unwired() {
+    let reviews = production_activation_control_reviews();
+    assert_eq!(reviews.len(), 2);
+    for review in reviews {
+        assert_eq!(
+            review.status,
+            ProductionActivationControlStatus::ValidatedButExecutorUnwired
+        );
+        assert_eq!(
+            review.request_validation_status,
+            "Complete activation request"
+        );
+        assert_eq!(review.safety_plan_validation_status, "Complete safety plan");
+        assert_eq!(
+            review.executor_wiring_status,
+            ProductionExecutorWiringState::Unwired
+        );
+        assert_eq!(review.production_status, "Disabled");
+        assert!(!review.production_activation_enabled);
+        assert!(!review.category_production_enabled);
     }
 }
 

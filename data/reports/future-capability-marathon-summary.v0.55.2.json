@@ -95,7 +95,8 @@
     "report_backed_approval_card_data",
     "screenshot_level_disabled_approval_card_assertions",
     "default_disabled_production_activation_decision_review",
-    "default_disabled_production_activation_path_review"
+    "default_disabled_production_activation_path_review",
+    "default_disabled_production_activation_control_review"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -133,7 +134,9 @@
     "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-DECISION-REVIEW-LOG.md",
     "data/reports/default-disabled-production-activation-path.v0.55.2.json",
-    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-PATH-REVIEW-LOG.md"
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-PATH-REVIEW-LOG.md",
+    "data/reports/default-disabled-production-activation-control.v0.55.2.json",
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-CONTROL-REVIEW-LOG.md"
   ],
   "testsAdded": [
     "tests/future_capability_marathon.rs",
@@ -144,7 +147,9 @@
     "source/include and duplicate production activation decision review model tests",
     "GTK screenshot/accessibility assertions for source/include and duplicate activation decision cards",
     "source/include and duplicate production activation path model tests",
-    "GTK screenshot/accessibility assertions for source/include and duplicate activation path cards"
+    "GTK screenshot/accessibility assertions for source/include and duplicate activation path cards",
+    "source/include and duplicate production activation control model tests",
+    "GTK screenshot/accessibility assertions for source/include and duplicate activation control cards"
   ],
   "validation": {
     "cargoFmt": "passed",
@@ -157,12 +162,12 @@
     "gtkSafeEnvMatrix": "passed",
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260620_000757"
   },
-  "nextRecommendedAction": "Design final production activation controls that validate complete request and safety-plan inputs while keeping source/include and duplicate production executors unwired by default.",
+  "nextRecommendedAction": "Design the final explicit activation form/state machine that can collect real user request data while keeping source/include and duplicate production executors unwired by default.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "98-98%",
       "after": "98-99%",
-      "evidence": "Added disabled Config-page production activation path cards for source/include and duplicate paths, backed by GTK screenshot plus AT-SPI assertions."
+      "evidence": "Added disabled Config-page production activation path and final control cards for source/include and duplicate, backed by GTK screenshot plus AT-SPI assertions."
     },
     "configDiscoverySourceAwareModel": {
       "before": "90-93%",
@@ -186,13 +191,13 @@
     },
     "missingDefaultInsertion": {
       "before": "97-98%",
-      "after": "98-98%",
-      "evidence": "Source/include activation path consumes ApprovedButDefaultDisabled decision and report-backed proof data, then remains stopped at explicit production flag false."
+      "after": "98-99%",
+      "evidence": "Source/include activation control validates complete request and safety-plan inputs, requires executor wiring to stay Unwired, and remains review-only with production flag false."
     },
     "duplicateResolution": {
       "before": "88-92%",
-      "after": "89-93%",
-      "evidence": "Duplicate activation path consumes ApprovedButDefaultDisabled decision and report-backed proof data, then remains stopped at explicit production flag false."
+      "after": "90-93%",
+      "evidence": "Duplicate activation control validates complete request and safety-plan inputs, requires executor wiring to stay Unwired, and remains review-only with production flag false."
     },
     "highRiskDisplayRecovery": {
       "before": "61-70%",

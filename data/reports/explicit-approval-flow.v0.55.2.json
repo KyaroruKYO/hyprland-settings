@@ -78,7 +78,9 @@
     "report_backed_disabled_approval_cards_degrade_missing_fields_explicitly",
     "gtk_harness_records_screenshot_level_disabled_approval_card_assertions",
     "disabled_future_approval_cards_are_visible_and_non_mutating",
-    "deep_approval_card_data_report_records_proof_backed_fields_without_enablement"
+    "deep_approval_card_data_report_records_proof_backed_fields_without_enablement",
+    "source_include_activation_control_validates_complete_inputs_but_keeps_executor_unwired",
+    "duplicate_activation_control_validates_complete_inputs_but_keeps_executor_unwired"
   ],
   "safety": {
     "productionFlagDefaultFalse": true,
@@ -105,7 +107,7 @@
     "duplicateProductionEnabled": false,
     "unsafeProductionBehaviorEnabled": false
   },
-  "nextRecommendedWork": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.",
+  "nextRecommendedWork": "Design the final explicit activation form/state machine that can collect real user request data while keeping source/include and duplicate production executors unwired by default.",
   "testsAdded": [
     "production activation decision review tests for source/include and duplicate default-disabled paths"
   ],
@@ -123,6 +125,25 @@
     },
     "duplicateReplacement": {
       "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    }
+  },
+  "activationControlReview": {
+    "report": "data/reports/default-disabled-production-activation-control.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ValidatedButExecutorUnwired",
+      "requestValidationStatus": "Complete activation request",
+      "safetyPlanValidationStatus": "Complete safety plan",
+      "executorWiringStatus": "Unwired",
+      "productionEnabled": false,
+      "productionFlag": false
+    },
+    "duplicateReplacement": {
+      "status": "ValidatedButExecutorUnwired",
+      "requestValidationStatus": "Complete activation request",
+      "safetyPlanValidationStatus": "Complete safety plan",
+      "executorWiringStatus": "Unwired",
       "productionEnabled": false,
       "productionFlag": false
     }

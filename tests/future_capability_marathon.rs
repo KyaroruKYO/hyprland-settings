@@ -86,12 +86,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Design final production activation controls that validate complete request and safety-plan inputs while keeping source/include and duplicate production executors unwired by default."
+        "Design the final explicit activation form/state machine that can collect real user request data while keeping source/include and duplicate production executors unwired by default."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("complete request and safety-plan inputs"));
+        .contains("explicit activation form/state machine"));
 }
 
 #[test]
@@ -541,6 +541,66 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         false
     );
 
+    let activation_control =
+        read_json("data/reports/default-disabled-production-activation-control.v0.55.2.json");
+    assert_eq!(activation_control["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        activation_control["implementation"]["activationControlModelExists"],
+        true
+    );
+    assert_eq!(
+        activation_control["implementation"]["executorWiringModelExists"],
+        true
+    );
+    assert_eq!(
+        activation_control["implementation"]["uiSurfaceExists"],
+        true
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_control["controls"][key]["inputPathStatus"],
+            "ActivationPathNeedsExplicitProductionFlag"
+        );
+        assert_eq!(
+            activation_control["controls"][key]["status"],
+            "ValidatedButExecutorUnwired"
+        );
+        assert_eq!(
+            activation_control["controls"][key]["requestValidationStatus"],
+            "Complete activation request"
+        );
+        assert_eq!(
+            activation_control["controls"][key]["safetyPlanValidationStatus"],
+            "Complete safety plan"
+        );
+        assert_eq!(
+            activation_control["controls"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(
+            activation_control["controls"][key]["productionEnabled"],
+            false
+        );
+        assert_eq!(activation_control["controls"][key]["productionFlag"], false);
+        assert_eq!(
+            activation_control["controls"][key]["productionStatus"],
+            "Disabled"
+        );
+        assert_eq!(activation_control["screenshotLevelAssertions"][key], true);
+    }
+    assert_eq!(
+        activation_control["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+    assert_eq!(
+        activation_control["safety"]["sourceIncludeExecutorWired"],
+        false
+    );
+    assert_eq!(
+        activation_control["safety"]["duplicateExecutorWired"],
+        false
+    );
+
     let gtk_cards =
         read_json("data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json");
     assert_eq!(gtk_cards["projectDataVersion"], "v0.55.2");
@@ -597,6 +657,24 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         );
         assert_eq!(
             gtk_cards["activationPathResults"][key]["disabledActionProof"],
+            "live_gtk_atspi_proof"
+        );
+    }
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            gtk_cards["activationControlResults"][key]["headingProof"],
+            "live_gtk_atspi_proof"
+        );
+        assert_eq!(
+            gtk_cards["activationControlResults"][key]["productionDisabledProof"],
+            "live_gtk_atspi_proof"
+        );
+        assert_eq!(
+            gtk_cards["activationControlResults"][key]["executorWiringProof"],
+            "live_gtk_atspi_proof"
+        );
+        assert_eq!(
+            gtk_cards["activationControlResults"][key]["disabledActionProof"],
             "live_gtk_atspi_proof"
         );
     }

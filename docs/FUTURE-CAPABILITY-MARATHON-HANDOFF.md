@@ -129,3 +129,7 @@ Use report-backed approval card data as the input for a future default-disabled 
 - Added explicit future request and safety-plan requirements: production activation request, user approval, production flag, backup, restore, reread, post-restore verification, dry-run summary, touched-file list, and final confirmation.
 - Added disabled Config-page activation path cards and GTK screenshot plus AT-SPI assertions for both cards.
 - Production source/include insertion and duplicate replacement remain disabled; no real config, runtime mutation, reload, or executor path was enabled.
+
+## 2026-06-20 - Activation control handoff
+
+The branch now includes final review-only activation controls for source/include and duplicate. The controls validate complete request and safety-plan inputs and require executor wiring to remain `Unwired`; both remain `ValidatedButExecutorUnwired`, with production source/include insertion and duplicate writes disabled. Next exact work: design the explicit activation form/state machine that can collect real user request data while keeping executors unwired by default.
