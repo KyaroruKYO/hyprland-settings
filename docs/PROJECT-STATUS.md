@@ -50,21 +50,21 @@ The monitor-name oracle accepts names only from a current non-mutating snapshot 
 
 On `main`, the v0.1.0 safe release scope remains complete for guarded normal-scalar safe-batch use on the v0.55.2 model.
 
-On the `future-capability-marathon` branch, missing/default insertion is now production-enabled only for reviewed single-root normal-scalar safe-batch targets. Source/include insertion target selection, duplicate production writes, high-risk/display writes, structured-family writes, real profile/mode switching, runtime/reload mutation, and Hyprland 0.55.4 migration remain blocked or disabled pending explicit proof and approval.
+On the `future-capability-marathon` branch, missing/default insertion is now production-enabled only for reviewed single-root normal-scalar safe-batch targets. Source/include insertion target selection has disabled UI plus fixture target-selection proof, and duplicate resolution has disabled pre-Apply approval UI around the production gate. Source/include insertion expansion, duplicate production writes, high-risk/display writes, structured-family writes, real profile/mode switching, runtime/reload mutation, and Hyprland 0.55.4 migration remain blocked or disabled pending explicit proof and approval.
 
 Current future-capability tracker:
 
-- Core app shell / UI / navigation: 91-95%
-- Config discovery / source-aware model: 89-92%
+- Core app shell / UI / navigation: 92-96%
+- Config discovery / source-aware model: 90-93%
 - 341-row read/write model: 90-95%
 - Safe normal-scalar writes: 92-96%
 - Release packaging/tag/artifacts: 85-95%
-- Missing/default insertion: 86-91%
-- Duplicate resolution: 70-78%
+- Missing/default insertion: 87-92%
+- Duplicate resolution: 73-81%
 - High-risk/display recovery: 50-60%
 - Structured-family editors/writes: 48-58%
 - Profile/mode switching: 50-60%
 - Runtime/reload integration: 45-55%
 - Hyprland 0.55.4 migration: 35-45%
 
-Next exact work item: build disabled duplicate pre-Apply review UI around the production approval gate, or add source/include target-selection fixture proof while source/include insertion remains disabled.
+Next exact work item: add source/include selected-target safe-env insertion dry-run planner while production source/include insertion remains disabled.

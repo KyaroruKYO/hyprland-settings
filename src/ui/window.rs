@@ -15,7 +15,10 @@ use crate::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValueSourceStatus,
 };
 use crate::export::ExportBundle;
-use crate::future_capability::{source_include_insertion_review, SourceIncludeInsertionReadiness};
+use crate::future_capability::{
+    duplicate_production_approval_gate, source_include_insertion_review, DuplicateOccurrence,
+    DuplicateProductionGateStatus, SourceIncludeInsertionReadiness,
+};
 use crate::guarded_write_review::{
     build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
 };
@@ -1927,8 +1930,14 @@ fn append_duplicate_occurrence_selector(
     selector.append(&small_label(
         "The app will not auto-choose a duplicate line. Duplicate writes stay blocked until manual occurrence selection is reviewed.",
     ));
+    selector.append(&body_label("Pre-Apply duplicate approval review"));
+    selector.append(&small_label(
+        "No duplicate target is confirmed for production. Production duplicate Apply remains disabled.",
+    ));
 
     for (index, occurrence) in layered.occurrences.iter().enumerate() {
+        let duplicate_occurrence = duplicate_occurrence_from_layered(occurrence);
+        let gate = duplicate_production_approval_gate(Some(&duplicate_occurrence), None);
         let card = gtk::Box::new(gtk::Orientation::Vertical, 4);
         card.set_widget_name(&format!(
             "hyprland-settings-duplicate-occurrence-{}",
@@ -1953,9 +1962,35 @@ fn append_duplicate_occurrence_selector(
             occurrence.source_depth
         )));
         card.append(&small_label(&format!("Raw line: {}", occurrence.raw_line)));
+        card.append(&small_label(&format!(
+            "Approval state: {}",
+            duplicate_gate_status_label(gate.status)
+        )));
+        card.append(&small_label(&format!(
+            "Precondition fingerprint: {}",
+            gate.precondition
+                .as_ref()
+                .map(|precondition| precondition.fingerprint.as_str())
+                .unwrap_or("not available")
+        )));
+        card.append(&small_label(&format!(
+            "Block reason: {}",
+            gate.block_reason
+        )));
         for note in occurrence.friendly_notes() {
             card.append(&small_label(&note));
         }
+
+        let confirm = gtk::Button::with_label("Confirm duplicate target (planned)");
+        confirm.set_widget_name(&format!(
+            "hyprland-settings-duplicate-production-confirm-disabled-{}",
+            index + 1
+        ));
+        confirm.set_tooltip_text(Some(
+            "Disabled future action. This does not confirm a target or unblock Apply.",
+        ));
+        confirm.set_sensitive(false);
+        card.append(&confirm);
 
         let choose = gtk::Button::with_label("Choose this occurrence (planned)");
         choose.set_widget_name(&format!(
@@ -1971,6 +2006,32 @@ fn append_duplicate_occurrence_selector(
     }
 
     section.append(&selector);
+}
+
+fn duplicate_occurrence_from_layered(
+    occurrence: &crate::config_layered_values::LayeredValueOccurrence,
+) -> DuplicateOccurrence {
+    DuplicateOccurrence {
+        setting_id: occurrence.setting_id.clone(),
+        path: occurrence.file_path.clone(),
+        line_number: occurrence.line_number,
+        raw_line: occurrence.raw_line.clone(),
+        raw_value: occurrence.raw_value.clone(),
+        source_depth: occurrence.source_depth,
+    }
+}
+
+fn duplicate_gate_status_label(status: DuplicateProductionGateStatus) -> &'static str {
+    match status {
+        DuplicateProductionGateStatus::MissingConfirmation => "missing confirmation",
+        DuplicateProductionGateStatus::PendingConfirmation => "pending confirmation",
+        DuplicateProductionGateStatus::ConfirmedButProductionDisabled => {
+            "confirmed but production disabled"
+        }
+        DuplicateProductionGateStatus::Rejected => "rejected",
+        DuplicateProductionGateStatus::Expired => "expired",
+        DuplicateProductionGateStatus::FingerprintMismatch => "fingerprint mismatch",
+    }
 }
 
 fn append_session_value_projection_summary(

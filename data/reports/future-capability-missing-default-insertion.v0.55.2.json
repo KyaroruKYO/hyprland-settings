@@ -30,7 +30,10 @@
     "Added deterministic tests proving source/include and managed target selection remain blocked while the current single-root path stays eligible.",
     "Connected the source/include insertion readiness model to a disabled setting-detail review surface for missing/default rows in connected layouts.",
     "The disabled review surface shows root config, candidate target files, selected target state, readiness state, and disabled planned target controls.",
-    "Added source-level UI tests proving the source/include target-selection review is visible, read-only, disabled, and does not invoke production write or runtime code."
+    "Added source-level UI tests proving the source/include target-selection review is visible, read-only, disabled, and does not invoke production write or runtime code.",
+    "Added source/include fixture target-selection proof with selected target preconditions for root path, selected target, source depth, management hints, and candidate count.",
+    "The fixture proof blocks no target selected, unknown target, generated/script-managed targets, symlink/profile targets, and duplicate/ambiguous layouts.",
+    "The fixture proof allows only temp-fixture planning readiness and never enables production source/include insertion."
   ],
   "whatWasNotImplemented": [
     "No insertion into generated, script-managed, symlink/current-profile, profile/mode, multi-file, duplicate, high-risk, display/render-risk, structured, runtime-only, or missing target files was enabled.",
@@ -68,7 +71,11 @@
     "managedTargetInsertionProductionEnabled": false,
     "sourceIncludeTargetSelectionUiExists": true,
     "sourceIncludeTargetSelectionUiDisabled": true,
-    "connectedFileWritesEnabled": false
+    "connectedFileWritesEnabled": false,
+    "sourceIncludeFixtureTargetSelectionProofExists": true,
+    "sourceIncludeFixtureRequiresExplicitTarget": true,
+    "sourceIncludeFixtureBlocksManagedTargets": true,
+    "sourceIncludeFixturePlanAllowed": true
   },
   "validation": {
     "focusedSafeBatchWriteTests": "passed",
@@ -86,10 +93,10 @@
   },
   "blockers": [
     "Production insertion remains intentionally limited to single-file normal scalar targets.",
-    "Source/include insertion now has readiness model and disabled UI, but still needs fixture target-selection proof and safe-batch integration proof.",
+    "Source/include insertion now has readiness model, disabled UI, and fixture target-selection proof, but still needs selected-target safe-env insertion dry-run planner and safe-batch integration proof.",
     "Managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
   ],
-  "nextRecommendedWork": "Add source/include target-selection fixture proof with explicit selected target while keeping production source/include insertion disabled.",
+  "nextRecommendedWork": "Add source/include selected-target safe-env insertion dry-run planner while production source/include insertion remains disabled.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": true

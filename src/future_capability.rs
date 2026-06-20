@@ -34,6 +34,43 @@ pub struct SourceIncludeInsertionReview {
     pub review_lines: Vec<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SourceIncludeTargetSelectionStatus {
+    NoTargetSelected,
+    SelectedTargetReadyForFixture,
+    ManagedTargetBlocked,
+    TargetNotCandidate,
+    DuplicateOrAmbiguousBlocked,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SourceIncludeTargetCandidate {
+    pub path: PathBuf,
+    pub source_depth: usize,
+    pub generated_or_script_managed: bool,
+    pub symlink_or_profile_managed: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SourceIncludeTargetPrecondition {
+    pub root_path: PathBuf,
+    pub selected_target: PathBuf,
+    pub source_depth: usize,
+    pub generated_or_script_managed: bool,
+    pub symlink_or_profile_managed: bool,
+    pub candidate_count: usize,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SourceIncludeTargetSelectionProof {
+    pub status: SourceIncludeTargetSelectionStatus,
+    pub precondition: Option<SourceIncludeTargetPrecondition>,
+    pub fixture_plan_allowed: bool,
+    pub production_insertion_enabled: bool,
+    pub real_config_touched: bool,
+    pub review_lines: Vec<String>,
+}
+
 pub fn source_include_insertion_review(
     root_path: impl Into<PathBuf>,
     candidate_targets: Vec<PathBuf>,
@@ -63,6 +100,74 @@ pub fn source_include_insertion_review(
             "Source/include insertion needs explicit target selection before production activation."
                 .to_string(),
             "Generated, script-managed, symlink/current-profile, duplicate, and ambiguous targets stay blocked.".to_string(),
+        ],
+    }
+}
+
+pub fn source_include_target_selection_fixture_proof(
+    root_path: impl Into<PathBuf>,
+    candidates: Vec<SourceIncludeTargetCandidate>,
+    selected_target: Option<PathBuf>,
+    duplicate_or_ambiguous: bool,
+) -> SourceIncludeTargetSelectionProof {
+    let root_path = root_path.into();
+    let Some(selected_target) = selected_target else {
+        return SourceIncludeTargetSelectionProof {
+            status: SourceIncludeTargetSelectionStatus::NoTargetSelected,
+            precondition: None,
+            fixture_plan_allowed: false,
+            production_insertion_enabled: false,
+            real_config_touched: false,
+            review_lines: vec![
+                "No source/include target file is selected.".to_string(),
+                "Source/include insertion remains blocked.".to_string(),
+            ],
+        };
+    };
+    let Some(candidate) = candidates
+        .iter()
+        .find(|candidate| candidate.path == selected_target)
+    else {
+        return SourceIncludeTargetSelectionProof {
+            status: SourceIncludeTargetSelectionStatus::TargetNotCandidate,
+            precondition: None,
+            fixture_plan_allowed: false,
+            production_insertion_enabled: false,
+            real_config_touched: false,
+            review_lines: vec![
+                "Selected target is not part of the reviewed source/include graph.".to_string(),
+                "Source/include insertion remains blocked.".to_string(),
+            ],
+        };
+    };
+    let precondition = SourceIncludeTargetPrecondition {
+        root_path,
+        selected_target: selected_target.clone(),
+        source_depth: candidate.source_depth,
+        generated_or_script_managed: candidate.generated_or_script_managed,
+        symlink_or_profile_managed: candidate.symlink_or_profile_managed,
+        candidate_count: candidates.len(),
+    };
+    let status = if candidate.generated_or_script_managed || candidate.symlink_or_profile_managed {
+        SourceIncludeTargetSelectionStatus::ManagedTargetBlocked
+    } else if duplicate_or_ambiguous {
+        SourceIncludeTargetSelectionStatus::DuplicateOrAmbiguousBlocked
+    } else {
+        SourceIncludeTargetSelectionStatus::SelectedTargetReadyForFixture
+    };
+    let fixture_plan_allowed =
+        status == SourceIncludeTargetSelectionStatus::SelectedTargetReadyForFixture;
+
+    SourceIncludeTargetSelectionProof {
+        status,
+        precondition: Some(precondition),
+        fixture_plan_allowed,
+        production_insertion_enabled: false,
+        real_config_touched: false,
+        review_lines: vec![
+            "Source/include target selection is fixture proof only.".to_string(),
+            "Production source/include insertion remains disabled.".to_string(),
+            "The app must not auto-select root, source, profile, or generated targets.".to_string(),
         ],
     }
 }

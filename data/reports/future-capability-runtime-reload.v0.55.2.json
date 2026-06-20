@@ -22,7 +22,8 @@
     "Kept real reload and mutating hyprctl outside active Apply behavior.",
     "Added runtime command risk classification for status, reload, keyword, and dispatch actions.",
     "Added deterministic tests proving status is read-only while reload, keyword, and dispatch are mutating classes that remain dry-run only.",
-    "No additional production-safe runtime/reload step was available this sprint without explicit runtime mutation approval."
+    "No additional production-safe runtime/reload step was available this sprint without explicit runtime mutation approval.",
+    "This sprint rechecked runtime/reload and found no safe production step without explicit runtime mutation approval."
   ],
   "whatWasNotImplemented": [
     "No real hyprctl keyword, dispatch, reload, or runtime mutation path was added.",

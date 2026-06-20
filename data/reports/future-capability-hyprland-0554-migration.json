@@ -25,7 +25,8 @@
     "Added trusted export requirement model for requested data bundles.",
     "The model requires official export data, row-count diff, write-safety review, and safe-env GTK evidence before 0.55.4 can activate.",
     "Added tests proving v0.55.2 can remain active without extra proof while 0.55.4 remains blocked until all trusted inputs exist.",
-    "No additional migration activation step was available this sprint without trusted official 0.55.4 exports/source data."
+    "No additional migration activation step was available this sprint without trusted official 0.55.4 exports/source data.",
+    "This sprint rechecked Hyprland 0.55.4 migration and found no safe activation path without trusted official export/source data."
   ],
   "whatWasNotImplemented": [
     "No v0.55.2 exports were replaced.",

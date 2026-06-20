@@ -14,11 +14,13 @@
 - Missing/default insertion received safe-env-only planner/executor proof, disabled review scaffolding for unsupported layouts, and a production-enabled single-root normal-scalar safe-batch insertion path.
 - Missing/default insertion now has a source/include target-selection readiness model; source/include production insertion remains blocked.
 - Missing/default insertion now has a disabled source/include target-selection review surface in the setting detail pane; it shows root config, candidate targets, selected target state, readiness state, and planned disabled actions.
+- Missing/default insertion now has source/include fixture target-selection proof; fixture plans require an explicit selected target and block no-selection, generated/script-managed, symlink/profile, unknown, duplicate, and ambiguous targets.
 - Duplicate resolution received a read-only occurrence model and safe-env exact-line replacement proof.
 - Duplicate detail UI now has a disabled occurrence selector showing file, line, raw line, value, and source depth.
 - Duplicate resolution now has a disabled review workflow for no selection, invalid selection, and selected-but-production-disabled states.
 - Duplicate resolution now has a confirmation token/fingerprint model for missing, pending, confirmed, rejected, and expired states; production duplicate writes remain disabled.
 - Duplicate resolution now has a production approval gate scaffold with occurrence preconditions and a confirmation-gated safe-env replacement wrapper; production duplicate writes remain disabled.
+- Duplicate detail UI now has a disabled pre-Apply approval review showing approval state, precondition fingerprint, block reason, and a disabled planned confirmation action.
 - High-risk/display recovery received a mock watchdog state machine.
 - High-risk/display recovery received a disabled review model backed by mock watchdog state.
 - High-risk/display recovery now has a rollback proof workflow model for backup, reread, timeout restore, and restore reread requirements.
@@ -53,16 +55,16 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Build disabled duplicate pre-Apply review UI around the production approval gate, or add source/include target-selection fixture proof while source/include insertion remains disabled.
+Add source/include selected-target safe-env insertion dry-run planner while production source/include insertion remains disabled.
 
 ## Progress tracker
-- Core app shell / UI / navigation: 90-95% -> 91-95%
-- Config discovery / source-aware model: 87-91% -> 89-92%
+- Core app shell / UI / navigation: 91-95% -> 92-96%
+- Config discovery / source-aware model: 89-92% -> 90-93%
 - 341-row read/write model: 90-95% -> 90-95%
-- Safe normal-scalar writes: 91-96% -> 92-96%
+- Safe normal-scalar writes: 92-96% -> 92-96%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
-- Missing/default insertion: 84-90% -> 86-91%
-- Duplicate resolution: 66-74% -> 70-78%
+- Missing/default insertion: 86-91% -> 87-92%
+- Duplicate resolution: 70-78% -> 73-81%
 - High-risk/display recovery: 50-60% -> 50-60%
 - Structured-family editors/writes: 48-58% -> 48-58%
 - Profile/mode switching: 50-60% -> 50-60%
@@ -74,4 +76,4 @@ Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo bu
 GTK evidence root: `/tmp/hyprland-settings-gtk-automation/20260619_101038`.
 
 ## Recommended next Codex prompt
-Review the disabled source/include target-selection UI and duplicate production approval gate; then wire disabled duplicate pre-Apply review UI or add source/include target-selection fixture proof while keeping source/include insertion blocked.
+Add a source/include selected-target safe-env insertion dry-run planner that consumes the fixture target-selection proof while production source/include insertion remains disabled.

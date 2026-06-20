@@ -12,13 +12,14 @@ use hyprland_settings::future_capability::{
     render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
     replace_duplicate_occurrence_with_confirmation_safe_env, runtime_action_policy,
     runtime_action_review, runtime_command_risk, source_include_insertion_review,
-    structured_family_model, structured_family_review, switch_profile_symlink_safe_env,
-    trusted_export_requirement, validate_structured_edit_candidate,
-    DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
-    DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
-    DuplicateReplacementStatus, HighRiskLiveReadinessStatus, MockWatchdog, MockWatchdogState,
-    ProfileTargetReadiness, RuntimeAction, RuntimeCommandRisk, RuntimeDryRunExecutor,
-    SourceIncludeInsertionReadiness, StructuredBindEditStatus,
+    source_include_target_selection_fixture_proof, structured_family_model,
+    structured_family_review, switch_profile_symlink_safe_env, trusted_export_requirement,
+    validate_structured_edit_candidate, DuplicateOccurrenceApprovalState,
+    DuplicateOccurrenceReviewState, DuplicateProductionGateStatus, DuplicateReplacementOptions,
+    DuplicateReplacementRequest, DuplicateReplacementStatus, HighRiskLiveReadinessStatus,
+    MockWatchdog, MockWatchdogState, ProfileTargetReadiness, RuntimeAction, RuntimeCommandRisk,
+    RuntimeDryRunExecutor, SourceIncludeInsertionReadiness, SourceIncludeTargetCandidate,
+    SourceIncludeTargetSelectionStatus, StructuredBindEditStatus,
 };
 use hyprland_settings::missing_default_insertion::{
     build_missing_default_insertion_plan, MissingDefaultInsertionRequest,
@@ -103,6 +104,109 @@ fn source_include_insertion_review_allows_only_single_root_and_blocks_target_sel
         SourceIncludeInsertionReadiness::ManagedTargetBlocked
     );
     assert!(!managed.production_insertion_enabled);
+}
+
+#[test]
+fn source_include_target_selection_fixture_proof_requires_explicit_safe_target() {
+    let root = temp_root("source-target-fixture-proof");
+    let root_conf = root.join("hyprland.conf");
+    let sourced_conf = root.join("appearance.conf");
+    let generated_conf = root.join("generated.conf");
+    let profile_conf = root.join("profiles/current.conf");
+    let outside_conf = root.join("unknown.conf");
+    let candidates = vec![
+        SourceIncludeTargetCandidate {
+            path: root_conf.clone(),
+            source_depth: 0,
+            generated_or_script_managed: false,
+            symlink_or_profile_managed: false,
+        },
+        SourceIncludeTargetCandidate {
+            path: sourced_conf.clone(),
+            source_depth: 1,
+            generated_or_script_managed: false,
+            symlink_or_profile_managed: false,
+        },
+        SourceIncludeTargetCandidate {
+            path: generated_conf.clone(),
+            source_depth: 1,
+            generated_or_script_managed: true,
+            symlink_or_profile_managed: false,
+        },
+        SourceIncludeTargetCandidate {
+            path: profile_conf.clone(),
+            source_depth: 1,
+            generated_or_script_managed: false,
+            symlink_or_profile_managed: true,
+        },
+    ];
+
+    let no_selection =
+        source_include_target_selection_fixture_proof(&root_conf, candidates.clone(), None, false);
+    assert_eq!(
+        no_selection.status,
+        SourceIncludeTargetSelectionStatus::NoTargetSelected
+    );
+    assert!(!no_selection.fixture_plan_allowed);
+    assert!(!no_selection.production_insertion_enabled);
+
+    let selected = source_include_target_selection_fixture_proof(
+        &root_conf,
+        candidates.clone(),
+        Some(sourced_conf.clone()),
+        false,
+    );
+    assert_eq!(
+        selected.status,
+        SourceIncludeTargetSelectionStatus::SelectedTargetReadyForFixture
+    );
+    assert!(selected.fixture_plan_allowed);
+    assert!(!selected.production_insertion_enabled);
+    assert!(!selected.real_config_touched);
+    assert_eq!(
+        selected
+            .precondition
+            .as_ref()
+            .expect("precondition")
+            .source_depth,
+        1
+    );
+
+    let generated = source_include_target_selection_fixture_proof(
+        &root_conf,
+        candidates.clone(),
+        Some(generated_conf),
+        false,
+    );
+    assert_eq!(
+        generated.status,
+        SourceIncludeTargetSelectionStatus::ManagedTargetBlocked
+    );
+    assert!(!generated.fixture_plan_allowed);
+
+    let profile = source_include_target_selection_fixture_proof(
+        &root_conf,
+        candidates.clone(),
+        Some(profile_conf),
+        false,
+    );
+    assert_eq!(
+        profile.status,
+        SourceIncludeTargetSelectionStatus::ManagedTargetBlocked
+    );
+    assert!(!profile.fixture_plan_allowed);
+
+    let unknown = source_include_target_selection_fixture_proof(
+        &root_conf,
+        candidates,
+        Some(outside_conf),
+        false,
+    );
+    assert_eq!(
+        unknown.status,
+        SourceIncludeTargetSelectionStatus::TargetNotCandidate
+    );
+    assert!(!unknown.fixture_plan_allowed);
 }
 
 #[test]

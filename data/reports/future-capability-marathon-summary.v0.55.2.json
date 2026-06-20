@@ -53,7 +53,9 @@
     "hyprland_0554_trusted_export_requirement_model",
     "disabled_source_include_insertion_target_selection_ui",
     "duplicate_production_approval_gate_scaffold",
-    "confirmation_gated_duplicate_safe_env_replacement_wrapper"
+    "confirmation_gated_duplicate_safe_env_replacement_wrapper",
+    "source_include_target_selection_fixture_proof",
+    "disabled_duplicate_pre_apply_review_ui"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -92,17 +94,17 @@
     "gtkSafeEnvMatrix": "passed",
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_101038"
   },
-  "nextRecommendedAction": "Build disabled duplicate pre-Apply review UI around the production approval gate, or add source/include target-selection fixture proof while source/include insertion remains disabled.",
+  "nextRecommendedAction": "Add source/include selected-target safe-env insertion dry-run planner while production source/include insertion remains disabled.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
-      "before": "90-95%",
-      "after": "91-95%",
-      "evidence": "Added disabled source/include target-selection review surface with stable widget names/tooltips."
+      "before": "91-95%",
+      "after": "92-96%",
+      "evidence": "Added disabled duplicate pre-Apply review UI plus existing source/include target-selection UI."
     },
     "configDiscoverySourceAwareModel": {
-      "before": "87-91%",
-      "after": "89-92%",
-      "evidence": "Source/include readiness model now appears in disabled target-selection UI; unsafe expansion remains blocked."
+      "before": "89-92%",
+      "after": "90-93%",
+      "evidence": "Added source/include fixture target-selection proof and precondition model."
     },
     "rowReadWriteModel": {
       "before": "90-95%",
@@ -110,9 +112,9 @@
       "evidence": "341/341/0 and SAFE_WRITABLE_ROWS count preserved."
     },
     "safeNormalScalarWrites": {
-      "before": "91-96%",
+      "before": "92-96%",
       "after": "92-96%",
-      "evidence": "Current single-root missing/default gate preserved; source/include expansion surfaced as disabled review."
+      "evidence": "Single-root production path preserved; source/include target selection remains fixture-only."
     },
     "releasePackagingTagArtifacts": {
       "before": "85-95%",
@@ -120,14 +122,14 @@
       "evidence": "v0.1.0 tag and dist/v0.1.0 artifacts preserved."
     },
     "missingDefaultInsertion": {
-      "before": "84-90%",
-      "after": "86-91%",
-      "evidence": "Disabled source/include target-selection UI added; production source/include insertion remains blocked."
+      "before": "86-91%",
+      "after": "87-92%",
+      "evidence": "Source/include fixture target-selection proof added; production expansion still blocked."
     },
     "duplicateResolution": {
-      "before": "66-74%",
-      "after": "70-78%",
-      "evidence": "Production approval gate scaffold and confirmation-gated safe-env replacement wrapper added; production writes disabled."
+      "before": "70-78%",
+      "after": "73-81%",
+      "evidence": "Disabled duplicate pre-Apply review UI added around production approval gate."
     },
     "highRiskDisplayRecovery": {
       "before": "50-60%",
@@ -159,20 +161,22 @@
     "sourceIncludeInsertionTargetSelectionUi": "implemented_but_disabled: detail-pane review surface shows root config, candidate target files, selected target state, readiness state, and disabled planned target actions; source/include insertion remains blocked.",
     "duplicateProductionApproval": "implemented_but_disabled: production approval gate and precondition fingerprint model exist; confirmation-gated safe-env replacement wrapper exists; production Apply remains blocked.",
     "structuredFamilyLosslessProof": "safe_env_only: hl.bind lossless render and temp-fixture exact-line edit proof exists; production structured writes remain blocked.",
-    "highRiskLiveRecoveryProof": "implemented_but_disabled: no-op live readiness protocol exists and refuses real config/runtime mutation; live mutation proof still not run."
+    "highRiskLiveRecoveryProof": "implemented_but_disabled: no-op live readiness protocol exists and refuses real config/runtime mutation; live mutation proof still not run.",
+    "sourceIncludeFixtureTargetSelectionProof": "safe_env_only: fixture proof requires explicit selected target, blocks no-selection, generated/script-managed, symlink/profile, unknown, duplicate/ambiguous targets, and never enables production insertion.",
+    "disabledDuplicatePreApplyUi": "implemented_but_disabled: setting detail duplicate selector now shows pre-Apply approval state, precondition fingerprint, block reason, and disabled confirmation action."
   },
   "categoryCoverageThisSprint": {
-    "coreAppShellUiNavigation": "disabled source/include target-selection review surface added in setting detail pane with widget names/tooltips and source tests",
-    "configDiscoverySourceAwareModel": "source/include readiness model now exposed through disabled target-selection UI; production expansion remains blocked",
-    "rowReadWriteModel": "SAFE_WRITABLE_ROWS remains asserted at 341 in future capability UI/model tests; no row inventory changed",
-    "safeNormalScalarWrites": "single-root missing/default path preserved; source/include expansion shown as disabled target-selection review",
+    "coreAppShellUiNavigation": "disabled duplicate pre-Apply review UI and source/include target-selection review UI are present with source tests",
+    "configDiscoverySourceAwareModel": "source/include target selection fixture proof models root/source/managed/profile candidates and selected target preconditions",
+    "rowReadWriteModel": "future capability tests continue asserting SAFE_WRITABLE_ROWS remains 341; no row inventory changed",
+    "safeNormalScalarWrites": "current single-root insertion preserved; source/include selected-target proof remains fixture-only and production disabled",
     "releasePackagingTagArtifacts": "v0.1.0 tag and dist/v0.1.0 preserved; no release artifact mutation",
-    "missingDefaultInsertion": "disabled source/include target-selection review UI added for default/missing rows in connected layouts",
-    "duplicateResolution": "production approval gate and confirmation-gated safe-env replacement wrapper added; duplicate writes remain disabled",
-    "highRiskDisplayRecovery": "no additional production-safe step beyond existing no-op protocol; blocked by explicit approval and live recovery proof",
-    "structuredFamilyEditorsWrites": "no production-safe expansion beyond hl.bind lossless proof; blocked until structured write gate is approved",
-    "profileModeSwitching": "no production-safe expansion beyond safe-env target review; blocked by real-session approval and restore protocol",
-    "runtimeReloadIntegration": "no production-safe expansion beyond dry-run risk classification; mutating runtime remains blocked",
-    "hyprland0554Migration": "no production-safe expansion without trusted official exports; v0.55.2 remains default"
+    "missingDefaultInsertion": "source/include fixture target-selection proof added; production source/include insertion remains blocked",
+    "duplicateResolution": "disabled pre-Apply approval review UI added around production gate; production duplicate writes remain blocked",
+    "highRiskDisplayRecovery": "still blocked by live recovery proof and explicit approval; no safe mutation path exists in this sprint",
+    "structuredFamilyEditorsWrites": "still blocked by production structured approval and safe-batch integration; existing hl.bind proof remains fixture-only",
+    "profileModeSwitching": "still blocked by real-session approval and restore protocol; no real symlink/script operation allowed",
+    "runtimeReloadIntegration": "still blocked by runtime mutation approval; no real hyprctl execution allowed",
+    "hyprland0554Migration": "still blocked by trusted official export/source data; v0.55.2 remains default"
   }
 }

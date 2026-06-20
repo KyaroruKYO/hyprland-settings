@@ -35,7 +35,11 @@
     "Added duplicate production approval gate scaffold with missing, pending, confirmed-but-production-disabled, rejected, expired, and fingerprint-mismatch states.",
     "Added explicit occurrence precondition record with path, line number, raw line, old value, source depth, and fingerprint.",
     "Added confirmation-gated safe-env duplicate replacement wrapper; fixture replacement cannot run unless the confirmed occurrence fingerprint still matches.",
-    "Added tests for missing approval, pending approval, confirmed-but-production-disabled, fingerprint mismatch, unconfirmed replacement blocking, stale occurrence blocking, and confirmed safe-env replacement success."
+    "Added tests for missing approval, pending approval, confirmed-but-production-disabled, fingerprint mismatch, unconfirmed replacement blocking, stale occurrence blocking, and confirmed safe-env replacement success.",
+    "Added disabled duplicate pre-Apply approval review UI around the production approval gate.",
+    "The UI shows approval state, selected occurrence path, line number, raw line, old value, source depth, precondition fingerprint, and block reason.",
+    "The UI includes a disabled Confirm duplicate target (planned) action and continues to show duplicate Apply as blocked.",
+    "Added source-level UI tests proving the review surface exists and remains disabled."
   ],
   "whatWasNotImplemented": [
     "No automatic duplicate choice was added.",
@@ -68,17 +72,20 @@
     "productionApprovalGateExists": true,
     "occurrencePreconditionRecordExists": true,
     "confirmationGatedSafeEnvReplacementExists": true,
-    "fingerprintMismatchBlocksReplacement": true
+    "fingerprintMismatchBlocksReplacement": true,
+    "disabledDuplicatePreApplyReviewUiExists": true,
+    "duplicatePreApplyUiShowsFingerprintAndBlockReason": true,
+    "duplicatePreApplyConfirmActionDisabled": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"
   },
   "blockers": [
-    "Needs disabled pre-Apply duplicate review UI wired to the production approval gate.",
-    "Needs explicit approval before duplicate replacement can be wired to production Apply.",
-    "Needs final production gate proving stale line, line mismatch, old-value mismatch, source-layer duplicate, and same-file duplicate preconditions in the real safe-batch path."
+    "Needs explicit user approval and default-disabled production feature flag before duplicate replacement can be wired to production Apply.",
+    "Needs final production gate proving stale line, line mismatch, old-value mismatch, source-layer duplicate, and same-file duplicate preconditions in the real safe-batch path.",
+    "Needs production safe-batch integration review that still refuses real config unless explicitly approved."
   ],
-  "nextRecommendedWork": "Wire a disabled duplicate pre-Apply review UI to the production approval gate while keeping production duplicate writes disabled.",
+  "nextRecommendedWork": "Add default-disabled duplicate production activation checklist/flag model while keeping production duplicate writes off.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false
