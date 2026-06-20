@@ -4266,6 +4266,110 @@ impl ProductionActivationFormReview {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ProductionActivationDraftStatus {
+    EmptyDraft,
+    DraftDirty,
+    DraftMissingRequiredFields,
+    DraftValidatedForReviewOnly,
+    DraftBlockedExecutorWired,
+    DraftBlockedProductionFlagTrue,
+    DraftInvalidWrongScope,
+    DraftInvalidWrongCategory,
+}
+
+impl ProductionActivationDraftStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::EmptyDraft => "Empty draft",
+            Self::DraftDirty => "Draft dirty",
+            Self::DraftMissingRequiredFields => "Draft missing required fields",
+            Self::DraftValidatedForReviewOnly => "Draft validated for review only",
+            Self::DraftBlockedExecutorWired => "Draft blocked because executor is wired",
+            Self::DraftBlockedProductionFlagTrue => "Draft blocked because production flag is true",
+            Self::DraftInvalidWrongScope => "Draft invalid wrong scope",
+            Self::DraftInvalidWrongCategory => "Draft invalid wrong category",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ProductionActivationDraftUpdate {
+    Scope(Option<ProductionActivationRequestScope>),
+    UserFacingReason(String),
+    ExplicitActivationToken(String),
+    DecisionCategory(String),
+    BackupPlanAcknowledged(bool),
+    RestorePlanAcknowledged(bool),
+    RereadPlanAcknowledged(bool),
+    PostRestoreVerificationAcknowledged(bool),
+    FinalConfirmationAcknowledged(bool),
+    BackupBeforeWritePlan(String),
+    RestorePlan(String),
+    PostWriteRereadPlan(String),
+    PostRestoreVerificationPlan(String),
+    DryRunSummary(String),
+    FilesThatWouldBeTouched(Vec<String>),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationDraftForm {
+    pub form_state: ProductionActivationFormState,
+    pub dirty: bool,
+    pub persisted: bool,
+    pub last_validation_status: ProductionActivationDraftStatus,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationDraftReview {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub disabled_update_widget_name: String,
+    pub disabled_reset_widget_name: String,
+    pub heading: String,
+    pub draft: ProductionActivationDraftForm,
+    pub status: ProductionActivationDraftStatus,
+    pub form_validation_status: ProductionActivationFormStatus,
+    pub control_validation_status: ProductionActivationControlStatus,
+    pub dirty_state: String,
+    pub persistence_status: String,
+    pub request_generation_status: String,
+    pub safety_plan_generation_status: String,
+    pub executor_wiring_status: ProductionExecutorWiringState,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_activation_enabled: bool,
+    pub category_production_enabled: bool,
+    pub disabled_update_label: String,
+    pub disabled_reset_label: String,
+}
+
+impl ProductionActivationDraftReview {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        vec![
+            self.heading.clone(),
+            format!("Draft status: {}", self.status.user_facing_label()),
+            format!(
+                "Draft validation: {}",
+                self.form_validation_status.user_facing_label()
+            ),
+            format!("Dirty state: {}", self.dirty_state),
+            self.persistence_status.clone(),
+            format!(
+                "Control validation: {}",
+                self.control_validation_status.user_facing_label()
+            ),
+            format!(
+                "Executor wiring: {}",
+                self.executor_wiring_status.user_facing_label()
+            ),
+            format!("{}: {}", self.production_label, self.production_status),
+            self.disabled_update_label.clone(),
+            self.disabled_reset_label.clone(),
+        ]
+    }
+}
+
 const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
     "data/reports/disabled-approval-ui-cards.v0.55.2.json";
 const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
@@ -4621,6 +4725,36 @@ pub fn production_activation_form_reviews() -> Vec<ProductionActivationFormRevie
     ]
 }
 
+pub fn production_activation_draft_reviews() -> Vec<ProductionActivationDraftReview> {
+    let paths = production_activation_path_reviews();
+    let source_path = paths
+        .iter()
+        .find(|path| path.widget_name.contains("source-include"));
+    let duplicate_path = paths
+        .iter()
+        .find(|path| path.widget_name.contains("duplicate"));
+    vec![
+        source_include_activation_draft_review(
+            source_path,
+            production_activation_draft_from_form_state(production_activation_form_state(
+                ProductionActivationRequestScope::SourceIncludeInsertion,
+                "sourceIncludeInsertion",
+            )),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        ),
+        duplicate_activation_draft_review(
+            duplicate_path,
+            production_activation_draft_from_form_state(production_activation_form_state(
+                ProductionActivationRequestScope::DuplicateReplacement,
+                "duplicateReplacement",
+            )),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        ),
+    ]
+}
+
 pub fn production_activation_form_state(
     scope: ProductionActivationRequestScope,
     decision_category: &str,
@@ -4644,6 +4778,154 @@ pub fn production_activation_form_state(
             .to_string(),
         files_that_would_be_touched: vec!["report-backed selected target only".to_string()],
     }
+}
+
+pub fn empty_production_activation_draft() -> ProductionActivationDraftForm {
+    ProductionActivationDraftForm {
+        form_state: ProductionActivationFormState {
+            scope: None,
+            user_facing_reason: String::new(),
+            explicit_activation_token: String::new(),
+            decision_category: String::new(),
+            backup_plan_acknowledged: false,
+            restore_plan_acknowledged: false,
+            reread_plan_acknowledged: false,
+            post_restore_verification_acknowledged: false,
+            final_confirmation_acknowledged: false,
+            backup_before_write_plan: String::new(),
+            restore_plan: String::new(),
+            post_write_reread_plan: String::new(),
+            post_restore_verification_plan: String::new(),
+            dry_run_summary: String::new(),
+            files_that_would_be_touched: Vec::new(),
+        },
+        dirty: false,
+        persisted: false,
+        last_validation_status: ProductionActivationDraftStatus::EmptyDraft,
+    }
+}
+
+pub fn production_activation_draft_from_form_state(
+    form_state: ProductionActivationFormState,
+) -> ProductionActivationDraftForm {
+    ProductionActivationDraftForm {
+        form_state,
+        dirty: false,
+        persisted: false,
+        last_validation_status: ProductionActivationDraftStatus::DraftValidatedForReviewOnly,
+    }
+}
+
+pub fn apply_production_activation_draft_update(
+    draft: &mut ProductionActivationDraftForm,
+    update: ProductionActivationDraftUpdate,
+) {
+    match update {
+        ProductionActivationDraftUpdate::Scope(value) => draft.form_state.scope = value,
+        ProductionActivationDraftUpdate::UserFacingReason(value) => {
+            draft.form_state.user_facing_reason = value
+        }
+        ProductionActivationDraftUpdate::ExplicitActivationToken(value) => {
+            draft.form_state.explicit_activation_token = value
+        }
+        ProductionActivationDraftUpdate::DecisionCategory(value) => {
+            draft.form_state.decision_category = value
+        }
+        ProductionActivationDraftUpdate::BackupPlanAcknowledged(value) => {
+            draft.form_state.backup_plan_acknowledged = value
+        }
+        ProductionActivationDraftUpdate::RestorePlanAcknowledged(value) => {
+            draft.form_state.restore_plan_acknowledged = value
+        }
+        ProductionActivationDraftUpdate::RereadPlanAcknowledged(value) => {
+            draft.form_state.reread_plan_acknowledged = value
+        }
+        ProductionActivationDraftUpdate::PostRestoreVerificationAcknowledged(value) => {
+            draft.form_state.post_restore_verification_acknowledged = value
+        }
+        ProductionActivationDraftUpdate::FinalConfirmationAcknowledged(value) => {
+            draft.form_state.final_confirmation_acknowledged = value
+        }
+        ProductionActivationDraftUpdate::BackupBeforeWritePlan(value) => {
+            draft.form_state.backup_before_write_plan = value
+        }
+        ProductionActivationDraftUpdate::RestorePlan(value) => {
+            draft.form_state.restore_plan = value
+        }
+        ProductionActivationDraftUpdate::PostWriteRereadPlan(value) => {
+            draft.form_state.post_write_reread_plan = value
+        }
+        ProductionActivationDraftUpdate::PostRestoreVerificationPlan(value) => {
+            draft.form_state.post_restore_verification_plan = value
+        }
+        ProductionActivationDraftUpdate::DryRunSummary(value) => {
+            draft.form_state.dry_run_summary = value
+        }
+        ProductionActivationDraftUpdate::FilesThatWouldBeTouched(value) => {
+            draft.form_state.files_that_would_be_touched = value
+        }
+    }
+    draft.dirty = true;
+    draft.persisted = false;
+    draft.last_validation_status = ProductionActivationDraftStatus::DraftDirty;
+}
+
+pub fn reset_production_activation_draft(draft: &mut ProductionActivationDraftForm) {
+    *draft = empty_production_activation_draft();
+}
+
+pub fn source_include_activation_draft_review(
+    path: Option<&ProductionActivationPathReview>,
+    draft: ProductionActivationDraftForm,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+) -> ProductionActivationDraftReview {
+    activation_draft_review(
+        path,
+        draft,
+        executor_wiring,
+        production_activation_flag,
+        ActivationDraftSpec {
+            widget_name: "hyprland-settings-source-include-activation-draft-disabled",
+            evidence_widget_name: "hyprland-settings-source-include-activation-draft-evidence",
+            disabled_update_widget_name:
+                "hyprland-settings-source-include-activation-draft-update-disabled",
+            disabled_reset_widget_name:
+                "hyprland-settings-source-include-activation-draft-reset-disabled",
+            heading: "Source/include activation draft",
+            production_label: "Production source/include insertion",
+            disabled_update_label: "Update source/include activation draft (planned)",
+            disabled_reset_label: "Reset source/include activation draft (planned)",
+            expected_scope: ProductionActivationRequestScope::SourceIncludeInsertion,
+        },
+    )
+}
+
+pub fn duplicate_activation_draft_review(
+    path: Option<&ProductionActivationPathReview>,
+    draft: ProductionActivationDraftForm,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+) -> ProductionActivationDraftReview {
+    activation_draft_review(
+        path,
+        draft,
+        executor_wiring,
+        production_activation_flag,
+        ActivationDraftSpec {
+            widget_name: "hyprland-settings-duplicate-activation-draft-disabled",
+            evidence_widget_name: "hyprland-settings-duplicate-activation-draft-evidence",
+            disabled_update_widget_name:
+                "hyprland-settings-duplicate-activation-draft-update-disabled",
+            disabled_reset_widget_name:
+                "hyprland-settings-duplicate-activation-draft-reset-disabled",
+            heading: "Duplicate activation draft",
+            production_label: "Production duplicate writes",
+            disabled_update_label: "Update duplicate activation draft (planned)",
+            disabled_reset_label: "Reset duplicate activation draft (planned)",
+            expected_scope: ProductionActivationRequestScope::DuplicateReplacement,
+        },
+    )
 }
 
 pub fn source_include_activation_form_review(
@@ -4783,6 +5065,95 @@ pub fn duplicate_activation_control_review(
             expected_category: "duplicateReplacement",
         },
     )
+}
+
+struct ActivationDraftSpec {
+    widget_name: &'static str,
+    evidence_widget_name: &'static str,
+    disabled_update_widget_name: &'static str,
+    disabled_reset_widget_name: &'static str,
+    heading: &'static str,
+    production_label: &'static str,
+    disabled_update_label: &'static str,
+    disabled_reset_label: &'static str,
+    expected_scope: ProductionActivationRequestScope,
+}
+
+fn activation_draft_review(
+    path: Option<&ProductionActivationPathReview>,
+    mut draft: ProductionActivationDraftForm,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+    spec: ActivationDraftSpec,
+) -> ProductionActivationDraftReview {
+    let form_review = match spec.expected_scope {
+        ProductionActivationRequestScope::SourceIncludeInsertion => {
+            source_include_activation_form_review(
+                path,
+                draft.form_state.clone(),
+                executor_wiring,
+                production_activation_flag,
+            )
+        }
+        ProductionActivationRequestScope::DuplicateReplacement => duplicate_activation_form_review(
+            path,
+            draft.form_state.clone(),
+            executor_wiring,
+            production_activation_flag,
+        ),
+    };
+    let status = match form_review.status {
+        ProductionActivationFormStatus::Empty => ProductionActivationDraftStatus::EmptyDraft,
+        ProductionActivationFormStatus::MissingRequiredFields => {
+            ProductionActivationDraftStatus::DraftMissingRequiredFields
+        }
+        ProductionActivationFormStatus::InvalidWrongScope => {
+            ProductionActivationDraftStatus::DraftInvalidWrongScope
+        }
+        ProductionActivationFormStatus::InvalidWrongCategory => {
+            ProductionActivationDraftStatus::DraftInvalidWrongCategory
+        }
+        ProductionActivationFormStatus::BlockedExecutorWired => {
+            ProductionActivationDraftStatus::DraftBlockedExecutorWired
+        }
+        ProductionActivationFormStatus::BlockedProductionFlagTrue => {
+            ProductionActivationDraftStatus::DraftBlockedProductionFlagTrue
+        }
+        ProductionActivationFormStatus::ValidatedForReviewOnly => {
+            ProductionActivationDraftStatus::DraftValidatedForReviewOnly
+        }
+    };
+    draft.last_validation_status = status.clone();
+    draft.persisted = false;
+    let dirty_state = if draft.dirty {
+        "Dirty in-memory draft"
+    } else {
+        "Clean in-memory draft"
+    }
+    .to_string();
+
+    ProductionActivationDraftReview {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        disabled_update_widget_name: spec.disabled_update_widget_name.to_string(),
+        disabled_reset_widget_name: spec.disabled_reset_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        draft,
+        status,
+        form_validation_status: form_review.status,
+        control_validation_status: form_review.control_validation_status,
+        dirty_state,
+        persistence_status: "In-memory only".to_string(),
+        request_generation_status: form_review.request_generation_status,
+        safety_plan_generation_status: form_review.safety_plan_generation_status,
+        executor_wiring_status: executor_wiring,
+        production_label: spec.production_label.to_string(),
+        production_status: form_review.production_status,
+        production_activation_enabled: false,
+        category_production_enabled: false,
+        disabled_update_label: spec.disabled_update_label.to_string(),
+        disabled_reset_label: spec.disabled_reset_label.to_string(),
+    }
 }
 
 struct ActivationFormSpec {

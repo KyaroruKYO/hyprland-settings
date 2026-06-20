@@ -175,6 +175,29 @@ ACTIVATION_FORM_ASSERTIONS = {
     },
 }
 
+ACTIVATION_DRAFT_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include activation draft",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "memory": "In-memory only",
+        "update": "Update source/include activation draft (planned)",
+        "reset": "Reset source/include activation draft (planned)",
+        "widget": "hyprland-settings-source-include-activation-draft-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate activation draft",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "memory": "In-memory only",
+        "update": "Update duplicate activation draft (planned)",
+        "reset": "Reset duplicate activation draft (planned)",
+        "widget": "hyprland-settings-duplicate-activation-draft-disabled",
+    },
+}
+
 SAFE_NAVIGATION_TARGETS = {
     "Dashboard",
     "Config",
@@ -482,6 +505,36 @@ def activation_form_assertions(values):
             "fieldLabels": spec.get("fields", []),
             "fieldLabelsFound": all(field_results.values()),
             "fieldLabelResults": field_results,
+        }
+    return assertions
+
+
+def activation_draft_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in ACTIVATION_DRAFT_ASSERTIONS.items():
+        heading_found = spec["heading"].lower() in text
+        production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
+        executor_found = spec["executor"].lower() in text
+        memory_found = spec["memory"].lower() in text
+        update_found = spec["update"].lower() in text
+        reset_found = spec["reset"].lower() in text
+        widget_found = spec["widget"].lower() in text
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": heading_found,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": production_found,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": executor_found,
+            "memoryStatus": spec["memory"],
+            "memoryStatusFound": memory_found,
+            "disabledUpdate": spec["update"],
+            "disabledUpdateFound": update_found,
+            "disabledReset": spec["reset"],
+            "disabledResetFound": reset_found,
+            "widgetName": spec["widget"],
+            "widgetNameFound": widget_found,
         }
     return assertions
 
@@ -863,6 +916,14 @@ def main() -> int:
         "activationFormsAllProductionDisabledFound": False,
         "activationFormsAllExecutorUnwiredFound": False,
         "activationFormsAllDisabledActionsFound": False,
+        "activationFormsAllFieldLabelsFound": False,
+        "activationDraftAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDraftAssertions": {},
+        "activationDraftsAllHeadingsFound": False,
+        "activationDraftsAllProductionDisabledFound": False,
+        "activationDraftsAllExecutorUnwiredFound": False,
+        "activationDraftsAllInMemoryOnlyFound": False,
+        "activationDraftsAllDisabledActionsFound": False,
         "text": [],
         "error": None,
     }
@@ -942,6 +1003,9 @@ def main() -> int:
             result["text"] + result["textAfterNavigation"]
         )
         form_assertions = activation_form_assertions(result["text"] + result["textAfterNavigation"])
+        draft_assertions = activation_draft_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
         result["approvalCardAssertions"] = approval_assertions
         result["approvalCardsAllHeadingsFound"] = all(
             card["headingFound"] for card in approval_assertions.values()
@@ -997,6 +1061,26 @@ def main() -> int:
         )
         result["activationFormsAllDisabledActionsFound"] = all(
             card["disabledActionFound"] for card in form_assertions.values()
+        )
+        result["activationFormsAllFieldLabelsFound"] = all(
+            card["fieldLabelsFound"] for card in form_assertions.values()
+        )
+        result["activationDraftAssertions"] = draft_assertions
+        result["activationDraftsAllHeadingsFound"] = all(
+            card["headingFound"] for card in draft_assertions.values()
+        )
+        result["activationDraftsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in draft_assertions.values()
+        )
+        result["activationDraftsAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in draft_assertions.values()
+        )
+        result["activationDraftsAllInMemoryOnlyFound"] = all(
+            card["memoryStatusFound"] for card in draft_assertions.values()
+        )
+        result["activationDraftsAllDisabledActionsFound"] = all(
+            card["disabledUpdateFound"] and card["disabledResetFound"]
+            for card in draft_assertions.values()
         )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text

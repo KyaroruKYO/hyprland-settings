@@ -110,7 +110,7 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping source/include and duplicate production executors unwired by default.",
+  "nextRecommendedWork": "If interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.",
   "activationDecisionReview": {
     "sourceIncludeInsertion": "ApprovedButDefaultDisabled",
     "duplicateReplacement": "ApprovedButDefaultDisabled",
@@ -167,6 +167,27 @@
       "controlValidationStatus": "ValidatedButExecutorUnwired",
       "productionEnabled": false,
       "productionFlag": false
+    }
+  },
+  "activationDraftReview": {
+    "report": "data/reports/default-disabled-production-activation-draft.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "DraftValidatedForReviewOnly",
+      "persistenceStatus": "In-memory only",
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWiringStatus": "Unwired",
+      "diskPersistenceAdded": false
+    },
+    "duplicateReplacement": {
+      "status": "DraftValidatedForReviewOnly",
+      "persistenceStatus": "In-memory only",
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWiringStatus": "Unwired",
+      "diskPersistenceAdded": false
     }
   }
 }

@@ -94,3 +94,7 @@ Production gate readiness now records the source/include and duplicate activatio
 ## 2026-06-20 - Activation Form Field Readiness
 
 Production gate readiness now records real disabled GTK activation form fields for source/include and duplicate. The fields expose the same review-only request and safety-plan data through insensitive entries, check buttons, and text views; they do not wire executors, mutate state, or enable production flags.
+
+## 2026-06-20 - Activation Draft Readiness
+
+Production gate readiness now records in-memory activation draft plumbing for source/include and duplicate. Drafts can update/reset request fields, acknowledgement fields, safety-plan text, and touched-file lists in memory, then validate through the existing form and control reviews as review-only. Draft cards are disabled, planned update/reset actions are insensitive, no disk persistence exists, executors remain `Unwired`, and production flags remain false.

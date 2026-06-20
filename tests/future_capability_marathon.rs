@@ -87,12 +87,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping source/include and duplicate production executors unwired by default."
+        "If interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("still-disabled in-memory draft form plumbing"));
+        .contains("still-disabled UI state"));
 }
 
 #[test]
@@ -738,6 +738,66 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         activation_form_fields["safety"]["duplicateExecutorWired"],
         false
     );
+
+    let activation_draft =
+        read_json("data/reports/default-disabled-production-activation-draft.v0.55.2.json");
+    assert_eq!(activation_draft["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        activation_draft["implementation"]["activationDraftModelExists"],
+        true
+    );
+    assert_eq!(
+        activation_draft["implementation"]["draftStoreIsInMemoryOnly"],
+        true
+    );
+    assert_eq!(
+        activation_draft["implementation"]["diskPersistenceAdded"],
+        false
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_draft["drafts"][key]["status"],
+            "DraftValidatedForReviewOnly"
+        );
+        assert_eq!(
+            activation_draft["drafts"][key]["persistenceStatus"],
+            "In-memory only"
+        );
+        assert_eq!(
+            activation_draft["drafts"][key]["updateResetStatus"],
+            "Modeled and tested in memory only"
+        );
+        assert_eq!(
+            activation_draft["drafts"][key]["controlValidationStatus"],
+            "ValidatedButExecutorUnwired"
+        );
+        assert_eq!(
+            activation_draft["drafts"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(
+            activation_draft["drafts"][key]["productionStatus"],
+            "Disabled"
+        );
+        assert_eq!(activation_draft["drafts"][key]["productionEnabled"], false);
+        assert_eq!(activation_draft["drafts"][key]["productionFlag"], false);
+        assert_eq!(activation_draft["drafts"][key]["executorWired"], false);
+        assert_eq!(
+            activation_draft["drafts"][key]["draftPersistsToDisk"],
+            false
+        );
+        assert_eq!(activation_draft["screenshotLevelAssertions"][key], true);
+    }
+    assert_eq!(
+        activation_draft["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+    assert_eq!(activation_draft["safety"]["diskPersistenceAdded"], false);
+    assert_eq!(
+        activation_draft["safety"]["sourceIncludeExecutorWired"],
+        false
+    );
+    assert_eq!(activation_draft["safety"]["duplicateExecutorWired"], false);
 
     let gtk_cards =
         read_json("data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json");

@@ -78,7 +78,8 @@
     "default_disabled_production_activation_path_review",
     "default_disabled_production_activation_control_review",
     "default_disabled_production_activation_form_state_machine",
-    "default_disabled_production_activation_form_fields"
+    "default_disabled_production_activation_form_fields",
+    "default_disabled_production_activation_draft_state"
   ],
   "partialPhases": [],
   "blockedPhases": [
@@ -95,7 +96,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping source/include and duplicate production executors unwired by default.",
+  "nextExactPhaseToContinue": "If interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -131,7 +132,9 @@
     "data/reports/default-disabled-production-activation-form.v0.55.2.json",
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-FORM-REVIEW-LOG.md",
     "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
-    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-FORM-FIELDS-REVIEW-LOG.md"
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-FORM-FIELDS-REVIEW-LOG.md",
+    "data/reports/default-disabled-production-activation-draft.v0.55.2.json",
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-DRAFT-REVIEW-LOG.md"
   ],
   "testsPassing": "cargo fmt, cargo fmt --check, cargo check, cargo test, jq empty data/reports/*.json, git diff --check, cargo build --release, and GTK safe-env matrix passed after activation form field updates.",
   "testsFailing": [],
@@ -148,24 +151,27 @@
     "Activation path reviews remain review-only; production activation flags and executors are still false/unwired.",
     "Activation control reviews validate complete request and safety-plan inputs for source/include and duplicate, but require executors to remain Unwired and keep all production flags false.",
     "Activation form/state-machine reviews collect request and safety-plan field data for source/include and duplicate, validate through the activation controls, and remain review-only with executors Unwired.",
-    "Activation form fields now render as real disabled GTK Entry/TextView/CheckButton widgets with stable names and screenshot/accessibility field-label assertions."
+    "Activation form fields now render as real disabled GTK Entry/TextView/CheckButton widgets with stable names and screenshot/accessibility field-label assertions.",
+    "Activation draft state now updates/resets source/include and duplicate form values in memory only, validates through the existing form/control pipeline, displays disabled draft cards, and adds no persistence or executor wiring."
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping source/include and duplicate production executors unwired by default.",
+  "recommendedNextCodexPrompt": "If interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.",
   "generatedAt": "2026-06-20T00:00:00Z",
   "reportsAdded": [
     "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
     "data/reports/default-disabled-production-activation-path.v0.55.2.json",
     "data/reports/default-disabled-production-activation-control.v0.55.2.json",
     "data/reports/default-disabled-production-activation-form.v0.55.2.json",
-    "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json"
+    "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-draft.v0.55.2.json"
   ],
   "summary": [
     "Source/include and duplicate activation decisions now consume report-backed approval card data and remain ApprovedButDefaultDisabled.",
     "Source/include and duplicate activation paths consume approved-but-default-disabled decisions and report-backed proof, then stop at explicit production flag false.",
     "Source/include and duplicate activation controls validate complete review-only request and safety-plan inputs, prove executors remain unwired, and keep production disabled.",
     "Source/include and duplicate activation forms collect request and safety-plan field data, generate review-only request/plan values, validate through the controls as ValidatedButExecutorUnwired, and keep production disabled.",
-    "Source/include and duplicate activation form values now render through real disabled GTK form fields while executors remain Unwired."
+    "Source/include and duplicate activation form values now render through real disabled GTK form fields while executors remain Unwired.",
+    "Source/include and duplicate activation draft state can update/reset values in memory only and validates through the form/control pipeline as review-only."
   ]
 }

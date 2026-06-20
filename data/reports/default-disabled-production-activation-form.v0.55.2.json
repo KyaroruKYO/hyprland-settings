@@ -17,6 +17,8 @@
     "realDisabledGtkFormFieldsExist": true,
     "fieldsAreReadOnlyOrDisabled": true,
     "fieldReport": "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
+    "activationDraftPlumbingExists": true,
+    "activationDraftReport": "data/reports/default-disabled-production-activation-draft.v0.55.2.json",
     "screenshotLevelAssertionsImplemented": true,
     "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr"
   },
@@ -152,7 +154,7 @@
     "hyprland0554MigrationActivated": false
   },
   "nextRequiredWork": [
-    "If interactive collection is desired, convert the disabled field display into still-disabled input plumbing that can update in-memory draft state without wiring executors.",
+    "If interactive collection is desired, make the draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.",
     "Do not wire source/include or duplicate production executors until byte-exact live backup, write, reread, restore, and final approval proof exists."
   ]
 }

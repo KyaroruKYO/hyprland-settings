@@ -18,7 +18,9 @@
     "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
     "latestGtkMatrixRun": "/tmp/hyprland-settings-gtk-automation/20260620_134347",
     "latestGtkMatrixFieldLabelProof": "blocked_by_at_spi_bus",
-    "latestGtkMatrixBlocker": "AT-SPI was unable to open the bus socket under /run/user/1000, so the live accessibility tree did not match the app in this run."
+    "latestGtkMatrixBlocker": "AT-SPI was unable to open the bus socket under /run/user/1000, so the live accessibility tree did not match the app in this run.",
+    "activationDraftPlumbingExists": true,
+    "activationDraftReport": "data/reports/default-disabled-production-activation-draft.v0.55.2.json"
   },
   "forms": {
     "sourceIncludeInsertion": {

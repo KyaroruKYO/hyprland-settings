@@ -13,3 +13,4 @@
 - Source/include and duplicate executors remain `Unwired`.
 - Source/include and duplicate production flags remain false.
 - No real config, runtime, reload, AGS/Waybar, release tag, release artifact, or migration state was touched.
+- Follow-up in-memory activation draft plumbing is tracked in `data/reports/default-disabled-production-activation-draft.v0.55.2.json` and keeps these fields disabled/read-only.

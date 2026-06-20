@@ -48,7 +48,8 @@
     "Source/include activation path now consumes the ApprovedButDefaultDisabled decision and report-backed proof data, then stops at ActivationPathNeedsExplicitProductionFlag with production insertion disabled.",
     "Source/include activation control now validates complete review-only request and safety-plan inputs, proves the executor is Unwired, reaches ValidatedButExecutorUnwired, and still keeps production insertion disabled.",
     "Source/include activation form/state machine now collects review-only request fields, safety acknowledgements, backup/restore/reread/post-restore plans, dry-run summary, and touched-file list, then validates through the activation control as review-only with the executor still Unwired.",
-    "Source/include activation form values now render through real disabled GTK Entry, TextView, and CheckButton fields with stable widget names and screenshot/accessibility field-label assertions."
+    "Source/include activation form values now render through real disabled GTK Entry, TextView, and CheckButton fields with stable widget names and screenshot/accessibility field-label assertions.",
+    "Source/include activation draft plumbing can update/reset form values in memory, validates through the existing form/control pipeline as review-only, and never persists data or wires the executor."
   ],
   "whatWasNotImplemented": [
     "No insertion into generated, script-managed, symlink/current-profile, profile/mode, multi-file, duplicate, high-risk, display/render-risk, structured, runtime-only, or missing target files was enabled.",
@@ -133,7 +134,14 @@
     "sourceIncludeActivationFormStatus": "ValidatedForReviewOnly",
     "sourceIncludeActivationFormRequestGenerated": true,
     "sourceIncludeActivationFormSafetyPlanGenerated": true,
-    "sourceIncludeActivationFormProductionEnabled": false
+    "sourceIncludeActivationFormProductionEnabled": false,
+    "sourceIncludeActivationDraftExists": true,
+    "sourceIncludeActivationDraftStatus": "DraftValidatedForReviewOnly",
+    "sourceIncludeActivationDraftInMemoryOnly": true,
+    "sourceIncludeActivationDraftCanUpdateAndResetInMemory": true,
+    "sourceIncludeActivationDraftControlValidationStatus": "ValidatedButExecutorUnwired",
+    "sourceIncludeActivationDraftProductionEnabled": false,
+    "sourceIncludeActivationDraftDiskPersistenceAdded": false
   },
   "validation": {
     "focusedSafeBatchWriteTests": "passed",
@@ -154,7 +162,7 @@
     "Source/include insertion now has readiness model, disabled UI, fixture target-selection proof, selected-target dry-run planner, preview UI, temp-fixture guarded executor, copied-config-tree proof, and default-disabled production gate review, but production connected-file insertion remains disabled until explicit approval and live restoration proof exist.",
     "Managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
   ],
-  "nextRecommendedWork": "If interactive collection is desired, convert the disabled source/include GTK activation form field display into still-disabled in-memory draft form plumbing; keep production insertion disabled and executor unwired.",
+  "nextRecommendedWork": "If interactive collection is desired, make source/include activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": true,
@@ -188,5 +196,15 @@
     "executorWiringStatus": "Unwired",
     "productionEnabled": false,
     "productionStatus": "Disabled"
+  },
+  "sourceIncludeActivationDraftReview": {
+    "report": "data/reports/default-disabled-production-activation-draft.v0.55.2.json",
+    "status": "DraftValidatedForReviewOnly",
+    "persistenceStatus": "In-memory only",
+    "updateResetStatus": "Modeled and tested in memory only",
+    "controlValidationStatus": "ValidatedButExecutorUnwired",
+    "executorWiringStatus": "Unwired",
+    "productionEnabled": false,
+    "diskPersistenceAdded": false
   }
 }

@@ -93,7 +93,7 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping source/include and duplicate production executors unwired by default.
+If interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.
 
 ## Progress tracker
 - Core app shell / UI / navigation: 98-99% -> 99-99%
@@ -102,7 +102,7 @@ If interactive collection is desired, convert the disabled GTK activation form f
 - Safe normal-scalar writes: 92-96% -> 95-97%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
 - Missing/default insertion: 98-99% -> 99-99%
-- Duplicate resolution: 91-94% -> 92-94%
+- Duplicate resolution: 91-94% -> 93-95%
 - High-risk/display recovery: 61-70% -> 62-70%
 - Structured-family editors/writes: 63-73% -> 64-73%
 - Profile/mode switching: 64-73% -> 65-73%
@@ -115,7 +115,7 @@ Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo bu
 GTK matrix was run for the activation form field UI surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_134347`. The run did not mutate runtime/config, but live field-label proof was blocked because AT-SPI could not open the runtime bus socket.
 
 ## Recommended next Codex prompt
-If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping source/include and duplicate production executors unwired by default.
+If interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 
@@ -141,4 +141,8 @@ The branch now includes review-only activation form/state-machine projections fo
 
 ## 2026-06-20 - Disabled activation form fields handoff
 
-The branch now renders source/include and duplicate activation form data through real disabled GTK fields. Entries, check buttons, and text views are read-only/insensitive, screenshot/accessibility assertions cover the field labels, and production executors remain `Unwired`. Next exact work: if interactive collection is desired, convert the disabled field display into still-disabled in-memory draft form plumbing without wiring production executors.
+The branch now renders source/include and duplicate activation form data through real disabled GTK fields. Entries, check buttons, and text views are read-only/insensitive, screenshot/accessibility assertions cover the field labels, and production executors remain `Unwired`.
+
+## 2026-06-20 - Activation draft handoff
+
+The branch now includes in-memory activation draft plumbing for source/include and duplicate. Draft state can be created empty or from current form state, updated/reset in memory, converted into `ProductionActivationFormState`, and validated through the existing form/control reviews as review-only. The Config page displays disabled draft cards with draft status, validation, dirty state, in-memory-only copy, executor wiring `Unwired`, and production-disabled status. Planned update/reset controls are insensitive and have no persistence, mutation, or executor handler. Next exact work: if interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.

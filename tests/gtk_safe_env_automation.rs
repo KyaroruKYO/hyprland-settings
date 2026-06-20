@@ -111,6 +111,9 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("ACTIVATION_FORM_ASSERTIONS"));
     assert!(collector.contains("activationFormAssertions"));
     assert!(collector.contains("activationFormsAllExecutorUnwiredFound"));
+    assert!(collector.contains("ACTIVATION_DRAFT_ASSERTIONS"));
+    assert!(collector.contains("activationDraftAssertions"));
+    assert!(collector.contains("activationDraftsAllInMemoryOnlyFound"));
     for expected in [
         "Source/include approval review",
         "Duplicate approval review",
@@ -122,6 +125,13 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "Duplicate production activation control",
         "Source/include activation request form",
         "Duplicate activation request form",
+        "Source/include activation draft",
+        "Duplicate activation draft",
+        "In-memory only",
+        "Update source/include activation draft (planned)",
+        "Reset source/include activation draft (planned)",
+        "Update duplicate activation draft (planned)",
+        "Reset duplicate activation draft (planned)",
         "Executor wiring: Unwired",
         "Structured hl.bind approval review",
         "Profile/mode approval review",
@@ -243,6 +253,13 @@ fn gtk_harness_records_screenshot_level_disabled_approval_card_assertions() {
         "activationFormsAllFieldLabelsFound",
         "fieldLabelsProof",
         "fieldLabelResults",
+        "activationDraftAssertionMethod",
+        "activationDraftResults",
+        "activationDraftsAllHeadingsFound",
+        "activationDraftsAllProductionDisabledFound",
+        "activationDraftsAllExecutorUnwiredFound",
+        "activationDraftsAllInMemoryOnlyFound",
+        "activationDraftsAllDisabledActionsFound",
         "sourceIncludeInsertion",
         "duplicateReplacement",
         "structuredHlBindWrite",

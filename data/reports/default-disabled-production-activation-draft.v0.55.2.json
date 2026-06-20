@@ -1,0 +1,93 @@
+{
+  "artifactKind": "default-disabled-production-activation-draft",
+  "projectDataVersion": "v0.55.2",
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "branch": "future-capability-marathon",
+  "inputActivationFormReport": "data/reports/default-disabled-production-activation-form.v0.55.2.json",
+  "inputActivationFormFieldsReport": "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
+  "implementation": {
+    "activationDraftModelExists": true,
+    "sourceIncludeActivationDraftExists": true,
+    "duplicateActivationDraftExists": true,
+    "draftUpdateModelExists": true,
+    "draftResetModelExists": true,
+    "draftStoreIsInMemoryOnly": true,
+    "diskPersistenceAdded": false,
+    "uiSurfaceExists": true,
+    "fieldsRemainDisabledOrReadOnly": true,
+    "screenshotLevelAssertionsImplemented": true,
+    "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+    "latestGtkMatrixRun": "pending fresh matrix",
+    "latestGtkMatrixDraftProof": "pending"
+  },
+  "drafts": {
+    "sourceIncludeInsertion": {
+      "widgetName": "hyprland-settings-source-include-activation-draft-disabled",
+      "evidenceWidgetName": "hyprland-settings-source-include-activation-draft-evidence",
+      "status": "DraftValidatedForReviewOnly",
+      "formValidationStatus": "ValidatedForReviewOnly",
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "dirtyState": "Clean in-memory draft",
+      "persistenceStatus": "In-memory only",
+      "updateResetStatus": "Modeled and tested in memory only",
+      "requestGenerationStatus": "ProductionActivationRequest generated for review only",
+      "safetyPlanGenerationStatus": "ProductionActivationSafetyPlan generated for review only",
+      "executorWiringStatus": "Unwired",
+      "productionStatus": "Disabled",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWired": false,
+      "draftPersistsToDisk": false,
+      "disabledUpdateAction": "Update source/include activation draft (planned)",
+      "disabledResetAction": "Reset source/include activation draft (planned)",
+      "reviewOnly": true
+    },
+    "duplicateReplacement": {
+      "widgetName": "hyprland-settings-duplicate-activation-draft-disabled",
+      "evidenceWidgetName": "hyprland-settings-duplicate-activation-draft-evidence",
+      "status": "DraftValidatedForReviewOnly",
+      "formValidationStatus": "ValidatedForReviewOnly",
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "dirtyState": "Clean in-memory draft",
+      "persistenceStatus": "In-memory only",
+      "updateResetStatus": "Modeled and tested in memory only",
+      "requestGenerationStatus": "ProductionActivationRequest generated for review only",
+      "safetyPlanGenerationStatus": "ProductionActivationSafetyPlan generated for review only",
+      "executorWiringStatus": "Unwired",
+      "productionStatus": "Disabled",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWired": false,
+      "draftPersistsToDisk": false,
+      "disabledUpdateAction": "Update duplicate activation draft (planned)",
+      "disabledResetAction": "Reset duplicate activation draft (planned)",
+      "reviewOnly": true
+    }
+  },
+  "screenshotLevelAssertions": {
+    "sourceIncludeInsertion": true,
+    "duplicateReplacement": true,
+    "sourceIncludeDraftSourceTested": true,
+    "duplicateDraftSourceTested": true,
+    "sourceIncludeDraftLiveGtkProof": false,
+    "duplicateDraftLiveGtkProof": false,
+    "latestLiveGtkBlocker": "pending fresh GTK matrix; if AT-SPI bus remains unavailable, source/model proof remains authoritative"
+  },
+  "safety": {
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "sourceIncludeExecutorWired": false,
+    "duplicateExecutorWired": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "diskPersistenceAdded": false,
+    "realConfigTouched": false,
+    "runtimeMutatedThisSprint": false,
+    "hyprctlReloadRun": false,
+    "v0552DefaultPreserved": true,
+    "hyprland0554MigrationActivated": false
+  },
+  "nextRequiredWork": [
+    "If interactive collection is desired, make the draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.",
+    "Do not wire source/include or duplicate production executors until byte-exact backup, write, reread, restore, and final approval proof exists."
+  ]
+}
