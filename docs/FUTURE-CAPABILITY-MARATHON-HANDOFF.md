@@ -18,6 +18,7 @@
 - Missing/default insertion now has a source/include selected-target dry-run planner that previews the exact selected target and inserted line for root/source temp fixtures while keeping production source/include insertion disabled.
 - Missing/default insertion now wires selected-target dry-run preview into the disabled detail UI and shows root path, selected target, source depth, planned inserted line, proposed value, and blocked/allowed dry-run state.
 - Missing/default insertion now has a guarded temp-fixture executor that consumes source/include proof plus dry-run plan, inserts the exact planned line, verifies it, restores original bytes, and verifies restored content fingerprint.
+- Copied-config-tree proof now copies root/source config files to temp, preserves relative source/include layout, records source depth and management hints, runs the source/include guarded executor against the copied target, restores the copied file, and proves the original file unchanged.
 - Duplicate resolution received a read-only occurrence model and safe-env exact-line replacement proof.
 - Duplicate detail UI now has a disabled occurrence selector showing file, line, raw line, value, and source depth.
 - Duplicate resolution now has a disabled review workflow for no selection, invalid selection, and selected-but-production-disabled states.
@@ -25,30 +26,36 @@
 - Duplicate resolution now has a production approval gate scaffold with occurrence preconditions and a confirmation-gated safe-env replacement wrapper; production duplicate writes remain disabled.
 - Duplicate detail UI now has a disabled pre-Apply approval review showing approval state, precondition fingerprint, block reason, and a disabled planned confirmation action.
 - Duplicate resolution now has a guarded temp-fixture executor that requires confirmed occurrence, matching fingerprint, matching raw line, matching old value, backup, replacement verification, and byte-exact restore.
+- Duplicate resolution now has copied-config-tree proof for confirmed replacement against a copied duplicate target with byte-exact restoration and original-file unchanged verification.
 - High-risk/display recovery received a mock watchdog state machine.
 - High-risk/display recovery received a disabled review model backed by mock watchdog state.
 - High-risk/display recovery now has a rollback proof workflow model for backup, reread, timeout restore, and restore reread requirements.
 - High-risk/display recovery now has a no-op live-readiness protocol that refuses real config paths and runtime mutation.
 - High-risk/display recovery now has a guarded no-op live-readiness executor that requires recovery channel evidence, dead-man timeout evidence, and restore command evidence before reporting readiness.
+- High-risk/display recovery now records that read-only runtime socket checks were attempted but unavailable, so no real high-risk/display mutation was attempted.
 - Structured families received read-only disabled editor scaffolding for raw structured entries.
 - Structured family scaffolding now rejects invalid prefixes and multiline candidate input.
 - Structured families now have a disabled review workflow for `hl.bind` edit candidates with raw-line and comments/order preservation requirements.
 - Structured families now have `hl.bind` lossless render and safe-env exact-line edit proof for temp fixtures; production structured writes remain disabled.
 - Structured families now have a guarded `hl.bind` temp-fixture executor that validates candidates, edits one selected line, verifies the new raw line, preserves comments/order, and restores original bytes.
+- Structured families now have copied-config-tree proof for `hl.bind` exact-line edit against a copied target with byte-exact restoration and original-file unchanged verification.
 - Profile/mode switching received safe-env-only temp symlink switch/restore proof.
 - Profile/mode switching received disabled review scaffolding and forced restore-failure coverage.
 - Profile/mode switching now has a disabled selection review model for current profile, resolved target, selected target, and symlink path.
 - Profile/mode switching now has a target approval review model that refuses real-session paths and keeps safe-env targets review-only.
 - Profile/mode switching now has a guarded temp-fixture executor that switches a temp symlink, verifies the new target, restores the original target, and verifies restoration.
+- Profile/mode switching now has copied-config-tree proof that preserves a copied profile symlink, switches it to a copied target, restores the original copied target, and proves the real symlink untouched.
 - Runtime/reload received a dry-run action boundary and mock executor.
 - Runtime/reload received a runtime action policy scaffold.
 - Runtime/reload now has a disabled action review workflow combining policy, dry-run result, and execution log.
 - Runtime/reload now classifies status as read-only and reload/keyword/dispatch as mutating risk classes without executing commands.
 - Runtime/reload now has a guarded executor model that allows read-only status proof, records mutation dry-run intent, requires prior snapshots and restore commands, and keeps `real_command_executed` false.
+- Runtime/reload read-only `hyprctl version` and `hyprctl monitors -j` were attempted; both failed without mutation because the socket was unavailable in this shell.
 - Hyprland 0.55.4 migration received disabled assessment scaffolding.
 - Hyprland 0.55.4 migration now has a side-by-side comparison review that keeps v0.55.2 active and records missing proof.
 - Hyprland 0.55.4 migration now has a trusted-export requirement model; 0.55.2 remains the active default bundle.
 - Hyprland 0.55.4 migration now has a local evidence collector that records package/runtime version evidence as advisory and blocks activation until official exports, row-count diff, write-safety review, GTK evidence, local version evidence, and explicit user approval exist.
+- Hyprland 0.55.4 migration now records local package metadata evidence: `hyprland 0.55.4-1`; this does not activate migration.
 - Controlled live-test guard model now records backup, SHA256, symlink, runtime snapshot, restore, post-restore verification, out-of-band recovery, trusted-data, and explicit live flag prerequisites before any live/system mutation can be considered.
 - No production write expansion was enabled.
 - Deterministic tests were added for each concrete safe-env/mock model and disabled production status.
@@ -65,25 +72,25 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Run controlled copied-config-tree proof for source/include, duplicate, structured, profile, and runtime paths before considering any real config/runtime mutation.
+Promote copied-config-tree proof into default-disabled production gate review for source/include, duplicate, and `hl.bind` structured writes; retry read-only runtime evidence in a shell with a reachable Hyprland socket.
 
 ## Progress tracker
 - Core app shell / UI / navigation: 92-96% -> 93-96%
-- Config discovery / source-aware model: 90-93% -> 92-95%
+- Config discovery / source-aware model: 90-93% -> 93-96%
 - 341-row read/write model: 90-95% -> 90-95%
-- Safe normal-scalar writes: 92-96% -> 94-97%
+- Safe normal-scalar writes: 92-96% -> 95-97%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
-- Missing/default insertion: 87-92% -> 91-94%
-- Duplicate resolution: 73-81% -> 77-84%
-- High-risk/display recovery: 50-60% -> 54-64%
-- Structured-family editors/writes: 48-58% -> 53-63%
-- Profile/mode switching: 50-60% -> 55-65%
-- Runtime/reload integration: 45-55% -> 50-60%
-- Hyprland 0.55.4 migration: 35-45% -> 39-49%
+- Missing/default insertion: 87-92% -> 92-95%
+- Duplicate resolution: 73-81% -> 80-86%
+- High-risk/display recovery: 50-60% -> 55-65%
+- Structured-family editors/writes: 48-58% -> 56-66%
+- Profile/mode switching: 50-60% -> 58-68%
+- Runtime/reload integration: 45-55% -> 51-61%
+- Hyprland 0.55.4 migration: 35-45% -> 41-51%
 
 ## Validation status
 Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `jq empty data/reports/*.json`, `git diff --check`, and `tools/live_scenario_harness/run_gtk_evidence_matrix.sh`.
 GTK evidence root: `/tmp/hyprland-settings-gtk-automation/20260619_184829`.
 
 ## Recommended next Codex prompt
-Run controlled copied-config-tree proof for source/include, duplicate, structured, profile, and runtime paths before considering any real config/runtime mutation.
+Promote copied-config-tree proof into default-disabled production gate review for source/include, duplicate, and `hl.bind` structured writes; retry read-only runtime evidence in a shell with a reachable Hyprland socket.

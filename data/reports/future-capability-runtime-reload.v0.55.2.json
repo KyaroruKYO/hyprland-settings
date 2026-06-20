@@ -25,7 +25,8 @@
     "No additional production-safe runtime/reload step was available this sprint without explicit runtime mutation approval.",
     "This sprint rechecked runtime/reload and found no safe production step without explicit runtime mutation approval.",
     "Controlled live-test guard requires read-only runtime snapshot before runtime mutation.",
-    "Added a guarded runtime executor model that supports read-only status proof, mutation dry-run proof, restore-command generation from prior snapshots, command logging, and default real_command_executed=false."
+    "Added a guarded runtime executor model that supports read-only status proof, mutation dry-run proof, restore-command generation from prior snapshots, command logging, and default real_command_executed=false.",
+    "Attempted read-only hyprctl version and monitors queries; both failed without mutation because the runtime socket was unavailable in this shell."
   ],
   "whatWasNotImplemented": [
     "No real hyprctl keyword, dispatch, reload, or runtime mutation path was added.",
@@ -58,7 +59,10 @@
     "runtimeGuardedExecutorExists": true,
     "runtimeGuardedExecutorExecutesRealCommands": false,
     "runtimeGuardedExecutorRequiresPriorSnapshotForMutation": true,
-    "runtimeGuardedExecutorGeneratesRestoreCommand": true
+    "runtimeGuardedExecutorGeneratesRestoreCommand": true,
+    "readOnlyHyprctlVersionAttempted": true,
+    "readOnlyHyprctlMonitorsAttempted": true,
+    "readOnlyHyprctlSocketAvailable": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"

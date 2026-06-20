@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "production-gate-readiness",
+  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "startingCommit": "35c96c4374e56327cc67224060d10227eda54a40",
+  "projectDataVersion": "v0.55.2",
+  "countsPreserved": "341 readable / 341 writable / 0 blocked",
+  "readyForDefaultDisabledGateReview": [
+    "source/include selected-target insertion",
+    "duplicate occurrence replacement",
+    "structured hl.bind exact-line replacement"
+  ],
+  "notReadyForProductionActivation": [
+    "high-risk/display writes",
+    "real profile/mode switching",
+    "runtime/reload mutation",
+    "Hyprland 0.55.4 migration activation"
+  ],
+  "gateDefaults": {
+    "sourceIncludeInsertionEnabledByDefault": false,
+    "duplicateWritesEnabledByDefault": false,
+    "structuredWritesEnabledByDefault": false,
+    "profileSwitchingEnabledByDefault": false,
+    "runtimeReloadEnabledByDefault": false,
+    "highRiskDisplayWritesEnabledByDefault": false,
+    "hyprland0554MigrationEnabledByDefault": false
+  },
+  "proofAvailable": {
+    "tempFixtureExecutors": true,
+    "copiedConfigTreeProof": true,
+    "byteExactRestore": true,
+    "originalRealConfigUnchanged": true,
+    "realRuntimeMutationProof": false,
+    "realConfigMutationProof": false
+  },
+  "requiredBeforeAnyProductionEnablement": [
+    "default-disabled feature flag or equivalent user approval boundary",
+    "pre-Apply review showing exact target path, old line, new line, and preconditions",
+    "copied-config-tree proof linked from the review",
+    "byte-exact backup and restore plan for any live target",
+    "post-restore verification if live testing is run",
+    "explicit user approval before real config/runtime mutation"
+  ],
+  "runtimeEvidence": {
+    "hyprctlVersion": "failed without mutation: Couldn't set socket timeout (2)",
+    "hyprctlMonitors": "failed without mutation: Couldn't set socket timeout (2)",
+    "mutatingHyprctlRun": false
+  },
+  "releaseBoundariesPreserved": {
+    "mainModified": false,
+    "v010TagModified": false,
+    "distV010Modified": false,
+    "v0552DefaultPreserved": true,
+    "hyprland0554Activated": false
+  },
+  "nextRecommendedWork": "Implement default-disabled production gate review for source/include insertion, duplicate replacement, and hl.bind structured writes using copied-config-tree proof as the prerequisite evidence."
+}

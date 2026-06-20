@@ -65,7 +65,14 @@
     "profile_switch_guarded_temp_fixture_executor",
     "runtime_guarded_executor_model",
     "high_risk_guarded_live_readiness_executor",
-    "hyprland_0554_local_evidence_collector"
+    "hyprland_0554_local_evidence_collector",
+    "copied_config_tree_proof_harness",
+    "copied_tree_source_include_executor_proof",
+    "copied_tree_duplicate_executor_proof",
+    "copied_tree_structured_bind_executor_proof",
+    "copied_tree_profile_symlink_executor_proof",
+    "read_only_runtime_query_attempt",
+    "hyprland_0554_package_metadata_evidence"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -84,6 +91,8 @@
     "data/reports/future-capability-profile-mode-switching.v0.55.2.json",
     "data/reports/future-capability-runtime-reload.v0.55.2.json",
     "data/reports/future-capability-hyprland-0554-migration.json",
+    "data/reports/copied-config-tree-proof.v0.55.2.json",
+    "data/reports/production-gate-readiness.v0.55.2.json",
     "data/reports/future-capability-marathon-summary.v0.55.2.json",
     "data/reports/future-capability-marathon-handoff.v0.55.2.json"
   ],
@@ -104,7 +113,7 @@
     "gtkSafeEnvMatrix": "passed",
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_184829"
   },
-  "nextRecommendedAction": "Run controlled copied-config-tree proof for source/include, duplicate, structured, profile, and runtime paths before considering any real config/runtime mutation.",
+  "nextRecommendedAction": "Promote copied-config-tree proof into default-disabled production gate review for source/include, duplicate, and hl.bind structured writes; retry read-only runtime evidence in a shell with a reachable Hyprland socket.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "92-96%",
@@ -113,8 +122,8 @@
     },
     "configDiscoverySourceAwareModel": {
       "before": "90-93%",
-      "after": "92-95%",
-      "evidence": "Added disabled selected-target dry-run preview plus a temp-fixture guarded executor that consumes source/include target-selection proof."
+      "after": "93-96%",
+      "evidence": "Added copied-config-tree harness that preserves source/include layout, maps original paths to temp copies, records source depth and management hints, and verifies original files stay unchanged."
     },
     "rowReadWriteModel": {
       "before": "90-95%",
@@ -123,8 +132,8 @@
     },
     "safeNormalScalarWrites": {
       "before": "92-96%",
-      "after": "94-97%",
-      "evidence": "Source/include guarded temp executor proves backup, planned-line insertion, reread verification, byte-exact restore, and hash restoration for non-real fixture paths."
+      "after": "95-97%",
+      "evidence": "Copied-config-tree source/include proof runs guarded insertion against copied targets, verifies the planned line, restores copied bytes, and proves originals unchanged."
     },
     "releasePackagingTagArtifacts": {
       "before": "85-95%",
@@ -133,38 +142,38 @@
     },
     "missingDefaultInsertion": {
       "before": "87-92%",
-      "after": "91-94%",
-      "evidence": "Selected-target preview UI and guarded temp executor now prove source/include insertion can execute and restore in temp fixtures; production expansion still blocked."
+      "after": "92-95%",
+      "evidence": "Copied-config-tree selected-target source/include proof now succeeds and restores copied root/source targets; production expansion still default-disabled."
     },
     "duplicateResolution": {
       "before": "73-81%",
-      "after": "77-84%",
-      "evidence": "Duplicate guarded temp executor proves confirmed occurrence replacement, reread verification, and byte-exact restore while production Apply stays disabled."
+      "after": "80-86%",
+      "evidence": "Copied-config-tree duplicate proof now handles confirmed same-file/source-layer replacement on copied targets and restores bytes while production Apply stays disabled."
     },
     "highRiskDisplayRecovery": {
       "before": "50-60%",
-      "after": "54-64%",
-      "evidence": "High-risk guarded live-readiness executor proves no-op readiness only when recovery channel, dead-man timeout, and restore command evidence are present."
+      "after": "55-65%",
+      "evidence": "High-risk readiness now records copied/live proof blockers plus failed read-only runtime socket query; no mutation was run."
     },
     "structuredFamilyEditorsWrites": {
       "before": "48-58%",
-      "after": "53-63%",
-      "evidence": "hl.bind guarded temp executor proves exact-line edit, validation, reread verification, comment/order preservation, and byte-exact restore."
+      "after": "56-66%",
+      "evidence": "Copied-config-tree hl.bind proof edits one selected copied line, verifies the raw line, preserves comments/order, restores bytes, and proves originals unchanged."
     },
     "profileModeSwitching": {
       "before": "50-60%",
-      "after": "55-65%",
-      "evidence": "Profile guarded temp executor switches and restores temp symlinks with original-target verification while real profile paths remain refused."
+      "after": "58-68%",
+      "evidence": "Copied-config-tree profile proof preserves copied symlink metadata, switches a copied current profile symlink, restores the target, and proves the real symlink untouched."
     },
     "runtimeReloadIntegration": {
       "before": "45-55%",
-      "after": "50-60%",
-      "evidence": "Runtime guarded executor supports read-only status proof, mutation dry-run proof, restore-command generation, and no real command execution."
+      "after": "51-61%",
+      "evidence": "Runtime readiness attempted read-only hyprctl queries, recorded socket unavailability without mutation, and kept mutation dry-run only."
     },
     "hyprland0554Migration": {
       "before": "35-45%",
-      "after": "39-49%",
-      "evidence": "Local 0.55.4 evidence collector records package/runtime evidence as advisory and blocks activation until trusted exports, row diff, write-safety review, GTK evidence, and approval exist."
+      "after": "41-51%",
+      "evidence": "Local package metadata recorded hyprland 0.55.4-1 as advisory evidence; activation still requires official exports, row diff, write-safety review, safe-env evidence, and approval."
     }
   },
   "priorityTrackStatus": {
@@ -183,6 +192,7 @@
     "runtimeGuardedExecutor": "implemented_but_disabled: runtime executor records read-only/dry-run command proof and restore commands while real_command_executed remains false.",
     "highRiskLiveReadinessExecutor": "implemented_but_disabled: no-op readiness executor requires recovery channel, dead-man timeout, and restore command evidence and refuses mutation by default.",
     "hyprland0554LocalEvidenceCollector": "implemented_but_disabled: local package/runtime evidence is advisory only and cannot activate migration without trusted exports and review proof.",
+    "copiedConfigTreeProof": "copied_config_tree_proven: copied source/include, duplicate, structured bind, and profile symlink executors ran against temp copied config trees, restored copied targets, and verified originals unchanged.",
     "controlledLiveTestGuard": "implemented_but_disabled: guard records backup, content fingerprints, symlink, runtime snapshot, restore, post-restore verification, out-of-band recovery, trusted-data, and explicit live flag requirements before any live mutation."
   },
   "categoryCoverageThisSprint": {

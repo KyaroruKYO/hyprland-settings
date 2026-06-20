@@ -38,7 +38,8 @@
     "The dry-run planner shows exact selected target, source depth, inserted line, and preview copy without writing files.",
     "The dry-run planner blocks no selection, managed/ambiguous selections, target mismatch, non-fixture targets, and insertion plans that are already blocked.",
     "Wired the selected-target dry-run preview into the disabled detail UI so users can inspect root path, selected target, source depth, proposed value, planned inserted line, and dry-run status.",
-    "Added a guarded temp-fixture executor that consumes source/include target-selection proof and the dry-run plan, backs up the selected target, inserts the exact planned line, rereads it, restores original bytes, and verifies restored content fingerprint."
+    "Added a guarded temp-fixture executor that consumes source/include target-selection proof and the dry-run plan, backs up the selected target, inserts the exact planned line, rereads it, restores original bytes, and verifies restored content fingerprint.",
+    "Added copied-config-tree source/include proof that maps original source/include files to temp copies, runs the guarded executor against copied targets, restores copied files, and verifies originals unchanged."
   ],
   "whatWasNotImplemented": [
     "No insertion into generated, script-managed, symlink/current-profile, profile/mode, multi-file, duplicate, high-risk, display/render-risk, structured, runtime-only, or missing target files was enabled.",
@@ -92,7 +93,10 @@
     "sourceIncludeGuardedTempExecutorExists": true,
     "sourceIncludeGuardedTempExecutorRestoresBytes": true,
     "sourceIncludeGuardedTempExecutorRefusesNonTempTargets": true,
-    "sourceIncludeGuardedTempExecutorRequiresGuard": true
+    "sourceIncludeGuardedTempExecutorRequiresGuard": true,
+    "sourceIncludeCopiedConfigTreeProofExists": true,
+    "sourceIncludeCopiedConfigTreeRestoresCopiedTarget": true,
+    "sourceIncludeCopiedConfigTreeOriginalUnchanged": true
   },
   "validation": {
     "focusedSafeBatchWriteTests": "passed",
@@ -110,10 +114,10 @@
   },
   "blockers": [
     "Production insertion remains intentionally limited to single-file normal scalar targets.",
-    "Source/include insertion now has readiness model, disabled UI, fixture target-selection proof, selected-target dry-run planner, preview UI, and temp-fixture guarded executor, but production connected-file insertion remains disabled until copied-config/live proof and explicit production approval are reviewed.",
+    "Source/include insertion now has readiness model, disabled UI, fixture target-selection proof, selected-target dry-run planner, preview UI, temp-fixture guarded executor, and copied-config-tree proof, but production connected-file insertion remains disabled until default-disabled production gate review and explicit approval are added.",
     "Managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
   ],
-  "nextRecommendedWork": "Run copied-config-tree proof for source/include selected-target insertion before considering production connected-file insertion.",
+  "nextRecommendedWork": "Promote copied-config-tree source/include proof into a default-disabled production target-selection gate review.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": true

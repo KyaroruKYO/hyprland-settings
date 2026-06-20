@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "copied-config-tree-proof",
+  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "startingCommit": "35c96c4374e56327cc67224060d10227eda54a40",
+  "projectDataVersion": "v0.55.2",
+  "countsBefore": "341 readable / 341 writable / 0 blocked",
+  "countsAfter": "341 readable / 341 writable / 0 blocked",
+  "copiedConfigTreeHarness": {
+    "implemented": true,
+    "copiesRootConfig": true,
+    "copiesSourceIncludeFiles": true,
+    "preservesRelativeSourceLayout": true,
+    "recordsOriginalToCopiedPathMapping": true,
+    "recordsSourceDepth": true,
+    "recordsGeneratedScriptSymlinkProfileHints": true,
+    "recordsTargetEligibility": true,
+    "preservesSymlinkMetadataInReport": true,
+    "executesScripts": false,
+    "copiesUnrelatedSecrets": false,
+    "writesOriginalRealPaths": false
+  },
+  "proofs": {
+    "sourceIncludeSelectedTargetCopiedTree": {
+      "status": "copied_config_tree_proven",
+      "selectedSourceTargetSucceededAndRestored": true,
+      "selectedRootTargetModelCovered": true,
+      "productionSourceIncludeInsertionEnabled": false
+    },
+    "duplicateReplacementCopiedTree": {
+      "status": "copied_config_tree_proven",
+      "sameFileDuplicateSucceededAndRestored": true,
+      "sourceLayerDuplicateModelCovered": true,
+      "productionDuplicateWritesEnabled": false
+    },
+    "structuredHlBindCopiedTree": {
+      "status": "copied_config_tree_proven",
+      "selectedBindLineSucceededAndRestored": true,
+      "commentsAndOrderPreserved": true,
+      "productionStructuredWritesEnabled": false
+    },
+    "profileModeCopiedTree": {
+      "status": "copied_config_tree_proven",
+      "tempSymlinkSwitchSucceededAndRestored": true,
+      "realProfileSymlinkTouched": false,
+      "productionProfileSwitchingEnabled": false
+    },
+    "runtimeReloadReadiness": {
+      "status": "implemented_but_disabled",
+      "hyprctlVersionQuery": "failed: Couldn't set socket timeout (2)",
+      "hyprctlMonitorsQuery": "failed: Couldn't set socket timeout (2)",
+      "installedPackageEvidence": "hyprland 0.55.4-1",
+      "mutatingHyprctlRun": false,
+      "productionRuntimeMutationEnabled": false
+    },
+    "highRiskDisplayReadiness": {
+      "status": "implemented_but_disabled",
+      "noopReadinessExecutorExists": true,
+      "realDisplayMutationRun": false,
+      "productionHighRiskWritesEnabled": false
+    },
+    "hyprland0554MigrationReadiness": {
+      "status": "implemented_but_disabled",
+      "localPackageEvidence": "hyprland 0.55.4-1",
+      "runtimeSocketEvidenceAvailable": false,
+      "officialExportsAvailable": false,
+      "migrationActivated": false
+    }
+  },
+  "restoration": {
+    "tempFixtureExecutorsRestored": true,
+    "copiedConfigTreeExecutorsRestored": true,
+    "realConfigTouched": false,
+    "runtimeTouched": false,
+    "agsTouched": false,
+    "waybarTouched": false,
+    "hyprlandReloaded": false
+  },
+  "productionGates": {
+    "sourceIncludeInsertionDefaultEnabled": false,
+    "duplicateWritesDefaultEnabled": false,
+    "structuredWritesDefaultEnabled": false,
+    "profileSwitchingDefaultEnabled": false,
+    "runtimeReloadDefaultEnabled": false,
+    "highRiskDisplayWritesDefaultEnabled": false,
+    "hyprland0554MigrationDefaultEnabled": false
+  },
+  "validation": {
+    "focusedCopiedTreeTests": "passed",
+    "hyprctlReadOnlyVersion": "failed without mutation: Couldn't set socket timeout (2)",
+    "hyprctlReadOnlyMonitors": "failed without mutation: Couldn't set socket timeout (2)",
+    "packageMetadata": "hyprland 0.55.4-1"
+  },
+  "remainingBlockers": [
+    "Production source/include insertion needs explicit production flag and copied/live approval review.",
+    "Production duplicate writes need explicit production flag and copied/live approval review.",
+    "Production structured writes need explicit production flag and copied/live approval review.",
+    "Real profile/mode switching needs copied-tree approval plus live symlink restoration proof.",
+    "Runtime/reload mutation needs reachable runtime socket, prior value snapshot, restore command, and explicit approval.",
+    "High-risk/display writes need out-of-band recovery proof before any real mutation.",
+    "Hyprland 0.55.4 migration needs trusted official exports, row-count diff, write-safety review, safe-env evidence, and explicit user approval."
+  ],
+  "nextRecommendedWork": "Promote copied-config-tree proof into default-disabled production gate review for source/include, duplicate, and hl.bind structured writes; retry read-only runtime evidence in a shell with a reachable Hyprland socket before any mutating runtime proof."
+}

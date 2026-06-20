@@ -28,7 +28,8 @@
     "No additional production-safe high-risk/display step was available this sprint without crossing the live recovery proof and explicit approval boundary.",
     "This sprint rechecked high-risk/display recovery and found no safe production step beyond the existing no-op protocol without explicit live recovery approval.",
     "Controlled live-test guard requires out-of-band recovery and read-only runtime snapshot before high-risk/display mutation.",
-    "Added a guarded no-op live-readiness executor that requires guard approval, out-of-band recovery channel evidence, dead-man timeout evidence, and restore command evidence before reporting readiness."
+    "Added a guarded no-op live-readiness executor that requires guard approval, out-of-band recovery channel evidence, dead-man timeout evidence, and restore command evidence before reporting readiness.",
+    "Attempted read-only runtime socket checks for live-readiness context; socket was unavailable and no high-risk/display mutation was attempted."
   ],
   "whatWasNotImplemented": [
     "No real display/render writes were enabled.",
@@ -65,7 +66,9 @@
     "highRiskGuardedExecutorNoopOnly": true,
     "highRiskGuardedExecutorRequiresOutOfBandRecovery": true,
     "highRiskGuardedExecutorRequiresDeadManTimeout": true,
-    "highRiskGuardedExecutorRequiresRestoreCommand": true
+    "highRiskGuardedExecutorRequiresRestoreCommand": true,
+    "readOnlyRuntimeSocketCheckAttempted": true,
+    "readOnlyRuntimeSocketAvailable": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"

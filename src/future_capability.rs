@@ -5,6 +5,10 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, Result};
 
+use crate::config_graph::{
+    inspect_config_graph_with_options, ConfigGraphOptions, ConfigManagementHintKind,
+    SourceFollowPolicy,
+};
 use crate::config_parser::{parse_hyprland_config_file, ParseStatus};
 use crate::missing_default_insertion::MissingDefaultInsertionPlan;
 
@@ -254,6 +258,45 @@ pub struct GuardedTempExecutionReport {
     pub errors: Vec<String>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct CopiedConfigTreeFile {
+    pub original_path: PathBuf,
+    pub copied_path: PathBuf,
+    pub source_depth: usize,
+    pub is_symlink: bool,
+    pub original_symlink_target: Option<PathBuf>,
+    pub copied_symlink_target: Option<PathBuf>,
+    pub original_fingerprint: String,
+    pub copied_initial_fingerprint: String,
+    pub generated_or_script_managed: bool,
+    pub symlink_or_profile_managed: bool,
+    pub target_eligible: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct CopiedConfigTreeSnapshot {
+    pub original_root_path: PathBuf,
+    pub copied_root_path: PathBuf,
+    pub copy_root: PathBuf,
+    pub files: Vec<CopiedConfigTreeFile>,
+    pub real_config_touched: bool,
+    pub runtime_touched: bool,
+    pub production_behavior_enabled: bool,
+    pub errors: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct CopiedConfigTreeReport {
+    pub snapshot: CopiedConfigTreeSnapshot,
+    pub originals_unchanged: bool,
+    pub copied_files_restored: bool,
+    pub source_include_executor_restored: Option<bool>,
+    pub duplicate_executor_restored: Option<bool>,
+    pub structured_executor_restored: Option<bool>,
+    pub profile_executor_restored: Option<bool>,
+    pub review_lines: Vec<String>,
+}
+
 pub fn source_include_insertion_review(
     root_path: impl Into<PathBuf>,
     candidate_targets: Vec<PathBuf>,
@@ -389,6 +432,216 @@ pub fn execute_source_include_selected_target_guarded_temp(
         force_verification_failure,
         force_restore_failure,
     )
+}
+
+pub fn copy_config_tree_for_proof(
+    root_path: impl AsRef<Path>,
+    copy_root: impl AsRef<Path>,
+) -> CopiedConfigTreeSnapshot {
+    let root_path = root_path.as_ref().to_path_buf();
+    let copy_root = copy_root.as_ref().to_path_buf();
+    let root_parent = root_path
+        .parent()
+        .map(Path::to_path_buf)
+        .unwrap_or_else(|| PathBuf::from("/"));
+    let options = ConfigGraphOptions {
+        home_dir: root_parent.parent().map(Path::to_path_buf),
+        script_dirs: Vec::new(),
+        max_depth: 16,
+        source_follow_policy: SourceFollowPolicy::ReviewAll,
+    };
+    let graph = inspect_config_graph_with_options(&root_path, options);
+    let copied_root_path = map_original_path_to_copy(&root_path, &root_parent, &copy_root);
+    let mut files = Vec::new();
+    let mut errors = Vec::new();
+
+    for file in graph.files {
+        if !file.readable {
+            errors.push(format!("skipped unreadable file {}", file.path.display()));
+            continue;
+        }
+        let copied_path = map_original_path_to_copy(&file.path, &root_parent, &copy_root);
+        if let Some(parent) = copied_path.parent() {
+            if let Err(error) = fs::create_dir_all(parent) {
+                errors.push(format!("could not create {}: {error}", parent.display()));
+                continue;
+            }
+        }
+
+        let generated_or_script_managed = file.hints.iter().any(|hint| {
+            matches!(
+                hint.kind,
+                ConfigManagementHintKind::GeneratedFile
+                    | ConfigManagementHintKind::ScriptManaged
+                    | ConfigManagementHintKind::ScriptReferenced
+            )
+        });
+        let symlink_or_profile_managed = file.is_symlink
+            || file.hints.iter().any(|hint| {
+                matches!(
+                    hint.kind,
+                    ConfigManagementHintKind::CurrentProfile
+                        | ConfigManagementHintKind::DesktopProfile
+                        | ConfigManagementHintKind::GamingProfile
+                        | ConfigManagementHintKind::LaptopProfile
+                        | ConfigManagementHintKind::PerformanceProfile
+                        | ConfigManagementHintKind::ModeProfile
+                        | ConfigManagementHintKind::SymlinkManaged
+                )
+            });
+
+        let original_fingerprint = if file.is_symlink {
+            symlink_fingerprint(file.symlink_target.as_ref())
+        } else {
+            match fs::read(&file.path) {
+                Ok(bytes) => content_fingerprint(&bytes),
+                Err(error) => {
+                    errors.push(format!("could not read {}: {error}", file.path.display()));
+                    continue;
+                }
+            }
+        };
+
+        let mut copied_symlink_target = None;
+        if file.is_symlink {
+            #[cfg(unix)]
+            {
+                if let Some(target) = file.symlink_target.as_ref() {
+                    let copied_target = map_original_path_to_copy(target, &root_parent, &copy_root);
+                    if let Some(parent) = copied_target.parent() {
+                        if let Err(error) = fs::create_dir_all(parent) {
+                            errors.push(format!(
+                                "could not create symlink target parent {}: {error}",
+                                parent.display()
+                            ));
+                        }
+                    }
+                    if target.is_file() {
+                        if let Err(error) = fs::copy(target, &copied_target) {
+                            errors.push(format!(
+                                "could not copy symlink target {}: {error}",
+                                target.display()
+                            ));
+                        }
+                    }
+                    let _ = fs::remove_file(&copied_path);
+                    match std::os::unix::fs::symlink(&copied_target, &copied_path) {
+                        Ok(()) => copied_symlink_target = Some(copied_target),
+                        Err(error) => errors.push(format!(
+                            "could not create copied symlink {}: {error}",
+                            copied_path.display()
+                        )),
+                    }
+                }
+            }
+            #[cfg(not(unix))]
+            {
+                errors.push("symlink copy proof requires unix symlink support".to_string());
+            }
+        } else if let Err(error) = fs::copy(&file.path, &copied_path) {
+            errors.push(format!(
+                "could not copy {} to {}: {error}",
+                file.path.display(),
+                copied_path.display()
+            ));
+            continue;
+        }
+
+        let copied_initial_fingerprint = if file.is_symlink {
+            symlink_fingerprint(copied_symlink_target.as_ref())
+        } else {
+            match fs::read(&copied_path) {
+                Ok(bytes) => content_fingerprint(&bytes),
+                Err(error) => {
+                    errors.push(format!(
+                        "could not read copy {}: {error}",
+                        copied_path.display()
+                    ));
+                    String::new()
+                }
+            }
+        };
+
+        files.push(CopiedConfigTreeFile {
+            original_path: file.path,
+            copied_path,
+            source_depth: file.source_depth,
+            is_symlink: file.is_symlink,
+            original_symlink_target: file.symlink_target,
+            copied_symlink_target,
+            original_fingerprint,
+            copied_initial_fingerprint,
+            generated_or_script_managed,
+            symlink_or_profile_managed,
+            target_eligible: !generated_or_script_managed && !symlink_or_profile_managed,
+        });
+    }
+
+    CopiedConfigTreeSnapshot {
+        original_root_path: root_path,
+        copied_root_path,
+        copy_root,
+        files,
+        real_config_touched: false,
+        runtime_touched: false,
+        production_behavior_enabled: false,
+        errors,
+    }
+}
+
+pub fn copied_config_tree_originals_unchanged(snapshot: &CopiedConfigTreeSnapshot) -> bool {
+    snapshot.files.iter().all(|file| {
+        if file.is_symlink {
+            path_symlink_fingerprint(&file.original_path) == file.original_fingerprint
+        } else {
+            fs::read(&file.original_path)
+                .map(|bytes| content_fingerprint(&bytes) == file.original_fingerprint)
+                .unwrap_or(false)
+        }
+    })
+}
+
+pub fn copied_config_tree_files_restored(snapshot: &CopiedConfigTreeSnapshot) -> bool {
+    snapshot.files.iter().all(|file| {
+        if file.is_symlink {
+            path_symlink_fingerprint(&file.copied_path) == file.copied_initial_fingerprint
+        } else {
+            fs::read(&file.copied_path)
+                .map(|bytes| content_fingerprint(&bytes) == file.copied_initial_fingerprint)
+                .unwrap_or(false)
+        }
+    })
+}
+
+pub fn copied_config_tree_report(
+    snapshot: CopiedConfigTreeSnapshot,
+    source_include_executor: Option<&GuardedTempExecutionReport>,
+    duplicate_executor: Option<&GuardedTempExecutionReport>,
+    structured_executor: Option<&GuardedTempExecutionReport>,
+    profile_executor_restored: Option<bool>,
+) -> CopiedConfigTreeReport {
+    let originals_unchanged = copied_config_tree_originals_unchanged(&snapshot);
+    let copied_files_restored = copied_config_tree_files_restored(&snapshot);
+    CopiedConfigTreeReport {
+        snapshot,
+        originals_unchanged,
+        copied_files_restored,
+        source_include_executor_restored: source_include_executor.map(|report| {
+            report.restore_succeeded && report.status == GuardedTempExecutionStatus::SucceededAndRestored
+        }),
+        duplicate_executor_restored: duplicate_executor.map(|report| {
+            report.restore_succeeded && report.status == GuardedTempExecutionStatus::SucceededAndRestored
+        }),
+        structured_executor_restored: structured_executor.map(|report| {
+            report.restore_succeeded && report.status == GuardedTempExecutionStatus::SucceededAndRestored
+        }),
+        profile_executor_restored,
+        review_lines: vec![
+            "Copied-config-tree proof runs only against temp copies.".to_string(),
+            "Original real config files are fingerprinted and verified unchanged.".to_string(),
+            "Production source/include, duplicate, structured, profile, runtime, and high-risk behavior remains disabled by default.".to_string(),
+        ],
+    }
 }
 
 pub fn source_include_selected_target_dry_run_plan(
@@ -1828,6 +2081,41 @@ fn content_fingerprint(bytes: &[u8]) -> String {
     let mut hasher = DefaultHasher::new();
     bytes.hash(&mut hasher);
     format!("sha256-fixture-fingerprint:{:016x}", hasher.finish())
+}
+
+fn symlink_fingerprint(target: Option<&PathBuf>) -> String {
+    target
+        .map(|target| format!("symlink-target:{}", target.display()))
+        .unwrap_or_else(|| "symlink-target:none".to_string())
+}
+
+fn path_symlink_fingerprint(path: &Path) -> String {
+    fs::read_link(path)
+        .ok()
+        .map(|target| {
+            if target.is_absolute() {
+                target
+            } else {
+                path.parent()
+                    .map(|parent| parent.join(target))
+                    .unwrap_or_else(|| PathBuf::from("."))
+            }
+        })
+        .as_ref()
+        .map(|target| format!("symlink-target:{}", target.display()))
+        .unwrap_or_else(|| "symlink-target:none".to_string())
+}
+
+fn map_original_path_to_copy(path: &Path, root_parent: &Path, copy_root: &Path) -> PathBuf {
+    if let Ok(relative) = path.strip_prefix(root_parent) {
+        copy_root.join(relative)
+    } else {
+        copy_root.join(
+            path.file_name()
+                .and_then(|name| name.to_str())
+                .unwrap_or("copied-config-file"),
+        )
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

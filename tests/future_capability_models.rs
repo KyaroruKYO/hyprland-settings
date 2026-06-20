@@ -3,7 +3,9 @@ use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use hyprland_settings::future_capability::{
-    assess_hyprland_version_migration, current_v0552_data_bundle, disabled_migration_review,
+    assess_hyprland_version_migration, copied_config_tree_files_restored,
+    copied_config_tree_originals_unchanged, copied_config_tree_report, copy_config_tree_for_proof,
+    current_v0552_data_bundle, disabled_migration_review,
     disabled_missing_default_insertion_review, disabled_profile_switch_review,
     disabled_profile_switch_selection_review, duplicate_occurrence_confirmation,
     duplicate_occurrence_model, duplicate_occurrence_review, duplicate_production_approval_gate,
@@ -21,8 +23,8 @@ use hyprland_settings::future_capability::{
     ControlledLiveTestKind, DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
     DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
     DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
-    MockWatchdog, MockWatchdogState, ProfileTargetReadiness, RuntimeAction, RuntimeCommandRisk,
-    RuntimeDryRunExecutor, SourceIncludeInsertionReadiness,
+    MockWatchdog, MockWatchdogState, ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction,
+    RuntimeCommandRisk, RuntimeDryRunExecutor, SourceIncludeInsertionReadiness,
     SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
     SourceIncludeTargetSelectionStatus, StructuredBindEditStatus,
 };
@@ -647,6 +649,227 @@ fn source_include_guarded_executor_refuses_missing_guard_non_temp_and_restores_a
         false,
     );
     assert_eq!(non_temp.status, GuardedTempExecutionStatus::Blocked);
+}
+
+#[cfg(unix)]
+#[test]
+fn copied_config_tree_runs_guarded_executors_on_copies_and_restores_everything() {
+    let realish = temp_root("copied-tree-realish");
+    let root_conf = realish.join("hyprland.conf");
+    let sourced_conf = realish.join("appearance.conf");
+    let profiles = realish.join("profiles");
+    let desktop = profiles.join("desktop.conf");
+    let gaming = profiles.join("gaming.conf");
+    let current = profiles.join("current.conf");
+    write_file(
+        &root_conf,
+        "source = appearance.conf\nsource = profiles/current.conf\nsource = profiles/gaming.conf\n",
+    );
+    write_file(
+        &sourced_conf,
+        "decoration:blur:enabled = true\ndecoration:blur:enabled = false\nbind = SUPER, Return, exec, foot\n# keep comment\n",
+    );
+    write_file(&desktop, "misc:disable_splash_rendering = false\n");
+    write_file(&gaming, "misc:disable_splash_rendering = true\n");
+    std::os::unix::fs::symlink(&desktop, &current).expect("profile symlink should create");
+
+    let copy_root = temp_root("copied-tree-copy");
+    let snapshot = copy_config_tree_for_proof(&root_conf, &copy_root);
+    assert!(snapshot.errors.is_empty(), "{:?}", snapshot.errors);
+    assert!(!snapshot.real_config_touched);
+    assert!(!snapshot.runtime_touched);
+    assert!(copied_config_tree_originals_unchanged(&snapshot));
+    assert!(copied_config_tree_files_restored(&snapshot));
+
+    let copied_sourced = snapshot
+        .files
+        .iter()
+        .find(|file| file.original_path == sourced_conf)
+        .expect("sourced file should be copied")
+        .clone();
+    let copied_root = snapshot
+        .files
+        .iter()
+        .find(|file| file.original_path == root_conf)
+        .expect("root file should be copied")
+        .clone();
+    let copied_current = snapshot
+        .files
+        .iter()
+        .find(|file| file.original_path == current)
+        .expect("current symlink should be copied")
+        .clone();
+    let copied_gaming = snapshot
+        .files
+        .iter()
+        .find(|file| file.original_path == gaming)
+        .expect("gaming profile should be copied")
+        .clone();
+    assert!(copied_root.target_eligible);
+    assert!(copied_sourced.target_eligible);
+    assert!(!copied_current.target_eligible);
+
+    let source_proof = source_include_target_selection_fixture_proof(
+        snapshot.copied_root_path.clone(),
+        vec![
+            SourceIncludeTargetCandidate {
+                path: copied_root.copied_path.clone(),
+                source_depth: copied_root.source_depth,
+                generated_or_script_managed: copied_root.generated_or_script_managed,
+                symlink_or_profile_managed: copied_root.symlink_or_profile_managed,
+            },
+            SourceIncludeTargetCandidate {
+                path: copied_sourced.copied_path.clone(),
+                source_depth: copied_sourced.source_depth,
+                generated_or_script_managed: copied_sourced.generated_or_script_managed,
+                symlink_or_profile_managed: copied_sourced.symlink_or_profile_managed,
+            },
+        ],
+        Some(copied_sourced.copied_path.clone()),
+        false,
+    );
+    let insertion_plan = build_missing_default_insertion_plan(MissingDefaultInsertionRequest {
+        setting_id: "misc.disable_splash_rendering".to_string(),
+        proposed_value: "true".to_string(),
+        target_path: copied_sourced.copied_path.clone(),
+        backup_stamp: "copied-tree-source".to_string(),
+    });
+    let dry_run = source_include_selected_target_dry_run_plan(&source_proof, &insertion_plan);
+    let source_guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::SourceIncludeInsertion,
+        complete_live_guard_request(copied_sourced.copied_path.clone()),
+    );
+    let source_report = execute_source_include_selected_target_guarded_temp(
+        &source_proof,
+        &dry_run,
+        &source_guard,
+        false,
+        false,
+    );
+    assert_eq!(
+        source_report.status,
+        GuardedTempExecutionStatus::SucceededAndRestored
+    );
+    assert!(copied_config_tree_originals_unchanged(&snapshot));
+    assert!(copied_config_tree_files_restored(&snapshot));
+
+    let duplicate_model = duplicate_occurrence_model(
+        "decoration.blur.enabled",
+        &[(
+            copied_sourced.copied_path.clone(),
+            copied_sourced.source_depth,
+        )],
+    )
+    .expect("duplicate model should build from copied tree");
+    let duplicate_occurrence = duplicate_model.occurrences[1].clone();
+    let duplicate_confirmation = duplicate_occurrence_confirmation(
+        Some(&duplicate_occurrence),
+        Some("token"),
+        "token",
+        false,
+        false,
+    );
+    let duplicate_request = DuplicateReplacementRequest {
+        occurrence: duplicate_occurrence,
+        expected_old_value: "false".to_string(),
+        proposed_value: "true".to_string(),
+        backup_stamp: "copied-tree-duplicate".to_string(),
+    };
+    let duplicate_guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::DuplicateReplacement,
+        complete_live_guard_request(copied_sourced.copied_path.clone()),
+    );
+    let duplicate_report = execute_duplicate_replacement_guarded_temp(
+        &duplicate_confirmation,
+        &duplicate_request,
+        &duplicate_guard,
+        false,
+        false,
+    );
+    assert_eq!(
+        duplicate_report.status,
+        GuardedTempExecutionStatus::SucceededAndRestored
+    );
+    assert!(copied_config_tree_originals_unchanged(&snapshot));
+    assert!(copied_config_tree_files_restored(&snapshot));
+
+    let structured_guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::StructuredWrite,
+        complete_live_guard_request(copied_sourced.copied_path.clone()),
+    );
+    let structured_report = execute_structured_bind_guarded_temp(
+        &copied_sourced.copied_path,
+        3,
+        "bind = SUPER, Return, exec, foot",
+        "bind = SUPER, Return, exec, kitty",
+        &structured_guard,
+        false,
+        false,
+    );
+    assert_eq!(
+        structured_report.status,
+        GuardedTempExecutionStatus::SucceededAndRestored
+    );
+    assert!(copied_config_tree_originals_unchanged(&snapshot));
+    assert!(copied_config_tree_files_restored(&snapshot));
+
+    let profile_guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::ProfileSwitch,
+        ControlledLiveTestGuardRequest {
+            symlink_targets_recorded: true,
+            ..complete_live_guard_request(copied_current.copied_path.clone())
+        },
+    );
+    let profile_report = switch_profile_symlink_guarded_temp(
+        &snapshot.copy_root,
+        &copied_current.copied_path,
+        &copied_gaming.copied_path,
+        &profile_guard,
+        false,
+    );
+    assert_eq!(profile_report.status, ProfileSwitchStatus::Succeeded);
+    let profile_restored = profile_report.restored_target == profile_report.original_target;
+    assert!(profile_restored);
+    assert!(copied_config_tree_originals_unchanged(&snapshot));
+    assert!(copied_config_tree_files_restored(&snapshot));
+
+    let report = copied_config_tree_report(
+        snapshot,
+        Some(&source_report),
+        Some(&duplicate_report),
+        Some(&structured_report),
+        Some(profile_restored),
+    );
+    assert!(report.originals_unchanged);
+    assert!(report.copied_files_restored);
+    assert_eq!(report.source_include_executor_restored, Some(true));
+    assert_eq!(report.duplicate_executor_restored, Some(true));
+    assert_eq!(report.structured_executor_restored, Some(true));
+    assert_eq!(report.profile_executor_restored, Some(true));
+}
+
+#[test]
+fn copied_config_tree_classifies_generated_and_unknown_targets_without_writing_originals() {
+    let realish = temp_root("copied-tree-generated");
+    let root_conf = realish.join("hyprland.conf");
+    let generated = realish.join("generated.conf");
+    write_file(&root_conf, "source = generated.conf\n");
+    write_file(
+        &generated,
+        "# Generated by a script; do not edit\nmisc:disable_splash_rendering = false\n",
+    );
+    let copy_root = temp_root("copied-tree-generated-copy");
+    let snapshot = copy_config_tree_for_proof(&root_conf, &copy_root);
+    assert!(snapshot.errors.is_empty(), "{:?}", snapshot.errors);
+    let copied_generated = snapshot
+        .files
+        .iter()
+        .find(|file| file.original_path == generated)
+        .expect("generated file should be copied");
+    assert!(copied_generated.generated_or_script_managed);
+    assert!(!copied_generated.target_eligible);
+    assert!(copied_config_tree_originals_unchanged(&snapshot));
+    assert!(copied_config_tree_files_restored(&snapshot));
 }
 
 #[test]

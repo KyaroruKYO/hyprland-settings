@@ -28,7 +28,8 @@
     "No additional migration activation step was available this sprint without trusted official 0.55.4 exports/source data.",
     "This sprint rechecked Hyprland 0.55.4 migration and found no safe activation path without trusted official export/source data.",
     "Controlled live-test guard requires trusted versioned data bundle before migration activation.",
-    "Added a local evidence collector that records installed package/runtime version evidence as advisory only and still requires official exports, row-count diff, write-safety review, safe-env evidence, local version evidence, and explicit user approval before activation."
+    "Added a local evidence collector that records installed package/runtime version evidence as advisory only and still requires official exports, row-count diff, write-safety review, safe-env evidence, local version evidence, and explicit user approval before activation.",
+    "Recorded local package metadata evidence from pacman: hyprland 0.55.4-1; runtime socket evidence was unavailable in this shell."
   ],
   "whatWasNotImplemented": [
     "No v0.55.2 exports were replaced.",
@@ -63,6 +64,8 @@
     "localHyprlandVersionEvidenceCollectorExists": true,
     "packageRuntimeEvidenceAdvisoryOnly": true,
     "explicitUserApprovalRequiredFor0554": true,
+    "localPackageMetadataEvidence": "hyprland 0.55.4-1",
+    "runtimeSocketEvidenceAvailable": false,
     "liveMutationExecutedThisSprint": false,
     "restorationRequiredThisSprint": false
   },

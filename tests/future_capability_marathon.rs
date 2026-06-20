@@ -82,12 +82,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Run controlled copied-config-tree proof for source/include, duplicate, structured, profile, and runtime paths before considering any real config/runtime mutation."
+        "Promote copied-config-tree proof into default-disabled production gate review for source/include, duplicate, and hl.bind structured writes; retry read-only runtime evidence in a shell with a reachable Hyprland socket."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("copied-config-tree proof"));
+        .contains("production gate review"));
 }
 
 #[test]
@@ -112,4 +112,78 @@ fn active_safe_batch_copy_still_blocks_future_tracks() {
     assert!(SafeBatchEligibility::BlockedProfileModeSwitch
         .user_facing_blocked_copy()
         .contains("profile and mode switching"));
+}
+
+#[test]
+fn copied_config_tree_report_records_restored_proofs_without_production_enablement() {
+    let report = read_json("data/reports/copied-config-tree-proof.v0.55.2.json");
+    assert_eq!(report["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        report["countsAfter"],
+        "341 readable / 341 writable / 0 blocked"
+    );
+    assert_eq!(report["copiedConfigTreeHarness"]["implemented"], true);
+    assert_eq!(
+        report["proofs"]["sourceIncludeSelectedTargetCopiedTree"]["status"],
+        "copied_config_tree_proven"
+    );
+    assert_eq!(
+        report["proofs"]["duplicateReplacementCopiedTree"]["status"],
+        "copied_config_tree_proven"
+    );
+    assert_eq!(
+        report["proofs"]["structuredHlBindCopiedTree"]["status"],
+        "copied_config_tree_proven"
+    );
+    assert_eq!(
+        report["proofs"]["profileModeCopiedTree"]["tempSymlinkSwitchSucceededAndRestored"],
+        true
+    );
+    assert_eq!(report["restoration"]["realConfigTouched"], false);
+    assert_eq!(report["restoration"]["runtimeTouched"], false);
+    assert_eq!(
+        report["productionGates"]["sourceIncludeInsertionDefaultEnabled"],
+        false
+    );
+    assert_eq!(
+        report["productionGates"]["duplicateWritesDefaultEnabled"],
+        false
+    );
+    assert_eq!(
+        report["productionGates"]["hyprland0554MigrationDefaultEnabled"],
+        false
+    );
+}
+
+#[test]
+fn production_gate_readiness_report_keeps_all_future_gates_default_disabled() {
+    let report = read_json("data/reports/production-gate-readiness.v0.55.2.json");
+    assert_eq!(report["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        report["countsPreserved"],
+        "341 readable / 341 writable / 0 blocked"
+    );
+    assert_eq!(report["proofAvailable"]["copiedConfigTreeProof"], true);
+    assert_eq!(report["proofAvailable"]["realRuntimeMutationProof"], false);
+    assert_eq!(
+        report["gateDefaults"]["sourceIncludeInsertionEnabledByDefault"],
+        false
+    );
+    assert_eq!(
+        report["gateDefaults"]["duplicateWritesEnabledByDefault"],
+        false
+    );
+    assert_eq!(
+        report["gateDefaults"]["structuredWritesEnabledByDefault"],
+        false
+    );
+    assert_eq!(
+        report["gateDefaults"]["hyprland0554MigrationEnabledByDefault"],
+        false
+    );
+    assert_eq!(report["releaseBoundariesPreserved"]["mainModified"], false);
+    assert_eq!(
+        report["releaseBoundariesPreserved"]["v0552DefaultPreserved"],
+        true
+    );
 }

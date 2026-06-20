@@ -28,7 +28,8 @@
     "No additional production-safe profile switching step was available this sprint without explicit real-session switching approval.",
     "This sprint rechecked profile/mode switching and found no safe production step without explicit real-session approval and restore protocol.",
     "Controlled live-test guard requires original symlink targets before profile switching mutation.",
-    "Added a guarded temp-fixture profile switch executor that requires selected target, current symlink, original symlink snapshot, and guard approval, then switches, verifies, restores, and verifies the restored target."
+    "Added a guarded temp-fixture profile switch executor that requires selected target, current symlink, original symlink snapshot, and guard approval, then switches, verifies, restores, and verifies the restored target.",
+    "Added copied-config-tree profile/mode proof that preserves a copied profile symlink, switches it to a copied target, restores the original copied symlink target, and verifies the real symlink remains untouched."
   ],
   "whatWasNotImplemented": [
     "No real symlink was switched.",
@@ -62,7 +63,10 @@
     "profileSwitchGuardedTempExecutorExists": true,
     "profileSwitchGuardedTempExecutorRestoresSymlinkTarget": true,
     "profileSwitchGuardedTempExecutorRequiresGuard": true,
-    "profileSwitchGuardedTempExecutorRefusesRealProfilePathByDefault": true
+    "profileSwitchGuardedTempExecutorRefusesRealProfilePathByDefault": true,
+    "profileSwitchCopiedConfigTreeProofExists": true,
+    "profileSwitchCopiedConfigTreeRestoresSymlinkTarget": true,
+    "profileSwitchCopiedConfigTreeRealSymlinkUntouched": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"

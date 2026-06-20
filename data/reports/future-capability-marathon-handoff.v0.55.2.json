@@ -45,7 +45,14 @@
     "profile_switch_guarded_temp_fixture_executor",
     "runtime_guarded_executor_model",
     "high_risk_guarded_live_readiness_executor",
-    "hyprland_0554_local_evidence_collector"
+    "hyprland_0554_local_evidence_collector",
+    "copied_config_tree_proof_harness",
+    "copied_tree_source_include_executor_proof",
+    "copied_tree_duplicate_executor_proof",
+    "copied_tree_structured_bind_executor_proof",
+    "copied_tree_profile_symlink_executor_proof",
+    "read_only_runtime_query_attempt",
+    "hyprland_0554_package_metadata_evidence"
   ],
   "partialPhases": [],
   "blockedPhases": [
@@ -62,7 +69,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "Run controlled copied-config-tree proof for source/include, duplicate, structured, profile, and runtime paths before considering any real config/runtime mutation.",
+  "nextExactPhaseToContinue": "Promote copied-config-tree proof into default-disabled production gate review for source/include, duplicate, and hl.bind structured writes; retry read-only runtime evidence in a shell with a reachable Hyprland socket.",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -76,16 +83,17 @@
     "tests/future_capability_ui.rs",
     "data/reports/future-capability-*.json"
   ],
-  "testsPassing": "Focused future_capability_models and future_capability_ui tests passed after adding guarded temp-fixture executor tests and selected-target dry-run preview source tests; full validation pending.",
+  "testsPassing": "Focused future_capability_models passed after adding copied-config-tree harness and copied-tree executor restoration tests; full validation pending.",
   "testsFailing": [],
   "validationStatus": "passed; GTK safe-env evidence root /tmp/hyprland-settings-gtk-automation/20260619_101038",
   "knownRisks": [
-    "No real live/system mutation was run in this sprint; all executor proof ran against temp fixtures and restored original state.",
-    "Source/include insertion remains production-disabled until copied-config-tree and explicit production target approval are reviewed.",
+    "No real live/system mutation was run in this sprint; copied-config-tree executor proof ran against temp copies and restored copied state.",
+    "Read-only hyprctl socket queries were attempted but unavailable in this shell.",
+    "Source/include insertion remains production-disabled until default-disabled production gate review is added and approved.",
     "High-risk/display mutation remains blocked until out-of-band recovery can be proven before any mutation.",
     "0.55.4 migration remains blocked without trusted official exports and row/write-safety review."
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "Run controlled copied-config-tree proof for source/include, duplicate, structured, profile, and runtime paths before considering any real config/runtime mutation."
+  "recommendedNextCodexPrompt": "Promote copied-config-tree proof into default-disabled production gate review for source/include, duplicate, and hl.bind structured writes; retry read-only runtime evidence in a shell with a reachable Hyprland socket."
 }
