@@ -279,6 +279,18 @@ fn disabled_future_approval_cards_are_visible_and_non_mutating() {
         "hyprland-settings-production-activation-live-draft-edit-section",
         "Live memory-only activation draft editing",
         "production_activation_live_draft_edit_review_card",
+        "production_activation_draft_persistence_boundary_section",
+        "hyprland-settings-production-activation-draft-persistence-boundary-section",
+        "Activation draft persistence boundary",
+        "production_activation_draft_persistence_boundary_card",
+        "production_activation_draft_persistence_boundaries",
+        "ProductionActivationDraftPersistenceBoundary",
+        "Persistence enabled",
+        "Draft written to disk",
+        "Storage path",
+        "Serializer called",
+        "Storage directory created",
+        "Required before persistence",
         "append_live_draft_text_field",
         "append_live_draft_multiline_field",
         "append_live_draft_check_field",
@@ -382,6 +394,25 @@ fn disabled_future_approval_cards_are_visible_and_non_mutating() {
     }
 
     for expected in [
+        "Source/include activation draft persistence boundary",
+        "Duplicate activation draft persistence boundary",
+        "hyprland-settings-source-include-activation-draft-persistence-boundary-disabled",
+        "hyprland-settings-source-include-activation-draft-persistence-boundary-evidence",
+        "hyprland-settings-duplicate-activation-draft-persistence-boundary-disabled",
+        "hyprland-settings-duplicate-activation-draft-persistence-boundary-evidence",
+        "Persistence forbidden by default",
+        "Enable source/include draft persistence (not available)",
+        "Clear source/include persisted draft (not available)",
+        "Enable duplicate draft persistence (not available)",
+        "Clear duplicate persisted draft (not available)",
+    ] {
+        assert!(
+            model_source.contains(expected),
+            "missing disabled approval cards model source: {expected}"
+        );
+    }
+
+    for expected in [
         "DISABLED_APPROVAL_CARDS_REPORT_JSON",
         "load_disabled_approval_cards_from_reports",
         "load_disabled_approval_cards_from_report_str",
@@ -443,6 +474,16 @@ fn disabled_future_approval_cards_are_visible_and_non_mutating() {
         "duplicate_activation_draft_gtk_review",
         "apply_production_activation_draft_gtk_update",
         "production_activation_draft_gtk_state_from_draft",
+        "ProductionActivationDraftPersistenceBoundary",
+        "ProductionActivationDraftPersistenceStatus",
+        "ProductionActivationDraftPersistenceScope",
+        "production_activation_draft_persistence_boundaries",
+        "source_include_activation_draft_persistence_boundary",
+        "duplicate_activation_draft_persistence_boundary",
+        "PersistenceForbiddenByDefault",
+        "draft_written_to_disk",
+        "storage_path",
+        "serializer_called",
         "ProductionActivationDraftReview",
         "ProductionActivationDraftStatus",
         "ProductionActivationDraftUpdate",
@@ -628,6 +669,12 @@ fn disabled_future_approval_cards_are_visible_and_non_mutating() {
         "hyprctl",
         "reload",
         "enable.set_sensitive(true)",
+        "File::create",
+        "write_all",
+        "serde_json::to_writer",
+        "serde_json::to_string",
+        "config_dir",
+        "data_dir",
     ] {
         assert!(
             !section_source.contains(forbidden),

@@ -52,7 +52,8 @@
     "Duplicate activation control now validates complete review-only request and safety-plan inputs, proves the executor is Unwired, reaches ValidatedButExecutorUnwired, and still keeps production duplicate writes disabled.",
     "Duplicate activation form/state machine now collects review-only request fields, safety acknowledgements, backup/restore/reread/post-restore plans, dry-run summary, and touched-file list, then validates through the activation control as review-only with the executor still Unwired.",
     "Duplicate activation form values now render through real disabled GTK Entry, TextView, and CheckButton fields with stable widget names and screenshot/accessibility field-label assertions.",
-    "Duplicate activation draft plumbing can update/reset form values in memory, validates through the existing form/control pipeline as review-only, and never persists data or wires the executor."
+    "Duplicate activation draft plumbing can update/reset form values in memory, validates through the existing form/control pipeline as review-only, and never persists data or wires the executor.",
+    "Duplicate activation draft persistence now has an explicit default-disabled boundary: persistence is forbidden by default, no draft is written to disk, storage path is none, and the executor remains Unwired."
   ],
   "whatWasNotImplemented": [
     "No automatic duplicate choice was added.",
@@ -74,7 +75,8 @@
     "data/reports/default-disabled-production-activation-path.v0.55.2.json",
     "data/reports/default-disabled-production-activation-control.v0.55.2.json",
     "data/reports/default-disabled-production-activation-form.v0.55.2.json",
-    "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json"
+    "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-draft-persistence-boundary.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "manualOccurrenceSelectionRequired": true,
@@ -135,7 +137,12 @@
     "duplicateActivationDraftCanUpdateAndResetInMemory": true,
     "duplicateActivationDraftControlValidationStatus": "ValidatedButExecutorUnwired",
     "duplicateActivationDraftProductionEnabled": false,
-    "duplicateActivationDraftDiskPersistenceAdded": false
+    "duplicateActivationDraftDiskPersistenceAdded": false,
+    "duplicateActivationDraftPersistenceBoundaryExists": true,
+    "duplicateActivationDraftPersistenceForbiddenByDefault": true,
+    "duplicateActivationDraftPersistenceEnabled": false,
+    "duplicateActivationDraftWrittenToDisk": false,
+    "duplicateActivationDraftStoragePath": "none"
   },
   "validation": {
     "phaseValidation": "pending batch validation"
@@ -145,7 +152,7 @@
     "Temp-fixture and copied-config-tree executors now prove stale line, raw-line mismatch, old-value mismatch, source-layer duplicate, and same-file duplicate preconditions; explicit production flag review is still required before production Apply integration.",
     "Needs production safe-batch integration review that still refuses real config unless explicitly approved."
   ],
-  "nextRecommendedWork": "If live interaction is desired, connect editable GTK fields to the existing duplicate memory-only draft-edit model while keeping persistence and executors disabled.",
+  "nextRecommendedWork": "Keep duplicate activation draft persistence forbidden by default until explicit opt-in, private storage, redaction, retention, delete, encryption, and no-executor-wiring proof exists.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false,

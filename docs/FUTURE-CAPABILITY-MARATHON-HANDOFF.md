@@ -93,7 +93,7 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Design a persistence boundary for activation drafts without enabling persistence by default, or keep the branch capped until production activation safety gates are ready.
+Keep activation draft persistence forbidden by default until explicit opt-in, private storage, redaction, retention, delete, encryption, and no-executor-wiring proof exists; otherwise continue only with production activation safety gates.
 
 ## Progress tracker
 - Core app shell / UI / navigation: 98-99% -> 99-99%
@@ -115,7 +115,7 @@ Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo bu
 GTK matrix was run for the live activation draft-edit bridge; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_154855`. The run did not mutate runtime/config and screenshot plus AT-SPI accessibility-tree assertions passed for the legacy draft-edit and live memory-only draft-edit cards.
 
 ## Recommended next Codex prompt
-Design a persistence boundary for activation drafts without enabling persistence by default, or keep the branch capped until production activation safety gates are ready.
+Keep activation draft persistence forbidden by default until explicit opt-in, private storage, redaction, retention, delete, encryption, and no-executor-wiring proof exists; otherwise continue only with production activation safety gates.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 
@@ -153,8 +153,12 @@ The branch now includes a still-disabled activation draft-edit layer for source/
 
 ## 2026-06-20 - Live activation draft edit bridge handoff
 
-The branch now connects source/include and duplicate activation form field edits to a live memory-only draft-edit bridge. Entry, text-buffer, and check-button handlers update in-memory draft state, recompute draft/form/control validation, and reset memory state without persistence. The Config page displays live draft-edit cards with memory-only mode, dirty state, recomputed validation, `Not saved to disk`, executor wiring `Unwired`, and production-disabled status. Production activation controls remain disabled, no source/include or duplicate executor is wired, production flags remain false, and no real config/runtime/reload path was added. Next exact work: design a persistence boundary for activation drafts without enabling persistence by default, or keep the branch capped until production activation safety gates are ready.
+The branch now connects source/include and duplicate activation form field edits to a live memory-only draft-edit bridge. Entry, text-buffer, and check-button handlers update in-memory draft state, recompute draft/form/control validation, and reset memory state without persistence. The Config page displays live draft-edit cards with memory-only mode, dirty state, recomputed validation, `Not saved to disk`, executor wiring `Unwired`, and production-disabled status. Production activation controls remain disabled, no source/include or duplicate executor is wired, production flags remain false, and no real config/runtime/reload path was added. The follow-up persistence boundary now forbids saving activation drafts by default; remaining work is explicit opt-in/private-storage policy or production activation safety gates.
 
 ## 2026-06-20 - Remaining dependency scan handoff
 
 The remaining dependency scan is recorded in `data/reports/future-capability-remaining-dependency-scan.v0.55.2.json` and `docs/FUTURE-CAPABILITY-REMAINING-DEPENDENCY-SCAN.md`. Core UI, config discovery, 341-row coverage, safe normal-scalar writes, and release packaging are effectively capped for this safe-release branch. Source/include, duplicate, structured, profile/mode, and runtime/reload are blocked by production activation. High-risk/display is blocked by high-risk recovery proof. Hyprland 0.55.4 migration is blocked by missing official export data.
+
+## 2026-06-20 - Activation draft persistence boundary handoff
+
+The branch now includes a default-disabled persistence boundary for source/include and duplicate activation drafts. Persistence is forbidden by default, no draft data is written to disk, storage path is `none`, no storage directory or serializer/write path exists, and source/include and duplicate executors remain `Unwired`. The Config page displays disabled persistence-boundary cards and not-available persistence/clear controls. Next work is either a full opt-in/private-storage/redaction/retention/delete/encryption policy review or production activation safety gates; no persistence should be added implicitly.

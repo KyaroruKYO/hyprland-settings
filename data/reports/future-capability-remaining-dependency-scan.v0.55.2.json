@@ -11,7 +11,8 @@
     "data/reports/future-capability-profile-mode-switching.v0.55.2.json",
     "data/reports/future-capability-runtime-reload.v0.55.2.json",
     "data/reports/future-capability-high-risk-recovery.v0.55.2.json",
-    "data/reports/future-capability-hyprland-0554-migration.json"
+    "data/reports/future-capability-hyprland-0554-migration.json",
+    "data/reports/default-disabled-production-activation-draft-persistence-boundary.v0.55.2.json"
   ],
   "scanComplete": true,
   "classifications": {
@@ -37,11 +38,11 @@
     },
     "missingDefaultInsertion": {
       "classification": "blocked by production activation",
-      "evidence": "Source/include insertion has decision/path/control/form/draft/edit review layers, but production insertion remains disabled and executors remain unwired."
+      "evidence": "Source/include insertion has decision/path/control/form/draft/edit/live-edit/persistence-boundary review layers, but production insertion remains disabled, executors remain unwired, and draft persistence is forbidden by default."
     },
     "duplicateResolution": {
       "classification": "blocked by production activation",
-      "evidence": "Duplicate replacement has decision/path/control/form/draft/edit review layers, but production duplicate writes remain disabled and executors remain unwired."
+      "evidence": "Duplicate replacement has decision/path/control/form/draft/edit/live-edit/persistence-boundary review layers, but production duplicate writes remain disabled, executors remain unwired, and draft persistence is forbidden by default."
     },
     "highRiskDisplayRecovery": {
       "classification": "blocked by high-risk recovery proof",
@@ -66,8 +67,8 @@
   },
   "safeIndependentExtraWork": {
     "attempted": true,
-    "completed": "remaining dependency scan",
-    "reasonNoAdditionalAreaImplemented": "No single independent category was uniquely available after the draft-edit work; remaining categories are either capped for safe-release scope or blocked by production activation, official export data, or high-risk recovery proof.",
+    "completed": "activation draft persistence boundary",
+    "reasonNoAdditionalAreaImplemented": "A safe independent boundary was available after the draft-edit work: define default-disabled draft persistence without adding disk writes. Remaining categories are otherwise capped for safe-release scope or blocked by production activation, official export data, or high-risk recovery proof.",
     "productionBehaviorEnabled": false
   },
   "safety": {
@@ -75,6 +76,8 @@
     "runtimeMutatedThisSprint": false,
     "hyprctlReloadRun": false,
     "diskPersistenceAdded": false,
+    "activationDraftPersistenceBoundaryExists": true,
+    "activationDraftPersistenceEnabled": false,
     "unsafeProductionBehaviorEnabled": false,
     "sourceIncludeExecutorWired": false,
     "duplicateExecutorWired": false,

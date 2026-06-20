@@ -1,0 +1,124 @@
+{
+  "artifactKind": "default-disabled-production-activation-draft-persistence-boundary",
+  "projectDataVersion": "v0.55.2",
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "branch": "future-capability-marathon",
+  "chosenOption": "persistence boundary",
+  "whyChosen": "A default-disabled persistence boundary can be modeled safely without adding storage paths, serializers, disk writes, production flags, or executor wiring.",
+  "inputReports": [
+    "data/reports/default-disabled-production-activation-live-draft-edit.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-draft-edit.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-draft.v0.55.2.json"
+  ],
+  "implementation": {
+    "sourceIncludePersistenceBoundaryExists": true,
+    "duplicatePersistenceBoundaryExists": true,
+    "draftPersistenceEnabled": false,
+    "draftDataWrittenToDisk": false,
+    "storagePathCreated": false,
+    "storageDirectoryCreated": false,
+    "configPathCreated": false,
+    "userDataPathCreated": false,
+    "serializerOrWritePathAdded": false,
+    "deleteRetentionPolicyExists": false,
+    "encryptionPolicyExists": false,
+    "redactionPolicyExists": false,
+    "uiSurfaceExists": true,
+    "screenshotLevelAssertionsImplemented": true,
+    "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+    "latestGtkMatrixRun": "/tmp/hyprland-settings-gtk-automation/20260620_164532"
+  },
+  "boundaries": {
+    "sourceIncludeInsertion": {
+      "widgetName": "hyprland-settings-source-include-activation-draft-persistence-boundary-disabled",
+      "evidenceWidgetName": "hyprland-settings-source-include-activation-draft-persistence-boundary-evidence",
+      "status": "PersistenceForbiddenByDefault",
+      "persistenceEnabled": false,
+      "draftWrittenToDisk": false,
+      "storagePath": "none",
+      "serializerCalled": false,
+      "storageDirectoryCreated": false,
+      "configPathCreated": false,
+      "userDataPathCreated": false,
+      "executorWiringStatus": "Unwired",
+      "productionStatus": "Disabled",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWired": false,
+      "requiredBeforePersistence": [
+        "explicit user opt-in",
+        "private storage location design",
+        "redaction review for potentially sensitive config paths",
+        "expiry/retention policy",
+        "delete/clear draft control",
+        "encryption decision",
+        "migration/versioning strategy",
+        "proof that persistence never enables production executors",
+        "proof that persisted drafts cannot auto-apply",
+        "proof that production flags remain false"
+      ]
+    },
+    "duplicateReplacement": {
+      "widgetName": "hyprland-settings-duplicate-activation-draft-persistence-boundary-disabled",
+      "evidenceWidgetName": "hyprland-settings-duplicate-activation-draft-persistence-boundary-evidence",
+      "status": "PersistenceForbiddenByDefault",
+      "persistenceEnabled": false,
+      "draftWrittenToDisk": false,
+      "storagePath": "none",
+      "serializerCalled": false,
+      "storageDirectoryCreated": false,
+      "configPathCreated": false,
+      "userDataPathCreated": false,
+      "executorWiringStatus": "Unwired",
+      "productionStatus": "Disabled",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWired": false,
+      "requiredBeforePersistence": [
+        "explicit user opt-in",
+        "private storage location design",
+        "redaction review for potentially sensitive config paths",
+        "expiry/retention policy",
+        "delete/clear draft control",
+        "encryption decision",
+        "migration/versioning strategy",
+        "proof that persistence never enables production executors",
+        "proof that persisted drafts cannot auto-apply",
+        "proof that production flags remain false"
+      ]
+    }
+  },
+  "screenshotLevelAssertions": {
+    "sourceIncludeInsertion": true,
+    "duplicateReplacement": true,
+    "latestLiveGtkBlocker": null
+  },
+  "safety": {
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "sourceIncludeExecutorWired": false,
+    "duplicateExecutorWired": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "diskPersistenceAdded": false,
+    "storageDirectoryCreated": false,
+    "serializerOrWritePathAdded": false,
+    "realConfigTouched": false,
+    "runtimeMutatedThisSprint": false,
+    "hyprctlReloadRun": false,
+    "v0552DefaultPreserved": true,
+    "hyprland0554MigrationActivated": false
+  },
+  "branchState": {
+    "branchCapped": false,
+    "canContinue": true,
+    "nextSafeWork": "Design opt-in persistence requirements further or stop source/include and duplicate until production activation safety gates are ready."
+  },
+  "nonActions": [
+    "No activation draft persistence was added.",
+    "No activation draft data was written to disk.",
+    "No storage path, config path, or user data path was created.",
+    "No serializer or write path was added.",
+    "No source/include or duplicate production executor was wired.",
+    "No production flag was enabled."
+  ]
+}

@@ -4637,6 +4637,115 @@ impl ProductionActivationDraftGtkReview {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationDraftPersistenceStatus {
+    PersistenceForbiddenByDefault,
+    PersistenceUnavailable,
+    PersistenceWouldRequireExplicitUserOptIn,
+    PersistenceWouldRequirePrivateStorageDesign,
+    PersistenceWouldRequireRedactionReview,
+    PersistenceWouldRequireExpiryPolicy,
+    PersistenceWouldRequireDeleteControl,
+    PersistenceWouldRequireEncryptionDecision,
+    PersistenceWouldRequireNoExecutorWiringProof,
+    PersistenceBoundaryValidated,
+}
+
+impl ProductionActivationDraftPersistenceStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::PersistenceForbiddenByDefault => "Persistence forbidden by default",
+            Self::PersistenceUnavailable => "Persistence unavailable",
+            Self::PersistenceWouldRequireExplicitUserOptIn => {
+                "Persistence would require explicit user opt-in"
+            }
+            Self::PersistenceWouldRequirePrivateStorageDesign => {
+                "Persistence would require private storage design"
+            }
+            Self::PersistenceWouldRequireRedactionReview => {
+                "Persistence would require redaction review"
+            }
+            Self::PersistenceWouldRequireExpiryPolicy => "Persistence would require expiry policy",
+            Self::PersistenceWouldRequireDeleteControl => {
+                "Persistence would require delete control"
+            }
+            Self::PersistenceWouldRequireEncryptionDecision => {
+                "Persistence would require encryption decision"
+            }
+            Self::PersistenceWouldRequireNoExecutorWiringProof => {
+                "Persistence would require no executor wiring proof"
+            }
+            Self::PersistenceBoundaryValidated => "Persistence boundary validated",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationDraftPersistenceScope {
+    SourceIncludeInsertion,
+    DuplicateReplacement,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationDraftPersistenceBoundary {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub heading: String,
+    pub scope: ProductionActivationDraftPersistenceScope,
+    pub status: ProductionActivationDraftPersistenceStatus,
+    pub persistence_enabled: bool,
+    pub draft_written_to_disk: bool,
+    pub storage_path: Option<String>,
+    pub serializer_called: bool,
+    pub storage_directory_created: bool,
+    pub config_path_created: bool,
+    pub user_data_path_created: bool,
+    pub delete_retention_policy_exists: bool,
+    pub encryption_policy_exists: bool,
+    pub redaction_policy_exists: bool,
+    pub executor_wiring_status: ProductionExecutorWiringState,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_activation_enabled: bool,
+    pub category_production_enabled: bool,
+    pub required_before_persistence: Vec<String>,
+    pub disabled_enable_label: String,
+    pub disabled_clear_label: String,
+}
+
+impl ProductionActivationDraftPersistenceBoundary {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        let mut lines = vec![
+            self.heading.clone(),
+            format!("Persistence status: {}", self.status.user_facing_label()),
+            format!("Persistence enabled: {}", self.persistence_enabled),
+            format!("Draft written to disk: {}", self.draft_written_to_disk),
+            format!(
+                "Storage path: {}",
+                self.storage_path.as_deref().unwrap_or("none")
+            ),
+            format!("Serializer called: {}", self.serializer_called),
+            format!(
+                "Storage directory created: {}",
+                self.storage_directory_created
+            ),
+            format!(
+                "Executor wiring: {}",
+                self.executor_wiring_status.user_facing_label()
+            ),
+            format!("{}: {}", self.production_label, self.production_status),
+        ];
+        lines.extend(
+            self.required_before_persistence
+                .iter()
+                .map(|requirement| format!("Required before persistence: {requirement}")),
+        );
+        lines.push(self.disabled_enable_label.clone());
+        lines.push(self.disabled_clear_label.clone());
+        lines
+    }
+}
+
 const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
     "data/reports/disabled-approval-ui-cards.v0.55.2.json";
 const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
@@ -5088,6 +5197,43 @@ pub fn production_activation_live_draft_gtk_reviews() -> Vec<ProductionActivatio
             false,
         ),
     ]
+}
+
+pub fn production_activation_draft_persistence_boundaries(
+) -> Vec<ProductionActivationDraftPersistenceBoundary> {
+    vec![
+        source_include_activation_draft_persistence_boundary(),
+        duplicate_activation_draft_persistence_boundary(),
+    ]
+}
+
+pub fn source_include_activation_draft_persistence_boundary(
+) -> ProductionActivationDraftPersistenceBoundary {
+    activation_draft_persistence_boundary(PersistenceBoundarySpec {
+        widget_name:
+            "hyprland-settings-source-include-activation-draft-persistence-boundary-disabled",
+        evidence_widget_name:
+            "hyprland-settings-source-include-activation-draft-persistence-boundary-evidence",
+        heading: "Source/include activation draft persistence boundary",
+        scope: ProductionActivationDraftPersistenceScope::SourceIncludeInsertion,
+        production_label: "Production source/include insertion",
+        disabled_enable_label: "Enable source/include draft persistence (not available)",
+        disabled_clear_label: "Clear source/include persisted draft (not available)",
+    })
+}
+
+pub fn duplicate_activation_draft_persistence_boundary(
+) -> ProductionActivationDraftPersistenceBoundary {
+    activation_draft_persistence_boundary(PersistenceBoundarySpec {
+        widget_name: "hyprland-settings-duplicate-activation-draft-persistence-boundary-disabled",
+        evidence_widget_name:
+            "hyprland-settings-duplicate-activation-draft-persistence-boundary-evidence",
+        heading: "Duplicate activation draft persistence boundary",
+        scope: ProductionActivationDraftPersistenceScope::DuplicateReplacement,
+        production_label: "Production duplicate writes",
+        disabled_enable_label: "Enable duplicate draft persistence (not available)",
+        disabled_clear_label: "Clear duplicate persisted draft (not available)",
+    })
 }
 
 pub fn production_activation_form_state(
@@ -5752,6 +5898,57 @@ struct ActivationDraftGtkSpec {
     update_label: &'static str,
     reset_label: &'static str,
     expected_scope: ProductionActivationRequestScope,
+}
+
+struct PersistenceBoundarySpec {
+    widget_name: &'static str,
+    evidence_widget_name: &'static str,
+    heading: &'static str,
+    scope: ProductionActivationDraftPersistenceScope,
+    production_label: &'static str,
+    disabled_enable_label: &'static str,
+    disabled_clear_label: &'static str,
+}
+
+fn activation_draft_persistence_boundary(
+    spec: PersistenceBoundarySpec,
+) -> ProductionActivationDraftPersistenceBoundary {
+    ProductionActivationDraftPersistenceBoundary {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        scope: spec.scope,
+        status: ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault,
+        persistence_enabled: false,
+        draft_written_to_disk: false,
+        storage_path: None,
+        serializer_called: false,
+        storage_directory_created: false,
+        config_path_created: false,
+        user_data_path_created: false,
+        delete_retention_policy_exists: false,
+        encryption_policy_exists: false,
+        redaction_policy_exists: false,
+        executor_wiring_status: ProductionExecutorWiringState::Unwired,
+        production_label: spec.production_label.to_string(),
+        production_status: "Disabled".to_string(),
+        production_activation_enabled: false,
+        category_production_enabled: false,
+        required_before_persistence: vec![
+            "explicit user opt-in".to_string(),
+            "private storage location design".to_string(),
+            "redaction review for potentially sensitive config paths".to_string(),
+            "expiry/retention policy".to_string(),
+            "delete/clear draft control".to_string(),
+            "encryption decision".to_string(),
+            "migration/versioning strategy".to_string(),
+            "proof that persistence never enables production executors".to_string(),
+            "proof that persisted drafts cannot auto-apply".to_string(),
+            "proof that production flags remain false".to_string(),
+        ],
+        disabled_enable_label: spec.disabled_enable_label.to_string(),
+        disabled_clear_label: spec.disabled_clear_label.to_string(),
+    }
 }
 
 fn activation_draft_review(

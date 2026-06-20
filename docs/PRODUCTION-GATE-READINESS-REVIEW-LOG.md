@@ -107,6 +107,10 @@ Production gate readiness now records a still-disabled activation draft-edit lay
 
 Production gate readiness now records live GTK draft-edit bridge coverage for source/include and duplicate. GTK field changes update in-memory draft state only, recompute draft/form/control validation, and can reset to default memory state without writing disk state or wiring executors. The bridge keeps production flags false, executors `Unwired`, source/include insertion disabled, duplicate writes disabled, and persistence unavailable.
 
+## 2026-06-20 - Activation Draft Persistence Boundary Readiness
+
+Production gate readiness now records a default-disabled activation draft persistence boundary for source/include and duplicate. Persistence is forbidden by default, persistence enabled is false, draft written to disk is false, storage path is none, no serializer/write path is added, no storage directory is created, executors remain `Unwired`, source/include insertion remains disabled, and duplicate writes remain disabled.
+
 ## 2026-06-20 - Remaining Dependency Scan
 
 The remaining dependency scan records that source/include, duplicate, structured-family writes, profile/mode switching, and runtime/reload production expansion are blocked by explicit production activation; high-risk/display is blocked by high-risk recovery proof; Hyprland 0.55.4 migration is blocked by missing official export data; and the core safe-release scope is otherwise capped.

@@ -16,6 +16,9 @@
     "productionActionEnabled": false,
     "sourceIncludeExecutorWired": false,
     "duplicateExecutorWired": false,
+    "activationDraftPersistenceBoundaryReport": "data/reports/default-disabled-production-activation-draft-persistence-boundary.v0.55.2.json",
+    "activationDraftPersistenceBoundaryExists": true,
+    "draftPersistenceForbiddenByDefault": true,
     "uiSurfaceExists": true,
     "screenshotLevelAssertionsImplemented": true,
     "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
@@ -91,6 +94,7 @@
   },
   "nonActions": [
     "No draft data is persisted to disk.",
+    "Draft persistence is forbidden by default by a dedicated persistence boundary report.",
     "No source/include production insertion executor is wired or called.",
     "No duplicate production replacement executor is wired or called.",
     "No real config is touched.",
@@ -98,7 +102,7 @@
     "No production flag is enabled."
   ],
   "nextRequiredWork": [
-    "Keep the live draft bridge memory-only until a separate persistence design exists.",
+    "Keep the live draft bridge memory-only until the default-disabled persistence boundary has explicit opt-in, storage, redaction, retention, delete, and encryption decisions.",
     "Do not wire source/include or duplicate production executors until byte-exact backup, write, reread, restore, final approval, and production activation flags are proven."
   ]
 }

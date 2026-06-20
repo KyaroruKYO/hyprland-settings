@@ -102,6 +102,7 @@
     "default_disabled_production_activation_draft_state",
     "default_disabled_production_activation_draft_edit_review",
     "default_disabled_production_activation_live_draft_edit_bridge",
+    "default_disabled_production_activation_draft_persistence_boundary",
     "future_capability_remaining_dependency_scan"
   ],
   "phasesPartiallyCompleted": [],
@@ -153,6 +154,8 @@
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-DRAFT-EDIT-REVIEW-LOG.md",
     "data/reports/default-disabled-production-activation-live-draft-edit.v0.55.2.json",
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-LIVE-DRAFT-EDIT-REVIEW-LOG.md",
+    "data/reports/default-disabled-production-activation-draft-persistence-boundary.v0.55.2.json",
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-DRAFT-PERSISTENCE-BOUNDARY-REVIEW-LOG.md",
     "data/reports/future-capability-remaining-dependency-scan.v0.55.2.json",
     "docs/FUTURE-CAPABILITY-REMAINING-DEPENDENCY-SCAN.md"
   ],
@@ -176,6 +179,7 @@
     "GTK screenshot/accessibility assertions for source/include and duplicate activation draft cards",
     "source/include and duplicate activation draft-edit memory-only model tests",
     "source/include and duplicate live GTK activation draft edit bridge model and source tests",
+    "source/include and duplicate activation draft persistence boundary model and UI tests",
     "GTK screenshot/accessibility assertions for source/include and duplicate activation draft-edit cards",
     "remaining dependency scan report assertions"
   ],
@@ -191,7 +195,7 @@
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260620_154855",
     "gtkSafeEnvFieldLabelBlocker": "none"
   },
-  "nextRecommendedAction": "Design a persistence boundary for activation drafts without enabling persistence by default, or keep the branch capped until production activation safety gates are ready.",
+  "nextRecommendedAction": "Keep activation draft persistence forbidden by default until explicit opt-in, private storage, redaction, retention, delete, encryption, and no-executor-wiring proof exists; otherwise continue only with production activation safety gates.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "98-98%",
@@ -221,12 +225,12 @@
     "missingDefaultInsertion": {
       "before": "99-100%",
       "after": "99-100%",
-      "evidence": "Source/include activation live GTK draft edit bridge updates memory-only draft state, recomputes review-only validation, resets in memory, keeps executor Unwired, adds no persistence, and keeps production flag false."
+      "evidence": "Source/include activation live GTK draft edit bridge updates memory-only draft state, and the persistence boundary explicitly forbids saving drafts by default with no storage path, serializer, or executor wiring."
     },
     "duplicateResolution": {
       "before": "94-95%",
       "after": "95-95%",
-      "evidence": "Duplicate activation live GTK draft edit bridge updates memory-only draft state, recomputes review-only validation, resets in memory, keeps executor Unwired, adds no persistence, and keeps production flag false."
+      "evidence": "Duplicate activation live GTK draft edit bridge updates memory-only draft state, and the persistence boundary explicitly forbids saving drafts by default with no storage path, serializer, or executor wiring."
     },
     "highRiskDisplayRecovery": {
       "before": "61-70%",
@@ -281,6 +285,7 @@
     "activationFormStateMachine": "implemented_but_disabled: source/include and duplicate activation form states collect request data, safety acknowledgements, backup/restore/reread/post-restore plans, dry-run summary, and touched-file lists, render through real disabled GTK fields, then validate through the final controls as review-only with executors Unwired.",
     "activationDraftState": "implemented_but_disabled: source/include and duplicate drafts can update/reset form values in memory only, validate through the existing form/control pipeline as review-only, and display disabled draft status cards; no persistence or executor wiring exists.",
     "activationDraftEditReview": "implemented_but_disabled: source/include and duplicate draft-edit mode is disabled by default, can be modeled in memory only, and now has a live GTK bridge whose field changes update memory-only draft state, recompute validation, reset in memory, and keep persistence absent, executors Unwired, and production flags false.",
+    "activationDraftPersistenceBoundary": "implemented_but_disabled: source/include and duplicate draft persistence is forbidden by default; no draft is written to disk, storage path is none, no serializer/write path exists, executors remain Unwired, and production flags remain false.",
     "remainingDependencyScan": "completed: all tracker categories were classified as capped, production-activation-blocked, high-risk-recovery-blocked, or missing-official-data-blocked; no additional independent production-safe implementation was selected.",
     "runtimeSocketDiagnosis": "live_readonly_evidence: sandbox EPERM explains the prior timeout; outside-sandbox hyprctl version, monitors, and getoption queries succeeded.",
     "runtimeLiveRestoreProof": "live_restore_proven: prior gaps_in value 5 and temporary value 6 were prepared with restore command first; keyword and assignment eval failed before value change, then hl.config eval succeeded and restored readback to 5."
@@ -291,8 +296,8 @@
     "rowReadWriteModel": "future capability tests continue asserting SAFE_WRITABLE_ROWS remains 341; no row inventory changed",
     "safeNormalScalarWrites": "selected-target dry-run integrates with the existing missing/default insertion plan but does not write connected files",
     "releasePackagingTagArtifacts": "v0.1.0 tag and dist/v0.1.0 preserved; no release artifact mutation",
-    "missingDefaultInsertion": "source/include activation live GTK draft edit bridge updates memory-only draft state, recomputes validation, resets in memory, adds no persistence, and keeps production source/include insertion blocked",
-    "duplicateResolution": "duplicate activation live GTK draft edit bridge updates memory-only draft state, recomputes validation, resets in memory, adds no persistence, and keeps production duplicate writes blocked",
+    "missingDefaultInsertion": "source/include activation live GTK draft edit bridge updates memory-only draft state, and the persistence boundary forbids saving drafts by default while keeping production source/include insertion blocked",
+    "duplicateResolution": "duplicate activation live GTK draft edit bridge updates memory-only draft state, and the persistence boundary forbids saving drafts by default while keeping production duplicate writes blocked",
     "highRiskDisplayRecovery": "guarded no-op readiness executor added and requires out-of-band recovery before high-risk/display mutation",
     "structuredFamilyEditorsWrites": "guarded hl.bind temp executor added for reversible structured write proof; production structured writes remain blocked",
     "profileModeSwitching": "guarded temp symlink executor added and verifies restored target; real profile switching remains blocked",

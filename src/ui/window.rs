@@ -19,16 +19,17 @@ use crate::future_capability::{
     apply_production_activation_draft_gtk_update, disabled_future_approval_card_projections,
     duplicate_activation_draft_gtk_review, duplicate_production_approval_gate,
     production_activation_control_reviews, production_activation_decision_reviews,
-    production_activation_draft_edit_reviews, production_activation_draft_reviews,
-    production_activation_form_reviews, production_activation_live_draft_gtk_reviews,
-    production_activation_path_reviews, proven_runtime_approval_evidence_summary,
-    source_include_activation_draft_gtk_review, source_include_insertion_review,
-    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
-    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
-    ProductionActivationControlReview, ProductionActivationDecisionReview,
-    ProductionActivationDraftEditReview, ProductionActivationDraftGtkField,
-    ProductionActivationDraftGtkReview, ProductionActivationDraftGtkState,
-    ProductionActivationDraftGtkUpdate, ProductionActivationDraftReview,
+    production_activation_draft_edit_reviews, production_activation_draft_persistence_boundaries,
+    production_activation_draft_reviews, production_activation_form_reviews,
+    production_activation_live_draft_gtk_reviews, production_activation_path_reviews,
+    proven_runtime_approval_evidence_summary, source_include_activation_draft_gtk_review,
+    source_include_insertion_review, source_include_selected_target_dry_run_plan,
+    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
+    DuplicateOccurrence, DuplicateProductionGateStatus, ProductionActivationControlReview,
+    ProductionActivationDecisionReview, ProductionActivationDraftEditReview,
+    ProductionActivationDraftGtkField, ProductionActivationDraftGtkReview,
+    ProductionActivationDraftGtkState, ProductionActivationDraftGtkUpdate,
+    ProductionActivationDraftPersistenceBoundary, ProductionActivationDraftReview,
     ProductionActivationFormReview, ProductionActivationPathReview, ProductionExecutorWiringState,
     SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
     SourceIncludeTargetCandidate,
@@ -1425,6 +1426,7 @@ fn production_activation_path_reviews_section() -> gtk::Frame {
     content.append(&production_activation_draft_reviews_section());
     content.append(&production_activation_draft_edit_reviews_section());
     content.append(&production_activation_live_draft_edit_reviews_section());
+    content.append(&production_activation_draft_persistence_boundary_section());
 
     frame.set_child(Some(&content));
     frame
@@ -1755,6 +1757,120 @@ fn production_activation_live_draft_edit_reviews_section() -> gtk::Frame {
     for review in production_activation_live_draft_gtk_reviews() {
         content.append(&production_activation_live_draft_edit_review_card(&review));
     }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_draft_persistence_boundary_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(
+        "hyprland-settings-production-activation-draft-persistence-boundary-section",
+    );
+    frame.set_tooltip_text(Some(
+        "Activation draft persistence is forbidden by default. This section adds no storage or serializer.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Activation draft persistence boundary"));
+    content.append(&small_label(
+        "Draft persistence is not available. No draft data is saved, no storage path exists, and production executors remain unwired.",
+    ));
+
+    for boundary in production_activation_draft_persistence_boundaries() {
+        content.append(&production_activation_draft_persistence_boundary_card(
+            &boundary,
+        ));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_draft_persistence_boundary_card(
+    boundary: &ProductionActivationDraftPersistenceBoundary,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&boundary.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled activation draft persistence boundary. This has no storage, serializer, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&boundary.evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&boundary.heading));
+    append_detail_line(
+        &content,
+        "Persistence status",
+        boundary.status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Persistence enabled",
+        &boundary.persistence_enabled.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Draft written to disk",
+        &boundary.draft_written_to_disk.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Storage path",
+        boundary.storage_path.as_deref().unwrap_or("none"),
+    );
+    append_detail_line(
+        &content,
+        "Serializer called",
+        &boundary.serializer_called.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Storage directory created",
+        &boundary.storage_directory_created.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        boundary.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &boundary.production_label,
+        &boundary.production_status,
+    );
+
+    content.append(&small_label("Required before persistence"));
+    for requirement in &boundary.required_before_persistence {
+        content.append(&small_label(&format!(
+            "Required before persistence: {requirement}"
+        )));
+    }
+
+    let enable = gtk::Button::with_label(&boundary.disabled_enable_label);
+    enable.set_widget_name(&format!("{}-enable-disabled", boundary.widget_name));
+    enable.set_tooltip_text(Some(
+        "Draft persistence is not available. This button has no persistence or executor callback.",
+    ));
+    enable.set_sensitive(false);
+    content.append(&enable);
+
+    let clear = gtk::Button::with_label(&boundary.disabled_clear_label);
+    clear.set_widget_name(&format!("{}-clear-disabled", boundary.widget_name));
+    clear.set_tooltip_text(Some(
+        "There is no persisted draft to clear. This button has no storage callback.",
+    ));
+    clear.set_sensitive(false);
+    content.append(&clear);
 
     frame.set_child(Some(&content));
     frame

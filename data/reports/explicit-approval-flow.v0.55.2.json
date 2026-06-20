@@ -103,11 +103,14 @@
     "remainingGatedApprovalUiCardsExist": true,
     "remainingGatedApprovalUiCardsEnabled": false,
     "remainingGatedApprovalUiCardsHaveDeepProofData": true,
+    "activationDraftPersistenceBoundaryExists": true,
+    "activationDraftPersistenceEnabled": false,
+    "activationDraftDataWrittenToDisk": false,
     "sourceIncludeProductionEnabled": false,
     "duplicateProductionEnabled": false,
     "unsafeProductionBehaviorEnabled": false
   },
-  "nextRecommendedWork": "If interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.",
+  "nextRecommendedWork": "Keep activation draft persistence forbidden by default until explicit opt-in, storage, redaction, retention, delete, encryption, and no-executor-wiring proof exists.",
   "testsAdded": [
     "production activation decision review tests for source/include and duplicate default-disabled paths"
   ],

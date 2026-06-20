@@ -27,14 +27,15 @@ use hyprland_settings::future_capability::{
     production_activation_control_safety_plan, production_activation_decision_reviews,
     production_activation_draft_edit_reviews, production_activation_draft_edit_state_from_draft,
     production_activation_draft_from_form_state, production_activation_draft_gtk_state_from_draft,
-    production_activation_draft_reviews, production_activation_form_reviews,
-    production_activation_form_state, production_activation_live_draft_gtk_reviews,
-    production_activation_path_reviews, profile_approval_flow, profile_production_gate_review,
-    profile_target_approval_review, proven_runtime_approval_evidence_summary,
-    render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
-    replace_duplicate_occurrence_with_confirmation_safe_env, reset_production_activation_draft,
-    runtime_action_policy, runtime_action_review, runtime_approval_flow, runtime_command_risk,
-    runtime_eval_syntax_evidence, runtime_guarded_executor, runtime_live_restore_approval_review,
+    production_activation_draft_persistence_boundaries, production_activation_draft_reviews,
+    production_activation_form_reviews, production_activation_form_state,
+    production_activation_live_draft_gtk_reviews, production_activation_path_reviews,
+    profile_approval_flow, profile_production_gate_review, profile_target_approval_review,
+    proven_runtime_approval_evidence_summary, render_structured_entry_lossless,
+    replace_duplicate_occurrence_safe_env, replace_duplicate_occurrence_with_confirmation_safe_env,
+    reset_production_activation_draft, runtime_action_policy, runtime_action_review,
+    runtime_approval_flow, runtime_command_risk, runtime_eval_syntax_evidence,
+    runtime_guarded_executor, runtime_live_restore_approval_review,
     runtime_live_restore_attempt_review, runtime_live_restore_proof_review,
     runtime_production_gate_review, runtime_socket_diagnosis,
     source_include_activation_control_review, source_include_activation_decision_review,
@@ -56,6 +57,7 @@ use hyprland_settings::future_capability::{
     ProductionActivationDraftEditAction, ProductionActivationDraftEditMode,
     ProductionActivationDraftEditStatus, ProductionActivationDraftGtkField,
     ProductionActivationDraftGtkStatus, ProductionActivationDraftGtkUpdate,
+    ProductionActivationDraftPersistenceScope, ProductionActivationDraftPersistenceStatus,
     ProductionActivationDraftStatus, ProductionActivationDraftUpdate,
     ProductionActivationFormStatus, ProductionActivationPathStatus, ProductionActivationRequest,
     ProductionActivationRequestScope, ProductionActivationSafetyPlan,
@@ -6118,6 +6120,96 @@ fn default_live_draft_gtk_bridge_reviews_are_memory_only_and_non_production() {
         assert!(lines.contains("Not saved to disk"));
         assert!(lines.contains("Executor wiring: Unwired"));
     }
+}
+
+#[test]
+fn activation_draft_persistence_boundaries_forbid_persistence_by_default() {
+    let boundaries = production_activation_draft_persistence_boundaries();
+    assert_eq!(boundaries.len(), 2);
+    for boundary in &boundaries {
+        assert_eq!(
+            boundary.status,
+            ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault
+        );
+        assert!(!boundary.persistence_enabled);
+        assert!(!boundary.draft_written_to_disk);
+        assert_eq!(boundary.storage_path, None);
+        assert!(!boundary.serializer_called);
+        assert!(!boundary.storage_directory_created);
+        assert!(!boundary.config_path_created);
+        assert!(!boundary.user_data_path_created);
+        assert!(!boundary.delete_retention_policy_exists);
+        assert!(!boundary.encryption_policy_exists);
+        assert!(!boundary.redaction_policy_exists);
+        assert_eq!(
+            boundary.executor_wiring_status,
+            ProductionExecutorWiringState::Unwired
+        );
+        assert_eq!(boundary.production_status, "Disabled");
+        assert!(!boundary.production_activation_enabled);
+        assert!(!boundary.category_production_enabled);
+        for expected in [
+            "explicit user opt-in",
+            "private storage location design",
+            "redaction review for potentially sensitive config paths",
+            "expiry/retention policy",
+            "delete/clear draft control",
+            "encryption decision",
+            "migration/versioning strategy",
+            "proof that persistence never enables production executors",
+            "proof that persisted drafts cannot auto-apply",
+            "proof that production flags remain false",
+        ] {
+            assert!(
+                boundary
+                    .required_before_persistence
+                    .iter()
+                    .any(|requirement| requirement == expected),
+                "missing persistence requirement {expected}"
+            );
+        }
+        let lines = boundary.user_facing_lines().join("\n");
+        assert!(lines.contains("Persistence status: Persistence forbidden by default"));
+        assert!(lines.contains("Persistence enabled: false"));
+        assert!(lines.contains("Draft written to disk: false"));
+        assert!(lines.contains("Storage path: none"));
+        assert!(lines.contains("Serializer called: false"));
+        assert!(lines.contains("Executor wiring: Unwired"));
+    }
+
+    let source = boundaries
+        .iter()
+        .find(|boundary| boundary.widget_name.contains("source-include"))
+        .expect("source/include persistence boundary");
+    assert_eq!(
+        source.scope,
+        ProductionActivationDraftPersistenceScope::SourceIncludeInsertion
+    );
+    assert_eq!(
+        source.widget_name,
+        "hyprland-settings-source-include-activation-draft-persistence-boundary-disabled"
+    );
+    assert_eq!(
+        source.evidence_widget_name,
+        "hyprland-settings-source-include-activation-draft-persistence-boundary-evidence"
+    );
+
+    let duplicate = boundaries
+        .iter()
+        .find(|boundary| boundary.widget_name.contains("duplicate"))
+        .expect("duplicate persistence boundary");
+    assert_eq!(
+        duplicate.scope,
+        ProductionActivationDraftPersistenceScope::DuplicateReplacement
+    );
+    assert_eq!(
+        duplicate.widget_name,
+        "hyprland-settings-duplicate-activation-draft-persistence-boundary-disabled"
+    );
+    assert_eq!(
+        duplicate.evidence_widget_name,
+        "hyprland-settings-duplicate-activation-draft-persistence-boundary-evidence"
+    );
 }
 
 #[test]

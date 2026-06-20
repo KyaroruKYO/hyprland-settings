@@ -112,3 +112,7 @@ Connected source/include and duplicate activation form field edits to a memory-o
 ## 2026-06-20 - Remaining dependency scan
 
 Added a remaining dependency scan across all tracker categories. Core UI, config discovery, 341-row coverage, safe normal-scalar writes, and release packaging are effectively capped for the current safe-release scope. Missing/default insertion, duplicate resolution, structured-family writes, profile/mode switching, and runtime/reload integration are blocked by explicit production activation. High-risk/display recovery is blocked by missing high-risk recovery proof. Hyprland 0.55.4 migration is blocked by missing official export data. No extra independent production-safe implementation was selected after the draft-edit layer because the remaining work is either capped or blocked by those dependencies.
+
+## 2026-06-20 - Activation draft persistence boundary
+
+Added a default-disabled persistence boundary for source/include and duplicate activation drafts. Persistence is forbidden by default, persistence enabled is false, draft written to disk is false, storage path is none, no serializer/write path is added, executors remain `Unwired`, and production flags remain false. The Config page now shows disabled persistence-boundary cards, and the reports list the future requirements before persistence could ever be considered: explicit opt-in, private storage, redaction, retention, delete/clear controls, encryption, versioning, no-executor-wiring proof, no auto-apply proof, and production flags remaining false.

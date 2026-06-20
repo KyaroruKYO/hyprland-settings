@@ -28,3 +28,13 @@
 - Source/include and duplicate production flags remain false.
 - No disk persistence, real config mutation, runtime mutation, reload, AGS/Waybar touch, release artifact change, or migration activation was added.
 - GTK matrix evidence root: /tmp/hyprland-settings-gtk-automation/20260620_154855.
+
+## 2026-06-20 - Persistence boundary
+
+- Added a dedicated default-disabled persistence boundary report for source/include and duplicate activation drafts.
+- Persistence is forbidden by default.
+- No activation draft data is written to disk.
+- Storage path is `none`.
+- No storage directory, serializer, or write path is added.
+- Source/include and duplicate executors remain `Unwired`.
+- Source/include and duplicate production flags remain false.

@@ -227,6 +227,35 @@ ACTIVATION_DRAFT_EDIT_ASSERTIONS = {
     },
 }
 
+ACTIVATION_DRAFT_PERSISTENCE_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include activation draft persistence boundary",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Persistence forbidden by default",
+        "enabled": "Persistence enabled: false",
+        "written": "Draft written to disk: false",
+        "storage": "Storage path: none",
+        "enable": "Enable source/include draft persistence (not available)",
+        "clear": "Clear source/include persisted draft (not available)",
+        "widget": "hyprland-settings-source-include-activation-draft-persistence-boundary-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate activation draft persistence boundary",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Persistence forbidden by default",
+        "enabled": "Persistence enabled: false",
+        "written": "Draft written to disk: false",
+        "storage": "Storage path: none",
+        "enable": "Enable duplicate draft persistence (not available)",
+        "clear": "Clear duplicate persisted draft (not available)",
+        "widget": "hyprland-settings-duplicate-activation-draft-persistence-boundary-disabled",
+    },
+}
+
 LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT = [
     "Source/include activation draft editing",
     "Duplicate activation draft editing",
@@ -620,6 +649,36 @@ def activation_draft_edit_assertions(values):
             "disabledResetFound": reset_found,
             "widgetName": spec["widget"],
             "widgetNameFound": widget_found,
+        }
+    return assertions
+
+
+def activation_draft_persistence_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in ACTIVATION_DRAFT_PERSISTENCE_ASSERTIONS.items():
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": spec["heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "persistenceStatus": spec["status"],
+            "persistenceStatusFound": spec["status"].lower() in text,
+            "persistenceEnabled": spec["enabled"],
+            "persistenceEnabledFound": spec["enabled"].lower() in text,
+            "draftWritten": spec["written"],
+            "draftWrittenFound": spec["written"].lower() in text,
+            "storagePath": spec["storage"],
+            "storagePathFound": spec["storage"].lower() in text,
+            "disabledEnable": spec["enable"],
+            "disabledEnableFound": spec["enable"].lower() in text,
+            "disabledClear": spec["clear"],
+            "disabledClearFound": spec["clear"].lower() in text,
+            "widgetName": spec["widget"],
+            "widgetNameFound": spec["widget"].lower() in text,
         }
     return assertions
 
@@ -1018,6 +1077,14 @@ def main() -> int:
         "activationDraftEditsAllModeFound": False,
         "activationDraftEditsAllValidationFound": False,
         "activationDraftEditsAllDisabledActionsFound": False,
+        "activationDraftPersistenceAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDraftPersistenceAssertions": {},
+        "activationDraftPersistenceAllHeadingsFound": False,
+        "activationDraftPersistenceAllProductionDisabledFound": False,
+        "activationDraftPersistenceAllExecutorUnwiredFound": False,
+        "activationDraftPersistenceAllForbiddenFound": False,
+        "activationDraftPersistenceAllStorageAbsentFound": False,
+        "activationDraftPersistenceAllDisabledActionsFound": False,
         "text": [],
         "error": None,
     }
@@ -1101,6 +1168,9 @@ def main() -> int:
             result["text"] + result["textAfterNavigation"]
         )
         draft_edit_assertions = activation_draft_edit_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        draft_persistence_assertions = activation_draft_persistence_assertions(
             result["text"] + result["textAfterNavigation"]
         )
         result["approvalCardAssertions"] = approval_assertions
@@ -1201,6 +1271,28 @@ def main() -> int:
         result["activationDraftEditsAllDisabledActionsFound"] = all(
             card["disabledUpdateFound"] and card["disabledResetFound"]
             for card in draft_edit_assertions.values()
+        )
+        result["activationDraftPersistenceAssertions"] = draft_persistence_assertions
+        result["activationDraftPersistenceAllHeadingsFound"] = all(
+            card["headingFound"] for card in draft_persistence_assertions.values()
+        )
+        result["activationDraftPersistenceAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in draft_persistence_assertions.values()
+        )
+        result["activationDraftPersistenceAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in draft_persistence_assertions.values()
+        )
+        result["activationDraftPersistenceAllForbiddenFound"] = all(
+            card["persistenceStatusFound"] and card["persistenceEnabledFound"]
+            for card in draft_persistence_assertions.values()
+        )
+        result["activationDraftPersistenceAllStorageAbsentFound"] = all(
+            card["draftWrittenFound"] and card["storagePathFound"]
+            for card in draft_persistence_assertions.values()
+        )
+        result["activationDraftPersistenceAllDisabledActionsFound"] = all(
+            card["disabledEnableFound"] and card["disabledClearFound"]
+            for card in draft_persistence_assertions.values()
         )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text

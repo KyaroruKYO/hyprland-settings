@@ -87,12 +87,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Design a persistence boundary for activation drafts without enabling persistence by default, or keep the branch capped until production activation safety gates are ready."
+        "Keep activation draft persistence forbidden by default until explicit opt-in, private storage, redaction, retention, delete, encryption, and no-executor-wiring proof exists; otherwise continue only with production activation safety gates."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("persistence boundary"));
+        .contains("persistence forbidden by default"));
 }
 
 #[test]
@@ -992,6 +992,100 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         false
     );
 
+    let activation_persistence_boundary = read_json(
+        "data/reports/default-disabled-production-activation-draft-persistence-boundary.v0.55.2.json",
+    );
+    assert_eq!(
+        activation_persistence_boundary["projectDataVersion"],
+        "v0.55.2"
+    );
+    assert_eq!(
+        activation_persistence_boundary["chosenOption"],
+        "persistence boundary"
+    );
+    assert_eq!(
+        activation_persistence_boundary["implementation"]["sourceIncludePersistenceBoundaryExists"],
+        true
+    );
+    assert_eq!(
+        activation_persistence_boundary["implementation"]["duplicatePersistenceBoundaryExists"],
+        true
+    );
+    assert_eq!(
+        activation_persistence_boundary["implementation"]["draftPersistenceEnabled"],
+        false
+    );
+    assert_eq!(
+        activation_persistence_boundary["implementation"]["draftDataWrittenToDisk"],
+        false
+    );
+    assert_eq!(
+        activation_persistence_boundary["implementation"]["storagePathCreated"],
+        false
+    );
+    assert_eq!(
+        activation_persistence_boundary["implementation"]["serializerOrWritePathAdded"],
+        false
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_persistence_boundary["boundaries"][key]["status"],
+            "PersistenceForbiddenByDefault"
+        );
+        assert_eq!(
+            activation_persistence_boundary["boundaries"][key]["persistenceEnabled"],
+            false
+        );
+        assert_eq!(
+            activation_persistence_boundary["boundaries"][key]["draftWrittenToDisk"],
+            false
+        );
+        assert_eq!(
+            activation_persistence_boundary["boundaries"][key]["storagePath"],
+            "none"
+        );
+        assert_eq!(
+            activation_persistence_boundary["boundaries"][key]["serializerCalled"],
+            false
+        );
+        assert_eq!(
+            activation_persistence_boundary["boundaries"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(
+            activation_persistence_boundary["boundaries"][key]["productionStatus"],
+            "Disabled"
+        );
+        assert_eq!(
+            activation_persistence_boundary["boundaries"][key]["productionFlag"],
+            false
+        );
+        assert_eq!(
+            activation_persistence_boundary["screenshotLevelAssertions"][key],
+            true
+        );
+    }
+    assert_eq!(
+        activation_persistence_boundary["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+    assert_eq!(
+        activation_persistence_boundary["safety"]["diskPersistenceAdded"],
+        false
+    );
+    assert_eq!(
+        activation_persistence_boundary["safety"]["sourceIncludeExecutorWired"],
+        false
+    );
+    assert_eq!(
+        activation_persistence_boundary["safety"]["duplicateExecutorWired"],
+        false
+    );
+    assert_eq!(
+        activation_persistence_boundary["branchState"]["branchCapped"],
+        false
+    );
+
     let dependency_scan =
         read_json("data/reports/future-capability-remaining-dependency-scan.v0.55.2.json");
     assert_eq!(dependency_scan["projectDataVersion"], "v0.55.2");
@@ -1035,7 +1129,7 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     );
     assert_eq!(
         dependency_scan["safeIndependentExtraWork"]["completed"],
-        "remaining dependency scan"
+        "activation draft persistence boundary"
     );
     assert_eq!(
         dependency_scan["safety"]["unsafeProductionBehaviorEnabled"],

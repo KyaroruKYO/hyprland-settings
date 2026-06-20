@@ -17,6 +17,9 @@
     "liveGtkFieldEditsUpdateMemoryOnly": true,
     "liveGtkFieldValidationRecomputes": true,
     "liveGtkResetUpdatesMemoryOnly": true,
+    "activationDraftPersistenceBoundaryReport": "data/reports/default-disabled-production-activation-draft-persistence-boundary.v0.55.2.json",
+    "activationDraftPersistenceBoundaryExists": true,
+    "draftPersistenceForbiddenByDefault": true,
     "diskPersistenceAdded": false,
     "uiSurfaceExists": true,
     "legacyDraftEditSurfaceRemainsDisabled": true,
@@ -97,7 +100,7 @@
     "hyprland0554MigrationActivated": false
   },
   "nextRequiredWork": [
-    "If live editing is introduced later, keep edits in memory only until separate persistence and production-executor approval gates exist.",
+    "Keep live editing memory-only until the default-disabled persistence boundary has explicit opt-in, private storage, redaction, retention, delete, encryption, and no-executor-wiring proof.",
     "Do not wire source/include or duplicate production executors until byte-exact backup, write, reread, restore, and final approval proof exists."
   ]
 }
