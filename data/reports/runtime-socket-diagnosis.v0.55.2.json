@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "runtime-socket-diagnosis",
+  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "projectDataVersion": "v0.55.2",
+  "hyprctlBinaryPath": "/usr/bin/hyprctl",
+  "shell": {
+    "shell": "/usr/bin/zsh",
+    "user": "kyo",
+    "uid": 1000,
+    "xdgRuntimeDir": "/run/user/1000",
+    "hyprlandInstanceSignature": "a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299",
+    "waylandDisplay": "wayland-1",
+    "display": ":0"
+  },
+  "sandboxDiagnosis": {
+    "status": "permission_mismatch",
+    "hyprlandProcessVisible": false,
+    "directSocketConnect": "failed: Operation not permitted",
+    "hyprctlReadOnly": "failed: Couldn't set socket timeout (2)",
+    "rootCause": "filesystem-visible socket exists, but sandbox process isolation/seccomp prevents connecting to the Hyprland Unix socket"
+  },
+  "realSessionDiagnosis": {
+    "status": "hyprctl_readonly_succeeded",
+    "hyprlandProcessVisible": true,
+    "hyprlandProcess": "811 Hyprland --watchdog-fd 4",
+    "hyprlandProcessEnv": {
+      "XDG_RUNTIME_DIR": "/run/user/1000"
+    },
+    "socketPath": "/run/user/1000/hypr/a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299/.socket.sock",
+    "socketCandidatesTested": [
+      "a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299"
+    ],
+    "readOnlyQueries": {
+      "version": "succeeded: Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704",
+      "monitorsJson": "succeeded: HDMI-A-1 focused 3840x2160@120 scale 1.67",
+      "generalGapsIn": "succeeded: css gap data: 5 5 5 5; set: true",
+      "generalGapsOut": "succeeded: css gap data: 10 10 10 10; set: true",
+      "decorationBlurEnabled": "succeeded: bool: true; set: true",
+      "miscDisableHyprlandLogo": "succeeded: bool: true; set: true"
+    }
+  },
+  "liveRestoreAttempt": {
+    "setting": "general:gaps_in",
+    "priorValue": "5",
+    "temporaryValue": "6",
+    "restoreCommand": "hyprctl keyword general:gaps_in 5",
+    "keywordMutation": "failed before value change: keyword can't work with non-legacy parsers. Use eval.",
+    "evalMutation": "failed before value change: error: function arguments expected near '='",
+    "postMutationReadback": "css gap data: 5 5 5 5; set: true",
+    "postRestoreReadback": "css gap data: 5 5 5 5; set: true",
+    "restorationVerified": true,
+    "runtimeLeftUnchanged": true
+  },
+  "productionGate": {
+    "runtimeReloadEnabled": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "v0552ModelPreserved": true,
+    "hyprland0554MigrationActivated": false
+  },
+  "tests": [
+    "runtime_socket_diagnosis_distinguishes_sandbox_permission_and_real_readonly_success",
+    "runtime_socket_diagnosis_records_raw_socket_success_with_hyprctl_failure",
+    "runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_production"
+  ],
+  "nextRecommendedWork": "Identify the correct Hyprland 0.55.4 runtime eval syntax for dynamic config mutation, then rerun the controlled general:gaps_in live restore proof."
+}

@@ -62,7 +62,10 @@
     "hyprland_0554_default_disabled_activation_gate",
     "runtime_readonly_evidence_retry",
     "explicit_approval_flow_model",
-    "runtime_live_restore_proof_model"
+    "runtime_live_restore_proof_model",
+    "runtime_socket_diagnosis",
+    "runtime_readonly_evidence_resolved",
+    "controlled_runtime_live_restore_attempt"
   ],
   "partialPhases": [],
   "blockedPhases": [
@@ -79,7 +82,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation.",
+  "nextExactPhaseToContinue": "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in before rerunning controlled live restore proof.",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -93,19 +96,21 @@
     "tests/future_capability_ui.rs",
     "data/reports/future-capability-*.json",
     "data/reports/explicit-approval-flow.v0.55.2.json",
-    "data/reports/runtime-live-restore-proof.v0.55.2.json"
+    "data/reports/runtime-live-restore-proof.v0.55.2.json",
+    "data/reports/runtime-socket-diagnosis.v0.55.2.json"
   ],
-  "testsPassing": "Full validation passed after adding explicit approval flow and runtime live restore proof model.",
+  "testsPassing": "cargo fmt, cargo fmt --check, cargo check, cargo test, jq empty data/reports/*.json, git diff --check, and cargo build --release passed after runtime socket diagnosis updates.",
   "testsFailing": [],
-  "validationStatus": "passed: cargo fmt, cargo fmt --check, cargo check, cargo test, cargo build --release, jq empty data/reports/*.json, and git diff --check; GTK matrix not rerun because no visible UI behavior changed this sprint",
+  "validationStatus": "passed after runtime socket diagnosis updates",
   "knownRisks": [
     "No real live/system mutation was run in this sprint; copied-config-tree executor proof ran against temp copies and restored copied state.",
-    "Read-only hyprctl binary, instance signature, and socket directory were observed, but version, monitors, and getoption queries still failed with socket timeout in this shell.",
+    "Sandboxed read-only hyprctl and direct socket probes fail because the sandbox cannot connect to the Hyprland Unix socket; outside-sandbox read-only hyprctl succeeds.",
+    "Controlled general:gaps_in live restore proof is blocked by Hyprland 0.55.4 mutation syntax: keyword is rejected for non-legacy parsers and tested eval syntax failed before value change.",
     "Source/include insertion remains production-disabled beyond single-root scope until explicit approval and live restoration proof exist.",
     "High-risk/display mutation remains blocked until out-of-band recovery can be proven before any mutation.",
     "0.55.4 migration remains blocked without trusted official exports and row/write-safety review."
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation."
+  "recommendedNextCodexPrompt": "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in before rerunning controlled live restore proof."
 }

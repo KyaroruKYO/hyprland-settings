@@ -5,15 +5,17 @@
 - `echo "$HYPRLAND_INSTANCE_SIGNATURE"`: `a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299`
 - `ls -la /tmp/hypr`: missing
 - `ls -la "$XDG_RUNTIME_DIR/hypr"`: socket directory exists for the current signature
-- `hyprctl version`: failed without mutation, `Couldn't set socket timeout (2)`
-- `hyprctl monitors -j`: failed without mutation, `Couldn't set socket timeout (2)`
-- `hyprctl getoption general:gaps_in`: failed without mutation, `Couldn't set socket timeout (2)`
-- `hyprctl getoption general:gaps_out`: failed without mutation, `Couldn't set socket timeout (2)`
-- `hyprctl getoption decoration:blur:enabled`: failed without mutation, `Couldn't set socket timeout (2)`
-- `hyprctl getoption misc:disable_hyprland_logo`: failed without mutation, `Couldn't set socket timeout (2)`
+- Sandboxed `hyprctl version`: failed without mutation, `Couldn't set socket timeout (2)`
+- Sandboxed direct socket connect: failed, `Operation not permitted`
+- Outside-sandbox `hyprctl version`: succeeded, Hyprland 0.55.4 commit `a0136d8c04687bb36eb8a28eb9d1ff92aea99704`
+- Outside-sandbox `hyprctl monitors -j`: succeeded
+- Outside-sandbox `hyprctl getoption general:gaps_in`: `css gap data: 5 5 5 5`
+- Outside-sandbox `hyprctl getoption general:gaps_out`: `css gap data: 10 10 10 10`
+- Outside-sandbox `hyprctl getoption decoration:blur:enabled`: `bool: true`
+- Outside-sandbox `hyprctl getoption misc:disable_hyprland_logo`: `bool: true`
 
 ## Result
-The binary and session signature are present, and the runtime socket directory exists, but read-only `hyprctl` queries failed before returning data. No mutating `hyprctl` command was run.
+The previous socket timeout is explained by sandbox socket/process isolation. In the real session, read-only `hyprctl` evidence succeeds.
 
 ## Gate Decision
-Runtime/reload production mutation remains disabled. A future runtime gate still needs successful read-only evidence, prior value snapshots, restore commands, command-specific recovery plans, and explicit approval before any mutation.
+Runtime/reload production mutation remains disabled. Read-only evidence is now available, but dynamic mutation still needs a valid Hyprland 0.55.4 mutation syntax and a successful live-restore proof.

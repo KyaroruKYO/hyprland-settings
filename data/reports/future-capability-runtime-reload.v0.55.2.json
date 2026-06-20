@@ -30,7 +30,9 @@
     "Retried read-only runtime evidence and found /usr/bin/hyprctl, a Hyprland instance signature, and a socket directory under XDG_RUNTIME_DIR/hypr, but hyprctl version, monitors -j, and getoption general:gaps_in still failed without mutation with socket timeout.",
     "Added a default-disabled runtime/reload production gate review requiring read-only evidence, prior value snapshot, restore command, command-specific recovery plan for dispatch, explicit approval, and production flag.",
     "Connected runtime keyword/reload reviews to the shared explicit approval-flow model; live restore proof can reach ready_but_default_disabled in model tests, never production enabled by default.",
-    "Added runtime live-restore proof model for blocked read-only evidence, ready-but-default-disabled restore plans, and simulated live-restore-proven state; real live mutation was not run because read-only hyprctl queries timed out."
+    "Added runtime live-restore proof model for blocked read-only evidence, ready-but-default-disabled restore plans, and simulated live-restore-proven state; real-session read-only evidence now succeeds outside the sandbox.",
+    "Diagnosed the original socket timeout as sandbox permission/process isolation: direct socket connect failed with Operation not permitted inside the sandbox, while outside-sandbox hyprctl read-only queries succeeded.",
+    "Attempted one guarded low-risk general:gaps_in live-restore proof after preparing restore commands. hyprctl keyword was rejected for non-legacy parsers and tested hyprctl eval syntax failed before value change; post-attempt readback stayed at the prior value."
   ],
   "whatWasNotImplemented": [
     "No real hyprctl keyword, dispatch, reload, or runtime mutation path was added.",
@@ -45,7 +47,8 @@
   "reportsAdded": [
     "data/reports/future-capability-runtime-reload.v0.55.2.json",
     "data/reports/explicit-approval-flow.v0.55.2.json",
-    "data/reports/runtime-live-restore-proof.v0.55.2.json"
+    "data/reports/runtime-live-restore-proof.v0.55.2.json",
+    "data/reports/runtime-socket-diagnosis.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "dryRunRuntimeInterfaceAllowed": true,
@@ -68,7 +71,12 @@
     "runtimeGuardedExecutorGeneratesRestoreCommand": true,
     "readOnlyHyprctlVersionAttempted": true,
     "readOnlyHyprctlMonitorsAttempted": true,
-    "readOnlyHyprctlSocketAvailable": false,
+    "readOnlyHyprctlSocketAvailable": true,
+    "runtimeSocketTimeoutRootCause": "sandbox permission/process isolation",
+    "runtimeReadOnlyEvidenceSucceededOutsideSandbox": true,
+    "runtimeLiveRestoreAttempted": true,
+    "runtimeLiveRestoreBlockedByMutationSyntax": true,
+    "runtimeLeftUnchangedAfterAttempt": true,
     "hyprctlBinaryFound": true,
     "hyprlandInstanceSignaturePresent": true,
     "runtimeSocketDirectoryObserved": true,
@@ -86,7 +94,7 @@
     "Production reload requires separate approval, read-only evidence, prior snapshot, restore command, and recovery proof.",
     "Mutating hyprctl keyword and dispatch remain blocked."
   ],
-  "nextRecommendedWork": "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation.",
+  "nextRecommendedWork": "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in before rerunning controlled live restore proof.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

@@ -31,7 +31,8 @@
     "Added a guarded no-op live-readiness executor that requires guard approval, out-of-band recovery channel evidence, dead-man timeout evidence, and restore command evidence before reporting readiness.",
     "Attempted read-only runtime socket checks for live-readiness context; socket was unavailable and no high-risk/display mutation was attempted.",
     "Added a default-disabled high-risk/display production gate review requiring out-of-band recovery, dead-man timeout, restore command, config backup, runtime snapshot, explicit approval, and readiness proof.",
-    "Connected high-risk/display production gate review to the shared explicit approval-flow model; approval still blocks without out-of-band recovery and live restore proof."
+    "Connected high-risk/display production gate review to the shared explicit approval-flow model; approval still blocks without out-of-band recovery and live restore proof.",
+    "Recorded runtime read-only evidence as a stronger readiness input: outside-sandbox hyprctl version, monitors, and getoption queries succeeded. High-risk/display mutation was not attempted."
   ],
   "whatWasNotImplemented": [
     "No real display/render writes were enabled.",
@@ -46,7 +47,8 @@
   ],
   "reportsAdded": [
     "data/reports/future-capability-high-risk-recovery.v0.55.2.json",
-    "data/reports/explicit-approval-flow.v0.55.2.json"
+    "data/reports/explicit-approval-flow.v0.55.2.json",
+    "data/reports/runtime-socket-diagnosis.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "mockWatchdogAllowed": true,
@@ -71,7 +73,9 @@
     "highRiskGuardedExecutorRequiresDeadManTimeout": true,
     "highRiskGuardedExecutorRequiresRestoreCommand": true,
     "readOnlyRuntimeSocketCheckAttempted": true,
-    "readOnlyRuntimeSocketAvailable": false,
+    "readOnlyRuntimeSocketAvailable": true,
+    "runtimeReadOnlyEvidenceSucceeded": true,
+    "runtimeLiveRestoreBlockedByMutationSyntax": true,
     "highRiskDefaultDisabledProductionGateExists": true,
     "highRiskDefaultDisabledProductionGateRequiresRecovery": true,
     "highRiskProductionWriteEnabledByGate": false,

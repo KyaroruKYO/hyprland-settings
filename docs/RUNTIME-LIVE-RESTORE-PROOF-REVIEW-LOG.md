@@ -9,10 +9,17 @@
 - Socket directory: observed under `$XDG_RUNTIME_DIR/hypr`
 
 ## Result
-All read-only `hyprctl` queries failed without mutation with `Couldn't set socket timeout (2)`.
+Read-only `hyprctl` queries succeeded outside the sandbox. `general:gaps_in` prior value was parsed as `5`, and the planned temporary value was `6`.
+
+## Controlled Attempt
+- Restore command prepared before mutation: `hyprctl keyword general:gaps_in 5`
+- `hyprctl keyword general:gaps_in 6`: failed before value change with `keyword can't work with non-legacy parsers. Use eval.`
+- `hyprctl eval 'general:gaps_in = 6'`: failed before value change with a parser syntax error.
+- Post-attempt readback: `css gap data: 5 5 5 5`
+- Runtime left unchanged: yes
 
 ## Decision
-No runtime mutation was run. The preferred `general:gaps_in` live-restore proof remains blocked because the prior value could not be read and no post-mutation/post-restore readback path was available.
+The preferred `general:gaps_in` live-restore proof remains blocked because the correct Hyprland 0.55.4 dynamic mutation syntax is still unknown. Production runtime mutation remains disabled.
 
 ## Model Work
-`RuntimeLiveRestoreProof` now records read-only evidence, prior value, temporary value, restore command, post-mutation readback, post-restore readback, restoration status, and production-disabled state. Tests prove failed read-only evidence blocks mutation and that a complete restore proof can reach a non-production ready state.
+`RuntimeLiveRestoreProof` now records read-only evidence, prior value, temporary value, restore command, mutation command failure, post-attempt readback, post-restore readback, restoration status, and production-disabled state. Tests prove failed read-only evidence blocks mutation, failed mutation syntax does not enable production, and a complete restore proof can reach a non-production ready state.

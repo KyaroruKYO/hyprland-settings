@@ -60,15 +60,15 @@
 - Runtime/reload now has a disabled action review workflow combining policy, dry-run result, and execution log.
 - Runtime/reload now classifies status as read-only and reload/keyword/dispatch as mutating risk classes without executing commands.
 - Runtime/reload now has a guarded executor model that allows read-only status proof, records mutation dry-run intent, requires prior snapshots and restore commands, and keeps `real_command_executed` false.
-- Runtime/reload read-only `hyprctl version` and `hyprctl monitors -j` were attempted; both failed without mutation because the socket was unavailable in this shell.
 - Runtime/reload now has a default-disabled production gate review requiring read-only evidence, prior value snapshot, restore command, command-specific recovery plan for dispatch, and explicit approval.
-- Runtime/reload read-only evidence retry found `/usr/bin/hyprctl`, a Hyprland instance signature, and a socket directory under `$XDG_RUNTIME_DIR/hypr`, but `hyprctl version`, `hyprctl monitors -j`, `hyprctl getoption general:gaps_in`, `general:gaps_out`, `decoration:blur:enabled`, and `misc:disable_hyprland_logo` all failed without mutation with `Couldn't set socket timeout (2)`.
-- Runtime/reload now has a runtime live-restore proof model. Real live restore was not run because prior value capture failed; model tests prove blocked, ready-but-default-disabled, and simulated live-restore-proven states.
+- Runtime/reload socket diagnosis found the prior timeout was caused by sandbox Unix-socket permission/process isolation; outside-sandbox read-only `hyprctl version`, `monitors -j`, and `getoption` queries now succeed.
+- Runtime/reload now has a runtime live-restore proof model. The controlled `general:gaps_in` proof prepared prior value `5`, temporary value `6`, and restore commands before mutation; `keyword` and tested `eval` syntax both failed before value change, and readback verified the runtime remained unchanged.
 - Hyprland 0.55.4 migration received disabled assessment scaffolding.
 - Hyprland 0.55.4 migration now has a side-by-side comparison review that keeps v0.55.2 active and records missing proof.
 - Hyprland 0.55.4 migration now has a trusted-export requirement model; 0.55.2 remains the active default bundle.
 - Hyprland 0.55.4 migration now has a local evidence collector that records package/runtime version evidence as advisory and blocks activation until official exports, row-count diff, write-safety review, GTK evidence, local version evidence, and explicit user approval exist.
 - Hyprland 0.55.4 migration now records local package metadata evidence: `hyprland 0.55.4-1`; this does not activate migration.
+- Hyprland 0.55.4 migration now records runtime version evidence from `hyprctl version`: commit `a0136d8c04687bb36eb8a28eb9d1ff92aea99704`; this remains advisory only.
 - Hyprland 0.55.4 migration now has a default-disabled activation gate requiring official exports, row-count diff, write-safety review, safe-env evidence, and explicit user approval before the v0.55.2 default can change.
 - Hyprland 0.55.4 migration now connects to the explicit approval-flow model. Approval alone cannot activate 0.55.4 without official exports, row diff, write-safety review, safe-env evidence, and explicit default-disabled activation review.
 - Controlled live-test guard model now records backup, SHA256, symlink, runtime snapshot, restore, post-restore verification, out-of-band recovery, trusted-data, and explicit live flag prerequisites before any live/system mutation can be considered.
@@ -79,7 +79,7 @@
 - Missing/default insertion is enabled only for reviewed single-file normal scalar safe-batch targets; source/include target selection and managed/duplicate/high-risk/structured/profile/runtime insertion remain blocked.
 - Source/include target-selection UI is visible but disabled and does not write connected files.
 - Duplicate resolution has no production write path despite safe-env exact-line proof, confirmation-token scaffolding, and a production approval gate model.
-- Runtime/reload and high-risk recovery remain mock/dry-run/no-op only.
+- Runtime/reload has read-only live evidence and a blocked guarded mutation attempt; runtime mutation remains disabled.
 
 ## Blocked phases
 - High-risk/display-render production writes require live recovery proof and explicit approval.
@@ -87,7 +87,7 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Resolve the `hyprctl` socket timeout from the runtime shell, then rerun read-only `getoption` evidence before any controlled keyword mutation.
+Identify the correct Hyprland 0.55.4 runtime `eval` syntax for `general:gaps_in`, then rerun controlled live restore proof.
 
 ## Progress tracker
 - Core app shell / UI / navigation: 92-96% -> 93-96%
@@ -97,11 +97,11 @@ Resolve the `hyprctl` socket timeout from the runtime shell, then rerun read-onl
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
 - Missing/default insertion: 87-92% -> 93-96%
 - Duplicate resolution: 83-88% -> 84-89%
-- High-risk/display recovery: 57-66% -> 58-67%
+- High-risk/display recovery: 58-67% -> 59-68%
 - Structured-family editors/writes: 60-69% -> 61-70%
 - Profile/mode switching: 61-70% -> 62-71%
-- Runtime/reload integration: 53-63% -> 55-65%
-- Hyprland 0.55.4 migration: 44-54% -> 45-55%
+- Runtime/reload integration: 55-65% -> 58-68%
+- Hyprland 0.55.4 migration: 45-55% -> 47-57%
 
 ## Validation status
 Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `jq empty data/reports/*.json`, and `git diff --check`.
@@ -109,4 +109,4 @@ Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo bu
 GTK matrix was not rerun for the approval-flow additions because no visible UI behavior changed; prior GTK evidence root remains `/tmp/hyprland-settings-gtk-automation/20260619_194620`.
 
 ## Recommended next Codex prompt
-Resolve the `hyprctl` socket timeout from the runtime shell, then rerun read-only `getoption` evidence before any controlled keyword mutation.
+Identify the correct Hyprland 0.55.4 runtime `eval` syntax for `general:gaps_in`, then rerun controlled live restore proof.

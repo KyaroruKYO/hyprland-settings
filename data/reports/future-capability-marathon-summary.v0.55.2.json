@@ -82,7 +82,10 @@
     "hyprland_0554_default_disabled_activation_gate",
     "runtime_readonly_evidence_retry",
     "explicit_approval_flow_model",
-    "runtime_live_restore_proof_model"
+    "runtime_live_restore_proof_model",
+    "runtime_socket_diagnosis",
+    "runtime_readonly_evidence_resolved",
+    "controlled_runtime_live_restore_attempt"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -107,6 +110,7 @@
     "data/reports/runtime-readonly-evidence.v0.55.2.json",
     "data/reports/explicit-approval-flow.v0.55.2.json",
     "data/reports/runtime-live-restore-proof.v0.55.2.json",
+    "data/reports/runtime-socket-diagnosis.v0.55.2.json",
     "data/reports/future-capability-marathon-summary.v0.55.2.json",
     "data/reports/future-capability-marathon-handoff.v0.55.2.json"
   ],
@@ -127,7 +131,7 @@
     "gtkSafeEnvMatrix": "not_run_no_visible_ui_changes_this_sprint",
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_194620"
   },
-  "nextRecommendedAction": "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation.",
+  "nextRecommendedAction": "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in before rerunning controlled live restore proof.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "92-96%",
@@ -166,8 +170,8 @@
     },
     "highRiskDisplayRecovery": {
       "before": "50-60%",
-      "after": "58-67%",
-      "evidence": "High-risk readiness now has a default-disabled production gate and explicit approval flow requiring recovery channel, dead-man timeout, restore command, backup, runtime snapshot, and approval."
+      "after": "59-68%",
+      "evidence": "High-risk readiness now has runtime read-only evidence as an input, but high-risk mutation still requires recovery channel, dead-man timeout, restore command, backup, runtime snapshot, and approval."
     },
     "structuredFamilyEditorsWrites": {
       "before": "48-58%",
@@ -181,13 +185,13 @@
     },
     "runtimeReloadIntegration": {
       "before": "45-55%",
-      "after": "55-65%",
-      "evidence": "Runtime readiness now has a default-disabled production gate, explicit approval flow, runtime live-restore proof model, and read-only evidence retry: hyprctl/socket observed, but read-only queries still failed with socket timeout."
+      "after": "58-68%",
+      "evidence": "Runtime socket diagnosis identified sandbox EPERM as the timeout root cause; outside-sandbox read-only hyprctl succeeded. Controlled live restore is blocked by Hyprland 0.55.4 mutation syntax before value change."
     },
     "hyprland0554Migration": {
       "before": "35-45%",
-      "after": "45-55%",
-      "evidence": "Local package metadata now feeds a default-disabled activation gate and explicit approval flow; activation still requires official exports, row diff, write-safety review, safe-env evidence, and approval."
+      "after": "47-57%",
+      "evidence": "Runtime hyprctl version evidence confirms Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704; activation still requires official exports, row diff, write-safety review, safe-env evidence, and approval."
     }
   },
   "priorityTrackStatus": {
@@ -210,7 +214,8 @@
     "controlledLiveTestGuard": "implemented_but_disabled: guard records backup, content fingerprints, symlink, runtime snapshot, restore, post-restore verification, out-of-band recovery, trusted-data, and explicit live flag requirements before any live mutation.",
     "defaultDisabledProductionGates": "ready_but_default_disabled: source/include, duplicate, structured hl.bind, and profile gates can review copied proof while keeping production disabled; runtime, high-risk, and 0.55.4 gates block on missing live/trusted evidence.",
     "explicitApprovalFlow": "implemented_but_disabled: approval scopes require exact target/command, copied or live proof, old/proposed state, restore plan, one-shot or expiry behavior, and never enable production by default.",
-    "runtimeLiveRestoreProof": "implemented_but_disabled: model can represent blocked read-only evidence, ready-but-default-disabled restore plans, and live-restore-proven state; real live proof was not run because read-only hyprctl queries timed out."
+    "runtimeSocketDiagnosis": "live_readonly_evidence: sandbox EPERM explains the prior timeout; outside-sandbox hyprctl version, monitors, and getoption queries succeeded.",
+    "runtimeLiveRestoreProof": "blocked_requires_new_runtime_syntax: prior gaps_in value 5 and temporary value 6 were prepared with restore command first; keyword and tested eval syntax failed before value change, readback stayed restored at 5."
   },
   "categoryCoverageThisSprint": {
     "coreAppShellUiNavigation": "disabled duplicate pre-Apply review UI and source/include selected-target dry-run preview UI are present with source tests",

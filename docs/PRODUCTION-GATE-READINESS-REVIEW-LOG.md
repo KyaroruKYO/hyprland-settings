@@ -16,21 +16,21 @@
 - Duplicate occurrence replacement: copied-config-tree proof plus confirmed occurrence can reach `ReadyButDefaultDisabled`.
 - Structured `hl.bind` exact-line replacement: copied-config-tree proof plus candidate validation can reach `ReadyButDefaultDisabled`.
 - Profile/mode switching: copied symlink proof can reach `ReadyButDefaultDisabled`, but real-session proof is still required.
-- Runtime/reload mutation: gate exists and blocks without read-only evidence, prior snapshot, restore command, and approval.
+- Runtime/reload mutation: gate has read-only evidence and prior snapshot for `general:gaps_in`, but controlled live restore remains blocked by Hyprland 0.55.4 mutation syntax.
 - High-risk/display writes: gate exists and blocks without out-of-band recovery, dead-man timeout, restore command, config backup, runtime snapshot, and approval.
 - Hyprland 0.55.4 activation: gate exists and blocks advisory-only evidence without official exports, row diff, write-safety review, safe-env evidence, and approval.
 
 ## Explicit approval flow implemented
 - Approval requests now name the exact scope, exact target path or runtime command, old state, proposed state, restore plan, one-shot/expiry behavior, and copied-config-tree or live-restore proof.
 - Source/include, duplicate, structured `hl.bind`, and profile/mode approvals can reach `ApprovedButDefaultDisabled` from copied-config-tree proof.
-- Runtime keyword approval can reach `ReadyButDefaultDisabled` in model tests when live-restore proof exists, but the real runtime shell still lacks successful read-only evidence.
+- Runtime keyword approval can reach `ReadyButDefaultDisabled` in model tests when live-restore proof exists. Real read-only evidence now succeeds, but live restore proof is blocked by mutation syntax.
 - High-risk/display and Hyprland 0.55.4 approvals remain blocked unless their recovery/trusted-data evidence is complete.
 - Approval never flips production behavior on by default.
 
 ## Not ready for production activation
 - High-risk/display writes: no out-of-band recovery proof.
 - Real profile/mode switching: no live symlink proof against the real session.
-- Runtime/reload mutation: runtime socket unavailable in this shell; no prior-value restore proof.
+- Runtime/reload mutation: sandbox socket access is blocked by `Operation not permitted`; outside-sandbox read-only evidence succeeds, but `keyword` and tested `eval` syntax fail before value change.
 - Hyprland 0.55.4 migration: official exports, row-count diff, write-safety review, safe-env evidence, and explicit approval are missing.
 
 ## Required gate behavior
@@ -42,13 +42,17 @@
 - No real config or runtime mutation without explicit approval.
 
 ## Read-only runtime evidence
-- `hyprctl version`: failed without mutation, `Couldn't set socket timeout (2)`.
-- `hyprctl monitors -j`: failed without mutation, `Couldn't set socket timeout (2)`.
-- `hyprctl getoption general:gaps_in`: failed without mutation, `Couldn't set socket timeout (2)`.
-- `hyprctl getoption general:gaps_out`: failed without mutation, `Couldn't set socket timeout (2)`.
-- `hyprctl getoption decoration:blur:enabled`: failed without mutation, `Couldn't set socket timeout (2)`.
-- `hyprctl getoption misc:disable_hyprland_logo`: failed without mutation, `Couldn't set socket timeout (2)`.
+- Sandboxed direct socket connect: failed, `Operation not permitted`.
+- Outside-sandbox `hyprctl version`: succeeded, Hyprland 0.55.4 commit `a0136d8c04687bb36eb8a28eb9d1ff92aea99704`.
+- Outside-sandbox `hyprctl monitors -j`: succeeded.
+- Outside-sandbox `hyprctl getoption general:gaps_in`: `css gap data: 5 5 5 5`.
+- Outside-sandbox `hyprctl getoption general:gaps_out`: `css gap data: 10 10 10 10`.
+- Outside-sandbox `hyprctl getoption decoration:blur:enabled`: `bool: true`.
+- Outside-sandbox `hyprctl getoption misc:disable_hyprland_logo`: `bool: true`.
+- Controlled `hyprctl keyword general:gaps_in 6`: failed before value change because non-legacy parsers require eval.
+- Controlled `hyprctl eval 'general:gaps_in = 6'`: failed before value change with parser syntax error.
+- Post-attempt readback stayed `css gap data: 5 5 5 5`.
 - `pacman -Q hyprland`: `hyprland 0.55.4-1`.
 
 ## Next exact work
-Resolve the `hyprctl` socket timeout from the runtime shell, then rerun read-only `getoption` evidence before any controlled keyword mutation.
+Identify the correct Hyprland 0.55.4 runtime `eval` syntax for `general:gaps_in`, then rerun controlled live restore proof.

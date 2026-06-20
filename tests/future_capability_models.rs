@@ -21,21 +21,23 @@ use hyprland_settings::future_capability::{
     render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
     replace_duplicate_occurrence_with_confirmation_safe_env, runtime_action_policy,
     runtime_action_review, runtime_approval_flow, runtime_command_risk, runtime_guarded_executor,
-    runtime_live_restore_proof_review, runtime_production_gate_review,
-    source_include_approval_flow, source_include_insertion_review,
-    source_include_production_gate_review, source_include_selected_target_dry_run_plan,
-    source_include_target_selection_fixture_proof, structured_approval_flow,
-    structured_family_model, structured_family_review, structured_production_gate_review,
-    switch_profile_symlink_guarded_temp, switch_profile_symlink_safe_env,
-    trusted_export_requirement, validate_structured_edit_candidate, ApprovalEvidence,
-    ApprovalRequest, ApprovalScope, ApprovalStatus, ApprovalToken, ControlledLiveTestGuardRequest,
-    ControlledLiveTestKind, DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
+    runtime_live_restore_attempt_review, runtime_live_restore_proof_review,
+    runtime_production_gate_review, runtime_socket_diagnosis, source_include_approval_flow,
+    source_include_insertion_review, source_include_production_gate_review,
+    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
+    structured_approval_flow, structured_family_model, structured_family_review,
+    structured_production_gate_review, switch_profile_symlink_guarded_temp,
+    switch_profile_symlink_safe_env, trusted_export_requirement,
+    validate_structured_edit_candidate, ApprovalEvidence, ApprovalRequest, ApprovalScope,
+    ApprovalStatus, ApprovalToken, ControlledLiveTestGuardRequest, ControlledLiveTestKind,
+    DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
     DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
     DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
     HighRiskProductionGateStatus, HyprlandVersionActivationStatus, MockWatchdog, MockWatchdogState,
     ProfileProductionGateStatus, ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction,
-    RuntimeCommandRisk, RuntimeDryRunExecutor, RuntimeLiveRestoreStatus,
-    RuntimeProductionGateStatus, SourceIncludeInsertionReadiness,
+    RuntimeCommandRisk, RuntimeDirectIpcReadOnlyEvidence, RuntimeDryRunExecutor,
+    RuntimeLiveRestoreStatus, RuntimeProductionGateStatus, RuntimeReadOnlyEvidence,
+    RuntimeSocketCandidate, RuntimeSocketDiagnosisStatus, SourceIncludeInsertionReadiness,
     SourceIncludeProductionGateStatus, SourceIncludeSelectedTargetDryRunStatus,
     SourceIncludeTargetCandidate, SourceIncludeTargetSelectionStatus, StructuredBindEditStatus,
     StructuredProductionGateStatus,
@@ -453,6 +455,26 @@ fn approval_request(
         provided_token: Some("approve".to_string()),
         current_tick: 1,
         rejected: false,
+    }
+}
+
+fn runtime_readonly_evidence(
+    succeeded: bool,
+    raw_error_text: Option<&str>,
+) -> RuntimeReadOnlyEvidence {
+    RuntimeReadOnlyEvidence {
+        hyprctl_binary_path: Some(PathBuf::from("/usr/bin/hyprctl")),
+        instance_signature: Some(
+            "a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299".to_string(),
+        ),
+        xdg_runtime_dir: Some(PathBuf::from("/run/user/1000")),
+        version_succeeded: succeeded,
+        monitors_json_succeeded: succeeded,
+        gaps_in_succeeded: succeeded,
+        gaps_out_succeeded: succeeded,
+        blur_enabled_succeeded: succeeded,
+        logo_disabled_succeeded: succeeded,
+        raw_error_text: raw_error_text.map(ToOwned::to_owned),
     }
 }
 
@@ -2689,6 +2711,134 @@ fn runtime_live_restore_proof_blocks_failed_readonly_and_can_reach_ready_states_
     assert!(restored.runtime_touched);
     assert!(restored.restored);
     assert!(!restored.production_runtime_enabled);
+}
+
+#[test]
+fn runtime_socket_diagnosis_distinguishes_sandbox_permission_and_real_readonly_success() {
+    let socket = PathBuf::from(
+        "/run/user/1000/hypr/a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299/.socket.sock",
+    );
+    let sandboxed = runtime_socket_diagnosis(
+        runtime_readonly_evidence(false, Some("Couldn't set socket timeout (2)")),
+        vec![RuntimeSocketCandidate {
+            signature: "a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299".to_string(),
+            socket_path: socket.clone(),
+            exists: true,
+            hyprctl_version_succeeded: false,
+            raw_socket_succeeded: false,
+            error: Some("Operation not permitted".to_string()),
+        }],
+        RuntimeDirectIpcReadOnlyEvidence {
+            socket_path: socket.clone(),
+            attempted: true,
+            succeeded: false,
+            error: Some("Operation not permitted".to_string()),
+        },
+        false,
+        false,
+    );
+    assert_eq!(
+        sandboxed.status,
+        RuntimeSocketDiagnosisStatus::PermissionMismatch
+    );
+    assert!(!sandboxed.mutation_allowed);
+
+    let real_session = runtime_socket_diagnosis(
+        runtime_readonly_evidence(true, None),
+        vec![RuntimeSocketCandidate {
+            signature: "a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299".to_string(),
+            socket_path: socket.clone(),
+            exists: true,
+            hyprctl_version_succeeded: true,
+            raw_socket_succeeded: true,
+            error: None,
+        }],
+        RuntimeDirectIpcReadOnlyEvidence {
+            socket_path: socket,
+            attempted: false,
+            succeeded: false,
+            error: None,
+        },
+        true,
+        true,
+    );
+    assert_eq!(
+        real_session.status,
+        RuntimeSocketDiagnosisStatus::HyprctlReadOnlySucceeded
+    );
+    assert!(real_session.mutation_allowed);
+}
+
+#[test]
+fn runtime_socket_diagnosis_records_raw_socket_success_with_hyprctl_failure() {
+    let socket = PathBuf::from("/run/user/1000/hypr/signature/.socket.sock");
+    let diagnosis = runtime_socket_diagnosis(
+        runtime_readonly_evidence(false, Some("hyprctl failed")),
+        vec![RuntimeSocketCandidate {
+            signature: "signature".to_string(),
+            socket_path: socket.clone(),
+            exists: true,
+            hyprctl_version_succeeded: false,
+            raw_socket_succeeded: true,
+            error: None,
+        }],
+        RuntimeDirectIpcReadOnlyEvidence {
+            socket_path: socket,
+            attempted: true,
+            succeeded: true,
+            error: None,
+        },
+        true,
+        true,
+    );
+    assert_eq!(
+        diagnosis.status,
+        RuntimeSocketDiagnosisStatus::RawSocketSucceededHyprctlFailed
+    );
+    assert!(!diagnosis.mutation_allowed);
+}
+
+#[test]
+fn runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_production() {
+    let action = RuntimeAction::Keyword {
+        key: "general:gaps_in".to_string(),
+        value: "6".to_string(),
+    };
+    let unparseable = runtime_live_restore_attempt_review(
+        action.clone(),
+        true,
+        None,
+        Some("6"),
+        Some("hyprctl eval 'general:gaps_in = 5'"),
+        Some("hyprctl eval 'general:gaps_in = 6'"),
+        false,
+        None,
+        None,
+    );
+    assert_eq!(
+        unparseable.status,
+        RuntimeLiveRestoreStatus::PriorValueMissing
+    );
+    assert!(!unparseable.production_runtime_enabled);
+
+    let failed_keyword = runtime_live_restore_attempt_review(
+        action,
+        true,
+        Some("5"),
+        Some("6"),
+        Some("hyprctl keyword general:gaps_in 5"),
+        Some("hyprctl keyword general:gaps_in 6"),
+        false,
+        Some("5"),
+        Some("5"),
+    );
+    assert_eq!(
+        failed_keyword.status,
+        RuntimeLiveRestoreStatus::LiveRestoreBlocked
+    );
+    assert!(!failed_keyword.real_command_executed);
+    assert!(!failed_keyword.runtime_touched);
+    assert!(!failed_keyword.production_runtime_enabled);
 }
 
 #[test]

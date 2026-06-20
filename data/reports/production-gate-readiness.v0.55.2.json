@@ -66,13 +66,16 @@
     "hyprctlBinary": "/usr/bin/hyprctl",
     "hyprlandInstanceSignature": "a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299",
     "socketDirectoryObserved": true,
-    "hyprctlVersion": "failed without mutation: Couldn't set socket timeout (2)",
-    "hyprctlMonitors": "failed without mutation: Couldn't set socket timeout (2)",
-    "hyprctlGetoptionGeneralGapsIn": "failed without mutation: Couldn't set socket timeout (2)",
-    "hyprctlGetoptionGeneralGapsOut": "failed without mutation: Couldn't set socket timeout (2)",
-    "hyprctlGetoptionDecorationBlurEnabled": "failed without mutation: Couldn't set socket timeout (2)",
-    "hyprctlGetoptionMiscDisableHyprlandLogo": "failed without mutation: Couldn't set socket timeout (2)",
-    "mutatingHyprctlRun": false
+    "sandboxRootCause": "sandbox direct socket access failed with Operation not permitted; outside sandbox read-only hyprctl succeeded",
+    "hyprctlVersion": "succeeded: Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704",
+    "hyprctlMonitors": "succeeded: HDMI-A-1 focused",
+    "hyprctlGetoptionGeneralGapsIn": "succeeded: css gap data: 5 5 5 5; set: true",
+    "hyprctlGetoptionGeneralGapsOut": "succeeded: css gap data: 10 10 10 10; set: true",
+    "hyprctlGetoptionDecorationBlurEnabled": "succeeded: bool: true; set: true",
+    "hyprctlGetoptionMiscDisableHyprlandLogo": "succeeded: bool: true; set: true",
+    "mutatingHyprctlRun": true,
+    "runtimeLeftUnchanged": true,
+    "liveRestoreBlocker": "keyword is rejected for non-legacy parsers and tested eval syntax failed before value change"
   },
   "releaseBoundariesPreserved": {
     "mainModified": false,
@@ -81,5 +84,5 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation."
+  "nextRecommendedWork": "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in before rerunning controlled live restore proof."
 }

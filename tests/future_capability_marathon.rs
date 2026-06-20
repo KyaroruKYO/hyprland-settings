@@ -82,12 +82,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation."
+        "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in before rerunning controlled live restore proof."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("controlled keyword mutation"));
+        .contains("controlled live restore proof"));
 }
 
 #[test]
@@ -226,16 +226,14 @@ fn default_disabled_gate_and_runtime_evidence_reports_keep_production_disabled()
 
     let runtime = read_json("data/reports/runtime-readonly-evidence.v0.55.2.json");
     assert_eq!(runtime["evidence"]["hyprctlBinaryFound"], true);
-    assert_eq!(
-        runtime["evidence"]["readOnlyHyprctlQueriesSucceeded"],
-        false
-    );
-    assert_eq!(runtime["evidence"]["mutatingHyprctlRun"], false);
+    assert_eq!(runtime["evidence"]["readOnlyHyprctlQueriesSucceeded"], true);
+    assert_eq!(runtime["evidence"]["mutatingHyprctlRun"], true);
+    assert_eq!(runtime["evidence"]["runtimeTouched"], false);
     assert_eq!(runtime["productionGate"]["runtimeMutationEnabled"], false);
     assert!(runtime["commands"]["hyprctlGetoptionGeneralGapsOut"]
         .as_str()
         .expect("gaps_out evidence should be text")
-        .contains("Couldn't set socket timeout"));
+        .contains("css gap data: 10 10 10 10"));
 }
 
 #[test]
@@ -257,9 +255,11 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     assert_eq!(live_restore["projectDataVersion"], "v0.55.2");
     assert_eq!(
         live_restore["liveShellProof"]["status"],
-        "blocked_readonly_evidence_unavailable"
+        "live_restore_blocked_mutation_syntax"
     );
-    assert_eq!(live_restore["liveShellProof"]["mutatingHyprctlRun"], false);
+    assert_eq!(live_restore["liveShellProof"]["mutatingHyprctlRun"], true);
+    assert_eq!(live_restore["liveShellProof"]["runtimeTouched"], false);
+    assert_eq!(live_restore["liveShellProof"]["restorationVerified"], true);
     assert_eq!(
         live_restore["modelProof"]["statusWithSimulatedRestore"],
         "live_restore_proven"
@@ -268,4 +268,14 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         live_restore["productionGate"]["runtimeMutationEnabled"],
         false
     );
+
+    let socket = read_json("data/reports/runtime-socket-diagnosis.v0.55.2.json");
+    assert_eq!(socket["projectDataVersion"], "v0.55.2");
+    assert_eq!(socket["sandboxDiagnosis"]["status"], "permission_mismatch");
+    assert_eq!(
+        socket["realSessionDiagnosis"]["status"],
+        "hyprctl_readonly_succeeded"
+    );
+    assert_eq!(socket["liveRestoreAttempt"]["runtimeLeftUnchanged"], true);
+    assert_eq!(socket["productionGate"]["runtimeReloadEnabled"], false);
 }

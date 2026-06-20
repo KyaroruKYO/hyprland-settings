@@ -3267,6 +3267,162 @@ pub struct RuntimeProductionGateReview {
     pub review_lines: Vec<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RuntimeSocketDiagnosisStatus {
+    HyprctlReadOnlySucceeded,
+    HyprctlSocketTimeout,
+    WrongInstanceSignature,
+    StaleSocket,
+    RawSocketSucceededHyprctlFailed,
+    PermissionMismatch,
+    HyprlandProcessMissing,
+    RuntimeEnvMismatch,
+    UnknownFailure,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeSocketCandidate {
+    pub signature: String,
+    pub socket_path: PathBuf,
+    pub exists: bool,
+    pub hyprctl_version_succeeded: bool,
+    pub raw_socket_succeeded: bool,
+    pub error: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeDirectIpcReadOnlyEvidence {
+    pub socket_path: PathBuf,
+    pub attempted: bool,
+    pub succeeded: bool,
+    pub error: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeReadOnlyEvidence {
+    pub hyprctl_binary_path: Option<PathBuf>,
+    pub instance_signature: Option<String>,
+    pub xdg_runtime_dir: Option<PathBuf>,
+    pub version_succeeded: bool,
+    pub monitors_json_succeeded: bool,
+    pub gaps_in_succeeded: bool,
+    pub gaps_out_succeeded: bool,
+    pub blur_enabled_succeeded: bool,
+    pub logo_disabled_succeeded: bool,
+    pub raw_error_text: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeSocketDiagnosis {
+    pub status: RuntimeSocketDiagnosisStatus,
+    pub read_only_evidence: RuntimeReadOnlyEvidence,
+    pub candidates: Vec<RuntimeSocketCandidate>,
+    pub direct_ipc: RuntimeDirectIpcReadOnlyEvidence,
+    pub hyprland_process_visible: bool,
+    pub process_env_matches_shell: bool,
+    pub root_cause: String,
+    pub mutation_allowed: bool,
+    pub blockers: Vec<String>,
+}
+
+pub fn runtime_socket_diagnosis(
+    read_only_evidence: RuntimeReadOnlyEvidence,
+    candidates: Vec<RuntimeSocketCandidate>,
+    direct_ipc: RuntimeDirectIpcReadOnlyEvidence,
+    hyprland_process_visible: bool,
+    process_env_matches_shell: bool,
+) -> RuntimeSocketDiagnosis {
+    let all_hyprctl_readonly = read_only_evidence.version_succeeded
+        && read_only_evidence.monitors_json_succeeded
+        && read_only_evidence.gaps_in_succeeded;
+    let mut blockers = Vec::new();
+    let (status, root_cause) = if all_hyprctl_readonly {
+        (
+            RuntimeSocketDiagnosisStatus::HyprctlReadOnlySucceeded,
+            "hyprctl read-only evidence succeeded for the selected runtime shell".to_string(),
+        )
+    } else if !hyprland_process_visible {
+        blockers.push("Hyprland process is not visible from this execution context".to_string());
+        if direct_ipc
+            .error
+            .as_deref()
+            .map(|error| error.contains("Operation not permitted"))
+            .unwrap_or(false)
+        {
+            (
+                RuntimeSocketDiagnosisStatus::PermissionMismatch,
+                "sandbox or permission boundary prevents direct Unix socket access".to_string(),
+            )
+        } else {
+            (
+                RuntimeSocketDiagnosisStatus::HyprlandProcessMissing,
+                "Hyprland process is missing or hidden from the current process namespace"
+                    .to_string(),
+            )
+        }
+    } else if !process_env_matches_shell {
+        blockers.push("Hyprland process environment does not match shell environment".to_string());
+        (
+            RuntimeSocketDiagnosisStatus::RuntimeEnvMismatch,
+            "shell runtime variables do not match the Hyprland process environment".to_string(),
+        )
+    } else if direct_ipc.succeeded && !all_hyprctl_readonly {
+        blockers.push("raw IPC succeeded while hyprctl read-only queries failed".to_string());
+        (
+            RuntimeSocketDiagnosisStatus::RawSocketSucceededHyprctlFailed,
+            "raw read-only IPC works but hyprctl failed".to_string(),
+        )
+    } else if candidates
+        .iter()
+        .any(|candidate| candidate.raw_socket_succeeded)
+        && !candidates
+            .iter()
+            .any(|candidate| candidate.hyprctl_version_succeeded)
+    {
+        blockers.push("candidate signature did not match a working hyprctl instance".to_string());
+        (
+            RuntimeSocketDiagnosisStatus::WrongInstanceSignature,
+            "socket candidate exists but no matching hyprctl instance succeeded".to_string(),
+        )
+    } else if read_only_evidence
+        .raw_error_text
+        .as_deref()
+        .map(|error| error.contains("Couldn't set socket timeout"))
+        .unwrap_or(false)
+    {
+        blockers.push("hyprctl read-only command failed with socket timeout".to_string());
+        (
+            RuntimeSocketDiagnosisStatus::HyprctlSocketTimeout,
+            "hyprctl read-only query could not configure or use the runtime socket timeout"
+                .to_string(),
+        )
+    } else if candidates.iter().any(|candidate| candidate.exists) && !direct_ipc.succeeded {
+        blockers.push("socket file exists but read-only IPC did not succeed".to_string());
+        (
+            RuntimeSocketDiagnosisStatus::StaleSocket,
+            "socket path exists but could not be used for read-only IPC".to_string(),
+        )
+    } else {
+        blockers.push("runtime socket failure did not match a known category".to_string());
+        (
+            RuntimeSocketDiagnosisStatus::UnknownFailure,
+            "runtime socket failure remains unknown".to_string(),
+        )
+    };
+
+    RuntimeSocketDiagnosis {
+        status,
+        read_only_evidence,
+        candidates,
+        direct_ipc,
+        hyprland_process_visible,
+        process_env_matches_shell,
+        root_cause,
+        mutation_allowed: status == RuntimeSocketDiagnosisStatus::HyprctlReadOnlySucceeded,
+        blockers,
+    }
+}
+
 pub fn runtime_action_policy(action: RuntimeAction) -> RuntimeActionPolicy {
     let reason = match &action {
         RuntimeAction::Status { .. } => {
@@ -3459,6 +3615,7 @@ pub enum RuntimeLiveRestoreStatus {
     PostMutationReadbackMissing,
     PostRestoreVerificationFailed,
     LiveRestoreProven,
+    LiveRestoreBlocked,
     ReadyButDefaultDisabled,
 }
 
@@ -3545,6 +3702,92 @@ pub fn runtime_live_restore_proof_review(
         review_lines: vec![
             "Runtime live-restore proof requires prior value, generated restore command, post-mutation readback, and post-restore verification.".to_string(),
             "Production runtime mutation remains default-disabled even after proof.".to_string(),
+            format!(
+                "Blockers: {}",
+                if blockers.is_empty() {
+                    "none".to_string()
+                } else {
+                    blockers.join("; ")
+                }
+            ),
+        ],
+    }
+}
+
+pub fn runtime_live_restore_attempt_review(
+    action: RuntimeAction,
+    read_only_evidence_available: bool,
+    prior_value: Option<&str>,
+    temporary_value: Option<&str>,
+    restore_command: Option<&str>,
+    mutation_command: Option<&str>,
+    mutation_command_succeeded: bool,
+    post_mutation_value: Option<&str>,
+    post_restore_value: Option<&str>,
+) -> RuntimeLiveRestoreProof {
+    let mut blockers = Vec::new();
+    let mut status = RuntimeLiveRestoreStatus::ReadyButDefaultDisabled;
+    if !read_only_evidence_available {
+        status = RuntimeLiveRestoreStatus::ReadOnlyEvidenceMissing;
+        blockers.push("read-only runtime evidence is required before live mutation".to_string());
+    }
+    if prior_value.is_none() {
+        status = RuntimeLiveRestoreStatus::PriorValueMissing;
+        blockers.push("prior runtime value is required".to_string());
+    }
+    if temporary_value.is_none() {
+        status = RuntimeLiveRestoreStatus::TemporaryValueMissing;
+        blockers.push("temporary runtime value is required".to_string());
+    }
+    if restore_command.is_none() {
+        status = RuntimeLiveRestoreStatus::RestoreCommandMissing;
+        blockers.push("restore command must be generated before mutation".to_string());
+    }
+    if mutation_command.is_none() {
+        status = RuntimeLiveRestoreStatus::LiveRestoreBlocked;
+        blockers.push("mutation command must be explicit before mutation".to_string());
+    }
+    if mutation_command.is_some()
+        && restore_command.is_some()
+        && read_only_evidence_available
+        && prior_value.is_some()
+        && temporary_value.is_some()
+        && !mutation_command_succeeded
+    {
+        status = RuntimeLiveRestoreStatus::LiveRestoreBlocked;
+        blockers
+            .push("runtime mutation command failed before a value change was verified".to_string());
+    }
+    if mutation_command_succeeded && post_mutation_value.is_none() {
+        status = RuntimeLiveRestoreStatus::PostMutationReadbackMissing;
+        blockers.push("post-mutation readback is required".to_string());
+    }
+    let restored =
+        mutation_command_succeeded && prior_value.is_some() && post_restore_value == prior_value;
+    if mutation_command_succeeded && !restored {
+        status = RuntimeLiveRestoreStatus::PostRestoreVerificationFailed;
+        blockers.push("post-restore readback did not match the prior value".to_string());
+    }
+    if blockers.is_empty() && mutation_command_succeeded && restored {
+        status = RuntimeLiveRestoreStatus::LiveRestoreProven;
+    }
+
+    RuntimeLiveRestoreProof {
+        action,
+        status,
+        prior_value: prior_value.map(ToOwned::to_owned),
+        temporary_value: temporary_value.map(ToOwned::to_owned),
+        restore_command: restore_command.map(ToOwned::to_owned),
+        post_mutation_value: post_mutation_value.map(ToOwned::to_owned),
+        post_restore_value: post_restore_value.map(ToOwned::to_owned),
+        real_command_executed: mutation_command_succeeded,
+        runtime_touched: mutation_command_succeeded,
+        restored,
+        production_runtime_enabled: false,
+        blockers: blockers.clone(),
+        review_lines: vec![
+            "Runtime live-restore attempts require read-only evidence, prior value, generated restore command, mutation command, readback, and restore verification.".to_string(),
+            "Failed mutation syntax is recorded as blocked and must not enable production runtime mutation.".to_string(),
             format!(
                 "Blockers: {}",
                 if blockers.is_empty() {

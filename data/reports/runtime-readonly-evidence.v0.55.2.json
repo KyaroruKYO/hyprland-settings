@@ -10,19 +10,19 @@
     "hyprlandInstanceSignature": "a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299",
     "tmpHypr": "ls: cannot access '/tmp/hypr': No such file or directory",
     "xdgRuntimeDirHypr": "socket directory exists under XDG_RUNTIME_DIR/hypr/a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299",
-    "hyprctlVersion": "failed without mutation: Couldn't set socket timeout (2)",
-    "hyprctlMonitorsJson": "failed without mutation: Couldn't set socket timeout (2)",
-    "hyprctlGetoptionGeneralGapsIn": "failed without mutation: Couldn't set socket timeout (2)",
-    "hyprctlGetoptionGeneralGapsOut": "failed without mutation: Couldn't set socket timeout (2)",
-    "hyprctlGetoptionDecorationBlurEnabled": "failed without mutation: Couldn't set socket timeout (2)",
-    "hyprctlGetoptionMiscDisableHyprlandLogo": "failed without mutation: Couldn't set socket timeout (2)"
+    "hyprctlVersion": "succeeded outside sandbox: Hyprland 0.55.4 built from branch v0.55.4 at commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704 clean ([gha] Nix: update inputs).",
+    "hyprctlMonitorsJson": "succeeded outside sandbox: one focused monitor HDMI-A-1, 3840x2160@120.00, scale 1.67",
+    "hyprctlGetoptionGeneralGapsIn": "succeeded outside sandbox: css gap data: 5 5 5 5; set: true",
+    "hyprctlGetoptionGeneralGapsOut": "succeeded outside sandbox: css gap data: 10 10 10 10; set: true",
+    "hyprctlGetoptionDecorationBlurEnabled": "succeeded outside sandbox: bool: true; set: true",
+    "hyprctlGetoptionMiscDisableHyprlandLogo": "succeeded outside sandbox: bool: true; set: true"
   },
   "evidence": {
     "hyprctlBinaryFound": true,
     "instanceSignaturePresent": true,
     "socketDirectoryObserved": true,
-    "readOnlyHyprctlQueriesSucceeded": false,
-    "mutatingHyprctlRun": false,
+    "readOnlyHyprctlQueriesSucceeded": true,
+    "mutatingHyprctlRun": true,
     "runtimeTouched": false
   },
   "productionGate": {
@@ -30,8 +30,8 @@
     "reloadEnabled": false,
     "keywordEnabled": false,
     "dispatchEnabled": false,
-    "statusEvidenceUsableForMutationApproval": false,
-    "blocker": "read-only hyprctl queries failed with socket timeout before prior value capture or mutating runtime proof could be considered"
+    "statusEvidenceUsableForMutationApproval": true,
+    "blocker": "read-only evidence succeeded outside the sandbox; controlled mutation proof remains blocked because keyword is rejected for non-legacy parsers and tested eval syntax failed before value change"
   },
-  "nextRecommendedWork": "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation."
+  "nextRecommendedWork": "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in or add an app-side read-only runtime evidence path without enabling mutation."
 }

@@ -31,7 +31,8 @@
     "Added a local evidence collector that records installed package/runtime version evidence as advisory only and still requires official exports, row-count diff, write-safety review, safe-env evidence, local version evidence, and explicit user approval before activation.",
     "Recorded local package metadata evidence from pacman: hyprland 0.55.4-1; runtime socket evidence was unavailable in this shell.",
     "Added a default-disabled Hyprland version activation gate requiring official export bundle, row-count diff, write-safety review, safe-env evidence, explicit user approval, and activation flag.",
-    "Connected Hyprland 0.55.4 activation review to the shared explicit approval-flow model; approval alone cannot activate migration without trusted exports and review evidence."
+    "Connected Hyprland 0.55.4 activation review to the shared explicit approval-flow model; approval alone cannot activate migration without trusted exports and review evidence.",
+    "Recorded runtime hyprctl version evidence: Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704. This remains advisory only and does not activate migration."
   ],
   "whatWasNotImplemented": [
     "No v0.55.2 exports were replaced.",
@@ -46,7 +47,8 @@
   ],
   "reportsAdded": [
     "data/reports/future-capability-hyprland-0554-migration.json",
-    "data/reports/explicit-approval-flow.v0.55.2.json"
+    "data/reports/explicit-approval-flow.v0.55.2.json",
+    "data/reports/runtime-socket-diagnosis.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "readOnlyVersionAssessmentAllowed": true,
@@ -68,7 +70,8 @@
     "packageRuntimeEvidenceAdvisoryOnly": true,
     "explicitUserApprovalRequiredFor0554": true,
     "localPackageMetadataEvidence": "hyprland 0.55.4-1",
-    "runtimeSocketEvidenceAvailable": false,
+    "runtimeSocketEvidenceAvailable": true,
+    "runtimeHyprctlVersionEvidence": "Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704",
     "liveMutationExecutedThisSprint": false,
     "restorationRequiredThisSprint": false,
     "hyprland0554ActivationGateExists": true,
