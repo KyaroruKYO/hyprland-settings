@@ -66,6 +66,7 @@
 - Runtime/reload now has a runtime approval live-restore gate. The proven `hl.config` eval command pair, exact readbacks, restore verification, and explicit approval token evidence can reach `approved_but_default_disabled`; production runtime/reload remains disabled.
 - Runtime/reload now has a disabled setting-detail approval UI surface. It displays the proven `hl.config` eval mutation/restore command pair, prior/temp values, post-mutation and post-restore readbacks, approved-but-default-disabled status, and an insensitive planned enable control; it has no runtime handler and does not enable production runtime/reload.
 - The Config page now has disabled approval review cards for source/include insertion, duplicate replacement, structured `hl.bind` writes, profile/mode switching, high-risk/display writes, and Hyprland 0.55.4 migration. Each card shows proof or blocker state, production-disabled status, and an insensitive planned enable action with no mutation handler.
+- Source/include and duplicate activation forms now render real disabled GTK form fields. Scope/reason/token/category use disabled read-only entries, acknowledgements use disabled check buttons, and safety plans use disabled read-only text views; they still validate through the final controls as `ValidatedButExecutorUnwired` with executors `Unwired`.
 - The disabled approval review cards are now report-backed. A typed adapter loads serialized card records from `data/reports/disabled-approval-ui-cards.v0.55.2.json`, preserves the existing stable widget names, and renders explicit `Missing from report` copy if serialized fields are absent.
 - GTK safe-env screenshot-level assertions now cover all six disabled approval cards by checking each heading, production-disabled line, and planned disabled action through screenshot capture plus AT-SPI accessibility-tree text.
 - Hyprland 0.55.4 migration received disabled assessment scaffolding.
@@ -92,7 +93,7 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Replace the review-only activation form projections with real disabled GTK form fields if interactive collection is desired, keeping source/include and duplicate production executors unwired by default.
+If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping source/include and duplicate production executors unwired by default.
 
 ## Progress tracker
 - Core app shell / UI / navigation: 98-99% -> 99-99%
@@ -101,7 +102,7 @@ Replace the review-only activation form projections with real disabled GTK form 
 - Safe normal-scalar writes: 92-96% -> 95-97%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
 - Missing/default insertion: 98-99% -> 99-99%
-- Duplicate resolution: 90-93% -> 91-94%
+- Duplicate resolution: 91-94% -> 92-94%
 - High-risk/display recovery: 61-70% -> 62-70%
 - Structured-family editors/writes: 63-73% -> 64-73%
 - Profile/mode switching: 64-73% -> 65-73%
@@ -111,10 +112,10 @@ Replace the review-only activation form projections with real disabled GTK form 
 ## Validation status
 Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `jq empty data/reports/*.json`, and `git diff --check`.
 
-GTK matrix passed for the activation form/state-machine UI surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_131546`.
+GTK matrix was run for the activation form field UI surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_134347`. The run did not mutate runtime/config, but live field-label proof was blocked because AT-SPI could not open the runtime bus socket.
 
 ## Recommended next Codex prompt
-Replace the review-only activation form projections with real disabled GTK form fields if interactive collection is desired, keeping source/include and duplicate production executors unwired by default.
+If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping source/include and duplicate production executors unwired by default.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 
@@ -136,4 +137,8 @@ The branch now includes final review-only activation controls for source/include
 
 ## 2026-06-20 - Activation form handoff
 
-The branch now includes review-only activation form/state-machine projections for source/include and duplicate. Complete form states collect request fields and safety-plan acknowledgements, generate `ProductionActivationRequest` and `ProductionActivationSafetyPlan` values, validate through the final controls as `ValidatedButExecutorUnwired`, and keep production executors `Unwired`. Next exact work: replace the review-only form projections with real disabled GTK form fields if interactive collection is desired, without wiring production executors.
+The branch now includes review-only activation form/state-machine projections for source/include and duplicate. Complete form states collect request fields and safety-plan acknowledgements, generate `ProductionActivationRequest` and `ProductionActivationSafetyPlan` values, validate through the final controls as `ValidatedButExecutorUnwired`, and keep production executors `Unwired`.
+
+## 2026-06-20 - Disabled activation form fields handoff
+
+The branch now renders source/include and duplicate activation form data through real disabled GTK fields. Entries, check buttons, and text views are read-only/insensitive, screenshot/accessibility assertions cover the field labels, and production executors remain `Unwired`. Next exact work: if interactive collection is desired, convert the disabled field display into still-disabled in-memory draft form plumbing without wiring production executors.

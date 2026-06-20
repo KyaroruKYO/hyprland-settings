@@ -1638,6 +1638,7 @@ fn production_activation_form_review_card(review: &ProductionActivationFormRevie
         "Executor wiring",
         review.executor_wiring_status.user_facing_label(),
     );
+    append_disabled_activation_form_fields(&content, review);
     content.append(&body_label("Required fields"));
     if review.missing_fields.is_empty() {
         content.append(&small_label("All required form fields are present."));
@@ -1670,6 +1671,199 @@ fn production_activation_form_review_card(review: &ProductionActivationFormRevie
 
     frame.set_child(Some(&content));
     frame
+}
+
+fn append_disabled_activation_form_fields(
+    parent: &gtk::Box,
+    review: &ProductionActivationFormReview,
+) {
+    let prefix = activation_form_widget_prefix(review);
+    parent.append(&body_label("Disabled activation form fields"));
+    parent.append(&small_label(
+        "These fields show the future activation request shape. They are read-only and cannot run production writes.",
+    ));
+    append_disabled_activation_text_field(
+        parent,
+        &prefix,
+        "scope-field",
+        "Scope/category",
+        review
+            .form_state
+            .scope
+            .as_ref()
+            .map(|scope| match scope {
+                crate::future_capability::ProductionActivationRequestScope::SourceIncludeInsertion => {
+                    "source/include"
+                }
+                crate::future_capability::ProductionActivationRequestScope::DuplicateReplacement => {
+                    "duplicate"
+                }
+            })
+            .unwrap_or("Missing from form"),
+    );
+    append_disabled_activation_text_field(
+        parent,
+        &prefix,
+        "reason-field",
+        "User-facing reason",
+        &review.form_state.user_facing_reason,
+    );
+    append_disabled_activation_text_field(
+        parent,
+        &prefix,
+        "token-field",
+        "Explicit activation phrase/token",
+        &review.form_state.explicit_activation_token,
+    );
+    append_disabled_activation_text_field(
+        parent,
+        &prefix,
+        "decision-category-field",
+        "Decision category",
+        &review.form_state.decision_category,
+    );
+    append_disabled_activation_check_field(
+        parent,
+        &prefix,
+        "backup-check",
+        "Backup-before-write acknowledgement",
+        review.form_state.backup_plan_acknowledged,
+    );
+    append_disabled_activation_check_field(
+        parent,
+        &prefix,
+        "restore-check",
+        "Restore-plan acknowledgement",
+        review.form_state.restore_plan_acknowledged,
+    );
+    append_disabled_activation_check_field(
+        parent,
+        &prefix,
+        "reread-check",
+        "Post-write reread acknowledgement",
+        review.form_state.reread_plan_acknowledged,
+    );
+    append_disabled_activation_check_field(
+        parent,
+        &prefix,
+        "post-restore-check",
+        "Post-restore verification acknowledgement",
+        review.form_state.post_restore_verification_acknowledged,
+    );
+    append_disabled_activation_check_field(
+        parent,
+        &prefix,
+        "final-check",
+        "Final confirmation acknowledgement",
+        review.form_state.final_confirmation_acknowledged,
+    );
+    append_disabled_activation_multiline_field(
+        parent,
+        &prefix,
+        "backup-plan-field",
+        "Backup-before-write plan",
+        &review.form_state.backup_before_write_plan,
+    );
+    append_disabled_activation_multiline_field(
+        parent,
+        &prefix,
+        "restore-plan-field",
+        "Restore plan",
+        &review.form_state.restore_plan,
+    );
+    append_disabled_activation_multiline_field(
+        parent,
+        &prefix,
+        "reread-plan-field",
+        "Post-write reread plan",
+        &review.form_state.post_write_reread_plan,
+    );
+    append_disabled_activation_multiline_field(
+        parent,
+        &prefix,
+        "post-restore-plan-field",
+        "Post-restore verification plan",
+        &review.form_state.post_restore_verification_plan,
+    );
+    append_disabled_activation_multiline_field(
+        parent,
+        &prefix,
+        "dry-run-summary-field",
+        "Dry-run summary",
+        &review.form_state.dry_run_summary,
+    );
+    append_disabled_activation_multiline_field(
+        parent,
+        &prefix,
+        "touched-files-field",
+        "Files that would be touched",
+        &review.form_state.files_that_would_be_touched.join(", "),
+    );
+}
+
+fn activation_form_widget_prefix(review: &ProductionActivationFormReview) -> String {
+    review
+        .widget_name
+        .strip_suffix("-disabled")
+        .unwrap_or(&review.widget_name)
+        .to_string()
+}
+
+fn append_disabled_activation_text_field(
+    parent: &gtk::Box,
+    prefix: &str,
+    suffix: &str,
+    label: &str,
+    value: &str,
+) {
+    let row = gtk::Box::new(gtk::Orientation::Vertical, 3);
+    row.append(&small_label(label));
+    let entry = gtk::Entry::new();
+    entry.set_widget_name(&format!("{prefix}-{suffix}-disabled"));
+    entry.set_tooltip_text(Some("Read-only future activation form field."));
+    entry.set_text(value);
+    entry.set_editable(false);
+    entry.set_sensitive(false);
+    row.append(&entry);
+    parent.append(&row);
+}
+
+fn append_disabled_activation_multiline_field(
+    parent: &gtk::Box,
+    prefix: &str,
+    suffix: &str,
+    label: &str,
+    value: &str,
+) {
+    let row = gtk::Box::new(gtk::Orientation::Vertical, 3);
+    row.append(&small_label(label));
+    let text = gtk::TextView::new();
+    text.set_widget_name(&format!("{prefix}-{suffix}-disabled"));
+    text.set_tooltip_text(Some("Read-only future activation safety-plan field."));
+    text.set_wrap_mode(gtk::WrapMode::WordChar);
+    text.set_editable(false);
+    text.set_cursor_visible(false);
+    text.set_sensitive(false);
+    text.buffer().set_text(value);
+    row.append(&text);
+    parent.append(&row);
+}
+
+fn append_disabled_activation_check_field(
+    parent: &gtk::Box,
+    prefix: &str,
+    suffix: &str,
+    label: &str,
+    checked: bool,
+) {
+    let check = gtk::CheckButton::with_label(label);
+    check.set_widget_name(&format!("{prefix}-{suffix}-disabled"));
+    check.set_tooltip_text(Some(
+        "Read-only acknowledgement for future activation review.",
+    ));
+    check.set_active(checked);
+    check.set_sensitive(false);
+    parent.append(&check);
 }
 
 fn append_connected_file_details(

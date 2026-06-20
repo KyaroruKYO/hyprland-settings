@@ -90,3 +90,7 @@ Production gate readiness now records the final source/include and duplicate act
 ## 2026-06-20 - Activation form readiness
 
 Production gate readiness now records the source/include and duplicate activation form/state-machine layer. The form state can collect review-only request data and safety-plan acknowledgements, generate request and safety-plan values, and validate through the final activation controls. The controls remain `ValidatedButExecutorUnwired`; production flags remain false and executors remain unwired.
+
+## 2026-06-20 - Activation Form Field Readiness
+
+Production gate readiness now records real disabled GTK activation form fields for source/include and duplicate. The fields expose the same review-only request and safety-plan data through insensitive entries, check buttons, and text views; they do not wire executors, mutate state, or enable production flags.

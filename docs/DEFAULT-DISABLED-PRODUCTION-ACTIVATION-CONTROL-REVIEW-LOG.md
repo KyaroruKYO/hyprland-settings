@@ -37,3 +37,5 @@ Scope: source/include insertion and duplicate replacement.
 ## Follow-up Form Layer
 
 The next review-only layer now exists in `data/reports/default-disabled-production-activation-form.v0.55.2.json`. It generates request and safety-plan data from explicit form state and validates through these controls while keeping source/include and duplicate executors `Unwired`.
+
+The form layer now also has real disabled GTK fields recorded in `data/reports/default-disabled-production-activation-form-fields.v0.55.2.json`. Those fields expose the review-only request and safety-plan data without wiring source/include or duplicate production executors.

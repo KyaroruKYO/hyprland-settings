@@ -85,7 +85,7 @@
     "hyprland0554MigrationActivated": false
   },
   "nextRequiredWork": [
-    "Replace review-only activation form projections with real disabled GTK form fields if interactive collection is desired, keeping executors unwired.",
+    "If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping executors unwired.",
     "Add any future real-config activation proof only with byte-exact backup, restore, and post-restore verification."
   ],
   "activationPathReview": {
@@ -116,6 +116,7 @@
   },
   "activationFormReview": {
     "report": "data/reports/default-disabled-production-activation-form.v0.55.2.json",
+    "fieldReport": "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
     "sourceIncludeInsertion": {
       "status": "ValidatedForReviewOnly",
       "controlValidationStatus": "ValidatedButExecutorUnwired",

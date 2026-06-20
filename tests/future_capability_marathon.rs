@@ -4,6 +4,7 @@ use hyprland_settings::safe_batch_write::{
     safe_batch_write_user_facing_lines, SafeBatchEligibility,
 };
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
+use serde_json::json;
 
 fn read_json(path: &str) -> serde_json::Value {
     serde_json::from_slice(&fs::read(path).expect("report should exist"))
@@ -86,12 +87,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Replace the review-only activation form projections with real disabled GTK form fields if interactive collection is desired, keeping source/include and duplicate production executors unwired by default."
+        "If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping source/include and duplicate production executors unwired by default."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("real disabled GTK form fields"));
+        .contains("still-disabled in-memory draft form plumbing"));
 }
 
 #[test]
@@ -620,6 +621,14 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         activation_form["implementation"]["controlValidationFromFormExists"],
         true
     );
+    assert_eq!(
+        activation_form["implementation"]["realDisabledGtkFormFieldsExist"],
+        true
+    );
+    assert_eq!(
+        activation_form["implementation"]["fieldsAreReadOnlyOrDisabled"],
+        true
+    );
     for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
         assert_eq!(
             activation_form["forms"][key]["status"],
@@ -645,6 +654,7 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         assert_eq!(activation_form["forms"][key]["productionFlag"], false);
         assert_eq!(activation_form["forms"][key]["executorWired"], false);
         assert_eq!(activation_form["forms"][key]["reviewOnly"], true);
+        assert!(activation_form["forms"][key]["fieldWidgets"].is_object());
         assert_eq!(activation_form["screenshotLevelAssertions"][key], true);
     }
     assert_eq!(
@@ -656,6 +666,78 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         false
     );
     assert_eq!(activation_form["safety"]["duplicateExecutorWired"], false);
+
+    let activation_form_fields =
+        read_json("data/reports/default-disabled-production-activation-form-fields.v0.55.2.json");
+    assert_eq!(activation_form_fields["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        activation_form_fields["implementation"]["sourceIncludeRealDisabledGtkFormFieldsExist"],
+        true
+    );
+    assert_eq!(
+        activation_form_fields["implementation"]["duplicateRealDisabledGtkFormFieldsExist"],
+        true
+    );
+    assert_eq!(
+        activation_form_fields["implementation"]["entryFieldsUseEditableFalse"],
+        true
+    );
+    assert_eq!(
+        activation_form_fields["implementation"]["textViewFieldsUseEditableFalse"],
+        true
+    );
+    assert_eq!(
+        activation_form_fields["implementation"]["checkFieldsUseSensitiveFalse"],
+        true
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_form_fields["forms"][key]["status"],
+            "ValidatedForReviewOnly"
+        );
+        assert_eq!(
+            activation_form_fields["forms"][key]["controlValidationStatus"],
+            "ValidatedButExecutorUnwired"
+        );
+        assert_eq!(
+            activation_form_fields["forms"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(
+            activation_form_fields["forms"][key]["productionStatus"],
+            "Disabled"
+        );
+        assert_eq!(
+            activation_form_fields["forms"][key]["productionEnabled"],
+            false
+        );
+        assert_eq!(
+            activation_form_fields["forms"][key]["productionFlag"],
+            false
+        );
+        assert_eq!(activation_form_fields["forms"][key]["executorWired"], false);
+        assert!(activation_form_fields["forms"][key]["fieldWidgets"].is_object());
+        assert!(activation_form_fields["forms"][key]["visibleFieldLabels"]
+            .as_array()
+            .expect("visible field labels")
+            .contains(&json!("User-facing reason")));
+        assert_eq!(
+            activation_form_fields["screenshotLevelAssertions"][key],
+            true
+        );
+    }
+    assert_eq!(
+        activation_form_fields["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+    assert_eq!(
+        activation_form_fields["safety"]["sourceIncludeExecutorWired"],
+        false
+    );
+    assert_eq!(
+        activation_form_fields["safety"]["duplicateExecutorWired"],
+        false
+    );
 
     let gtk_cards =
         read_json("data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json");

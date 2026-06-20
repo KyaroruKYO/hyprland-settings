@@ -84,6 +84,7 @@
   },
   "activationFormReview": {
     "report": "data/reports/default-disabled-production-activation-form.v0.55.2.json",
+    "fieldReport": "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
     "sourceIncludeInsertion": "ValidatedForReviewOnly; request and safety plan generated; production flag false",
     "duplicateReplacement": "ValidatedForReviewOnly; request and safety plan generated; production flag false"
   },

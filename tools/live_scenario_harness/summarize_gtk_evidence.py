@@ -431,6 +431,10 @@ def aggregate(runs):
             result["disabledActionProof"] == "live_gtk_atspi_proof"
             for result in activation_form_results.values()
         ),
+        "activationFormsAllFieldLabelsFound": all(
+            result["fieldLabelsProof"] == "live_gtk_atspi_proof"
+            for result in activation_form_results.values()
+        ),
         "fallbackProofUsed": any(level in {"source_model_fallback", "not_proven"} for level in by_area.values())
         or any(level in {"source_model_fallback", "not_proven"} for level in by_blocked_category.values()),
     }
@@ -757,6 +761,17 @@ def activation_form_assertion_results(runs):
             ),
             None,
         )
+        field_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("activationFormAssertions", {})
+                .get(key, {})
+                .get("fieldLabelsFound")
+            ),
+            None,
+        )
         sample = {}
         for run in runs:
             sample = run["accessibility"].get("activationFormAssertions", {}).get(key, {})
@@ -777,6 +792,10 @@ def activation_form_assertion_results(runs):
             "disabledAction": sample.get("disabledAction"),
             "disabledActionProof": "live_gtk_atspi_proof" if action_run else "not_proven",
             "disabledActionEvidenceRun": action_run["name"] if action_run else None,
+            "fieldLabels": sample.get("fieldLabels"),
+            "fieldLabelResults": sample.get("fieldLabelResults"),
+            "fieldLabelsProof": "live_gtk_atspi_proof" if field_run else "not_proven",
+            "fieldLabelsEvidenceRun": field_run["name"] if field_run else None,
             "widgetName": sample.get("widgetName"),
             "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
         }

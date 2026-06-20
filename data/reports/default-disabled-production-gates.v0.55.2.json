@@ -158,7 +158,7 @@
     "hyprland0554UsesRuntimePackageAndTrustedDataStatus": true,
     "productionBehaviorEnabled": false
   },
-  "nextRecommendedWork": "Replace review-only activation form projections with real disabled GTK form fields if interactive collection is desired, keeping source/include and duplicate production executors unwired by default.",
+  "nextRecommendedWork": "If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping source/include and duplicate production executors unwired by default.",
   "activationDecisionReview": {
     "report": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
     "sourceIncludeInsertion": "ApprovedButDefaultDisabled; production flag false",
@@ -198,6 +198,7 @@
   },
   "activationFormReview": {
     "report": "data/reports/default-disabled-production-activation-form.v0.55.2.json",
+    "fieldReport": "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
     "sourceIncludeInsertion": {
       "status": "ValidatedForReviewOnly",
       "requestGenerationStatus": "ProductionActivationRequest generated for review only",

@@ -1,59 +1,34 @@
 {
-  "artifactKind": "default-disabled-production-activation-form",
+  "artifactKind": "default-disabled-production-activation-form-fields",
   "projectDataVersion": "v0.55.2",
   "generatedAt": "2026-06-20T00:00:00Z",
   "branch": "future-capability-marathon",
-  "inputActivationControlReport": "data/reports/default-disabled-production-activation-control.v0.55.2.json",
-  "inputActivationPathReport": "data/reports/default-disabled-production-activation-path.v0.55.2.json",
-  "inputDecisionReport": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
+  "inputActivationFormReport": "data/reports/default-disabled-production-activation-form.v0.55.2.json",
   "implementation": {
-    "activationFormStateMachineExists": true,
-    "sourceIncludeActivationFormExists": true,
-    "duplicateActivationFormExists": true,
-    "requestGenerationExists": true,
-    "safetyPlanGenerationExists": true,
-    "controlValidationFromFormExists": true,
-    "uiSurfaceExists": true,
-    "realDisabledGtkFormFieldsExist": true,
-    "fieldsAreReadOnlyOrDisabled": true,
-    "fieldReport": "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
+    "sourceIncludeRealDisabledGtkFormFieldsExist": true,
+    "duplicateRealDisabledGtkFormFieldsExist": true,
+    "sourceIncludeFieldsAreReadOnlyOrDisabled": true,
+    "duplicateFieldsAreReadOnlyOrDisabled": true,
+    "entryFieldsUseEditableFalse": true,
+    "entryFieldsUseSensitiveFalse": true,
+    "textViewFieldsUseEditableFalse": true,
+    "textViewFieldsUseSensitiveFalse": true,
+    "checkFieldsUseSensitiveFalse": true,
     "screenshotLevelAssertionsImplemented": true,
-    "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr"
+    "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+    "latestGtkMatrixRun": "/tmp/hyprland-settings-gtk-automation/20260620_134347",
+    "latestGtkMatrixFieldLabelProof": "blocked_by_at_spi_bus",
+    "latestGtkMatrixBlocker": "AT-SPI was unable to open the bus socket under /run/user/1000, so the live accessibility tree did not match the app in this run."
   },
   "forms": {
     "sourceIncludeInsertion": {
-      "widgetName": "hyprland-settings-source-include-activation-form-disabled",
-      "evidenceWidgetName": "hyprland-settings-source-include-activation-form-evidence",
       "status": "ValidatedForReviewOnly",
-      "requestGenerationStatus": "ProductionActivationRequest generated for review only",
-      "safetyPlanGenerationStatus": "ProductionActivationSafetyPlan generated for review only",
       "controlValidationStatus": "ValidatedButExecutorUnwired",
       "executorWiringStatus": "Unwired",
+      "productionStatus": "Disabled",
       "productionEnabled": false,
       "productionFlag": false,
-      "categoryProductionFlag": false,
-      "productionStatus": "Disabled",
       "executorWired": false,
-      "requestPreview": {
-        "scope": "source/include",
-        "decisionCategory": "sourceIncludeInsertion",
-        "hasReason": true,
-        "hasExplicitActivationToken": true,
-        "backupPlanAcknowledged": true,
-        "restorePlanAcknowledged": true,
-        "rereadPlanAcknowledged": true,
-        "postRestoreVerificationAcknowledged": true,
-        "finalConfirmationAcknowledged": true
-      },
-      "safetyPlanPreview": {
-        "backupBeforeWritePlanPresent": true,
-        "restorePlanPresent": true,
-        "postWriteRereadPlanPresent": true,
-        "postRestoreVerificationPlanPresent": true,
-        "dryRunSummaryPresent": true,
-        "filesThatWouldBeTouchedPresent": true
-      },
-      "disabledAction": "Validate source/include activation form (planned)",
       "fieldWidgets": {
         "scope": "hyprland-settings-source-include-activation-form-scope-field-disabled",
         "reason": "hyprland-settings-source-include-activation-form-reason-field-disabled",
@@ -70,44 +45,30 @@
         "dryRunSummary": "hyprland-settings-source-include-activation-form-dry-run-summary-field-disabled",
         "filesThatWouldBeTouched": "hyprland-settings-source-include-activation-form-touched-files-field-disabled"
       },
-      "fieldWidgetBehavior": "Entry fields set_editable(false) and set_sensitive(false); TextView fields set_editable(false), cursor hidden, and set_sensitive(false); CheckButton acknowledgements set_sensitive(false).",
-      "reviewOnly": true,
-      "productionExecutorReady": false,
-      "productionWriteReady": false
+      "visibleFieldLabels": [
+        "User-facing reason",
+        "Explicit activation phrase/token",
+        "Backup-before-write acknowledgement",
+        "Restore-plan acknowledgement",
+        "Post-write reread acknowledgement",
+        "Final confirmation acknowledgement",
+        "Backup-before-write plan",
+        "Restore plan",
+        "Post-write reread plan",
+        "Post-restore verification plan",
+        "Dry-run summary",
+        "Files that would be touched"
+      ],
+      "reviewOnly": true
     },
     "duplicateReplacement": {
-      "widgetName": "hyprland-settings-duplicate-activation-form-disabled",
-      "evidenceWidgetName": "hyprland-settings-duplicate-activation-form-evidence",
       "status": "ValidatedForReviewOnly",
-      "requestGenerationStatus": "ProductionActivationRequest generated for review only",
-      "safetyPlanGenerationStatus": "ProductionActivationSafetyPlan generated for review only",
       "controlValidationStatus": "ValidatedButExecutorUnwired",
       "executorWiringStatus": "Unwired",
+      "productionStatus": "Disabled",
       "productionEnabled": false,
       "productionFlag": false,
-      "categoryProductionFlag": false,
-      "productionStatus": "Disabled",
       "executorWired": false,
-      "requestPreview": {
-        "scope": "duplicate",
-        "decisionCategory": "duplicateReplacement",
-        "hasReason": true,
-        "hasExplicitActivationToken": true,
-        "backupPlanAcknowledged": true,
-        "restorePlanAcknowledged": true,
-        "rereadPlanAcknowledged": true,
-        "postRestoreVerificationAcknowledged": true,
-        "finalConfirmationAcknowledged": true
-      },
-      "safetyPlanPreview": {
-        "backupBeforeWritePlanPresent": true,
-        "restorePlanPresent": true,
-        "postWriteRereadPlanPresent": true,
-        "postRestoreVerificationPlanPresent": true,
-        "dryRunSummaryPresent": true,
-        "filesThatWouldBeTouchedPresent": true
-      },
-      "disabledAction": "Validate duplicate activation form (planned)",
       "fieldWidgets": {
         "scope": "hyprland-settings-duplicate-activation-form-scope-field-disabled",
         "reason": "hyprland-settings-duplicate-activation-form-reason-field-disabled",
@@ -124,10 +85,21 @@
         "dryRunSummary": "hyprland-settings-duplicate-activation-form-dry-run-summary-field-disabled",
         "filesThatWouldBeTouched": "hyprland-settings-duplicate-activation-form-touched-files-field-disabled"
       },
-      "fieldWidgetBehavior": "Entry fields set_editable(false) and set_sensitive(false); TextView fields set_editable(false), cursor hidden, and set_sensitive(false); CheckButton acknowledgements set_sensitive(false).",
-      "reviewOnly": true,
-      "productionExecutorReady": false,
-      "productionWriteReady": false
+      "visibleFieldLabels": [
+        "User-facing reason",
+        "Explicit activation phrase/token",
+        "Backup-before-write acknowledgement",
+        "Restore-plan acknowledgement",
+        "Post-write reread acknowledgement",
+        "Final confirmation acknowledgement",
+        "Backup-before-write plan",
+        "Restore plan",
+        "Post-write reread plan",
+        "Post-restore verification plan",
+        "Dry-run summary",
+        "Files that would be touched"
+      ],
+      "reviewOnly": true
     }
   },
   "screenshotLevelAssertions": {
@@ -150,9 +122,5 @@
     "hyprctlReloadRun": false,
     "v0552DefaultPreserved": true,
     "hyprland0554MigrationActivated": false
-  },
-  "nextRequiredWork": [
-    "If interactive collection is desired, convert the disabled field display into still-disabled input plumbing that can update in-memory draft state without wiring executors.",
-    "Do not wire source/include or duplicate production executors until byte-exact live backup, write, reread, restore, and final approval proof exists."
-  ]
+  }
 }

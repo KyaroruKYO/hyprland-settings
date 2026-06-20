@@ -194,7 +194,7 @@
     "sourceIncludeProductionEnabled": false,
     "duplicateProductionEnabled": false
   },
-  "nextRecommendedWork": "Replace review-only activation form projections with real disabled GTK form fields if interactive collection is desired, still keeping all production behavior default-disabled.",
+  "nextRecommendedWork": "If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping all production behavior default-disabled.",
   "activationPathReview": {
     "report": "data/reports/default-disabled-production-activation-path.v0.55.2.json",
     "sourceIncludeInsertion": {
@@ -223,6 +223,7 @@
   },
   "activationFormReview": {
     "report": "data/reports/default-disabled-production-activation-form.v0.55.2.json",
+    "fieldReport": "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
     "sourceIncludeInsertion": {
       "status": "ValidatedForReviewOnly",
       "controlValidationStatus": "ValidatedButExecutorUnwired",

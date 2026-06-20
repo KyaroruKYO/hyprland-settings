@@ -50,7 +50,8 @@
     "Duplicate activation decision review now consumes report-backed card data and reaches ApprovedButDefaultDisabled while production duplicate writes remain disabled.",
     "Duplicate activation path now consumes the ApprovedButDefaultDisabled decision and report-backed proof data, then stops at ActivationPathNeedsExplicitProductionFlag with production duplicate writes disabled.",
     "Duplicate activation control now validates complete review-only request and safety-plan inputs, proves the executor is Unwired, reaches ValidatedButExecutorUnwired, and still keeps production duplicate writes disabled.",
-    "Duplicate activation form/state machine now collects review-only request fields, safety acknowledgements, backup/restore/reread/post-restore plans, dry-run summary, and touched-file list, then validates through the activation control as review-only with the executor still Unwired."
+    "Duplicate activation form/state machine now collects review-only request fields, safety acknowledgements, backup/restore/reread/post-restore plans, dry-run summary, and touched-file list, then validates through the activation control as review-only with the executor still Unwired.",
+    "Duplicate activation form values now render through real disabled GTK Entry, TextView, and CheckButton fields with stable widget names and screenshot/accessibility field-label assertions."
   ],
   "whatWasNotImplemented": [
     "No automatic duplicate choice was added.",
@@ -71,7 +72,8 @@
     "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
     "data/reports/default-disabled-production-activation-path.v0.55.2.json",
     "data/reports/default-disabled-production-activation-control.v0.55.2.json",
-    "data/reports/default-disabled-production-activation-form.v0.55.2.json"
+    "data/reports/default-disabled-production-activation-form.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "manualOccurrenceSelectionRequired": true,
@@ -135,7 +137,7 @@
     "Temp-fixture and copied-config-tree executors now prove stale line, raw-line mismatch, old-value mismatch, source-layer duplicate, and same-file duplicate preconditions; explicit production flag review is still required before production Apply integration.",
     "Needs production safe-batch integration review that still refuses real config unless explicitly approved."
   ],
-  "nextRecommendedWork": "Replace the duplicate review-only activation form projection with real disabled GTK form fields if interactive collection is desired; keep production duplicate writes disabled and executor unwired.",
+  "nextRecommendedWork": "If interactive collection is desired, convert the disabled duplicate GTK activation form field display into still-disabled in-memory draft form plumbing; keep production duplicate writes disabled and executor unwired.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false,

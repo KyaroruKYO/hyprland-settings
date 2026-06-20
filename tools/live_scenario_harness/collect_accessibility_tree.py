@@ -136,6 +136,20 @@ ACTIVATION_FORM_ASSERTIONS = {
         "executor": "Executor wiring: Unwired",
         "action": "Validate source/include activation form (planned)",
         "widget": "hyprland-settings-source-include-activation-form-disabled",
+        "fields": [
+            "User-facing reason",
+            "Explicit activation phrase/token",
+            "Backup-before-write acknowledgement",
+            "Restore-plan acknowledgement",
+            "Post-write reread acknowledgement",
+            "Final confirmation acknowledgement",
+            "Backup-before-write plan",
+            "Restore plan",
+            "Post-write reread plan",
+            "Post-restore verification plan",
+            "Dry-run summary",
+            "Files that would be touched",
+        ],
     },
     "duplicateReplacement": {
         "heading": "Duplicate activation request form",
@@ -144,6 +158,20 @@ ACTIVATION_FORM_ASSERTIONS = {
         "executor": "Executor wiring: Unwired",
         "action": "Validate duplicate activation form (planned)",
         "widget": "hyprland-settings-duplicate-activation-form-disabled",
+        "fields": [
+            "User-facing reason",
+            "Explicit activation phrase/token",
+            "Backup-before-write acknowledgement",
+            "Restore-plan acknowledgement",
+            "Post-write reread acknowledgement",
+            "Final confirmation acknowledgement",
+            "Backup-before-write plan",
+            "Restore plan",
+            "Post-write reread plan",
+            "Post-restore verification plan",
+            "Dry-run summary",
+            "Files that would be touched",
+        ],
     },
 }
 
@@ -436,6 +464,10 @@ def activation_form_assertions(values):
         executor_found = spec["executor"].lower() in text
         action_found = spec["action"].lower() in text
         widget_found = spec["widget"].lower() in text
+        field_results = {
+            field: field.lower() in text
+            for field in spec.get("fields", [])
+        }
         assertions[key] = {
             "heading": spec["heading"],
             "headingFound": heading_found,
@@ -447,6 +479,9 @@ def activation_form_assertions(values):
             "disabledActionFound": action_found,
             "widgetName": spec["widget"],
             "widgetNameFound": widget_found,
+            "fieldLabels": spec.get("fields", []),
+            "fieldLabelsFound": all(field_results.values()),
+            "fieldLabelResults": field_results,
         }
     return assertions
 
