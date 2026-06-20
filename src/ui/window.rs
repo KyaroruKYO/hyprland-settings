@@ -16,16 +16,20 @@ use crate::current_config::{
 };
 use crate::export::ExportBundle;
 use crate::future_capability::{
-    disabled_future_approval_card_projections, duplicate_production_approval_gate,
+    apply_production_activation_draft_gtk_update, disabled_future_approval_card_projections,
+    duplicate_activation_draft_gtk_review, duplicate_production_approval_gate,
     production_activation_control_reviews, production_activation_decision_reviews,
     production_activation_draft_edit_reviews, production_activation_draft_reviews,
-    production_activation_form_reviews, production_activation_path_reviews,
-    proven_runtime_approval_evidence_summary, source_include_insertion_review,
+    production_activation_form_reviews, production_activation_live_draft_gtk_reviews,
+    production_activation_path_reviews, proven_runtime_approval_evidence_summary,
+    source_include_activation_draft_gtk_review, source_include_insertion_review,
     source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
     DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
     ProductionActivationControlReview, ProductionActivationDecisionReview,
-    ProductionActivationDraftEditReview, ProductionActivationDraftReview,
-    ProductionActivationFormReview, ProductionActivationPathReview,
+    ProductionActivationDraftEditReview, ProductionActivationDraftGtkField,
+    ProductionActivationDraftGtkReview, ProductionActivationDraftGtkState,
+    ProductionActivationDraftGtkUpdate, ProductionActivationDraftReview,
+    ProductionActivationFormReview, ProductionActivationPathReview, ProductionExecutorWiringState,
     SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
     SourceIncludeTargetCandidate,
 };
@@ -1420,6 +1424,7 @@ fn production_activation_path_reviews_section() -> gtk::Frame {
     content.append(&production_activation_form_reviews_section());
     content.append(&production_activation_draft_reviews_section());
     content.append(&production_activation_draft_edit_reviews_section());
+    content.append(&production_activation_live_draft_edit_reviews_section());
 
     frame.set_child(Some(&content));
     frame
@@ -1728,6 +1733,484 @@ fn production_activation_draft_edit_review_card(
 
     frame.set_child(Some(&content));
     frame
+}
+
+fn production_activation_live_draft_edit_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-live-draft-edit-section");
+    frame.set_tooltip_text(Some(
+        "Live activation draft field edits update memory only. No draft persistence or production executor is available.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Live memory-only activation draft editing"));
+    content.append(&small_label(
+        "These editable draft fields update in-memory review state only. They are not saved to disk and cannot run production writes.",
+    ));
+
+    for review in production_activation_live_draft_gtk_reviews() {
+        content.append(&production_activation_live_draft_edit_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+#[derive(Clone)]
+struct LiveDraftStatusLabels {
+    bridge: gtk::Label,
+    dirty: gtk::Label,
+    draft: gtk::Label,
+    form: gtk::Label,
+    control: gtk::Label,
+}
+
+fn production_activation_live_draft_edit_review_card(
+    review: &ProductionActivationDraftGtkReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Memory-only activation draft edit bridge. This does not persist data or wire production executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Live draft edit bridge evidence. GTK field changes update only in-memory draft state.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    content.append(&small_label("Draft editing mode: memory-only"));
+    content.append(&small_label(&review.not_saved_status));
+
+    let labels = LiveDraftStatusLabels {
+        bridge: body_label(""),
+        dirty: body_label(""),
+        draft: body_label(""),
+        form: body_label(""),
+        control: body_label(""),
+    };
+    labels
+        .bridge
+        .set_widget_name("hyprland-settings-live-draft-bridge-status");
+    labels
+        .dirty
+        .set_widget_name("hyprland-settings-live-draft-dirty-state");
+    labels
+        .draft
+        .set_widget_name("hyprland-settings-live-draft-validation");
+    labels
+        .form
+        .set_widget_name("hyprland-settings-live-draft-form-validation");
+    labels
+        .control
+        .set_widget_name("hyprland-settings-live-draft-control-validation");
+    refresh_live_draft_status_labels(&labels, review);
+    content.append(&labels.bridge);
+    content.append(&labels.dirty);
+    content.append(&labels.draft);
+    content.append(&labels.form);
+    content.append(&labels.control);
+
+    append_detail_line(&content, "In-memory only", &review.persistence_status);
+    append_detail_line(&content, "Not saved to disk", &review.not_saved_status);
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let state = Rc::new(RefCell::new(review.state.clone()));
+    let refresh = live_draft_refresh(review);
+    append_live_draft_text_field(
+        &content,
+        "User-facing reason",
+        &review.state.edit_state.draft.form_state.user_facing_reason,
+        &live_draft_widget_name(review, "reason-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::UserFacingReason,
+    );
+    append_live_draft_text_field(
+        &content,
+        "Explicit activation phrase/token",
+        &review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .explicit_activation_token,
+        &live_draft_widget_name(review, "token-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::ExplicitActivationToken,
+    );
+    append_live_draft_check_field(
+        &content,
+        "Backup-before-write acknowledgement",
+        review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .backup_plan_acknowledged,
+        &live_draft_widget_name(review, "backup-check"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::BackupPlanAcknowledged,
+    );
+    append_live_draft_check_field(
+        &content,
+        "Restore-plan acknowledgement",
+        review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .restore_plan_acknowledged,
+        &live_draft_widget_name(review, "restore-check"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::RestorePlanAcknowledged,
+    );
+    append_live_draft_check_field(
+        &content,
+        "Post-write reread acknowledgement",
+        review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .reread_plan_acknowledged,
+        &live_draft_widget_name(review, "reread-check"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::RereadPlanAcknowledged,
+    );
+    append_live_draft_check_field(
+        &content,
+        "Post-restore verification acknowledgement",
+        review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .post_restore_verification_acknowledged,
+        &live_draft_widget_name(review, "post-restore-check"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::PostRestoreVerificationAcknowledged,
+    );
+    append_live_draft_check_field(
+        &content,
+        "Final confirmation acknowledgement",
+        review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .final_confirmation_acknowledged,
+        &live_draft_widget_name(review, "final-check"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::FinalConfirmationAcknowledged,
+    );
+    append_live_draft_multiline_field(
+        &content,
+        "Backup-before-write plan",
+        &review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .backup_before_write_plan,
+        &live_draft_widget_name(review, "backup-plan-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::BackupBeforeWritePlan,
+    );
+    append_live_draft_multiline_field(
+        &content,
+        "Restore plan",
+        &review.state.edit_state.draft.form_state.restore_plan,
+        &live_draft_widget_name(review, "restore-plan-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::RestorePlan,
+    );
+    append_live_draft_multiline_field(
+        &content,
+        "Post-write reread plan",
+        &review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .post_write_reread_plan,
+        &live_draft_widget_name(review, "reread-plan-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::PostWriteRereadPlan,
+    );
+    append_live_draft_multiline_field(
+        &content,
+        "Post-restore verification plan",
+        &review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .post_restore_verification_plan,
+        &live_draft_widget_name(review, "post-restore-plan-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::PostRestoreVerificationPlan,
+    );
+    append_live_draft_multiline_field(
+        &content,
+        "Dry-run summary",
+        &review.state.edit_state.draft.form_state.dry_run_summary,
+        &live_draft_widget_name(review, "dry-run-summary-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::DryRunSummary,
+    );
+    append_live_draft_multiline_field(
+        &content,
+        "Files that would be touched",
+        &review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .files_that_would_be_touched
+            .join("\n"),
+        &live_draft_widget_name(review, "touched-files-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::FilesThatWouldBeTouched,
+    );
+
+    let update = gtk::Button::with_label(&review.update_label);
+    update.set_widget_name(&live_draft_widget_name(review, "update-memory-only"));
+    update.set_tooltip_text(Some(
+        "Recomputes in-memory draft review state only. This does not persist or run executors.",
+    ));
+    update.connect_clicked({
+        let state = state.clone();
+        let labels = labels.clone();
+        let refresh = refresh.clone();
+        move |_| {
+            let review = refresh(&state.borrow());
+            refresh_live_draft_status_labels(&labels, &review);
+        }
+    });
+    content.append(&update);
+
+    let reset = gtk::Button::with_label(&review.reset_label);
+    reset.set_widget_name(&live_draft_widget_name(review, "reset-memory-only"));
+    reset.set_tooltip_text(Some(
+        "Resets only the in-memory draft. This does not persist or run executors.",
+    ));
+    reset.connect_clicked({
+        let state = state.clone();
+        let labels = labels.clone();
+        let refresh = refresh.clone();
+        move |_| {
+            apply_production_activation_draft_gtk_update(
+                &mut state.borrow_mut(),
+                ProductionActivationDraftGtkUpdate::ResetToDefault,
+            );
+            let review = refresh(&state.borrow());
+            refresh_live_draft_status_labels(&labels, &review);
+        }
+    });
+    content.append(&reset);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn live_draft_widget_name(review: &ProductionActivationDraftGtkReview, suffix: &str) -> String {
+    let prefix = if review.widget_name.contains("source-include") {
+        "hyprland-settings-source-include-activation-live-draft-edit"
+    } else {
+        "hyprland-settings-duplicate-activation-live-draft-edit"
+    };
+    format!("{prefix}-{suffix}-disabled")
+}
+
+fn live_draft_refresh(
+    review: &ProductionActivationDraftGtkReview,
+) -> Rc<dyn Fn(&ProductionActivationDraftGtkState) -> ProductionActivationDraftGtkReview> {
+    let is_source = review.widget_name.contains("source-include");
+    Rc::new(move |state| {
+        if is_source {
+            source_include_activation_draft_gtk_review(
+                None,
+                state.clone(),
+                ProductionExecutorWiringState::Unwired,
+                false,
+            )
+        } else {
+            duplicate_activation_draft_gtk_review(
+                None,
+                state.clone(),
+                ProductionExecutorWiringState::Unwired,
+                false,
+            )
+        }
+    })
+}
+
+fn refresh_live_draft_status_labels(
+    labels: &LiveDraftStatusLabels,
+    review: &ProductionActivationDraftGtkReview,
+) {
+    labels.bridge.set_text(&format!(
+        "GTK bridge status: {}",
+        review.status.user_facing_label()
+    ));
+    labels
+        .dirty
+        .set_text(&format!("Draft dirty state: {}", review.dirty_state));
+    labels.draft.set_text(&format!(
+        "Draft validation: {}",
+        review.draft_status.user_facing_label()
+    ));
+    labels.form.set_text(&format!(
+        "Form validation: {}",
+        review.form_validation_status.user_facing_label()
+    ));
+    labels.control.set_text(&format!(
+        "Control validation: {}",
+        review.control_validation_status.user_facing_label()
+    ));
+}
+
+fn append_live_draft_text_field(
+    parent: &gtk::Box,
+    label: &str,
+    value: &str,
+    widget_name: &str,
+    state: Rc<RefCell<ProductionActivationDraftGtkState>>,
+    labels: LiveDraftStatusLabels,
+    refresh: Rc<dyn Fn(&ProductionActivationDraftGtkState) -> ProductionActivationDraftGtkReview>,
+    field: ProductionActivationDraftGtkField,
+) {
+    let row = gtk::Box::new(gtk::Orientation::Vertical, 3);
+    row.append(&small_label(label));
+    let entry = gtk::Entry::new();
+    entry.set_widget_name(widget_name);
+    entry.set_tooltip_text(Some(
+        "Memory-only activation draft field. This is not saved to disk.",
+    ));
+    entry.set_text(value);
+    entry.connect_changed(move |entry| {
+        apply_production_activation_draft_gtk_update(
+            &mut state.borrow_mut(),
+            ProductionActivationDraftGtkUpdate::Text {
+                field,
+                value: entry.text().to_string(),
+            },
+        );
+        let review = refresh(&state.borrow());
+        refresh_live_draft_status_labels(&labels, &review);
+    });
+    row.append(&entry);
+    parent.append(&row);
+}
+
+fn append_live_draft_multiline_field(
+    parent: &gtk::Box,
+    label: &str,
+    value: &str,
+    widget_name: &str,
+    state: Rc<RefCell<ProductionActivationDraftGtkState>>,
+    labels: LiveDraftStatusLabels,
+    refresh: Rc<dyn Fn(&ProductionActivationDraftGtkState) -> ProductionActivationDraftGtkReview>,
+    field: ProductionActivationDraftGtkField,
+) {
+    let row = gtk::Box::new(gtk::Orientation::Vertical, 3);
+    row.append(&small_label(label));
+    let text = gtk::TextView::new();
+    text.set_widget_name(widget_name);
+    text.set_tooltip_text(Some(
+        "Memory-only activation draft text field. This is not saved to disk.",
+    ));
+    text.set_wrap_mode(gtk::WrapMode::WordChar);
+    text.buffer().set_text(value);
+    text.buffer().connect_changed(move |buffer| {
+        let value = buffer.text(&buffer.start_iter(), &buffer.end_iter(), false);
+        apply_production_activation_draft_gtk_update(
+            &mut state.borrow_mut(),
+            ProductionActivationDraftGtkUpdate::Text {
+                field,
+                value: value.to_string(),
+            },
+        );
+        let review = refresh(&state.borrow());
+        refresh_live_draft_status_labels(&labels, &review);
+    });
+    row.append(&text);
+    parent.append(&row);
+}
+
+fn append_live_draft_check_field(
+    parent: &gtk::Box,
+    label: &str,
+    checked: bool,
+    widget_name: &str,
+    state: Rc<RefCell<ProductionActivationDraftGtkState>>,
+    labels: LiveDraftStatusLabels,
+    refresh: Rc<dyn Fn(&ProductionActivationDraftGtkState) -> ProductionActivationDraftGtkReview>,
+    field: ProductionActivationDraftGtkField,
+) {
+    let check = gtk::CheckButton::with_label(label);
+    check.set_widget_name(widget_name);
+    check.set_tooltip_text(Some(
+        "Memory-only activation draft acknowledgement. This is not saved to disk.",
+    ));
+    check.set_active(checked);
+    check.connect_toggled(move |check| {
+        apply_production_activation_draft_gtk_update(
+            &mut state.borrow_mut(),
+            ProductionActivationDraftGtkUpdate::Acknowledgement {
+                field,
+                value: check.is_active(),
+            },
+        );
+        let review = refresh(&state.borrow());
+        refresh_live_draft_status_labels(&labels, &review);
+    });
+    parent.append(&check);
 }
 
 fn production_activation_draft_review_card(review: &ProductionActivationDraftReview) -> gtk::Frame {

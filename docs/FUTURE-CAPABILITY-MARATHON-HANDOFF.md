@@ -93,7 +93,7 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Connect live GTK field editing to the memory-only draft-edit model behind still-disabled controls, without persistence, production actions, or executor wiring.
+Design a persistence boundary for activation drafts without enabling persistence by default, or keep the branch capped until production activation safety gates are ready.
 
 ## Progress tracker
 - Core app shell / UI / navigation: 98-99% -> 99-99%
@@ -112,10 +112,10 @@ Connect live GTK field editing to the memory-only draft-edit model behind still-
 ## Validation status
 Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `jq empty data/reports/*.json`, and `git diff --check`.
 
-GTK matrix was run for the activation draft-edit UI surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_151212`. The run did not mutate runtime/config and screenshot plus AT-SPI accessibility-tree assertions passed for the draft-edit cards.
+GTK matrix was run for the live activation draft-edit bridge; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_154855`. The run did not mutate runtime/config and screenshot plus AT-SPI accessibility-tree assertions passed for the legacy draft-edit and live memory-only draft-edit cards.
 
 ## Recommended next Codex prompt
-Connect live GTK field editing to the memory-only draft-edit model behind still-disabled controls, without persistence, production actions, or executor wiring.
+Design a persistence boundary for activation drafts without enabling persistence by default, or keep the branch capped until production activation safety gates are ready.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 
@@ -150,6 +150,10 @@ The branch now includes in-memory activation draft plumbing for source/include a
 ## 2026-06-20 - Activation draft edit handoff
 
 The branch now includes a still-disabled activation draft-edit layer for source/include and duplicate. Draft editing is disabled by default in the UI, but model tests can enter an in-memory-only edit mode, update draft request/safety-plan fields, recompute validation through the existing form/control reviews, reset to defaults, and prove persistence remains absent. The Config page displays disabled draft-edit cards with editing mode, dirty state, validation, in-memory-only copy, executor wiring `Unwired`, and production-disabled status. Planned update/reset controls are insensitive and have no persistence, mutation, or executor handler. Next exact work: connect live GTK field editing to the memory-only draft-edit model behind still-disabled controls, without persistence, production actions, or executor wiring.
+
+## 2026-06-20 - Live activation draft edit bridge handoff
+
+The branch now connects source/include and duplicate activation form field edits to a live memory-only draft-edit bridge. Entry, text-buffer, and check-button handlers update in-memory draft state, recompute draft/form/control validation, and reset memory state without persistence. The Config page displays live draft-edit cards with memory-only mode, dirty state, recomputed validation, `Not saved to disk`, executor wiring `Unwired`, and production-disabled status. Production activation controls remain disabled, no source/include or duplicate executor is wired, production flags remain false, and no real config/runtime/reload path was added. Next exact work: design a persistence boundary for activation drafts without enabling persistence by default, or keep the branch capped until production activation safety gates are ready.
 
 ## 2026-06-20 - Remaining dependency scan handoff
 

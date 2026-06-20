@@ -103,6 +103,10 @@ Production gate readiness now records in-memory activation draft plumbing for so
 
 Production gate readiness now records a still-disabled activation draft-edit layer for source/include and duplicate. Draft editing is disabled by default in the live UI; model tests can enter in-memory-only edit mode, update draft request and safety-plan values, recompute validation through the existing form/control pipeline, and reset to default draft state. Draft-edit cards are disabled, planned update/reset actions are insensitive, no disk persistence exists, executors remain `Unwired`, and production flags remain false.
 
+## 2026-06-20 - Live Activation Draft Edit Readiness
+
+Production gate readiness now records live GTK draft-edit bridge coverage for source/include and duplicate. GTK field changes update in-memory draft state only, recompute draft/form/control validation, and can reset to default memory state without writing disk state or wiring executors. The bridge keeps production flags false, executors `Unwired`, source/include insertion disabled, duplicate writes disabled, and persistence unavailable.
+
 ## 2026-06-20 - Remaining Dependency Scan
 
 The remaining dependency scan records that source/include, duplicate, structured-family writes, profile/mode switching, and runtime/reload production expansion are blocked by explicit production activation; high-risk/display is blocked by high-risk recovery proof; Hyprland 0.55.4 migration is blocked by missing official export data; and the core safe-release scope is otherwise capped.

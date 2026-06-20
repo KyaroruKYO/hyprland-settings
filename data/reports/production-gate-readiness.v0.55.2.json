@@ -212,5 +212,30 @@
       "executorWiringStatus": "Unwired",
       "diskPersistenceAdded": false
     }
+  },
+  "activationLiveDraftEditBridge": {
+    "report": "data/reports/default-disabled-production-activation-live-draft-edit.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "GtkBridgeValidationRecomputedForReviewOnly",
+      "gtkFieldEditMemoryOnly": true,
+      "validationRecomputed": true,
+      "resetMemoryOnly": true,
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWiringStatus": "Unwired",
+      "diskPersistenceAdded": false
+    },
+    "duplicateReplacement": {
+      "status": "GtkBridgeValidationRecomputedForReviewOnly",
+      "gtkFieldEditMemoryOnly": true,
+      "validationRecomputed": true,
+      "resetMemoryOnly": true,
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWiringStatus": "Unwired",
+      "diskPersistenceAdded": false
+    }
   }
 }

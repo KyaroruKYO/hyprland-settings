@@ -4498,6 +4498,145 @@ impl ProductionActivationDraftEditReview {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationDraftGtkField {
+    UserFacingReason,
+    ExplicitActivationToken,
+    DecisionCategory,
+    BackupPlanAcknowledged,
+    RestorePlanAcknowledged,
+    RereadPlanAcknowledged,
+    PostRestoreVerificationAcknowledged,
+    FinalConfirmationAcknowledged,
+    BackupBeforeWritePlan,
+    RestorePlan,
+    PostWriteRereadPlan,
+    PostRestoreVerificationPlan,
+    DryRunSummary,
+    FilesThatWouldBeTouched,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ProductionActivationDraftGtkUpdate {
+    Text {
+        field: ProductionActivationDraftGtkField,
+        value: String,
+    },
+    Acknowledgement {
+        field: ProductionActivationDraftGtkField,
+        value: bool,
+    },
+    ResetToDefault,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationDraftGtkStatus {
+    GtkBridgeEnabledInMemoryOnly,
+    GtkBridgeMemoryUpdated,
+    GtkBridgeResetInMemoryOnly,
+    GtkBridgeValidationRecomputedForReviewOnly,
+    GtkBridgeBlockedProductionFlagTrue,
+    GtkBridgeBlockedExecutorWired,
+    GtkBridgePersistenceUnavailable,
+}
+
+impl ProductionActivationDraftGtkStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::GtkBridgeEnabledInMemoryOnly => "GTK draft bridge enabled in memory only",
+            Self::GtkBridgeMemoryUpdated => "GTK draft bridge memory updated",
+            Self::GtkBridgeResetInMemoryOnly => "GTK draft bridge reset in memory only",
+            Self::GtkBridgeValidationRecomputedForReviewOnly => {
+                "GTK draft bridge validation recomputed for review only"
+            }
+            Self::GtkBridgeBlockedProductionFlagTrue => {
+                "GTK draft bridge blocked because production flag is true"
+            }
+            Self::GtkBridgeBlockedExecutorWired => {
+                "GTK draft bridge blocked because executor is wired"
+            }
+            Self::GtkBridgePersistenceUnavailable => "GTK draft bridge persistence unavailable",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationDraftGtkState {
+    pub edit_state: ProductionActivationDraftEditState,
+    pub bridge_enabled: bool,
+    pub last_update_status: ProductionActivationDraftGtkStatus,
+    pub persisted: bool,
+    pub production_action_enabled: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationDraftGtkResult {
+    pub status: ProductionActivationDraftGtkStatus,
+    pub state: ProductionActivationDraftGtkState,
+    pub draft_edit_status: ProductionActivationDraftEditStatus,
+    pub draft_validation_status: ProductionActivationDraftStatus,
+    pub form_validation_status: ProductionActivationFormStatus,
+    pub control_validation_status: ProductionActivationControlStatus,
+    pub persistence_status: String,
+    pub production_action_enabled: bool,
+    pub executor_wired: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationDraftGtkReview {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub heading: String,
+    pub state: ProductionActivationDraftGtkState,
+    pub status: ProductionActivationDraftGtkStatus,
+    pub draft_edit_status: ProductionActivationDraftEditStatus,
+    pub draft_status: ProductionActivationDraftStatus,
+    pub form_validation_status: ProductionActivationFormStatus,
+    pub control_validation_status: ProductionActivationControlStatus,
+    pub dirty_state: String,
+    pub persistence_status: String,
+    pub not_saved_status: String,
+    pub executor_wiring_status: ProductionExecutorWiringState,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_activation_enabled: bool,
+    pub category_production_enabled: bool,
+    pub update_label: String,
+    pub reset_label: String,
+}
+
+impl ProductionActivationDraftGtkReview {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        vec![
+            self.heading.clone(),
+            "Draft editing mode: memory-only".to_string(),
+            format!("GTK bridge status: {}", self.status.user_facing_label()),
+            format!("Draft dirty state: {}", self.dirty_state),
+            format!(
+                "Draft validation: {}",
+                self.draft_status.user_facing_label()
+            ),
+            self.persistence_status.clone(),
+            self.not_saved_status.clone(),
+            format!(
+                "Form validation: {}",
+                self.form_validation_status.user_facing_label()
+            ),
+            format!(
+                "Control validation: {}",
+                self.control_validation_status.user_facing_label()
+            ),
+            format!(
+                "Executor wiring: {}",
+                self.executor_wiring_status.user_facing_label()
+            ),
+            format!("{}: {}", self.production_label, self.production_status),
+            self.update_label.clone(),
+            self.reset_label.clone(),
+        ]
+    }
+}
+
 const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
     "data/reports/disabled-approval-ui-cards.v0.55.2.json";
 const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
@@ -4917,6 +5056,40 @@ pub fn production_activation_draft_edit_reviews() -> Vec<ProductionActivationDra
     ]
 }
 
+pub fn production_activation_live_draft_gtk_reviews() -> Vec<ProductionActivationDraftGtkReview> {
+    let paths = production_activation_path_reviews();
+    let source_path = paths
+        .iter()
+        .find(|path| path.widget_name.contains("source-include"));
+    let duplicate_path = paths
+        .iter()
+        .find(|path| path.widget_name.contains("duplicate"));
+    vec![
+        source_include_activation_draft_gtk_review(
+            source_path,
+            production_activation_draft_gtk_state_from_draft(
+                production_activation_draft_from_form_state(production_activation_form_state(
+                    ProductionActivationRequestScope::SourceIncludeInsertion,
+                    "sourceIncludeInsertion",
+                )),
+            ),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        ),
+        duplicate_activation_draft_gtk_review(
+            duplicate_path,
+            production_activation_draft_gtk_state_from_draft(
+                production_activation_draft_from_form_state(production_activation_form_state(
+                    ProductionActivationRequestScope::DuplicateReplacement,
+                    "duplicateReplacement",
+                )),
+            ),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        ),
+    ]
+}
+
 pub fn production_activation_form_state(
     scope: ProductionActivationRequestScope,
     decision_category: &str,
@@ -5097,6 +5270,158 @@ pub fn apply_production_activation_draft_edit_action(
     }
 }
 
+pub fn production_activation_draft_gtk_state_from_draft(
+    draft: ProductionActivationDraftForm,
+) -> ProductionActivationDraftGtkState {
+    let mut edit_state = production_activation_draft_edit_state_from_draft(draft);
+    edit_state.mode = ProductionActivationDraftEditMode::EnabledInMemoryOnly;
+    ProductionActivationDraftGtkState {
+        edit_state,
+        bridge_enabled: true,
+        last_update_status: ProductionActivationDraftGtkStatus::GtkBridgeEnabledInMemoryOnly,
+        persisted: false,
+        production_action_enabled: false,
+    }
+}
+
+pub fn apply_production_activation_draft_gtk_update(
+    state: &mut ProductionActivationDraftGtkState,
+    update: ProductionActivationDraftGtkUpdate,
+) -> ProductionActivationDraftGtkResult {
+    if state.edit_state.mode != ProductionActivationDraftEditMode::EnabledInMemoryOnly {
+        state.edit_state.mode = ProductionActivationDraftEditMode::EnabledInMemoryOnly;
+    }
+    let reset_update = matches!(update, ProductionActivationDraftGtkUpdate::ResetToDefault);
+    let edit_result = match update {
+        ProductionActivationDraftGtkUpdate::Text { field, value } => {
+            apply_production_activation_draft_edit_action(
+                &mut state.edit_state,
+                ProductionActivationDraftEditAction::ApplyUpdate(gtk_text_update(field, value)),
+            )
+        }
+        ProductionActivationDraftGtkUpdate::Acknowledgement { field, value } => {
+            apply_production_activation_draft_edit_action(
+                &mut state.edit_state,
+                ProductionActivationDraftEditAction::ApplyUpdate(gtk_acknowledgement_update(
+                    field, value,
+                )),
+            )
+        }
+        ProductionActivationDraftGtkUpdate::ResetToDefault => {
+            apply_production_activation_draft_edit_action(
+                &mut state.edit_state,
+                ProductionActivationDraftEditAction::ResetToDefault,
+            )
+        }
+    };
+
+    state.persisted = false;
+    state.production_action_enabled = false;
+    state.edit_state.persisted = false;
+    state.edit_state.production_action_enabled = false;
+    state.last_update_status = if reset_update {
+        ProductionActivationDraftGtkStatus::GtkBridgeResetInMemoryOnly
+    } else {
+        ProductionActivationDraftGtkStatus::GtkBridgeMemoryUpdated
+    };
+
+    ProductionActivationDraftGtkResult {
+        status: state.last_update_status,
+        state: state.clone(),
+        draft_edit_status: edit_result.status,
+        draft_validation_status: edit_result.draft_validation_status,
+        form_validation_status: ProductionActivationFormStatus::ValidatedForReviewOnly,
+        control_validation_status: ProductionActivationControlStatus::ValidatedButExecutorUnwired,
+        persistence_status: "In-memory only".to_string(),
+        production_action_enabled: false,
+        executor_wired: false,
+    }
+}
+
+fn gtk_text_update(
+    field: ProductionActivationDraftGtkField,
+    value: String,
+) -> ProductionActivationDraftUpdate {
+    match field {
+        ProductionActivationDraftGtkField::UserFacingReason => {
+            ProductionActivationDraftUpdate::UserFacingReason(value)
+        }
+        ProductionActivationDraftGtkField::ExplicitActivationToken => {
+            ProductionActivationDraftUpdate::ExplicitActivationToken(value)
+        }
+        ProductionActivationDraftGtkField::DecisionCategory => {
+            ProductionActivationDraftUpdate::DecisionCategory(value)
+        }
+        ProductionActivationDraftGtkField::BackupBeforeWritePlan => {
+            ProductionActivationDraftUpdate::BackupBeforeWritePlan(value)
+        }
+        ProductionActivationDraftGtkField::RestorePlan => {
+            ProductionActivationDraftUpdate::RestorePlan(value)
+        }
+        ProductionActivationDraftGtkField::PostWriteRereadPlan => {
+            ProductionActivationDraftUpdate::PostWriteRereadPlan(value)
+        }
+        ProductionActivationDraftGtkField::PostRestoreVerificationPlan => {
+            ProductionActivationDraftUpdate::PostRestoreVerificationPlan(value)
+        }
+        ProductionActivationDraftGtkField::DryRunSummary => {
+            ProductionActivationDraftUpdate::DryRunSummary(value)
+        }
+        ProductionActivationDraftGtkField::FilesThatWouldBeTouched => {
+            ProductionActivationDraftUpdate::FilesThatWouldBeTouched(
+                value
+                    .lines()
+                    .flat_map(|line| line.split(','))
+                    .map(str::trim)
+                    .filter(|line| !line.is_empty())
+                    .map(ToString::to_string)
+                    .collect(),
+            )
+        }
+        ProductionActivationDraftGtkField::BackupPlanAcknowledged
+        | ProductionActivationDraftGtkField::RestorePlanAcknowledged
+        | ProductionActivationDraftGtkField::RereadPlanAcknowledged
+        | ProductionActivationDraftGtkField::PostRestoreVerificationAcknowledged
+        | ProductionActivationDraftGtkField::FinalConfirmationAcknowledged => {
+            ProductionActivationDraftUpdate::UserFacingReason(value)
+        }
+    }
+}
+
+fn gtk_acknowledgement_update(
+    field: ProductionActivationDraftGtkField,
+    value: bool,
+) -> ProductionActivationDraftUpdate {
+    match field {
+        ProductionActivationDraftGtkField::BackupPlanAcknowledged => {
+            ProductionActivationDraftUpdate::BackupPlanAcknowledged(value)
+        }
+        ProductionActivationDraftGtkField::RestorePlanAcknowledged => {
+            ProductionActivationDraftUpdate::RestorePlanAcknowledged(value)
+        }
+        ProductionActivationDraftGtkField::RereadPlanAcknowledged => {
+            ProductionActivationDraftUpdate::RereadPlanAcknowledged(value)
+        }
+        ProductionActivationDraftGtkField::PostRestoreVerificationAcknowledged => {
+            ProductionActivationDraftUpdate::PostRestoreVerificationAcknowledged(value)
+        }
+        ProductionActivationDraftGtkField::FinalConfirmationAcknowledged => {
+            ProductionActivationDraftUpdate::FinalConfirmationAcknowledged(value)
+        }
+        ProductionActivationDraftGtkField::UserFacingReason
+        | ProductionActivationDraftGtkField::ExplicitActivationToken
+        | ProductionActivationDraftGtkField::DecisionCategory
+        | ProductionActivationDraftGtkField::BackupBeforeWritePlan
+        | ProductionActivationDraftGtkField::RestorePlan
+        | ProductionActivationDraftGtkField::PostWriteRereadPlan
+        | ProductionActivationDraftGtkField::PostRestoreVerificationPlan
+        | ProductionActivationDraftGtkField::DryRunSummary
+        | ProductionActivationDraftGtkField::FilesThatWouldBeTouched => {
+            ProductionActivationDraftUpdate::BackupPlanAcknowledged(value)
+        }
+    }
+}
+
 pub fn source_include_activation_draft_review(
     path: Option<&ProductionActivationPathReview>,
     draft: ProductionActivationDraftForm,
@@ -5153,6 +5478,30 @@ pub fn source_include_activation_draft_edit_review(
     )
 }
 
+pub fn source_include_activation_draft_gtk_review(
+    path: Option<&ProductionActivationPathReview>,
+    state: ProductionActivationDraftGtkState,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+) -> ProductionActivationDraftGtkReview {
+    activation_draft_gtk_review(
+        path,
+        state,
+        executor_wiring,
+        production_activation_flag,
+        ActivationDraftGtkSpec {
+            widget_name: "hyprland-settings-source-include-activation-live-draft-edit-disabled",
+            evidence_widget_name:
+                "hyprland-settings-source-include-activation-live-draft-edit-evidence",
+            heading: "Source/include live activation draft editing",
+            production_label: "Production source/include insertion",
+            update_label: "Update source/include activation draft (memory only)",
+            reset_label: "Reset source/include activation draft (memory only)",
+            expected_scope: ProductionActivationRequestScope::SourceIncludeInsertion,
+        },
+    )
+}
+
 pub fn duplicate_activation_draft_review(
     path: Option<&ProductionActivationPathReview>,
     draft: ProductionActivationDraftForm,
@@ -5175,6 +5524,29 @@ pub fn duplicate_activation_draft_review(
             production_label: "Production duplicate writes",
             disabled_update_label: "Update duplicate activation draft (planned)",
             disabled_reset_label: "Reset duplicate activation draft (planned)",
+            expected_scope: ProductionActivationRequestScope::DuplicateReplacement,
+        },
+    )
+}
+
+pub fn duplicate_activation_draft_gtk_review(
+    path: Option<&ProductionActivationPathReview>,
+    state: ProductionActivationDraftGtkState,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+) -> ProductionActivationDraftGtkReview {
+    activation_draft_gtk_review(
+        path,
+        state,
+        executor_wiring,
+        production_activation_flag,
+        ActivationDraftGtkSpec {
+            widget_name: "hyprland-settings-duplicate-activation-live-draft-edit-disabled",
+            evidence_widget_name: "hyprland-settings-duplicate-activation-live-draft-edit-evidence",
+            heading: "Duplicate live activation draft editing",
+            production_label: "Production duplicate writes",
+            update_label: "Update duplicate activation draft (memory only)",
+            reset_label: "Reset duplicate activation draft (memory only)",
             expected_scope: ProductionActivationRequestScope::DuplicateReplacement,
         },
     )
@@ -5372,6 +5744,16 @@ struct ActivationDraftEditSpec {
     expected_scope: ProductionActivationRequestScope,
 }
 
+struct ActivationDraftGtkSpec {
+    widget_name: &'static str,
+    evidence_widget_name: &'static str,
+    heading: &'static str,
+    production_label: &'static str,
+    update_label: &'static str,
+    reset_label: &'static str,
+    expected_scope: ProductionActivationRequestScope,
+}
+
 fn activation_draft_review(
     path: Option<&ProductionActivationPathReview>,
     mut draft: ProductionActivationDraftForm,
@@ -5446,6 +5828,75 @@ fn activation_draft_review(
         category_production_enabled: false,
         disabled_update_label: spec.disabled_update_label.to_string(),
         disabled_reset_label: spec.disabled_reset_label.to_string(),
+    }
+}
+
+fn activation_draft_gtk_review(
+    path: Option<&ProductionActivationPathReview>,
+    mut state: ProductionActivationDraftGtkState,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+    spec: ActivationDraftGtkSpec,
+) -> ProductionActivationDraftGtkReview {
+    state.persisted = false;
+    state.production_action_enabled = false;
+    state.edit_state.persisted = false;
+    state.edit_state.production_action_enabled = false;
+    if state.edit_state.mode != ProductionActivationDraftEditMode::EnabledInMemoryOnly {
+        state.edit_state.mode = ProductionActivationDraftEditMode::EnabledInMemoryOnly;
+    }
+
+    let draft_edit_review = match spec.expected_scope {
+        ProductionActivationRequestScope::SourceIncludeInsertion => {
+            source_include_activation_draft_edit_review(
+                path,
+                state.edit_state.clone(),
+                executor_wiring,
+                production_activation_flag,
+            )
+        }
+        ProductionActivationRequestScope::DuplicateReplacement => {
+            duplicate_activation_draft_edit_review(
+                path,
+                state.edit_state.clone(),
+                executor_wiring,
+                production_activation_flag,
+            )
+        }
+    };
+
+    let status = if executor_wiring != ProductionExecutorWiringState::Unwired {
+        ProductionActivationDraftGtkStatus::GtkBridgeBlockedExecutorWired
+    } else if production_activation_flag {
+        ProductionActivationDraftGtkStatus::GtkBridgeBlockedProductionFlagTrue
+    } else if state.persisted || state.edit_state.persisted {
+        ProductionActivationDraftGtkStatus::GtkBridgePersistenceUnavailable
+    } else if state.edit_state.dirty || state.edit_state.draft.dirty {
+        ProductionActivationDraftGtkStatus::GtkBridgeValidationRecomputedForReviewOnly
+    } else {
+        ProductionActivationDraftGtkStatus::GtkBridgeEnabledInMemoryOnly
+    };
+
+    ProductionActivationDraftGtkReview {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        state,
+        status,
+        draft_edit_status: draft_edit_review.status,
+        draft_status: draft_edit_review.draft_status,
+        form_validation_status: draft_edit_review.form_validation_status,
+        control_validation_status: draft_edit_review.control_validation_status,
+        dirty_state: draft_edit_review.dirty_state,
+        persistence_status: "In-memory only".to_string(),
+        not_saved_status: "Not saved to disk".to_string(),
+        executor_wiring_status: executor_wiring,
+        production_label: spec.production_label.to_string(),
+        production_status: draft_edit_review.production_status,
+        production_activation_enabled: false,
+        category_production_enabled: false,
+        update_label: spec.update_label.to_string(),
+        reset_label: spec.reset_label.to_string(),
     }
 }
 

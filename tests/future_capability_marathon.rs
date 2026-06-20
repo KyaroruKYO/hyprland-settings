@@ -87,12 +87,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Connect live GTK field editing to the memory-only draft-edit model behind still-disabled controls, without persistence, production actions, or executor wiring."
+        "Design a persistence boundary for activation drafts without enabling persistence by default, or keep the branch capped until production activation safety gates are ready."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("memory-only draft-edit model"));
+        .contains("persistence boundary"));
 }
 
 #[test]
@@ -890,6 +890,105 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     );
     assert_eq!(
         activation_draft_edit["safety"]["duplicateExecutorWired"],
+        false
+    );
+
+    let activation_live_draft_edit = read_json(
+        "data/reports/default-disabled-production-activation-live-draft-edit.v0.55.2.json",
+    );
+    assert_eq!(activation_live_draft_edit["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        activation_live_draft_edit["implementation"]["sourceIncludeLiveDraftEditBridgeExists"],
+        true
+    );
+    assert_eq!(
+        activation_live_draft_edit["implementation"]["duplicateLiveDraftEditBridgeExists"],
+        true
+    );
+    assert_eq!(
+        activation_live_draft_edit["implementation"]["gtkFieldChangedHandlersUpdateMemoryOnly"],
+        true
+    );
+    assert_eq!(
+        activation_live_draft_edit["implementation"]["textViewBufferHandlersUpdateMemoryOnly"],
+        true
+    );
+    assert_eq!(
+        activation_live_draft_edit["implementation"]["checkButtonHandlersUpdateMemoryOnly"],
+        true
+    );
+    assert_eq!(
+        activation_live_draft_edit["implementation"]["resetHandlersUpdateMemoryOnly"],
+        true
+    );
+    assert_eq!(
+        activation_live_draft_edit["implementation"]["diskPersistenceAdded"],
+        false
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_live_draft_edit["liveDraftEditBridges"][key]["initialStatus"],
+            "GtkBridgeEnabledInMemoryOnly"
+        );
+        assert_eq!(
+            activation_live_draft_edit["liveDraftEditBridges"][key]["memoryUpdateStatus"],
+            "GtkBridgeMemoryUpdated"
+        );
+        assert_eq!(
+            activation_live_draft_edit["liveDraftEditBridges"][key]["resetStatus"],
+            "GtkBridgeResetInMemoryOnly"
+        );
+        assert_eq!(
+            activation_live_draft_edit["liveDraftEditBridges"][key]["formValidationStatus"],
+            "ValidatedForReviewOnly"
+        );
+        assert_eq!(
+            activation_live_draft_edit["liveDraftEditBridges"][key]["controlValidationStatus"],
+            "ValidatedButExecutorUnwired"
+        );
+        assert_eq!(
+            activation_live_draft_edit["liveDraftEditBridges"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(
+            activation_live_draft_edit["liveDraftEditBridges"][key]["productionStatus"],
+            "Disabled"
+        );
+        assert_eq!(
+            activation_live_draft_edit["liveDraftEditBridges"][key]["productionEnabled"],
+            false
+        );
+        assert_eq!(
+            activation_live_draft_edit["liveDraftEditBridges"][key]["productionFlag"],
+            false
+        );
+        assert_eq!(
+            activation_live_draft_edit["liveDraftEditBridges"][key]["executorWired"],
+            false
+        );
+        assert_eq!(
+            activation_live_draft_edit["liveDraftEditBridges"][key]["draftPersistsToDisk"],
+            false
+        );
+        assert_eq!(
+            activation_live_draft_edit["screenshotLevelAssertions"][key],
+            true
+        );
+    }
+    assert_eq!(
+        activation_live_draft_edit["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+    assert_eq!(
+        activation_live_draft_edit["safety"]["diskPersistenceAdded"],
+        false
+    );
+    assert_eq!(
+        activation_live_draft_edit["safety"]["sourceIncludeExecutorWired"],
+        false
+    );
+    assert_eq!(
+        activation_live_draft_edit["safety"]["duplicateExecutorWired"],
         false
     );
 

@@ -200,30 +200,42 @@ ACTIVATION_DRAFT_ASSERTIONS = {
 
 ACTIVATION_DRAFT_EDIT_ASSERTIONS = {
     "sourceIncludeInsertion": {
-        "heading": "Source/include activation draft editing",
+        "heading": "Source/include live activation draft editing",
         "production": "Production source/include insertion",
         "disabled": "Disabled",
         "executor": "Executor wiring: Unwired",
         "memory": "In-memory only",
-        "mode": "Editing mode",
+        "mode": "Draft editing mode: memory-only",
         "validation": "Draft validation",
-        "update": "Update source/include activation draft (planned)",
-        "reset": "Reset source/include activation draft (planned)",
-        "widget": "hyprland-settings-source-include-activation-draft-edit-disabled",
+        "not_saved": "Not saved to disk",
+        "update": "Update source/include activation draft (memory only)",
+        "reset": "Reset source/include activation draft (memory only)",
+        "widget": "hyprland-settings-source-include-activation-live-draft-edit-disabled",
     },
     "duplicateReplacement": {
-        "heading": "Duplicate activation draft editing",
+        "heading": "Duplicate live activation draft editing",
         "production": "Production duplicate writes",
         "disabled": "Disabled",
         "executor": "Executor wiring: Unwired",
         "memory": "In-memory only",
-        "mode": "Editing mode",
+        "mode": "Draft editing mode: memory-only",
         "validation": "Draft validation",
-        "update": "Update duplicate activation draft (planned)",
-        "reset": "Reset duplicate activation draft (planned)",
-        "widget": "hyprland-settings-duplicate-activation-draft-edit-disabled",
+        "not_saved": "Not saved to disk",
+        "update": "Update duplicate activation draft (memory only)",
+        "reset": "Reset duplicate activation draft (memory only)",
+        "widget": "hyprland-settings-duplicate-activation-live-draft-edit-disabled",
     },
 }
+
+LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT = [
+    "Source/include activation draft editing",
+    "Duplicate activation draft editing",
+    "Editing mode",
+    "Update source/include activation draft (planned)",
+    "Reset source/include activation draft (planned)",
+    "Update duplicate activation draft (planned)",
+    "Reset duplicate activation draft (planned)",
+]
 
 SAFE_NAVIGATION_TARGETS = {
     "Dashboard",
@@ -569,12 +581,20 @@ def activation_draft_assertions(values):
 def activation_draft_edit_assertions(values):
     text = "\n".join(values).lower()
     assertions = {}
+    assertions["legacyDraftEditSurface"] = {
+        "expectedText": LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT,
+        "expectedTextFound": {
+            expected: expected.lower() in text
+            for expected in LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT
+        },
+    }
     for key, spec in ACTIVATION_DRAFT_EDIT_ASSERTIONS.items():
         heading_found = spec["heading"].lower() in text
         production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
         executor_found = spec["executor"].lower() in text
         memory_found = spec["memory"].lower() in text
         mode_found = spec["mode"].lower() in text
+        not_saved_found = spec["not_saved"].lower() in text
         validation_found = spec["validation"].lower() in text
         update_found = spec["update"].lower() in text
         reset_found = spec["reset"].lower() in text
@@ -590,6 +610,8 @@ def activation_draft_edit_assertions(values):
             "memoryStatusFound": memory_found,
             "editingMode": spec["mode"],
             "editingModeFound": mode_found,
+            "notSavedStatus": spec["not_saved"],
+            "notSavedStatusFound": not_saved_found,
             "draftValidation": spec["validation"],
             "draftValidationFound": validation_found,
             "disabledUpdate": spec["update"],

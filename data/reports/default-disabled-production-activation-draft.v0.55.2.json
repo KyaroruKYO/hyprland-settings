@@ -14,12 +14,13 @@
     "draftStoreIsInMemoryOnly": true,
     "activationDraftEditReviewExists": true,
     "activationDraftEditReport": "data/reports/default-disabled-production-activation-draft-edit.v0.55.2.json",
+    "activationLiveDraftEditReport": "data/reports/default-disabled-production-activation-live-draft-edit.v0.55.2.json",
     "diskPersistenceAdded": false,
     "uiSurfaceExists": true,
     "fieldsRemainDisabledOrReadOnly": true,
     "screenshotLevelAssertionsImplemented": true,
     "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
-    "latestGtkMatrixRun": "pending fresh matrix",
+    "latestGtkMatrixRun": "/tmp/hyprland-settings-gtk-automation/20260620_154855",
     "latestGtkMatrixDraftProof": "pending"
   },
   "drafts": {

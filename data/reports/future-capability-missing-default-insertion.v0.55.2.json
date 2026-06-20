@@ -216,5 +216,18 @@
     "executorWiringStatus": "Unwired",
     "productionEnabled": false,
     "diskPersistenceAdded": false
+  },
+  "sourceIncludeLiveDraftEditBridge": {
+    "report": "data/reports/default-disabled-production-activation-live-draft-edit.v0.55.2.json",
+    "status": "GtkBridgeValidationRecomputedForReviewOnly",
+    "gtkFieldEditMemoryOnly": true,
+    "validationRecomputed": true,
+    "resetMemoryOnly": true,
+    "formValidationStatus": "ValidatedForReviewOnly",
+    "controlValidationStatus": "ValidatedButExecutorUnwired",
+    "executorWiringStatus": "Unwired",
+    "productionEnabled": false,
+    "productionFlag": false,
+    "diskPersistenceAdded": false
   }
 }
