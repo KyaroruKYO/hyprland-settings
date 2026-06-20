@@ -29,7 +29,8 @@
     "This sprint rechecked Hyprland 0.55.4 migration and found no safe activation path without trusted official export/source data.",
     "Controlled live-test guard requires trusted versioned data bundle before migration activation.",
     "Added a local evidence collector that records installed package/runtime version evidence as advisory only and still requires official exports, row-count diff, write-safety review, safe-env evidence, local version evidence, and explicit user approval before activation.",
-    "Recorded local package metadata evidence from pacman: hyprland 0.55.4-1; runtime socket evidence was unavailable in this shell."
+    "Recorded local package metadata evidence from pacman: hyprland 0.55.4-1; runtime socket evidence was unavailable in this shell.",
+    "Added a default-disabled Hyprland version activation gate requiring official export bundle, row-count diff, write-safety review, safe-env evidence, explicit user approval, and activation flag."
   ],
   "whatWasNotImplemented": [
     "No v0.55.2 exports were replaced.",
@@ -67,7 +68,10 @@
     "localPackageMetadataEvidence": "hyprland 0.55.4-1",
     "runtimeSocketEvidenceAvailable": false,
     "liveMutationExecutedThisSprint": false,
-    "restorationRequiredThisSprint": false
+    "restorationRequiredThisSprint": false,
+    "hyprland0554ActivationGateExists": true,
+    "hyprland0554ActivationGateBlocksPartialEvidence": true,
+    "hyprland0554MigrationActivatedByGate": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"

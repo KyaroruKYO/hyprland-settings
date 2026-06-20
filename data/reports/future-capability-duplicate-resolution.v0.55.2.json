@@ -42,7 +42,8 @@
     "Added source-level UI tests proving the review surface exists and remains disabled.",
     "Controlled live-test guard records backup/hash/restore prerequisites for duplicate replacement before any live mutation; production duplicate writes remain disabled.",
     "Added a guarded temp-fixture executor that requires confirmed occurrence, matching fingerprint, matching raw line, matching old value, backup, replacement verification, byte-exact restore, and restored content fingerprint verification.",
-    "Added copied-config-tree duplicate proof that replaces a confirmed copied duplicate occurrence, verifies the copied change, restores copied bytes, and verifies original files unchanged."
+    "Added copied-config-tree duplicate proof that replaces a confirmed copied duplicate occurrence, verifies the copied change, restores copied bytes, and verifies original files unchanged.",
+    "Added a default-disabled duplicate production gate review that requires confirmed occurrence, matching fingerprint, path, line number, raw line, old value, source depth, copied-config-tree proof, and production flag before any production Apply integration."
   ],
   "whatWasNotImplemented": [
     "No automatic duplicate choice was added.",
@@ -90,17 +91,20 @@
     "duplicateGuardedTempExecutorRefusesNonTempTargets": true,
     "duplicateCopiedConfigTreeProofExists": true,
     "duplicateCopiedConfigTreeRestoresCopiedTarget": true,
-    "duplicateCopiedConfigTreeOriginalUnchanged": true
+    "duplicateCopiedConfigTreeOriginalUnchanged": true,
+    "duplicateDefaultDisabledProductionGateExists": true,
+    "duplicateDefaultDisabledProductionGateReady": true,
+    "duplicateProductionApplyEnabledByGate": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"
   },
   "blockers": [
-    "Needs explicit user approval and default-disabled production feature flag before duplicate replacement can be wired to production Apply.",
+    "Needs explicit user approval and live restoration proof before duplicate replacement can be wired to production Apply.",
     "Temp-fixture and copied-config-tree executors now prove stale line, raw-line mismatch, old-value mismatch, source-layer duplicate, and same-file duplicate preconditions; explicit production flag review is still required before production Apply integration.",
     "Needs production safe-batch integration review that still refuses real config unless explicitly approved."
   ],
-  "nextRecommendedWork": "Promote copied-config-tree duplicate replacement proof into a default-disabled production approval review.",
+  "nextRecommendedWork": "Add explicit user approval flow and live restoration proof before considering production duplicate replacement.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

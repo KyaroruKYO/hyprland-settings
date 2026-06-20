@@ -2033,6 +2033,9 @@ fn duplicate_gate_status_label(status: DuplicateProductionGateStatus) -> &'stati
         DuplicateProductionGateStatus::ConfirmedButProductionDisabled => {
             "confirmed but production disabled"
         }
+        DuplicateProductionGateStatus::MissingCopiedProof => "missing copied proof",
+        DuplicateProductionGateStatus::CopiedProofMismatch => "copied proof mismatch",
+        DuplicateProductionGateStatus::ReadyButDefaultDisabled => "ready but default disabled",
         DuplicateProductionGateStatus::Rejected => "rejected",
         DuplicateProductionGateStatus::Expired => "expired",
         DuplicateProductionGateStatus::FingerprintMismatch => "fingerprint mismatch",

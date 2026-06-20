@@ -82,12 +82,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Promote copied-config-tree proof into default-disabled production gate review for source/include, duplicate, and hl.bind structured writes; retry read-only runtime evidence in a shell with a reachable Hyprland socket."
+        "Retry read-only runtime evidence from a shell with successful hyprctl socket queries, then add explicit approval flows and live restoration proof before considering any real production activation."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("production gate review"));
+        .contains("live restoration proof"));
 }
 
 #[test]
@@ -181,9 +181,45 @@ fn production_gate_readiness_report_keeps_all_future_gates_default_disabled() {
         report["gateDefaults"]["hyprland0554MigrationEnabledByDefault"],
         false
     );
+    assert!(report["defaultDisabledGateReviewImplemented"]
+        .as_array()
+        .expect("gate review list")
+        .iter()
+        .any(|item| item == "duplicate occurrence replacement"));
     assert_eq!(report["releaseBoundariesPreserved"]["mainModified"], false);
     assert_eq!(
         report["releaseBoundariesPreserved"]["v0552DefaultPreserved"],
         true
     );
+}
+
+#[test]
+fn default_disabled_gate_and_runtime_evidence_reports_keep_production_disabled() {
+    let gates = read_json("data/reports/default-disabled-production-gates.v0.55.2.json");
+    assert_eq!(gates["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        gates["sourceIncludeProductionGate"]["status"],
+        "ready_but_default_disabled"
+    );
+    assert_eq!(
+        gates["duplicateProductionGate"]["status"],
+        "ready_but_default_disabled"
+    );
+    assert_eq!(
+        gates["structuredHlBindProductionGate"]["status"],
+        "ready_but_default_disabled"
+    );
+    assert_eq!(gates["safety"]["sourceIncludeInsertionEnabled"], false);
+    assert_eq!(gates["safety"]["duplicateWritesEnabled"], false);
+    assert_eq!(gates["safety"]["structuredWritesEnabled"], false);
+    assert_eq!(gates["safety"]["v0552DefaultPreserved"], true);
+
+    let runtime = read_json("data/reports/runtime-readonly-evidence.v0.55.2.json");
+    assert_eq!(runtime["evidence"]["hyprctlBinaryFound"], true);
+    assert_eq!(
+        runtime["evidence"]["readOnlyHyprctlQueriesSucceeded"],
+        false
+    );
+    assert_eq!(runtime["evidence"]["mutatingHyprctlRun"], false);
+    assert_eq!(runtime["productionGate"]["runtimeMutationEnabled"], false);
 }

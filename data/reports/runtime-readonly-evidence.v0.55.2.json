@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "runtime-readonly-evidence",
+  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "startingCommit": "98e0a8c4cd101ebb509056b10251c42debc017d2",
+  "projectDataVersion": "v0.55.2",
+  "commands": {
+    "commandVHyprctl": "/usr/bin/hyprctl",
+    "hyprlandInstanceSignature": "a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299",
+    "tmpHypr": "ls: cannot access '/tmp/hypr': No such file or directory",
+    "xdgRuntimeDirHypr": "socket directory exists under XDG_RUNTIME_DIR/hypr/a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299",
+    "hyprctlVersion": "failed without mutation: Couldn't set socket timeout (2)",
+    "hyprctlMonitorsJson": "failed without mutation: Couldn't set socket timeout (2)",
+    "hyprctlGetoptionGeneralGapsIn": "failed without mutation: Couldn't set socket timeout (2)"
+  },
+  "evidence": {
+    "hyprctlBinaryFound": true,
+    "instanceSignaturePresent": true,
+    "socketDirectoryObserved": true,
+    "readOnlyHyprctlQueriesSucceeded": false,
+    "mutatingHyprctlRun": false,
+    "runtimeTouched": false
+  },
+  "productionGate": {
+    "runtimeMutationEnabled": false,
+    "reloadEnabled": false,
+    "keywordEnabled": false,
+    "dispatchEnabled": false,
+    "statusEvidenceUsableForMutationApproval": false,
+    "blocker": "read-only hyprctl queries failed with socket timeout before any mutating runtime proof could be considered"
+  },
+  "nextRecommendedWork": "Retry read-only hyprctl evidence from a shell/session where the socket timeout issue is resolved; do not run mutating hyprctl until prior values and restore commands are proven."
+}

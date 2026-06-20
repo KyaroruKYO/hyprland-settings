@@ -11,10 +11,14 @@
 - v0.1.0 tag modified: no
 - dist/v0.1.0 modified: no
 
-## Ready for default-disabled production gate review
-- Source/include selected-target insertion: copied-config-tree proof exists.
-- Duplicate occurrence replacement: copied-config-tree proof exists.
-- Structured `hl.bind` exact-line replacement: copied-config-tree proof exists.
+## Default-disabled production gate review implemented
+- Source/include selected-target insertion: copied-config-tree proof can reach `ReadyButDefaultDisabled`.
+- Duplicate occurrence replacement: copied-config-tree proof plus confirmed occurrence can reach `ReadyButDefaultDisabled`.
+- Structured `hl.bind` exact-line replacement: copied-config-tree proof plus candidate validation can reach `ReadyButDefaultDisabled`.
+- Profile/mode switching: copied symlink proof can reach `ReadyButDefaultDisabled`, but real-session proof is still required.
+- Runtime/reload mutation: gate exists and blocks without read-only evidence, prior snapshot, restore command, and approval.
+- High-risk/display writes: gate exists and blocks without out-of-band recovery, dead-man timeout, restore command, config backup, runtime snapshot, and approval.
+- Hyprland 0.55.4 activation: gate exists and blocks advisory-only evidence without official exports, row diff, write-safety review, safe-env evidence, and approval.
 
 ## Not ready for production activation
 - High-risk/display writes: no out-of-band recovery proof.
@@ -33,7 +37,8 @@
 ## Read-only runtime evidence
 - `hyprctl version`: failed without mutation, `Couldn't set socket timeout (2)`.
 - `hyprctl monitors -j`: failed without mutation, `Couldn't set socket timeout (2)`.
+- `hyprctl getoption general:gaps_in`: failed without mutation, `Couldn't set socket timeout (2)`.
 - `pacman -Q hyprland`: `hyprland 0.55.4-1`.
 
 ## Next exact work
-Implement default-disabled production gate review for source/include insertion, duplicate replacement, and `hl.bind` structured writes using copied-config-tree proof as prerequisite evidence.
+Retry read-only runtime evidence from a shell with successful `hyprctl` socket queries, then design explicit user-approval flows before any real production activation.

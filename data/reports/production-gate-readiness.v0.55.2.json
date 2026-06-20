@@ -9,7 +9,17 @@
   "readyForDefaultDisabledGateReview": [
     "source/include selected-target insertion",
     "duplicate occurrence replacement",
-    "structured hl.bind exact-line replacement"
+    "structured hl.bind exact-line replacement",
+    "profile/mode copied symlink switching"
+  ],
+  "defaultDisabledGateReviewImplemented": [
+    "source/include selected-target insertion",
+    "duplicate occurrence replacement",
+    "structured hl.bind exact-line replacement",
+    "profile/mode switching",
+    "runtime/reload mutation",
+    "high-risk/display writes",
+    "Hyprland 0.55.4 migration activation"
   ],
   "notReadyForProductionActivation": [
     "high-risk/display writes",
@@ -43,8 +53,12 @@
     "explicit user approval before real config/runtime mutation"
   ],
   "runtimeEvidence": {
+    "hyprctlBinary": "/usr/bin/hyprctl",
+    "hyprlandInstanceSignature": "a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299",
+    "socketDirectoryObserved": true,
     "hyprctlVersion": "failed without mutation: Couldn't set socket timeout (2)",
     "hyprctlMonitors": "failed without mutation: Couldn't set socket timeout (2)",
+    "hyprctlGetoptionGeneralGapsIn": "failed without mutation: Couldn't set socket timeout (2)",
     "mutatingHyprctlRun": false
   },
   "releaseBoundariesPreserved": {
@@ -54,5 +68,5 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Implement default-disabled production gate review for source/include insertion, duplicate replacement, and hl.bind structured writes using copied-config-tree proof as the prerequisite evidence."
+  "nextRecommendedWork": "Retry read-only runtime evidence from a shell with successful hyprctl socket queries, then design explicit user-approval flows before any real production activation."
 }

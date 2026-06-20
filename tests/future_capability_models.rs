@@ -9,24 +9,31 @@ use hyprland_settings::future_capability::{
     disabled_missing_default_insertion_review, disabled_profile_switch_review,
     disabled_profile_switch_selection_review, duplicate_occurrence_confirmation,
     duplicate_occurrence_model, duplicate_occurrence_review, duplicate_production_approval_gate,
-    edit_structured_bind_safe_env, execute_duplicate_replacement_guarded_temp,
+    duplicate_production_gate_review, edit_structured_bind_safe_env,
+    execute_duplicate_replacement_guarded_temp,
     execute_source_include_selected_target_guarded_temp, execute_structured_bind_guarded_temp,
     high_risk_guarded_live_readiness_executor, high_risk_live_recovery_protocol,
-    high_risk_recovery_review, high_risk_recovery_workflow, local_hyprland_version_evidence,
-    migration_comparison_review, profile_target_approval_review, render_structured_entry_lossless,
-    replace_duplicate_occurrence_safe_env, replace_duplicate_occurrence_with_confirmation_safe_env,
-    runtime_action_policy, runtime_action_review, runtime_command_risk, runtime_guarded_executor,
-    source_include_insertion_review, source_include_selected_target_dry_run_plan,
+    high_risk_production_gate_review, high_risk_recovery_review, high_risk_recovery_workflow,
+    hyprland_version_activation_gate, local_hyprland_version_evidence, migration_comparison_review,
+    profile_production_gate_review, profile_target_approval_review,
+    render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
+    replace_duplicate_occurrence_with_confirmation_safe_env, runtime_action_policy,
+    runtime_action_review, runtime_command_risk, runtime_guarded_executor,
+    runtime_production_gate_review, source_include_insertion_review,
+    source_include_production_gate_review, source_include_selected_target_dry_run_plan,
     source_include_target_selection_fixture_proof, structured_family_model,
-    structured_family_review, switch_profile_symlink_guarded_temp, switch_profile_symlink_safe_env,
+    structured_family_review, structured_production_gate_review,
+    switch_profile_symlink_guarded_temp, switch_profile_symlink_safe_env,
     trusted_export_requirement, validate_structured_edit_candidate, ControlledLiveTestGuardRequest,
     ControlledLiveTestKind, DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
     DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
     DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
-    MockWatchdog, MockWatchdogState, ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction,
-    RuntimeCommandRisk, RuntimeDryRunExecutor, SourceIncludeInsertionReadiness,
+    HighRiskProductionGateStatus, HyprlandVersionActivationStatus, MockWatchdog, MockWatchdogState,
+    ProfileProductionGateStatus, ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction,
+    RuntimeCommandRisk, RuntimeDryRunExecutor, RuntimeProductionGateStatus,
+    SourceIncludeInsertionReadiness, SourceIncludeProductionGateStatus,
     SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
-    SourceIncludeTargetSelectionStatus, StructuredBindEditStatus,
+    SourceIncludeTargetSelectionStatus, StructuredBindEditStatus, StructuredProductionGateStatus,
 };
 use hyprland_settings::missing_default_insertion::{
     build_missing_default_insertion_plan, MissingDefaultInsertionRequest,
@@ -846,6 +853,279 @@ fn copied_config_tree_runs_guarded_executors_on_copies_and_restores_everything()
     assert_eq!(report.duplicate_executor_restored, Some(true));
     assert_eq!(report.structured_executor_restored, Some(true));
     assert_eq!(report.profile_executor_restored, Some(true));
+}
+
+#[cfg(unix)]
+#[test]
+fn copied_config_tree_proof_drives_default_disabled_production_gates() {
+    let realish = temp_root("production-gates-copied-tree-realish");
+    let root_conf = realish.join("hyprland.conf");
+    let sourced_conf = realish.join("appearance.conf");
+    let profiles = realish.join("profiles");
+    let desktop = profiles.join("desktop.conf");
+    let gaming = profiles.join("gaming.conf");
+    let current = profiles.join("current.conf");
+    write_file(
+        &root_conf,
+        "source = appearance.conf\nsource = profiles/current.conf\nsource = profiles/gaming.conf\n",
+    );
+    write_file(
+        &sourced_conf,
+        "decoration:blur:enabled = true\ndecoration:blur:enabled = false\nbind = SUPER, Return, exec, foot\n# keep comment\n",
+    );
+    write_file(&desktop, "misc:disable_splash_rendering = false\n");
+    write_file(&gaming, "misc:disable_splash_rendering = true\n");
+    std::os::unix::fs::symlink(&desktop, &current).expect("profile symlink should create");
+
+    let copy_root = temp_root("production-gates-copied-tree-copy");
+    let snapshot = copy_config_tree_for_proof(&root_conf, &copy_root);
+    let copied_sourced = snapshot
+        .files
+        .iter()
+        .find(|file| file.original_path == sourced_conf)
+        .expect("sourced file should be copied")
+        .clone();
+    let copied_root = snapshot
+        .files
+        .iter()
+        .find(|file| file.original_path == root_conf)
+        .expect("root file should be copied")
+        .clone();
+    let copied_current = snapshot
+        .files
+        .iter()
+        .find(|file| file.original_path == current)
+        .expect("current symlink should be copied")
+        .clone();
+    let copied_gaming = snapshot
+        .files
+        .iter()
+        .find(|file| file.original_path == gaming)
+        .expect("gaming profile should be copied")
+        .clone();
+
+    let candidates = vec![
+        SourceIncludeTargetCandidate {
+            path: copied_root.copied_path.clone(),
+            source_depth: copied_root.source_depth,
+            generated_or_script_managed: copied_root.generated_or_script_managed,
+            symlink_or_profile_managed: copied_root.symlink_or_profile_managed,
+        },
+        SourceIncludeTargetCandidate {
+            path: copied_sourced.copied_path.clone(),
+            source_depth: copied_sourced.source_depth,
+            generated_or_script_managed: copied_sourced.generated_or_script_managed,
+            symlink_or_profile_managed: copied_sourced.symlink_or_profile_managed,
+        },
+    ];
+    let source_proof = source_include_target_selection_fixture_proof(
+        snapshot.copied_root_path.clone(),
+        candidates.clone(),
+        Some(copied_sourced.copied_path.clone()),
+        false,
+    );
+    let insertion_plan = build_missing_default_insertion_plan(MissingDefaultInsertionRequest {
+        setting_id: "misc.disable_splash_rendering".to_string(),
+        proposed_value: "true".to_string(),
+        target_path: copied_sourced.copied_path.clone(),
+        backup_stamp: "production-gate-source".to_string(),
+    });
+    let dry_run = source_include_selected_target_dry_run_plan(&source_proof, &insertion_plan);
+    let source_guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::SourceIncludeInsertion,
+        complete_live_guard_request(copied_sourced.copied_path.clone()),
+    );
+    let source_report = execute_source_include_selected_target_guarded_temp(
+        &source_proof,
+        &dry_run,
+        &source_guard,
+        false,
+        false,
+    );
+
+    let duplicate_model = duplicate_occurrence_model(
+        "decoration.blur.enabled",
+        &[(
+            copied_sourced.copied_path.clone(),
+            copied_sourced.source_depth,
+        )],
+    )
+    .expect("duplicate model should build");
+    let duplicate_occurrence = duplicate_model.occurrences[1].clone();
+    let duplicate_confirmation = duplicate_occurrence_confirmation(
+        Some(&duplicate_occurrence),
+        Some("token"),
+        "token",
+        false,
+        false,
+    );
+    let duplicate_request = DuplicateReplacementRequest {
+        occurrence: duplicate_occurrence.clone(),
+        expected_old_value: "false".to_string(),
+        proposed_value: "true".to_string(),
+        backup_stamp: "production-gate-duplicate".to_string(),
+    };
+    let duplicate_guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::DuplicateReplacement,
+        complete_live_guard_request(copied_sourced.copied_path.clone()),
+    );
+    let duplicate_report = execute_duplicate_replacement_guarded_temp(
+        &duplicate_confirmation,
+        &duplicate_request,
+        &duplicate_guard,
+        false,
+        false,
+    );
+
+    let structured_guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::StructuredWrite,
+        complete_live_guard_request(copied_sourced.copied_path.clone()),
+    );
+    let structured_report = execute_structured_bind_guarded_temp(
+        &copied_sourced.copied_path,
+        3,
+        "bind = SUPER, Return, exec, foot",
+        "bind = SUPER, Return, exec, kitty",
+        &structured_guard,
+        false,
+        false,
+    );
+
+    let profile_guard = hyprland_settings::future_capability::controlled_live_test_guard_review(
+        ControlledLiveTestKind::ProfileSwitch,
+        ControlledLiveTestGuardRequest {
+            symlink_targets_recorded: true,
+            ..complete_live_guard_request(copied_current.copied_path.clone())
+        },
+    );
+    let profile_report = switch_profile_symlink_guarded_temp(
+        &snapshot.copy_root,
+        &copied_current.copied_path,
+        &copied_gaming.copied_path,
+        &profile_guard,
+        false,
+    );
+    let profile_restored = profile_report.restored_target == profile_report.original_target;
+    let copied_report = copied_config_tree_report(
+        snapshot,
+        Some(&source_report),
+        Some(&duplicate_report),
+        Some(&structured_report),
+        Some(profile_restored),
+    );
+
+    let source_gate = source_include_production_gate_review(
+        &source_proof,
+        Some(&dry_run),
+        Some(&copied_report),
+        false,
+    );
+    assert_eq!(
+        source_gate.gate.status,
+        SourceIncludeProductionGateStatus::ReadyButDefaultDisabled
+    );
+    assert!(source_gate.gate.copied_proof_restored);
+    assert!(!source_gate.gate.production_apply_enabled);
+
+    let no_target = source_include_target_selection_fixture_proof(
+        copied_root.copied_path.clone(),
+        candidates,
+        None,
+        false,
+    );
+    let no_target_gate = source_include_production_gate_review(&no_target, None, None, false);
+    assert_eq!(
+        no_target_gate.gate.status,
+        SourceIncludeProductionGateStatus::NoTargetSelected
+    );
+
+    let duplicate_gate = duplicate_production_gate_review(
+        Some(&duplicate_occurrence),
+        Some(&duplicate_confirmation),
+        Some(&copied_report),
+        Some("true".to_string()),
+        false,
+    );
+    assert_eq!(
+        duplicate_gate.status,
+        DuplicateProductionGateStatus::ReadyButDefaultDisabled
+    );
+    assert!(duplicate_gate.copied_proof_restored);
+    assert!(!duplicate_gate.production_apply_enabled);
+    let pending = duplicate_occurrence_confirmation(
+        Some(&duplicate_occurrence),
+        Some("wrong"),
+        "token",
+        false,
+        false,
+    );
+    let pending_gate = duplicate_production_gate_review(
+        Some(&duplicate_occurrence),
+        Some(&pending),
+        Some(&copied_report),
+        Some("true".to_string()),
+        false,
+    );
+    assert_eq!(
+        pending_gate.status,
+        DuplicateProductionGateStatus::PendingConfirmation
+    );
+
+    let structured_gate = structured_production_gate_review(
+        "hl.bind",
+        copied_sourced.copied_path.clone(),
+        3,
+        "bind = SUPER, Return, exec, foot",
+        "bind = SUPER, Return, exec, kitty",
+        Some(&copied_report),
+        true,
+        false,
+    );
+    assert_eq!(
+        structured_gate.status,
+        StructuredProductionGateStatus::ReadyButDefaultDisabled
+    );
+    assert!(structured_gate.copied_proof_restored);
+    assert!(!structured_gate.production_apply_enabled);
+    let invalid_structured = structured_production_gate_review(
+        "hl.bind",
+        copied_sourced.copied_path.clone(),
+        3,
+        "bind = SUPER, Return, exec, foot",
+        "monitor = HDMI-A-1, preferred, auto, 1",
+        Some(&copied_report),
+        true,
+        false,
+    );
+    assert_eq!(
+        invalid_structured.status,
+        StructuredProductionGateStatus::InvalidCandidate
+    );
+
+    let profile_gate = profile_production_gate_review(
+        copied_current.copied_path.clone(),
+        copied_current.copied_symlink_target.clone(),
+        Some(copied_gaming.copied_path.clone()),
+        Some(&copied_report),
+        false,
+    );
+    assert_eq!(
+        profile_gate.status,
+        ProfileProductionGateStatus::ReadyButDefaultDisabled
+    );
+    assert!(profile_gate.copied_proof_restored);
+    assert!(!profile_gate.production_switch_enabled);
+    let profile_missing_selection = profile_production_gate_review(
+        copied_current.copied_path,
+        copied_current.copied_symlink_target,
+        None,
+        Some(&copied_report),
+        false,
+    );
+    assert_eq!(
+        profile_missing_selection.status,
+        ProfileProductionGateStatus::NoSelection
+    );
 }
 
 #[test]
@@ -2062,4 +2342,180 @@ fn local_hyprland_0554_evidence_is_advisory_until_trusted_bundle_is_complete() {
     assert!(current.activation_allowed);
     assert!(!current.production_default_changed);
     assert!(current.missing_inputs.is_empty());
+}
+
+#[test]
+fn runtime_production_gate_requires_readonly_evidence_snapshot_restore_and_default_disabled_flag() {
+    let missing_socket = runtime_production_gate_review(
+        RuntimeAction::Status {
+            query: "version".to_string(),
+        },
+        false,
+        None,
+        None,
+        false,
+        false,
+    );
+    assert_eq!(
+        missing_socket.status,
+        RuntimeProductionGateStatus::ReadOnlyEvidenceMissing
+    );
+    assert!(!missing_socket.production_runtime_enabled);
+
+    let keyword_missing_snapshot = runtime_production_gate_review(
+        RuntimeAction::Keyword {
+            key: "general:gaps_in".to_string(),
+            value: "5".to_string(),
+        },
+        true,
+        None,
+        None,
+        true,
+        false,
+    );
+    assert_eq!(
+        keyword_missing_snapshot.status,
+        RuntimeProductionGateStatus::RestoreCommandMissing
+    );
+    assert!(!keyword_missing_snapshot.production_runtime_enabled);
+
+    let keyword_ready = runtime_production_gate_review(
+        RuntimeAction::Keyword {
+            key: "general:gaps_in".to_string(),
+            value: "5".to_string(),
+        },
+        true,
+        Some("4"),
+        None,
+        true,
+        false,
+    );
+    assert_eq!(
+        keyword_ready.status,
+        RuntimeProductionGateStatus::ReadyButDefaultDisabled
+    );
+    assert_eq!(
+        keyword_ready.restore_command.as_deref(),
+        Some("hyprctl keyword general:gaps_in 4")
+    );
+    assert!(!keyword_ready.production_runtime_enabled);
+
+    let dispatch_missing_plan = runtime_production_gate_review(
+        RuntimeAction::Dispatch {
+            command: "workspace 1".to_string(),
+        },
+        true,
+        Some("prior workspace"),
+        None,
+        true,
+        false,
+    );
+    assert_eq!(
+        dispatch_missing_plan.status,
+        RuntimeProductionGateStatus::RecoveryPlanMissing
+    );
+}
+
+#[test]
+fn high_risk_production_gate_requires_recovery_deadman_restore_backup_snapshot_and_approval() {
+    let root = temp_root("high-risk-production-gate");
+    let config = root.join("hyprland.conf");
+    write_file(&config, "render:direct_scanout = false\n");
+    let protocol = high_risk_live_recovery_protocol("render.direct_scanout", config, true, false);
+    let missing_recovery = high_risk_production_gate_review(
+        Some(&protocol),
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+    );
+    assert_eq!(
+        missing_recovery.status,
+        HighRiskProductionGateStatus::RecoveryMissing
+    );
+    assert!(!missing_recovery.production_write_enabled);
+
+    let missing_deadman = high_risk_production_gate_review(
+        Some(&protocol),
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        false,
+    );
+    assert_eq!(
+        missing_deadman.status,
+        HighRiskProductionGateStatus::DeadManTimeoutMissing
+    );
+
+    let ready = high_risk_production_gate_review(
+        Some(&protocol),
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+    );
+    assert_eq!(
+        ready.status,
+        HighRiskProductionGateStatus::ReadyButDefaultDisabled
+    );
+    assert!(!ready.production_write_enabled);
+}
+
+#[test]
+fn hyprland_0554_activation_gate_keeps_0552_default_until_all_trusted_inputs_and_flag_exist() {
+    let partial = local_hyprland_version_evidence(
+        "0.55.4",
+        Some("hyprland 0.55.4-1"),
+        Some("Hyprland 0.55.4"),
+        false,
+        false,
+        false,
+        false,
+        false,
+    );
+    let partial_gate = hyprland_version_activation_gate(&partial, false);
+    assert_eq!(
+        partial_gate.status,
+        HyprlandVersionActivationStatus::MissingUserApproval
+    );
+    assert!(!partial_gate.migration_activated);
+    assert!(!partial_gate.production_default_changed);
+    assert_eq!(partial_gate.current_default_version, "0.55.2");
+
+    let complete = local_hyprland_version_evidence(
+        "0.55.4",
+        Some("hyprland 0.55.4-1"),
+        Some("Hyprland 0.55.4"),
+        true,
+        true,
+        true,
+        true,
+        true,
+    );
+    let ready = hyprland_version_activation_gate(&complete, false);
+    assert_eq!(
+        ready.status,
+        HyprlandVersionActivationStatus::ReadyButDefaultDisabled
+    );
+    assert!(!ready.migration_activated);
+    assert_eq!(ready.current_default_version, "0.55.2");
+
+    let current =
+        local_hyprland_version_evidence("0.55.2", None, None, false, false, false, false, false);
+    let current_gate = hyprland_version_activation_gate(&current, false);
+    assert_eq!(
+        current_gate.status,
+        HyprlandVersionActivationStatus::Enabled
+    );
+    assert!(current_gate.migration_activated);
+    assert_eq!(current_gate.current_default_version, "0.55.2");
 }

@@ -26,7 +26,9 @@
     "This sprint rechecked runtime/reload and found no safe production step without explicit runtime mutation approval.",
     "Controlled live-test guard requires read-only runtime snapshot before runtime mutation.",
     "Added a guarded runtime executor model that supports read-only status proof, mutation dry-run proof, restore-command generation from prior snapshots, command logging, and default real_command_executed=false.",
-    "Attempted read-only hyprctl version and monitors queries; both failed without mutation because the runtime socket was unavailable in this shell."
+    "Attempted read-only hyprctl version and monitors queries; both failed without mutation because the runtime socket was unavailable in this shell.",
+    "Retried read-only runtime evidence and found /usr/bin/hyprctl, a Hyprland instance signature, and a socket directory under XDG_RUNTIME_DIR/hypr, but hyprctl version, monitors -j, and getoption general:gaps_in still failed without mutation with socket timeout.",
+    "Added a default-disabled runtime/reload production gate review requiring read-only evidence, prior value snapshot, restore command, command-specific recovery plan for dispatch, explicit approval, and production flag."
   ],
   "whatWasNotImplemented": [
     "No real hyprctl keyword, dispatch, reload, or runtime mutation path was added.",
@@ -62,17 +64,22 @@
     "runtimeGuardedExecutorGeneratesRestoreCommand": true,
     "readOnlyHyprctlVersionAttempted": true,
     "readOnlyHyprctlMonitorsAttempted": true,
-    "readOnlyHyprctlSocketAvailable": false
+    "readOnlyHyprctlSocketAvailable": false,
+    "hyprctlBinaryFound": true,
+    "hyprlandInstanceSignaturePresent": true,
+    "runtimeSocketDirectoryObserved": true,
+    "runtimeDefaultDisabledProductionGateExists": true,
+    "runtimeProductionMutationEnabledByGate": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"
   },
   "blockers": [
     "Needs a production command approval model before any runtime adapter can be activated.",
-    "Production reload requires separate approval and recovery proof.",
+    "Production reload requires separate approval, read-only evidence, prior snapshot, restore command, and recovery proof.",
     "Mutating hyprctl keyword and dispatch remain blocked."
   ],
-  "nextRecommendedWork": "Connect command risk classification to disabled UI copy and define approval requirements for any future real runtime adapter.",
+  "nextRecommendedWork": "Retry read-only runtime evidence from a shell with successful hyprctl socket queries, then add explicit approval and restoration proof before any runtime mutation.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

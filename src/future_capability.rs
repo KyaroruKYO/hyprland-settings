@@ -644,6 +644,165 @@ pub fn copied_config_tree_report(
     }
 }
 
+fn copied_report_has_path(report: &CopiedConfigTreeReport, path: &Path) -> bool {
+    report
+        .snapshot
+        .files
+        .iter()
+        .any(|file| file.copied_path == path)
+}
+
+fn copied_report_base_ready(report: &CopiedConfigTreeReport, path: &Path) -> bool {
+    report.originals_unchanged
+        && report.copied_files_restored
+        && copied_report_has_path(report, path)
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SourceIncludeProductionGateStatus {
+    NoTargetSelected,
+    TargetNotInSourceGraph,
+    ManagedTargetBlocked,
+    DuplicateOrAmbiguousBlocked,
+    MissingDryRunPlan,
+    MissingCopiedProof,
+    CopiedProofMismatch,
+    ReadyButDefaultDisabled,
+    Enabled,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SourceIncludeProductionGate {
+    pub status: SourceIncludeProductionGateStatus,
+    pub root_path: Option<PathBuf>,
+    pub selected_target_path: Option<PathBuf>,
+    pub source_depth: Option<usize>,
+    pub planned_line: Option<String>,
+    pub proposed_value: Option<String>,
+    pub copied_proof_restored: bool,
+    pub production_flag_enabled: bool,
+    pub production_apply_enabled: bool,
+    pub blockers: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SourceIncludeProductionReview {
+    pub gate: SourceIncludeProductionGate,
+    pub review_lines: Vec<String>,
+}
+
+pub fn source_include_production_gate_review(
+    proof: &SourceIncludeTargetSelectionProof,
+    dry_run: Option<&SourceIncludeSelectedTargetDryRunPlan>,
+    copied_proof: Option<&CopiedConfigTreeReport>,
+    production_flag_enabled: bool,
+) -> SourceIncludeProductionReview {
+    let mut blockers = Vec::new();
+    let mut status = match proof.status {
+        SourceIncludeTargetSelectionStatus::NoTargetSelected => {
+            blockers.push("explicit source/include target selection is required".to_string());
+            SourceIncludeProductionGateStatus::NoTargetSelected
+        }
+        SourceIncludeTargetSelectionStatus::TargetNotCandidate => {
+            blockers.push("selected target is not in the reviewed source graph".to_string());
+            SourceIncludeProductionGateStatus::TargetNotInSourceGraph
+        }
+        SourceIncludeTargetSelectionStatus::ManagedTargetBlocked => {
+            blockers.push(
+                "generated, script-managed, symlink, profile, or mode targets are blocked"
+                    .to_string(),
+            );
+            SourceIncludeProductionGateStatus::ManagedTargetBlocked
+        }
+        SourceIncludeTargetSelectionStatus::DuplicateOrAmbiguousBlocked => {
+            blockers.push("duplicate or ambiguous source/include target is blocked".to_string());
+            SourceIncludeProductionGateStatus::DuplicateOrAmbiguousBlocked
+        }
+        SourceIncludeTargetSelectionStatus::SelectedTargetReadyForFixture => {
+            SourceIncludeProductionGateStatus::ReadyButDefaultDisabled
+        }
+    };
+
+    let copied_proof_restored = if status
+        == SourceIncludeProductionGateStatus::ReadyButDefaultDisabled
+    {
+        match (dry_run, copied_proof) {
+            (Some(dry_run), Some(report))
+                if dry_run.status == SourceIncludeSelectedTargetDryRunStatus::Planned =>
+            {
+                if let Some(target) = dry_run.selected_target.as_ref() {
+                    let ready = copied_report_base_ready(report, target)
+                        && report.source_include_executor_restored == Some(true);
+                    if !ready {
+                        blockers.push(
+                            "copied-config-tree source/include proof does not match the selected target and planned line"
+                                .to_string(),
+                        );
+                        status = SourceIncludeProductionGateStatus::CopiedProofMismatch;
+                    }
+                    ready
+                } else {
+                    blockers.push("selected-target dry-run has no target path".to_string());
+                    status = SourceIncludeProductionGateStatus::MissingDryRunPlan;
+                    false
+                }
+            }
+            (Some(_), _) => {
+                blockers.push("copied-config-tree source/include proof is required".to_string());
+                status = SourceIncludeProductionGateStatus::MissingCopiedProof;
+                false
+            }
+            (None, _) => {
+                blockers.push("selected-target dry-run plan is required".to_string());
+                status = SourceIncludeProductionGateStatus::MissingDryRunPlan;
+                false
+            }
+        }
+    } else {
+        false
+    };
+
+    if status == SourceIncludeProductionGateStatus::ReadyButDefaultDisabled
+        && copied_proof_restored
+        && production_flag_enabled
+    {
+        status = SourceIncludeProductionGateStatus::Enabled;
+    } else if status == SourceIncludeProductionGateStatus::ReadyButDefaultDisabled
+        && copied_proof_restored
+        && !production_flag_enabled
+    {
+        blockers.push("source/include production insertion flag is default-disabled".to_string());
+    }
+
+    let production_apply_enabled = status == SourceIncludeProductionGateStatus::Enabled;
+    let proposed_value = dry_run
+        .and_then(|plan| plan.insertion_line.as_ref())
+        .and_then(|line| line.split_once('='))
+        .map(|(_, value)| value.trim().to_string());
+    let gate = SourceIncludeProductionGate {
+        status,
+        root_path: dry_run.and_then(|plan| plan.root_path.clone()),
+        selected_target_path: dry_run.and_then(|plan| plan.selected_target.clone()),
+        source_depth: dry_run.and_then(|plan| plan.source_depth),
+        planned_line: dry_run.and_then(|plan| plan.insertion_line.clone()),
+        proposed_value,
+        copied_proof_restored,
+        production_flag_enabled,
+        production_apply_enabled,
+        blockers: blockers.clone(),
+    };
+    SourceIncludeProductionReview {
+        gate,
+        review_lines: vec![
+            "Source/include insertion now has copied-config-tree proof as a prerequisite."
+                .to_string(),
+            "The selected target, source depth, planned line, and proposed value must match the copied proof.".to_string(),
+            "Production source/include insertion remains default-disabled until explicit activation review.".to_string(),
+            format!("Blockers: {}", if blockers.is_empty() { "none".to_string() } else { blockers.join("; ") }),
+        ],
+    }
+}
+
 pub fn source_include_selected_target_dry_run_plan(
     proof: &SourceIncludeTargetSelectionProof,
     insertion_plan: &MissingDefaultInsertionPlan,
@@ -859,6 +1018,9 @@ pub enum DuplicateProductionGateStatus {
     MissingConfirmation,
     PendingConfirmation,
     ConfirmedButProductionDisabled,
+    MissingCopiedProof,
+    CopiedProofMismatch,
+    ReadyButDefaultDisabled,
     Rejected,
     Expired,
     FingerprintMismatch,
@@ -883,6 +1045,23 @@ pub struct DuplicateProductionApprovalGate {
     pub production_apply_enabled: bool,
     pub duplicate_write_enabled: bool,
     pub block_reason: String,
+    pub review_lines: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DuplicateProductionGateReview {
+    pub setting_id: String,
+    pub status: DuplicateProductionGateStatus,
+    pub selected_path: Option<PathBuf>,
+    pub selected_line_number: Option<usize>,
+    pub selected_raw_line: Option<String>,
+    pub old_value: Option<String>,
+    pub proposed_value: Option<String>,
+    pub source_depth: Option<usize>,
+    pub copied_proof_restored: bool,
+    pub production_flag_enabled: bool,
+    pub production_apply_enabled: bool,
+    pub blockers: Vec<String>,
     pub review_lines: Vec<String>,
 }
 
@@ -1093,6 +1272,15 @@ pub fn duplicate_production_approval_gate(
         DuplicateProductionGateStatus::ConfirmedButProductionDisabled => {
             "Duplicate occurrence is confirmed for fixture proof, but production duplicate writes remain disabled.".to_string()
         }
+        DuplicateProductionGateStatus::MissingCopiedProof => {
+            "Copied-config-tree duplicate replacement proof is required.".to_string()
+        }
+        DuplicateProductionGateStatus::CopiedProofMismatch => {
+            "Copied-config-tree duplicate proof does not match the confirmed occurrence.".to_string()
+        }
+        DuplicateProductionGateStatus::ReadyButDefaultDisabled => {
+            "Duplicate occurrence is confirmed and copied proof is restored, but production duplicate writes are default-disabled.".to_string()
+        }
         DuplicateProductionGateStatus::Rejected => {
             "Duplicate occurrence approval was rejected.".to_string()
         }
@@ -1121,6 +1309,115 @@ pub fn duplicate_production_approval_gate(
             block_reason,
             "The app will not choose the first, last, base, or profile value automatically."
                 .to_string(),
+        ],
+    }
+}
+
+pub fn duplicate_production_gate_review(
+    occurrence: Option<&DuplicateOccurrence>,
+    confirmation: Option<&DuplicateOccurrenceConfirmation>,
+    copied_proof: Option<&CopiedConfigTreeReport>,
+    proposed_value: Option<String>,
+    production_flag_enabled: bool,
+) -> DuplicateProductionGateReview {
+    let base_gate = duplicate_production_approval_gate(occurrence, confirmation);
+    let mut status = base_gate.status;
+    let mut blockers = vec![base_gate.block_reason.clone()];
+    let mut copied_proof_restored = false;
+
+    if status == DuplicateProductionGateStatus::ConfirmedButProductionDisabled {
+        let Some(precondition) = base_gate.precondition.as_ref() else {
+            status = DuplicateProductionGateStatus::MissingConfirmation;
+            blockers.push("duplicate precondition record is missing".to_string());
+            return duplicate_gate_review_from_parts(
+                base_gate,
+                status,
+                proposed_value,
+                false,
+                production_flag_enabled,
+                false,
+                blockers,
+            );
+        };
+        match copied_proof {
+            Some(report) => {
+                copied_proof_restored = copied_report_base_ready(report, &precondition.path)
+                    && report.duplicate_executor_restored == Some(true);
+                if copied_proof_restored {
+                    status = if production_flag_enabled {
+                        DuplicateProductionGateStatus::ConfirmedButProductionDisabled
+                    } else {
+                        DuplicateProductionGateStatus::ReadyButDefaultDisabled
+                    };
+                    if !production_flag_enabled {
+                        blockers =
+                            vec!["duplicate production write flag is default-disabled".to_string()];
+                    } else {
+                        blockers =
+                            vec!["duplicate production Apply integration is still not wired"
+                                .to_string()];
+                    }
+                } else {
+                    status = DuplicateProductionGateStatus::CopiedProofMismatch;
+                    blockers.push(
+                        "copied-config-tree duplicate proof must restore the selected copied target"
+                            .to_string(),
+                    );
+                }
+            }
+            None => {
+                status = DuplicateProductionGateStatus::MissingCopiedProof;
+                blockers.push("copied-config-tree duplicate proof is missing".to_string());
+            }
+        }
+    }
+
+    duplicate_gate_review_from_parts(
+        base_gate,
+        status,
+        proposed_value,
+        copied_proof_restored,
+        production_flag_enabled,
+        false,
+        blockers,
+    )
+}
+
+fn duplicate_gate_review_from_parts(
+    base_gate: DuplicateProductionApprovalGate,
+    status: DuplicateProductionGateStatus,
+    proposed_value: Option<String>,
+    copied_proof_restored: bool,
+    production_flag_enabled: bool,
+    production_apply_enabled: bool,
+    blockers: Vec<String>,
+) -> DuplicateProductionGateReview {
+    let precondition = base_gate.precondition.as_ref();
+    DuplicateProductionGateReview {
+        setting_id: base_gate.setting_id,
+        status,
+        selected_path: precondition.map(|precondition| precondition.path.clone()),
+        selected_line_number: precondition.map(|precondition| precondition.line_number),
+        selected_raw_line: precondition.map(|precondition| precondition.raw_line.clone()),
+        old_value: precondition.map(|precondition| precondition.old_value.clone()),
+        proposed_value,
+        source_depth: precondition.map(|precondition| precondition.source_depth),
+        copied_proof_restored,
+        production_flag_enabled,
+        production_apply_enabled,
+        blockers: blockers.clone(),
+        review_lines: vec![
+            "Duplicate replacement requires confirmed occurrence targeting.".to_string(),
+            "Path, line number, raw line, old value, fingerprint, source depth, and copied proof must match.".to_string(),
+            "Production duplicate writes remain disabled by default.".to_string(),
+            format!(
+                "Blockers: {}",
+                if blockers.is_empty() {
+                    "none".to_string()
+                } else {
+                    blockers.join("; ")
+                }
+            ),
         ],
     }
 }
@@ -1395,6 +1692,36 @@ pub struct HighRiskLiveRecoveryProtocol {
     pub review_lines: Vec<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum HighRiskProductionGateStatus {
+    RecoveryMissing,
+    DeadManTimeoutMissing,
+    RestoreCommandMissing,
+    ConfigBackupMissing,
+    RuntimeSnapshotMissing,
+    ExplicitApprovalMissing,
+    ReadinessProofMissing,
+    ReadyButDefaultDisabled,
+    Enabled,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct HighRiskProductionGateReview {
+    pub setting_id: String,
+    pub status: HighRiskProductionGateStatus,
+    pub readiness_status: Option<HighRiskLiveReadinessStatus>,
+    pub out_of_band_recovery_available: bool,
+    pub dead_man_timeout_recorded: bool,
+    pub restore_command_recorded: bool,
+    pub config_backup_recorded: bool,
+    pub runtime_snapshot_recorded: bool,
+    pub explicit_approval_recorded: bool,
+    pub production_flag_enabled: bool,
+    pub production_write_enabled: bool,
+    pub blockers: Vec<String>,
+    pub review_lines: Vec<String>,
+}
+
 pub fn high_risk_recovery_review(
     setting_id: &str,
     watchdog: &MockWatchdog,
@@ -1489,6 +1816,87 @@ pub fn high_risk_guarded_live_readiness_executor(
     protocol.live_write_enabled = false;
     protocol.mutating_runtime_enabled = false;
     protocol
+}
+
+pub fn high_risk_production_gate_review(
+    protocol: Option<&HighRiskLiveRecoveryProtocol>,
+    out_of_band_recovery_available: bool,
+    dead_man_timeout_recorded: bool,
+    restore_command_recorded: bool,
+    config_backup_recorded: bool,
+    runtime_snapshot_recorded: bool,
+    explicit_approval_recorded: bool,
+    production_flag_enabled: bool,
+) -> HighRiskProductionGateReview {
+    let setting_id = protocol
+        .map(|protocol| protocol.setting_id.clone())
+        .unwrap_or_default();
+    let mut blockers = Vec::new();
+    let mut status = HighRiskProductionGateStatus::ReadyButDefaultDisabled;
+    if protocol
+        .map(|protocol| protocol.status != HighRiskLiveReadinessStatus::NoopReadyForReview)
+        .unwrap_or(true)
+    {
+        status = HighRiskProductionGateStatus::ReadinessProofMissing;
+        blockers.push("no-op or copied readiness proof is required".to_string());
+    }
+    if !out_of_band_recovery_available {
+        status = HighRiskProductionGateStatus::RecoveryMissing;
+        blockers.push("out-of-band recovery channel is required".to_string());
+    }
+    if !dead_man_timeout_recorded {
+        status = HighRiskProductionGateStatus::DeadManTimeoutMissing;
+        blockers.push("dead-man timeout is required".to_string());
+    }
+    if !restore_command_recorded {
+        status = HighRiskProductionGateStatus::RestoreCommandMissing;
+        blockers.push("restore command is required".to_string());
+    }
+    if !config_backup_recorded {
+        status = HighRiskProductionGateStatus::ConfigBackupMissing;
+        blockers.push("config backup is required".to_string());
+    }
+    if !runtime_snapshot_recorded {
+        status = HighRiskProductionGateStatus::RuntimeSnapshotMissing;
+        blockers.push("runtime snapshot is required".to_string());
+    }
+    if !explicit_approval_recorded {
+        status = HighRiskProductionGateStatus::ExplicitApprovalMissing;
+        blockers.push("explicit high-risk write approval is required".to_string());
+    }
+    if status == HighRiskProductionGateStatus::ReadyButDefaultDisabled && production_flag_enabled {
+        status = HighRiskProductionGateStatus::Enabled;
+    } else if status == HighRiskProductionGateStatus::ReadyButDefaultDisabled {
+        blockers.push("high-risk production write flag is default-disabled".to_string());
+    }
+    let production_write_enabled = status == HighRiskProductionGateStatus::Enabled;
+    HighRiskProductionGateReview {
+        setting_id,
+        status,
+        readiness_status: protocol.map(|protocol| protocol.status),
+        out_of_band_recovery_available,
+        dead_man_timeout_recorded,
+        restore_command_recorded,
+        config_backup_recorded,
+        runtime_snapshot_recorded,
+        explicit_approval_recorded,
+        production_flag_enabled,
+        production_write_enabled,
+        blockers: blockers.clone(),
+        review_lines: vec![
+            "High-risk/display writes require an out-of-band recovery path before any live mutation.".to_string(),
+            "Dead-man timeout, restore command, config backup, runtime snapshot, and explicit approval are mandatory.".to_string(),
+            "Production high-risk writes remain default-disabled.".to_string(),
+            format!(
+                "Blockers: {}",
+                if blockers.is_empty() {
+                    "none".to_string()
+                } else {
+                    blockers.join("; ")
+                }
+            ),
+        ],
+    }
 }
 
 fn structured_bind_blocked(
@@ -1899,6 +2307,115 @@ pub fn execute_structured_bind_guarded_temp(
     )
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredProductionGateStatus {
+    InvalidFamily,
+    InvalidCandidate,
+    MissingSelectedLine,
+    MissingCopiedProof,
+    CopiedProofMismatch,
+    ReadyButDefaultDisabled,
+    Enabled,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredProductionGateReview {
+    pub family_id: String,
+    pub status: StructuredProductionGateStatus,
+    pub target_path: PathBuf,
+    pub line_number: usize,
+    pub old_raw_line: String,
+    pub new_raw_line: String,
+    pub copied_proof_restored: bool,
+    pub comments_order_preserved: bool,
+    pub production_flag_enabled: bool,
+    pub production_apply_enabled: bool,
+    pub blockers: Vec<String>,
+    pub review_lines: Vec<String>,
+}
+
+pub fn structured_production_gate_review(
+    family_id: &str,
+    target_path: impl Into<PathBuf>,
+    line_number: usize,
+    old_raw_line: &str,
+    new_raw_line: &str,
+    copied_proof: Option<&CopiedConfigTreeReport>,
+    comments_order_preserved: bool,
+    production_flag_enabled: bool,
+) -> StructuredProductionGateReview {
+    let target_path = target_path.into();
+    let mut blockers = Vec::new();
+    let mut status = StructuredProductionGateStatus::ReadyButDefaultDisabled;
+    if family_id != "hl.bind" {
+        status = StructuredProductionGateStatus::InvalidFamily;
+        blockers.push("this production gate currently accepts hl.bind only".to_string());
+    }
+    if old_raw_line.trim().is_empty() || line_number == 0 {
+        status = StructuredProductionGateStatus::MissingSelectedLine;
+        blockers.push("exact selected structured line and line number are required".to_string());
+    }
+    let candidate = validate_structured_edit_candidate(family_id, new_raw_line);
+    if !candidate.accepted {
+        status = StructuredProductionGateStatus::InvalidCandidate;
+        blockers.extend(candidate.errors);
+    }
+    if !comments_order_preserved {
+        status = StructuredProductionGateStatus::CopiedProofMismatch;
+        blockers.push("comments/order preservation proof is required".to_string());
+    }
+
+    let copied_proof_restored = match copied_proof {
+        Some(report) => {
+            copied_report_base_ready(report, &target_path)
+                && report.structured_executor_restored == Some(true)
+        }
+        None => false,
+    };
+    if status == StructuredProductionGateStatus::ReadyButDefaultDisabled && !copied_proof_restored {
+        status = if copied_proof.is_some() {
+            StructuredProductionGateStatus::CopiedProofMismatch
+        } else {
+            StructuredProductionGateStatus::MissingCopiedProof
+        };
+        blockers.push("restored copied-config-tree hl.bind proof is required".to_string());
+    }
+    if status == StructuredProductionGateStatus::ReadyButDefaultDisabled && production_flag_enabled
+    {
+        status = StructuredProductionGateStatus::Enabled;
+    } else if status == StructuredProductionGateStatus::ReadyButDefaultDisabled {
+        blockers.push("structured production write flag is default-disabled".to_string());
+    }
+
+    let production_apply_enabled = status == StructuredProductionGateStatus::Enabled;
+    StructuredProductionGateReview {
+        family_id: family_id.to_string(),
+        status,
+        target_path,
+        line_number,
+        old_raw_line: old_raw_line.to_string(),
+        new_raw_line: new_raw_line.to_string(),
+        copied_proof_restored,
+        comments_order_preserved,
+        production_flag_enabled,
+        production_apply_enabled,
+        blockers: blockers.clone(),
+        review_lines: vec![
+            "Structured production writes currently review hl.bind only.".to_string(),
+            "Exact old line, new line, target file, line number, candidate validation, and copied proof are required.".to_string(),
+            "Production structured writes remain default-disabled.".to_string(),
+            format!(
+                "Blockers: {}",
+                if blockers.is_empty() {
+                    "none".to_string()
+                } else {
+                    blockers.join("; ")
+                }
+            ),
+        ],
+    }
+}
+
 fn execute_guarded_temp_line_mutation(
     target_path: PathBuf,
     planned_line: String,
@@ -2177,6 +2694,30 @@ pub struct ProfileTargetApprovalReview {
     pub review_lines: Vec<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProfileProductionGateStatus {
+    NoSelection,
+    MissingTarget,
+    MissingSymlinkSnapshot,
+    MissingCopiedProof,
+    ReadyButDefaultDisabled,
+    Enabled,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProfileProductionGateReview {
+    pub status: ProfileProductionGateStatus,
+    pub symlink_path: PathBuf,
+    pub original_symlink_target: Option<PathBuf>,
+    pub selected_target_profile: Option<PathBuf>,
+    pub copied_proof_restored: bool,
+    pub real_session_live_proof_required: bool,
+    pub production_flag_enabled: bool,
+    pub production_switch_enabled: bool,
+    pub blockers: Vec<String>,
+    pub review_lines: Vec<String>,
+}
+
 pub fn disabled_profile_switch_review(
     symlink_path: impl Into<PathBuf>,
     current_profile: Option<PathBuf>,
@@ -2248,6 +2789,74 @@ pub fn profile_target_approval_review(
             "Profile target review is safe-env only.".to_string(),
             "Real profile symlinks and scripts stay blocked.".to_string(),
             "Hyprland reload is not part of this review.".to_string(),
+        ],
+    }
+}
+
+pub fn profile_production_gate_review(
+    symlink_path: impl Into<PathBuf>,
+    original_symlink_target: Option<PathBuf>,
+    selected_target_profile: Option<PathBuf>,
+    copied_proof: Option<&CopiedConfigTreeReport>,
+    production_flag_enabled: bool,
+) -> ProfileProductionGateReview {
+    let symlink_path = symlink_path.into();
+    let mut blockers = Vec::new();
+    let mut status = ProfileProductionGateStatus::ReadyButDefaultDisabled;
+    if selected_target_profile.is_none() {
+        status = ProfileProductionGateStatus::NoSelection;
+        blockers.push("selected profile target is required".to_string());
+    }
+    if selected_target_profile
+        .as_ref()
+        .map(|target| !target.exists())
+        .unwrap_or(false)
+    {
+        status = ProfileProductionGateStatus::MissingTarget;
+        blockers.push("selected profile target must exist in the copied tree".to_string());
+    }
+    if original_symlink_target.is_none() {
+        status = ProfileProductionGateStatus::MissingSymlinkSnapshot;
+        blockers.push("original symlink target snapshot is required".to_string());
+    }
+    let copied_proof_restored = copied_proof
+        .map(|report| {
+            copied_report_base_ready(report, &symlink_path)
+                && report.profile_executor_restored == Some(true)
+        })
+        .unwrap_or(false);
+    if status == ProfileProductionGateStatus::ReadyButDefaultDisabled && !copied_proof_restored {
+        status = ProfileProductionGateStatus::MissingCopiedProof;
+        blockers.push("restored copied-config-tree profile symlink proof is required".to_string());
+    }
+    if status == ProfileProductionGateStatus::ReadyButDefaultDisabled && production_flag_enabled {
+        status = ProfileProductionGateStatus::Enabled;
+    } else if status == ProfileProductionGateStatus::ReadyButDefaultDisabled {
+        blockers.push("profile production switch flag is default-disabled".to_string());
+    }
+    let production_switch_enabled = status == ProfileProductionGateStatus::Enabled;
+    ProfileProductionGateReview {
+        status,
+        symlink_path,
+        original_symlink_target,
+        selected_target_profile,
+        copied_proof_restored,
+        real_session_live_proof_required: true,
+        production_flag_enabled,
+        production_switch_enabled,
+        blockers: blockers.clone(),
+        review_lines: vec![
+            "Profile/mode switching requires copied symlink proof and separate real-session live proof.".to_string(),
+            "The original symlink target must be restored exactly before any production activation.".to_string(),
+            "Production profile switching remains default-disabled.".to_string(),
+            format!(
+                "Blockers: {}",
+                if blockers.is_empty() {
+                    "none".to_string()
+                } else {
+                    blockers.join("; ")
+                }
+            ),
         ],
     }
 }
@@ -2394,6 +3003,29 @@ pub struct RuntimeGuardedExecutionReport {
     pub errors: Vec<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RuntimeProductionGateStatus {
+    ReadOnlyEvidenceMissing,
+    PriorValueSnapshotMissing,
+    RestoreCommandMissing,
+    RecoveryPlanMissing,
+    ReadyButDefaultDisabled,
+    Enabled,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeProductionGateReview {
+    pub action: RuntimeAction,
+    pub status: RuntimeProductionGateStatus,
+    pub read_only_evidence_available: bool,
+    pub restore_command: Option<String>,
+    pub explicit_approval_recorded: bool,
+    pub production_flag_enabled: bool,
+    pub production_runtime_enabled: bool,
+    pub blockers: Vec<String>,
+    pub review_lines: Vec<String>,
+}
+
 pub fn runtime_action_policy(action: RuntimeAction) -> RuntimeActionPolicy {
     let reason = match &action {
         RuntimeAction::Status { .. } => {
@@ -2496,6 +3128,87 @@ pub fn runtime_guarded_executor(
     }
 }
 
+pub fn runtime_production_gate_review(
+    action: RuntimeAction,
+    read_only_evidence_available: bool,
+    prior_value_snapshot: Option<&str>,
+    command_specific_recovery_plan: Option<&str>,
+    explicit_approval_recorded: bool,
+    production_flag_enabled: bool,
+) -> RuntimeProductionGateReview {
+    let risk = runtime_command_risk(&action);
+    let mut blockers = Vec::new();
+    let mut status = RuntimeProductionGateStatus::ReadyButDefaultDisabled;
+    if !read_only_evidence_available {
+        status = RuntimeProductionGateStatus::ReadOnlyEvidenceMissing;
+        blockers.push("reachable read-only runtime evidence is required".to_string());
+    }
+
+    let restore_command = match (&action, prior_value_snapshot) {
+        (RuntimeAction::Keyword { key, .. }, Some(value)) => {
+            Some(format!("hyprctl keyword {key} {value}"))
+        }
+        (RuntimeAction::Reload, Some(_)) => {
+            Some("restore config backup before hyprctl reload".to_string())
+        }
+        (RuntimeAction::Dispatch { .. }, Some(_)) => {
+            command_specific_recovery_plan.map(ToOwned::to_owned)
+        }
+        (RuntimeAction::Status { .. }, _) => None,
+        _ => None,
+    };
+
+    if !matches!(risk, RuntimeCommandRisk::ReadOnlyStatus) {
+        if prior_value_snapshot.is_none() {
+            status = RuntimeProductionGateStatus::PriorValueSnapshotMissing;
+            blockers.push("prior runtime value snapshot is required".to_string());
+        }
+        if restore_command.is_none() {
+            status = RuntimeProductionGateStatus::RestoreCommandMissing;
+            blockers.push("restore command must be generated before runtime mutation".to_string());
+        }
+        if matches!(risk, RuntimeCommandRisk::MutatingDispatch)
+            && command_specific_recovery_plan.is_none()
+        {
+            status = RuntimeProductionGateStatus::RecoveryPlanMissing;
+            blockers.push("dispatch requires command-specific recovery plan".to_string());
+        }
+        if !explicit_approval_recorded {
+            blockers.push("explicit runtime mutation approval is required".to_string());
+        }
+    }
+
+    if status == RuntimeProductionGateStatus::ReadyButDefaultDisabled && production_flag_enabled {
+        status = RuntimeProductionGateStatus::Enabled;
+    } else if status == RuntimeProductionGateStatus::ReadyButDefaultDisabled {
+        blockers.push("runtime production mutation flag is default-disabled".to_string());
+    }
+    let production_runtime_enabled = status == RuntimeProductionGateStatus::Enabled;
+    RuntimeProductionGateReview {
+        action,
+        status,
+        read_only_evidence_available,
+        restore_command,
+        explicit_approval_recorded,
+        production_flag_enabled,
+        production_runtime_enabled,
+        blockers: blockers.clone(),
+        review_lines: vec![
+            "Runtime mutation requires read-only evidence, prior snapshot, restore command, and explicit approval.".to_string(),
+            "Reload requires a config-backup prerequisite; dispatch requires command-specific recovery.".to_string(),
+            "Production runtime mutation remains default-disabled.".to_string(),
+            format!(
+                "Blockers: {}",
+                if blockers.is_empty() {
+                    "none".to_string()
+                } else {
+                    blockers.join("; ")
+                }
+            ),
+        ],
+    }
+}
+
 impl RuntimeDryRunExecutor {
     pub fn evaluate(&mut self, action: RuntimeAction) -> RuntimeDryRunResult {
         let would_mutate_runtime = !matches!(action, RuntimeAction::Status { .. });
@@ -2587,6 +3300,37 @@ pub struct LocalHyprlandVersionEvidence {
     pub missing_inputs: Vec<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum HyprlandVersionActivationStatus {
+    PartialEvidenceOnly,
+    MissingOfficialExport,
+    MissingRowCountDiff,
+    MissingWriteSafetyReview,
+    MissingSafeEnvEvidence,
+    MissingUserApproval,
+    ReadyButDefaultDisabled,
+    Enabled,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct HyprlandVersionActivationGate {
+    pub requested_version: String,
+    pub current_default_version: String,
+    pub status: HyprlandVersionActivationStatus,
+    pub local_package_evidence: Option<String>,
+    pub local_runtime_evidence: Option<String>,
+    pub official_export_available: bool,
+    pub row_count_diff_available: bool,
+    pub write_safety_review_available: bool,
+    pub safe_env_evidence_available: bool,
+    pub user_approval_recorded: bool,
+    pub activation_flag_enabled: bool,
+    pub migration_activated: bool,
+    pub production_default_changed: bool,
+    pub blockers: Vec<String>,
+    pub review_lines: Vec<String>,
+}
+
 pub fn current_v0552_data_bundle() -> VersionedDataBundle {
     VersionedDataBundle {
         version: "0.55.2".to_string(),
@@ -2595,6 +3339,87 @@ pub fn current_v0552_data_bundle() -> VersionedDataBundle {
         blocked_rows: 0,
         default_model: true,
         trusted_source: true,
+    }
+}
+
+pub fn hyprland_version_activation_gate(
+    evidence: &LocalHyprlandVersionEvidence,
+    activation_flag_enabled: bool,
+) -> HyprlandVersionActivationGate {
+    let current_default = current_v0552_data_bundle();
+    let mut blockers = Vec::new();
+    let mut status = HyprlandVersionActivationStatus::ReadyButDefaultDisabled;
+    if evidence.requested_version == current_default.version {
+        status = HyprlandVersionActivationStatus::Enabled;
+    } else {
+        let has_only_advisory_evidence = (evidence.installed_package_version.is_some()
+            || evidence.runtime_binary_version.is_some())
+            && (!evidence.official_export_available
+                || !evidence.row_count_diff_available
+                || !evidence.write_safety_review_available
+                || !evidence.safe_env_evidence_available);
+        if has_only_advisory_evidence {
+            blockers.push("local package/runtime version evidence is advisory only".to_string());
+            status = HyprlandVersionActivationStatus::PartialEvidenceOnly;
+        }
+        if !evidence.official_export_available {
+            blockers.push("trusted official export bundle is required".to_string());
+            status = HyprlandVersionActivationStatus::MissingOfficialExport;
+        }
+        if !evidence.row_count_diff_available {
+            blockers.push("row-count diff against v0.55.2 is required".to_string());
+            status = HyprlandVersionActivationStatus::MissingRowCountDiff;
+        }
+        if !evidence.write_safety_review_available {
+            blockers.push("write-safety review is required".to_string());
+            status = HyprlandVersionActivationStatus::MissingWriteSafetyReview;
+        }
+        if !evidence.safe_env_evidence_available {
+            blockers.push("safe-env evidence matrix is required".to_string());
+            status = HyprlandVersionActivationStatus::MissingSafeEnvEvidence;
+        }
+        if !evidence.user_approval_recorded {
+            blockers.push("explicit user approval is required".to_string());
+            status = HyprlandVersionActivationStatus::MissingUserApproval;
+        }
+        if blockers.is_empty() && activation_flag_enabled {
+            status = HyprlandVersionActivationStatus::Enabled;
+        } else if blockers.is_empty() {
+            status = HyprlandVersionActivationStatus::ReadyButDefaultDisabled;
+            blockers.push("migration activation flag is default-disabled".to_string());
+        }
+    }
+
+    let migration_activated = evidence.requested_version == current_default.version
+        || status == HyprlandVersionActivationStatus::Enabled && activation_flag_enabled;
+    HyprlandVersionActivationGate {
+        requested_version: evidence.requested_version.clone(),
+        current_default_version: current_default.version,
+        status,
+        local_package_evidence: evidence.installed_package_version.clone(),
+        local_runtime_evidence: evidence.runtime_binary_version.clone(),
+        official_export_available: evidence.official_export_available,
+        row_count_diff_available: evidence.row_count_diff_available,
+        write_safety_review_available: evidence.write_safety_review_available,
+        safe_env_evidence_available: evidence.safe_env_evidence_available,
+        user_approval_recorded: evidence.user_approval_recorded,
+        activation_flag_enabled,
+        migration_activated,
+        production_default_changed: false,
+        blockers: blockers.clone(),
+        review_lines: vec![
+            "Hyprland v0.55.2 remains the active/default app data bundle.".to_string(),
+            "Package/runtime version evidence is advisory and cannot replace trusted official exports.".to_string(),
+            "0.55.4 activation requires official exports, row diff, write-safety review, safe-env evidence, and user approval.".to_string(),
+            format!(
+                "Blockers: {}",
+                if blockers.is_empty() {
+                    "none".to_string()
+                } else {
+                    blockers.join("; ")
+                }
+            ),
+        ],
     }
 }
 

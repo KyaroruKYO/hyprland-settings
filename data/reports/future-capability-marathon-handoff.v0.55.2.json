@@ -52,7 +52,15 @@
     "copied_tree_structured_bind_executor_proof",
     "copied_tree_profile_symlink_executor_proof",
     "read_only_runtime_query_attempt",
-    "hyprland_0554_package_metadata_evidence"
+    "hyprland_0554_package_metadata_evidence",
+    "source_include_default_disabled_production_gate_review",
+    "duplicate_default_disabled_production_gate_review",
+    "structured_hl_bind_default_disabled_production_gate_review",
+    "profile_mode_default_disabled_production_gate_review",
+    "runtime_reload_default_disabled_production_gate_review",
+    "high_risk_display_default_disabled_production_gate_review",
+    "hyprland_0554_default_disabled_activation_gate",
+    "runtime_readonly_evidence_retry"
   ],
   "partialPhases": [],
   "blockedPhases": [
@@ -69,7 +77,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "Promote copied-config-tree proof into default-disabled production gate review for source/include, duplicate, and hl.bind structured writes; retry read-only runtime evidence in a shell with a reachable Hyprland socket.",
+  "nextExactPhaseToContinue": "Retry read-only runtime evidence from a shell with successful hyprctl socket queries, then add explicit approval flows and live restoration proof before considering any real production activation.",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -83,17 +91,17 @@
     "tests/future_capability_ui.rs",
     "data/reports/future-capability-*.json"
   ],
-  "testsPassing": "Focused future_capability_models passed after adding copied-config-tree harness and copied-tree executor restoration tests; full validation pending.",
+  "testsPassing": "Focused future_capability_models passed after adding default-disabled production gate reviews; full validation pending.",
   "testsFailing": [],
-  "validationStatus": "passed; GTK safe-env evidence root /tmp/hyprland-settings-gtk-automation/20260619_101038",
+  "validationStatus": "passed; GTK safe-env evidence root /tmp/hyprland-settings-gtk-automation/20260619_194620",
   "knownRisks": [
     "No real live/system mutation was run in this sprint; copied-config-tree executor proof ran against temp copies and restored copied state.",
-    "Read-only hyprctl socket queries were attempted but unavailable in this shell.",
-    "Source/include insertion remains production-disabled until default-disabled production gate review is added and approved.",
+    "Read-only hyprctl binary, instance signature, and socket directory were observed, but queries still failed with socket timeout in this shell.",
+    "Source/include insertion remains production-disabled beyond single-root scope until explicit approval and live restoration proof exist.",
     "High-risk/display mutation remains blocked until out-of-band recovery can be proven before any mutation.",
     "0.55.4 migration remains blocked without trusted official exports and row/write-safety review."
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "Promote copied-config-tree proof into default-disabled production gate review for source/include, duplicate, and hl.bind structured writes; retry read-only runtime evidence in a shell with a reachable Hyprland socket."
+  "recommendedNextCodexPrompt": "Retry read-only runtime evidence from a shell with successful hyprctl socket queries, then add explicit approval flows and live restoration proof before considering any real production activation."
 }
