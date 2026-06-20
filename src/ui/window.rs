@@ -15,6 +15,7 @@ use crate::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValueSourceStatus,
 };
 use crate::export::ExportBundle;
+use crate::future_capability::{source_include_insertion_review, SourceIncludeInsertionReadiness};
 use crate::guarded_write_review::{
     build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
 };
@@ -1794,6 +1795,7 @@ fn render_detail(
 
     append_detail_section(detail_content, "Edit", |section| {
         append_user_facing_write_reason(&detail, section);
+        append_source_include_insertion_target_review(model, &detail, section);
         append_pre_apply_review_scaffold(model, &detail, section);
         append_write_controls(model, &detail, section);
     });
@@ -2191,6 +2193,131 @@ fn append_pre_apply_review_scaffold(
 
     frame.set_child(Some(&content));
     section.append(&frame);
+}
+
+fn append_source_include_insertion_target_review(
+    model: &UiProjection,
+    detail: &RowDetailProjection,
+    section: &gtk::Box,
+) {
+    if detail.current_value.status != CurrentValueSourceStatus::NotConfigured {
+        return;
+    }
+    let Some(graph) = config_graph_for_discovery(&model.config_discovery) else {
+        return;
+    };
+    if graph.files.len() <= 1
+        && graph.source_references.is_empty()
+        && !graph.has_generated_hints
+        && !graph.has_script_managed_hints
+        && !graph.has_profile_hints
+        && !graph.has_mode_hints
+        && !graph.files.iter().any(|file| file.is_symlink)
+    {
+        return;
+    }
+
+    let candidate_targets: Vec<_> = graph.files.iter().map(|file| file.path.clone()).collect();
+    let managed_or_ambiguous = graph.has_generated_hints
+        || graph.has_script_managed_hints
+        || graph.has_profile_hints
+        || graph.has_mode_hints
+        || graph.files.iter().any(|file| file.is_symlink)
+        || !graph.unreadable_files.is_empty()
+        || !graph.cycles.is_empty()
+        || !graph.unsupported_sources.is_empty();
+    let review = source_include_insertion_review(
+        graph.root_path.clone(),
+        candidate_targets,
+        None,
+        managed_or_ambiguous,
+    );
+
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-source-include-insertion-review-disabled");
+    frame.set_tooltip_text(Some(
+        "Disabled source/include insertion target-selection review. This does not write connected files.",
+    ));
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label("Source/include insertion target review"));
+    content.append(&small_label(
+        "This setting uses Hyprland's default value, but this config uses connected files.",
+    ));
+    content.append(&small_label(
+        "Source/include insertion is not active yet. The app will not pick a connected file automatically.",
+    ));
+    append_detail_line(&content, "Root config", &friendly_path(&review.root_path));
+    append_detail_line(
+        &content,
+        "Readiness",
+        source_include_readiness_label(review.readiness),
+    );
+
+    for line in &review.review_lines {
+        content.append(&small_label(line));
+    }
+
+    if let Some(selected_target) = &review.selected_target {
+        append_detail_line(&content, "Selected target", &friendly_path(selected_target));
+    } else {
+        append_detail_line(&content, "Selected target", "none");
+    }
+
+    content.append(&body_label("Candidate target files"));
+    for (index, target) in review.candidate_targets.iter().enumerate() {
+        let card = gtk::Box::new(gtk::Orientation::Vertical, 4);
+        card.set_widget_name(&format!(
+            "hyprland-settings-source-include-target-candidate-disabled-{}",
+            index + 1
+        ));
+        card.set_tooltip_text(Some(
+            "Read-only source/include insertion target candidate. Choosing it is planned but disabled.",
+        ));
+        card.append(&small_label(&format!(
+            "Candidate {}: {}",
+            index + 1,
+            friendly_path(target)
+        )));
+        let choose = gtk::Button::with_label("Use this target (planned)");
+        choose.set_widget_name(&format!(
+            "hyprland-settings-source-include-target-choice-disabled-{}",
+            index + 1
+        ));
+        choose.set_tooltip_text(Some(
+            "Disabled future action. This does not insert a config line or unblock Apply.",
+        ));
+        choose.set_sensitive(false);
+        card.append(&choose);
+        content.append(&card);
+    }
+
+    let choose_target = gtk::Button::with_label("Choose target file (planned)");
+    choose_target.set_widget_name("hyprland-settings-source-include-target-selection-disabled");
+    choose_target.set_tooltip_text(Some(
+        "Disabled source/include target selection. Production insertion remains limited to single-root configs.",
+    ));
+    choose_target.set_sensitive(false);
+    content.append(&choose_target);
+    frame.set_child(Some(&content));
+    section.append(&frame);
+}
+
+fn source_include_readiness_label(readiness: SourceIncludeInsertionReadiness) -> &'static str {
+    match readiness {
+        SourceIncludeInsertionReadiness::SingleRootEligible => "single-root eligible",
+        SourceIncludeInsertionReadiness::SourceIncludeTargetSelectionRequired => {
+            "target selection required"
+        }
+        SourceIncludeInsertionReadiness::ManagedTargetBlocked => "managed target blocked",
+        SourceIncludeInsertionReadiness::DuplicateOrAmbiguousBlocked => {
+            "duplicate or ambiguous target blocked"
+        }
+    }
 }
 
 fn inactive_session_value_projection(

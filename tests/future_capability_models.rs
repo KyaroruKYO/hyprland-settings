@@ -6,14 +6,16 @@ use hyprland_settings::future_capability::{
     assess_hyprland_version_migration, current_v0552_data_bundle, disabled_migration_review,
     disabled_missing_default_insertion_review, disabled_profile_switch_review,
     disabled_profile_switch_selection_review, duplicate_occurrence_confirmation,
-    duplicate_occurrence_model, duplicate_occurrence_review, edit_structured_bind_safe_env,
-    high_risk_live_recovery_protocol, high_risk_recovery_review, high_risk_recovery_workflow,
-    migration_comparison_review, profile_target_approval_review, render_structured_entry_lossless,
-    replace_duplicate_occurrence_safe_env, runtime_action_policy, runtime_action_review,
-    runtime_command_risk, source_include_insertion_review, structured_family_model,
-    structured_family_review, switch_profile_symlink_safe_env, trusted_export_requirement,
-    validate_structured_edit_candidate, DuplicateOccurrenceApprovalState,
-    DuplicateOccurrenceReviewState, DuplicateReplacementOptions, DuplicateReplacementRequest,
+    duplicate_occurrence_model, duplicate_occurrence_review, duplicate_production_approval_gate,
+    edit_structured_bind_safe_env, high_risk_live_recovery_protocol, high_risk_recovery_review,
+    high_risk_recovery_workflow, migration_comparison_review, profile_target_approval_review,
+    render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
+    replace_duplicate_occurrence_with_confirmation_safe_env, runtime_action_policy,
+    runtime_action_review, runtime_command_risk, source_include_insertion_review,
+    structured_family_model, structured_family_review, switch_profile_symlink_safe_env,
+    trusted_export_requirement, validate_structured_edit_candidate,
+    DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
+    DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
     DuplicateReplacementStatus, HighRiskLiveReadinessStatus, MockWatchdog, MockWatchdogState,
     ProfileTargetReadiness, RuntimeAction, RuntimeCommandRisk, RuntimeDryRunExecutor,
     SourceIncludeInsertionReadiness, StructuredBindEditStatus,
@@ -248,6 +250,63 @@ fn duplicate_occurrence_confirmation_requires_matching_token_and_keeps_productio
 }
 
 #[test]
+fn duplicate_production_gate_requires_confirmed_matching_occurrence_and_blocks_apply() {
+    let root = temp_root("duplicate-production-gate");
+    let config = root.join("hyprland.conf");
+    write_file(&config, "decoration:blur:enabled = true\n");
+    let occurrence = duplicate_occurrence_model("decoration.blur.enabled", &[(config.clone(), 1)])
+        .expect("model should build")
+        .occurrences[0]
+        .clone();
+
+    let missing = duplicate_production_approval_gate(Some(&occurrence), None);
+    assert_eq!(
+        missing.status,
+        DuplicateProductionGateStatus::MissingConfirmation
+    );
+    assert!(!missing.safe_env_replacement_allowed);
+    assert!(!missing.production_apply_enabled);
+    assert!(!missing.duplicate_write_enabled);
+
+    let pending =
+        duplicate_occurrence_confirmation(Some(&occurrence), Some("wrong"), "token", false, false);
+    let pending_gate = duplicate_production_approval_gate(Some(&occurrence), Some(&pending));
+    assert_eq!(
+        pending_gate.status,
+        DuplicateProductionGateStatus::PendingConfirmation
+    );
+    assert!(!pending_gate.safe_env_replacement_allowed);
+
+    let confirmed =
+        duplicate_occurrence_confirmation(Some(&occurrence), Some("token"), "token", false, false);
+    let confirmed_gate = duplicate_production_approval_gate(Some(&occurrence), Some(&confirmed));
+    assert_eq!(
+        confirmed_gate.status,
+        DuplicateProductionGateStatus::ConfirmedButProductionDisabled
+    );
+    assert!(confirmed_gate.safe_env_replacement_allowed);
+    assert!(!confirmed_gate.production_apply_enabled);
+    assert!(!confirmed_gate.duplicate_write_enabled);
+    assert_eq!(
+        confirmed_gate
+            .precondition
+            .as_ref()
+            .expect("precondition")
+            .source_depth,
+        1
+    );
+
+    let mut stale = occurrence.clone();
+    stale.raw_line = "decoration:blur:enabled = false".to_string();
+    let stale_gate = duplicate_production_approval_gate(Some(&stale), Some(&confirmed));
+    assert_eq!(
+        stale_gate.status,
+        DuplicateProductionGateStatus::FingerprintMismatch
+    );
+    assert!(!stale_gate.safe_env_replacement_allowed);
+}
+
+#[test]
 fn duplicate_replacement_safe_env_replaces_exact_selected_line_and_verifies() {
     let root = temp_root("duplicate-replace");
     let config = root.join("hyprland.conf");
@@ -278,6 +337,58 @@ fn duplicate_replacement_safe_env_replaces_exact_selected_line_and_verifies() {
     assert!(fs::read_to_string(config)
         .expect("config should read")
         .starts_with("decoration:blur:enabled = false\n"));
+}
+
+#[test]
+fn duplicate_replacement_with_confirmation_blocks_unconfirmed_and_stale_occurrences() {
+    let root = temp_root("duplicate-confirmed-replace");
+    let config = root.join("hyprland.conf");
+    write_file(&config, "decoration:blur:enabled = true\n");
+    let occurrence = duplicate_occurrence_model("decoration.blur.enabled", &[(config.clone(), 0)])
+        .expect("model should build")
+        .occurrences[0]
+        .clone();
+    let request = DuplicateReplacementRequest {
+        occurrence: occurrence.clone(),
+        expected_old_value: "true".to_string(),
+        proposed_value: "false".to_string(),
+        backup_stamp: "confirmed".to_string(),
+    };
+
+    let pending =
+        duplicate_occurrence_confirmation(Some(&occurrence), Some("wrong"), "token", false, false);
+    let blocked = replace_duplicate_occurrence_with_confirmation_safe_env(
+        &pending,
+        &request,
+        &DuplicateReplacementOptions::default(),
+    );
+    assert_eq!(blocked.status, DuplicateReplacementStatus::Blocked);
+    assert!(!blocked.exact_line_replaced);
+    assert_eq!(
+        fs::read_to_string(&config).expect("config should read"),
+        "decoration:blur:enabled = true\n"
+    );
+
+    let confirmed =
+        duplicate_occurrence_confirmation(Some(&occurrence), Some("token"), "token", false, false);
+    let mut stale_request = request.clone();
+    stale_request.occurrence.raw_value = "false".to_string();
+    let stale = replace_duplicate_occurrence_with_confirmation_safe_env(
+        &confirmed,
+        &stale_request,
+        &DuplicateReplacementOptions::default(),
+    );
+    assert_eq!(stale.status, DuplicateReplacementStatus::Blocked);
+    assert!(!stale.exact_line_replaced);
+
+    let report = replace_duplicate_occurrence_with_confirmation_safe_env(
+        &confirmed,
+        &request,
+        &DuplicateReplacementOptions::default(),
+    );
+    assert_eq!(report.status, DuplicateReplacementStatus::Succeeded);
+    assert!(report.exact_line_replaced);
+    assert!(!report.production_write_enabled);
 }
 
 #[test]

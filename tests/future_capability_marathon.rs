@@ -82,12 +82,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Connect source/include insertion target-selection review to disabled UI, or build the explicit duplicate production approval gate while keeping duplicate writes disabled by default."
+        "Build disabled duplicate pre-Apply review UI around the production approval gate, or add source/include target-selection fixture proof while source/include insertion remains disabled."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("duplicate confirmation"));
+        .contains("duplicate production approval gate"));
 }
 
 #[test]

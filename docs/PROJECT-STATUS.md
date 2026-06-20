@@ -54,17 +54,17 @@ On the `future-capability-marathon` branch, missing/default insertion is now pro
 
 Current future-capability tracker:
 
-- Core app shell / UI / navigation: 90-95%
-- Config discovery / source-aware model: 87-91%
+- Core app shell / UI / navigation: 91-95%
+- Config discovery / source-aware model: 89-92%
 - 341-row read/write model: 90-95%
-- Safe normal-scalar writes: 91-96%
+- Safe normal-scalar writes: 92-96%
 - Release packaging/tag/artifacts: 85-95%
-- Missing/default insertion: 84-90%
-- Duplicate resolution: 66-74%
+- Missing/default insertion: 86-91%
+- Duplicate resolution: 70-78%
 - High-risk/display recovery: 50-60%
 - Structured-family editors/writes: 48-58%
 - Profile/mode switching: 50-60%
 - Runtime/reload integration: 45-55%
 - Hyprland 0.55.4 migration: 35-45%
 
-Next exact work item: connect source/include insertion target-selection review to disabled UI, or build the explicit duplicate production approval gate while keeping duplicate writes disabled by default.
+Next exact work item: build disabled duplicate pre-Apply review UI around the production approval gate, or add source/include target-selection fixture proof while source/include insertion remains disabled.

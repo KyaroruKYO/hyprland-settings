@@ -50,7 +50,10 @@
     "structured_hl_bind_lossless_render_and_safe_env_edit_proof",
     "profile_target_approval_review_model",
     "runtime_command_risk_classification",
-    "hyprland_0554_trusted_export_requirement_model"
+    "hyprland_0554_trusted_export_requirement_model",
+    "disabled_source_include_insertion_target_selection_ui",
+    "duplicate_production_approval_gate_scaffold",
+    "confirmation_gated_duplicate_safe_env_replacement_wrapper"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -89,17 +92,17 @@
     "gtkSafeEnvMatrix": "passed",
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_101038"
   },
-  "nextRecommendedAction": "Review duplicate confirmation, hl.bind lossless proof, and high-risk no-op live protocol; next exact implementation target is source/include target selection UI/model or explicit duplicate production approval gate, with production writes still disabled by default.",
+  "nextRecommendedAction": "Build disabled duplicate pre-Apply review UI around the production approval gate, or add source/include target-selection fixture proof while source/include insertion remains disabled.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "90-95%",
-      "after": "90-95%",
-      "evidence": "No broad UI redesign; existing disabled surfaces preserved."
+      "after": "91-95%",
+      "evidence": "Added disabled source/include target-selection review surface with stable widget names/tooltips."
     },
     "configDiscoverySourceAwareModel": {
-      "before": "85-90%",
-      "after": "87-91%",
-      "evidence": "Added source/include insertion target-selection readiness model; unsafe multi-file insertion remains blocked."
+      "before": "87-91%",
+      "after": "89-92%",
+      "evidence": "Source/include readiness model now appears in disabled target-selection UI; unsafe expansion remains blocked."
     },
     "rowReadWriteModel": {
       "before": "90-95%",
@@ -107,9 +110,9 @@
       "evidence": "341/341/0 and SAFE_WRITABLE_ROWS count preserved."
     },
     "safeNormalScalarWrites": {
-      "before": "90-95%",
-      "after": "91-96%",
-      "evidence": "Single-root missing/default insertion remains gated; source/include expansion modeled but disabled."
+      "before": "91-96%",
+      "after": "92-96%",
+      "evidence": "Current single-root missing/default gate preserved; source/include expansion surfaced as disabled review."
     },
     "releasePackagingTagArtifacts": {
       "before": "85-95%",
@@ -117,44 +120,59 @@
       "evidence": "v0.1.0 tag and dist/v0.1.0 artifacts preserved."
     },
     "missingDefaultInsertion": {
-      "before": "80-88%",
-      "after": "84-90%",
-      "evidence": "Production single-root path remains enabled; source/include target-selection architecture added but disabled."
+      "before": "84-90%",
+      "after": "86-91%",
+      "evidence": "Disabled source/include target-selection UI added; production source/include insertion remains blocked."
     },
     "duplicateResolution": {
-      "before": "60-70%",
-      "after": "66-74%",
-      "evidence": "Added confirmation token/fingerprint model; production duplicate writes remain disabled."
+      "before": "66-74%",
+      "after": "70-78%",
+      "evidence": "Production approval gate scaffold and confirmation-gated safe-env replacement wrapper added; production writes disabled."
     },
     "highRiskDisplayRecovery": {
-      "before": "45-55%",
+      "before": "50-60%",
       "after": "50-60%",
-      "evidence": "Added no-op live recovery readiness protocol refusing real paths and runtime mutation."
+      "evidence": "No safe production progress without live recovery proof and explicit approval."
     },
     "structuredFamilyEditorsWrites": {
-      "before": "40-50%",
+      "before": "48-58%",
       "after": "48-58%",
-      "evidence": "Added hl.bind lossless render and safe-env exact-line edit proof; production writes remain disabled."
+      "evidence": "No safe production progress beyond existing hl.bind proof without structured write gate approval."
     },
     "profileModeSwitching": {
-      "before": "45-55%",
+      "before": "50-60%",
       "after": "50-60%",
-      "evidence": "Added profile target approval review that distinguishes no selection, missing target, outside safe-env, and safe-env-only states."
+      "evidence": "No safe real-session progress without explicit profile switching approval."
     },
     "runtimeReloadIntegration": {
-      "before": "40-50%",
+      "before": "45-55%",
       "after": "45-55%",
-      "evidence": "Added runtime command risk classification for status, reload, keyword, and dispatch."
+      "evidence": "No safe runtime mutation progress without explicit runtime approval."
     },
     "hyprland0554Migration": {
-      "before": "30-40%",
+      "before": "35-45%",
       "after": "35-45%",
-      "evidence": "Added trusted export requirement model; v0.55.2 remains active default."
+      "evidence": "No activation progress without trusted official 0.55.4 exports."
     }
   },
   "priorityTrackStatus": {
-    "duplicateProductionApproval": "implemented_but_disabled: confirmation token/fingerprint model exists; production Apply remains blocked pending explicit approval gate.",
+    "sourceIncludeInsertionTargetSelectionUi": "implemented_but_disabled: detail-pane review surface shows root config, candidate target files, selected target state, readiness state, and disabled planned target actions; source/include insertion remains blocked.",
+    "duplicateProductionApproval": "implemented_but_disabled: production approval gate and precondition fingerprint model exist; confirmation-gated safe-env replacement wrapper exists; production Apply remains blocked.",
     "structuredFamilyLosslessProof": "safe_env_only: hl.bind lossless render and temp-fixture exact-line edit proof exists; production structured writes remain blocked.",
     "highRiskLiveRecoveryProof": "implemented_but_disabled: no-op live readiness protocol exists and refuses real config/runtime mutation; live mutation proof still not run."
+  },
+  "categoryCoverageThisSprint": {
+    "coreAppShellUiNavigation": "disabled source/include target-selection review surface added in setting detail pane with widget names/tooltips and source tests",
+    "configDiscoverySourceAwareModel": "source/include readiness model now exposed through disabled target-selection UI; production expansion remains blocked",
+    "rowReadWriteModel": "SAFE_WRITABLE_ROWS remains asserted at 341 in future capability UI/model tests; no row inventory changed",
+    "safeNormalScalarWrites": "single-root missing/default path preserved; source/include expansion shown as disabled target-selection review",
+    "releasePackagingTagArtifacts": "v0.1.0 tag and dist/v0.1.0 preserved; no release artifact mutation",
+    "missingDefaultInsertion": "disabled source/include target-selection review UI added for default/missing rows in connected layouts",
+    "duplicateResolution": "production approval gate and confirmation-gated safe-env replacement wrapper added; duplicate writes remain disabled",
+    "highRiskDisplayRecovery": "no additional production-safe step beyond existing no-op protocol; blocked by explicit approval and live recovery proof",
+    "structuredFamilyEditorsWrites": "no production-safe expansion beyond hl.bind lossless proof; blocked until structured write gate is approved",
+    "profileModeSwitching": "no production-safe expansion beyond safe-env target review; blocked by real-session approval and restore protocol",
+    "runtimeReloadIntegration": "no production-safe expansion beyond dry-run risk classification; mutating runtime remains blocked",
+    "hyprland0554Migration": "no production-safe expansion without trusted official exports; v0.55.2 remains default"
   }
 }

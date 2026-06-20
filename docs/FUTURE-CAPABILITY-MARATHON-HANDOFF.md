@@ -13,10 +13,12 @@
 - All seven future capability tracks were reviewed and recorded.
 - Missing/default insertion received safe-env-only planner/executor proof, disabled review scaffolding for unsupported layouts, and a production-enabled single-root normal-scalar safe-batch insertion path.
 - Missing/default insertion now has a source/include target-selection readiness model; source/include production insertion remains blocked.
+- Missing/default insertion now has a disabled source/include target-selection review surface in the setting detail pane; it shows root config, candidate targets, selected target state, readiness state, and planned disabled actions.
 - Duplicate resolution received a read-only occurrence model and safe-env exact-line replacement proof.
 - Duplicate detail UI now has a disabled occurrence selector showing file, line, raw line, value, and source depth.
 - Duplicate resolution now has a disabled review workflow for no selection, invalid selection, and selected-but-production-disabled states.
 - Duplicate resolution now has a confirmation token/fingerprint model for missing, pending, confirmed, rejected, and expired states; production duplicate writes remain disabled.
+- Duplicate resolution now has a production approval gate scaffold with occurrence preconditions and a confirmation-gated safe-env replacement wrapper; production duplicate writes remain disabled.
 - High-risk/display recovery received a mock watchdog state machine.
 - High-risk/display recovery received a disabled review model backed by mock watchdog state.
 - High-risk/display recovery now has a rollback proof workflow model for backup, reread, timeout restore, and restore reread requirements.
@@ -41,7 +43,8 @@
 
 ## Partial phases
 - Missing/default insertion is enabled only for reviewed single-file normal scalar safe-batch targets; source/include target selection and managed/duplicate/high-risk/structured/profile/runtime insertion remain blocked.
-- Duplicate resolution has no production write path despite safe-env exact-line proof and confirmation-token scaffolding.
+- Source/include target-selection UI is visible but disabled and does not write connected files.
+- Duplicate resolution has no production write path despite safe-env exact-line proof, confirmation-token scaffolding, and a production approval gate model.
 - Runtime/reload and high-risk recovery remain mock/dry-run/no-op only.
 
 ## Blocked phases
@@ -50,25 +53,25 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Connect source/include insertion target-selection review to disabled UI, or build the explicit duplicate production approval gate while keeping duplicate writes disabled by default.
+Build disabled duplicate pre-Apply review UI around the production approval gate, or add source/include target-selection fixture proof while source/include insertion remains disabled.
 
 ## Progress tracker
-- Core app shell / UI / navigation: 90-95% -> 90-95%
-- Config discovery / source-aware model: 85-90% -> 87-91%
+- Core app shell / UI / navigation: 90-95% -> 91-95%
+- Config discovery / source-aware model: 87-91% -> 89-92%
 - 341-row read/write model: 90-95% -> 90-95%
-- Safe normal-scalar writes: 90-95% -> 91-96%
+- Safe normal-scalar writes: 91-96% -> 92-96%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
-- Missing/default insertion: 80-88% -> 84-90%
-- Duplicate resolution: 60-70% -> 66-74%
-- High-risk/display recovery: 45-55% -> 50-60%
-- Structured-family editors/writes: 40-50% -> 48-58%
-- Profile/mode switching: 45-55% -> 50-60%
-- Runtime/reload integration: 40-50% -> 45-55%
-- Hyprland 0.55.4 migration: 30-40% -> 35-45%
+- Missing/default insertion: 84-90% -> 86-91%
+- Duplicate resolution: 66-74% -> 70-78%
+- High-risk/display recovery: 50-60% -> 50-60%
+- Structured-family editors/writes: 48-58% -> 48-58%
+- Profile/mode switching: 50-60% -> 50-60%
+- Runtime/reload integration: 45-55% -> 45-55%
+- Hyprland 0.55.4 migration: 35-45% -> 35-45%
 
 ## Validation status
 Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `jq empty data/reports/*.json`, `git diff --check`, and `tools/live_scenario_harness/run_gtk_evidence_matrix.sh`.
 GTK evidence root: `/tmp/hyprland-settings-gtk-automation/20260619_101038`.
 
 ## Recommended next Codex prompt
-Review the new duplicate confirmation, structured `hl.bind` lossless proof, and high-risk no-op protocol; then choose whether to wire disabled source/include target-selection UI or design the duplicate production approval gate.
+Review the disabled source/include target-selection UI and duplicate production approval gate; then wire disabled duplicate pre-Apply review UI or add source/include target-selection fixture proof while keeping source/include insertion blocked.

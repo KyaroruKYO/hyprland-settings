@@ -24,7 +24,8 @@
     "Kept profile/mode safe-batch blocking asserted by deterministic tests.",
     "Defined safe-env symlink/profile switching as the next acceptable proof path.",
     "Added a profile target approval review model that distinguishes no selection, missing target, target outside safe-env, and safe-env-only review states.",
-    "Added deterministic tests proving real-session profile paths are refused as outside safe-env and production switching remains disabled."
+    "Added deterministic tests proving real-session profile paths are refused as outside safe-env and production switching remains disabled.",
+    "No additional production-safe profile switching step was available this sprint without explicit real-session switching approval."
   ],
   "whatWasNotImplemented": [
     "No real symlink was switched.",

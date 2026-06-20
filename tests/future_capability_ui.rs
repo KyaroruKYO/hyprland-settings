@@ -67,3 +67,63 @@ fn layered_occurrences_expose_raw_line_and_source_depth_for_selector() {
     assert!(source.contains("source_depth: file.source_depth"));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
+
+#[test]
+fn source_include_insertion_target_review_is_visible_read_only_and_disabled() {
+    let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
+    let review_source = source_slice(
+        &source,
+        "fn append_source_include_insertion_target_review",
+        "fn source_include_readiness_label",
+    );
+
+    for expected in [
+        "hyprland-settings-source-include-insertion-review-disabled",
+        "hyprland-settings-source-include-target-candidate-disabled",
+        "hyprland-settings-source-include-target-choice-disabled",
+        "hyprland-settings-source-include-target-selection-disabled",
+        "Source/include insertion target review",
+        "Source/include insertion is not active yet.",
+        "The app will not pick a connected file automatically.",
+        "Candidate target files",
+        "Use this target (planned)",
+        "Choose target file (planned)",
+        "choose.set_sensitive(false)",
+        "choose_target.set_sensitive(false)",
+    ] {
+        assert!(
+            review_source.contains(expected),
+            "missing source/include insertion target review source: {expected}"
+        );
+    }
+
+    for forbidden in [
+        "execute_missing_default_insertion_plan",
+        "replace_duplicate_occurrence_safe_env",
+        "apply_setting_change",
+        "hyprctl",
+        "reload",
+    ] {
+        assert!(
+            !review_source.contains(forbidden),
+            "source/include target review must not invoke production or runtime behavior: {forbidden}"
+        );
+    }
+}
+
+#[test]
+fn source_include_insertion_target_review_is_called_from_detail_edit_section() {
+    let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
+    let edit_source = source_slice(
+        &source,
+        "append_detail_section(detail_content, \"Edit\"",
+        "append_detail_section(detail_content, \"Safety\"",
+    );
+
+    assert!(edit_source.contains("append_source_include_insertion_target_review"));
+    assert!(source.contains("source_include_insertion_review("));
+    assert!(
+        source.contains("SourceIncludeInsertionReadiness::SourceIncludeTargetSelectionRequired")
+    );
+    assert!(source.contains("SourceIncludeInsertionReadiness::ManagedTargetBlocked"));
+}

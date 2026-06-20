@@ -30,7 +30,10 @@
     "structured_hl_bind_lossless_render_and_safe_env_edit_proof",
     "profile_target_approval_review_model",
     "runtime_command_risk_classification",
-    "hyprland_0554_trusted_export_requirement_model"
+    "hyprland_0554_trusted_export_requirement_model",
+    "disabled_source_include_insertion_target_selection_ui",
+    "duplicate_production_approval_gate_scaffold",
+    "confirmation_gated_duplicate_safe_env_replacement_wrapper"
   ],
   "partialPhases": [],
   "blockedPhases": [
@@ -47,7 +50,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "Connect source/include insertion target-selection review to disabled UI, or build the explicit duplicate production approval gate while keeping duplicate writes disabled by default.",
+  "nextExactPhaseToContinue": "Build disabled duplicate pre-Apply review UI around the production approval gate, or add source/include target-selection fixture proof while source/include insertion remains disabled.",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -75,12 +78,13 @@
   "validationStatus": "passed; GTK safe-env evidence root /tmp/hyprland-settings-gtk-automation/20260619_101038",
   "knownRisks": [
     "Missing/default insertion is production-enabled only for single-root normal-scalar safe-batch targets; source/include, managed, duplicate, high-risk, structured, profile/mode, runtime, and ambiguous insertion targets remain blocked.",
-    "Duplicate confirmation tokens and safe-env replacement proof exist, but production duplicate writes remain intentionally inactive.",
+    "Source/include insertion target-selection UI is visible but disabled and does not write connected files.",
+    "Duplicate production approval gate exists, but production duplicate writes remain intentionally inactive.",
     "Structured hl.bind has lossless render and safe-env exact-line edit proof, but production structured writes remain intentionally inactive.",
     "High-risk live recovery protocol is no-op only and refuses real config paths and runtime mutation.",
     "Profile switching, runtime reload, and Hyprland 0.55.4 migration remain inactive."
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "Review the new duplicate confirmation, structured hl.bind lossless proof, and high-risk no-op protocol; then choose whether to wire disabled source/include target-selection UI or design the duplicate production approval gate."
+  "recommendedNextCodexPrompt": "Review the disabled source/include target-selection UI and duplicate production approval gate; then either wire disabled duplicate pre-Apply review UI or add source/include target-selection fixture proof while keeping source/include insertion blocked."
 }

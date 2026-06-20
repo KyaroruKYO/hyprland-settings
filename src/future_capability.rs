@@ -167,6 +167,38 @@ pub struct DuplicateOccurrenceConfirmation {
     pub review_lines: Vec<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum DuplicateProductionGateStatus {
+    MissingConfirmation,
+    PendingConfirmation,
+    ConfirmedButProductionDisabled,
+    Rejected,
+    Expired,
+    FingerprintMismatch,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DuplicateOccurrencePrecondition {
+    pub path: PathBuf,
+    pub line_number: usize,
+    pub raw_line: String,
+    pub old_value: String,
+    pub source_depth: usize,
+    pub fingerprint: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DuplicateProductionApprovalGate {
+    pub setting_id: String,
+    pub status: DuplicateProductionGateStatus,
+    pub precondition: Option<DuplicateOccurrencePrecondition>,
+    pub safe_env_replacement_allowed: bool,
+    pub production_apply_enabled: bool,
+    pub duplicate_write_enabled: bool,
+    pub block_reason: String,
+    pub review_lines: Vec<String>,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct DuplicateOccurrenceReview {
     pub setting_id: String,
@@ -311,6 +343,97 @@ pub fn duplicate_occurrence_confirmation(
             "Manual occurrence confirmation is required before a duplicate replacement proof can run.".to_string(),
             "Production Apply remains disabled even after fixture confirmation.".to_string(),
             "The selected path, line number, raw line, and old value must still match at write time.".to_string(),
+        ],
+    }
+}
+
+fn duplicate_occurrence_fingerprint(occurrence: &DuplicateOccurrence) -> String {
+    format!(
+        "{}:{}:{}:{}",
+        occurrence.path.display(),
+        occurrence.line_number,
+        occurrence.raw_line,
+        occurrence.raw_value
+    )
+}
+
+pub fn duplicate_production_approval_gate(
+    occurrence: Option<&DuplicateOccurrence>,
+    confirmation: Option<&DuplicateOccurrenceConfirmation>,
+) -> DuplicateProductionApprovalGate {
+    let precondition = occurrence.map(|occurrence| DuplicateOccurrencePrecondition {
+        path: occurrence.path.clone(),
+        line_number: occurrence.line_number,
+        raw_line: occurrence.raw_line.clone(),
+        old_value: occurrence.raw_value.clone(),
+        source_depth: occurrence.source_depth,
+        fingerprint: duplicate_occurrence_fingerprint(occurrence),
+    });
+
+    let status = match (occurrence, confirmation) {
+        (None, _) | (_, None) => DuplicateProductionGateStatus::MissingConfirmation,
+        (Some(_), Some(confirmation))
+            if confirmation.approval_state == DuplicateOccurrenceApprovalState::Rejected =>
+        {
+            DuplicateProductionGateStatus::Rejected
+        }
+        (Some(_), Some(confirmation))
+            if confirmation.approval_state == DuplicateOccurrenceApprovalState::Expired =>
+        {
+            DuplicateProductionGateStatus::Expired
+        }
+        (Some(_), Some(confirmation))
+            if confirmation.approval_state != DuplicateOccurrenceApprovalState::Confirmed =>
+        {
+            DuplicateProductionGateStatus::PendingConfirmation
+        }
+        (Some(occurrence), Some(confirmation))
+            if confirmation.occurrence_fingerprint.as_deref()
+                != Some(duplicate_occurrence_fingerprint(occurrence).as_str()) =>
+        {
+            DuplicateProductionGateStatus::FingerprintMismatch
+        }
+        (Some(_), Some(_)) => DuplicateProductionGateStatus::ConfirmedButProductionDisabled,
+    };
+
+    let block_reason = match status {
+        DuplicateProductionGateStatus::MissingConfirmation => {
+            "No duplicate occurrence has confirmed target approval.".to_string()
+        }
+        DuplicateProductionGateStatus::PendingConfirmation => {
+            "Duplicate occurrence approval is still pending.".to_string()
+        }
+        DuplicateProductionGateStatus::ConfirmedButProductionDisabled => {
+            "Duplicate occurrence is confirmed for fixture proof, but production duplicate writes remain disabled.".to_string()
+        }
+        DuplicateProductionGateStatus::Rejected => {
+            "Duplicate occurrence approval was rejected.".to_string()
+        }
+        DuplicateProductionGateStatus::Expired => {
+            "Duplicate occurrence approval expired before Apply.".to_string()
+        }
+        DuplicateProductionGateStatus::FingerprintMismatch => {
+            "Duplicate occurrence preconditions no longer match the confirmed target.".to_string()
+        }
+    };
+
+    DuplicateProductionApprovalGate {
+        setting_id: occurrence
+            .map(|occurrence| occurrence.setting_id.clone())
+            .or_else(|| confirmation.map(|confirmation| confirmation.setting_id.clone()))
+            .unwrap_or_default(),
+        status,
+        precondition,
+        safe_env_replacement_allowed: status
+            == DuplicateProductionGateStatus::ConfirmedButProductionDisabled,
+        production_apply_enabled: false,
+        duplicate_write_enabled: false,
+        block_reason: block_reason.clone(),
+        review_lines: vec![
+            "Duplicate writes need explicit occurrence target confirmation.".to_string(),
+            block_reason,
+            "The app will not choose the first, last, base, or profile value automatically."
+                .to_string(),
         ],
     }
 }
@@ -460,6 +583,18 @@ pub fn replace_duplicate_occurrence_safe_env(
         runtime_touched: false,
         errors: Vec::new(),
     }
+}
+
+pub fn replace_duplicate_occurrence_with_confirmation_safe_env(
+    confirmation: &DuplicateOccurrenceConfirmation,
+    request: &DuplicateReplacementRequest,
+    options: &DuplicateReplacementOptions,
+) -> DuplicateReplacementReport {
+    let gate = duplicate_production_approval_gate(Some(&request.occurrence), Some(confirmation));
+    if gate.status != DuplicateProductionGateStatus::ConfirmedButProductionDisabled {
+        return duplicate_failed(gate.block_reason);
+    }
+    replace_duplicate_occurrence_safe_env(request, options)
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
