@@ -27,3 +27,6 @@ The preferred `general:gaps_in` live-restore proof is now proven for the low-ris
 
 ## Model Work
 `RuntimeLiveRestoreProof` now records read-only evidence, prior value, temporary value, restore command, mutation command failure/success, post-mutation readback, post-restore readback, restoration status, and production-disabled state. Tests prove failed read-only evidence blocks mutation, failed mutation syntax does not enable production, and a complete restore proof can reach `LiveRestoreProven` without enabling production.
+
+## UI Evidence
+The proof is now displayed in a disabled setting-detail runtime approval surface. The surface shows the exact mutation and restore commands, readbacks, approved-but-default-disabled status, and disabled production runtime/reload state. It has no runtime handler and does not enable production Apply.

@@ -40,10 +40,23 @@
     "runtimeReloadEnabled": false,
     "approvalAloneCanEnableProduction": false
   },
+  "runtimeApprovalUiSurface": {
+    "implemented": true,
+    "status": "implemented_but_disabled",
+    "widgetName": "hyprland-settings-runtime-approval-review-disabled",
+    "evidenceWidgetName": "hyprland-settings-runtime-live-restore-evidence",
+    "disabledActionWidgetName": "hyprland-settings-runtime-approval-enable-disabled",
+    "displaysProvenHlConfigEvalSyntax": true,
+    "displaysRestoreProof": true,
+    "productionRuntimeReloadEnabled": false
+  },
   "tests": [
     "runtime_live_restore_approval_review_consumes_proof_but_keeps_production_disabled",
     "runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production",
-    "runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_production"
+    "runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_production",
+    "runtime_approval_evidence_projection_includes_proof_without_enabling_production",
+    "runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled",
+    "runtime_approval_review_surface_is_called_from_detail_edit_section"
   ],
   "safety": {
     "realConfigTouched": false,
@@ -63,5 +76,5 @@
     "Dispatch still requires command-specific recovery proof.",
     "Any future production runtime mutation needs a separate explicit activation flag beyond approval review."
   ],
-  "nextRecommendedWork": "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload."
+  "nextRecommendedWork": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
 }

@@ -35,7 +35,8 @@
     "Attempted one guarded low-risk general:gaps_in live-restore proof after preparing restore commands. hyprctl keyword was rejected for non-legacy parsers and tested assignment eval syntax failed before value change; the active Lua config syntax identified hyprctl eval 'hl.config({ general = { gaps_in = 6 } })' as the correct mutation form.",
     "Ran the controlled hl.config eval proof outside the sandbox: gaps_in changed from 5 to 6, then the prepared restore command returned it to 5 and post-restore readback verified restoration.",
     "Connected the proven hl.config eval live-restore proof and mutation syntax evidence to a default-disabled runtime approval review that can reach approved_but_default_disabled with valid approval token evidence.",
-    "Added tests proving missing proof, failed restore proof, wrong setting, wrong restore command, missing approval, wrong scope, expired approval, and valid approval behavior while production runtime/reload remains disabled."
+    "Added tests proving missing proof, failed restore proof, wrong setting, wrong restore command, missing approval, wrong scope, expired approval, and valid approval behavior while production runtime/reload remains disabled.",
+    "Added a disabled runtime approval UI surface in the setting detail pane that displays the proven hl.config eval command pair, prior/temporary values, readbacks, approval status, and disabled production runtime/reload state without handlers."
   ],
   "whatWasNotImplemented": [
     "No real hyprctl keyword, dispatch, reload, or runtime mutation path was added.",
@@ -46,7 +47,10 @@
     "tests/future_capability_marathon.rs",
     "controlled_live_test_guard_requires_reversible_proof_before_any_mutation",
     "controlled_live_test_guard_has_category_specific_profile_runtime_and_migration_gates",
-    "runtime_live_restore_approval_review_consumes_proof_but_keeps_production_disabled"
+    "runtime_live_restore_approval_review_consumes_proof_but_keeps_production_disabled",
+    "runtime_approval_evidence_projection_includes_proof_without_enabling_production",
+    "runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled",
+    "runtime_approval_review_surface_is_called_from_detail_edit_section"
   ],
   "reportsAdded": [
     "data/reports/future-capability-runtime-reload.v0.55.2.json",
@@ -54,7 +58,8 @@
     "data/reports/runtime-live-restore-proof.v0.55.2.json",
     "data/reports/runtime-socket-diagnosis.v0.55.2.json",
     "data/reports/runtime-mutation-syntax-proof.v0.55.2.json",
-    "data/reports/runtime-approval-live-restore-gate.v0.55.2.json"
+    "data/reports/runtime-approval-live-restore-gate.v0.55.2.json",
+    "data/reports/runtime-approval-ui-surface.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "dryRunRuntimeInterfaceAllowed": true,
@@ -88,6 +93,9 @@
     "runtimeApprovalReviewConsumesLiveRestoreProof": true,
     "runtimeApprovalReviewStatus": "approved_but_default_disabled",
     "runtimeApprovalReviewEnablesProduction": false,
+    "runtimeApprovalUiSurfaceExists": true,
+    "runtimeApprovalUiSurfaceEnabled": false,
+    "runtimeApprovalUiSurfaceDisplaysRestoreProof": true,
     "hyprctlBinaryFound": true,
     "hyprlandInstanceSignaturePresent": true,
     "runtimeSocketDirectoryObserved": true,
@@ -97,7 +105,8 @@
     "runtimeApprovalCanEnableProductionByDefault": false,
     "runtimeLiveRestoreProofModelExists": true,
     "runtimeMutationSyntaxEvidenceModelExists": true,
-    "runtimeApprovalLiveRestoreGateModelExists": true
+    "runtimeApprovalLiveRestoreGateModelExists": true,
+    "runtimeApprovalUiSurfaceExists": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"
@@ -108,7 +117,7 @@
     "Production runtime mutation remains disabled even though the low-risk live restore proof and approval review succeeded.",
     "Reload and dispatch still require separate restore/recovery plans before any production activation."
   ],
-  "nextRecommendedWork": "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload.",
+  "nextRecommendedWork": "Extend the disabled approval UI pattern to the remaining future capability review cards without enabling production behavior.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": true,
   "whetherProductionBehaviorEnabled": false

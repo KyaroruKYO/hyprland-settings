@@ -18,9 +18,9 @@ use hyprland_settings::future_capability::{
     high_risk_recovery_workflow, hyprland_0554_approval_flow, hyprland_version_activation_gate,
     local_hyprland_version_evidence, migration_comparison_review, profile_approval_flow,
     profile_production_gate_review, profile_target_approval_review,
-    render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
-    replace_duplicate_occurrence_with_confirmation_safe_env, runtime_action_policy,
-    runtime_action_review, runtime_approval_flow, runtime_command_risk,
+    proven_runtime_approval_evidence_summary, render_structured_entry_lossless,
+    replace_duplicate_occurrence_safe_env, replace_duplicate_occurrence_with_confirmation_safe_env,
+    runtime_action_policy, runtime_action_review, runtime_approval_flow, runtime_command_risk,
     runtime_eval_syntax_evidence, runtime_guarded_executor, runtime_live_restore_approval_review,
     runtime_live_restore_attempt_review, runtime_live_restore_proof_review,
     runtime_production_gate_review, runtime_socket_diagnosis, source_include_approval_flow,
@@ -3141,6 +3141,33 @@ fn runtime_live_restore_approval_review_consumes_proof_but_keeps_production_disa
         .blockers
         .iter()
         .any(|blocker| blocker.contains("not wired")));
+}
+
+#[test]
+fn runtime_approval_evidence_projection_includes_proof_without_enabling_production() {
+    let evidence = proven_runtime_approval_evidence_summary();
+    let lines = evidence.user_facing_lines();
+    for expected in [
+        "Runtime approval review",
+        "Runtime changes are not enabled yet.",
+        "This setting has a proven live-restore test.",
+        "Production runtime/reload remains disabled.",
+        "Setting: general:gaps_in",
+        "Prior value: 5",
+        "Temporary test value: 6",
+        "Mutation command: hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'",
+        "Restore command: hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'",
+        "Post-mutation readback: css gap data: 6 6 6 6; set: true",
+        "Post-restore readback: css gap data: 5 5 5 5; set: true",
+        "Approval status: Approved but default-disabled",
+        "Production runtime/reload: Disabled",
+    ] {
+        assert!(
+            lines.iter().any(|line| line == expected),
+            "missing runtime approval evidence line: {expected}"
+        );
+    }
+    assert!(!evidence.production_runtime_enabled);
 }
 
 #[test]

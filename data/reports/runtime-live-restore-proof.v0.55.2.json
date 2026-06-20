@@ -87,7 +87,15 @@
     "runtime_live_restore_proof_blocks_failed_readonly_and_can_reach_ready_states_without_enabling_production",
     "runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_production",
     "runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production",
+    "runtime_approval_evidence_projection_includes_proof_without_enabling_production",
+    "runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled",
     "runtime_high_risk_and_hyprland_approval_flows_keep_production_disabled"
   ],
-  "nextRecommendedWork": "Use the proven hl.config eval live-restore syntax as readiness evidence for future default-disabled runtime approval; production runtime/reload remains disabled until explicit activation gates are implemented."
+  "runtimeApprovalUiSurface": {
+    "implemented": true,
+    "status": "implemented_but_disabled",
+    "displaysRestoreProof": true,
+    "productionRuntimeEnabled": false
+  },
+  "nextRecommendedWork": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
 }

@@ -16,9 +16,10 @@ use crate::current_config::{
 };
 use crate::export::ExportBundle;
 use crate::future_capability::{
-    duplicate_production_approval_gate, source_include_insertion_review,
-    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
-    DuplicateOccurrence, DuplicateProductionGateStatus, SourceIncludeInsertionReadiness,
+    duplicate_production_approval_gate, proven_runtime_approval_evidence_summary,
+    source_include_insertion_review, source_include_selected_target_dry_run_plan,
+    source_include_target_selection_fixture_proof, DuplicateOccurrence,
+    DuplicateProductionGateStatus, SourceIncludeInsertionReadiness,
     SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
 };
 use crate::guarded_write_review::{
@@ -1804,6 +1805,7 @@ fn render_detail(
     append_detail_section(detail_content, "Edit", |section| {
         append_user_facing_write_reason(&detail, section);
         append_source_include_insertion_target_review(model, &detail, section);
+        append_runtime_approval_review_surface(&detail, section);
         append_pre_apply_review_scaffold(model, &detail, section);
         append_write_controls(model, &detail, section);
     });
@@ -2259,6 +2261,69 @@ fn append_pre_apply_review_scaffold(
         review_button.set_sensitive(false);
         content.append(&review_button);
     }
+
+    frame.set_child(Some(&content));
+    section.append(&frame);
+}
+
+fn append_runtime_approval_review_surface(detail: &RowDetailProjection, section: &gtk::Box) {
+    if detail.row_id != "appearance.gaps_in" && detail.official_setting != "general.gaps_in" {
+        return;
+    }
+
+    let evidence = proven_runtime_approval_evidence_summary();
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-runtime-approval-review-disabled");
+    frame.set_tooltip_text(Some(
+        "Disabled runtime approval review. This displays live-restore proof but does not enable runtime Apply.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    content.set_widget_name("hyprland-settings-runtime-live-restore-evidence");
+    content.set_tooltip_text(Some(
+        "Runtime live-restore evidence for general:gaps_in. Review-only; no hyprctl command runs.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label("Runtime approval review"));
+    content.append(&small_label("Runtime changes are not enabled yet."));
+    content.append(&small_label("This setting has a proven live-restore test."));
+    content.append(&small_label("Production runtime/reload remains disabled."));
+    append_detail_line(&content, "Setting", &evidence.setting);
+    append_detail_line(&content, "Prior value", &evidence.prior_value);
+    append_detail_line(&content, "Temporary test value", &evidence.temporary_value);
+    append_detail_line(&content, "Mutation command", &evidence.mutation_command);
+    append_detail_line(&content, "Restore command", &evidence.restore_command);
+    append_detail_line(
+        &content,
+        "Post-mutation readback",
+        &evidence.post_mutation_readback,
+    );
+    append_detail_line(
+        &content,
+        "Post-restore readback",
+        &evidence.post_restore_readback,
+    );
+    append_detail_line(&content, "Approval status", &evidence.approval_status);
+    append_detail_line(
+        &content,
+        "Production runtime/reload",
+        &evidence.production_runtime_status,
+    );
+    content.append(&small_label(
+        "This review surface is proof display only and does not call hyprctl.",
+    ));
+
+    let enable = gtk::Button::with_label("Enable runtime apply (planned)");
+    enable.set_widget_name("hyprland-settings-runtime-approval-enable-disabled");
+    enable.set_tooltip_text(Some(
+        "Disabled future action. This does not enable runtime/reload Apply or run hyprctl.",
+    ));
+    enable.set_sensitive(false);
+    content.append(&enable);
 
     frame.set_child(Some(&content));
     section.append(&frame);

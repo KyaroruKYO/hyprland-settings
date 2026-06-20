@@ -52,7 +52,13 @@
   "v0552ModelPreserved": true,
   "hyprland0554MigrationActivated": false,
   "tests": [
-    "runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production"
+    "runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production",
+    "runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled"
   ],
-  "nextRecommendedWork": "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload."
+  "runtimeApprovalUiSurface": {
+    "implemented": true,
+    "status": "implemented_but_disabled",
+    "productionRuntimeEnabled": false
+  },
+  "nextRecommendedWork": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
 }

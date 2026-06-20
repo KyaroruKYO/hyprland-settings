@@ -78,6 +78,8 @@
     "liveRestoreProof": "proven with hyprctl eval 'hl.config({ general = { gaps_in = VALUE } })'",
     "runtimeApprovalReview": "approved_but_default_disabled with live-restore proof and explicit approval token evidence",
     "runtimeApprovalReviewProductionEnabled": false,
+    "runtimeApprovalUiSurface": "implemented_but_disabled: setting detail surface displays the proven hl.config eval command pair, restore proof, approval status, and disabled production runtime/reload state",
+    "runtimeApprovalUiSurfaceProductionEnabled": false,
     "postMutationReadback": "css gap data: 6 6 6 6; set: true",
     "postRestoreReadback": "css gap data: 5 5 5 5; set: true"
   },
@@ -88,5 +90,5 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload."
+  "nextRecommendedWork": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
 }

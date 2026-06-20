@@ -88,7 +88,8 @@
     "controlled_runtime_live_restore_attempt",
     "runtime_mutation_syntax_proof",
     "controlled_runtime_live_restore_proven",
-    "runtime_approval_live_restore_gate"
+    "runtime_approval_live_restore_gate",
+    "runtime_approval_ui_surface"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -116,6 +117,7 @@
     "data/reports/runtime-socket-diagnosis.v0.55.2.json",
     "data/reports/runtime-mutation-syntax-proof.v0.55.2.json",
     "data/reports/runtime-approval-live-restore-gate.v0.55.2.json",
+    "data/reports/runtime-approval-ui-surface.v0.55.2.json",
     "data/reports/future-capability-marathon-summary.v0.55.2.json",
     "data/reports/future-capability-marathon-handoff.v0.55.2.json"
   ],
@@ -133,15 +135,15 @@
     "cargoBuildRelease": "passed",
     "jqReports": "passed",
     "gitDiffCheck": "passed",
-    "gtkSafeEnvMatrix": "not_run_no_visible_ui_changes_this_sprint",
-    "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_194620"
+    "gtkSafeEnvMatrix": "passed",
+    "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_231716"
   },
-  "nextRecommendedAction": "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload.",
+  "nextRecommendedAction": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "92-96%",
-      "after": "93-96%",
-      "evidence": "Source/include selected-target dry-run preview is now wired into the disabled detail UI with stable widget names and source tests."
+      "after": "94-97%",
+      "evidence": "Runtime approval review is now wired into the disabled detail UI with stable widget names, disabled planned action, and source tests showing the proven live-restore evidence is display-only."
     },
     "configDiscoverySourceAwareModel": {
       "before": "90-93%",
@@ -190,8 +192,8 @@
     },
     "runtimeReloadIntegration": {
       "before": "45-55%",
-      "after": "64-74%",
-      "evidence": "Runtime socket diagnosis identified sandbox EPERM as the timeout root cause; outside-sandbox read-only hyprctl succeeded. Controlled hl.config eval live restore changed gaps_in from 5 to 6, restored it to 5, and now feeds an approved_but_default_disabled runtime approval review while production runtime remains disabled."
+      "after": "66-76%",
+      "evidence": "Runtime socket diagnosis identified sandbox EPERM as the timeout root cause; outside-sandbox read-only hyprctl succeeded. Controlled hl.config eval live restore changed gaps_in from 5 to 6, restored it to 5, feeds an approved_but_default_disabled runtime approval review, and is now displayed in a disabled detail UI surface while production runtime remains disabled."
     },
     "hyprland0554Migration": {
       "before": "35-45%",
@@ -214,6 +216,7 @@
     "profileModeGuardedExecutor": "tested_and_restored: temp-fixture guarded executor switches a symlink, verifies target, restores original target, and refuses real profile paths by default.",
     "runtimeGuardedExecutor": "tested_and_restored: controlled outside-sandbox hl.config eval proof changed gaps_in from 5 to 6, restored it to 5, and production runtime remains disabled.",
     "runtimeApprovalLiveRestoreGate": "approved_but_default_disabled: proven hl.config eval live-restore proof plus exact runtime approval evidence reaches approved_but_default_disabled, never production enabled.",
+    "runtimeApprovalUiSurface": "implemented_but_disabled: setting detail review surface displays the proven hl.config eval command pair, prior/temp values, readbacks, approval status, and disabled production runtime/reload state with an insensitive planned enable action.",
     "highRiskLiveReadinessExecutor": "implemented_but_disabled: no-op readiness executor requires recovery channel, dead-man timeout, and restore command evidence and refuses mutation by default.",
     "hyprland0554LocalEvidenceCollector": "implemented_but_disabled: local package/runtime evidence is advisory only and cannot activate migration without trusted exports and review proof.",
     "copiedConfigTreeProof": "copied_config_tree_proven: copied source/include, duplicate, structured bind, and profile symlink executors ran against temp copied config trees, restored copied targets, and verified originals unchanged.",

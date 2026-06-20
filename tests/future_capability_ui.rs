@@ -147,3 +147,85 @@ fn source_include_insertion_target_review_is_called_from_detail_edit_section() {
     );
     assert!(source.contains("SourceIncludeInsertionReadiness::ManagedTargetBlocked"));
 }
+
+#[test]
+fn runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled() {
+    let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
+    let model_source = fs::read_to_string("src/future_capability.rs")
+        .expect("future capability source should read");
+    let review_source = source_slice(
+        &source,
+        "fn append_runtime_approval_review_surface",
+        "fn append_source_include_insertion_target_review",
+    );
+
+    for expected in [
+        "hyprland-settings-runtime-approval-review-disabled",
+        "hyprland-settings-runtime-live-restore-evidence",
+        "hyprland-settings-runtime-approval-enable-disabled",
+        "Runtime approval review",
+        "Runtime changes are not enabled yet.",
+        "This setting has a proven live-restore test.",
+        "Production runtime/reload remains disabled.",
+        "Setting",
+        "Prior value",
+        "Temporary test value",
+        "Mutation command",
+        "Restore command",
+        "Post-mutation readback",
+        "Post-restore readback",
+        "Approval status",
+        "Production runtime/reload",
+        "Enable runtime apply (planned)",
+        "enable.set_sensitive(false)",
+        "proven_runtime_approval_evidence_summary",
+    ] {
+        assert!(
+            review_source.contains(expected),
+            "missing runtime approval review source: {expected}"
+        );
+    }
+
+    for expected in [
+        "general:gaps_in",
+        "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'",
+        "hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'",
+        "css gap data: 6 6 6 6; set: true",
+        "css gap data: 5 5 5 5; set: true",
+        "Approved but default-disabled",
+        "Disabled",
+    ] {
+        assert!(
+            model_source.contains(expected),
+            "missing runtime approval projection source: {expected}"
+        );
+    }
+
+    for forbidden in [
+        "runtime_live_restore_attempt_review(",
+        "runtime_guarded_executor(",
+        "runtime_production_enabled = true",
+        "production_runtime_enabled = true",
+        "apply_setting_change",
+        "hyprctl reload",
+        "enable.set_sensitive(true)",
+    ] {
+        assert!(
+            !review_source.contains(forbidden),
+            "runtime approval review must not enable or execute production runtime behavior: {forbidden}"
+        );
+    }
+}
+
+#[test]
+fn runtime_approval_review_surface_is_called_from_detail_edit_section() {
+    let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
+    let edit_source = source_slice(
+        &source,
+        "append_detail_section(detail_content, \"Edit\"",
+        "append_detail_section(detail_content, \"Safety\"",
+    );
+
+    assert!(edit_source.contains("append_runtime_approval_review_surface"));
+    assert!(source.contains("proven_runtime_approval_evidence_summary"));
+}

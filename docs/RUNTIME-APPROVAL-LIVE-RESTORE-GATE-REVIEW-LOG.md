@@ -21,6 +21,14 @@ The review consumes:
 
 Valid approval plus the proven live-restore evidence reaches `approved_but_default_disabled`.
 
+The evidence is now projected into a disabled setting-detail UI surface:
+
+- review widget: `hyprland-settings-runtime-approval-review-disabled`
+- evidence widget: `hyprland-settings-runtime-live-restore-evidence`
+- disabled planned action: `hyprland-settings-runtime-approval-enable-disabled`
+
+The surface is display-only and does not call `hyprctl`.
+
 ## Safety
 
 Production runtime/reload remains disabled.
@@ -38,6 +46,9 @@ The only runtime mutation evidence remains the restored low-risk `general:gaps_i
 - `runtime_live_restore_approval_review_consumes_proof_but_keeps_production_disabled`
 - `runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production`
 - `runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_production`
+- `runtime_approval_evidence_projection_includes_proof_without_enabling_production`
+- `runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled`
+- `runtime_approval_review_surface_is_called_from_detail_edit_section`
 
 ## Remaining Blockers
 

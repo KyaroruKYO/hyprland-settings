@@ -64,6 +64,7 @@
 - Runtime/reload socket diagnosis found the prior timeout was caused by sandbox Unix-socket permission/process isolation; outside-sandbox read-only `hyprctl version`, `monitors -j`, and `getoption` queries now succeed.
 - Runtime/reload now has a runtime live-restore proof model. The controlled `general:gaps_in` proof prepared prior value `5`, temporary value `6`, and restore commands before mutation; `keyword` and assignment `eval` syntax failed before value change, then `hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'` changed the runtime value and the prepared `hl.config` restore command returned it to `5`.
 - Runtime/reload now has a runtime approval live-restore gate. The proven `hl.config` eval command pair, exact readbacks, restore verification, and explicit approval token evidence can reach `approved_but_default_disabled`; production runtime/reload remains disabled.
+- Runtime/reload now has a disabled setting-detail approval UI surface. It displays the proven `hl.config` eval mutation/restore command pair, prior/temp values, post-mutation and post-restore readbacks, approved-but-default-disabled status, and an insensitive planned enable control; it has no runtime handler and does not enable production runtime/reload.
 - Hyprland 0.55.4 migration received disabled assessment scaffolding.
 - Hyprland 0.55.4 migration now has a side-by-side comparison review that keeps v0.55.2 active and records missing proof.
 - Hyprland 0.55.4 migration now has a trusted-export requirement model; 0.55.2 remains the active default bundle.
@@ -88,10 +89,10 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Add a disabled runtime approval UI surface that displays the proven `hl.config` eval live-restore evidence without enabling production runtime/reload.
+Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior.
 
 ## Progress tracker
-- Core app shell / UI / navigation: 92-96% -> 93-96%
+- Core app shell / UI / navigation: 92-96% -> 94-97%
 - Config discovery / source-aware model: 90-93% -> 94-96%
 - 341-row read/write model: 90-95% -> 90-95%
 - Safe normal-scalar writes: 92-96% -> 95-97%
@@ -101,13 +102,13 @@ Add a disabled runtime approval UI surface that displays the proven `hl.config` 
 - High-risk/display recovery: 58-67% -> 59-68%
 - Structured-family editors/writes: 60-69% -> 61-70%
 - Profile/mode switching: 61-70% -> 62-71%
-- Runtime/reload integration: 55-65% -> 64-74%
+- Runtime/reload integration: 55-65% -> 66-76%
 - Hyprland 0.55.4 migration: 45-55% -> 47-57%
 
 ## Validation status
 Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `jq empty data/reports/*.json`, and `git diff --check`.
 
-GTK matrix was not rerun for the approval-flow additions because no visible UI behavior changed; prior GTK evidence root remains `/tmp/hyprland-settings-gtk-automation/20260619_194620`.
+GTK matrix passed for the visible runtime approval UI surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260619_231716`.
 
 ## Recommended next Codex prompt
-Add a disabled runtime approval UI surface that displays the proven `hl.config` eval live-restore evidence without enabling production runtime/reload.
+Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior.

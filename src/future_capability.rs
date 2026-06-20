@@ -3737,6 +3737,58 @@ pub struct RuntimeApprovalReview {
     pub review_lines: Vec<String>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeApprovalEvidenceSummary {
+    pub setting: String,
+    pub prior_value: String,
+    pub temporary_value: String,
+    pub mutation_command: String,
+    pub restore_command: String,
+    pub post_mutation_readback: String,
+    pub post_restore_readback: String,
+    pub approval_status: String,
+    pub production_runtime_status: String,
+    pub production_runtime_enabled: bool,
+}
+
+impl RuntimeApprovalEvidenceSummary {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        vec![
+            "Runtime approval review".to_string(),
+            "Runtime changes are not enabled yet.".to_string(),
+            "This setting has a proven live-restore test.".to_string(),
+            "Production runtime/reload remains disabled.".to_string(),
+            format!("Setting: {}", self.setting),
+            format!("Prior value: {}", self.prior_value),
+            format!("Temporary test value: {}", self.temporary_value),
+            format!("Mutation command: {}", self.mutation_command),
+            format!("Restore command: {}", self.restore_command),
+            format!("Post-mutation readback: {}", self.post_mutation_readback),
+            format!("Post-restore readback: {}", self.post_restore_readback),
+            format!("Approval status: {}", self.approval_status),
+            format!(
+                "Production runtime/reload: {}",
+                self.production_runtime_status
+            ),
+        ]
+    }
+}
+
+pub fn proven_runtime_approval_evidence_summary() -> RuntimeApprovalEvidenceSummary {
+    RuntimeApprovalEvidenceSummary {
+        setting: "general:gaps_in".to_string(),
+        prior_value: "5".to_string(),
+        temporary_value: "6".to_string(),
+        mutation_command: "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'".to_string(),
+        restore_command: "hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'".to_string(),
+        post_mutation_readback: "css gap data: 6 6 6 6; set: true".to_string(),
+        post_restore_readback: "css gap data: 5 5 5 5; set: true".to_string(),
+        approval_status: "Approved but default-disabled".to_string(),
+        production_runtime_status: "Disabled".to_string(),
+        production_runtime_enabled: false,
+    }
+}
+
 pub fn runtime_live_restore_approval_review(
     action: RuntimeAction,
     live_restore_proof: Option<&RuntimeLiveRestoreProof>,

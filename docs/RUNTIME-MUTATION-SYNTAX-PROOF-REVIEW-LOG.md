@@ -24,3 +24,6 @@
 
 ## Gate Decision
 Runtime live restore is proven for this low-risk `general:gaps_in` keyword path, but production runtime/reload remains disabled. The proof is readiness evidence for a future default-disabled runtime approval flow; it is not production activation.
+
+## UI Projection
+The proven `hl.config` eval syntax is now projected into a disabled runtime approval UI surface in the setting detail pane. The surface is review-only, includes an insensitive planned enable control, and does not call `hyprctl`.

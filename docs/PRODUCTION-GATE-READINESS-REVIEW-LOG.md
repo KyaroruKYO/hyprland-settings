@@ -17,6 +17,7 @@
 - Structured `hl.bind` exact-line replacement: copied-config-tree proof plus candidate validation can reach `ReadyButDefaultDisabled`.
 - Profile/mode switching: copied symlink proof can reach `ReadyButDefaultDisabled`, but real-session proof is still required.
 - Runtime/reload mutation: gate has read-only evidence, prior snapshot, restore command, and proven low-risk live restore for `general:gaps_in`; production remains default-disabled.
+- Runtime approval UI: setting detail now displays the proven live-restore evidence in a disabled review surface with no runtime handler and an insensitive planned enable action.
 - High-risk/display writes: gate exists and blocks without out-of-band recovery, dead-man timeout, restore command, config backup, runtime snapshot, and approval.
 - Hyprland 0.55.4 activation: gate exists and blocks advisory-only evidence without official exports, row diff, write-safety review, safe-env evidence, and approval.
 
@@ -58,4 +59,4 @@
 - `pacman -Q hyprland`: `hyprland 0.55.4-1`.
 
 ## Next exact work
-Add a disabled runtime approval UI surface that displays the proven `hl.config` eval live-restore evidence without enabling production runtime/reload.
+Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior.

@@ -86,12 +86,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload."
+        "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("disabled runtime approval UI surface"));
+        .contains("Extend the disabled approval UI pattern"));
 }
 
 #[test]
@@ -316,5 +316,35 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     assert_eq!(
         approval["runtimeApprovalReview"]["successfulMutationSyntax"],
         "hyprctl eval 'hl.config({ general = { gaps_in = VALUE } })'"
+    );
+
+    let ui_surface = read_json("data/reports/runtime-approval-ui-surface.v0.55.2.json");
+    assert_eq!(ui_surface["projectDataVersion"], "v0.55.2");
+    assert_eq!(ui_surface["uiSurface"]["implemented"], true);
+    assert_eq!(
+        ui_surface["uiSurface"]["widgetName"],
+        "hyprland-settings-runtime-approval-review-disabled"
+    );
+    assert_eq!(
+        ui_surface["uiSurface"]["disabledActionWidgetName"],
+        "hyprland-settings-runtime-approval-enable-disabled"
+    );
+    assert_eq!(ui_surface["uiSurface"]["disabledActionSensitive"], false);
+    assert_eq!(
+        ui_surface["visibleEvidence"]["mutationCommand"],
+        "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'"
+    );
+    assert_eq!(
+        ui_surface["visibleEvidence"]["restoreCommand"],
+        "hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'"
+    );
+    assert_eq!(
+        ui_surface["visibleEvidence"]["approvalStatus"],
+        "Approved but default-disabled"
+    );
+    assert_eq!(ui_surface["safety"]["runtimeMutatedThisSprint"], false);
+    assert_eq!(
+        ui_surface["safety"]["runtimeReloadProductionEnabled"],
+        false
     );
 }
