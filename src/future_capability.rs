@@ -3937,6 +3937,115 @@ impl ProductionActivationDecisionReview {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ProductionActivationPathStatus {
+    ActivationPathReadyButDefaultDisabled,
+    ActivationPathBlocked,
+    ActivationPathNeedsExplicitProductionFlag,
+    ActivationPathNeedsRealBackupRestorePlan,
+    ActivationPathNeedsFinalUserApproval,
+}
+
+impl ProductionActivationPathStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::ActivationPathReadyButDefaultDisabled => {
+                "Activation path ready but default-disabled"
+            }
+            Self::ActivationPathBlocked => "Activation path blocked",
+            Self::ActivationPathNeedsExplicitProductionFlag => {
+                "Activation path needs explicit production flag"
+            }
+            Self::ActivationPathNeedsRealBackupRestorePlan => {
+                "Activation path needs real backup/restore plan"
+            }
+            Self::ActivationPathNeedsFinalUserApproval => {
+                "Activation path needs final user approval"
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ProductionActivationRequestScope {
+    SourceIncludeInsertion,
+    DuplicateReplacement,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationRequest {
+    pub scope: ProductionActivationRequestScope,
+    pub user_facing_reason: String,
+    pub decision_category: String,
+    pub explicit_activation_token: String,
+    pub backup_plan_acknowledged: bool,
+    pub restore_plan_acknowledged: bool,
+    pub reread_plan_acknowledged: bool,
+    pub final_confirmation_acknowledged: bool,
+    pub one_shot_nonce: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationSafetyPlan {
+    pub backup_before_write_plan: Option<String>,
+    pub restore_plan: Option<String>,
+    pub post_write_reread_plan: Option<String>,
+    pub post_restore_verification_plan: Option<String>,
+    pub dry_run_summary: Option<String>,
+    pub files_that_would_be_touched: Vec<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationPathReview {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub disabled_action_widget_name: String,
+    pub heading: String,
+    pub input_decision_status: ProductionActivationDecisionStatus,
+    pub input_proof_source: String,
+    pub status: ProductionActivationPathStatus,
+    pub required_before_enabling: Vec<String>,
+    pub blockers: Vec<String>,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_activation_enabled: bool,
+    pub category_production_enabled: bool,
+    pub disabled_action_label: String,
+}
+
+impl ProductionActivationPathReview {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        let mut lines = vec![
+            self.heading.clone(),
+            format!(
+                "Input decision: {}",
+                self.input_decision_status.user_facing_label()
+            ),
+            format!("Proof source: {}", self.input_proof_source),
+            format!(
+                "Activation path status: {}",
+                self.status.user_facing_label()
+            ),
+        ];
+        lines.extend(
+            self.required_before_enabling
+                .iter()
+                .map(|item| format!("Required before enabling: {item}")),
+        );
+        lines.extend(
+            self.blockers
+                .iter()
+                .map(|blocker| format!("Activation path blocker: {blocker}")),
+        );
+        lines.push(format!(
+            "{}: {}",
+            self.production_label, self.production_status
+        ));
+        lines.push(self.disabled_action_label.clone());
+        lines
+    }
+}
+
 const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
     "data/reports/disabled-approval-ui-cards.v0.55.2.json";
 const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
@@ -4111,6 +4220,288 @@ pub fn duplicate_activation_decision_review(
             original_unchanged_label: "original real config unchanged",
         },
     )
+}
+
+pub fn production_activation_path_reviews() -> Vec<ProductionActivationPathReview> {
+    let report = load_disabled_approval_cards_from_reports();
+    let input_source = match &report.source.load_status {
+        ApprovalCardReportLoadStatus::Loaded => report.source.path.clone(),
+        ApprovalCardReportLoadStatus::ReportUnavailable(error) => {
+            format!("{} ({error})", report.source.path)
+        }
+    };
+    let source_card = report
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("source-include"));
+    let duplicate_card = report
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("duplicate"));
+    let source_decision = source_include_activation_decision_review(source_card, &input_source);
+    let duplicate_decision = duplicate_activation_decision_review(duplicate_card, &input_source);
+    vec![
+        source_include_activation_path_review(
+            Some(&source_decision),
+            source_card,
+            None,
+            None,
+            false,
+        ),
+        duplicate_activation_path_review(
+            Some(&duplicate_decision),
+            duplicate_card,
+            None,
+            None,
+            false,
+        ),
+    ]
+}
+
+pub fn source_include_activation_path_review(
+    decision: Option<&ProductionActivationDecisionReview>,
+    card: Option<&DisabledApprovalCardProjection>,
+    request: Option<&ProductionActivationRequest>,
+    safety_plan: Option<&ProductionActivationSafetyPlan>,
+    production_activation_flag: bool,
+) -> ProductionActivationPathReview {
+    activation_path_review(
+        decision,
+        card,
+        request,
+        safety_plan,
+        production_activation_flag,
+        ActivationPathSpec {
+            widget_name: "hyprland-settings-source-include-activation-path-disabled",
+            evidence_widget_name: "hyprland-settings-source-include-activation-path-evidence",
+            disabled_action_widget_name:
+                "hyprland-settings-source-include-activation-path-start-disabled",
+            heading: "Source/include production activation path",
+            production_label: "Production source/include insertion",
+            disabled_action_label: "Start source/include production activation (planned)",
+            expected_scope: ProductionActivationRequestScope::SourceIncludeInsertion,
+            expected_category: "sourceIncludeInsertion",
+        },
+    )
+}
+
+pub fn duplicate_activation_path_review(
+    decision: Option<&ProductionActivationDecisionReview>,
+    card: Option<&DisabledApprovalCardProjection>,
+    request: Option<&ProductionActivationRequest>,
+    safety_plan: Option<&ProductionActivationSafetyPlan>,
+    production_activation_flag: bool,
+) -> ProductionActivationPathReview {
+    activation_path_review(
+        decision,
+        card,
+        request,
+        safety_plan,
+        production_activation_flag,
+        ActivationPathSpec {
+            widget_name: "hyprland-settings-duplicate-activation-path-disabled",
+            evidence_widget_name: "hyprland-settings-duplicate-activation-path-evidence",
+            disabled_action_widget_name:
+                "hyprland-settings-duplicate-activation-path-start-disabled",
+            heading: "Duplicate production activation path",
+            production_label: "Production duplicate writes",
+            disabled_action_label: "Start duplicate production activation (planned)",
+            expected_scope: ProductionActivationRequestScope::DuplicateReplacement,
+            expected_category: "duplicateReplacement",
+        },
+    )
+}
+
+struct ActivationPathSpec {
+    widget_name: &'static str,
+    evidence_widget_name: &'static str,
+    disabled_action_widget_name: &'static str,
+    heading: &'static str,
+    production_label: &'static str,
+    disabled_action_label: &'static str,
+    expected_scope: ProductionActivationRequestScope,
+    expected_category: &'static str,
+}
+
+fn activation_path_review(
+    decision: Option<&ProductionActivationDecisionReview>,
+    card: Option<&DisabledApprovalCardProjection>,
+    request: Option<&ProductionActivationRequest>,
+    safety_plan: Option<&ProductionActivationSafetyPlan>,
+    production_activation_flag: bool,
+    spec: ActivationPathSpec,
+) -> ProductionActivationPathReview {
+    let mut blockers = Vec::new();
+    let input_decision_status = decision
+        .map(|decision| decision.status.clone())
+        .unwrap_or(ProductionActivationDecisionStatus::MissingReportBackedCard);
+    let input_proof_source = card
+        .map(|card| card.proof_record.source.clone())
+        .unwrap_or_else(|| "Missing report-backed approval card".to_string());
+    let production_status = decision
+        .map(|decision| decision.production_status.clone())
+        .or_else(|| card.map(|card| card.production_status.clone()))
+        .unwrap_or_else(|| "Disabled".to_string());
+
+    if decision.is_none() {
+        blockers.push("activation decision review is missing".to_string());
+    } else if input_decision_status
+        != ProductionActivationDecisionStatus::ApprovedButDefaultDisabled
+    {
+        blockers.push(format!(
+            "input decision must be ApprovedButDefaultDisabled, got {}",
+            input_decision_status.user_facing_label()
+        ));
+    }
+    if card.is_none() || missing_report_value(&input_proof_source) {
+        blockers.push("report-backed approval card proof is missing".to_string());
+    }
+    if production_status != "Disabled" {
+        blockers.push(format!(
+            "production status must be Disabled, got {production_status}"
+        ));
+    }
+    if production_activation_flag {
+        blockers.push(
+            "production activation flag was true; this default-disabled review refuses enablement"
+                .to_string(),
+        );
+    } else {
+        blockers.push("category-specific production activation flag is false".to_string());
+    }
+
+    match request {
+        Some(request) => {
+            if request.scope != spec.expected_scope {
+                blockers
+                    .push("activation request scope does not match decision category".to_string());
+            }
+            if request.decision_category != spec.expected_category {
+                blockers.push("activation request decision category does not match".to_string());
+            }
+            if request.explicit_activation_token.trim().is_empty() {
+                blockers.push("explicit production activation token is missing".to_string());
+            }
+            if request.user_facing_reason.trim().is_empty() {
+                blockers.push("user-facing activation reason is missing".to_string());
+            }
+            if !request.backup_plan_acknowledged {
+                blockers.push("backup-before-write plan acknowledgement is missing".to_string());
+            }
+            if !request.restore_plan_acknowledged {
+                blockers.push("restore plan acknowledgement is missing".to_string());
+            }
+            if !request.reread_plan_acknowledged {
+                blockers.push("post-write reread plan acknowledgement is missing".to_string());
+            }
+            if !request.final_confirmation_acknowledged {
+                blockers.push("final confirmation acknowledgement is missing".to_string());
+            }
+        }
+        None => blockers.push("explicit production activation request is missing".to_string()),
+    }
+
+    match safety_plan {
+        Some(plan) => {
+            if plan
+                .backup_before_write_plan
+                .as_deref()
+                .is_none_or(str::is_empty)
+            {
+                blockers.push("backup-before-write plan is missing".to_string());
+            }
+            if plan.restore_plan.as_deref().is_none_or(str::is_empty) {
+                blockers.push("restore plan is missing".to_string());
+            }
+            if plan
+                .post_write_reread_plan
+                .as_deref()
+                .is_none_or(str::is_empty)
+            {
+                blockers.push("post-write reread plan is missing".to_string());
+            }
+            if plan
+                .post_restore_verification_plan
+                .as_deref()
+                .is_none_or(str::is_empty)
+            {
+                blockers.push("post-restore verification plan is missing".to_string());
+            }
+            if plan.dry_run_summary.as_deref().is_none_or(str::is_empty) {
+                blockers.push("dry-run summary is missing".to_string());
+            }
+            if plan.files_that_would_be_touched.is_empty() {
+                blockers.push("files that would be touched are missing".to_string());
+            }
+        }
+        None => blockers.push("backup/restore/reread safety plan is missing".to_string()),
+    }
+
+    let status = activation_path_status(&blockers, production_activation_flag);
+    ProductionActivationPathReview {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        disabled_action_widget_name: spec.disabled_action_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        input_decision_status,
+        input_proof_source,
+        status,
+        required_before_enabling: vec![
+            "explicit production activation request".to_string(),
+            "explicit user approval".to_string(),
+            "category-specific production activation flag".to_string(),
+            "backup-before-write plan".to_string(),
+            "restore plan".to_string(),
+            "post-write reread plan".to_string(),
+            "post-restore verification plan".to_string(),
+            "dry-run summary".to_string(),
+            "clear list of files that would be touched".to_string(),
+            "final confirmation".to_string(),
+        ],
+        blockers,
+        production_label: spec.production_label.to_string(),
+        production_status,
+        production_activation_enabled: false,
+        category_production_enabled: false,
+        disabled_action_label: spec.disabled_action_label.to_string(),
+    }
+}
+
+fn activation_path_status(
+    blockers: &[String],
+    production_activation_flag: bool,
+) -> ProductionActivationPathStatus {
+    if blockers.iter().any(|blocker| {
+        blocker.contains("production status must be Disabled")
+            || blocker.contains("production activation flag was true")
+            || blocker.contains("input decision must be ApprovedButDefaultDisabled")
+            || blocker.contains("activation decision review is missing")
+            || blocker.contains("report-backed approval card proof is missing")
+    }) {
+        return ProductionActivationPathStatus::ActivationPathBlocked;
+    }
+    if !production_activation_flag {
+        return ProductionActivationPathStatus::ActivationPathNeedsExplicitProductionFlag;
+    }
+    if blockers.iter().any(|blocker| {
+        blocker.contains("backup")
+            || blocker.contains("restore")
+            || blocker.contains("reread")
+            || blocker.contains("dry-run")
+            || blocker.contains("files that would be touched")
+    }) {
+        return ProductionActivationPathStatus::ActivationPathNeedsRealBackupRestorePlan;
+    }
+    if blockers.iter().any(|blocker| {
+        blocker.contains("request")
+            || blocker.contains("approval")
+            || blocker.contains("confirmation")
+            || blocker.contains("token")
+            || blocker.contains("reason")
+    }) {
+        return ProductionActivationPathStatus::ActivationPathNeedsFinalUserApproval;
+    }
+    ProductionActivationPathStatus::ActivationPathReadyButDefaultDisabled
 }
 
 struct ActivationDecisionSpec {

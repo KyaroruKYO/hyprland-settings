@@ -47,7 +47,8 @@
     "Connected duplicate production gate review to the shared explicit approval-flow model; copied proof plus confirmed occurrence can reach approved_but_default_disabled, never production enabled by default.",
     "Added a disabled duplicate approval review card on the Config page. It shows selected occurrence, target path, line number, raw line, old/proposed values, fingerprint/precondition status, copied proof status, approval status, production-disabled state, blockers, and an insensitive planned enable action.",
     "The duplicate approval card is now fed from serialized report data and covered by GTK safe-env screenshot plus AT-SPI accessibility-tree assertions.",
-    "Duplicate activation decision review now consumes report-backed card data and reaches ApprovedButDefaultDisabled while production duplicate writes remain disabled."
+    "Duplicate activation decision review now consumes report-backed card data and reaches ApprovedButDefaultDisabled while production duplicate writes remain disabled.",
+    "Duplicate activation path now consumes the ApprovedButDefaultDisabled decision and report-backed proof data, then stops at ActivationPathNeedsExplicitProductionFlag with production duplicate writes disabled."
   ],
   "whatWasNotImplemented": [
     "No automatic duplicate choice was added.",
@@ -65,7 +66,8 @@
     "data/reports/explicit-approval-flow.v0.55.2.json",
     "data/reports/report-backed-approval-card-data.v0.55.2.json",
     "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
-    "data/reports/default-disabled-production-activation-decision.v0.55.2.json"
+    "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-path.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "manualOccurrenceSelectionRequired": true,
@@ -128,6 +130,12 @@
   "duplicateActivationDecisionReview": {
     "status": "ApprovedButDefaultDisabled",
     "inputSource": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+    "productionEnabled": false,
+    "productionStatus": "Disabled"
+  },
+  "duplicateActivationPathReview": {
+    "status": "ActivationPathNeedsExplicitProductionFlag",
+    "inputDecisionStatus": "ApprovedButDefaultDisabled",
     "productionEnabled": false,
     "productionStatus": "Disabled"
   }

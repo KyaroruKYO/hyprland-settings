@@ -75,3 +75,10 @@ Use report-backed approval card data as the input for a future default-disabled 
 - Both decisions can reach ApprovedButDefaultDisabled only while production flags remain false.
 - Added disabled Config-page decision cards and GTK screenshot plus AT-SPI assertions for both cards.
 - No production source/include insertion, duplicate write, runtime mutation, reload, or real config mutation was enabled.
+
+## Default-Disabled Production Activation Path Review - 2026-06-20
+
+- Added source/include and duplicate production activation path reviews that consume ApprovedButDefaultDisabled decisions.
+- Added explicit future request and safety-plan requirements: production activation request, user approval, production flag, backup, restore, reread, post-restore verification, dry-run summary, touched-file list, and final confirmation.
+- Added disabled Config-page activation path cards and GTK screenshot plus AT-SPI assertions for both cards.
+- Production source/include insertion and duplicate replacement remain disabled; no real config, runtime mutation, reload, or executor path was enabled.

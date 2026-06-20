@@ -211,6 +211,17 @@ def run_summary(run_dir):
             "activationDecisionsAllDisabledActionsFound": bool(
                 accessibility.get("activationDecisionsAllDisabledActionsFound")
             ),
+            "activationPathAssertionMethod": accessibility.get("activationPathAssertionMethod"),
+            "activationPathAssertions": accessibility.get("activationPathAssertions", {}),
+            "activationPathsAllHeadingsFound": bool(
+                accessibility.get("activationPathsAllHeadingsFound")
+            ),
+            "activationPathsAllProductionDisabledFound": bool(
+                accessibility.get("activationPathsAllProductionDisabledFound")
+            ),
+            "activationPathsAllDisabledActionsFound": bool(
+                accessibility.get("activationPathsAllDisabledActionsFound")
+            ),
             "duplicateConflictDetailNavigationAttempted": bool(
                 accessibility.get("duplicateConflictDetailNavigationAttempted")
             ),
@@ -267,6 +278,7 @@ def aggregate(runs):
     category_results = blocked_category_results(runs, by_blocked_category)
     approval_card_results = approval_card_assertion_results(runs)
     activation_decision_results = activation_decision_assertion_results(runs)
+    activation_path_results = activation_path_assertion_results(runs)
 
     return {
         "appLaunchAttempted": bool(runs),
@@ -332,6 +344,20 @@ def aggregate(runs):
         "activationDecisionsAllDisabledActionsFound": all(
             result["disabledActionProof"] == "live_gtk_atspi_proof"
             for result in activation_decision_results.values()
+        ),
+        "activationPathAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationPathResults": activation_path_results,
+        "activationPathsAllHeadingsFound": all(
+            result["headingProof"] == "live_gtk_atspi_proof"
+            for result in activation_path_results.values()
+        ),
+        "activationPathsAllProductionDisabledFound": all(
+            result["productionDisabledProof"] == "live_gtk_atspi_proof"
+            for result in activation_path_results.values()
+        ),
+        "activationPathsAllDisabledActionsFound": all(
+            result["disabledActionProof"] == "live_gtk_atspi_proof"
+            for result in activation_path_results.values()
         ),
         "fallbackProofUsed": any(level in {"source_model_fallback", "not_proven"} for level in by_area.values())
         or any(level in {"source_model_fallback", "not_proven"} for level in by_blocked_category.values()),
@@ -448,6 +474,69 @@ def activation_decision_assertion_results(runs):
         sample = {}
         for run in runs:
             sample = run["accessibility"].get("activationDecisionAssertions", {}).get(key, {})
+            if sample:
+                break
+        results[key] = {
+            "heading": sample.get("heading"),
+            "headingProof": "live_gtk_atspi_proof" if heading_run else "not_proven",
+            "headingEvidenceRun": heading_run["name"] if heading_run else None,
+            "productionDisabledText": sample.get("productionDisabledText"),
+            "productionDisabledProof": "live_gtk_atspi_proof"
+            if production_run
+            else "not_proven",
+            "productionDisabledEvidenceRun": production_run["name"] if production_run else None,
+            "disabledAction": sample.get("disabledAction"),
+            "disabledActionProof": "live_gtk_atspi_proof" if action_run else "not_proven",
+            "disabledActionEvidenceRun": action_run["name"] if action_run else None,
+            "widgetName": sample.get("widgetName"),
+            "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        }
+    return results
+
+
+def activation_path_assertion_results(runs):
+    path_keys = [
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+    ]
+    results = {}
+    for key in path_keys:
+        heading_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("activationPathAssertions", {})
+                .get(key, {})
+                .get("headingFound")
+            ),
+            None,
+        )
+        production_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("activationPathAssertions", {})
+                .get(key, {})
+                .get("productionDisabledFound")
+            ),
+            None,
+        )
+        action_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("activationPathAssertions", {})
+                .get(key, {})
+                .get("disabledActionFound")
+            ),
+            None,
+        )
+        sample = {}
+        for run in runs:
+            sample = run["accessibility"].get("activationPathAssertions", {}).get(key, {})
             if sample:
                 break
         results[key] = {
@@ -670,6 +759,15 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
         "activationDecisionsAllDisabledActionsFound": summary[
             "activationDecisionsAllDisabledActionsFound"
         ],
+        "activationPathAssertionMethod": summary["activationPathAssertionMethod"],
+        "activationPathResults": summary["activationPathResults"],
+        "activationPathsAllHeadingsFound": summary["activationPathsAllHeadingsFound"],
+        "activationPathsAllProductionDisabledFound": summary[
+            "activationPathsAllProductionDisabledFound"
+        ],
+        "activationPathsAllDisabledActionsFound": summary[
+            "activationPathsAllDisabledActionsFound"
+        ],
         "fallbackProofUsed": summary["fallbackProofUsed"],
         "issuesFound": issues(summary),
         "recommendedFixes": recommended_fixes(summary),
@@ -834,6 +932,17 @@ def write_reports(reports_dir, evidence_root, evidence_summary, runs, summary):
                 ],
                 "activationDecisionsAllDisabledActionsFound": summary[
                     "activationDecisionsAllDisabledActionsFound"
+                ],
+                "activationPathAssertionMethod": summary["activationPathAssertionMethod"],
+                "activationPathResults": summary["activationPathResults"],
+                "activationPathsAllHeadingsFound": summary[
+                    "activationPathsAllHeadingsFound"
+                ],
+                "activationPathsAllProductionDisabledFound": summary[
+                    "activationPathsAllProductionDisabledFound"
+                ],
+                "activationPathsAllDisabledActionsFound": summary[
+                    "activationPathsAllDisabledActionsFound"
                 ],
                 "safety": {
                     "runtimeMutated": False,

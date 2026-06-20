@@ -116,5 +116,18 @@
     "duplicateReplacement": "ApprovedButDefaultDisabled",
     "productionEnabled": false,
     "report": "data/reports/default-disabled-production-activation-decision.v0.55.2.json"
+  },
+  "activationPathReview": {
+    "report": "data/reports/default-disabled-production-activation-path.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    },
+    "duplicateReplacement": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    }
   }
 }

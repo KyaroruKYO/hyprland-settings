@@ -194,5 +194,18 @@
     "sourceIncludeProductionEnabled": false,
     "duplicateProductionEnabled": false
   },
-  "nextRecommendedWork": "Feed the disabled approval cards from serialized proof records instead of fixed in-code projections, still keeping all production behavior default-disabled."
+  "nextRecommendedWork": "Feed the disabled approval cards from serialized proof records instead of fixed in-code projections, still keeping all production behavior default-disabled.",
+  "activationPathReview": {
+    "report": "data/reports/default-disabled-production-activation-path.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    },
+    "duplicateReplacement": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    }
+  }
 }

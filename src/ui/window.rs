@@ -17,10 +17,11 @@ use crate::current_config::{
 use crate::export::ExportBundle;
 use crate::future_capability::{
     disabled_future_approval_card_projections, duplicate_production_approval_gate,
-    production_activation_decision_reviews, proven_runtime_approval_evidence_summary,
-    source_include_insertion_review, source_include_selected_target_dry_run_plan,
-    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
-    DuplicateOccurrence, DuplicateProductionGateStatus, ProductionActivationDecisionReview,
+    production_activation_decision_reviews, production_activation_path_reviews,
+    proven_runtime_approval_evidence_summary, source_include_insertion_review,
+    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
+    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
+    ProductionActivationDecisionReview, ProductionActivationPathReview,
     SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
     SourceIncludeTargetCandidate,
 };
@@ -1325,6 +1326,7 @@ fn production_activation_decision_reviews_section() -> gtk::Frame {
     for review in production_activation_decision_reviews() {
         content.append(&production_activation_decision_review_card(&review));
     }
+    content.append(&production_activation_path_reviews_section());
 
     frame.set_child(Some(&content));
     frame
@@ -1385,6 +1387,86 @@ fn production_activation_decision_review_card(
     ));
     enable.set_sensitive(false);
     content.append(&enable);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_path_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-path-section");
+    frame.set_tooltip_text(Some(
+        "Default-disabled production activation path reviews. These show the future steps required before production activation could ever be considered.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Future production activation paths"));
+    content.append(&small_label(
+        "These paths consume approved decisions but do not enable production flags or run executors.",
+    ));
+
+    for review in production_activation_path_reviews() {
+        content.append(&production_activation_path_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_path_review_card(review: &ProductionActivationPathReview) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled production activation path. This card cannot enable writes or run production executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Activation path evidence. This path is review-only and has no mutation handler.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(
+        &content,
+        "Input decision",
+        review.input_decision_status.user_facing_label(),
+    );
+    append_detail_line(&content, "Proof source", &review.input_proof_source);
+    append_detail_line(
+        &content,
+        "Activation path status",
+        review.status.user_facing_label(),
+    );
+    content.append(&body_label("Required before enabling"));
+    for requirement in &review.required_before_enabling {
+        content.append(&small_label(requirement));
+    }
+    content.append(&body_label("Activation path blockers"));
+    for blocker in &review.blockers {
+        content.append(&small_label(blocker));
+    }
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let start = gtk::Button::with_label(&review.disabled_action_label);
+    start.set_widget_name(&review.disabled_action_widget_name);
+    start.set_tooltip_text(Some(
+        "Disabled planned activation path. This does not enable production behavior.",
+    ));
+    start.set_sensitive(false);
+    content.append(&start);
 
     frame.set_child(Some(&content));
     frame

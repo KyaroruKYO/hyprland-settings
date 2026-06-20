@@ -1,0 +1,94 @@
+{
+  "artifactKind": "default-disabled-production-activation-path",
+  "projectDataVersion": "v0.55.2",
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "branch": "future-capability-marathon",
+  "inputDecisionReport": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
+  "inputApprovalCardReport": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+  "implementation": {
+    "activationPathModelExists": true,
+    "activationRequestModelExists": true,
+    "activationSafetyPlanModelExists": true,
+    "sourceIncludeActivationPathExists": true,
+    "duplicateActivationPathExists": true,
+    "uiSurfaceExists": true,
+    "screenshotLevelAssertionsImplemented": true,
+    "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr"
+  },
+  "paths": {
+    "sourceIncludeInsertion": {
+      "widgetName": "hyprland-settings-source-include-activation-path-disabled",
+      "evidenceWidgetName": "hyprland-settings-source-include-activation-path-evidence",
+      "inputDecisionStatus": "ApprovedButDefaultDisabled",
+      "inputProofSource": "copied-config-tree proof",
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionActivationFlag": false,
+      "categoryProductionFlag": false,
+      "productionStatus": "Disabled",
+      "requiredBeforeEnabling": [
+        "explicit production activation request",
+        "explicit user approval",
+        "category-specific production activation flag",
+        "backup-before-write plan",
+        "restore plan",
+        "post-write reread plan",
+        "post-restore verification plan",
+        "dry-run summary",
+        "clear list of files that would be touched",
+        "final confirmation"
+      ],
+      "blockers": [
+        "category-specific production activation flag is false",
+        "explicit production activation request is missing",
+        "backup/restore/reread safety plan is missing"
+      ]
+    },
+    "duplicateReplacement": {
+      "widgetName": "hyprland-settings-duplicate-activation-path-disabled",
+      "evidenceWidgetName": "hyprland-settings-duplicate-activation-path-evidence",
+      "inputDecisionStatus": "ApprovedButDefaultDisabled",
+      "inputProofSource": "copied-config-tree proof",
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionActivationFlag": false,
+      "categoryProductionFlag": false,
+      "productionStatus": "Disabled",
+      "requiredBeforeEnabling": [
+        "explicit production activation request",
+        "explicit user approval",
+        "category-specific production activation flag",
+        "backup-before-write plan",
+        "restore plan",
+        "post-write reread plan",
+        "post-restore verification plan",
+        "dry-run summary",
+        "clear list of files that would be touched",
+        "final confirmation"
+      ],
+      "blockers": [
+        "category-specific production activation flag is false",
+        "explicit production activation request is missing",
+        "backup/restore/reread safety plan is missing"
+      ]
+    }
+  },
+  "screenshotLevelAssertions": {
+    "sourceIncludeInsertion": true,
+    "duplicateReplacement": true
+  },
+  "safety": {
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "realConfigTouched": false,
+    "runtimeMutatedThisSprint": false,
+    "hyprctlReloadRun": false,
+    "v0552DefaultPreserved": true,
+    "hyprland0554MigrationActivated": false
+  },
+  "nextRequiredWork": [
+    "Design final production activation controls that can remain default-off while validating complete request and safety-plan inputs.",
+    "Do not wire production executors until real-config backup, restore, reread, and final approval paths are proven."
+  ]
+}

@@ -86,12 +86,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Design an explicit production activation path that can consume approved-but-default-disabled source/include and duplicate decisions while keeping production flags false by default."
+        "Design final production activation controls that validate complete request and safety-plan inputs while keeping source/include and duplicate production executors unwired by default."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("approved-but-default-disabled source/include and duplicate decisions"));
+        .contains("complete request and safety-plan inputs"));
 }
 
 #[test]
@@ -497,6 +497,50 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         false
     );
 
+    let activation_path =
+        read_json("data/reports/default-disabled-production-activation-path.v0.55.2.json");
+    assert_eq!(activation_path["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        activation_path["implementation"]["activationPathModelExists"],
+        true
+    );
+    assert_eq!(
+        activation_path["implementation"]["activationRequestModelExists"],
+        true
+    );
+    assert_eq!(
+        activation_path["implementation"]["activationSafetyPlanModelExists"],
+        true
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_path["paths"][key]["inputDecisionStatus"],
+            "ApprovedButDefaultDisabled"
+        );
+        assert_eq!(
+            activation_path["paths"][key]["status"],
+            "ActivationPathNeedsExplicitProductionFlag"
+        );
+        assert_eq!(activation_path["paths"][key]["productionEnabled"], false);
+        assert_eq!(
+            activation_path["paths"][key]["productionActivationFlag"],
+            false
+        );
+        assert_eq!(
+            activation_path["paths"][key]["categoryProductionFlag"],
+            false
+        );
+        assert_eq!(
+            activation_path["paths"][key]["productionStatus"],
+            "Disabled"
+        );
+        assert_eq!(activation_path["screenshotLevelAssertions"][key], true);
+    }
+    assert_eq!(
+        activation_path["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+
     let gtk_cards =
         read_json("data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json");
     assert_eq!(gtk_cards["projectDataVersion"], "v0.55.2");
@@ -539,6 +583,20 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         );
         assert_eq!(
             gtk_cards["activationDecisionResults"][key]["disabledActionProof"],
+            "live_gtk_atspi_proof"
+        );
+    }
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            gtk_cards["activationPathResults"][key]["headingProof"],
+            "live_gtk_atspi_proof"
+        );
+        assert_eq!(
+            gtk_cards["activationPathResults"][key]["productionDisabledProof"],
+            "live_gtk_atspi_proof"
+        );
+        assert_eq!(
+            gtk_cards["activationPathResults"][key]["disabledActionProof"],
             "live_gtk_atspi_proof"
         );
     }

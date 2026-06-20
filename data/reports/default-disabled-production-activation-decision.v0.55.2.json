@@ -87,5 +87,18 @@
   "nextRequiredWork": [
     "Design an explicit production activation path that can consume approved-but-default-disabled decisions without making the default production flags true.",
     "Add any future real-config activation proof only with byte-exact backup, restore, and post-restore verification."
-  ]
+  ],
+  "activationPathReview": {
+    "report": "data/reports/default-disabled-production-activation-path.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    },
+    "duplicateReplacement": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    }
+  }
 }

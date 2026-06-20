@@ -100,7 +100,10 @@
     "runtimeApprovalUiSurfaceEnabled": false,
     "remainingGatedApprovalUiCardsExist": true,
     "remainingGatedApprovalUiCardsEnabled": false,
-    "remainingGatedApprovalUiCardsHaveDeepProofData": true
+    "remainingGatedApprovalUiCardsHaveDeepProofData": true,
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "unsafeProductionBehaviorEnabled": false
   },
   "nextRecommendedWork": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.",
   "testsAdded": [
@@ -110,5 +113,18 @@
     "consumesApprovalCardData": true,
     "productionFlagsRemainFalse": true,
     "report": "data/reports/default-disabled-production-activation-decision.v0.55.2.json"
+  },
+  "activationPathReview": {
+    "report": "data/reports/default-disabled-production-activation-path.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    },
+    "duplicateReplacement": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    }
   }
 }

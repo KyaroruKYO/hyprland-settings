@@ -44,7 +44,8 @@
     "Connected source/include production gate review to the shared explicit approval-flow model; copied proof plus exact selected target and inserted line can reach approved_but_default_disabled, never production enabled by default.",
     "Added a disabled source/include approval review card on the Config page. It shows copied-config-tree proof, selected-target/planned-line evidence, approval status, production-disabled state, blockers, and an insensitive planned enable action.",
     "The source/include approval card is now fed from serialized report data and covered by GTK safe-env screenshot plus AT-SPI accessibility-tree assertions.",
-    "Source/include activation decision review now consumes report-backed card data and reaches ApprovedButDefaultDisabled while production insertion remains disabled."
+    "Source/include activation decision review now consumes report-backed card data and reaches ApprovedButDefaultDisabled while production insertion remains disabled.",
+    "Source/include activation path now consumes the ApprovedButDefaultDisabled decision and report-backed proof data, then stops at ActivationPathNeedsExplicitProductionFlag with production insertion disabled."
   ],
   "whatWasNotImplemented": [
     "No insertion into generated, script-managed, symlink/current-profile, profile/mode, multi-file, duplicate, high-risk, display/render-risk, structured, runtime-only, or missing target files was enabled.",
@@ -65,7 +66,8 @@
     "data/reports/explicit-approval-flow.v0.55.2.json",
     "data/reports/report-backed-approval-card-data.v0.55.2.json",
     "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
-    "data/reports/default-disabled-production-activation-decision.v0.55.2.json"
+    "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-path.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "allowedTarget": "eligible normal scalar missing/default setting in an explicit existing single-file root config",
@@ -145,6 +147,12 @@
   "sourceIncludeActivationDecisionReview": {
     "status": "ApprovedButDefaultDisabled",
     "inputSource": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+    "productionEnabled": false,
+    "productionStatus": "Disabled"
+  },
+  "sourceIncludeActivationPathReview": {
+    "status": "ActivationPathNeedsExplicitProductionFlag",
+    "inputDecisionStatus": "ApprovedButDefaultDisabled",
     "productionEnabled": false,
     "productionStatus": "Disabled"
   }

@@ -116,7 +116,10 @@
     "runtimeReloadEnabled": false,
     "highRiskWritesEnabled": false,
     "hyprland0554MigrationActivated": false,
-    "v0552DefaultPreserved": true
+    "v0552DefaultPreserved": true,
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "unsafeProductionBehaviorEnabled": false
   },
   "tests": [
     "copied_config_tree_proof_drives_default_disabled_production_gates",
@@ -158,5 +161,18 @@
     "report": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
     "sourceIncludeInsertion": "ApprovedButDefaultDisabled; production flag false",
     "duplicateReplacement": "ApprovedButDefaultDisabled; production flag false"
+  },
+  "activationPathReview": {
+    "report": "data/reports/default-disabled-production-activation-path.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    },
+    "duplicateReplacement": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    }
   }
 }

@@ -81,7 +81,9 @@
     "realConfigTouched": false,
     "runtimeMutatedThisSprint": false,
     "hyprctlReloadRun": false,
-    "v0552DefaultPreserved": true
+    "v0552DefaultPreserved": true,
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false
   },
   "nextRecommendedWork": "Use report-backed approval card data as the handoff source for future explicit production activation UX, while keeping every production flag default-disabled until approval and restoration gates are complete.",
   "activationDecisionReview": {
@@ -95,6 +97,19 @@
       "inputCard": "hyprland-settings-duplicate-approval-review-disabled",
       "status": "ApprovedButDefaultDisabled",
       "productionEnabled": false
+    }
+  },
+  "activationPathReview": {
+    "report": "data/reports/default-disabled-production-activation-path.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    },
+    "duplicateReplacement": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
     }
   }
 }
