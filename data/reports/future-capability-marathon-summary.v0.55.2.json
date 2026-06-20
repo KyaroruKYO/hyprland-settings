@@ -14,7 +14,7 @@
   "hyprland0554MigrationActivated": false,
   "unsafeProductionBehaviorEnabled": false,
   "realConfigTouched": false,
-  "runtimeTouched": false,
+  "runtimeTouched": true,
   "phasesAttempted": [
     "missing_default_insertion",
     "duplicate_resolution",
@@ -85,7 +85,9 @@
     "runtime_live_restore_proof_model",
     "runtime_socket_diagnosis",
     "runtime_readonly_evidence_resolved",
-    "controlled_runtime_live_restore_attempt"
+    "controlled_runtime_live_restore_attempt",
+    "runtime_mutation_syntax_proof",
+    "controlled_runtime_live_restore_proven"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -111,6 +113,7 @@
     "data/reports/explicit-approval-flow.v0.55.2.json",
     "data/reports/runtime-live-restore-proof.v0.55.2.json",
     "data/reports/runtime-socket-diagnosis.v0.55.2.json",
+    "data/reports/runtime-mutation-syntax-proof.v0.55.2.json",
     "data/reports/future-capability-marathon-summary.v0.55.2.json",
     "data/reports/future-capability-marathon-handoff.v0.55.2.json"
   ],
@@ -131,7 +134,7 @@
     "gtkSafeEnvMatrix": "not_run_no_visible_ui_changes_this_sprint",
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_194620"
   },
-  "nextRecommendedAction": "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in before rerunning controlled live restore proof.",
+  "nextRecommendedAction": "Connect the proven hl.config eval live-restore proof to default-disabled runtime approval review without enabling production runtime/reload.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "92-96%",
@@ -185,13 +188,13 @@
     },
     "runtimeReloadIntegration": {
       "before": "45-55%",
-      "after": "58-68%",
-      "evidence": "Runtime socket diagnosis identified sandbox EPERM as the timeout root cause; outside-sandbox read-only hyprctl succeeded. Controlled live restore is blocked by Hyprland 0.55.4 mutation syntax before value change."
+      "after": "62-72%",
+      "evidence": "Runtime socket diagnosis identified sandbox EPERM as the timeout root cause; outside-sandbox read-only hyprctl succeeded. Controlled hl.config eval live restore changed gaps_in from 5 to 6, restored it to 5, and kept production runtime disabled."
     },
     "hyprland0554Migration": {
       "before": "35-45%",
       "after": "47-57%",
-      "evidence": "Runtime hyprctl version evidence confirms Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704; activation still requires official exports, row diff, write-safety review, safe-env evidence, and approval."
+      "evidence": "Runtime hyprctl version evidence confirms Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704; local search found no trusted official 0.55.4 export bundle, so activation still requires official exports, row diff, write-safety review, safe-env evidence, and approval."
     }
   },
   "priorityTrackStatus": {
@@ -207,7 +210,7 @@
     "duplicateGuardedExecutor": "tested_and_restored: temp-fixture guarded executor requires confirmed matching occurrence and restores original file bytes after replacement proof.",
     "structuredGuardedExecutor": "tested_and_restored: hl.bind temp-fixture guarded executor validates candidate, edits exact selected line, verifies new raw line, and restores original bytes.",
     "profileModeGuardedExecutor": "tested_and_restored: temp-fixture guarded executor switches a symlink, verifies target, restores original target, and refuses real profile paths by default.",
-    "runtimeGuardedExecutor": "implemented_but_disabled: runtime executor records read-only/dry-run command proof and restore commands while real_command_executed remains false.",
+    "runtimeGuardedExecutor": "tested_and_restored: controlled outside-sandbox hl.config eval proof changed gaps_in from 5 to 6, restored it to 5, and production runtime remains disabled.",
     "highRiskLiveReadinessExecutor": "implemented_but_disabled: no-op readiness executor requires recovery channel, dead-man timeout, and restore command evidence and refuses mutation by default.",
     "hyprland0554LocalEvidenceCollector": "implemented_but_disabled: local package/runtime evidence is advisory only and cannot activate migration without trusted exports and review proof.",
     "copiedConfigTreeProof": "copied_config_tree_proven: copied source/include, duplicate, structured bind, and profile symlink executors ran against temp copied config trees, restored copied targets, and verified originals unchanged.",
@@ -215,7 +218,7 @@
     "defaultDisabledProductionGates": "ready_but_default_disabled: source/include, duplicate, structured hl.bind, and profile gates can review copied proof while keeping production disabled; runtime, high-risk, and 0.55.4 gates block on missing live/trusted evidence.",
     "explicitApprovalFlow": "implemented_but_disabled: approval scopes require exact target/command, copied or live proof, old/proposed state, restore plan, one-shot or expiry behavior, and never enable production by default.",
     "runtimeSocketDiagnosis": "live_readonly_evidence: sandbox EPERM explains the prior timeout; outside-sandbox hyprctl version, monitors, and getoption queries succeeded.",
-    "runtimeLiveRestoreProof": "blocked_requires_new_runtime_syntax: prior gaps_in value 5 and temporary value 6 were prepared with restore command first; keyword and tested eval syntax failed before value change, readback stayed restored at 5."
+    "runtimeLiveRestoreProof": "live_restore_proven: prior gaps_in value 5 and temporary value 6 were prepared with restore command first; keyword and assignment eval failed before value change, then hl.config eval succeeded and restored readback to 5."
   },
   "categoryCoverageThisSprint": {
     "coreAppShellUiNavigation": "disabled duplicate pre-Apply review UI and source/include selected-target dry-run preview UI are present with source tests",
@@ -228,7 +231,7 @@
     "highRiskDisplayRecovery": "guarded no-op readiness executor added and requires out-of-band recovery before high-risk/display mutation",
     "structuredFamilyEditorsWrites": "guarded hl.bind temp executor added for reversible structured write proof; production structured writes remain blocked",
     "profileModeSwitching": "guarded temp symlink executor added and verifies restored target; real profile switching remains blocked",
-    "runtimeReloadIntegration": "guarded runtime executor records dry-run mutation and restore command proof while executing no real commands",
+    "runtimeReloadIntegration": "guarded runtime proof executed one low-risk hl.config eval mutation, restored the prior value, and keeps production runtime/reload disabled",
     "hyprland0554Migration": "local evidence collector added; migration remains inactive until trusted bundle proof exists"
   }
 }

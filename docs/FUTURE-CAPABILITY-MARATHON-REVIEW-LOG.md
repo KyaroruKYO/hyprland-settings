@@ -26,10 +26,10 @@
 - Runtime mutation/reload: dry-run action boundary, mock executor, runtime action policy scaffold, disabled action review workflow, command risk classification, controlled live-test guard prerequisites, and guarded runtime executor model added; real reload and mutating hyprctl remain blocked.
 - Runtime socket diagnosis: sandboxed `hyprctl` and direct socket probes fail because the sandbox cannot connect to the Hyprland Unix socket; outside-sandbox read-only `hyprctl` evidence succeeds.
 - Runtime read-only evidence: `hyprctl version`, `monitors -j`, `getoption general:gaps_in`, `general:gaps_out`, `decoration:blur:enabled`, and `misc:disable_hyprland_logo` succeeded outside the sandbox.
-- Runtime live restore proof: `general:gaps_in` prior value `5` and temporary value `6` were prepared with restore commands before mutation. `keyword` was rejected for non-legacy parsers, and tested `eval` syntax failed before value change. Runtime readback stayed at `5`.
+- Runtime live restore proof: `general:gaps_in` prior value `5` and temporary value `6` were prepared with restore commands before mutation. `keyword` was rejected for non-legacy parsers, assignment `eval` syntax failed before value change, and `hl.config` eval changed readback to `6` before the prepared restore returned readback to `5`.
 - Hyprland 0.55.4 migration: disabled assessment scaffold, versioned data bundle model, disabled migration review, side-by-side comparison review, trusted-export requirement model, and local evidence collector added; app still defaults to v0.55.2 data/model.
 - Hyprland 0.55.4 package/runtime evidence: `pacman -Q hyprland` reported `hyprland 0.55.4-1`, and `hyprctl version` confirmed Hyprland 0.55.4 commit `a0136d8c04687bb36eb8a28eb9d1ff92aea99704`; this is advisory only and does not activate migration.
-- Controlled live/system testing: a guarded low-risk runtime mutation attempt was made for `general:gaps_in`, but both mutation command forms failed before value change and readback verified runtime remained unchanged.
+- Controlled live/system testing: a guarded low-risk runtime mutation was made for `general:gaps_in`, then restored immediately and verified with post-restore readback.
 
 ## Progress tracker
 - Core app shell / UI / navigation: 92-96% -> 93-96%
@@ -42,14 +42,14 @@
 - High-risk/display recovery: 58-67% -> 59-68%
 - Structured-family editors/writes: 60-69% -> 61-70%
 - Profile/mode switching: 61-70% -> 62-71%
-- Runtime/reload integration: 55-65% -> 58-68%
+- Runtime/reload integration: 55-65% -> 62-72%
 - Hyprland 0.55.4 migration: 45-55% -> 47-57%
 
 ## Safety
 - Real user config edited: no
 - AGS/Waybar touched: no
 - Hyprland reloaded: no
-- Mutating hyprctl used: yes, controlled `keyword` and `eval` attempts for `general:gaps_in`; both failed before value change and readback verified runtime unchanged.
+- Mutating hyprctl used: yes, controlled `keyword`, assignment `eval`, and `hl.config` eval attempts for `general:gaps_in`; only `hl.config` changed the value and it was restored immediately.
 - Scripts executed: no
 - Lua executed: no
 - Release/tag/package touched: no
@@ -65,4 +65,4 @@
 - GTK safe-env evidence matrix: not rerun this sprint because no visible UI behavior changed; deterministic model/report tests cover the approval-flow additions.
 
 ## Next recommended sprint
-Identify the correct Hyprland 0.55.4 runtime `eval` syntax for `general:gaps_in`, then rerun controlled live restore proof.
+Connect the proven `hl.config` eval live-restore proof to default-disabled runtime approval review without enabling production runtime/reload.

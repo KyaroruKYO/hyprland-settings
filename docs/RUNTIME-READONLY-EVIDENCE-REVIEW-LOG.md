@@ -18,4 +18,4 @@
 The previous socket timeout is explained by sandbox socket/process isolation. In the real session, read-only `hyprctl` evidence succeeds.
 
 ## Gate Decision
-Runtime/reload production mutation remains disabled. Read-only evidence is now available, but dynamic mutation still needs a valid Hyprland 0.55.4 mutation syntax and a successful live-restore proof.
+Runtime/reload production mutation remains disabled. Read-only evidence is available, and the low-risk `general:gaps_in` live-restore proof now succeeds through `hyprctl eval 'hl.config({ general = { gaps_in = VALUE } })'`.

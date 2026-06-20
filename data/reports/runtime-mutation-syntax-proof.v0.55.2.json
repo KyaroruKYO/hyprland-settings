@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "runtime-mutation-syntax-proof",
+  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "projectDataVersion": "v0.55.2",
+  "allRuntimeWorkOutsideSandbox": true,
+  "setting": "general:gaps_in",
+  "priorValue": "5",
+  "temporaryValue": "6",
+  "readOnlyEvidenceSucceeded": true,
+  "inspectedSources": [
+    "hyprctl --help",
+    "hyprctl eval --help",
+    "hyprctl keyword --help",
+    "active /home/kyo/.config/hypr/modes/current.lua",
+    "active /home/kyo/.config/hypr/modes/current.conf",
+    "local repo/docs reports"
+  ],
+  "syntaxCandidates": [
+    {
+      "syntax": "hyprctl keyword general:gaps_in 6",
+      "status": "failed_before_value_change",
+      "error": "keyword can't work with non-legacy parsers. Use eval.",
+      "postAttemptReadback": "css gap data: 5 5 5 5; set: true"
+    },
+    {
+      "syntax": "hyprctl eval 'general:gaps_in = 6'",
+      "status": "failed_before_value_change",
+      "error": "function arguments expected near '='",
+      "postAttemptReadback": "css gap data: 5 5 5 5; set: true"
+    },
+    {
+      "syntax": "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'",
+      "restoreSyntax": "hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'",
+      "status": "mutated_and_restored",
+      "mutationOutput": "ok",
+      "postMutationReadback": "css gap data: 6 6 6 6; set: true",
+      "restoreOutput": "ok",
+      "postRestoreReadback": "css gap data: 5 5 5 5; set: true"
+    }
+  ],
+  "successfulMutationSyntax": "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'",
+  "restoreCommand": "hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'",
+  "runtimeChangedTemporarily": true,
+  "runtimeRestored": true,
+  "runtimeLeftUnchanged": true,
+  "hyprctlReloadRun": false,
+  "configFilesEdited": false,
+  "productionRuntimeEnabled": false,
+  "unsafeProductionBehaviorEnabled": false,
+  "v0552ModelPreserved": true,
+  "hyprland0554MigrationActivated": false,
+  "tests": [
+    "runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production"
+  ],
+  "nextRecommendedWork": "Use the proven hl.config eval command pair in a default-disabled runtime approval review; do not enable runtime/reload production behavior without explicit activation gates."
+}

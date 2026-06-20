@@ -61,7 +61,7 @@
     "duplicateReplacement": "approved_but_default_disabled with copied proof",
     "structuredHlBindWrite": "approved_but_default_disabled with copied proof",
     "profileModeSwitch": "approved_but_default_disabled with copied proof",
-    "runtimeKeyword": "read-only evidence succeeded outside sandbox; live-restore proof is blocked because keyword is rejected for non-legacy parsers and tested eval syntax failed before value change",
+    "runtimeKeyword": "read-only evidence succeeded outside sandbox; live-restore proof is proven with hl.config eval and production remains default-disabled",
     "highRiskDisplayWrite": "ready_but_default_disabled only when recovery proof is complete; live mutation not run",
     "hyprland0554Migration": "ready_but_default_disabled only with complete trusted evidence; current local evidence remains partial"
   },
@@ -80,9 +80,10 @@
     "highRiskWritesEnabled": false,
     "hyprland0554MigrationActivated": false,
     "realConfigTouched": false,
-    "runtimeTouchedByImplementation": false,
+    "runtimeTouchedByImplementation": true,
     "runtimeReadOnlyEvidenceSucceeded": true,
-    "runtimeLiveRestoreBlockedByMutationSyntax": true
+    "runtimeLiveRestoreBlockedByMutationSyntax": false,
+    "runtimeLiveRestoreProven": true
   },
-  "nextRecommendedWork": "Identify the correct Hyprland 0.55.4 runtime eval syntax before rerunning controlled runtime live restore proof."
+  "nextRecommendedWork": "Connect proven runtime live-restore evidence to any future explicit runtime approval UI while keeping production runtime/reload disabled."
 }

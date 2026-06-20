@@ -40,13 +40,14 @@
     "productionSwitchEnabled": false
   },
   "runtimeReloadProductionGate": {
-    "status": "blocked_live_restore_mutation_syntax",
+    "status": "ready_but_default_disabled",
     "requiresReadOnlyEvidence": true,
     "requiresPriorValueSnapshot": true,
     "requiresRestoreCommand": true,
     "requiresExplicitApproval": true,
     "readOnlyEvidenceSucceeded": true,
-    "liveRestoreProofBlockedBy": "Hyprland 0.55.4 rejected keyword and tested eval syntax before value change",
+    "liveRestoreProofStatus": "live_restore_proven",
+    "runtimeMutationSyntax": "hyprctl eval 'hl.config({ general = { gaps_in = VALUE } })'",
     "productionRuntimeEnabled": false
   },
   "highRiskDisplayProductionGate": {
@@ -71,7 +72,7 @@
   },
   "safety": {
     "realConfigTouched": false,
-    "runtimeTouched": false,
+    "runtimeTouched": true,
     "mutatingHyprctlRun": true,
     "sourceIncludeInsertionEnabled": false,
     "duplicateWritesEnabled": false,
@@ -89,6 +90,7 @@
     "runtime_high_risk_and_hyprland_approval_flows_keep_production_disabled",
     "runtime_socket_diagnosis_distinguishes_sandbox_permission_and_real_readonly_success",
     "runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_production",
+    "runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production",
     "high_risk_production_gate_requires_recovery_deadman_restore_backup_snapshot_and_approval",
     "hyprland_0554_activation_gate_keeps_0552_default_until_all_trusted_inputs_and_flag_exist"
   ],
@@ -98,5 +100,5 @@
     "copiedProofCanReachApprovedButDefaultDisabled": true,
     "liveRestoreProofCanReachReadyButDefaultDisabled": true
   },
-  "nextRecommendedWork": "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in before rerunning controlled live restore proof."
+  "nextRecommendedWork": "Use the proven hl.config eval live-restore proof as readiness evidence while keeping production runtime/reload disabled until explicit activation gates are implemented."
 }

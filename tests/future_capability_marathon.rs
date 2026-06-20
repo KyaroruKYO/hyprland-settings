@@ -28,7 +28,11 @@ fn future_capability_reports_exist_and_keep_unsafe_production_tracks_disabled() 
             "895b67281f7551789e5b4a07c0ea849db1eab622"
         );
         assert_eq!(report["whetherRealConfigTouched"], false);
-        assert_eq!(report["whetherRuntimeTouched"], false);
+        if report_path == "data/reports/future-capability-runtime-reload.v0.55.2.json" {
+            assert_eq!(report["whetherRuntimeTouched"], true);
+        } else {
+            assert_eq!(report["whetherRuntimeTouched"], false);
+        }
         assert_eq!(report["whetherProductionBehaviorEnabled"], false);
         assert_ne!(report["implementationStatus"], "implemented_and_enabled");
     }
@@ -78,16 +82,16 @@ fn marathon_summary_attempts_all_tracks_and_preserves_release_scope() {
 fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     let handoff = read_json("data/reports/future-capability-marathon-handoff.v0.55.2.json");
     assert_eq!(handoff["currentBranch"], "future-capability-marathon");
-    assert_eq!(handoff["runtimeTouched"], false);
+    assert_eq!(handoff["runtimeTouched"], true);
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in before rerunning controlled live restore proof."
+        "Connect the proven hl.config eval live-restore proof to default-disabled runtime approval review without enabling production runtime/reload."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("controlled live restore proof"));
+        .contains("default-disabled runtime approval review"));
 }
 
 #[test]
@@ -228,7 +232,7 @@ fn default_disabled_gate_and_runtime_evidence_reports_keep_production_disabled()
     assert_eq!(runtime["evidence"]["hyprctlBinaryFound"], true);
     assert_eq!(runtime["evidence"]["readOnlyHyprctlQueriesSucceeded"], true);
     assert_eq!(runtime["evidence"]["mutatingHyprctlRun"], true);
-    assert_eq!(runtime["evidence"]["runtimeTouched"], false);
+    assert_eq!(runtime["evidence"]["runtimeTouched"], true);
     assert_eq!(runtime["productionGate"]["runtimeMutationEnabled"], false);
     assert!(runtime["commands"]["hyprctlGetoptionGeneralGapsOut"]
         .as_str()
@@ -255,14 +259,18 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     assert_eq!(live_restore["projectDataVersion"], "v0.55.2");
     assert_eq!(
         live_restore["liveShellProof"]["status"],
-        "live_restore_blocked_mutation_syntax"
+        "live_restore_proven"
     );
     assert_eq!(live_restore["liveShellProof"]["mutatingHyprctlRun"], true);
-    assert_eq!(live_restore["liveShellProof"]["runtimeTouched"], false);
+    assert_eq!(live_restore["liveShellProof"]["runtimeTouched"], true);
     assert_eq!(live_restore["liveShellProof"]["restorationVerified"], true);
     assert_eq!(
         live_restore["modelProof"]["statusWithSimulatedRestore"],
         "live_restore_proven"
+    );
+    assert_eq!(
+        live_restore["liveRestoreProof"]["postMutationReadback"],
+        "css gap data: 6 6 6 6; set: true"
     );
     assert_eq!(
         live_restore["productionGate"]["runtimeMutationEnabled"],
@@ -277,5 +285,17 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         "hyprctl_readonly_succeeded"
     );
     assert_eq!(socket["liveRestoreAttempt"]["runtimeLeftUnchanged"], true);
+    assert_eq!(
+        socket["liveRestoreAttempt"]["luaConfigEvalMutation"],
+        "succeeded: hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'"
+    );
     assert_eq!(socket["productionGate"]["runtimeReloadEnabled"], false);
+
+    let syntax = read_json("data/reports/runtime-mutation-syntax-proof.v0.55.2.json");
+    assert_eq!(
+        syntax["successfulMutationSyntax"],
+        "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'"
+    );
+    assert_eq!(syntax["runtimeRestored"], true);
+    assert_eq!(syntax["productionRuntimeEnabled"], false);
 }

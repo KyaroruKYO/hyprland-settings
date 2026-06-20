@@ -32,7 +32,8 @@
     "Attempted read-only runtime socket checks for live-readiness context; socket was unavailable and no high-risk/display mutation was attempted.",
     "Added a default-disabled high-risk/display production gate review requiring out-of-band recovery, dead-man timeout, restore command, config backup, runtime snapshot, explicit approval, and readiness proof.",
     "Connected high-risk/display production gate review to the shared explicit approval-flow model; approval still blocks without out-of-band recovery and live restore proof.",
-    "Recorded runtime read-only evidence as a stronger readiness input: outside-sandbox hyprctl version, monitors, and getoption queries succeeded. High-risk/display mutation was not attempted."
+    "Recorded runtime read-only evidence as a stronger readiness input: outside-sandbox hyprctl version, monitors, and getoption queries succeeded. High-risk/display mutation was not attempted.",
+    "Recorded low-risk runtime live-restore proof as additional readiness input: general:gaps_in changed from 5 to 6 using hl.config eval, then restored to 5. High-risk/display mutation still requires out-of-band recovery and dead-man restore proof."
   ],
   "whatWasNotImplemented": [
     "No real display/render writes were enabled.",
@@ -75,7 +76,8 @@
     "readOnlyRuntimeSocketCheckAttempted": true,
     "readOnlyRuntimeSocketAvailable": true,
     "runtimeReadOnlyEvidenceSucceeded": true,
-    "runtimeLiveRestoreBlockedByMutationSyntax": true,
+    "runtimeLiveRestoreBlockedByMutationSyntax": false,
+    "runtimeLiveRestoreProvenForLowRiskKeyword": true,
     "highRiskDefaultDisabledProductionGateExists": true,
     "highRiskDefaultDisabledProductionGateRequiresRecovery": true,
     "highRiskProductionWriteEnabledByGate": false,
@@ -86,7 +88,7 @@
     "phaseValidation": "pending batch validation"
   },
   "blockers": [
-    "Production high-risk writes require explicit user approval and live recovery proof.",
+    "Production high-risk writes require explicit user approval and high-risk-specific live recovery proof.",
     "Display/render failures need out-of-band rollback proof before activation.",
     "The current live-readiness protocol is intentionally no-op and cannot mutate config or runtime."
   ],

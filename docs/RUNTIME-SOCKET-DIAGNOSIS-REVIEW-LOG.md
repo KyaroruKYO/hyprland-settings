@@ -20,11 +20,14 @@
 - Setting: `general:gaps_in`
 - Prior value: `5`
 - Temporary value: `6`
-- Restore command prepared before mutation: `hyprctl keyword general:gaps_in 5`
+- Restore command prepared before successful mutation: `hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'`
 - `hyprctl keyword general:gaps_in 6`: failed before value change because non-legacy parsers require eval.
 - `hyprctl eval 'general:gaps_in = 6'`: failed before value change with parser syntax error.
-- Post-attempt readback: `css gap data: 5 5 5 5`
-- Restoration verified: yes, runtime remained unchanged.
+- `hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'`: succeeded.
+- Post-mutation readback: `css gap data: 6 6 6 6`
+- Restore output: `ok`
+- Post-restore readback: `css gap data: 5 5 5 5`
+- Restoration verified: yes.
 
 ## Gate Decision
-Runtime/reload production mutation remains disabled. Read-only evidence is now available, but live restore proof is blocked until the correct Hyprland 0.55.4 dynamic mutation syntax is identified and tested with the same restore guard.
+Runtime/reload production mutation remains disabled. Read-only evidence is available and the low-risk live restore proof is proven, but production runtime activation still requires explicit approval gates and must remain default-disabled.

@@ -6,7 +6,7 @@
 - Project data/model: v0.55.2
 - Counts preserved: 341 readable / 341 writable / 0 blocked
 - Real config touched: no
-- Runtime touched: no
+- Runtime touched: yes, controlled `general:gaps_in` mutation was restored immediately
 - main modified: no
 - v0.1.0 tag modified: no
 - dist/v0.1.0 modified: no
@@ -16,21 +16,21 @@
 - Duplicate occurrence replacement: copied-config-tree proof plus confirmed occurrence can reach `ReadyButDefaultDisabled`.
 - Structured `hl.bind` exact-line replacement: copied-config-tree proof plus candidate validation can reach `ReadyButDefaultDisabled`.
 - Profile/mode switching: copied symlink proof can reach `ReadyButDefaultDisabled`, but real-session proof is still required.
-- Runtime/reload mutation: gate has read-only evidence and prior snapshot for `general:gaps_in`, but controlled live restore remains blocked by Hyprland 0.55.4 mutation syntax.
+- Runtime/reload mutation: gate has read-only evidence, prior snapshot, restore command, and proven low-risk live restore for `general:gaps_in`; production remains default-disabled.
 - High-risk/display writes: gate exists and blocks without out-of-band recovery, dead-man timeout, restore command, config backup, runtime snapshot, and approval.
 - Hyprland 0.55.4 activation: gate exists and blocks advisory-only evidence without official exports, row diff, write-safety review, safe-env evidence, and approval.
 
 ## Explicit approval flow implemented
 - Approval requests now name the exact scope, exact target path or runtime command, old state, proposed state, restore plan, one-shot/expiry behavior, and copied-config-tree or live-restore proof.
 - Source/include, duplicate, structured `hl.bind`, and profile/mode approvals can reach `ApprovedButDefaultDisabled` from copied-config-tree proof.
-- Runtime keyword approval can reach `ReadyButDefaultDisabled` in model tests when live-restore proof exists. Real read-only evidence now succeeds, but live restore proof is blocked by mutation syntax.
+- Runtime keyword approval can reach `ReadyButDefaultDisabled` in model tests when live-restore proof exists. Real read-only evidence and low-risk live restore proof now both succeed, but production remains disabled by default.
 - High-risk/display and Hyprland 0.55.4 approvals remain blocked unless their recovery/trusted-data evidence is complete.
 - Approval never flips production behavior on by default.
 
 ## Not ready for production activation
 - High-risk/display writes: no out-of-band recovery proof.
 - Real profile/mode switching: no live symlink proof against the real session.
-- Runtime/reload mutation: sandbox socket access is blocked by `Operation not permitted`; outside-sandbox read-only evidence succeeds, but `keyword` and tested `eval` syntax fail before value change.
+- Runtime/reload mutation: sandbox socket access is blocked by `Operation not permitted`; outside-sandbox read-only evidence succeeds, and `hl.config` eval live restore is proven for `general:gaps_in`. Production activation still requires explicit runtime approval gates.
 - Hyprland 0.55.4 migration: official exports, row-count diff, write-safety review, safe-env evidence, and explicit approval are missing.
 
 ## Required gate behavior
@@ -51,8 +51,11 @@
 - Outside-sandbox `hyprctl getoption misc:disable_hyprland_logo`: `bool: true`.
 - Controlled `hyprctl keyword general:gaps_in 6`: failed before value change because non-legacy parsers require eval.
 - Controlled `hyprctl eval 'general:gaps_in = 6'`: failed before value change with parser syntax error.
-- Post-attempt readback stayed `css gap data: 5 5 5 5`.
+- Controlled `hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'`: succeeded.
+- Post-mutation readback: `css gap data: 6 6 6 6`.
+- Restore command: `hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'`.
+- Post-restore readback: `css gap data: 5 5 5 5`.
 - `pacman -Q hyprland`: `hyprland 0.55.4-1`.
 
 ## Next exact work
-Identify the correct Hyprland 0.55.4 runtime `eval` syntax for `general:gaps_in`, then rerun controlled live restore proof.
+Connect the proven `hl.config` eval live-restore proof to default-disabled runtime approval review without enabling production runtime/reload.

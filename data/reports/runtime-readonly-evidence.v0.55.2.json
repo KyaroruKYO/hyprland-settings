@@ -23,7 +23,7 @@
     "socketDirectoryObserved": true,
     "readOnlyHyprctlQueriesSucceeded": true,
     "mutatingHyprctlRun": true,
-    "runtimeTouched": false
+    "runtimeTouched": true
   },
   "productionGate": {
     "runtimeMutationEnabled": false,
@@ -31,7 +31,8 @@
     "keywordEnabled": false,
     "dispatchEnabled": false,
     "statusEvidenceUsableForMutationApproval": true,
-    "blocker": "read-only evidence succeeded outside the sandbox; controlled mutation proof remains blocked because keyword is rejected for non-legacy parsers and tested eval syntax failed before value change"
+    "liveRestoreProofUsableForDefaultDisabledApproval": true,
+    "blocker": "read-only evidence succeeded outside the sandbox and controlled hl.config eval live-restore proof succeeded; production runtime mutation remains disabled until explicit activation gates are implemented"
   },
-  "nextRecommendedWork": "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in or add an app-side read-only runtime evidence path without enabling mutation."
+  "nextRecommendedWork": "Use the proven hl.config eval live-restore command pair in a default-disabled runtime approval review without enabling production runtime/reload."
 }

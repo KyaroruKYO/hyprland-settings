@@ -45,12 +45,15 @@
     "setting": "general:gaps_in",
     "priorValue": "5",
     "temporaryValue": "6",
-    "restoreCommand": "hyprctl keyword general:gaps_in 5",
+    "restoreCommand": "hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'",
     "keywordMutation": "failed before value change: keyword can't work with non-legacy parsers. Use eval.",
     "evalMutation": "failed before value change: error: function arguments expected near '='",
-    "postMutationReadback": "css gap data: 5 5 5 5; set: true",
+    "luaConfigEvalMutation": "succeeded: hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'",
+    "postMutationReadback": "css gap data: 6 6 6 6; set: true",
+    "restoreOutput": "ok",
     "postRestoreReadback": "css gap data: 5 5 5 5; set: true",
     "restorationVerified": true,
+    "runtimeChangedTemporarily": true,
     "runtimeLeftUnchanged": true
   },
   "productionGate": {
@@ -62,7 +65,8 @@
   "tests": [
     "runtime_socket_diagnosis_distinguishes_sandbox_permission_and_real_readonly_success",
     "runtime_socket_diagnosis_records_raw_socket_success_with_hyprctl_failure",
-    "runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_production"
+    "runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_production",
+    "runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production"
   ],
-  "nextRecommendedWork": "Identify the correct Hyprland 0.55.4 runtime eval syntax for dynamic config mutation, then rerun the controlled general:gaps_in live restore proof."
+  "nextRecommendedWork": "Use the proven hl.config eval syntax as readiness evidence for the default-disabled runtime approval flow; production runtime mutation remains disabled."
 }

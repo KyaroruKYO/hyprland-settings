@@ -20,23 +20,24 @@ use hyprland_settings::future_capability::{
     profile_production_gate_review, profile_target_approval_review,
     render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
     replace_duplicate_occurrence_with_confirmation_safe_env, runtime_action_policy,
-    runtime_action_review, runtime_approval_flow, runtime_command_risk, runtime_guarded_executor,
-    runtime_live_restore_attempt_review, runtime_live_restore_proof_review,
-    runtime_production_gate_review, runtime_socket_diagnosis, source_include_approval_flow,
-    source_include_insertion_review, source_include_production_gate_review,
-    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
-    structured_approval_flow, structured_family_model, structured_family_review,
-    structured_production_gate_review, switch_profile_symlink_guarded_temp,
-    switch_profile_symlink_safe_env, trusted_export_requirement,
-    validate_structured_edit_candidate, ApprovalEvidence, ApprovalRequest, ApprovalScope,
-    ApprovalStatus, ApprovalToken, ControlledLiveTestGuardRequest, ControlledLiveTestKind,
-    DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
+    runtime_action_review, runtime_approval_flow, runtime_command_risk,
+    runtime_eval_syntax_evidence, runtime_guarded_executor, runtime_live_restore_attempt_review,
+    runtime_live_restore_proof_review, runtime_production_gate_review, runtime_socket_diagnosis,
+    source_include_approval_flow, source_include_insertion_review,
+    source_include_production_gate_review, source_include_selected_target_dry_run_plan,
+    source_include_target_selection_fixture_proof, structured_approval_flow,
+    structured_family_model, structured_family_review, structured_production_gate_review,
+    switch_profile_symlink_guarded_temp, switch_profile_symlink_safe_env,
+    trusted_export_requirement, validate_structured_edit_candidate, ApprovalEvidence,
+    ApprovalRequest, ApprovalScope, ApprovalStatus, ApprovalToken, ControlledLiveTestGuardRequest,
+    ControlledLiveTestKind, DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
     DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
     DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
     HighRiskProductionGateStatus, HyprlandVersionActivationStatus, MockWatchdog, MockWatchdogState,
     ProfileProductionGateStatus, ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction,
     RuntimeCommandRisk, RuntimeDirectIpcReadOnlyEvidence, RuntimeDryRunExecutor,
-    RuntimeLiveRestoreStatus, RuntimeProductionGateStatus, RuntimeReadOnlyEvidence,
+    RuntimeLiveRestoreStatus, RuntimeMutationCommandPair, RuntimeMutationSyntaxCandidate,
+    RuntimeMutationSyntaxStatus, RuntimeProductionGateStatus, RuntimeReadOnlyEvidence,
     RuntimeSocketCandidate, RuntimeSocketDiagnosisStatus, SourceIncludeInsertionReadiness,
     SourceIncludeProductionGateStatus, SourceIncludeSelectedTargetDryRunStatus,
     SourceIncludeTargetCandidate, SourceIncludeTargetSelectionStatus, StructuredBindEditStatus,
@@ -2839,6 +2840,81 @@ fn runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_
     assert!(!failed_keyword.real_command_executed);
     assert!(!failed_keyword.runtime_touched);
     assert!(!failed_keyword.production_runtime_enabled);
+}
+
+#[test]
+fn runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production()
+{
+    let keyword_failure = RuntimeMutationSyntaxCandidate {
+        syntax_name: "legacy keyword".to_string(),
+        command_pair: RuntimeMutationCommandPair {
+            mutation_command: "hyprctl keyword general:gaps_in 6".to_string(),
+            restore_command: "hyprctl keyword general:gaps_in 5".to_string(),
+        },
+        status: RuntimeMutationSyntaxStatus::FailedBeforeValueChange,
+        error: Some("keyword can't work with non-legacy parsers. Use eval.".to_string()),
+        post_mutation_value: Some("5".to_string()),
+        post_restore_value: Some("5".to_string()),
+    };
+    let assignment_eval_failure = RuntimeMutationSyntaxCandidate {
+        syntax_name: "assignment eval".to_string(),
+        command_pair: RuntimeMutationCommandPair {
+            mutation_command: "hyprctl eval 'general:gaps_in = 6'".to_string(),
+            restore_command: "hyprctl eval 'general:gaps_in = 5'".to_string(),
+        },
+        status: RuntimeMutationSyntaxStatus::FailedBeforeValueChange,
+        error: Some("function arguments expected near '='".to_string()),
+        post_mutation_value: Some("5".to_string()),
+        post_restore_value: Some("5".to_string()),
+    };
+    let lua_config_success = RuntimeMutationSyntaxCandidate {
+        syntax_name: "lua hl.config eval".to_string(),
+        command_pair: RuntimeMutationCommandPair {
+            mutation_command: "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'".to_string(),
+            restore_command: "hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'".to_string(),
+        },
+        status: RuntimeMutationSyntaxStatus::MutatedAndRestored,
+        error: None,
+        post_mutation_value: Some("6".to_string()),
+        post_restore_value: Some("5".to_string()),
+    };
+    let evidence = runtime_eval_syntax_evidence(
+        "general:gaps_in",
+        "5",
+        "6",
+        vec![
+            keyword_failure,
+            assignment_eval_failure,
+            lua_config_success.clone(),
+        ],
+    );
+    assert_eq!(
+        evidence.successful_syntax,
+        Some("lua hl.config eval".to_string())
+    );
+    assert!(evidence.live_restore_proven);
+    assert!(evidence.runtime_left_restored);
+    assert!(!evidence.production_runtime_enabled);
+
+    let proof = runtime_live_restore_attempt_review(
+        RuntimeAction::Keyword {
+            key: "general:gaps_in".to_string(),
+            value: "6".to_string(),
+        },
+        true,
+        Some("5"),
+        Some("6"),
+        Some(lua_config_success.command_pair.restore_command.as_str()),
+        Some(lua_config_success.command_pair.mutation_command.as_str()),
+        true,
+        Some("6"),
+        Some("5"),
+    );
+    assert_eq!(proof.status, RuntimeLiveRestoreStatus::LiveRestoreProven);
+    assert!(proof.real_command_executed);
+    assert!(proof.runtime_touched);
+    assert!(proof.restored);
+    assert!(!proof.production_runtime_enabled);
 }
 
 #[test]

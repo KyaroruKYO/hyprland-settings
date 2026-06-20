@@ -3619,6 +3619,82 @@ pub enum RuntimeLiveRestoreStatus {
     ReadyButDefaultDisabled,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RuntimeMutationSyntaxStatus {
+    NotAttempted,
+    FailedBeforeValueChange,
+    MutatedAndRestored,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeMutationCommandPair {
+    pub mutation_command: String,
+    pub restore_command: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeRestoreCommandPair {
+    pub setting: String,
+    pub prior_value: String,
+    pub temporary_value: String,
+    pub commands: RuntimeMutationCommandPair,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeMutationSyntaxCandidate {
+    pub syntax_name: String,
+    pub command_pair: RuntimeMutationCommandPair,
+    pub status: RuntimeMutationSyntaxStatus,
+    pub error: Option<String>,
+    pub post_mutation_value: Option<String>,
+    pub post_restore_value: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeEvalSyntaxEvidence {
+    pub setting: String,
+    pub prior_value: String,
+    pub temporary_value: String,
+    pub candidates: Vec<RuntimeMutationSyntaxCandidate>,
+    pub successful_syntax: Option<String>,
+    pub live_restore_proven: bool,
+    pub runtime_left_restored: bool,
+    pub production_runtime_enabled: bool,
+}
+
+pub fn runtime_eval_syntax_evidence(
+    setting: impl Into<String>,
+    prior_value: impl Into<String>,
+    temporary_value: impl Into<String>,
+    candidates: Vec<RuntimeMutationSyntaxCandidate>,
+) -> RuntimeEvalSyntaxEvidence {
+    let setting = setting.into();
+    let temporary_value = temporary_value.into();
+    let prior_value = prior_value.into();
+    let successful_syntax = candidates
+        .iter()
+        .find(|candidate| {
+            candidate.status == RuntimeMutationSyntaxStatus::MutatedAndRestored
+                && candidate.post_mutation_value.as_deref() == Some(temporary_value.as_str())
+                && candidate.post_restore_value.as_deref() == Some(prior_value.as_str())
+        })
+        .map(|candidate| candidate.syntax_name.clone());
+    let runtime_left_restored = candidates.iter().all(|candidate| {
+        candidate.status != RuntimeMutationSyntaxStatus::MutatedAndRestored
+            || candidate.post_restore_value.as_deref() == Some(prior_value.as_str())
+    });
+    RuntimeEvalSyntaxEvidence {
+        setting,
+        prior_value,
+        temporary_value,
+        live_restore_proven: successful_syntax.is_some(),
+        runtime_left_restored,
+        production_runtime_enabled: false,
+        candidates,
+        successful_syntax,
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RuntimeLiveRestoreProof {
     pub action: RuntimeAction,

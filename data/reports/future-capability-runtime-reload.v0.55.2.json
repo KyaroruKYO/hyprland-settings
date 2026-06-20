@@ -32,7 +32,8 @@
     "Connected runtime keyword/reload reviews to the shared explicit approval-flow model; live restore proof can reach ready_but_default_disabled in model tests, never production enabled by default.",
     "Added runtime live-restore proof model for blocked read-only evidence, ready-but-default-disabled restore plans, and simulated live-restore-proven state; real-session read-only evidence now succeeds outside the sandbox.",
     "Diagnosed the original socket timeout as sandbox permission/process isolation: direct socket connect failed with Operation not permitted inside the sandbox, while outside-sandbox hyprctl read-only queries succeeded.",
-    "Attempted one guarded low-risk general:gaps_in live-restore proof after preparing restore commands. hyprctl keyword was rejected for non-legacy parsers and tested hyprctl eval syntax failed before value change; post-attempt readback stayed at the prior value."
+    "Attempted one guarded low-risk general:gaps_in live-restore proof after preparing restore commands. hyprctl keyword was rejected for non-legacy parsers and tested assignment eval syntax failed before value change; the active Lua config syntax identified hyprctl eval 'hl.config({ general = { gaps_in = 6 } })' as the correct mutation form.",
+    "Ran the controlled hl.config eval proof outside the sandbox: gaps_in changed from 5 to 6, then the prepared restore command returned it to 5 and post-restore readback verified restoration."
   ],
   "whatWasNotImplemented": [
     "No real hyprctl keyword, dispatch, reload, or runtime mutation path was added.",
@@ -63,8 +64,8 @@
     "statusClassifiedReadOnly": true,
     "reloadKeywordDispatchClassifiedMutating": true,
     "runtimeMutationControlledLiveGuardRequiresReadOnlySnapshot": true,
-    "liveMutationExecutedThisSprint": false,
-    "restorationRequiredThisSprint": false,
+    "liveMutationExecutedThisSprint": true,
+    "restorationRequiredThisSprint": true,
     "runtimeGuardedExecutorExists": true,
     "runtimeGuardedExecutorExecutesRealCommands": false,
     "runtimeGuardedExecutorRequiresPriorSnapshotForMutation": true,
@@ -75,8 +76,10 @@
     "runtimeSocketTimeoutRootCause": "sandbox permission/process isolation",
     "runtimeReadOnlyEvidenceSucceededOutsideSandbox": true,
     "runtimeLiveRestoreAttempted": true,
-    "runtimeLiveRestoreBlockedByMutationSyntax": true,
-    "runtimeLeftUnchangedAfterAttempt": true,
+    "runtimeLiveRestoreBlockedByMutationSyntax": false,
+    "runtimeLiveRestoreProven": true,
+    "runtimeMutationSyntax": "hyprctl eval 'hl.config({ general = { gaps_in = VALUE } })'",
+    "runtimeLeftRestoredAfterAttempt": true,
     "hyprctlBinaryFound": true,
     "hyprlandInstanceSignaturePresent": true,
     "runtimeSocketDirectoryObserved": true,
@@ -84,7 +87,8 @@
     "runtimeProductionMutationEnabledByGate": false,
     "runtimeExplicitApprovalFlowExists": true,
     "runtimeApprovalCanEnableProductionByDefault": false,
-    "runtimeLiveRestoreProofModelExists": true
+    "runtimeLiveRestoreProofModelExists": true,
+    "runtimeMutationSyntaxEvidenceModelExists": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"
@@ -92,10 +96,11 @@
   "blockers": [
     "Needs a production command approval model before any runtime adapter can be activated.",
     "Production reload requires separate approval, read-only evidence, prior snapshot, restore command, and recovery proof.",
-    "Mutating hyprctl keyword and dispatch remain blocked."
+    "Production runtime mutation remains disabled even though the low-risk live restore proof succeeded.",
+    "Reload and dispatch still require separate restore/recovery plans before any production activation."
   ],
-  "nextRecommendedWork": "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in before rerunning controlled live restore proof.",
+  "nextRecommendedWork": "Connect the proven hl.config eval command pair to a default-disabled runtime approval review and keep production runtime/reload disabled until explicit activation gates are implemented.",
   "whetherRealConfigTouched": false,
-  "whetherRuntimeTouched": false,
+  "whetherRuntimeTouched": true,
   "whetherProductionBehaviorEnabled": false
 }

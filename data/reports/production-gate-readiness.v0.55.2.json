@@ -75,7 +75,9 @@
     "hyprctlGetoptionMiscDisableHyprlandLogo": "succeeded: bool: true; set: true",
     "mutatingHyprctlRun": true,
     "runtimeLeftUnchanged": true,
-    "liveRestoreBlocker": "keyword is rejected for non-legacy parsers and tested eval syntax failed before value change"
+    "liveRestoreProof": "proven with hyprctl eval 'hl.config({ general = { gaps_in = VALUE } })'",
+    "postMutationReadback": "css gap data: 6 6 6 6; set: true",
+    "postRestoreReadback": "css gap data: 5 5 5 5; set: true"
   },
   "releaseBoundariesPreserved": {
     "mainModified": false,
@@ -84,5 +86,5 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Identify the correct Hyprland 0.55.4 runtime eval syntax for general:gaps_in before rerunning controlled live restore proof."
+  "nextRecommendedWork": "Use the proven runtime live-restore command pair as readiness evidence for default-disabled runtime approval; keep production runtime/reload disabled."
 }
