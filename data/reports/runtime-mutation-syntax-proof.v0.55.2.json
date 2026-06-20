@@ -54,5 +54,5 @@
   "tests": [
     "runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production"
   ],
-  "nextRecommendedWork": "Use the proven hl.config eval command pair in a default-disabled runtime approval review; do not enable runtime/reload production behavior without explicit activation gates."
+  "nextRecommendedWork": "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload."
 }

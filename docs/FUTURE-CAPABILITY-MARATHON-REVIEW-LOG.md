@@ -42,7 +42,7 @@
 - High-risk/display recovery: 58-67% -> 59-68%
 - Structured-family editors/writes: 60-69% -> 61-70%
 - Profile/mode switching: 61-70% -> 62-71%
-- Runtime/reload integration: 55-65% -> 62-72%
+- Runtime/reload integration: 55-65% -> 64-74%
 - Hyprland 0.55.4 migration: 45-55% -> 47-57%
 
 ## Safety
@@ -65,4 +65,4 @@
 - GTK safe-env evidence matrix: not rerun this sprint because no visible UI behavior changed; deterministic model/report tests cover the approval-flow additions.
 
 ## Next recommended sprint
-Connect the proven `hl.config` eval live-restore proof to default-disabled runtime approval review without enabling production runtime/reload.
+Add a disabled runtime approval UI surface that displays the proven `hl.config` eval live-restore evidence without enabling production runtime/reload.

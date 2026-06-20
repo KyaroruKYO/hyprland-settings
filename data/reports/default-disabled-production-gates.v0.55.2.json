@@ -48,6 +48,10 @@
     "readOnlyEvidenceSucceeded": true,
     "liveRestoreProofStatus": "live_restore_proven",
     "runtimeMutationSyntax": "hyprctl eval 'hl.config({ general = { gaps_in = VALUE } })'",
+    "approvalReviewStatus": "approved_but_default_disabled",
+    "approvalReviewConsumesLiveRestoreProof": true,
+    "approvalReviewRequiresExactRuntimeCommand": true,
+    "approvalReviewProductionEnabled": false,
     "productionRuntimeEnabled": false
   },
   "highRiskDisplayProductionGate": {
@@ -91,6 +95,7 @@
     "runtime_socket_diagnosis_distinguishes_sandbox_permission_and_real_readonly_success",
     "runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_production",
     "runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production",
+    "runtime_live_restore_approval_review_consumes_proof_but_keeps_production_disabled",
     "high_risk_production_gate_requires_recovery_deadman_restore_backup_snapshot_and_approval",
     "hyprland_0554_activation_gate_keeps_0552_default_until_all_trusted_inputs_and_flag_exist"
   ],
@@ -98,7 +103,8 @@
     "implemented": true,
     "approvalDoesNotEnableProductionByDefault": true,
     "copiedProofCanReachApprovedButDefaultDisabled": true,
-    "liveRestoreProofCanReachReadyButDefaultDisabled": true
+    "liveRestoreProofCanReachReadyButDefaultDisabled": true,
+    "runtimeLiveRestoreApprovalCanReachApprovedButDefaultDisabled": true
   },
-  "nextRecommendedWork": "Use the proven hl.config eval live-restore proof as readiness evidence while keeping production runtime/reload disabled until explicit activation gates are implemented."
+  "nextRecommendedWork": "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload."
 }

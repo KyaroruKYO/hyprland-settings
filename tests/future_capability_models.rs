@@ -21,21 +21,23 @@ use hyprland_settings::future_capability::{
     render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
     replace_duplicate_occurrence_with_confirmation_safe_env, runtime_action_policy,
     runtime_action_review, runtime_approval_flow, runtime_command_risk,
-    runtime_eval_syntax_evidence, runtime_guarded_executor, runtime_live_restore_attempt_review,
-    runtime_live_restore_proof_review, runtime_production_gate_review, runtime_socket_diagnosis,
-    source_include_approval_flow, source_include_insertion_review,
-    source_include_production_gate_review, source_include_selected_target_dry_run_plan,
-    source_include_target_selection_fixture_proof, structured_approval_flow,
-    structured_family_model, structured_family_review, structured_production_gate_review,
-    switch_profile_symlink_guarded_temp, switch_profile_symlink_safe_env,
-    trusted_export_requirement, validate_structured_edit_candidate, ApprovalEvidence,
-    ApprovalRequest, ApprovalScope, ApprovalStatus, ApprovalToken, ControlledLiveTestGuardRequest,
-    ControlledLiveTestKind, DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
+    runtime_eval_syntax_evidence, runtime_guarded_executor, runtime_live_restore_approval_review,
+    runtime_live_restore_attempt_review, runtime_live_restore_proof_review,
+    runtime_production_gate_review, runtime_socket_diagnosis, source_include_approval_flow,
+    source_include_insertion_review, source_include_production_gate_review,
+    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
+    structured_approval_flow, structured_family_model, structured_family_review,
+    structured_production_gate_review, switch_profile_symlink_guarded_temp,
+    switch_profile_symlink_safe_env, trusted_export_requirement,
+    validate_structured_edit_candidate, ApprovalEvidence, ApprovalRequest, ApprovalScope,
+    ApprovalStatus, ApprovalToken, ControlledLiveTestGuardRequest, ControlledLiveTestKind,
+    DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
     DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
     DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
     HighRiskProductionGateStatus, HyprlandVersionActivationStatus, MockWatchdog, MockWatchdogState,
     ProfileProductionGateStatus, ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction,
-    RuntimeCommandRisk, RuntimeDirectIpcReadOnlyEvidence, RuntimeDryRunExecutor,
+    RuntimeApprovalReviewStatus, RuntimeCommandRisk, RuntimeDirectIpcReadOnlyEvidence,
+    RuntimeDryRunExecutor, RuntimeEvalSyntaxEvidence, RuntimeLiveRestoreProof,
     RuntimeLiveRestoreStatus, RuntimeMutationCommandPair, RuntimeMutationSyntaxCandidate,
     RuntimeMutationSyntaxStatus, RuntimeProductionGateStatus, RuntimeReadOnlyEvidence,
     RuntimeSocketCandidate, RuntimeSocketDiagnosisStatus, SourceIncludeInsertionReadiness,
@@ -477,6 +479,68 @@ fn runtime_readonly_evidence(
         logo_disabled_succeeded: succeeded,
         raw_error_text: raw_error_text.map(ToOwned::to_owned),
     }
+}
+
+fn proven_runtime_eval_syntax_evidence() -> RuntimeEvalSyntaxEvidence {
+    runtime_eval_syntax_evidence(
+        "general:gaps_in",
+        "5",
+        "6",
+        vec![
+            RuntimeMutationSyntaxCandidate {
+                syntax_name: "legacy keyword".to_string(),
+                command_pair: RuntimeMutationCommandPair {
+                    mutation_command: "hyprctl keyword general:gaps_in 6".to_string(),
+                    restore_command: "hyprctl keyword general:gaps_in 5".to_string(),
+                },
+                status: RuntimeMutationSyntaxStatus::FailedBeforeValueChange,
+                error: Some("keyword can't work with non-legacy parsers. Use eval.".to_string()),
+                post_mutation_value: Some("5".to_string()),
+                post_restore_value: Some("5".to_string()),
+            },
+            RuntimeMutationSyntaxCandidate {
+                syntax_name: "assignment eval".to_string(),
+                command_pair: RuntimeMutationCommandPair {
+                    mutation_command: "hyprctl eval 'general:gaps_in = 6'".to_string(),
+                    restore_command: "hyprctl eval 'general:gaps_in = 5'".to_string(),
+                },
+                status: RuntimeMutationSyntaxStatus::FailedBeforeValueChange,
+                error: Some("function arguments expected near '='".to_string()),
+                post_mutation_value: Some("5".to_string()),
+                post_restore_value: Some("5".to_string()),
+            },
+            RuntimeMutationSyntaxCandidate {
+                syntax_name: "lua hl.config eval".to_string(),
+                command_pair: RuntimeMutationCommandPair {
+                    mutation_command: "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'"
+                        .to_string(),
+                    restore_command: "hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'"
+                        .to_string(),
+                },
+                status: RuntimeMutationSyntaxStatus::MutatedAndRestored,
+                error: None,
+                post_mutation_value: Some("6".to_string()),
+                post_restore_value: Some("5".to_string()),
+            },
+        ],
+    )
+}
+
+fn proven_runtime_live_restore_proof() -> RuntimeLiveRestoreProof {
+    runtime_live_restore_attempt_review(
+        RuntimeAction::Keyword {
+            key: "general:gaps_in".to_string(),
+            value: "6".to_string(),
+        },
+        true,
+        Some("5"),
+        Some("6"),
+        Some("hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'"),
+        Some("hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'"),
+        true,
+        Some("6"),
+        Some("5"),
+    )
 }
 
 #[test]
@@ -2915,6 +2979,168 @@ fn runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_en
     assert!(proof.runtime_touched);
     assert!(proof.restored);
     assert!(!proof.production_runtime_enabled);
+}
+
+#[test]
+fn runtime_live_restore_approval_review_consumes_proof_but_keeps_production_disabled() {
+    let action = RuntimeAction::Keyword {
+        key: "general:gaps_in".to_string(),
+        value: "6".to_string(),
+    };
+    let syntax = proven_runtime_eval_syntax_evidence();
+    let proof = proven_runtime_live_restore_proof();
+    let command = "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'";
+
+    let missing_proof =
+        runtime_live_restore_approval_review(action.clone(), None, Some(&syntax), None, false);
+    assert_eq!(
+        missing_proof.status,
+        RuntimeApprovalReviewStatus::MissingLiveRestoreProof
+    );
+    assert!(!missing_proof.production_runtime_enabled);
+
+    let failed_proof = runtime_live_restore_attempt_review(
+        action.clone(),
+        true,
+        Some("5"),
+        Some("6"),
+        Some("hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'"),
+        Some(command),
+        true,
+        Some("6"),
+        Some("4"),
+    );
+    let failed_restore = runtime_live_restore_approval_review(
+        action.clone(),
+        Some(&failed_proof),
+        Some(&syntax),
+        None,
+        false,
+    );
+    assert_eq!(
+        failed_restore.status,
+        RuntimeApprovalReviewStatus::FailedLiveRestoreProof
+    );
+
+    let mut wrong_setting = syntax.clone();
+    wrong_setting.setting = "general:gaps_out".to_string();
+    let wrong_setting_review = runtime_live_restore_approval_review(
+        action.clone(),
+        Some(&proof),
+        Some(&wrong_setting),
+        None,
+        false,
+    );
+    assert_eq!(
+        wrong_setting_review.status,
+        RuntimeApprovalReviewStatus::WrongSetting
+    );
+
+    let mut wrong_restore = proof.clone();
+    wrong_restore.restore_command = Some("hyprctl keyword general:gaps_in 5".to_string());
+    let wrong_restore_review = runtime_live_restore_approval_review(
+        action.clone(),
+        Some(&wrong_restore),
+        Some(&syntax),
+        None,
+        false,
+    );
+    assert_eq!(
+        wrong_restore_review.status,
+        RuntimeApprovalReviewStatus::RestoreCommandMismatch
+    );
+
+    let missing_approval = runtime_live_restore_approval_review(
+        action.clone(),
+        Some(&proof),
+        Some(&syntax),
+        None,
+        false,
+    );
+    assert_eq!(
+        missing_approval.status,
+        RuntimeApprovalReviewStatus::MissingApproval
+    );
+
+    let wrong_scope = approval_request(
+        ApprovalScope::DuplicateReplacement,
+        None,
+        Some(command),
+        false,
+        true,
+    );
+    let wrong_scope_review = runtime_live_restore_approval_review(
+        action.clone(),
+        Some(&proof),
+        Some(&syntax),
+        Some(&wrong_scope),
+        false,
+    );
+    assert_eq!(
+        wrong_scope_review.status,
+        RuntimeApprovalReviewStatus::WrongApprovalScope
+    );
+
+    let mut expired = approval_request(
+        ApprovalScope::RuntimeKeyword,
+        None,
+        Some(command),
+        false,
+        true,
+    );
+    expired.current_tick = 100;
+    let expired_review = runtime_live_restore_approval_review(
+        action.clone(),
+        Some(&proof),
+        Some(&syntax),
+        Some(&expired),
+        false,
+    );
+    assert_eq!(
+        expired_review.status,
+        RuntimeApprovalReviewStatus::ApprovalExpired
+    );
+
+    let approved = approval_request(
+        ApprovalScope::RuntimeKeyword,
+        None,
+        Some(command),
+        false,
+        true,
+    );
+    let approved_review = runtime_live_restore_approval_review(
+        action.clone(),
+        Some(&proof),
+        Some(&syntax),
+        Some(&approved),
+        false,
+    );
+    assert_eq!(
+        approved_review.status,
+        RuntimeApprovalReviewStatus::ApprovedButDefaultDisabled
+    );
+    assert!(approved_review
+        .live_restore_evidence
+        .as_ref()
+        .is_some_and(|evidence| evidence.restoration_verified));
+    assert!(!approved_review.production_runtime_enabled);
+
+    let approved_with_flag = runtime_live_restore_approval_review(
+        action,
+        Some(&proof),
+        Some(&syntax),
+        Some(&approved),
+        true,
+    );
+    assert_eq!(
+        approved_with_flag.status,
+        RuntimeApprovalReviewStatus::ApprovedButDefaultDisabled
+    );
+    assert!(!approved_with_flag.production_runtime_enabled);
+    assert!(approved_with_flag
+        .blockers
+        .iter()
+        .any(|blocker| blocker.contains("not wired")));
 }
 
 #[test]

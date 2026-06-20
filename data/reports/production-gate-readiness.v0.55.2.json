@@ -51,7 +51,7 @@
     "copiedConfigTreeProof": true,
     "byteExactRestore": true,
     "originalRealConfigUnchanged": true,
-    "realRuntimeMutationProof": false,
+    "realRuntimeMutationProof": true,
     "realConfigMutationProof": false
   },
   "requiredBeforeAnyProductionEnablement": [
@@ -76,6 +76,8 @@
     "mutatingHyprctlRun": true,
     "runtimeLeftUnchanged": true,
     "liveRestoreProof": "proven with hyprctl eval 'hl.config({ general = { gaps_in = VALUE } })'",
+    "runtimeApprovalReview": "approved_but_default_disabled with live-restore proof and explicit approval token evidence",
+    "runtimeApprovalReviewProductionEnabled": false,
     "postMutationReadback": "css gap data: 6 6 6 6; set: true",
     "postRestoreReadback": "css gap data: 5 5 5 5; set: true"
   },
@@ -86,5 +88,5 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Use the proven runtime live-restore command pair as readiness evidence for default-disabled runtime approval; keep production runtime/reload disabled."
+  "nextRecommendedWork": "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload."
 }

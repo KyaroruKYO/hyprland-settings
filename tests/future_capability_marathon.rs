@@ -86,12 +86,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Connect the proven hl.config eval live-restore proof to default-disabled runtime approval review without enabling production runtime/reload."
+        "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("default-disabled runtime approval review"));
+        .contains("disabled runtime approval UI surface"));
 }
 
 #[test]
@@ -168,7 +168,7 @@ fn production_gate_readiness_report_keeps_all_future_gates_default_disabled() {
         "341 readable / 341 writable / 0 blocked"
     );
     assert_eq!(report["proofAvailable"]["copiedConfigTreeProof"], true);
-    assert_eq!(report["proofAvailable"]["realRuntimeMutationProof"], false);
+    assert_eq!(report["proofAvailable"]["realRuntimeMutationProof"], true);
     assert_eq!(
         report["gateDefaults"]["sourceIncludeInsertionEnabledByDefault"],
         false
@@ -298,4 +298,23 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     );
     assert_eq!(syntax["runtimeRestored"], true);
     assert_eq!(syntax["productionRuntimeEnabled"], false);
+
+    let approval = read_json("data/reports/runtime-approval-live-restore-gate.v0.55.2.json");
+    assert_eq!(approval["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        approval["runtimeApprovalReview"]["status"],
+        "approved_but_default_disabled"
+    );
+    assert_eq!(
+        approval["runtimeApprovalReview"]["productionRuntimeEnabled"],
+        false
+    );
+    assert_eq!(
+        approval["runtimeApprovalReview"]["requiresLiveRestoreProof"],
+        true
+    );
+    assert_eq!(
+        approval["runtimeApprovalReview"]["successfulMutationSyntax"],
+        "hyprctl eval 'hl.config({ general = { gaps_in = VALUE } })'"
+    );
 }

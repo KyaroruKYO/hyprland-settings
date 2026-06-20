@@ -33,7 +33,8 @@
     "Added a default-disabled high-risk/display production gate review requiring out-of-band recovery, dead-man timeout, restore command, config backup, runtime snapshot, explicit approval, and readiness proof.",
     "Connected high-risk/display production gate review to the shared explicit approval-flow model; approval still blocks without out-of-band recovery and live restore proof.",
     "Recorded runtime read-only evidence as a stronger readiness input: outside-sandbox hyprctl version, monitors, and getoption queries succeeded. High-risk/display mutation was not attempted.",
-    "Recorded low-risk runtime live-restore proof as additional readiness input: general:gaps_in changed from 5 to 6 using hl.config eval, then restored to 5. High-risk/display mutation still requires out-of-band recovery and dead-man restore proof."
+    "Recorded low-risk runtime live-restore proof as additional readiness input: general:gaps_in changed from 5 to 6 using hl.config eval, then restored to 5. High-risk/display mutation still requires out-of-band recovery and dead-man restore proof.",
+    "Recorded that the runtime live-restore proof now feeds an approved_but_default_disabled runtime approval review; this strengthens runtime confidence but is not enough to activate high-risk/display writes."
   ],
   "whatWasNotImplemented": [
     "No real display/render writes were enabled.",
@@ -78,6 +79,9 @@
     "runtimeReadOnlyEvidenceSucceeded": true,
     "runtimeLiveRestoreBlockedByMutationSyntax": false,
     "runtimeLiveRestoreProvenForLowRiskKeyword": true,
+    "runtimeApprovalReviewConsumesLiveRestoreProof": true,
+    "runtimeApprovalReviewStatus": "approved_but_default_disabled",
+    "runtimeApprovalReviewAloneEnoughForHighRiskActivation": false,
     "highRiskDefaultDisabledProductionGateExists": true,
     "highRiskDefaultDisabledProductionGateRequiresRecovery": true,
     "highRiskProductionWriteEnabledByGate": false,

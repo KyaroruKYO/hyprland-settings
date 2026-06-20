@@ -87,7 +87,8 @@
     "runtime_readonly_evidence_resolved",
     "controlled_runtime_live_restore_attempt",
     "runtime_mutation_syntax_proof",
-    "controlled_runtime_live_restore_proven"
+    "controlled_runtime_live_restore_proven",
+    "runtime_approval_live_restore_gate"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -114,6 +115,7 @@
     "data/reports/runtime-live-restore-proof.v0.55.2.json",
     "data/reports/runtime-socket-diagnosis.v0.55.2.json",
     "data/reports/runtime-mutation-syntax-proof.v0.55.2.json",
+    "data/reports/runtime-approval-live-restore-gate.v0.55.2.json",
     "data/reports/future-capability-marathon-summary.v0.55.2.json",
     "data/reports/future-capability-marathon-handoff.v0.55.2.json"
   ],
@@ -134,7 +136,7 @@
     "gtkSafeEnvMatrix": "not_run_no_visible_ui_changes_this_sprint",
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_194620"
   },
-  "nextRecommendedAction": "Connect the proven hl.config eval live-restore proof to default-disabled runtime approval review without enabling production runtime/reload.",
+  "nextRecommendedAction": "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "92-96%",
@@ -188,8 +190,8 @@
     },
     "runtimeReloadIntegration": {
       "before": "45-55%",
-      "after": "62-72%",
-      "evidence": "Runtime socket diagnosis identified sandbox EPERM as the timeout root cause; outside-sandbox read-only hyprctl succeeded. Controlled hl.config eval live restore changed gaps_in from 5 to 6, restored it to 5, and kept production runtime disabled."
+      "after": "64-74%",
+      "evidence": "Runtime socket diagnosis identified sandbox EPERM as the timeout root cause; outside-sandbox read-only hyprctl succeeded. Controlled hl.config eval live restore changed gaps_in from 5 to 6, restored it to 5, and now feeds an approved_but_default_disabled runtime approval review while production runtime remains disabled."
     },
     "hyprland0554Migration": {
       "before": "35-45%",
@@ -211,6 +213,7 @@
     "structuredGuardedExecutor": "tested_and_restored: hl.bind temp-fixture guarded executor validates candidate, edits exact selected line, verifies new raw line, and restores original bytes.",
     "profileModeGuardedExecutor": "tested_and_restored: temp-fixture guarded executor switches a symlink, verifies target, restores original target, and refuses real profile paths by default.",
     "runtimeGuardedExecutor": "tested_and_restored: controlled outside-sandbox hl.config eval proof changed gaps_in from 5 to 6, restored it to 5, and production runtime remains disabled.",
+    "runtimeApprovalLiveRestoreGate": "approved_but_default_disabled: proven hl.config eval live-restore proof plus exact runtime approval evidence reaches approved_but_default_disabled, never production enabled.",
     "highRiskLiveReadinessExecutor": "implemented_but_disabled: no-op readiness executor requires recovery channel, dead-man timeout, and restore command evidence and refuses mutation by default.",
     "hyprland0554LocalEvidenceCollector": "implemented_but_disabled: local package/runtime evidence is advisory only and cannot activate migration without trusted exports and review proof.",
     "copiedConfigTreeProof": "copied_config_tree_proven: copied source/include, duplicate, structured bind, and profile symlink executors ran against temp copied config trees, restored copied targets, and verified originals unchanged.",
@@ -231,7 +234,7 @@
     "highRiskDisplayRecovery": "guarded no-op readiness executor added and requires out-of-band recovery before high-risk/display mutation",
     "structuredFamilyEditorsWrites": "guarded hl.bind temp executor added for reversible structured write proof; production structured writes remain blocked",
     "profileModeSwitching": "guarded temp symlink executor added and verifies restored target; real profile switching remains blocked",
-    "runtimeReloadIntegration": "guarded runtime proof executed one low-risk hl.config eval mutation, restored the prior value, and keeps production runtime/reload disabled",
+    "runtimeReloadIntegration": "guarded runtime proof executed one low-risk hl.config eval mutation, restored the prior value, and now feeds a default-disabled runtime approval review while keeping production runtime/reload disabled",
     "hyprland0554Migration": "local evidence collector added; migration remains inactive until trusted bundle proof exists"
   }
 }

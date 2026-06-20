@@ -33,7 +33,8 @@
     "Added a default-disabled Hyprland version activation gate requiring official export bundle, row-count diff, write-safety review, safe-env evidence, explicit user approval, and activation flag.",
     "Connected Hyprland 0.55.4 activation review to the shared explicit approval-flow model; approval alone cannot activate migration without trusted exports and review evidence.",
     "Recorded runtime hyprctl version evidence: Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704. This remains advisory only and does not activate migration.",
-    "Searched local project/config documentation for trusted 0.55.4 export artifacts; no official v0.55.4 export bundle was found locally."
+    "Searched local project/config documentation for trusted 0.55.4 export artifacts; no official v0.55.4 export bundle was found locally.",
+    "Recorded the proven low-risk runtime live-restore and approval review as advisory 0.55.4 runtime capability evidence; this does not activate migration without official exports, row diff, write-safety review, safe-env evidence, and approval."
   ],
   "whatWasNotImplemented": [
     "No v0.55.2 exports were replaced.",
@@ -73,6 +74,9 @@
     "localPackageMetadataEvidence": "hyprland 0.55.4-1",
     "runtimeSocketEvidenceAvailable": true,
     "runtimeHyprctlVersionEvidence": "Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704",
+    "runtimeLiveRestoreEvidence": "general:gaps_in 5 -> 6 -> 5 via hl.config eval",
+    "runtimeApprovalReviewStatus": "approved_but_default_disabled",
+    "runtimeEvidenceCanActivate0554WithoutTrustedExports": false,
     "trustedLocalExportArtifactSearchCompleted": true,
     "trustedLocalExportArtifactsFound": false,
     "liveMutationExecutedThisSprint": false,

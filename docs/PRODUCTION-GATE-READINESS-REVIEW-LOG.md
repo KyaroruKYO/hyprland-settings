@@ -58,4 +58,4 @@
 - `pacman -Q hyprland`: `hyprland 0.55.4-1`.
 
 ## Next exact work
-Connect the proven `hl.config` eval live-restore proof to default-disabled runtime approval review without enabling production runtime/reload.
+Add a disabled runtime approval UI surface that displays the proven `hl.config` eval live-restore evidence without enabling production runtime/reload.

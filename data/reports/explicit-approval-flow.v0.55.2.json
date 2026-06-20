@@ -61,14 +61,15 @@
     "duplicateReplacement": "approved_but_default_disabled with copied proof",
     "structuredHlBindWrite": "approved_but_default_disabled with copied proof",
     "profileModeSwitch": "approved_but_default_disabled with copied proof",
-    "runtimeKeyword": "read-only evidence succeeded outside sandbox; live-restore proof is proven with hl.config eval and production remains default-disabled",
+    "runtimeKeyword": "approved_but_default_disabled with proven hl.config eval live-restore proof, exact command evidence, and production default-disabled",
     "highRiskDisplayWrite": "ready_but_default_disabled only when recovery proof is complete; live mutation not run",
     "hyprland0554Migration": "ready_but_default_disabled only with complete trusted evidence; current local evidence remains partial"
   },
   "tests": [
     "explicit_approval_flow_blocks_missing_wrong_expired_rejected_and_incomplete_evidence",
     "copied_config_tree_proof_drives_default_disabled_production_gates",
-    "runtime_high_risk_and_hyprland_approval_flows_keep_production_disabled"
+    "runtime_high_risk_and_hyprland_approval_flows_keep_production_disabled",
+    "runtime_live_restore_approval_review_consumes_proof_but_keeps_production_disabled"
   ],
   "safety": {
     "productionFlagDefaultFalse": true,
@@ -83,7 +84,9 @@
     "runtimeTouchedByImplementation": true,
     "runtimeReadOnlyEvidenceSucceeded": true,
     "runtimeLiveRestoreBlockedByMutationSyntax": false,
-    "runtimeLiveRestoreProven": true
+    "runtimeLiveRestoreProven": true,
+    "runtimeApprovalReviewConsumesLiveRestoreProof": true,
+    "runtimeApprovalReviewStatus": "approved_but_default_disabled"
   },
-  "nextRecommendedWork": "Connect proven runtime live-restore evidence to any future explicit runtime approval UI while keeping production runtime/reload disabled."
+  "nextRecommendedWork": "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload."
 }

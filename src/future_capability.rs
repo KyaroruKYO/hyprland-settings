@@ -3695,6 +3695,267 @@ pub fn runtime_eval_syntax_evidence(
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RuntimeApprovalReviewStatus {
+    MissingLiveRestoreProof,
+    FailedLiveRestoreProof,
+    MissingMutationSyntaxEvidence,
+    MutationSyntaxNotProven,
+    WrongSetting,
+    RestoreCommandMismatch,
+    MissingApproval,
+    WrongApprovalScope,
+    ApprovalRejected,
+    ApprovalExpired,
+    ApprovalPending,
+    MissingApprovalEvidence,
+    ReadyButDefaultDisabled,
+    ApprovedButDefaultDisabled,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeLiveRestoreApprovalEvidence {
+    pub setting: String,
+    pub prior_value: String,
+    pub temporary_value: String,
+    pub mutation_command: String,
+    pub restore_command: String,
+    pub post_mutation_readback: String,
+    pub post_restore_readback: String,
+    pub restoration_verified: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeApprovalReview {
+    pub action: RuntimeAction,
+    pub status: RuntimeApprovalReviewStatus,
+    pub live_restore_evidence: Option<RuntimeLiveRestoreApprovalEvidence>,
+    pub approval_decision: Option<ApprovalDecision>,
+    pub production_flag_enabled: bool,
+    pub production_runtime_enabled: bool,
+    pub blockers: Vec<String>,
+    pub review_lines: Vec<String>,
+}
+
+pub fn runtime_live_restore_approval_review(
+    action: RuntimeAction,
+    live_restore_proof: Option<&RuntimeLiveRestoreProof>,
+    syntax_evidence: Option<&RuntimeEvalSyntaxEvidence>,
+    approval_request: Option<&ApprovalRequest>,
+    production_flag_enabled: bool,
+) -> RuntimeApprovalReview {
+    let mut blockers = Vec::new();
+    let setting = match &action {
+        RuntimeAction::Keyword { key, .. } => key.clone(),
+        RuntimeAction::Reload => "reload".to_string(),
+        RuntimeAction::Dispatch { command } => format!("dispatch:{command}"),
+        RuntimeAction::Status { query } => format!("status:{query}"),
+    };
+
+    let Some(proof) = live_restore_proof else {
+        return runtime_approval_review_blocked(
+            action,
+            RuntimeApprovalReviewStatus::MissingLiveRestoreProof,
+            None,
+            None,
+            production_flag_enabled,
+            "proven runtime live-restore proof is required",
+        );
+    };
+    if proof.status != RuntimeLiveRestoreStatus::LiveRestoreProven
+        || !proof.restored
+        || proof.production_runtime_enabled
+    {
+        return runtime_approval_review_blocked(
+            action,
+            RuntimeApprovalReviewStatus::FailedLiveRestoreProof,
+            None,
+            None,
+            production_flag_enabled,
+            "runtime live-restore proof must be proven, restored, and production-disabled",
+        );
+    }
+
+    let Some(syntax) = syntax_evidence else {
+        return runtime_approval_review_blocked(
+            action,
+            RuntimeApprovalReviewStatus::MissingMutationSyntaxEvidence,
+            None,
+            None,
+            production_flag_enabled,
+            "runtime mutation syntax evidence is required",
+        );
+    };
+    if syntax.setting != setting {
+        return runtime_approval_review_blocked(
+            action,
+            RuntimeApprovalReviewStatus::WrongSetting,
+            None,
+            None,
+            production_flag_enabled,
+            "runtime syntax evidence setting does not match the requested action",
+        );
+    }
+    if !syntax.live_restore_proven || !syntax.runtime_left_restored {
+        return runtime_approval_review_blocked(
+            action,
+            RuntimeApprovalReviewStatus::MutationSyntaxNotProven,
+            None,
+            None,
+            production_flag_enabled,
+            "runtime mutation syntax did not prove mutation and restore",
+        );
+    }
+
+    let Some(successful_syntax) = syntax.successful_syntax.as_deref() else {
+        return runtime_approval_review_blocked(
+            action,
+            RuntimeApprovalReviewStatus::MutationSyntaxNotProven,
+            None,
+            None,
+            production_flag_enabled,
+            "no successful runtime mutation syntax is recorded",
+        );
+    };
+    let Some(success_candidate) = syntax.candidates.iter().find(|candidate| {
+        candidate.syntax_name == successful_syntax
+            && candidate.status == RuntimeMutationSyntaxStatus::MutatedAndRestored
+    }) else {
+        return runtime_approval_review_blocked(
+            action,
+            RuntimeApprovalReviewStatus::MutationSyntaxNotProven,
+            None,
+            None,
+            production_flag_enabled,
+            "successful runtime mutation syntax candidate is missing",
+        );
+    };
+
+    if proof.restore_command.as_deref()
+        != Some(success_candidate.command_pair.restore_command.as_str())
+    {
+        return runtime_approval_review_blocked(
+            action,
+            RuntimeApprovalReviewStatus::RestoreCommandMismatch,
+            None,
+            None,
+            production_flag_enabled,
+            "live restore proof restore command does not match the proven syntax restore command",
+        );
+    }
+    if proof.prior_value.as_deref() != Some(syntax.prior_value.as_str())
+        || proof.temporary_value.as_deref() != Some(syntax.temporary_value.as_str())
+        || proof.post_mutation_value.as_deref() != Some(syntax.temporary_value.as_str())
+        || proof.post_restore_value.as_deref() != Some(syntax.prior_value.as_str())
+    {
+        return runtime_approval_review_blocked(
+            action,
+            RuntimeApprovalReviewStatus::FailedLiveRestoreProof,
+            None,
+            None,
+            production_flag_enabled,
+            "live restore proof readbacks do not match mutation syntax evidence",
+        );
+    }
+
+    let evidence = RuntimeLiveRestoreApprovalEvidence {
+        setting: setting.clone(),
+        prior_value: syntax.prior_value.clone(),
+        temporary_value: syntax.temporary_value.clone(),
+        mutation_command: success_candidate.command_pair.mutation_command.clone(),
+        restore_command: success_candidate.command_pair.restore_command.clone(),
+        post_mutation_readback: proof.post_mutation_value.clone().unwrap_or_default(),
+        post_restore_readback: proof.post_restore_value.clone().unwrap_or_default(),
+        restoration_verified: proof.restored,
+    };
+
+    let decision = approval_decision_for_gate(
+        ApprovalScope::RuntimeKeyword,
+        true,
+        None,
+        Some(evidence.mutation_command.as_str()),
+        approval_request,
+        false,
+    );
+    let status = match decision.status {
+        ApprovalStatus::MissingEvidence if approval_request.is_none() => {
+            RuntimeApprovalReviewStatus::MissingApproval
+        }
+        ApprovalStatus::MissingEvidence => RuntimeApprovalReviewStatus::MissingApprovalEvidence,
+        ApprovalStatus::WrongScope => RuntimeApprovalReviewStatus::WrongApprovalScope,
+        ApprovalStatus::Rejected => RuntimeApprovalReviewStatus::ApprovalRejected,
+        ApprovalStatus::Expired => RuntimeApprovalReviewStatus::ApprovalExpired,
+        ApprovalStatus::Pending => RuntimeApprovalReviewStatus::ApprovalPending,
+        ApprovalStatus::ReadyButDefaultDisabled | ApprovalStatus::ApprovedButDefaultDisabled => {
+            RuntimeApprovalReviewStatus::ApprovedButDefaultDisabled
+        }
+        ApprovalStatus::Enabled => RuntimeApprovalReviewStatus::ApprovedButDefaultDisabled,
+    };
+    blockers.extend(decision.blockers.clone());
+    if production_flag_enabled {
+        blockers.push(
+            "runtime production activation is not wired in this default-disabled review"
+                .to_string(),
+        );
+    }
+    if status == RuntimeApprovalReviewStatus::ApprovedButDefaultDisabled
+        && !blockers
+            .iter()
+            .any(|blocker| blocker.contains("default-disabled"))
+    {
+        blockers.push("runtime production mutation flag is default-disabled".to_string());
+    }
+
+    RuntimeApprovalReview {
+        action,
+        status,
+        live_restore_evidence: Some(evidence),
+        approval_decision: Some(decision),
+        production_flag_enabled,
+        production_runtime_enabled: false,
+        blockers: blockers.clone(),
+        review_lines: vec![
+            "Runtime approval review consumes the proven hl.config eval live-restore proof."
+                .to_string(),
+            "The approval must name the exact runtime command, old value, proposed value, and restore plan."
+                .to_string(),
+            "Production runtime/reload remains disabled by default.".to_string(),
+            format!(
+                "Blockers: {}",
+                if blockers.is_empty() {
+                    "none".to_string()
+                } else {
+                    blockers.join("; ")
+                }
+            ),
+        ],
+    }
+}
+
+fn runtime_approval_review_blocked(
+    action: RuntimeAction,
+    status: RuntimeApprovalReviewStatus,
+    live_restore_evidence: Option<RuntimeLiveRestoreApprovalEvidence>,
+    approval_decision: Option<ApprovalDecision>,
+    production_flag_enabled: bool,
+    blocker: &str,
+) -> RuntimeApprovalReview {
+    RuntimeApprovalReview {
+        action,
+        status,
+        live_restore_evidence,
+        approval_decision,
+        production_flag_enabled,
+        production_runtime_enabled: false,
+        blockers: vec![blocker.to_string()],
+        review_lines: vec![
+            "Runtime approval review is blocked.".to_string(),
+            blocker.to_string(),
+            "Production runtime/reload remains disabled.".to_string(),
+        ],
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RuntimeLiveRestoreProof {
     pub action: RuntimeAction,

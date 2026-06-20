@@ -34,5 +34,5 @@
     "liveRestoreProofUsableForDefaultDisabledApproval": true,
     "blocker": "read-only evidence succeeded outside the sandbox and controlled hl.config eval live-restore proof succeeded; production runtime mutation remains disabled until explicit activation gates are implemented"
   },
-  "nextRecommendedWork": "Use the proven hl.config eval live-restore command pair in a default-disabled runtime approval review without enabling production runtime/reload."
+  "nextRecommendedWork": "Add a disabled runtime approval UI surface that displays the proven hl.config eval live-restore evidence without enabling production runtime/reload."
 }
