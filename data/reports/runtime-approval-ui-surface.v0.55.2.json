@@ -46,5 +46,10 @@
     "v0552DefaultPreserved": true,
     "hyprland0554MigrationActivated": false
   },
-  "nextRecommendedWork": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
+  "relatedDisabledApprovalCards": {
+    "implementedForRemainingGatedCategories": true,
+    "report": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+    "productionBehaviorEnabled": false
+  },
+  "nextRecommendedWork": "Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled."
 }

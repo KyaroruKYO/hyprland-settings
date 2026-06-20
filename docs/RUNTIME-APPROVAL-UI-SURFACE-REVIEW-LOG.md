@@ -46,4 +46,4 @@ Production runtime/reload remains disabled.
 
 ## Next
 
-Extend this disabled approval surface pattern to the remaining future capability review cards without enabling production behavior.
+The same disabled approval surface pattern now exists for source/include insertion, duplicate replacement, structured `hl.bind`, profile/mode switching, high-risk/display writes, and Hyprland 0.55.4 migration. See `docs/DISABLED-APPROVAL-UI-CARDS-REVIEW-LOG.md`.

@@ -16,11 +16,12 @@ use crate::current_config::{
 };
 use crate::export::ExportBundle;
 use crate::future_capability::{
-    duplicate_production_approval_gate, proven_runtime_approval_evidence_summary,
-    source_include_insertion_review, source_include_selected_target_dry_run_plan,
-    source_include_target_selection_fixture_proof, DuplicateOccurrence,
-    DuplicateProductionGateStatus, SourceIncludeInsertionReadiness,
-    SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
+    disabled_future_approval_card_projections, duplicate_production_approval_gate,
+    proven_runtime_approval_evidence_summary, source_include_insertion_review,
+    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
+    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
+    SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
+    SourceIncludeTargetCandidate,
 };
 use crate::guarded_write_review::{
     build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
@@ -579,6 +580,8 @@ fn build_config_view(
     content.append(&connected_files_review_section(&model.config_discovery));
 
     content.append(&profile_mode_detail_section());
+
+    content.append(&disabled_future_approval_cards_section());
 
     content.append(&config_section(
         "Future changes",
@@ -1204,6 +1207,76 @@ fn profile_mode_detail_section() -> gtk::Frame {
     frame.set_tooltip_text(Some(
         "Profile mode detail. Profile switching is not active yet. The app will not change profile files or symlinks.",
     ));
+    frame
+}
+
+fn disabled_future_approval_cards_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-disabled-approval-cards-section");
+    frame.set_tooltip_text(Some(
+        "Disabled future approval reviews. These cards show proof and blockers without enabling production behavior.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(12);
+    content.set_margin_bottom(12);
+    content.set_margin_start(12);
+    content.set_margin_end(12);
+    content.append(&title_label("Future approval reviews"));
+    content.append(&body_label(
+        "These review cards show proof and blockers for future capabilities.",
+    ));
+    content.append(&small_label(
+        "All planned enable controls are disabled. No production behavior is enabled here.",
+    ));
+
+    for card in disabled_future_approval_card_projections() {
+        content.append(&disabled_future_approval_card(&card));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn disabled_future_approval_card(card: &DisabledApprovalCardProjection) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&card.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled approval review card. This is review-only and cannot enable production behavior.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&card.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Approval evidence summary. This card is disabled and has no mutation handler.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&card.heading));
+    for line in &card.summary_lines {
+        content.append(&small_label(line));
+    }
+    for (label, value) in &card.evidence_lines {
+        append_detail_line(&content, label, value);
+    }
+    append_detail_line(&content, "Production status", &card.production_status);
+    content.append(&body_label("Blockers"));
+    for blocker in &card.blockers {
+        content.append(&small_label(blocker));
+    }
+
+    let enable = gtk::Button::with_label(&card.disabled_action_label);
+    enable.set_widget_name(&card.disabled_action_widget_name);
+    enable.set_tooltip_text(Some(
+        "Disabled future action. This does not enable production behavior or run any executor.",
+    ));
+    enable.set_sensitive(false);
+    content.append(&enable);
+
+    frame.set_child(Some(&content));
     frame
 }
 

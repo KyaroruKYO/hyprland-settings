@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "disabled-approval-ui-cards",
+  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "startingCommit": "ce41772a62605c3291e69feed5a19fb80f9c589d",
+  "projectDataVersion": "v0.55.2",
+  "countsPreserved": "341 readable / 341 writable / 0 blocked",
+  "uiSurface": {
+    "implemented": true,
+    "location": "Config page future approval reviews section",
+    "sectionWidgetName": "hyprland-settings-disabled-approval-cards-section",
+    "cardsAreReviewOnly": true,
+    "allPlannedEnableControlsSensitive": false,
+    "productionBehaviorEnabled": false
+  },
+  "cards": {
+    "sourceIncludeInsertion": {
+      "status": "implemented_but_disabled",
+      "widgetName": "hyprland-settings-source-include-approval-review-disabled",
+      "evidenceWidgetName": "hyprland-settings-source-include-approval-evidence",
+      "disabledActionWidgetName": "hyprland-settings-source-include-approval-enable-disabled",
+      "visibleProof": "copied-config-tree proof exists; selected target and planned line are review-only",
+      "productionStatus": "Disabled"
+    },
+    "duplicateReplacement": {
+      "status": "implemented_but_disabled",
+      "widgetName": "hyprland-settings-duplicate-approval-review-disabled",
+      "evidenceWidgetName": "hyprland-settings-duplicate-approval-evidence",
+      "disabledActionWidgetName": "hyprland-settings-duplicate-approval-enable-disabled",
+      "visibleProof": "confirmed occurrence, fingerprint/precondition, and copied proof are review-only",
+      "productionStatus": "Disabled"
+    },
+    "structuredHlBindWrite": {
+      "status": "implemented_but_disabled",
+      "widgetName": "hyprland-settings-structured-approval-review-disabled",
+      "evidenceWidgetName": "hyprland-settings-structured-approval-evidence",
+      "disabledActionWidgetName": "hyprland-settings-structured-approval-enable-disabled",
+      "visibleProof": "old/new bind raw lines, candidate validation, comments/order preservation, and copied proof are review-only",
+      "productionStatus": "Disabled"
+    },
+    "profileModeSwitch": {
+      "status": "implemented_but_disabled",
+      "widgetName": "hyprland-settings-profile-approval-review-disabled",
+      "evidenceWidgetName": "hyprland-settings-profile-approval-evidence",
+      "disabledActionWidgetName": "hyprland-settings-profile-approval-enable-disabled",
+      "visibleProof": "copied symlink proof and restore proof are review-only",
+      "productionStatus": "Disabled"
+    },
+    "highRiskDisplayWrite": {
+      "status": "implemented_but_disabled",
+      "widgetName": "hyprland-settings-high-risk-approval-review-disabled",
+      "evidenceWidgetName": "hyprland-settings-high-risk-approval-evidence",
+      "disabledActionWidgetName": "hyprland-settings-high-risk-approval-enable-disabled",
+      "visibleProof": "low-risk runtime live restore is listed as insufficient; out-of-band recovery and dead-man restore remain required",
+      "productionStatus": "Disabled"
+    },
+    "hyprland0554Migration": {
+      "status": "implemented_but_disabled",
+      "widgetName": "hyprland-settings-0554-approval-review-disabled",
+      "evidenceWidgetName": "hyprland-settings-0554-approval-evidence",
+      "disabledActionWidgetName": "hyprland-settings-0554-approval-enable-disabled",
+      "visibleProof": "runtime/package 0.55.4 evidence is advisory; official exports, row diff, write-safety review, and safe-env evidence remain required",
+      "productionStatus": "Disabled",
+      "activeModel": "v0.55.2",
+      "migrationStatus": "Inactive"
+    }
+  },
+  "tests": [
+    "disabled_future_approval_card_projections_cover_all_remaining_gates_without_enablement",
+    "disabled_future_approval_cards_are_visible_and_non_mutating"
+  ],
+  "safety": {
+    "realConfigTouched": false,
+    "runtimeMutatedThisSprint": false,
+    "hyprctlReloadRun": false,
+    "agsWaybarTouched": false,
+    "sourceIncludeInsertionEnabled": false,
+    "duplicateWritesEnabled": false,
+    "structuredWritesEnabled": false,
+    "profileSwitchingEnabled": false,
+    "highRiskDisplayWritesEnabled": false,
+    "hyprland0554MigrationActivated": false,
+    "runtimeReloadProductionEnabled": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "v0552DefaultPreserved": true
+  },
+  "nextRecommendedWork": "Add deeper per-card detail projections fed by live or copied proof records, still keeping all production behavior default-disabled."
+}

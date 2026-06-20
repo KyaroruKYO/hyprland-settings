@@ -12,7 +12,10 @@
     "requiresTargetInSourceGraph": true,
     "blocksGeneratedScriptSymlinkProfileModeTargets": true,
     "requiresCopiedConfigTreeProof": true,
-    "productionApplyEnabled": false
+    "productionApplyEnabled": false,
+    "approvalUiSurfaceExists": true,
+    "approvalUiSurfaceWidgetName": "hyprland-settings-source-include-approval-review-disabled",
+    "approvalUiSurfaceEnabled": false
   },
   "duplicateProductionGate": {
     "status": "ready_but_default_disabled",
@@ -20,7 +23,10 @@
     "requiresFingerprint": true,
     "requiresPathLineRawLineOldValueSourceDepth": true,
     "requiresCopiedConfigTreeProof": true,
-    "productionApplyEnabled": false
+    "productionApplyEnabled": false,
+    "approvalUiSurfaceExists": true,
+    "approvalUiSurfaceWidgetName": "hyprland-settings-duplicate-approval-review-disabled",
+    "approvalUiSurfaceEnabled": false
   },
   "structuredHlBindProductionGate": {
     "status": "ready_but_default_disabled",
@@ -29,7 +35,10 @@
     "requiresExactNewLine": true,
     "requiresCandidateValidation": true,
     "requiresCopiedConfigTreeProof": true,
-    "productionApplyEnabled": false
+    "productionApplyEnabled": false,
+    "approvalUiSurfaceExists": true,
+    "approvalUiSurfaceWidgetName": "hyprland-settings-structured-approval-review-disabled",
+    "approvalUiSurfaceEnabled": false
   },
   "profileModeProductionGate": {
     "status": "ready_but_default_disabled",
@@ -37,7 +46,10 @@
     "requiresSymlinkSnapshot": true,
     "requiresCopiedConfigTreeSymlinkProof": true,
     "requiresRealSessionLiveProofBeforeActivation": true,
-    "productionSwitchEnabled": false
+    "productionSwitchEnabled": false,
+    "approvalUiSurfaceExists": true,
+    "approvalUiSurfaceWidgetName": "hyprland-settings-profile-approval-review-disabled",
+    "approvalUiSurfaceEnabled": false
   },
   "runtimeReloadProductionGate": {
     "status": "ready_but_default_disabled",
@@ -64,7 +76,10 @@
     "requiresRestoreCommand": true,
     "requiresConfigBackup": true,
     "requiresRuntimeSnapshot": true,
-    "productionWriteEnabled": false
+    "productionWriteEnabled": false,
+    "approvalUiSurfaceExists": true,
+    "approvalUiSurfaceWidgetName": "hyprland-settings-high-risk-approval-review-disabled",
+    "approvalUiSurfaceEnabled": false
   },
   "hyprland0554ActivationGate": {
     "status": "blocked_missing_trusted_exports",
@@ -75,7 +90,10 @@
     "requiresWriteSafetyReview": true,
     "requiresSafeEnvEvidence": true,
     "requiresExplicitUserApproval": true,
-    "migrationActivated": false
+    "migrationActivated": false,
+    "approvalUiSurfaceExists": true,
+    "approvalUiSurfaceWidgetName": "hyprland-settings-0554-approval-review-disabled",
+    "approvalUiSurfaceEnabled": false
   },
   "safety": {
     "realConfigTouched": false,
@@ -102,6 +120,8 @@
     "runtime_approval_evidence_projection_includes_proof_without_enabling_production",
     "runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled",
     "runtime_approval_review_surface_is_called_from_detail_edit_section",
+    "disabled_future_approval_card_projections_cover_all_remaining_gates_without_enablement",
+    "disabled_future_approval_cards_are_visible_and_non_mutating",
     "high_risk_production_gate_requires_recovery_deadman_restore_backup_snapshot_and_approval",
     "hyprland_0554_activation_gate_keeps_0552_default_until_all_trusted_inputs_and_flag_exist"
   ],

@@ -41,7 +41,8 @@
     "Added a guarded temp-fixture executor that consumes source/include target-selection proof and the dry-run plan, backs up the selected target, inserts the exact planned line, rereads it, restores original bytes, and verifies restored content fingerprint.",
     "Added copied-config-tree source/include proof that maps original source/include files to temp copies, runs the guarded executor against copied targets, restores copied files, and verifies originals unchanged.",
     "Added a default-disabled source/include production gate review that requires explicit selected target, target-in-graph proof, matching dry-run plan, copied-config-tree proof, and production flag before any connected-file production expansion.",
-    "Connected source/include production gate review to the shared explicit approval-flow model; copied proof plus exact selected target and inserted line can reach approved_but_default_disabled, never production enabled by default."
+    "Connected source/include production gate review to the shared explicit approval-flow model; copied proof plus exact selected target and inserted line can reach approved_but_default_disabled, never production enabled by default.",
+    "Added a disabled source/include approval review card on the Config page. It shows copied-config-tree proof, selected-target/planned-line evidence, approval status, production-disabled state, blockers, and an insensitive planned enable action."
   ],
   "whatWasNotImplemented": [
     "No insertion into generated, script-managed, symlink/current-profile, profile/mode, multi-file, duplicate, high-risk, display/render-risk, structured, runtime-only, or missing target files was enabled.",
@@ -104,7 +105,10 @@
     "sourceIncludeDefaultDisabledProductionGateReady": true,
     "sourceIncludeProductionApplyEnabledByGate": false,
     "sourceIncludeExplicitApprovalFlowExists": true,
-    "sourceIncludeApprovalCanEnableProductionByDefault": false
+    "sourceIncludeApprovalCanEnableProductionByDefault": false,
+    "sourceIncludeApprovalUiCardExists": true,
+    "sourceIncludeApprovalUiCardEnabled": false,
+    "sourceIncludeApprovalUiWidgetName": "hyprland-settings-source-include-approval-review-disabled"
   },
   "validation": {
     "focusedSafeBatchWriteTests": "passed",
@@ -125,7 +129,7 @@
     "Source/include insertion now has readiness model, disabled UI, fixture target-selection proof, selected-target dry-run planner, preview UI, temp-fixture guarded executor, copied-config-tree proof, and default-disabled production gate review, but production connected-file insertion remains disabled until explicit approval and live restoration proof exist.",
     "Managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
   ],
-  "nextRecommendedWork": "Resolve live restoration proof for source/include targets before considering any default-disabled production flag beyond single-root safe-batch scope.",
+  "nextRecommendedWork": "Add deeper source/include approval card data fed by live or copied proof records while keeping connected-file production insertion disabled by default.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": true

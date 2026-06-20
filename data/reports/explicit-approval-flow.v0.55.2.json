@@ -57,13 +57,13 @@
     }
   },
   "categoryIntegration": {
-    "sourceIncludeInsertion": "approved_but_default_disabled with copied proof",
-    "duplicateReplacement": "approved_but_default_disabled with copied proof",
-    "structuredHlBindWrite": "approved_but_default_disabled with copied proof",
-    "profileModeSwitch": "approved_but_default_disabled with copied proof",
+    "sourceIncludeInsertion": "approved_but_default_disabled with copied proof and disabled approval UI card",
+    "duplicateReplacement": "approved_but_default_disabled with copied proof and disabled approval UI card",
+    "structuredHlBindWrite": "approved_but_default_disabled with copied proof and disabled approval UI card",
+    "profileModeSwitch": "approved_but_default_disabled with copied proof and disabled approval UI card",
     "runtimeKeyword": "approved_but_default_disabled with proven hl.config eval live-restore proof, exact command evidence, disabled UI evidence surface, and production default-disabled",
-    "highRiskDisplayWrite": "ready_but_default_disabled only when recovery proof is complete; live mutation not run",
-    "hyprland0554Migration": "ready_but_default_disabled only with complete trusted evidence; current local evidence remains partial"
+    "highRiskDisplayWrite": "ready_but_default_disabled only when recovery proof is complete; disabled approval UI card shows missing recovery proof",
+    "hyprland0554Migration": "ready_but_default_disabled only with complete trusted evidence; disabled approval UI card shows advisory evidence and missing trusted exports"
   },
   "tests": [
     "explicit_approval_flow_blocks_missing_wrong_expired_rejected_and_incomplete_evidence",
@@ -72,7 +72,9 @@
     "runtime_live_restore_approval_review_consumes_proof_but_keeps_production_disabled",
     "runtime_approval_evidence_projection_includes_proof_without_enabling_production",
     "runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled",
-    "runtime_approval_review_surface_is_called_from_detail_edit_section"
+    "runtime_approval_review_surface_is_called_from_detail_edit_section",
+    "disabled_future_approval_card_projections_cover_all_remaining_gates_without_enablement",
+    "disabled_future_approval_cards_are_visible_and_non_mutating"
   ],
   "safety": {
     "productionFlagDefaultFalse": true,
@@ -91,7 +93,9 @@
     "runtimeApprovalReviewConsumesLiveRestoreProof": true,
     "runtimeApprovalReviewStatus": "approved_but_default_disabled",
     "runtimeApprovalUiSurfaceExists": true,
-    "runtimeApprovalUiSurfaceEnabled": false
+    "runtimeApprovalUiSurfaceEnabled": false,
+    "remainingGatedApprovalUiCardsExist": true,
+    "remainingGatedApprovalUiCardsEnabled": false
   },
-  "nextRecommendedWork": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
+  "nextRecommendedWork": "Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled."
 }

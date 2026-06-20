@@ -31,7 +31,8 @@
     "Added a guarded temp-fixture profile switch executor that requires selected target, current symlink, original symlink snapshot, and guard approval, then switches, verifies, restores, and verifies the restored target.",
     "Added copied-config-tree profile/mode proof that preserves a copied profile symlink, switches it to a copied target, restores the original copied symlink target, and verifies the real symlink remains untouched.",
     "Added a default-disabled profile/mode production gate review that requires selected target, current symlink path, original symlink target snapshot, copied-config-tree symlink proof, restore proof, and future real-session live proof.",
-    "Connected profile/mode production gate review to the shared explicit approval-flow model; copied symlink proof can reach approved_but_default_disabled, never production enabled by default."
+    "Connected profile/mode production gate review to the shared explicit approval-flow model; copied symlink proof can reach approved_but_default_disabled, never production enabled by default.",
+    "Added a disabled profile/mode approval review card on the Config page. It shows current symlink, original target, proposed target, copied symlink proof, restore proof, approval status, production-disabled state, blockers, and an insensitive planned enable action."
   ],
   "whatWasNotImplemented": [
     "No real symlink was switched.",
@@ -74,7 +75,10 @@
     "profileDefaultDisabledProductionGateReady": true,
     "profileProductionSwitchEnabledByGate": false,
     "profileExplicitApprovalFlowExists": true,
-    "profileApprovalCanEnableProductionByDefault": false
+    "profileApprovalCanEnableProductionByDefault": false,
+    "profileApprovalUiCardExists": true,
+    "profileApprovalUiCardEnabled": false,
+    "profileApprovalUiWidgetName": "hyprland-settings-profile-approval-review-disabled"
   },
   "validation": {
     "phaseValidation": "pending batch validation"
@@ -84,7 +88,7 @@
     "Needs explicit user approval before any real session profile switch.",
     "Real mode scripts, reload, AGS restart, and Waybar restart remain blocked."
   ],
-  "nextRecommendedWork": "Add real-session live symlink restoration proof before considering default-disabled real profile/mode switching.",
+  "nextRecommendedWork": "Add deeper profile/mode approval card data fed by copied/live symlink proof records while keeping real profile switching disabled by default.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

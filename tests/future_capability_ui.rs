@@ -229,3 +229,117 @@ fn runtime_approval_review_surface_is_called_from_detail_edit_section() {
     assert!(edit_source.contains("append_runtime_approval_review_surface"));
     assert!(source.contains("proven_runtime_approval_evidence_summary"));
 }
+
+#[test]
+fn disabled_future_approval_cards_are_visible_and_non_mutating() {
+    let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
+    let model_source = fs::read_to_string("src/future_capability.rs")
+        .expect("future capability source should read");
+    let section_source = source_slice(
+        &source,
+        "fn disabled_future_approval_cards_section",
+        "fn append_connected_file_details",
+    );
+
+    for expected in [
+        "hyprland-settings-disabled-approval-cards-section",
+        "Future approval reviews",
+        "These review cards show proof and blockers for future capabilities.",
+        "All planned enable controls are disabled.",
+        "disabled_future_approval_card",
+        "enable.set_sensitive(false)",
+    ] {
+        assert!(
+            section_source.contains(expected),
+            "missing disabled approval cards UI source: {expected}"
+        );
+    }
+
+    for expected in [
+        "hyprland-settings-source-include-approval-review-disabled",
+        "hyprland-settings-source-include-approval-evidence",
+        "hyprland-settings-source-include-approval-enable-disabled",
+        "Source/include approval review",
+        "Copied-config-tree proof exists.",
+        "Production source/include insertion",
+        "Enable source/include insertion (planned)",
+        "hyprland-settings-duplicate-approval-review-disabled",
+        "hyprland-settings-duplicate-approval-evidence",
+        "hyprland-settings-duplicate-approval-enable-disabled",
+        "Duplicate approval review",
+        "Fingerprint/precondition status",
+        "Production duplicate writes",
+        "Enable duplicate replacement (planned)",
+        "hyprland-settings-structured-approval-review-disabled",
+        "hyprland-settings-structured-approval-evidence",
+        "hyprland-settings-structured-approval-enable-disabled",
+        "Structured hl.bind approval review",
+        "Old raw line",
+        "Proposed raw line",
+        "Candidate validation status",
+        "Production structured writes",
+        "Enable structured write (planned)",
+        "hyprland-settings-profile-approval-review-disabled",
+        "hyprland-settings-profile-approval-evidence",
+        "hyprland-settings-profile-approval-enable-disabled",
+        "Profile/mode approval review",
+        "Current symlink",
+        "Original target",
+        "Proposed target",
+        "Restore proof status",
+        "Production profile switching",
+        "Enable profile switching (planned)",
+        "hyprland-settings-high-risk-approval-review-disabled",
+        "hyprland-settings-high-risk-approval-evidence",
+        "hyprland-settings-high-risk-approval-enable-disabled",
+        "High-risk/display approval review",
+        "Out-of-band recovery",
+        "Dead-man timeout",
+        "Runtime live-restore proof is available for a low-risk setting.",
+        "That proof is not enough to enable high-risk/display writes.",
+        "Production high-risk/display writes",
+        "Enable high-risk/display writes (planned)",
+        "hyprland-settings-0554-approval-review-disabled",
+        "hyprland-settings-0554-approval-evidence",
+        "hyprland-settings-0554-approval-enable-disabled",
+        "Hyprland 0.55.4 migration review",
+        "Runtime version evidence exists.",
+        "Package metadata evidence exists.",
+        "These are advisory only.",
+        "Official 0.55.4 export bundle",
+        "Row-count diff",
+        "Write-safety review",
+        "Safe-env evidence",
+        "Current active app model",
+        "v0.55.2",
+        "Migration status",
+        "Inactive",
+        "Enable 0.55.4 migration (planned)",
+    ] {
+        assert!(
+            model_source.contains(expected),
+            "missing disabled approval card projection source: {expected}"
+        );
+    }
+
+    let config_source = source_slice(&source, "fn build_config_view", "fn config_path_summary");
+    assert!(config_source.contains("disabled_future_approval_cards_section"));
+
+    for forbidden in [
+        "execute_source_include_selected_target_guarded_temp",
+        "execute_duplicate_replacement_guarded_temp",
+        "execute_structured_bind_guarded_temp",
+        "switch_profile_symlink_guarded_temp",
+        "high_risk_guarded_live_readiness_executor",
+        "hyprland_version_activation_gate(",
+        "apply_setting_change",
+        "hyprctl",
+        "reload",
+        "enable.set_sensitive(true)",
+    ] {
+        assert!(
+            !section_source.contains(forbidden),
+            "disabled approval cards must not invoke production behavior: {forbidden}"
+        );
+    }
+}

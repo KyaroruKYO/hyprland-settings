@@ -6,12 +6,12 @@ use hyprland_settings::future_capability::{
     approval_decision_for_gate, assess_hyprland_version_migration,
     copied_config_tree_files_restored, copied_config_tree_originals_unchanged,
     copied_config_tree_report, copy_config_tree_for_proof, current_v0552_data_bundle,
-    disabled_migration_review, disabled_missing_default_insertion_review,
-    disabled_profile_switch_review, disabled_profile_switch_selection_review,
-    duplicate_approval_flow, duplicate_occurrence_confirmation, duplicate_occurrence_model,
-    duplicate_occurrence_review, duplicate_production_approval_gate,
-    duplicate_production_gate_review, edit_structured_bind_safe_env,
-    execute_duplicate_replacement_guarded_temp,
+    disabled_future_approval_card_projections, disabled_migration_review,
+    disabled_missing_default_insertion_review, disabled_profile_switch_review,
+    disabled_profile_switch_selection_review, duplicate_approval_flow,
+    duplicate_occurrence_confirmation, duplicate_occurrence_model, duplicate_occurrence_review,
+    duplicate_production_approval_gate, duplicate_production_gate_review,
+    edit_structured_bind_safe_env, execute_duplicate_replacement_guarded_temp,
     execute_source_include_selected_target_guarded_temp, execute_structured_bind_guarded_temp,
     high_risk_approval_flow, high_risk_guarded_live_readiness_executor,
     high_risk_live_recovery_protocol, high_risk_production_gate_review, high_risk_recovery_review,
@@ -3168,6 +3168,62 @@ fn runtime_approval_evidence_projection_includes_proof_without_enabling_producti
         );
     }
     assert!(!evidence.production_runtime_enabled);
+}
+
+#[test]
+fn disabled_future_approval_card_projections_cover_all_remaining_gates_without_enablement() {
+    let cards = disabled_future_approval_card_projections();
+    assert_eq!(cards.len(), 6);
+
+    for expected_widget in [
+        "hyprland-settings-source-include-approval-review-disabled",
+        "hyprland-settings-duplicate-approval-review-disabled",
+        "hyprland-settings-structured-approval-review-disabled",
+        "hyprland-settings-profile-approval-review-disabled",
+        "hyprland-settings-high-risk-approval-review-disabled",
+        "hyprland-settings-0554-approval-review-disabled",
+    ] {
+        let card = cards
+            .iter()
+            .find(|card| card.widget_name == expected_widget)
+            .unwrap_or_else(|| panic!("missing disabled approval card: {expected_widget}"));
+        assert_eq!(card.production_status, "Disabled");
+        assert!(!card.production_enabled);
+        assert!(card.disabled_action_label.contains("(planned)"));
+        assert!(!card.blockers.is_empty());
+        assert!(card
+            .user_facing_lines()
+            .iter()
+            .any(|line| line.contains("Production")));
+    }
+
+    let all_lines = cards
+        .iter()
+        .flat_map(|card| card.user_facing_lines())
+        .collect::<Vec<_>>()
+        .join("\n");
+    for expected in [
+        "Source/include approval review",
+        "Production source/include insertion: Disabled",
+        "Duplicate approval review",
+        "Production duplicate writes: Disabled",
+        "Structured hl.bind approval review",
+        "Production structured writes: Disabled",
+        "Profile/mode approval review",
+        "Production profile switching: Disabled",
+        "High-risk/display approval review",
+        "Runtime live-restore proof is available for a low-risk setting.",
+        "That proof is not enough to enable high-risk/display writes.",
+        "Hyprland 0.55.4 migration review",
+        "Current active app model: v0.55.2",
+        "Migration status: Inactive",
+        "Production migration activation: Disabled",
+    ] {
+        assert!(
+            all_lines.contains(expected),
+            "missing disabled approval projection line: {expected}"
+        );
+    }
 }
 
 #[test]

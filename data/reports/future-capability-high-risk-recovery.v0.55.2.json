@@ -34,7 +34,8 @@
     "Connected high-risk/display production gate review to the shared explicit approval-flow model; approval still blocks without out-of-band recovery and live restore proof.",
     "Recorded runtime read-only evidence as a stronger readiness input: outside-sandbox hyprctl version, monitors, and getoption queries succeeded. High-risk/display mutation was not attempted.",
     "Recorded low-risk runtime live-restore proof as additional readiness input: general:gaps_in changed from 5 to 6 using hl.config eval, then restored to 5. High-risk/display mutation still requires out-of-band recovery and dead-man restore proof.",
-    "Recorded that the runtime live-restore proof now feeds an approved_but_default_disabled runtime approval review; this strengthens runtime confidence but is not enough to activate high-risk/display writes."
+    "Recorded that the runtime live-restore proof now feeds an approved_but_default_disabled runtime approval review; this strengthens runtime confidence but is not enough to activate high-risk/display writes.",
+    "Added a disabled high-risk/display approval review card on the Config page. It states low-risk runtime restore proof is insufficient for high-risk activation and shows required out-of-band recovery, dead-man timeout, restore command, config backup, runtime snapshot, explicit approval, production-disabled state, blockers, and an insensitive planned enable action."
   ],
   "whatWasNotImplemented": [
     "No real display/render writes were enabled.",
@@ -86,7 +87,10 @@
     "highRiskDefaultDisabledProductionGateRequiresRecovery": true,
     "highRiskProductionWriteEnabledByGate": false,
     "highRiskExplicitApprovalFlowExists": true,
-    "highRiskApprovalCanEnableProductionByDefault": false
+    "highRiskApprovalCanEnableProductionByDefault": false,
+    "highRiskApprovalUiCardExists": true,
+    "highRiskApprovalUiCardEnabled": false,
+    "highRiskApprovalUiWidgetName": "hyprland-settings-high-risk-approval-review-disabled"
   },
   "validation": {
     "phaseValidation": "pending batch validation"
@@ -96,7 +100,7 @@
     "Display/render failures need out-of-band rollback proof before activation.",
     "The current live-readiness protocol is intentionally no-op and cannot mutate config or runtime."
   ],
-  "nextRecommendedWork": "Define a user-approved live proof protocol with out-of-band recovery before any high-risk/display production gate can be proposed.",
+  "nextRecommendedWork": "Add deeper high-risk/display approval card data fed by recovery proof records while keeping production high-risk/display writes disabled by default.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

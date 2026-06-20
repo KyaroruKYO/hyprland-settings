@@ -69,7 +69,8 @@
     "runtime_mutation_syntax_proof",
     "controlled_runtime_live_restore_proven",
     "runtime_approval_live_restore_gate",
-    "runtime_approval_ui_surface"
+    "runtime_approval_ui_surface",
+    "disabled_approval_ui_cards_for_remaining_gated_categories"
   ],
   "partialPhases": [],
   "blockedPhases": [
@@ -86,7 +87,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior.",
+  "nextExactPhaseToContinue": "Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled.",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -105,7 +106,9 @@
     "data/reports/runtime-mutation-syntax-proof.v0.55.2.json",
     "data/reports/runtime-approval-live-restore-gate.v0.55.2.json",
     "data/reports/runtime-approval-ui-surface.v0.55.2.json",
-    "docs/RUNTIME-APPROVAL-UI-SURFACE-REVIEW-LOG.md"
+    "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+    "docs/RUNTIME-APPROVAL-UI-SURFACE-REVIEW-LOG.md",
+    "docs/DISABLED-APPROVAL-UI-CARDS-REVIEW-LOG.md"
   ],
   "testsPassing": "cargo fmt, cargo fmt --check, cargo check, cargo test, jq empty data/reports/*.json, git diff --check, cargo build --release, and GTK safe-env matrix passed after runtime approval UI surface updates.",
   "testsFailing": [],
@@ -114,11 +117,11 @@
     "No real live/system mutation was run in this sprint; copied-config-tree executor proof ran against temp copies and restored copied state.",
     "Sandboxed read-only hyprctl and direct socket probes fail because the sandbox cannot connect to the Hyprland Unix socket; outside-sandbox read-only hyprctl succeeds.",
     "Controlled general:gaps_in live restore proof succeeded with hl.config eval syntax after keyword and assignment eval failed before value change; that proof now feeds an approved_but_default_disabled runtime approval review and disabled UI evidence surface while production runtime/reload remains disabled.",
-    "Source/include insertion remains production-disabled beyond single-root scope until explicit approval and live restoration proof exist.",
+    "Source/include insertion remains production-disabled beyond single-root scope; the disabled approval card is review-only and has no production handler.",
     "High-risk/display mutation remains blocked until out-of-band recovery can be proven before any mutation.",
     "0.55.4 migration remains blocked without trusted official exports and row/write-safety review."
   ],
   "realConfigTouched": false,
   "runtimeTouched": true,
-  "recommendedNextCodexPrompt": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
+  "recommendedNextCodexPrompt": "Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled."
 }

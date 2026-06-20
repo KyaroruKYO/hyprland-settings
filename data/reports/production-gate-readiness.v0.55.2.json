@@ -83,6 +83,17 @@
     "postMutationReadback": "css gap data: 6 6 6 6; set: true",
     "postRestoreReadback": "css gap data: 5 5 5 5; set: true"
   },
+  "disabledApprovalUiCards": {
+    "implemented": true,
+    "sectionWidgetName": "hyprland-settings-disabled-approval-cards-section",
+    "sourceIncludeInsertion": "hyprland-settings-source-include-approval-review-disabled",
+    "duplicateReplacement": "hyprland-settings-duplicate-approval-review-disabled",
+    "structuredHlBindWrite": "hyprland-settings-structured-approval-review-disabled",
+    "profileModeSwitch": "hyprland-settings-profile-approval-review-disabled",
+    "highRiskDisplayWrite": "hyprland-settings-high-risk-approval-review-disabled",
+    "hyprland0554Migration": "hyprland-settings-0554-approval-review-disabled",
+    "allCardsEnabled": false
+  },
   "releaseBoundariesPreserved": {
     "mainModified": false,
     "v010TagModified": false,
@@ -90,5 +101,5 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
+  "nextRecommendedWork": "Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled."
 }

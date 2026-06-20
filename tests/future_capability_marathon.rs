@@ -86,12 +86,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
+        "Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("Extend the disabled approval UI pattern"));
+        .contains("Add deeper per-card approval data"));
 }
 
 #[test]
@@ -345,6 +345,40 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     assert_eq!(ui_surface["safety"]["runtimeMutatedThisSprint"], false);
     assert_eq!(
         ui_surface["safety"]["runtimeReloadProductionEnabled"],
+        false
+    );
+
+    let disabled_cards = read_json("data/reports/disabled-approval-ui-cards.v0.55.2.json");
+    assert_eq!(disabled_cards["projectDataVersion"], "v0.55.2");
+    assert_eq!(disabled_cards["uiSurface"]["implemented"], true);
+    assert_eq!(
+        disabled_cards["uiSurface"]["sectionWidgetName"],
+        "hyprland-settings-disabled-approval-cards-section"
+    );
+    assert_eq!(
+        disabled_cards["uiSurface"]["allPlannedEnableControlsSensitive"],
+        false
+    );
+    for key in [
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+        "structuredHlBindWrite",
+        "profileModeSwitch",
+        "highRiskDisplayWrite",
+        "hyprland0554Migration",
+    ] {
+        assert_eq!(
+            disabled_cards["cards"][key]["status"],
+            "implemented_but_disabled"
+        );
+        assert_eq!(disabled_cards["cards"][key]["productionStatus"], "Disabled");
+    }
+    assert_eq!(
+        disabled_cards["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+    assert_eq!(
+        disabled_cards["safety"]["hyprland0554MigrationActivated"],
         false
     );
 }

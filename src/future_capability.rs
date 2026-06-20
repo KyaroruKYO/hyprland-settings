@@ -3789,6 +3789,332 @@ pub fn proven_runtime_approval_evidence_summary() -> RuntimeApprovalEvidenceSumm
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct DisabledApprovalCardProjection {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub disabled_action_widget_name: String,
+    pub heading: String,
+    pub summary_lines: Vec<String>,
+    pub evidence_lines: Vec<(String, String)>,
+    pub blockers: Vec<String>,
+    pub disabled_action_label: String,
+    pub production_status: String,
+    pub production_enabled: bool,
+}
+
+impl DisabledApprovalCardProjection {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        let mut lines = vec![self.heading.clone()];
+        lines.extend(self.summary_lines.clone());
+        for (label, value) in &self.evidence_lines {
+            lines.push(format!("{label}: {value}"));
+        }
+        lines.push(format!("Production status: {}", self.production_status));
+        for blocker in &self.blockers {
+            lines.push(format!("Blocker: {blocker}"));
+        }
+        lines.push(self.disabled_action_label.clone());
+        lines
+    }
+}
+
+pub fn disabled_future_approval_card_projections() -> Vec<DisabledApprovalCardProjection> {
+    vec![
+        DisabledApprovalCardProjection {
+            widget_name: "hyprland-settings-source-include-approval-review-disabled".to_string(),
+            evidence_widget_name: "hyprland-settings-source-include-approval-evidence".to_string(),
+            disabled_action_widget_name:
+                "hyprland-settings-source-include-approval-enable-disabled".to_string(),
+            heading: "Source/include approval review".to_string(),
+            summary_lines: vec![
+                "Source/include production insertion is not enabled yet.".to_string(),
+                "Copied-config-tree proof exists.".to_string(),
+                "Production connected-file insertion remains disabled.".to_string(),
+            ],
+            evidence_lines: vec![
+                (
+                    "Root config".to_string(),
+                    "copied-config-tree root fixture".to_string(),
+                ),
+                (
+                    "Selected target".to_string(),
+                    "copied source/include target fixture".to_string(),
+                ),
+                ("Source depth".to_string(), "1".to_string()),
+                (
+                    "Planned inserted line".to_string(),
+                    "normal scalar setting line from selected-target dry-run proof".to_string(),
+                ),
+                (
+                    "Proposed value".to_string(),
+                    "reviewed normal scalar value".to_string(),
+                ),
+                (
+                    "Copied-config-tree proof status".to_string(),
+                    "copied_config_tree_proven".to_string(),
+                ),
+                (
+                    "Approval status".to_string(),
+                    "Approved but default-disabled".to_string(),
+                ),
+                (
+                    "Production source/include insertion".to_string(),
+                    "Disabled".to_string(),
+                ),
+            ],
+            blockers: vec![
+                "production flag remains false".to_string(),
+                "real connected-file insertion still needs explicit activation".to_string(),
+            ],
+            disabled_action_label: "Enable source/include insertion (planned)".to_string(),
+            production_status: "Disabled".to_string(),
+            production_enabled: false,
+        },
+        DisabledApprovalCardProjection {
+            widget_name: "hyprland-settings-duplicate-approval-review-disabled".to_string(),
+            evidence_widget_name: "hyprland-settings-duplicate-approval-evidence".to_string(),
+            disabled_action_widget_name: "hyprland-settings-duplicate-approval-enable-disabled"
+                .to_string(),
+            heading: "Duplicate approval review".to_string(),
+            summary_lines: vec![
+                "Duplicate production writes are not enabled yet.".to_string(),
+                "Copied-config-tree proof exists.".to_string(),
+                "Production duplicate replacement remains disabled.".to_string(),
+            ],
+            evidence_lines: vec![
+                (
+                    "Selected occurrence".to_string(),
+                    "confirmed copied occurrence".to_string(),
+                ),
+                (
+                    "Target path".to_string(),
+                    "copied duplicate target fixture".to_string(),
+                ),
+                (
+                    "Line number".to_string(),
+                    "exact precondition line".to_string(),
+                ),
+                (
+                    "Raw line".to_string(),
+                    "raw duplicate line from copied proof".to_string(),
+                ),
+                (
+                    "Old value".to_string(),
+                    "copied proof old value".to_string(),
+                ),
+                (
+                    "Proposed value".to_string(),
+                    "copied proof proposed value".to_string(),
+                ),
+                (
+                    "Fingerprint/precondition status".to_string(),
+                    "matching copied proof precondition".to_string(),
+                ),
+                (
+                    "Copied proof status".to_string(),
+                    "copied_config_tree_proven".to_string(),
+                ),
+                (
+                    "Approval status".to_string(),
+                    "Approved but default-disabled".to_string(),
+                ),
+                (
+                    "Production duplicate writes".to_string(),
+                    "Disabled".to_string(),
+                ),
+            ],
+            blockers: vec![
+                "production duplicate write flag remains false".to_string(),
+                "Apply is not wired to duplicate replacement".to_string(),
+            ],
+            disabled_action_label: "Enable duplicate replacement (planned)".to_string(),
+            production_status: "Disabled".to_string(),
+            production_enabled: false,
+        },
+        DisabledApprovalCardProjection {
+            widget_name: "hyprland-settings-structured-approval-review-disabled".to_string(),
+            evidence_widget_name: "hyprland-settings-structured-approval-evidence".to_string(),
+            disabled_action_widget_name: "hyprland-settings-structured-approval-enable-disabled"
+                .to_string(),
+            heading: "Structured hl.bind approval review".to_string(),
+            summary_lines: vec![
+                "Structured production writes are not enabled yet.".to_string(),
+                "Copied-config-tree proof exists.".to_string(),
+                "Production hl.bind editing remains disabled.".to_string(),
+            ],
+            evidence_lines: vec![
+                (
+                    "Target file".to_string(),
+                    "copied bind target fixture".to_string(),
+                ),
+                ("Line number".to_string(), "selected bind line".to_string()),
+                (
+                    "Old raw line".to_string(),
+                    "original bind raw line from copied proof".to_string(),
+                ),
+                (
+                    "Proposed raw line".to_string(),
+                    "candidate bind raw line from copied proof".to_string(),
+                ),
+                (
+                    "Candidate validation status".to_string(),
+                    "valid hl.bind candidate".to_string(),
+                ),
+                (
+                    "Comment/order preservation status".to_string(),
+                    "comments and order preserved".to_string(),
+                ),
+                (
+                    "Copied proof status".to_string(),
+                    "copied_config_tree_proven".to_string(),
+                ),
+                (
+                    "Approval status".to_string(),
+                    "Approved but default-disabled".to_string(),
+                ),
+                (
+                    "Production structured writes".to_string(),
+                    "Disabled".to_string(),
+                ),
+            ],
+            blockers: vec![
+                "production structured write flag remains false".to_string(),
+                "Apply is not wired to structured-family writes".to_string(),
+            ],
+            disabled_action_label: "Enable structured write (planned)".to_string(),
+            production_status: "Disabled".to_string(),
+            production_enabled: false,
+        },
+        DisabledApprovalCardProjection {
+            widget_name: "hyprland-settings-profile-approval-review-disabled".to_string(),
+            evidence_widget_name: "hyprland-settings-profile-approval-evidence".to_string(),
+            disabled_action_widget_name: "hyprland-settings-profile-approval-enable-disabled"
+                .to_string(),
+            heading: "Profile/mode approval review".to_string(),
+            summary_lines: vec![
+                "Real profile switching is not enabled yet.".to_string(),
+                "Copied symlink proof exists.".to_string(),
+                "Real profile/mode switching remains disabled.".to_string(),
+            ],
+            evidence_lines: vec![
+                (
+                    "Current symlink".to_string(),
+                    "copied current.conf symlink".to_string(),
+                ),
+                (
+                    "Original target".to_string(),
+                    "original copied symlink target".to_string(),
+                ),
+                (
+                    "Proposed target".to_string(),
+                    "selected copied profile target".to_string(),
+                ),
+                (
+                    "Copied symlink proof status".to_string(),
+                    "copied_config_tree_proven".to_string(),
+                ),
+                (
+                    "Restore proof status".to_string(),
+                    "copied symlink restored".to_string(),
+                ),
+                (
+                    "Approval status".to_string(),
+                    "Approved but default-disabled".to_string(),
+                ),
+                (
+                    "Production profile switching".to_string(),
+                    "Disabled".to_string(),
+                ),
+            ],
+            blockers: vec![
+                "real-session live symlink restore proof is still required".to_string(),
+                "production profile switching flag remains false".to_string(),
+            ],
+            disabled_action_label: "Enable profile switching (planned)".to_string(),
+            production_status: "Disabled".to_string(),
+            production_enabled: false,
+        },
+        DisabledApprovalCardProjection {
+            widget_name: "hyprland-settings-high-risk-approval-review-disabled".to_string(),
+            evidence_widget_name: "hyprland-settings-high-risk-approval-evidence".to_string(),
+            disabled_action_widget_name: "hyprland-settings-high-risk-approval-enable-disabled"
+                .to_string(),
+            heading: "High-risk/display approval review".to_string(),
+            summary_lines: vec![
+                "High-risk display writes are not enabled yet.".to_string(),
+                "Runtime live-restore proof is available for a low-risk setting.".to_string(),
+                "That proof is not enough to enable high-risk/display writes.".to_string(),
+                "Required before high-risk/display activation:".to_string(),
+            ],
+            evidence_lines: vec![
+                ("Out-of-band recovery".to_string(), "Missing".to_string()),
+                ("Dead-man timeout".to_string(), "Missing".to_string()),
+                ("Restore command".to_string(), "Required".to_string()),
+                ("Config backup".to_string(), "Required".to_string()),
+                ("Runtime snapshot".to_string(), "Required".to_string()),
+                ("Explicit approval".to_string(), "Required".to_string()),
+                (
+                    "Approval status".to_string(),
+                    "Blocked by missing recovery proof".to_string(),
+                ),
+                (
+                    "Production high-risk/display writes".to_string(),
+                    "Disabled".to_string(),
+                ),
+            ],
+            blockers: vec![
+                "out-of-band recovery proof is missing".to_string(),
+                "dead-man restore proof is missing".to_string(),
+            ],
+            disabled_action_label: "Enable high-risk/display writes (planned)".to_string(),
+            production_status: "Disabled".to_string(),
+            production_enabled: false,
+        },
+        DisabledApprovalCardProjection {
+            widget_name: "hyprland-settings-0554-approval-review-disabled".to_string(),
+            evidence_widget_name: "hyprland-settings-0554-approval-evidence".to_string(),
+            disabled_action_widget_name: "hyprland-settings-0554-approval-enable-disabled"
+                .to_string(),
+            heading: "Hyprland 0.55.4 migration review".to_string(),
+            summary_lines: vec![
+                "Hyprland 0.55.4 activation is not enabled yet.".to_string(),
+                "Runtime version evidence exists.".to_string(),
+                "Package metadata evidence exists.".to_string(),
+                "These are advisory only.".to_string(),
+                "Required before activation:".to_string(),
+            ],
+            evidence_lines: vec![
+                (
+                    "Official 0.55.4 export bundle".to_string(),
+                    "Missing".to_string(),
+                ),
+                ("Row-count diff".to_string(), "Missing".to_string()),
+                ("Write-safety review".to_string(), "Missing".to_string()),
+                ("Safe-env evidence".to_string(), "Missing".to_string()),
+                ("Explicit approval".to_string(), "Required".to_string()),
+                (
+                    "Current active app model".to_string(),
+                    "v0.55.2".to_string(),
+                ),
+                ("Migration status".to_string(), "Inactive".to_string()),
+                (
+                    "Production migration activation".to_string(),
+                    "Disabled".to_string(),
+                ),
+            ],
+            blockers: vec![
+                "trusted official 0.55.4 export bundle is missing".to_string(),
+                "row-count diff, write-safety review, and safe-env evidence are missing"
+                    .to_string(),
+            ],
+            disabled_action_label: "Enable 0.55.4 migration (planned)".to_string(),
+            production_status: "Disabled".to_string(),
+            production_enabled: false,
+        },
+    ]
+}
+
 pub fn runtime_live_restore_approval_review(
     action: RuntimeAction,
     live_restore_proof: Option<&RuntimeLiveRestoreProof>,

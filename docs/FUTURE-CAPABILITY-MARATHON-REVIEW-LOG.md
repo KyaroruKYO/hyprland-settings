@@ -28,23 +28,24 @@
 - Runtime read-only evidence: `hyprctl version`, `monitors -j`, `getoption general:gaps_in`, `general:gaps_out`, `decoration:blur:enabled`, and `misc:disable_hyprland_logo` succeeded outside the sandbox.
 - Runtime live restore proof: `general:gaps_in` prior value `5` and temporary value `6` were prepared with restore commands before mutation. `keyword` was rejected for non-legacy parsers, assignment `eval` syntax failed before value change, and `hl.config` eval changed readback to `6` before the prepared restore returned readback to `5`.
 - Runtime approval UI surface: the setting detail pane now displays the proven `hl.config` eval mutation/restore command pair, prior/temp values, post-mutation and post-restore readbacks, approved-but-default-disabled status, and disabled production runtime/reload state. The planned enable control is insensitive and has no runtime handler.
+- Disabled approval UI cards: the Config page now displays review-only cards for source/include insertion, duplicate replacement, structured `hl.bind`, profile/mode switching, high-risk/display writes, and Hyprland 0.55.4 migration. Each card has stable widget names, proof or blocker copy, production-disabled status, and an insensitive planned enable action.
 - Hyprland 0.55.4 migration: disabled assessment scaffold, versioned data bundle model, disabled migration review, side-by-side comparison review, trusted-export requirement model, and local evidence collector added; app still defaults to v0.55.2 data/model.
 - Hyprland 0.55.4 package/runtime evidence: `pacman -Q hyprland` reported `hyprland 0.55.4-1`, and `hyprctl version` confirmed Hyprland 0.55.4 commit `a0136d8c04687bb36eb8a28eb9d1ff92aea99704`; this is advisory only and does not activate migration.
 - Controlled live/system testing: a guarded low-risk runtime mutation was made for `general:gaps_in`, then restored immediately and verified with post-restore readback.
 
 ## Progress tracker
-- Core app shell / UI / navigation: 92-96% -> 94-97%
+- Core app shell / UI / navigation: 92-96% -> 95-98%
 - Config discovery / source-aware model: 90-93% -> 94-96%
 - 341-row read/write model: 90-95% -> 90-95%
 - Safe normal-scalar writes: 92-96% -> 95-97%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
-- Missing/default insertion: 87-92% -> 93-96%
-- Duplicate resolution: 83-88% -> 84-89%
-- High-risk/display recovery: 58-67% -> 59-68%
-- Structured-family editors/writes: 60-69% -> 61-70%
-- Profile/mode switching: 61-70% -> 62-71%
+- Missing/default insertion: 87-92% -> 94-97%
+- Duplicate resolution: 83-88% -> 85-90%
+- High-risk/display recovery: 58-67% -> 60-69%
+- Structured-family editors/writes: 60-69% -> 62-72%
+- Profile/mode switching: 61-70% -> 63-72%
 - Runtime/reload integration: 55-65% -> 66-76%
-- Hyprland 0.55.4 migration: 45-55% -> 47-57%
+- Hyprland 0.55.4 migration: 45-55% -> 48-58%
 
 ## Safety
 - Real user config edited: no
@@ -63,7 +64,7 @@
 - cargo build --release: passed
 - jq reports: passed
 - git diff --check: passed
-- GTK safe-env evidence matrix: passed for the visible runtime approval UI surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260619_231716`.
+- GTK safe-env evidence matrix: passed for the disabled approval UI card surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260619_234758`.
 
 ## Next recommended sprint
-Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior.
+Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled.
