@@ -8,6 +8,9 @@
 - `hyprctl version`: failed without mutation, `Couldn't set socket timeout (2)`
 - `hyprctl monitors -j`: failed without mutation, `Couldn't set socket timeout (2)`
 - `hyprctl getoption general:gaps_in`: failed without mutation, `Couldn't set socket timeout (2)`
+- `hyprctl getoption general:gaps_out`: failed without mutation, `Couldn't set socket timeout (2)`
+- `hyprctl getoption decoration:blur:enabled`: failed without mutation, `Couldn't set socket timeout (2)`
+- `hyprctl getoption misc:disable_hyprland_logo`: failed without mutation, `Couldn't set socket timeout (2)`
 
 ## Result
 The binary and session signature are present, and the runtime socket directory exists, but read-only `hyprctl` queries failed before returning data. No mutating `hyprctl` command was run.

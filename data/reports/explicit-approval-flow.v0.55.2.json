@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "explicit-approval-flow",
+  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "projectDataVersion": "v0.55.2",
+  "countsPreserved": "341 readable / 341 writable / 0 blocked",
+  "approvalScopes": [
+    "source_include_insertion",
+    "duplicate_replacement",
+    "structured_hl_bind_write",
+    "profile_mode_switch",
+    "runtime_keyword",
+    "runtime_reload",
+    "high_risk_display_write",
+    "hyprland_0554_migration"
+  ],
+  "model": {
+    "approvalMustNameExactScope": true,
+    "approvalMustNameExactTargetOrRuntimeCommand": true,
+    "approvalMustLinkCopiedConfigTreeOrLiveRestoreProof": true,
+    "approvalMustIncludeOldState": true,
+    "approvalMustIncludeProposedNewState": true,
+    "approvalMustIncludeRestorePlan": true,
+    "approvalExpiresOrIsOneShot": true,
+    "approvalDoesNotEnableProductionByDefault": true
+  },
+  "approvalDefaults": {
+    "productionFlagDefault": false,
+    "approvalCanOnlyReachApprovedButDefaultDisabled": true,
+    "liveRestoreCanOnlyReachReadyButDefaultDisabled": true
+  },
+  "scopeCoverage": {
+    "source_include_insertion": {
+      "status": "implemented_but_disabled"
+    },
+    "duplicate_replacement": {
+      "status": "implemented_but_disabled"
+    },
+    "structured_hl_bind_write": {
+      "status": "implemented_but_disabled"
+    },
+    "profile_mode_switch": {
+      "status": "implemented_but_disabled"
+    },
+    "runtime_keyword": {
+      "status": "implemented_but_disabled"
+    },
+    "runtime_reload": {
+      "status": "implemented_but_disabled"
+    },
+    "high_risk_display_write": {
+      "status": "implemented_but_disabled"
+    },
+    "hyprland_0554_migration": {
+      "status": "implemented_but_disabled"
+    }
+  },
+  "categoryIntegration": {
+    "sourceIncludeInsertion": "approved_but_default_disabled with copied proof",
+    "duplicateReplacement": "approved_but_default_disabled with copied proof",
+    "structuredHlBindWrite": "approved_but_default_disabled with copied proof",
+    "profileModeSwitch": "approved_but_default_disabled with copied proof",
+    "runtimeKeyword": "ready_but_default_disabled with live-restore proof model; no live mutation run because read-only evidence failed",
+    "highRiskDisplayWrite": "ready_but_default_disabled only when recovery proof is complete; live mutation not run",
+    "hyprland0554Migration": "ready_but_default_disabled only with complete trusted evidence; current local evidence remains partial"
+  },
+  "tests": [
+    "explicit_approval_flow_blocks_missing_wrong_expired_rejected_and_incomplete_evidence",
+    "copied_config_tree_proof_drives_default_disabled_production_gates",
+    "runtime_high_risk_and_hyprland_approval_flows_keep_production_disabled"
+  ],
+  "safety": {
+    "productionFlagDefaultFalse": true,
+    "sourceIncludeInsertionEnabled": false,
+    "duplicateWritesEnabled": false,
+    "structuredWritesEnabled": false,
+    "profileSwitchingEnabled": false,
+    "runtimeReloadEnabled": false,
+    "highRiskWritesEnabled": false,
+    "hyprland0554MigrationActivated": false,
+    "realConfigTouched": false,
+    "runtimeTouchedByImplementation": false
+  },
+  "nextRecommendedWork": "Connect explicit approval decisions to visible disabled review copy, then retry runtime read-only evidence from a working Hyprland socket before any live mutation."
+}

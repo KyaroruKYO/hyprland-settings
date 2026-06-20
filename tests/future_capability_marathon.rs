@@ -82,12 +82,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Retry read-only runtime evidence from a shell with successful hyprctl socket queries, then add explicit approval flows and live restoration proof before considering any real production activation."
+        "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("live restoration proof"));
+        .contains("controlled keyword mutation"));
 }
 
 #[test]
@@ -186,6 +186,11 @@ fn production_gate_readiness_report_keeps_all_future_gates_default_disabled() {
         .expect("gate review list")
         .iter()
         .any(|item| item == "duplicate occurrence replacement"));
+    assert!(report["explicitApprovalFlowImplemented"]
+        .as_array()
+        .expect("approval flow list")
+        .iter()
+        .any(|item| item == "runtime_keyword"));
     assert_eq!(report["releaseBoundariesPreserved"]["mainModified"], false);
     assert_eq!(
         report["releaseBoundariesPreserved"]["v0552DefaultPreserved"],
@@ -213,6 +218,11 @@ fn default_disabled_gate_and_runtime_evidence_reports_keep_production_disabled()
     assert_eq!(gates["safety"]["duplicateWritesEnabled"], false);
     assert_eq!(gates["safety"]["structuredWritesEnabled"], false);
     assert_eq!(gates["safety"]["v0552DefaultPreserved"], true);
+    assert_eq!(gates["approvalFlow"]["implemented"], true);
+    assert_eq!(
+        gates["approvalFlow"]["approvalDoesNotEnableProductionByDefault"],
+        true
+    );
 
     let runtime = read_json("data/reports/runtime-readonly-evidence.v0.55.2.json");
     assert_eq!(runtime["evidence"]["hyprctlBinaryFound"], true);
@@ -222,4 +232,40 @@ fn default_disabled_gate_and_runtime_evidence_reports_keep_production_disabled()
     );
     assert_eq!(runtime["evidence"]["mutatingHyprctlRun"], false);
     assert_eq!(runtime["productionGate"]["runtimeMutationEnabled"], false);
+    assert!(runtime["commands"]["hyprctlGetoptionGeneralGapsOut"]
+        .as_str()
+        .expect("gaps_out evidence should be text")
+        .contains("Couldn't set socket timeout"));
+}
+
+#[test]
+fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_path() {
+    let approval = read_json("data/reports/explicit-approval-flow.v0.55.2.json");
+    assert_eq!(approval["projectDataVersion"], "v0.55.2");
+    assert_eq!(approval["approvalDefaults"]["productionFlagDefault"], false);
+    assert_eq!(
+        approval["scopeCoverage"]["runtime_keyword"]["status"],
+        "implemented_but_disabled"
+    );
+    assert!(approval["tests"]
+        .as_array()
+        .expect("tests")
+        .iter()
+        .any(|item| item == "explicit_approval_flow_blocks_missing_wrong_expired_rejected_and_incomplete_evidence"));
+
+    let live_restore = read_json("data/reports/runtime-live-restore-proof.v0.55.2.json");
+    assert_eq!(live_restore["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        live_restore["liveShellProof"]["status"],
+        "blocked_readonly_evidence_unavailable"
+    );
+    assert_eq!(live_restore["liveShellProof"]["mutatingHyprctlRun"], false);
+    assert_eq!(
+        live_restore["modelProof"]["statusWithSimulatedRestore"],
+        "live_restore_proven"
+    );
+    assert_eq!(
+        live_restore["productionGate"]["runtimeMutationEnabled"],
+        false
+    );
 }

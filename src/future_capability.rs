@@ -155,6 +155,247 @@ pub fn controlled_live_test_guard_review(
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ApprovalScope {
+    SourceIncludeInsertion,
+    DuplicateReplacement,
+    StructuredHlBindWrite,
+    ProfileModeSwitch,
+    RuntimeKeyword,
+    RuntimeReload,
+    HighRiskDisplayWrite,
+    Hyprland0554Migration,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ApprovalStatus {
+    MissingEvidence,
+    WrongScope,
+    Pending,
+    ApprovedButDefaultDisabled,
+    Rejected,
+    Expired,
+    ReadyButDefaultDisabled,
+    Enabled,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ApprovalToken {
+    pub token: String,
+    pub expires_at_tick: Option<u64>,
+    pub one_shot: bool,
+    pub used: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ApprovalEvidence {
+    pub target_path: Option<PathBuf>,
+    pub runtime_command: Option<String>,
+    pub copied_config_tree_proof_restored: bool,
+    pub live_restore_proof_restored: bool,
+    pub old_state: Option<String>,
+    pub proposed_new_state: Option<String>,
+    pub restore_plan: Option<String>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ApprovalRequest {
+    pub scope: ApprovalScope,
+    pub evidence: ApprovalEvidence,
+    pub token: ApprovalToken,
+    pub provided_token: Option<String>,
+    pub current_tick: u64,
+    pub rejected: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ApprovalDecision {
+    pub expected_scope: ApprovalScope,
+    pub status: ApprovalStatus,
+    pub evidence: Option<ApprovalEvidence>,
+    pub production_flag_enabled: bool,
+    pub production_apply_enabled: bool,
+    pub blockers: Vec<String>,
+    pub review_lines: Vec<String>,
+}
+
+pub fn approval_decision_for_gate(
+    expected_scope: ApprovalScope,
+    gate_ready: bool,
+    expected_target_path: Option<&Path>,
+    expected_runtime_command: Option<&str>,
+    request: Option<&ApprovalRequest>,
+    production_flag_enabled: bool,
+) -> ApprovalDecision {
+    let mut blockers = Vec::new();
+    let Some(request) = request else {
+        return approval_decision_blocked(
+            expected_scope,
+            ApprovalStatus::MissingEvidence,
+            None,
+            production_flag_enabled,
+            "approval request is required",
+        );
+    };
+    if request.scope != expected_scope {
+        return approval_decision_blocked(
+            expected_scope,
+            ApprovalStatus::WrongScope,
+            Some(request.evidence.clone()),
+            production_flag_enabled,
+            "approval scope does not match the production gate",
+        );
+    }
+    if request.rejected {
+        return approval_decision_blocked(
+            expected_scope,
+            ApprovalStatus::Rejected,
+            Some(request.evidence.clone()),
+            production_flag_enabled,
+            "approval request was rejected",
+        );
+    }
+    if request
+        .token
+        .expires_at_tick
+        .map(|expires_at| request.current_tick >= expires_at)
+        .unwrap_or(false)
+        || request.token.one_shot && request.token.used
+    {
+        return approval_decision_blocked(
+            expected_scope,
+            ApprovalStatus::Expired,
+            Some(request.evidence.clone()),
+            production_flag_enabled,
+            "approval token is expired or already used",
+        );
+    }
+    if request.provided_token.as_deref() != Some(request.token.token.as_str()) {
+        return approval_decision_blocked(
+            expected_scope,
+            ApprovalStatus::Pending,
+            Some(request.evidence.clone()),
+            production_flag_enabled,
+            "approval token has not been confirmed",
+        );
+    }
+    if !gate_ready {
+        blockers.push("production gate is not ready for approval".to_string());
+    }
+    if let Some(expected_target_path) = expected_target_path {
+        if request.evidence.target_path.as_deref() != Some(expected_target_path) {
+            blockers.push("approval target path does not match the production gate".to_string());
+        }
+    }
+    if let Some(expected_runtime_command) = expected_runtime_command {
+        if request.evidence.runtime_command.as_deref() != Some(expected_runtime_command) {
+            blockers
+                .push("approval runtime command does not match the production gate".to_string());
+        }
+    }
+    if request.evidence.old_state.is_none() {
+        blockers.push("approval old state is required".to_string());
+    }
+    if request.evidence.proposed_new_state.is_none() {
+        blockers.push("approval proposed new state is required".to_string());
+    }
+    if request.evidence.restore_plan.is_none() {
+        blockers.push("approval restore plan is required".to_string());
+    }
+    if !request.evidence.copied_config_tree_proof_restored
+        && !request.evidence.live_restore_proof_restored
+    {
+        blockers.push("approval must link copied-config-tree or live-restore proof".to_string());
+    }
+
+    if !blockers.is_empty() {
+        return ApprovalDecision {
+            expected_scope,
+            status: ApprovalStatus::MissingEvidence,
+            evidence: Some(request.evidence.clone()),
+            production_flag_enabled,
+            production_apply_enabled: false,
+            blockers,
+            review_lines: vec![
+                "Explicit approval is required before any gated production capability can be considered.".to_string(),
+                "The approval evidence is incomplete or does not match the gate.".to_string(),
+            ],
+        };
+    }
+
+    let mut status = if request.evidence.live_restore_proof_restored {
+        ApprovalStatus::ReadyButDefaultDisabled
+    } else {
+        ApprovalStatus::ApprovedButDefaultDisabled
+    };
+    if production_flag_enabled {
+        status = ApprovalStatus::Enabled;
+    }
+    let production_apply_enabled = status == ApprovalStatus::Enabled;
+    let mut blockers = Vec::new();
+    if !production_flag_enabled {
+        blockers.push("production flag remains default-disabled".to_string());
+    }
+    ApprovalDecision {
+        expected_scope,
+        status,
+        evidence: Some(request.evidence.clone()),
+        production_flag_enabled,
+        production_apply_enabled,
+        blockers: blockers.clone(),
+        review_lines: vec![
+            "Approval scope, target/command, state change, restore plan, and proof are linked."
+                .to_string(),
+            "Approval remains one-shot/expiring and does not enable production by default."
+                .to_string(),
+            format!(
+                "Blockers: {}",
+                if blockers.is_empty() {
+                    "none".to_string()
+                } else {
+                    blockers.join("; ")
+                }
+            ),
+        ],
+    }
+}
+
+fn approval_decision_blocked(
+    expected_scope: ApprovalScope,
+    status: ApprovalStatus,
+    evidence: Option<ApprovalEvidence>,
+    production_flag_enabled: bool,
+    blocker: &str,
+) -> ApprovalDecision {
+    ApprovalDecision {
+        expected_scope,
+        status,
+        evidence,
+        production_flag_enabled,
+        production_apply_enabled: false,
+        blockers: vec![blocker.to_string()],
+        review_lines: vec![
+            "Explicit approval is required before any gated production capability can be considered."
+                .to_string(),
+            blocker.to_string(),
+        ],
+    }
+}
+
+pub fn source_include_approval_flow(
+    review: &SourceIncludeProductionReview,
+    request: Option<&ApprovalRequest>,
+) -> ApprovalDecision {
+    approval_decision_for_gate(
+        ApprovalScope::SourceIncludeInsertion,
+        review.gate.status == SourceIncludeProductionGateStatus::ReadyButDefaultDisabled,
+        review.gate.selected_target_path.as_deref(),
+        None,
+        request,
+        false,
+    )
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SourceIncludeInsertionReadiness {
     SingleRootEligible,
     SourceIncludeTargetSelectionRequired,
@@ -3209,6 +3450,113 @@ pub fn runtime_production_gate_review(
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RuntimeLiveRestoreStatus {
+    ReadOnlyEvidenceMissing,
+    PriorValueMissing,
+    TemporaryValueMissing,
+    RestoreCommandMissing,
+    PostMutationReadbackMissing,
+    PostRestoreVerificationFailed,
+    LiveRestoreProven,
+    ReadyButDefaultDisabled,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RuntimeLiveRestoreProof {
+    pub action: RuntimeAction,
+    pub status: RuntimeLiveRestoreStatus,
+    pub prior_value: Option<String>,
+    pub temporary_value: Option<String>,
+    pub restore_command: Option<String>,
+    pub post_mutation_value: Option<String>,
+    pub post_restore_value: Option<String>,
+    pub real_command_executed: bool,
+    pub runtime_touched: bool,
+    pub restored: bool,
+    pub production_runtime_enabled: bool,
+    pub blockers: Vec<String>,
+    pub review_lines: Vec<String>,
+}
+
+pub fn runtime_live_restore_proof_review(
+    action: RuntimeAction,
+    read_only_evidence_available: bool,
+    prior_value: Option<&str>,
+    temporary_value: Option<&str>,
+    post_mutation_value: Option<&str>,
+    post_restore_value: Option<&str>,
+    live_mutation_executed: bool,
+) -> RuntimeLiveRestoreProof {
+    let mut blockers = Vec::new();
+    let mut status = RuntimeLiveRestoreStatus::ReadyButDefaultDisabled;
+    if !read_only_evidence_available {
+        status = RuntimeLiveRestoreStatus::ReadOnlyEvidenceMissing;
+        blockers.push("read-only runtime evidence is required before live mutation".to_string());
+    }
+    if prior_value.is_none() {
+        status = RuntimeLiveRestoreStatus::PriorValueMissing;
+        blockers.push("prior runtime value is required".to_string());
+    }
+    if temporary_value.is_none() {
+        status = RuntimeLiveRestoreStatus::TemporaryValueMissing;
+        blockers.push("temporary runtime value is required".to_string());
+    }
+    let restore_command = match (&action, prior_value) {
+        (RuntimeAction::Keyword { key, .. }, Some(value)) => {
+            Some(format!("hyprctl keyword {key} {value}"))
+        }
+        _ => None,
+    };
+    if restore_command.is_none() {
+        status = RuntimeLiveRestoreStatus::RestoreCommandMissing;
+        blockers.push("restore command must be generated before mutation".to_string());
+    }
+    if live_mutation_executed && post_mutation_value.is_none() {
+        status = RuntimeLiveRestoreStatus::PostMutationReadbackMissing;
+        blockers.push("post-mutation readback is required".to_string());
+    }
+    let restored =
+        live_mutation_executed && prior_value.is_some() && post_restore_value == prior_value;
+    if live_mutation_executed && !restored {
+        status = RuntimeLiveRestoreStatus::PostRestoreVerificationFailed;
+        blockers.push("post-restore readback did not match the prior value".to_string());
+    }
+    if blockers.is_empty() && live_mutation_executed && restored {
+        status = RuntimeLiveRestoreStatus::LiveRestoreProven;
+    } else if blockers.is_empty() {
+        status = RuntimeLiveRestoreStatus::ReadyButDefaultDisabled;
+        blockers.push("runtime live mutation was not executed in this proof".to_string());
+    }
+
+    RuntimeLiveRestoreProof {
+        action,
+        status,
+        prior_value: prior_value.map(ToOwned::to_owned),
+        temporary_value: temporary_value.map(ToOwned::to_owned),
+        restore_command,
+        post_mutation_value: post_mutation_value.map(ToOwned::to_owned),
+        post_restore_value: post_restore_value.map(ToOwned::to_owned),
+        real_command_executed: live_mutation_executed,
+        runtime_touched: live_mutation_executed,
+        restored,
+        production_runtime_enabled: false,
+        blockers: blockers.clone(),
+        review_lines: vec![
+            "Runtime live-restore proof requires prior value, generated restore command, post-mutation readback, and post-restore verification.".to_string(),
+            "Production runtime mutation remains default-disabled even after proof.".to_string(),
+            format!(
+                "Blockers: {}",
+                if blockers.is_empty() {
+                    "none".to_string()
+                } else {
+                    blockers.join("; ")
+                }
+            ),
+        ],
+    }
+}
+
 impl RuntimeDryRunExecutor {
     pub fn evaluate(&mut self, action: RuntimeAction) -> RuntimeDryRunResult {
         let would_mutate_runtime = !matches!(action, RuntimeAction::Status { .. });
@@ -3421,6 +3769,100 @@ pub fn hyprland_version_activation_gate(
             ),
         ],
     }
+}
+
+pub fn duplicate_approval_flow(
+    review: &DuplicateProductionGateReview,
+    request: Option<&ApprovalRequest>,
+) -> ApprovalDecision {
+    approval_decision_for_gate(
+        ApprovalScope::DuplicateReplacement,
+        review.status == DuplicateProductionGateStatus::ReadyButDefaultDisabled,
+        review.selected_path.as_deref(),
+        None,
+        request,
+        false,
+    )
+}
+
+pub fn structured_approval_flow(
+    review: &StructuredProductionGateReview,
+    request: Option<&ApprovalRequest>,
+) -> ApprovalDecision {
+    approval_decision_for_gate(
+        ApprovalScope::StructuredHlBindWrite,
+        review.status == StructuredProductionGateStatus::ReadyButDefaultDisabled,
+        Some(&review.target_path),
+        None,
+        request,
+        false,
+    )
+}
+
+pub fn profile_approval_flow(
+    review: &ProfileProductionGateReview,
+    request: Option<&ApprovalRequest>,
+) -> ApprovalDecision {
+    approval_decision_for_gate(
+        ApprovalScope::ProfileModeSwitch,
+        review.status == ProfileProductionGateStatus::ReadyButDefaultDisabled,
+        Some(&review.symlink_path),
+        None,
+        request,
+        false,
+    )
+}
+
+pub fn runtime_approval_flow(
+    review: &RuntimeProductionGateReview,
+    request: Option<&ApprovalRequest>,
+) -> ApprovalDecision {
+    let expected_command = match &review.action {
+        RuntimeAction::Keyword { key, value } => Some(format!("hyprctl keyword {key} {value}")),
+        RuntimeAction::Reload => Some("hyprctl reload".to_string()),
+        RuntimeAction::Dispatch { command } => Some(format!("hyprctl dispatch {command}")),
+        RuntimeAction::Status { query } => Some(format!("hyprctl {query}")),
+    };
+    let expected_scope = match review.action {
+        RuntimeAction::Reload => ApprovalScope::RuntimeReload,
+        _ => ApprovalScope::RuntimeKeyword,
+    };
+    approval_decision_for_gate(
+        expected_scope,
+        review.status == RuntimeProductionGateStatus::ReadyButDefaultDisabled,
+        None,
+        expected_command.as_deref(),
+        request,
+        false,
+    )
+}
+
+pub fn high_risk_approval_flow(
+    review: &HighRiskProductionGateReview,
+    request: Option<&ApprovalRequest>,
+) -> ApprovalDecision {
+    approval_decision_for_gate(
+        ApprovalScope::HighRiskDisplayWrite,
+        review.status == HighRiskProductionGateStatus::ReadyButDefaultDisabled,
+        None,
+        Some(review.setting_id.as_str()),
+        request,
+        false,
+    )
+}
+
+pub fn hyprland_0554_approval_flow(
+    review: &HyprlandVersionActivationGate,
+    request: Option<&ApprovalRequest>,
+) -> ApprovalDecision {
+    approval_decision_for_gate(
+        ApprovalScope::Hyprland0554Migration,
+        review.status == HyprlandVersionActivationStatus::ReadyButDefaultDisabled,
+        None,
+        Some("hyprland_0554_migration"),
+        request,
+        false,
+    )
 }
 
 pub fn local_hyprland_version_evidence(

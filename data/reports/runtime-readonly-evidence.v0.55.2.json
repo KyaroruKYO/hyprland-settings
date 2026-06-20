@@ -12,7 +12,10 @@
     "xdgRuntimeDirHypr": "socket directory exists under XDG_RUNTIME_DIR/hypr/a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299",
     "hyprctlVersion": "failed without mutation: Couldn't set socket timeout (2)",
     "hyprctlMonitorsJson": "failed without mutation: Couldn't set socket timeout (2)",
-    "hyprctlGetoptionGeneralGapsIn": "failed without mutation: Couldn't set socket timeout (2)"
+    "hyprctlGetoptionGeneralGapsIn": "failed without mutation: Couldn't set socket timeout (2)",
+    "hyprctlGetoptionGeneralGapsOut": "failed without mutation: Couldn't set socket timeout (2)",
+    "hyprctlGetoptionDecorationBlurEnabled": "failed without mutation: Couldn't set socket timeout (2)",
+    "hyprctlGetoptionMiscDisableHyprlandLogo": "failed without mutation: Couldn't set socket timeout (2)"
   },
   "evidence": {
     "hyprctlBinaryFound": true,
@@ -28,7 +31,7 @@
     "keywordEnabled": false,
     "dispatchEnabled": false,
     "statusEvidenceUsableForMutationApproval": false,
-    "blocker": "read-only hyprctl queries failed with socket timeout before any mutating runtime proof could be considered"
+    "blocker": "read-only hyprctl queries failed with socket timeout before prior value capture or mutating runtime proof could be considered"
   },
-  "nextRecommendedWork": "Retry read-only hyprctl evidence from a shell/session where the socket timeout issue is resolved; do not run mutating hyprctl until prior values and restore commands are proven."
+  "nextRecommendedWork": "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation."
 }

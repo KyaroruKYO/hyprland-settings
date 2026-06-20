@@ -21,6 +21,16 @@
     "high-risk/display writes",
     "Hyprland 0.55.4 migration activation"
   ],
+  "explicitApprovalFlowImplemented": [
+    "source_include_insertion",
+    "duplicate_replacement",
+    "structured_hl_bind_write",
+    "profile_mode_switch",
+    "runtime_keyword",
+    "runtime_reload",
+    "high_risk_display_write",
+    "hyprland_0554_migration"
+  ],
   "notReadyForProductionActivation": [
     "high-risk/display writes",
     "real profile/mode switching",
@@ -59,6 +69,9 @@
     "hyprctlVersion": "failed without mutation: Couldn't set socket timeout (2)",
     "hyprctlMonitors": "failed without mutation: Couldn't set socket timeout (2)",
     "hyprctlGetoptionGeneralGapsIn": "failed without mutation: Couldn't set socket timeout (2)",
+    "hyprctlGetoptionGeneralGapsOut": "failed without mutation: Couldn't set socket timeout (2)",
+    "hyprctlGetoptionDecorationBlurEnabled": "failed without mutation: Couldn't set socket timeout (2)",
+    "hyprctlGetoptionMiscDisableHyprlandLogo": "failed without mutation: Couldn't set socket timeout (2)",
     "mutatingHyprctlRun": false
   },
   "releaseBoundariesPreserved": {
@@ -68,5 +81,5 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Retry read-only runtime evidence from a shell with successful hyprctl socket queries, then design explicit user-approval flows before any real production activation."
+  "nextRecommendedWork": "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation."
 }

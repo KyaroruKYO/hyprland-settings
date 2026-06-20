@@ -82,9 +82,17 @@
   },
   "tests": [
     "copied_config_tree_proof_drives_default_disabled_production_gates",
+    "explicit_approval_flow_blocks_missing_wrong_expired_rejected_and_incomplete_evidence",
     "runtime_production_gate_requires_readonly_evidence_snapshot_restore_and_default_disabled_flag",
+    "runtime_high_risk_and_hyprland_approval_flows_keep_production_disabled",
     "high_risk_production_gate_requires_recovery_deadman_restore_backup_snapshot_and_approval",
     "hyprland_0554_activation_gate_keeps_0552_default_until_all_trusted_inputs_and_flag_exist"
   ],
-  "nextRecommendedWork": "Run controlled live/read-only evidence in an environment where Hyprland socket queries succeed, then add explicit user-approval flows before considering any real production activation."
+  "approvalFlow": {
+    "implemented": true,
+    "approvalDoesNotEnableProductionByDefault": true,
+    "copiedProofCanReachApprovedButDefaultDisabled": true,
+    "liveRestoreProofCanReachReadyButDefaultDisabled": true
+  },
+  "nextRecommendedWork": "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation."
 }

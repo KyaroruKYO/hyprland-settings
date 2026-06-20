@@ -3,37 +3,42 @@ use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use hyprland_settings::future_capability::{
-    assess_hyprland_version_migration, copied_config_tree_files_restored,
-    copied_config_tree_originals_unchanged, copied_config_tree_report, copy_config_tree_for_proof,
-    current_v0552_data_bundle, disabled_migration_review,
-    disabled_missing_default_insertion_review, disabled_profile_switch_review,
-    disabled_profile_switch_selection_review, duplicate_occurrence_confirmation,
-    duplicate_occurrence_model, duplicate_occurrence_review, duplicate_production_approval_gate,
+    approval_decision_for_gate, assess_hyprland_version_migration,
+    copied_config_tree_files_restored, copied_config_tree_originals_unchanged,
+    copied_config_tree_report, copy_config_tree_for_proof, current_v0552_data_bundle,
+    disabled_migration_review, disabled_missing_default_insertion_review,
+    disabled_profile_switch_review, disabled_profile_switch_selection_review,
+    duplicate_approval_flow, duplicate_occurrence_confirmation, duplicate_occurrence_model,
+    duplicate_occurrence_review, duplicate_production_approval_gate,
     duplicate_production_gate_review, edit_structured_bind_safe_env,
     execute_duplicate_replacement_guarded_temp,
     execute_source_include_selected_target_guarded_temp, execute_structured_bind_guarded_temp,
-    high_risk_guarded_live_readiness_executor, high_risk_live_recovery_protocol,
-    high_risk_production_gate_review, high_risk_recovery_review, high_risk_recovery_workflow,
-    hyprland_version_activation_gate, local_hyprland_version_evidence, migration_comparison_review,
+    high_risk_approval_flow, high_risk_guarded_live_readiness_executor,
+    high_risk_live_recovery_protocol, high_risk_production_gate_review, high_risk_recovery_review,
+    high_risk_recovery_workflow, hyprland_0554_approval_flow, hyprland_version_activation_gate,
+    local_hyprland_version_evidence, migration_comparison_review, profile_approval_flow,
     profile_production_gate_review, profile_target_approval_review,
     render_structured_entry_lossless, replace_duplicate_occurrence_safe_env,
     replace_duplicate_occurrence_with_confirmation_safe_env, runtime_action_policy,
-    runtime_action_review, runtime_command_risk, runtime_guarded_executor,
-    runtime_production_gate_review, source_include_insertion_review,
+    runtime_action_review, runtime_approval_flow, runtime_command_risk, runtime_guarded_executor,
+    runtime_live_restore_proof_review, runtime_production_gate_review,
+    source_include_approval_flow, source_include_insertion_review,
     source_include_production_gate_review, source_include_selected_target_dry_run_plan,
-    source_include_target_selection_fixture_proof, structured_family_model,
-    structured_family_review, structured_production_gate_review,
+    source_include_target_selection_fixture_proof, structured_approval_flow,
+    structured_family_model, structured_family_review, structured_production_gate_review,
     switch_profile_symlink_guarded_temp, switch_profile_symlink_safe_env,
-    trusted_export_requirement, validate_structured_edit_candidate, ControlledLiveTestGuardRequest,
+    trusted_export_requirement, validate_structured_edit_candidate, ApprovalEvidence,
+    ApprovalRequest, ApprovalScope, ApprovalStatus, ApprovalToken, ControlledLiveTestGuardRequest,
     ControlledLiveTestKind, DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
     DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
     DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
     HighRiskProductionGateStatus, HyprlandVersionActivationStatus, MockWatchdog, MockWatchdogState,
     ProfileProductionGateStatus, ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction,
-    RuntimeCommandRisk, RuntimeDryRunExecutor, RuntimeProductionGateStatus,
-    SourceIncludeInsertionReadiness, SourceIncludeProductionGateStatus,
-    SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
-    SourceIncludeTargetSelectionStatus, StructuredBindEditStatus, StructuredProductionGateStatus,
+    RuntimeCommandRisk, RuntimeDryRunExecutor, RuntimeLiveRestoreStatus,
+    RuntimeProductionGateStatus, SourceIncludeInsertionReadiness,
+    SourceIncludeProductionGateStatus, SourceIncludeSelectedTargetDryRunStatus,
+    SourceIncludeTargetCandidate, SourceIncludeTargetSelectionStatus, StructuredBindEditStatus,
+    StructuredProductionGateStatus,
 };
 use hyprland_settings::missing_default_insertion::{
     build_missing_default_insertion_plan, MissingDefaultInsertionRequest,
@@ -418,6 +423,36 @@ fn complete_live_guard_request(target: PathBuf) -> ControlledLiveTestGuardReques
         out_of_band_recovery_recorded: true,
         trusted_data_available: true,
         explicit_live_flag: true,
+    }
+}
+
+fn approval_request(
+    scope: ApprovalScope,
+    target_path: Option<PathBuf>,
+    runtime_command: Option<&str>,
+    copied_proof: bool,
+    live_restore_proof: bool,
+) -> ApprovalRequest {
+    ApprovalRequest {
+        scope,
+        evidence: ApprovalEvidence {
+            target_path,
+            runtime_command: runtime_command.map(ToOwned::to_owned),
+            copied_config_tree_proof_restored: copied_proof,
+            live_restore_proof_restored: live_restore_proof,
+            old_state: Some("old".to_string()),
+            proposed_new_state: Some("new".to_string()),
+            restore_plan: Some("restore old state".to_string()),
+        },
+        token: ApprovalToken {
+            token: "approve".to_string(),
+            expires_at_tick: Some(100),
+            one_shot: true,
+            used: false,
+        },
+        provided_token: Some("approve".to_string()),
+        current_tick: 1,
+        rejected: false,
     }
 }
 
@@ -1038,6 +1073,37 @@ fn copied_config_tree_proof_drives_default_disabled_production_gates() {
         no_target_gate.gate.status,
         SourceIncludeProductionGateStatus::NoTargetSelected
     );
+    let missing_source_approval = source_include_approval_flow(&source_gate, None);
+    assert_eq!(
+        missing_source_approval.status,
+        ApprovalStatus::MissingEvidence
+    );
+    let wrong_source_target = approval_request(
+        ApprovalScope::SourceIncludeInsertion,
+        Some(copied_root.copied_path.clone()),
+        None,
+        true,
+        false,
+    );
+    let wrong_source_target_decision =
+        source_include_approval_flow(&source_gate, Some(&wrong_source_target));
+    assert_eq!(
+        wrong_source_target_decision.status,
+        ApprovalStatus::MissingEvidence
+    );
+    let source_approval = approval_request(
+        ApprovalScope::SourceIncludeInsertion,
+        source_gate.gate.selected_target_path.clone(),
+        None,
+        true,
+        false,
+    );
+    let approved_source = source_include_approval_flow(&source_gate, Some(&source_approval));
+    assert_eq!(
+        approved_source.status,
+        ApprovalStatus::ApprovedButDefaultDisabled
+    );
+    assert!(!approved_source.production_apply_enabled);
 
     let duplicate_gate = duplicate_production_gate_review(
         Some(&duplicate_occurrence),
@@ -1070,6 +1136,32 @@ fn copied_config_tree_proof_drives_default_disabled_production_gates() {
         pending_gate.status,
         DuplicateProductionGateStatus::PendingConfirmation
     );
+    let wrong_duplicate_scope = approval_request(
+        ApprovalScope::SourceIncludeInsertion,
+        duplicate_gate.selected_path.clone(),
+        None,
+        true,
+        false,
+    );
+    let wrong_duplicate_scope_decision =
+        duplicate_approval_flow(&duplicate_gate, Some(&wrong_duplicate_scope));
+    assert_eq!(
+        wrong_duplicate_scope_decision.status,
+        ApprovalStatus::WrongScope
+    );
+    let duplicate_approval = approval_request(
+        ApprovalScope::DuplicateReplacement,
+        duplicate_gate.selected_path.clone(),
+        None,
+        true,
+        false,
+    );
+    let approved_duplicate = duplicate_approval_flow(&duplicate_gate, Some(&duplicate_approval));
+    assert_eq!(
+        approved_duplicate.status,
+        ApprovalStatus::ApprovedButDefaultDisabled
+    );
+    assert!(!approved_duplicate.production_apply_enabled);
 
     let structured_gate = structured_production_gate_review(
         "hl.bind",
@@ -1101,6 +1193,20 @@ fn copied_config_tree_proof_drives_default_disabled_production_gates() {
         invalid_structured.status,
         StructuredProductionGateStatus::InvalidCandidate
     );
+    let structured_approval = approval_request(
+        ApprovalScope::StructuredHlBindWrite,
+        Some(structured_gate.target_path.clone()),
+        None,
+        true,
+        false,
+    );
+    let approved_structured =
+        structured_approval_flow(&structured_gate, Some(&structured_approval));
+    assert_eq!(
+        approved_structured.status,
+        ApprovalStatus::ApprovedButDefaultDisabled
+    );
+    assert!(!approved_structured.production_apply_enabled);
 
     let profile_gate = profile_production_gate_review(
         copied_current.copied_path.clone(),
@@ -1126,6 +1232,122 @@ fn copied_config_tree_proof_drives_default_disabled_production_gates() {
         profile_missing_selection.status,
         ProfileProductionGateStatus::NoSelection
     );
+    let profile_approval = approval_request(
+        ApprovalScope::ProfileModeSwitch,
+        Some(profile_gate.symlink_path.clone()),
+        None,
+        true,
+        false,
+    );
+    let approved_profile = profile_approval_flow(&profile_gate, Some(&profile_approval));
+    assert_eq!(
+        approved_profile.status,
+        ApprovalStatus::ApprovedButDefaultDisabled
+    );
+    assert!(!approved_profile.production_apply_enabled);
+}
+
+#[test]
+fn explicit_approval_flow_blocks_missing_wrong_expired_rejected_and_incomplete_evidence() {
+    let target = temp_root("approval-flow").join("hyprland.conf");
+    let missing = approval_decision_for_gate(
+        ApprovalScope::DuplicateReplacement,
+        true,
+        Some(&target),
+        None,
+        None,
+        false,
+    );
+    assert_eq!(missing.status, ApprovalStatus::MissingEvidence);
+
+    let wrong_scope = approval_request(
+        ApprovalScope::SourceIncludeInsertion,
+        Some(target.clone()),
+        None,
+        true,
+        false,
+    );
+    let wrong = approval_decision_for_gate(
+        ApprovalScope::DuplicateReplacement,
+        true,
+        Some(&target),
+        None,
+        Some(&wrong_scope),
+        false,
+    );
+    assert_eq!(wrong.status, ApprovalStatus::WrongScope);
+
+    let mut expired = approval_request(
+        ApprovalScope::DuplicateReplacement,
+        Some(target.clone()),
+        None,
+        true,
+        false,
+    );
+    expired.current_tick = 100;
+    let expired_decision = approval_decision_for_gate(
+        ApprovalScope::DuplicateReplacement,
+        true,
+        Some(&target),
+        None,
+        Some(&expired),
+        false,
+    );
+    assert_eq!(expired_decision.status, ApprovalStatus::Expired);
+
+    let mut rejected = approval_request(
+        ApprovalScope::DuplicateReplacement,
+        Some(target.clone()),
+        None,
+        true,
+        false,
+    );
+    rejected.rejected = true;
+    let rejected_decision = approval_decision_for_gate(
+        ApprovalScope::DuplicateReplacement,
+        true,
+        Some(&target),
+        None,
+        Some(&rejected),
+        false,
+    );
+    assert_eq!(rejected_decision.status, ApprovalStatus::Rejected);
+
+    let mut incomplete = approval_request(
+        ApprovalScope::DuplicateReplacement,
+        Some(target.clone()),
+        None,
+        false,
+        false,
+    );
+    incomplete.evidence.restore_plan = None;
+    let incomplete_decision = approval_decision_for_gate(
+        ApprovalScope::DuplicateReplacement,
+        true,
+        Some(&target),
+        None,
+        Some(&incomplete),
+        false,
+    );
+    assert_eq!(incomplete_decision.status, ApprovalStatus::MissingEvidence);
+
+    let live_restore = approval_request(
+        ApprovalScope::DuplicateReplacement,
+        Some(target.clone()),
+        None,
+        false,
+        true,
+    );
+    let live_ready = approval_decision_for_gate(
+        ApprovalScope::DuplicateReplacement,
+        true,
+        Some(&target),
+        None,
+        Some(&live_restore),
+        false,
+    );
+    assert_eq!(live_ready.status, ApprovalStatus::ReadyButDefaultDisabled);
+    assert!(!live_ready.production_apply_enabled);
 }
 
 #[test]
@@ -2413,6 +2635,182 @@ fn runtime_production_gate_requires_readonly_evidence_snapshot_restore_and_defau
     assert_eq!(
         dispatch_missing_plan.status,
         RuntimeProductionGateStatus::RecoveryPlanMissing
+    );
+}
+
+#[test]
+fn runtime_live_restore_proof_blocks_failed_readonly_and_can_reach_ready_states_without_enabling_production(
+) {
+    let action = RuntimeAction::Keyword {
+        key: "general:gaps_in".to_string(),
+        value: "6".to_string(),
+    };
+    let blocked = runtime_live_restore_proof_review(
+        action.clone(),
+        false,
+        Some("5"),
+        Some("6"),
+        None,
+        None,
+        false,
+    );
+    assert_eq!(
+        blocked.status,
+        RuntimeLiveRestoreStatus::ReadOnlyEvidenceMissing
+    );
+    assert!(!blocked.production_runtime_enabled);
+    assert!(!blocked.real_command_executed);
+
+    let ready_without_mutation = runtime_live_restore_proof_review(
+        action.clone(),
+        true,
+        Some("5"),
+        Some("6"),
+        None,
+        None,
+        false,
+    );
+    assert_eq!(
+        ready_without_mutation.status,
+        RuntimeLiveRestoreStatus::ReadyButDefaultDisabled
+    );
+    assert!(!ready_without_mutation.runtime_touched);
+
+    let restored = runtime_live_restore_proof_review(
+        action,
+        true,
+        Some("5"),
+        Some("6"),
+        Some("6"),
+        Some("5"),
+        true,
+    );
+    assert_eq!(restored.status, RuntimeLiveRestoreStatus::LiveRestoreProven);
+    assert!(restored.runtime_touched);
+    assert!(restored.restored);
+    assert!(!restored.production_runtime_enabled);
+}
+
+#[test]
+fn runtime_high_risk_and_hyprland_approval_flows_keep_production_disabled() {
+    let runtime_gate = runtime_production_gate_review(
+        RuntimeAction::Keyword {
+            key: "general:gaps_in".to_string(),
+            value: "6".to_string(),
+        },
+        true,
+        Some("5"),
+        None,
+        true,
+        false,
+    );
+    assert_eq!(
+        runtime_gate.status,
+        RuntimeProductionGateStatus::ReadyButDefaultDisabled
+    );
+    let wrong_runtime = approval_request(
+        ApprovalScope::DuplicateReplacement,
+        None,
+        Some("hyprctl keyword general:gaps_in 6"),
+        false,
+        true,
+    );
+    assert_eq!(
+        runtime_approval_flow(&runtime_gate, Some(&wrong_runtime)).status,
+        ApprovalStatus::WrongScope
+    );
+    let runtime_request = approval_request(
+        ApprovalScope::RuntimeKeyword,
+        None,
+        Some("hyprctl keyword general:gaps_in 6"),
+        false,
+        true,
+    );
+    let runtime_decision = runtime_approval_flow(&runtime_gate, Some(&runtime_request));
+    assert_eq!(
+        runtime_decision.status,
+        ApprovalStatus::ReadyButDefaultDisabled
+    );
+    assert!(!runtime_decision.production_apply_enabled);
+
+    let root = temp_root("high-risk-approval");
+    let config = root.join("hyprland.conf");
+    write_file(&config, "render:direct_scanout = false\n");
+    let protocol = high_risk_live_recovery_protocol("render.direct_scanout", config, true, false);
+    let high_risk_gate = high_risk_production_gate_review(
+        Some(&protocol),
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+    );
+    assert_eq!(
+        high_risk_gate.status,
+        HighRiskProductionGateStatus::ReadyButDefaultDisabled
+    );
+    let high_risk_missing = high_risk_approval_flow(&high_risk_gate, None);
+    assert_eq!(high_risk_missing.status, ApprovalStatus::MissingEvidence);
+    let high_risk_request = approval_request(
+        ApprovalScope::HighRiskDisplayWrite,
+        None,
+        Some("render.direct_scanout"),
+        false,
+        true,
+    );
+    let high_risk_decision = high_risk_approval_flow(&high_risk_gate, Some(&high_risk_request));
+    assert_eq!(
+        high_risk_decision.status,
+        ApprovalStatus::ReadyButDefaultDisabled
+    );
+    assert!(!high_risk_decision.production_apply_enabled);
+
+    let evidence = local_hyprland_version_evidence(
+        "0.55.4",
+        Some("hyprland 0.55.4-1"),
+        Some("Hyprland 0.55.4"),
+        true,
+        true,
+        true,
+        true,
+        true,
+    );
+    let activation_gate = hyprland_version_activation_gate(&evidence, false);
+    assert_eq!(
+        activation_gate.status,
+        HyprlandVersionActivationStatus::ReadyButDefaultDisabled
+    );
+    let migration_request = approval_request(
+        ApprovalScope::Hyprland0554Migration,
+        None,
+        Some("hyprland_0554_migration"),
+        false,
+        true,
+    );
+    let migration_decision =
+        hyprland_0554_approval_flow(&activation_gate, Some(&migration_request));
+    assert_eq!(
+        migration_decision.status,
+        ApprovalStatus::ReadyButDefaultDisabled
+    );
+    assert!(!migration_decision.production_apply_enabled);
+
+    let partial = local_hyprland_version_evidence(
+        "0.55.4",
+        Some("hyprland 0.55.4-1"),
+        None,
+        false,
+        false,
+        false,
+        false,
+        true,
+    );
+    let partial_gate = hyprland_version_activation_gate(&partial, false);
+    assert_ne!(
+        partial_gate.status,
+        HyprlandVersionActivationStatus::ReadyButDefaultDisabled
     );
 }
 

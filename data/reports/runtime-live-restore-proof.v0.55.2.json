@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "runtime-live-restore-proof",
+  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "projectDataVersion": "v0.55.2",
+  "candidate": "general:gaps_in",
+  "runtimeReadOnlyEvidence": {
+    "hyprctlBinary": "/usr/bin/hyprctl",
+    "hyprlandInstanceSignature": "a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299",
+    "socketDirectoryObserved": true,
+    "readOnlyQueriesSucceeded": false,
+    "failure": "hyprctl version, monitors -j, getoption general:gaps_in, getoption general:gaps_out, getoption decoration:blur:enabled, and getoption misc:disable_hyprland_logo all failed without mutation: Couldn't set socket timeout (2)"
+  },
+  "liveRestoreProof": {
+    "status": "blocked_readonly_evidence_missing",
+    "priorValueCaptured": false,
+    "temporaryValueSelected": false,
+    "restoreCommandGeneratedBeforeMutation": false,
+    "postMutationReadbackAvailable": false,
+    "postRestoreReadbackAvailable": false,
+    "liveMutationExecuted": false,
+    "runtimeTouched": false,
+    "restorationRequired": false,
+    "restorationVerified": false
+  },
+  "liveShellProof": {
+    "status": "blocked_readonly_evidence_unavailable",
+    "priorValueCaptured": false,
+    "temporaryValueSelected": false,
+    "restoreCommandGeneratedBeforeMutation": false,
+    "postMutationReadbackAvailable": false,
+    "postRestoreReadbackAvailable": false,
+    "liveMutationExecuted": false,
+    "mutatingHyprctlRun": false,
+    "runtimeTouched": false,
+    "restorationRequired": false,
+    "restorationVerified": false
+  },
+  "modelProof": {
+    "runtimeLiveRestoreProofTypeExists": true,
+    "failedReadOnlyEvidenceBlocksMutation": true,
+    "readyButDefaultDisabledCanBeRepresentedWhenReadOnlyEvidenceAndRestorePlanExist": true,
+    "liveRestoreProvenCanBeRepresentedWhenPostRestoreReadbackMatchesPriorValue": true,
+    "statusWithSimulatedRestore": "live_restore_proven",
+    "productionRuntimeMutationDefaultEnabled": false
+  },
+  "productionGate": {
+    "runtimeMutationEnabled": false,
+    "runtimeReloadEnabled": false,
+    "requiresReadOnlyEvidence": true,
+    "requiresPriorValue": true,
+    "requiresRestoreCommand": true,
+    "requiresPostRestoreVerification": true
+  },
+  "tests": [
+    "runtime_live_restore_proof_blocks_failed_readonly_and_can_reach_ready_states_without_enabling_production",
+    "runtime_high_risk_and_hyprland_approval_flows_keep_production_disabled"
+  ],
+  "nextRecommendedWork": "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation."
+}

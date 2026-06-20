@@ -18,12 +18,14 @@
 - Source/include insertion: selected-target dry-run preview UI and guarded temp-fixture executor added; executor inserts the planned line, verifies it, restores original bytes, and verifies restored content fingerprint; source/include production insertion remains blocked.
 - Copied-config-tree proof: root/source configs are copied to temp, relative source/include layout is preserved, generated/script/symlink/profile hints are recorded, source/include/duplicate/structured/profile guarded executors run against copied targets, copied targets are restored, and original files are verified unchanged.
 - Default-disabled production gates: source/include insertion, duplicate replacement, structured `hl.bind` writes, profile/mode switching, runtime/reload mutation, high-risk/display writes, and Hyprland 0.55.4 activation now have review models that keep production behavior disabled by default.
+- Explicit approval flow: shared approval requests now cover source/include insertion, duplicate replacement, structured `hl.bind`, profile/mode switching, runtime keyword/reload, high-risk/display writes, and Hyprland 0.55.4 migration. Approval can reach approved/ready-but-default-disabled states only when copied-config-tree or live-restore proof is linked; production flags remain false by default.
 - Duplicate setting resolution: read-only occurrence model, safe-env exact-line replacement proof, disabled occurrence selector UI, disabled pre-Apply approval review UI, disabled review workflow, confirmation token/fingerprint model, production approval gate scaffold, confirmation-gated safe-env replacement wrapper, and guarded temp-fixture executor added; production remains blocked.
 - High-risk/display-render recovery: mock watchdog/recovery state machine, disabled review model, rollback proof workflow, no-op live-readiness protocol, and guarded no-op readiness executor added; real writes remain blocked.
 - Structured-family editors/writes: read-only disabled editor scaffold, invalid-input candidate validation, disabled `hl.bind` review workflow, lossless render proof, safe-env exact-line edit proof, and guarded `hl.bind` temp-fixture executor added; production writes remain blocked.
 - Profile/mode switching: safe-env temp symlink switch/restore proof, disabled review model, disabled selection review workflow, target approval review, forced restore-failure coverage, and guarded temp symlink executor added; real switching remains blocked.
 - Runtime mutation/reload: dry-run action boundary, mock executor, runtime action policy scaffold, disabled action review workflow, command risk classification, controlled live-test guard prerequisites, and guarded runtime executor model added; real reload and mutating hyprctl remain blocked.
-- Runtime read-only evidence: `/usr/bin/hyprctl`, a Hyprland instance signature, and a socket directory were observed, but `hyprctl version`, `hyprctl monitors -j`, and `hyprctl getoption general:gaps_in` failed without mutation with `Couldn't set socket timeout (2)`.
+- Runtime read-only evidence: `/usr/bin/hyprctl`, a Hyprland instance signature, and a socket directory were observed, but `hyprctl version`, `hyprctl monitors -j`, `hyprctl getoption general:gaps_in`, `general:gaps_out`, `decoration:blur:enabled`, and `misc:disable_hyprland_logo` failed without mutation with `Couldn't set socket timeout (2)`.
+- Runtime live restore proof: model support now represents blocked read-only evidence, ready-but-default-disabled restore plans, and simulated live-restore-proven state; no live mutation was run because prior value capture failed.
 - Hyprland 0.55.4 migration: disabled assessment scaffold, versioned data bundle model, disabled migration review, side-by-side comparison review, trusted-export requirement model, and local evidence collector added; app still defaults to v0.55.2 data/model.
 - Hyprland 0.55.4 package evidence: `pacman -Q hyprland` reported `hyprland 0.55.4-1`; this is advisory only and does not activate migration.
 - Controlled live/system testing: guard model and temp-fixture executors added for source/include insertion, duplicate replacement, structured bind writes, profile switching, runtime dry-run, and high-risk readiness; no real live/system mutation was executed.
@@ -35,12 +37,12 @@
 - Safe normal-scalar writes: 92-96% -> 95-97%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
 - Missing/default insertion: 87-92% -> 93-96%
-- Duplicate resolution: 73-81% -> 83-88%
-- High-risk/display recovery: 50-60% -> 57-66%
-- Structured-family editors/writes: 48-58% -> 60-69%
-- Profile/mode switching: 50-60% -> 61-70%
-- Runtime/reload integration: 45-55% -> 53-63%
-- Hyprland 0.55.4 migration: 35-45% -> 44-54%
+- Duplicate resolution: 83-88% -> 84-89%
+- High-risk/display recovery: 57-66% -> 58-67%
+- Structured-family editors/writes: 60-69% -> 61-70%
+- Profile/mode switching: 61-70% -> 62-71%
+- Runtime/reload integration: 53-63% -> 55-65%
+- Hyprland 0.55.4 migration: 44-54% -> 45-55%
 
 ## Safety
 - Real user config edited: no
@@ -59,7 +61,7 @@
 - cargo build --release: passed
 - jq reports: passed
 - git diff --check: passed
-- GTK safe-env evidence matrix: passed (`/tmp/hyprland-settings-gtk-automation/20260619_194620`)
+- GTK safe-env evidence matrix: not rerun this sprint because no visible UI behavior changed; deterministic model/report tests cover the approval-flow additions.
 
 ## Next recommended sprint
-Retry read-only runtime evidence from a shell with successful `hyprctl` socket queries, then add explicit approval flows and live restoration proof before considering any real production activation.
+Resolve the `hyprctl` socket timeout from the runtime shell, then rerun read-only `getoption` evidence before any controlled keyword mutation.

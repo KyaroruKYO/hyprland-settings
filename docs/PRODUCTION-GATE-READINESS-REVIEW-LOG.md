@@ -20,6 +20,13 @@
 - High-risk/display writes: gate exists and blocks without out-of-band recovery, dead-man timeout, restore command, config backup, runtime snapshot, and approval.
 - Hyprland 0.55.4 activation: gate exists and blocks advisory-only evidence without official exports, row diff, write-safety review, safe-env evidence, and approval.
 
+## Explicit approval flow implemented
+- Approval requests now name the exact scope, exact target path or runtime command, old state, proposed state, restore plan, one-shot/expiry behavior, and copied-config-tree or live-restore proof.
+- Source/include, duplicate, structured `hl.bind`, and profile/mode approvals can reach `ApprovedButDefaultDisabled` from copied-config-tree proof.
+- Runtime keyword approval can reach `ReadyButDefaultDisabled` in model tests when live-restore proof exists, but the real runtime shell still lacks successful read-only evidence.
+- High-risk/display and Hyprland 0.55.4 approvals remain blocked unless their recovery/trusted-data evidence is complete.
+- Approval never flips production behavior on by default.
+
 ## Not ready for production activation
 - High-risk/display writes: no out-of-band recovery proof.
 - Real profile/mode switching: no live symlink proof against the real session.
@@ -38,7 +45,10 @@
 - `hyprctl version`: failed without mutation, `Couldn't set socket timeout (2)`.
 - `hyprctl monitors -j`: failed without mutation, `Couldn't set socket timeout (2)`.
 - `hyprctl getoption general:gaps_in`: failed without mutation, `Couldn't set socket timeout (2)`.
+- `hyprctl getoption general:gaps_out`: failed without mutation, `Couldn't set socket timeout (2)`.
+- `hyprctl getoption decoration:blur:enabled`: failed without mutation, `Couldn't set socket timeout (2)`.
+- `hyprctl getoption misc:disable_hyprland_logo`: failed without mutation, `Couldn't set socket timeout (2)`.
 - `pacman -Q hyprland`: `hyprland 0.55.4-1`.
 
 ## Next exact work
-Retry read-only runtime evidence from a shell with successful `hyprctl` socket queries, then design explicit user-approval flows before any real production activation.
+Resolve the `hyprctl` socket timeout from the runtime shell, then rerun read-only `getoption` evidence before any controlled keyword mutation.

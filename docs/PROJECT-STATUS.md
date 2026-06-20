@@ -50,7 +50,7 @@ The monitor-name oracle accepts names only from a current non-mutating snapshot 
 
 On `main`, the v0.1.0 safe release scope remains complete for guarded normal-scalar safe-batch use on the v0.55.2 model.
 
-On the `future-capability-marathon` branch, missing/default insertion is now production-enabled only for reviewed single-root normal-scalar safe-batch targets. Source/include insertion target selection has disabled UI, fixture target-selection proof, selected-target dry-run planner, disabled preview UI, temp-fixture guarded executor proof, copied-config-tree proof, and default-disabled production gate review. Duplicate, structured `hl.bind`, and profile/mode paths now have copied-config-tree executor proof with byte/symlink restoration plus default-disabled production gate review. Runtime/reload has a guarded dry-run executor and default-disabled production gate; read-only `hyprctl` binary/socket evidence was observed, but read-only queries still failed with socket timeout. High-risk/display recovery has a guarded no-op readiness executor and default-disabled production gate. Hyprland 0.55.4 migration has local package metadata evidence (`hyprland 0.55.4-1`) plus a default-disabled activation gate, but remains advisory only. Source/include insertion expansion, duplicate production writes, high-risk/display writes, structured-family writes, real profile/mode switching, runtime/reload mutation, and Hyprland 0.55.4 migration remain blocked or disabled pending explicit approval and live proof where reversible.
+On the `future-capability-marathon` branch, missing/default insertion is now production-enabled only for reviewed single-root normal-scalar safe-batch targets. Source/include insertion target selection has disabled UI, fixture target-selection proof, selected-target dry-run planner, disabled preview UI, temp-fixture guarded executor proof, copied-config-tree proof, default-disabled production gate review, and explicit approval-flow integration. Duplicate, structured `hl.bind`, and profile/mode paths now have copied-config-tree executor proof with byte/symlink restoration plus default-disabled production gate review and explicit approval-flow integration. Runtime/reload has a guarded dry-run executor, default-disabled production gate, explicit approval-flow integration, and runtime live-restore proof model; read-only `hyprctl` binary/socket evidence was observed, but read-only queries still failed with socket timeout. High-risk/display recovery has a guarded no-op readiness executor, default-disabled production gate, and explicit approval-flow integration. Hyprland 0.55.4 migration has local package metadata evidence (`hyprland 0.55.4-1`) plus a default-disabled activation gate and explicit approval-flow integration, but remains advisory only. Source/include insertion expansion, duplicate production writes, high-risk/display writes, structured-family writes, real profile/mode switching, runtime/reload mutation, and Hyprland 0.55.4 migration remain blocked or disabled pending explicit approval and live proof where reversible.
 
 Current future-capability tracker:
 
@@ -60,11 +60,11 @@ Current future-capability tracker:
 - Safe normal-scalar writes: 95-97%
 - Release packaging/tag/artifacts: 85-95%
 - Missing/default insertion: 93-96%
-- Duplicate resolution: 83-88%
-- High-risk/display recovery: 57-66%
-- Structured-family editors/writes: 60-69%
-- Profile/mode switching: 61-70%
-- Runtime/reload integration: 53-63%
-- Hyprland 0.55.4 migration: 44-54%
+- Duplicate resolution: 84-89%
+- High-risk/display recovery: 58-67%
+- Structured-family editors/writes: 61-70%
+- Profile/mode switching: 62-71%
+- Runtime/reload integration: 55-65%
+- Hyprland 0.55.4 migration: 45-55%
 
-Next exact work item: retry read-only runtime evidence from a shell with successful `hyprctl` socket queries, then add explicit approval flows and live restoration proof before considering any real production activation.
+Next exact work item: resolve the `hyprctl` socket timeout from the runtime shell, then rerun read-only `getoption` evidence before any controlled keyword mutation.

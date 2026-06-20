@@ -28,7 +28,9 @@
     "Added a guarded runtime executor model that supports read-only status proof, mutation dry-run proof, restore-command generation from prior snapshots, command logging, and default real_command_executed=false.",
     "Attempted read-only hyprctl version and monitors queries; both failed without mutation because the runtime socket was unavailable in this shell.",
     "Retried read-only runtime evidence and found /usr/bin/hyprctl, a Hyprland instance signature, and a socket directory under XDG_RUNTIME_DIR/hypr, but hyprctl version, monitors -j, and getoption general:gaps_in still failed without mutation with socket timeout.",
-    "Added a default-disabled runtime/reload production gate review requiring read-only evidence, prior value snapshot, restore command, command-specific recovery plan for dispatch, explicit approval, and production flag."
+    "Added a default-disabled runtime/reload production gate review requiring read-only evidence, prior value snapshot, restore command, command-specific recovery plan for dispatch, explicit approval, and production flag.",
+    "Connected runtime keyword/reload reviews to the shared explicit approval-flow model; live restore proof can reach ready_but_default_disabled in model tests, never production enabled by default.",
+    "Added runtime live-restore proof model for blocked read-only evidence, ready-but-default-disabled restore plans, and simulated live-restore-proven state; real live mutation was not run because read-only hyprctl queries timed out."
   ],
   "whatWasNotImplemented": [
     "No real hyprctl keyword, dispatch, reload, or runtime mutation path was added.",
@@ -41,7 +43,9 @@
     "controlled_live_test_guard_has_category_specific_profile_runtime_and_migration_gates"
   ],
   "reportsAdded": [
-    "data/reports/future-capability-runtime-reload.v0.55.2.json"
+    "data/reports/future-capability-runtime-reload.v0.55.2.json",
+    "data/reports/explicit-approval-flow.v0.55.2.json",
+    "data/reports/runtime-live-restore-proof.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "dryRunRuntimeInterfaceAllowed": true,
@@ -69,7 +73,10 @@
     "hyprlandInstanceSignaturePresent": true,
     "runtimeSocketDirectoryObserved": true,
     "runtimeDefaultDisabledProductionGateExists": true,
-    "runtimeProductionMutationEnabledByGate": false
+    "runtimeProductionMutationEnabledByGate": false,
+    "runtimeExplicitApprovalFlowExists": true,
+    "runtimeApprovalCanEnableProductionByDefault": false,
+    "runtimeLiveRestoreProofModelExists": true
   },
   "validation": {
     "phaseValidation": "pending batch validation"
@@ -79,7 +86,7 @@
     "Production reload requires separate approval, read-only evidence, prior snapshot, restore command, and recovery proof.",
     "Mutating hyprctl keyword and dispatch remain blocked."
   ],
-  "nextRecommendedWork": "Retry read-only runtime evidence from a shell with successful hyprctl socket queries, then add explicit approval and restoration proof before any runtime mutation.",
+  "nextRecommendedWork": "Resolve the hyprctl socket timeout from the runtime shell, then rerun read-only getoption evidence before any controlled keyword mutation.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

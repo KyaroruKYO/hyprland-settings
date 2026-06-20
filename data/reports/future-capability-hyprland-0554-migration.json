@@ -30,7 +30,8 @@
     "Controlled live-test guard requires trusted versioned data bundle before migration activation.",
     "Added a local evidence collector that records installed package/runtime version evidence as advisory only and still requires official exports, row-count diff, write-safety review, safe-env evidence, local version evidence, and explicit user approval before activation.",
     "Recorded local package metadata evidence from pacman: hyprland 0.55.4-1; runtime socket evidence was unavailable in this shell.",
-    "Added a default-disabled Hyprland version activation gate requiring official export bundle, row-count diff, write-safety review, safe-env evidence, explicit user approval, and activation flag."
+    "Added a default-disabled Hyprland version activation gate requiring official export bundle, row-count diff, write-safety review, safe-env evidence, explicit user approval, and activation flag.",
+    "Connected Hyprland 0.55.4 activation review to the shared explicit approval-flow model; approval alone cannot activate migration without trusted exports and review evidence."
   ],
   "whatWasNotImplemented": [
     "No v0.55.2 exports were replaced.",
@@ -44,7 +45,8 @@
     "controlled_live_test_guard_has_category_specific_profile_runtime_and_migration_gates"
   ],
   "reportsAdded": [
-    "data/reports/future-capability-hyprland-0554-migration.json"
+    "data/reports/future-capability-hyprland-0554-migration.json",
+    "data/reports/explicit-approval-flow.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "readOnlyVersionAssessmentAllowed": true,
@@ -71,7 +73,9 @@
     "restorationRequiredThisSprint": false,
     "hyprland0554ActivationGateExists": true,
     "hyprland0554ActivationGateBlocksPartialEvidence": true,
-    "hyprland0554MigrationActivatedByGate": false
+    "hyprland0554MigrationActivatedByGate": false,
+    "hyprland0554ExplicitApprovalFlowExists": true,
+    "hyprland0554ApprovalCanActivateWithoutTrustedEvidence": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"

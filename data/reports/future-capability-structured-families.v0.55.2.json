@@ -31,7 +31,8 @@
     "Controlled live-test guard records reversible structured-write prerequisites; production structured writes remain disabled.",
     "Added a guarded hl.bind temp-fixture executor that validates candidates, edits one selected line, verifies the new raw line, preserves comments/order around the edit, restores original bytes, and verifies restored content fingerprint.",
     "Added copied-config-tree hl.bind proof that edits a selected copied bind line, verifies the copied raw line, restores copied bytes, and verifies original files unchanged.",
-    "Added a default-disabled hl.bind production gate review that requires exact old line, exact new line, candidate validation, comments/order proof, copied-config-tree proof, and production flag before any production Apply integration."
+    "Added a default-disabled hl.bind production gate review that requires exact old line, exact new line, candidate validation, comments/order proof, copied-config-tree proof, and production flag before any production Apply integration.",
+    "Connected structured hl.bind production gate review to the shared explicit approval-flow model; copied proof plus exact old/new line can reach approved_but_default_disabled, never production enabled by default."
   ],
   "whatWasNotImplemented": [
     "No monitor, bind, window rule, workspace rule, device, gesture, permission, animation, or curve writer was enabled.",
@@ -44,7 +45,8 @@
     "controlled_live_test_guard_has_category_specific_profile_runtime_and_migration_gates"
   ],
   "reportsAdded": [
-    "data/reports/future-capability-structured-families.v0.55.2.json"
+    "data/reports/future-capability-structured-families.v0.55.2.json",
+    "data/reports/explicit-approval-flow.v0.55.2.json"
   ],
   "safetyBoundaries": {
     "readOnlyParserImprovementsAllowed": true,
@@ -72,7 +74,9 @@
     "structuredBindCopiedConfigTreeOriginalUnchanged": true,
     "structuredBindDefaultDisabledProductionGateExists": true,
     "structuredBindDefaultDisabledProductionGateReady": true,
-    "structuredProductionApplyEnabledByGate": false
+    "structuredProductionApplyEnabledByGate": false,
+    "structuredExplicitApprovalFlowExists": true,
+    "structuredApprovalCanEnableProductionByDefault": false
   },
   "validation": {
     "phaseValidation": "pending batch validation"
@@ -82,7 +86,7 @@
     "Each structured family still needs family-specific preservation tests for comments, ordering, repeated records, and invalid input rejection.",
     "Only hl.bind has the new lossless safe-env exact-line edit proof; other structured families remain read-only scaffolds."
   ],
-  "nextRecommendedWork": "Add explicit approval flow and live restoration proof before considering production hl.bind structured writes.",
+  "nextRecommendedWork": "Add live restoration proof and production Apply integration review before considering default-disabled hl.bind structured writes.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false
