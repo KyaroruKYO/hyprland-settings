@@ -78,6 +78,9 @@
     "profileApprovalCanEnableProductionByDefault": false,
     "profileApprovalUiCardExists": true,
     "profileApprovalUiCardEnabled": false,
+    "profileDeepApprovalCardDataExists": true,
+    "profileDeepApprovalCardShowsCopiedSymlinkProof": true,
+    "profileDeepApprovalCardShowsRealSymlinkUntouched": true,
     "profileApprovalUiWidgetName": "hyprland-settings-profile-approval-review-disabled"
   },
   "validation": {
@@ -88,7 +91,7 @@
     "Needs explicit user approval before any real session profile switch.",
     "Real mode scripts, reload, AGS restart, and Waybar restart remain blocked."
   ],
-  "nextRecommendedWork": "Add deeper profile/mode approval card data fed by copied/live symlink proof records while keeping real profile switching disabled by default.",
+  "nextRecommendedWork": "Feed profile/mode approval card data from serialized copied symlink proof records while keeping real profile switching disabled by default.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

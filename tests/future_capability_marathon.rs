@@ -86,12 +86,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled."
+        "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("Add deeper per-card approval data"));
+        .contains("Feed disabled approval cards"));
 }
 
 #[test]
@@ -359,6 +359,7 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         disabled_cards["uiSurface"]["allPlannedEnableControlsSensitive"],
         false
     );
+    assert_eq!(disabled_cards["uiSurface"]["deepDataImplemented"], true);
     for key in [
         "sourceIncludeInsertion",
         "duplicateReplacement",
@@ -374,6 +375,30 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         assert_eq!(disabled_cards["cards"][key]["productionStatus"], "Disabled");
     }
     assert_eq!(
+        disabled_cards["cards"]["sourceIncludeInsertion"]["proofSource"],
+        "copied-config-tree proof"
+    );
+    assert_eq!(
+        disabled_cards["cards"]["duplicateReplacement"]["proofFields"]["copiedReplacementStatus"],
+        "selected duplicate replaced and reread in copied tree"
+    );
+    assert_eq!(
+        disabled_cards["cards"]["structuredHlBindWrite"]["restoreEvidence"]["copiedTargetRestore"],
+        "restored byte-for-byte"
+    );
+    assert_eq!(
+        disabled_cards["cards"]["profileModeSwitch"]["restoreEvidence"]["realSymlinkUntouched"],
+        "verified untouched"
+    );
+    assert_eq!(
+        disabled_cards["cards"]["highRiskDisplayWrite"]["proofFields"]["insufficiencyReason"],
+        "low-risk runtime proof does not prove display recovery"
+    );
+    assert_eq!(
+        disabled_cards["cards"]["hyprland0554Migration"]["proofFields"]["currentActiveAppModel"],
+        "v0.55.2"
+    );
+    assert_eq!(
         disabled_cards["safety"]["unsafeProductionBehaviorEnabled"],
         false
     );
@@ -381,4 +406,32 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         disabled_cards["safety"]["hyprland0554MigrationActivated"],
         false
     );
+
+    let deep_cards = read_json("data/reports/deep-approval-card-data.v0.55.2.json");
+    assert_eq!(deep_cards["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        deep_cards["implementation"]["deepProjectionModelExists"],
+        true
+    );
+    assert_eq!(deep_cards["implementation"]["uiRendersProofRecords"], true);
+    assert_eq!(deep_cards["implementation"]["allCardsRemainDisabled"], true);
+    for key in [
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+        "structuredHlBindWrite",
+        "profileModeSwitch",
+        "highRiskDisplayWrite",
+        "hyprland0554Migration",
+    ] {
+        assert_eq!(deep_cards["deepCards"][key]["productionEnabled"], false);
+        assert!(
+            deep_cards["deepCards"][key]["requiredFieldsDisplayed"]
+                .as_array()
+                .expect("deep card fields")
+                .len()
+                >= 6
+        );
+    }
+    assert_eq!(deep_cards["safety"]["runtimeMutatedThisSprint"], false);
+    assert_eq!(deep_cards["safety"]["v0552DefaultPreserved"], true);
 }

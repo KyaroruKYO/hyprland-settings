@@ -21,6 +21,7 @@
 - High-risk/display writes: gate exists and blocks without out-of-band recovery, dead-man timeout, restore command, config backup, runtime snapshot, and approval.
 - Hyprland 0.55.4 activation: gate exists and blocks advisory-only evidence without official exports, row diff, write-safety review, safe-env evidence, and approval.
 - Disabled approval UI cards: Config page now shows review-only cards for source/include insertion, duplicate replacement, structured `hl.bind`, profile/mode switching, high-risk/display writes, and Hyprland 0.55.4 migration. Every planned enable action is insensitive and no card has a mutation handler.
+- Deep approval card data: those cards now show structured proof source/status, proof-backed fields, preconditions, restore or unchanged evidence, blockers, and production-disabled status while remaining review-only.
 
 ## Explicit approval flow implemented
 - Approval requests now name the exact scope, exact target path or runtime command, old state, proposed state, restore plan, one-shot/expiry behavior, and copied-config-tree or live-restore proof.
@@ -60,4 +61,4 @@
 - `pacman -Q hyprland`: `hyprland 0.55.4-1`.
 
 ## Next exact work
-Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled.
+Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.

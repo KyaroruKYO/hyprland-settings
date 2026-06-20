@@ -64,7 +64,7 @@
 - cargo build --release: passed
 - jq reports: passed
 - git diff --check: passed
-- GTK safe-env evidence matrix: passed for the disabled approval UI card surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260619_234758`.
+- GTK safe-env evidence matrix: passed for the deep approval card data surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_000757`.
 
 ## Next recommended sprint
-Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled.
+Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.

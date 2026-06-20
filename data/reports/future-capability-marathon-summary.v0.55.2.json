@@ -90,7 +90,8 @@
     "controlled_runtime_live_restore_proven",
     "runtime_approval_live_restore_gate",
     "runtime_approval_ui_surface",
-    "disabled_approval_ui_cards_for_remaining_gated_categories"
+    "disabled_approval_ui_cards_for_remaining_gated_categories",
+    "deep_approval_card_data_for_remaining_gated_categories"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -120,6 +121,7 @@
     "data/reports/runtime-approval-live-restore-gate.v0.55.2.json",
     "data/reports/runtime-approval-ui-surface.v0.55.2.json",
     "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+    "data/reports/deep-approval-card-data.v0.55.2.json",
     "data/reports/future-capability-marathon-summary.v0.55.2.json",
     "data/reports/future-capability-marathon-handoff.v0.55.2.json"
   ],
@@ -138,14 +140,14 @@
     "jqReports": "passed",
     "gitDiffCheck": "passed",
     "gtkSafeEnvMatrix": "passed",
-    "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260619_234758"
+    "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260620_000757"
   },
-  "nextRecommendedAction": "Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled.",
+  "nextRecommendedAction": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "92-96%",
-      "after": "95-98%",
-      "evidence": "Runtime approval review and six remaining future approval cards are now wired into disabled UI with stable widget names, disabled planned actions, and source tests showing proof display is review-only."
+      "after": "96-98%",
+      "evidence": "Runtime approval review and six remaining future approval cards are wired into disabled UI with stable widget names, disabled planned actions, and deep proof/precondition/restore evidence rendered from structured projection records."
     },
     "configDiscoverySourceAwareModel": {
       "before": "90-93%",
@@ -169,28 +171,28 @@
     },
     "missingDefaultInsertion": {
       "before": "87-92%",
-      "after": "94-97%",
-      "evidence": "Copied-config-tree selected-target source/include proof now feeds a default-disabled production gate review and visible disabled approval card; production expansion still disabled."
+      "after": "95-97%",
+      "evidence": "Copied-config-tree selected-target source/include proof now feeds a default-disabled production gate review and deep disabled approval card fields for root, selected target, source depth, dry-run status, planned line, restore status, and original-unchanged proof; production expansion still disabled."
     },
     "duplicateResolution": {
       "before": "73-81%",
-      "after": "85-90%",
-      "evidence": "Copied-config-tree duplicate proof now feeds a default-disabled production gate review, explicit approval flow, and visible disabled approval card requiring confirmation, fingerprint, path, line, raw line, old value, source depth, and restore evidence."
+      "after": "86-91%",
+      "evidence": "Copied-config-tree duplicate proof now feeds a default-disabled production gate review, explicit approval flow, and deep disabled approval card fields for selected occurrence, path, source depth, line, raw line, old/proposed values, fingerprint status, copied replacement status, restore status, and original-unchanged proof."
     },
     "highRiskDisplayRecovery": {
       "before": "50-60%",
-      "after": "60-69%",
-      "evidence": "High-risk readiness now has runtime read-only evidence plus visible disabled approval card showing low-risk runtime restore is insufficient and recovery channel, dead-man timeout, restore command, backup, runtime snapshot, and approval remain required."
+      "after": "61-70%",
+      "evidence": "High-risk readiness now has runtime read-only evidence plus deep disabled approval card fields showing low-risk runtime restore is insufficient and recovery channel, dead-man timeout, restore command, backup, runtime snapshot, and approval remain required."
     },
     "structuredFamilyEditorsWrites": {
       "before": "48-58%",
-      "after": "62-72%",
-      "evidence": "Copied-config-tree hl.bind proof now feeds a default-disabled production gate, explicit approval flow, and visible disabled approval card requiring exact old/new line, candidate validation, comments/order proof, copied proof, and restore plan."
+      "after": "63-73%",
+      "evidence": "Copied-config-tree hl.bind proof now feeds a default-disabled production gate, explicit approval flow, and deep disabled approval card fields for target, source depth, line, old/new raw lines, candidate validation, comment/order preservation, copied edit status, restore status, and original-unchanged proof."
     },
     "profileModeSwitching": {
       "before": "50-60%",
-      "after": "63-72%",
-      "evidence": "Copied-config-tree profile proof now feeds a default-disabled production gate, explicit approval flow, and visible disabled approval card requiring selected target, symlink snapshot, copied restore proof, and future real-session proof."
+      "after": "64-73%",
+      "evidence": "Copied-config-tree profile proof now feeds a default-disabled production gate, explicit approval flow, and deep disabled approval card fields for copied symlink, original target, proposed target, copied switch status, restore status, real symlink untouched proof, and future real-session proof."
     },
     "runtimeReloadIntegration": {
       "before": "45-55%",
@@ -199,8 +201,8 @@
     },
     "hyprland0554Migration": {
       "before": "35-45%",
-      "after": "48-58%",
-      "evidence": "Runtime hyprctl version evidence confirms Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704, and visible disabled migration approval card now marks package/runtime evidence advisory only; local search found no trusted official 0.55.4 export bundle, so activation still requires official exports, row diff, write-safety review, safe-env evidence, and approval."
+      "after": "49-60%",
+      "evidence": "Runtime hyprctl version evidence confirms Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704, and the deep disabled migration approval card now records runtime/package evidence as advisory only plus missing official exports, row diff, write-safety review, safe-env evidence, approval, active v0.55.2 model, and inactive migration status."
     }
   },
   "priorityTrackStatus": {
@@ -220,6 +222,7 @@
     "runtimeApprovalLiveRestoreGate": "approved_but_default_disabled: proven hl.config eval live-restore proof plus exact runtime approval evidence reaches approved_but_default_disabled, never production enabled.",
     "runtimeApprovalUiSurface": "implemented_but_disabled: setting detail review surface displays the proven hl.config eval command pair, prior/temp values, readbacks, approval status, and disabled production runtime/reload state with an insensitive planned enable action.",
     "disabledApprovalUiCards": "implemented_but_disabled: Config page now shows disabled review-only cards for source/include insertion, duplicate replacement, structured hl.bind writes, profile/mode switching, high-risk/display writes, and Hyprland 0.55.4 migration. Every card has stable widget names, proof/blocker copy, disabled planned action, and no production handler.",
+    "deepApprovalCardData": "implemented_but_disabled: the six disabled approval cards now render structured proof source, proof status, proof fields, preconditions, restore/unchanged evidence, blockers, and production-disabled status from deep projection data.",
     "highRiskLiveReadinessExecutor": "implemented_but_disabled: no-op readiness executor requires recovery channel, dead-man timeout, and restore command evidence and refuses mutation by default.",
     "hyprland0554LocalEvidenceCollector": "implemented_but_disabled: local package/runtime evidence is advisory only and cannot activate migration without trusted exports and review proof.",
     "copiedConfigTreeProof": "copied_config_tree_proven: copied source/include, duplicate, structured bind, and profile symlink executors ran against temp copied config trees, restored copied targets, and verified originals unchanged.",

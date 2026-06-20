@@ -108,6 +108,9 @@
     "sourceIncludeApprovalCanEnableProductionByDefault": false,
     "sourceIncludeApprovalUiCardExists": true,
     "sourceIncludeApprovalUiCardEnabled": false,
+    "sourceIncludeDeepApprovalCardDataExists": true,
+    "sourceIncludeDeepApprovalCardShowsCopiedProof": true,
+    "sourceIncludeDeepApprovalCardShowsRestoreAndOriginalUnchanged": true,
     "sourceIncludeApprovalUiWidgetName": "hyprland-settings-source-include-approval-review-disabled"
   },
   "validation": {
@@ -129,7 +132,7 @@
     "Source/include insertion now has readiness model, disabled UI, fixture target-selection proof, selected-target dry-run planner, preview UI, temp-fixture guarded executor, copied-config-tree proof, and default-disabled production gate review, but production connected-file insertion remains disabled until explicit approval and live restoration proof exist.",
     "Managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
   ],
-  "nextRecommendedWork": "Add deeper source/include approval card data fed by live or copied proof records while keeping connected-file production insertion disabled by default.",
+  "nextRecommendedWork": "Feed source/include approval card data from serialized copied proof records while keeping connected-file production insertion disabled by default.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": true

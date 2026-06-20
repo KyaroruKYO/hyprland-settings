@@ -122,6 +122,7 @@
     "runtime_approval_review_surface_is_called_from_detail_edit_section",
     "disabled_future_approval_card_projections_cover_all_remaining_gates_without_enablement",
     "disabled_future_approval_cards_are_visible_and_non_mutating",
+    "deep_approval_card_data_report_records_proof_backed_fields_without_enablement",
     "high_risk_production_gate_requires_recovery_deadman_restore_backup_snapshot_and_approval",
     "hyprland_0554_activation_gate_keeps_0552_default_until_all_trusted_inputs_and_flag_exist"
   ],
@@ -132,5 +133,15 @@
     "liveRestoreProofCanReachReadyButDefaultDisabled": true,
     "runtimeLiveRestoreApprovalCanReachApprovedButDefaultDisabled": true
   },
-  "nextRecommendedWork": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
+  "deepApprovalCardData": {
+    "implemented": true,
+    "sourceIncludeUsesCopiedProof": true,
+    "duplicateUsesCopiedProof": true,
+    "structuredUsesCopiedProof": true,
+    "profileUsesCopiedSymlinkProof": true,
+    "highRiskUsesReadinessAndRuntimeProof": true,
+    "hyprland0554UsesRuntimePackageAndTrustedDataStatus": true,
+    "productionBehaviorEnabled": false
+  },
+  "nextRecommendedWork": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled."
 }

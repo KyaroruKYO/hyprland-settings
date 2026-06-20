@@ -85,6 +85,7 @@
   },
   "disabledApprovalUiCards": {
     "implemented": true,
+    "deepDataImplemented": true,
     "sectionWidgetName": "hyprland-settings-disabled-approval-cards-section",
     "sourceIncludeInsertion": "hyprland-settings-source-include-approval-review-disabled",
     "duplicateReplacement": "hyprland-settings-duplicate-approval-review-disabled",
@@ -101,5 +102,5 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled."
+  "nextRecommendedWork": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled."
 }

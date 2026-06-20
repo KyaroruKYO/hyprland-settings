@@ -90,6 +90,9 @@
     "highRiskApprovalCanEnableProductionByDefault": false,
     "highRiskApprovalUiCardExists": true,
     "highRiskApprovalUiCardEnabled": false,
+    "highRiskDeepApprovalCardDataExists": true,
+    "highRiskDeepApprovalCardShowsRuntimeProofInsufficient": true,
+    "highRiskDeepApprovalCardShowsRecoveryBlockers": true,
     "highRiskApprovalUiWidgetName": "hyprland-settings-high-risk-approval-review-disabled"
   },
   "validation": {
@@ -100,7 +103,7 @@
     "Display/render failures need out-of-band rollback proof before activation.",
     "The current live-readiness protocol is intentionally no-op and cannot mutate config or runtime."
   ],
-  "nextRecommendedWork": "Add deeper high-risk/display approval card data fed by recovery proof records while keeping production high-risk/display writes disabled by default.",
+  "nextRecommendedWork": "Feed high-risk/display approval card data from serialized readiness and recovery proof records while keeping production high-risk/display writes disabled by default.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

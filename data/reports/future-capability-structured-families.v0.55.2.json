@@ -80,6 +80,9 @@
     "structuredApprovalCanEnableProductionByDefault": false,
     "structuredApprovalUiCardExists": true,
     "structuredApprovalUiCardEnabled": false,
+    "structuredDeepApprovalCardDataExists": true,
+    "structuredDeepApprovalCardShowsRawLineValidationAndCopiedProof": true,
+    "structuredDeepApprovalCardShowsRestoreAndOriginalUnchanged": true,
     "structuredApprovalUiWidgetName": "hyprland-settings-structured-approval-review-disabled"
   },
   "validation": {
@@ -90,7 +93,7 @@
     "Each structured family still needs family-specific preservation tests for comments, ordering, repeated records, and invalid input rejection.",
     "Only hl.bind has the new lossless safe-env exact-line edit proof; other structured families remain read-only scaffolds."
   ],
-  "nextRecommendedWork": "Add deeper structured hl.bind approval card data fed by copied/live proof records while keeping production structured writes disabled by default.",
+  "nextRecommendedWork": "Feed structured hl.bind approval card data from serialized copied proof records while keeping production structured writes disabled by default.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

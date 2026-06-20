@@ -15,7 +15,18 @@ The Config page now includes a disabled future approval review section with revi
 - high-risk/display writes
 - Hyprland 0.55.4 migration
 
-Each card displays the current proof or approval state, production-disabled status, blockers, and an insensitive planned enable action.
+Each card displays structured proof data, production-disabled status, blockers, and an insensitive planned enable action.
+
+## Deep Data
+
+The approval cards now render:
+
+- proof source and proof status
+- proof-backed fields such as copied target, source depth, copied replacement/edit/switch status, runtime evidence, package evidence, or trusted-data state
+- preconditions such as selected target, fingerprint/raw-line matching, candidate validation, recovery requirements, or official export requirements
+- restore or unchanged evidence, including copied target restore, real config unchanged, real symlink untouched, high-risk restoration missing, and v0.55.2 migration preservation
+
+The deep data is still review-only projection data. It does not enable production Apply, production profile switching, runtime mutation, high-risk writes, or migration activation.
 
 ## Safety
 
@@ -44,7 +55,8 @@ The v0.55.2 app model remains active and Hyprland 0.55.4 migration remains inact
 
 - `disabled_future_approval_card_projections_cover_all_remaining_gates_without_enablement`
 - `disabled_future_approval_cards_are_visible_and_non_mutating`
+- `deep_approval_card_data_report_records_proof_backed_fields_without_enablement`
 
 ## Next
 
-Add deeper per-card detail projections fed by live or copied proof records, still keeping all production behavior default-disabled.
+Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.

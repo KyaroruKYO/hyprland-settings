@@ -3191,6 +3191,11 @@ fn disabled_future_approval_card_projections_cover_all_remaining_gates_without_e
         assert!(!card.production_enabled);
         assert!(card.disabled_action_label.contains("(planned)"));
         assert!(!card.blockers.is_empty());
+        assert!(!card.proof_record.source.is_empty());
+        assert!(!card.proof_record.status.is_empty());
+        assert!(!card.proof_record.fields.is_empty());
+        assert!(!card.preconditions.is_empty());
+        assert!(!card.restore_evidence.is_empty());
         assert!(card
             .user_facing_lines()
             .iter()
@@ -3205,18 +3210,44 @@ fn disabled_future_approval_card_projections_cover_all_remaining_gates_without_e
     for expected in [
         "Source/include approval review",
         "Production source/include insertion: Disabled",
+        "Proof source: copied-config-tree proof",
+        "Proof dry-run status: selected target plan accepted for copied tree",
+        "Precondition planned inserted line: normal scalar setting line from selected-target dry-run proof (matched copied proof)",
+        "Restore evidence copied target restore: restored byte-for-byte",
+        "Restore evidence original real config unchanged: verified unchanged",
         "Duplicate approval review",
         "Production duplicate writes: Disabled",
+        "Proof copied replacement status: selected duplicate replaced and reread in copied tree",
+        "Precondition raw line: raw duplicate line from copied proof (matched fingerprint)",
+        "Precondition old value: copied proof old value (matched old-value precondition)",
         "Structured hl.bind approval review",
         "Production structured writes: Disabled",
+        "Proof copied edit status: selected hl.bind line edited and reread in copied tree",
+        "Proof comment/order preservation: comments and order preserved",
+        "Precondition proposed raw line: candidate bind raw line from copied proof (valid hl.bind candidate)",
         "Profile/mode approval review",
         "Production profile switching: Disabled",
+        "Proof source: copied-config-tree profile/symlink proof",
+        "Proof copied switch status: temp symlink switched to selected copied target",
+        "Restore evidence real symlink untouched: verified untouched",
         "High-risk/display approval review",
+        "Proof source: high-risk readiness gate",
+        "Proof runtime read-only evidence: succeeded outside sandbox",
+        "Proof low-risk runtime live-restore proof: general:gaps_in restored after hl.config eval proof",
+        "Proof insufficiency reason: low-risk runtime proof does not prove display recovery",
         "Runtime live-restore proof is available for a low-risk setting.",
         "That proof is not enough to enable high-risk/display writes.",
+        "Precondition out-of-band recovery: missing (blocks activation)",
+        "Precondition dead-man timeout: missing (blocks activation)",
         "Hyprland 0.55.4 migration review",
+        "Proof source: runtime/package/trusted-data records",
+        "Proof runtime version evidence: Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704",
+        "Proof package metadata evidence: hyprland 0.55.4-1",
+        "Precondition official 0.55.4 export bundle: missing (blocks activation)",
+        "Precondition safe-env evidence: missing (blocks activation)",
         "Current active app model: v0.55.2",
         "Migration status: Inactive",
+        "Restore evidence migration activation: inactive; v0.55.2 remains active",
         "Production migration activation: Disabled",
     ] {
         assert!(

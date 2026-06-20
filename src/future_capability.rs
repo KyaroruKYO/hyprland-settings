@@ -3790,12 +3790,35 @@ pub fn proven_runtime_approval_evidence_summary() -> RuntimeApprovalEvidenceSumm
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ApprovalCardProofRecord {
+    pub source: String,
+    pub status: String,
+    pub fields: Vec<(String, String)>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ApprovalCardPreconditionLine {
+    pub label: String,
+    pub value: String,
+    pub status: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ApprovalCardRestoreEvidence {
+    pub label: String,
+    pub status: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct DisabledApprovalCardProjection {
     pub widget_name: String,
     pub evidence_widget_name: String,
     pub disabled_action_widget_name: String,
     pub heading: String,
     pub summary_lines: Vec<String>,
+    pub proof_record: ApprovalCardProofRecord,
+    pub preconditions: Vec<ApprovalCardPreconditionLine>,
+    pub restore_evidence: Vec<ApprovalCardRestoreEvidence>,
     pub evidence_lines: Vec<(String, String)>,
     pub blockers: Vec<String>,
     pub disabled_action_label: String,
@@ -3807,6 +3830,23 @@ impl DisabledApprovalCardProjection {
     pub fn user_facing_lines(&self) -> Vec<String> {
         let mut lines = vec![self.heading.clone()];
         lines.extend(self.summary_lines.clone());
+        lines.push(format!("Proof source: {}", self.proof_record.source));
+        lines.push(format!("Proof status: {}", self.proof_record.status));
+        for (label, value) in &self.proof_record.fields {
+            lines.push(format!("Proof {label}: {value}"));
+        }
+        for precondition in &self.preconditions {
+            lines.push(format!(
+                "Precondition {}: {} ({})",
+                precondition.label, precondition.value, precondition.status
+            ));
+        }
+        for evidence in &self.restore_evidence {
+            lines.push(format!(
+                "Restore evidence {}: {}",
+                evidence.label, evidence.status
+            ));
+        }
         for (label, value) in &self.evidence_lines {
             lines.push(format!("{label}: {value}"));
         }
@@ -3831,6 +3871,48 @@ pub fn disabled_future_approval_card_projections() -> Vec<DisabledApprovalCardPr
                 "Source/include production insertion is not enabled yet.".to_string(),
                 "Copied-config-tree proof exists.".to_string(),
                 "Production connected-file insertion remains disabled.".to_string(),
+            ],
+            proof_record: ApprovalCardProofRecord {
+                source: "copied-config-tree proof".to_string(),
+                status: "copied_config_tree_proven".to_string(),
+                fields: vec![
+                    (
+                        "root config".to_string(),
+                        "copied-config-tree root fixture".to_string(),
+                    ),
+                    (
+                        "selected target".to_string(),
+                        "copied source/include target fixture".to_string(),
+                    ),
+                    ("source depth".to_string(), "1".to_string()),
+                    (
+                        "dry-run status".to_string(),
+                        "selected target plan accepted for copied tree".to_string(),
+                    ),
+                ],
+            },
+            preconditions: vec![
+                ApprovalCardPreconditionLine {
+                    label: "planned inserted line".to_string(),
+                    value: "normal scalar setting line from selected-target dry-run proof"
+                        .to_string(),
+                    status: "matched copied proof".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "proposed value".to_string(),
+                    value: "reviewed normal scalar value".to_string(),
+                    status: "normal scalar only".to_string(),
+                },
+            ],
+            restore_evidence: vec![
+                ApprovalCardRestoreEvidence {
+                    label: "copied target restore".to_string(),
+                    status: "restored byte-for-byte".to_string(),
+                },
+                ApprovalCardRestoreEvidence {
+                    label: "original real config unchanged".to_string(),
+                    status: "verified unchanged".to_string(),
+                },
             ],
             evidence_lines: vec![
                 (
@@ -3881,6 +3963,57 @@ pub fn disabled_future_approval_card_projections() -> Vec<DisabledApprovalCardPr
                 "Duplicate production writes are not enabled yet.".to_string(),
                 "Copied-config-tree proof exists.".to_string(),
                 "Production duplicate replacement remains disabled.".to_string(),
+            ],
+            proof_record: ApprovalCardProofRecord {
+                source: "copied-config-tree proof".to_string(),
+                status: "copied_config_tree_proven".to_string(),
+                fields: vec![
+                    (
+                        "selected occurrence".to_string(),
+                        "confirmed copied occurrence".to_string(),
+                    ),
+                    (
+                        "target path".to_string(),
+                        "copied duplicate target fixture".to_string(),
+                    ),
+                    ("source depth".to_string(), "1".to_string()),
+                    (
+                        "copied replacement status".to_string(),
+                        "selected duplicate replaced and reread in copied tree".to_string(),
+                    ),
+                ],
+            },
+            preconditions: vec![
+                ApprovalCardPreconditionLine {
+                    label: "line number".to_string(),
+                    value: "exact precondition line".to_string(),
+                    status: "matched copied occurrence".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "raw line".to_string(),
+                    value: "raw duplicate line from copied proof".to_string(),
+                    status: "matched fingerprint".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "old value".to_string(),
+                    value: "copied proof old value".to_string(),
+                    status: "matched old-value precondition".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "proposed value".to_string(),
+                    value: "copied proof proposed value".to_string(),
+                    status: "review only".to_string(),
+                },
+            ],
+            restore_evidence: vec![
+                ApprovalCardRestoreEvidence {
+                    label: "copied target restore".to_string(),
+                    status: "restored byte-for-byte".to_string(),
+                },
+                ApprovalCardRestoreEvidence {
+                    label: "original real config unchanged".to_string(),
+                    status: "verified unchanged".to_string(),
+                },
             ],
             evidence_lines: vec![
                 (
@@ -3943,6 +4076,52 @@ pub fn disabled_future_approval_card_projections() -> Vec<DisabledApprovalCardPr
                 "Copied-config-tree proof exists.".to_string(),
                 "Production hl.bind editing remains disabled.".to_string(),
             ],
+            proof_record: ApprovalCardProofRecord {
+                source: "copied-config-tree proof".to_string(),
+                status: "copied_config_tree_proven".to_string(),
+                fields: vec![
+                    (
+                        "target file".to_string(),
+                        "copied bind target fixture".to_string(),
+                    ),
+                    ("source depth".to_string(), "1".to_string()),
+                    (
+                        "copied edit status".to_string(),
+                        "selected hl.bind line edited and reread in copied tree".to_string(),
+                    ),
+                    (
+                        "comment/order preservation".to_string(),
+                        "comments and order preserved".to_string(),
+                    ),
+                ],
+            },
+            preconditions: vec![
+                ApprovalCardPreconditionLine {
+                    label: "line number".to_string(),
+                    value: "selected bind line".to_string(),
+                    status: "matched copied proof".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "old raw line".to_string(),
+                    value: "original bind raw line from copied proof".to_string(),
+                    status: "matched stale-line precondition".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "proposed raw line".to_string(),
+                    value: "candidate bind raw line from copied proof".to_string(),
+                    status: "valid hl.bind candidate".to_string(),
+                },
+            ],
+            restore_evidence: vec![
+                ApprovalCardRestoreEvidence {
+                    label: "copied target restore".to_string(),
+                    status: "restored byte-for-byte".to_string(),
+                },
+                ApprovalCardRestoreEvidence {
+                    label: "original real config unchanged".to_string(),
+                    status: "verified unchanged".to_string(),
+                },
+            ],
             evidence_lines: vec![
                 (
                     "Target file".to_string(),
@@ -3997,6 +4176,50 @@ pub fn disabled_future_approval_card_projections() -> Vec<DisabledApprovalCardPr
                 "Copied symlink proof exists.".to_string(),
                 "Real profile/mode switching remains disabled.".to_string(),
             ],
+            proof_record: ApprovalCardProofRecord {
+                source: "copied-config-tree profile/symlink proof".to_string(),
+                status: "copied_config_tree_proven".to_string(),
+                fields: vec![
+                    (
+                        "current symlink".to_string(),
+                        "copied current.conf symlink".to_string(),
+                    ),
+                    (
+                        "original target".to_string(),
+                        "original copied symlink target".to_string(),
+                    ),
+                    (
+                        "proposed target".to_string(),
+                        "selected copied profile target".to_string(),
+                    ),
+                    (
+                        "copied switch status".to_string(),
+                        "temp symlink switched to selected copied target".to_string(),
+                    ),
+                ],
+            },
+            preconditions: vec![
+                ApprovalCardPreconditionLine {
+                    label: "selected target".to_string(),
+                    value: "selected copied profile target".to_string(),
+                    status: "inside copied tree".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "original symlink target".to_string(),
+                    value: "original copied symlink target".to_string(),
+                    status: "snapshot recorded".to_string(),
+                },
+            ],
+            restore_evidence: vec![
+                ApprovalCardRestoreEvidence {
+                    label: "copied symlink restore".to_string(),
+                    status: "restored original copied target".to_string(),
+                },
+                ApprovalCardRestoreEvidence {
+                    label: "real symlink untouched".to_string(),
+                    status: "verified untouched".to_string(),
+                },
+            ],
             evidence_lines: vec![
                 (
                     "Current symlink".to_string(),
@@ -4047,6 +4270,55 @@ pub fn disabled_future_approval_card_projections() -> Vec<DisabledApprovalCardPr
                 "That proof is not enough to enable high-risk/display writes.".to_string(),
                 "Required before high-risk/display activation:".to_string(),
             ],
+            proof_record: ApprovalCardProofRecord {
+                source: "high-risk readiness gate".to_string(),
+                status: "blocked_recovery_proof_missing".to_string(),
+                fields: vec![
+                    (
+                        "runtime read-only evidence".to_string(),
+                        "succeeded outside sandbox".to_string(),
+                    ),
+                    (
+                        "low-risk runtime live-restore proof".to_string(),
+                        "general:gaps_in restored after hl.config eval proof".to_string(),
+                    ),
+                    (
+                        "insufficiency reason".to_string(),
+                        "low-risk runtime proof does not prove display recovery".to_string(),
+                    ),
+                ],
+            },
+            preconditions: vec![
+                ApprovalCardPreconditionLine {
+                    label: "out-of-band recovery".to_string(),
+                    value: "missing".to_string(),
+                    status: "blocks activation".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "dead-man timeout".to_string(),
+                    value: "missing".to_string(),
+                    status: "blocks activation".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "restore command".to_string(),
+                    value: "required".to_string(),
+                    status: "not proven for display risk".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "config backup".to_string(),
+                    value: "required".to_string(),
+                    status: "not attached to high-risk live proof".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "runtime snapshot".to_string(),
+                    value: "required".to_string(),
+                    status: "not attached to high-risk live proof".to_string(),
+                },
+            ],
+            restore_evidence: vec![ApprovalCardRestoreEvidence {
+                label: "high-risk restoration".to_string(),
+                status: "not proven; no display mutation attempted".to_string(),
+            }],
             evidence_lines: vec![
                 ("Out-of-band recovery".to_string(), "Missing".to_string()),
                 ("Dead-man timeout".to_string(), "Missing".to_string()),
@@ -4084,6 +4356,60 @@ pub fn disabled_future_approval_card_projections() -> Vec<DisabledApprovalCardPr
                 "These are advisory only.".to_string(),
                 "Required before activation:".to_string(),
             ],
+            proof_record: ApprovalCardProofRecord {
+                source: "runtime/package/trusted-data records".to_string(),
+                status: "blocked_missing_trusted_exports".to_string(),
+                fields: vec![
+                    (
+                        "runtime version evidence".to_string(),
+                        "Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704"
+                            .to_string(),
+                    ),
+                    (
+                        "package metadata evidence".to_string(),
+                        "hyprland 0.55.4-1".to_string(),
+                    ),
+                    (
+                        "current active app model".to_string(),
+                        "v0.55.2".to_string(),
+                    ),
+                    (
+                        "advisory evidence status".to_string(),
+                        "runtime/package evidence cannot activate migration".to_string(),
+                    ),
+                ],
+            },
+            preconditions: vec![
+                ApprovalCardPreconditionLine {
+                    label: "official 0.55.4 export bundle".to_string(),
+                    value: "missing".to_string(),
+                    status: "blocks activation".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "row-count diff".to_string(),
+                    value: "missing".to_string(),
+                    status: "blocks activation".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "write-safety review".to_string(),
+                    value: "missing".to_string(),
+                    status: "blocks activation".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "safe-env evidence".to_string(),
+                    value: "missing".to_string(),
+                    status: "blocks activation".to_string(),
+                },
+                ApprovalCardPreconditionLine {
+                    label: "explicit approval".to_string(),
+                    value: "required".to_string(),
+                    status: "not sufficient without trusted inputs".to_string(),
+                },
+            ],
+            restore_evidence: vec![ApprovalCardRestoreEvidence {
+                label: "migration activation".to_string(),
+                status: "inactive; v0.55.2 remains active".to_string(),
+            }],
             evidence_lines: vec![
                 (
                     "Official 0.55.4 export bundle".to_string(),

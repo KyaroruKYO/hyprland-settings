@@ -102,6 +102,9 @@
     "duplicateApprovalCanEnableProductionByDefault": false,
     "duplicateApprovalUiCardExists": true,
     "duplicateApprovalUiCardEnabled": false,
+    "duplicateDeepApprovalCardDataExists": true,
+    "duplicateDeepApprovalCardShowsFingerprintAndCopiedProof": true,
+    "duplicateDeepApprovalCardShowsRestoreAndOriginalUnchanged": true,
     "duplicateApprovalUiWidgetName": "hyprland-settings-duplicate-approval-review-disabled"
   },
   "validation": {
@@ -112,7 +115,7 @@
     "Temp-fixture and copied-config-tree executors now prove stale line, raw-line mismatch, old-value mismatch, source-layer duplicate, and same-file duplicate preconditions; explicit production flag review is still required before production Apply integration.",
     "Needs production safe-batch integration review that still refuses real config unless explicitly approved."
   ],
-  "nextRecommendedWork": "Add deeper duplicate approval card data fed by copied/live proof records while keeping production duplicate writes disabled by default.",
+  "nextRecommendedWork": "Feed duplicate approval card data from serialized copied proof records while keeping production duplicate writes disabled by default.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

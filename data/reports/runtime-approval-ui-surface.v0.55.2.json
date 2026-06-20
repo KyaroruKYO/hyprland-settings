@@ -49,7 +49,9 @@
   "relatedDisabledApprovalCards": {
     "implementedForRemainingGatedCategories": true,
     "report": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+    "deepDataReport": "data/reports/deep-approval-card-data.v0.55.2.json",
+    "deepDataImplemented": true,
     "productionBehaviorEnabled": false
   },
-  "nextRecommendedWork": "Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled."
+  "nextRecommendedWork": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled."
 }

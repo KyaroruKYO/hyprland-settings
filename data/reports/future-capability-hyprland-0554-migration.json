@@ -89,6 +89,9 @@
     "hyprland0554ApprovalCanActivateWithoutTrustedEvidence": false,
     "hyprland0554ApprovalUiCardExists": true,
     "hyprland0554ApprovalUiCardEnabled": false,
+    "hyprland0554DeepApprovalCardDataExists": true,
+    "hyprland0554DeepApprovalCardShowsAdvisoryRuntimeAndPackageEvidence": true,
+    "hyprland0554DeepApprovalCardShowsTrustedDataBlockers": true,
     "hyprland0554ApprovalUiWidgetName": "hyprland-settings-0554-approval-review-disabled"
   },
   "validation": {
@@ -99,7 +102,7 @@
     "Needs row-count diff, write-safety review, and GTK safe-env evidence before changing the default app model.",
     "v0.55.2 remains the active/default bundle."
   ],
-  "nextRecommendedWork": "Add deeper 0.55.4 migration approval card data fed by trusted export records if they become available; keep v0.55.2 active until official exports, row diff, write-safety review, safe-env evidence, and approval exist.",
+  "nextRecommendedWork": "Feed 0.55.4 migration approval card data from serialized trusted-data records when available; keep v0.55.2 active until official exports, row diff, write-safety review, safe-env evidence, and approval exist.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false

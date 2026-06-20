@@ -90,26 +90,26 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled.
+Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.
 
 ## Progress tracker
-- Core app shell / UI / navigation: 92-96% -> 95-98%
+- Core app shell / UI / navigation: 95-98% -> 96-98%
 - Config discovery / source-aware model: 90-93% -> 94-96%
 - 341-row read/write model: 90-95% -> 90-95%
 - Safe normal-scalar writes: 92-96% -> 95-97%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
-- Missing/default insertion: 87-92% -> 94-97%
-- Duplicate resolution: 83-88% -> 85-90%
-- High-risk/display recovery: 58-67% -> 60-69%
-- Structured-family editors/writes: 60-69% -> 62-72%
-- Profile/mode switching: 61-70% -> 63-72%
+- Missing/default insertion: 94-97% -> 95-97%
+- Duplicate resolution: 85-90% -> 86-91%
+- High-risk/display recovery: 60-70% -> 61-70%
+- Structured-family editors/writes: 62-72% -> 63-73%
+- Profile/mode switching: 63-73% -> 64-73%
 - Runtime/reload integration: 55-65% -> 66-76%
-- Hyprland 0.55.4 migration: 45-55% -> 48-58%
+- Hyprland 0.55.4 migration: 48-59% -> 49-60%
 
 ## Validation status
 Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `jq empty data/reports/*.json`, and `git diff --check`.
 
-GTK matrix passed for the disabled approval UI card surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260619_234758`.
+GTK matrix passed for the deep approval card data surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_000757`.
 
 ## Recommended next Codex prompt
-Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled.
+Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled.

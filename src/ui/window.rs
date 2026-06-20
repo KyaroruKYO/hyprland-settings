@@ -1259,6 +1259,27 @@ fn disabled_future_approval_card(card: &DisabledApprovalCardProjection) -> gtk::
     for line in &card.summary_lines {
         content.append(&small_label(line));
     }
+    append_detail_line(&content, "Proof source", &card.proof_record.source);
+    append_detail_line(&content, "Proof status", &card.proof_record.status);
+    for (label, value) in &card.proof_record.fields {
+        append_detail_line(&content, label, value);
+    }
+    if !card.preconditions.is_empty() {
+        content.append(&body_label("Preconditions"));
+        for precondition in &card.preconditions {
+            append_detail_line(
+                &content,
+                &precondition.label,
+                &format!("{} ({})", precondition.value, precondition.status),
+            );
+        }
+    }
+    if !card.restore_evidence.is_empty() {
+        content.append(&body_label("Restore and unchanged evidence"));
+        for evidence in &card.restore_evidence {
+            append_detail_line(&content, &evidence.label, &evidence.status);
+        }
+    }
     for (label, value) in &card.evidence_lines {
         append_detail_line(&content, label, value);
     }

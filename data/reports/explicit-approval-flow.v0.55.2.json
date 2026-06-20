@@ -74,7 +74,8 @@
     "runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled",
     "runtime_approval_review_surface_is_called_from_detail_edit_section",
     "disabled_future_approval_card_projections_cover_all_remaining_gates_without_enablement",
-    "disabled_future_approval_cards_are_visible_and_non_mutating"
+    "disabled_future_approval_cards_are_visible_and_non_mutating",
+    "deep_approval_card_data_report_records_proof_backed_fields_without_enablement"
   ],
   "safety": {
     "productionFlagDefaultFalse": true,
@@ -95,7 +96,8 @@
     "runtimeApprovalUiSurfaceExists": true,
     "runtimeApprovalUiSurfaceEnabled": false,
     "remainingGatedApprovalUiCardsExist": true,
-    "remainingGatedApprovalUiCardsEnabled": false
+    "remainingGatedApprovalUiCardsEnabled": false,
+    "remainingGatedApprovalUiCardsHaveDeepProofData": true
   },
-  "nextRecommendedWork": "Add deeper per-card approval data fed by live or copied proof records, still keeping all production behavior default-disabled."
+  "nextRecommendedWork": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled."
 }

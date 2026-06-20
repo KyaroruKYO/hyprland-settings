@@ -1,13 +1,14 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "artifactKind": "disabled-approval-ui-cards",
   "generatedAt": "2026-06-19T00:00:00-07:00",
   "branch": "future-capability-marathon",
-  "startingCommit": "ce41772a62605c3291e69feed5a19fb80f9c589d",
+  "startingCommit": "d23af73a07c7edcf541a17ad297dcd3db53c18fb",
   "projectDataVersion": "v0.55.2",
   "countsPreserved": "341 readable / 341 writable / 0 blocked",
   "uiSurface": {
     "implemented": true,
+    "deepDataImplemented": true,
     "location": "Config page future approval reviews section",
     "sectionWidgetName": "hyprland-settings-disabled-approval-cards-section",
     "cardsAreReviewOnly": true,
@@ -20,7 +21,22 @@
       "widgetName": "hyprland-settings-source-include-approval-review-disabled",
       "evidenceWidgetName": "hyprland-settings-source-include-approval-evidence",
       "disabledActionWidgetName": "hyprland-settings-source-include-approval-enable-disabled",
-      "visibleProof": "copied-config-tree proof exists; selected target and planned line are review-only",
+      "proofSource": "copied-config-tree proof",
+      "proofStatus": "copied_config_tree_proven",
+      "proofFields": {
+        "rootConfig": "copied-config-tree root fixture",
+        "selectedTarget": "copied source/include target fixture",
+        "sourceDepth": "1",
+        "dryRunStatus": "selected target plan accepted for copied tree"
+      },
+      "preconditions": {
+        "plannedInsertedLine": "matched copied proof",
+        "proposedValue": "normal scalar only"
+      },
+      "restoreEvidence": {
+        "copiedTargetRestore": "restored byte-for-byte",
+        "originalRealConfigUnchanged": "verified unchanged"
+      },
       "productionStatus": "Disabled"
     },
     "duplicateReplacement": {
@@ -28,7 +44,24 @@
       "widgetName": "hyprland-settings-duplicate-approval-review-disabled",
       "evidenceWidgetName": "hyprland-settings-duplicate-approval-evidence",
       "disabledActionWidgetName": "hyprland-settings-duplicate-approval-enable-disabled",
-      "visibleProof": "confirmed occurrence, fingerprint/precondition, and copied proof are review-only",
+      "proofSource": "copied-config-tree proof",
+      "proofStatus": "copied_config_tree_proven",
+      "proofFields": {
+        "selectedOccurrence": "confirmed copied occurrence",
+        "targetPath": "copied duplicate target fixture",
+        "sourceDepth": "1",
+        "copiedReplacementStatus": "selected duplicate replaced and reread in copied tree"
+      },
+      "preconditions": {
+        "lineNumber": "matched copied occurrence",
+        "rawLine": "matched fingerprint",
+        "oldValue": "matched old-value precondition",
+        "proposedValue": "review only"
+      },
+      "restoreEvidence": {
+        "copiedTargetRestore": "restored byte-for-byte",
+        "originalRealConfigUnchanged": "verified unchanged"
+      },
       "productionStatus": "Disabled"
     },
     "structuredHlBindWrite": {
@@ -36,7 +69,23 @@
       "widgetName": "hyprland-settings-structured-approval-review-disabled",
       "evidenceWidgetName": "hyprland-settings-structured-approval-evidence",
       "disabledActionWidgetName": "hyprland-settings-structured-approval-enable-disabled",
-      "visibleProof": "old/new bind raw lines, candidate validation, comments/order preservation, and copied proof are review-only",
+      "proofSource": "copied-config-tree proof",
+      "proofStatus": "copied_config_tree_proven",
+      "proofFields": {
+        "targetFile": "copied bind target fixture",
+        "sourceDepth": "1",
+        "copiedEditStatus": "selected hl.bind line edited and reread in copied tree",
+        "commentOrderPreservation": "comments and order preserved"
+      },
+      "preconditions": {
+        "lineNumber": "matched copied proof",
+        "oldRawLine": "matched stale-line precondition",
+        "proposedRawLine": "valid hl.bind candidate"
+      },
+      "restoreEvidence": {
+        "copiedTargetRestore": "restored byte-for-byte",
+        "originalRealConfigUnchanged": "verified unchanged"
+      },
       "productionStatus": "Disabled"
     },
     "profileModeSwitch": {
@@ -44,7 +93,22 @@
       "widgetName": "hyprland-settings-profile-approval-review-disabled",
       "evidenceWidgetName": "hyprland-settings-profile-approval-evidence",
       "disabledActionWidgetName": "hyprland-settings-profile-approval-enable-disabled",
-      "visibleProof": "copied symlink proof and restore proof are review-only",
+      "proofSource": "copied-config-tree profile/symlink proof",
+      "proofStatus": "copied_config_tree_proven",
+      "proofFields": {
+        "currentSymlink": "copied current.conf symlink",
+        "originalTarget": "original copied symlink target",
+        "proposedTarget": "selected copied profile target",
+        "copiedSwitchStatus": "temp symlink switched to selected copied target"
+      },
+      "preconditions": {
+        "selectedTarget": "inside copied tree",
+        "originalSymlinkTarget": "snapshot recorded"
+      },
+      "restoreEvidence": {
+        "copiedSymlinkRestore": "restored original copied target",
+        "realSymlinkUntouched": "verified untouched"
+      },
       "productionStatus": "Disabled"
     },
     "highRiskDisplayWrite": {
@@ -52,7 +116,23 @@
       "widgetName": "hyprland-settings-high-risk-approval-review-disabled",
       "evidenceWidgetName": "hyprland-settings-high-risk-approval-evidence",
       "disabledActionWidgetName": "hyprland-settings-high-risk-approval-enable-disabled",
-      "visibleProof": "low-risk runtime live restore is listed as insufficient; out-of-band recovery and dead-man restore remain required",
+      "proofSource": "high-risk readiness gate",
+      "proofStatus": "blocked_recovery_proof_missing",
+      "proofFields": {
+        "runtimeReadOnlyEvidence": "succeeded outside sandbox",
+        "lowRiskRuntimeLiveRestoreProof": "general:gaps_in restored after hl.config eval proof",
+        "insufficiencyReason": "low-risk runtime proof does not prove display recovery"
+      },
+      "preconditions": {
+        "outOfBandRecovery": "blocks activation",
+        "deadManTimeout": "blocks activation",
+        "restoreCommand": "not proven for display risk",
+        "configBackup": "not attached to high-risk live proof",
+        "runtimeSnapshot": "not attached to high-risk live proof"
+      },
+      "restoreEvidence": {
+        "highRiskRestoration": "not proven; no display mutation attempted"
+      },
       "productionStatus": "Disabled"
     },
     "hyprland0554Migration": {
@@ -60,7 +140,24 @@
       "widgetName": "hyprland-settings-0554-approval-review-disabled",
       "evidenceWidgetName": "hyprland-settings-0554-approval-evidence",
       "disabledActionWidgetName": "hyprland-settings-0554-approval-enable-disabled",
-      "visibleProof": "runtime/package 0.55.4 evidence is advisory; official exports, row diff, write-safety review, and safe-env evidence remain required",
+      "proofSource": "runtime/package/trusted-data records",
+      "proofStatus": "blocked_missing_trusted_exports",
+      "proofFields": {
+        "runtimeVersionEvidence": "Hyprland 0.55.4 commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704",
+        "packageMetadataEvidence": "hyprland 0.55.4-1",
+        "currentActiveAppModel": "v0.55.2",
+        "advisoryEvidenceStatus": "runtime/package evidence cannot activate migration"
+      },
+      "preconditions": {
+        "official0554ExportBundle": "blocks activation",
+        "rowCountDiff": "blocks activation",
+        "writeSafetyReview": "blocks activation",
+        "safeEnvEvidence": "blocks activation",
+        "explicitApproval": "not sufficient without trusted inputs"
+      },
+      "restoreEvidence": {
+        "migrationActivation": "inactive; v0.55.2 remains active"
+      },
       "productionStatus": "Disabled",
       "activeModel": "v0.55.2",
       "migrationStatus": "Inactive"
@@ -68,7 +165,8 @@
   },
   "tests": [
     "disabled_future_approval_card_projections_cover_all_remaining_gates_without_enablement",
-    "disabled_future_approval_cards_are_visible_and_non_mutating"
+    "disabled_future_approval_cards_are_visible_and_non_mutating",
+    "deep_approval_card_data_report_records_proof_backed_fields_without_enablement"
   ],
   "safety": {
     "realConfigTouched": false,
@@ -85,5 +183,5 @@
     "unsafeProductionBehaviorEnabled": false,
     "v0552DefaultPreserved": true
   },
-  "nextRecommendedWork": "Add deeper per-card detail projections fed by live or copied proof records, still keeping all production behavior default-disabled."
+  "nextRecommendedWork": "Feed the disabled approval cards from serialized proof records instead of fixed in-code projections, still keeping all production behavior default-disabled."
 }
