@@ -87,12 +87,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "If interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring."
+        "Connect live GTK field editing to the memory-only draft-edit model behind still-disabled controls, without persistence, production actions, or executor wiring."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("still-disabled UI state"));
+        .contains("memory-only draft-edit model"));
 }
 
 #[test]
@@ -798,6 +798,156 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         false
     );
     assert_eq!(activation_draft["safety"]["duplicateExecutorWired"], false);
+
+    let activation_draft_edit =
+        read_json("data/reports/default-disabled-production-activation-draft-edit.v0.55.2.json");
+    assert_eq!(activation_draft_edit["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        activation_draft_edit["implementation"]["sourceIncludeDraftEditPlumbingExists"],
+        true
+    );
+    assert_eq!(
+        activation_draft_edit["implementation"]["duplicateDraftEditPlumbingExists"],
+        true
+    );
+    assert_eq!(
+        activation_draft_edit["implementation"]["draftEditingDisabledByDefault"],
+        true
+    );
+    assert_eq!(
+        activation_draft_edit["implementation"]["draftEditingCanBeModeledInMemoryOnly"],
+        true
+    );
+    assert_eq!(
+        activation_draft_edit["implementation"]["diskPersistenceAdded"],
+        false
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_draft_edit["draftEdits"][key]["defaultMode"],
+            "DraftEditingDisabledByDefault"
+        );
+        assert_eq!(
+            activation_draft_edit["draftEdits"][key]["memoryOnlyMode"],
+            "DraftEditingEnabledInMemoryOnly"
+        );
+        assert_eq!(
+            activation_draft_edit["draftEdits"][key]["validatedStatus"],
+            "DraftEditingValidatedForReviewOnly"
+        );
+        assert_eq!(
+            activation_draft_edit["draftEdits"][key]["formValidationStatus"],
+            "ValidatedForReviewOnly"
+        );
+        assert_eq!(
+            activation_draft_edit["draftEdits"][key]["controlValidationStatus"],
+            "ValidatedButExecutorUnwired"
+        );
+        assert_eq!(
+            activation_draft_edit["draftEdits"][key]["persistenceStatus"],
+            "In-memory only"
+        );
+        assert_eq!(
+            activation_draft_edit["draftEdits"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(
+            activation_draft_edit["draftEdits"][key]["productionStatus"],
+            "Disabled"
+        );
+        assert_eq!(
+            activation_draft_edit["draftEdits"][key]["productionEnabled"],
+            false
+        );
+        assert_eq!(
+            activation_draft_edit["draftEdits"][key]["productionFlag"],
+            false
+        );
+        assert_eq!(
+            activation_draft_edit["draftEdits"][key]["executorWired"],
+            false
+        );
+        assert_eq!(
+            activation_draft_edit["draftEdits"][key]["draftPersistsToDisk"],
+            false
+        );
+        assert_eq!(
+            activation_draft_edit["screenshotLevelAssertions"][key],
+            true
+        );
+    }
+    assert_eq!(
+        activation_draft_edit["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+    assert_eq!(
+        activation_draft_edit["safety"]["diskPersistenceAdded"],
+        false
+    );
+    assert_eq!(
+        activation_draft_edit["safety"]["sourceIncludeExecutorWired"],
+        false
+    );
+    assert_eq!(
+        activation_draft_edit["safety"]["duplicateExecutorWired"],
+        false
+    );
+
+    let dependency_scan =
+        read_json("data/reports/future-capability-remaining-dependency-scan.v0.55.2.json");
+    assert_eq!(dependency_scan["projectDataVersion"], "v0.55.2");
+    assert_eq!(dependency_scan["scanComplete"], true);
+    for key in [
+        "coreAppShellUiNavigation",
+        "configDiscoverySourceAwareModel",
+        "rowReadWriteModel",
+        "safeNormalScalarWrites",
+        "releasePackagingTagArtifacts",
+        "missingDefaultInsertion",
+        "duplicateResolution",
+        "highRiskDisplayRecovery",
+        "structuredFamilyEditorsWrites",
+        "profileModeSwitching",
+        "runtimeReloadIntegration",
+        "hyprland0554Migration",
+    ] {
+        assert!(dependency_scan["classifications"][key]["classification"].is_string());
+        assert!(dependency_scan["classifications"][key]["evidence"].is_string());
+    }
+    assert_eq!(
+        dependency_scan["classifications"]["missingDefaultInsertion"]["classification"],
+        "blocked by production activation"
+    );
+    assert_eq!(
+        dependency_scan["classifications"]["duplicateResolution"]["classification"],
+        "blocked by production activation"
+    );
+    assert_eq!(
+        dependency_scan["classifications"]["highRiskDisplayRecovery"]["classification"],
+        "blocked by high-risk recovery proof"
+    );
+    assert_eq!(
+        dependency_scan["classifications"]["hyprland0554Migration"]["classification"],
+        "blocked by missing official data/export"
+    );
+    assert_eq!(
+        dependency_scan["safeIndependentExtraWork"]["attempted"],
+        true
+    );
+    assert_eq!(
+        dependency_scan["safeIndependentExtraWork"]["completed"],
+        "remaining dependency scan"
+    );
+    assert_eq!(
+        dependency_scan["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+    assert_eq!(dependency_scan["safety"]["diskPersistenceAdded"], false);
+    assert_eq!(
+        dependency_scan["safety"]["sourceIncludeExecutorWired"],
+        false
+    );
+    assert_eq!(dependency_scan["safety"]["duplicateExecutorWired"], false);
 
     let gtk_cards =
         read_json("data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json");

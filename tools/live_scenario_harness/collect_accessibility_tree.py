@@ -198,6 +198,33 @@ ACTIVATION_DRAFT_ASSERTIONS = {
     },
 }
 
+ACTIVATION_DRAFT_EDIT_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include activation draft editing",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "memory": "In-memory only",
+        "mode": "Editing mode",
+        "validation": "Draft validation",
+        "update": "Update source/include activation draft (planned)",
+        "reset": "Reset source/include activation draft (planned)",
+        "widget": "hyprland-settings-source-include-activation-draft-edit-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate activation draft editing",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "memory": "In-memory only",
+        "mode": "Editing mode",
+        "validation": "Draft validation",
+        "update": "Update duplicate activation draft (planned)",
+        "reset": "Reset duplicate activation draft (planned)",
+        "widget": "hyprland-settings-duplicate-activation-draft-edit-disabled",
+    },
+}
+
 SAFE_NAVIGATION_TARGETS = {
     "Dashboard",
     "Config",
@@ -529,6 +556,42 @@ def activation_draft_assertions(values):
             "executorWiringFound": executor_found,
             "memoryStatus": spec["memory"],
             "memoryStatusFound": memory_found,
+            "disabledUpdate": spec["update"],
+            "disabledUpdateFound": update_found,
+            "disabledReset": spec["reset"],
+            "disabledResetFound": reset_found,
+            "widgetName": spec["widget"],
+            "widgetNameFound": widget_found,
+        }
+    return assertions
+
+
+def activation_draft_edit_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in ACTIVATION_DRAFT_EDIT_ASSERTIONS.items():
+        heading_found = spec["heading"].lower() in text
+        production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
+        executor_found = spec["executor"].lower() in text
+        memory_found = spec["memory"].lower() in text
+        mode_found = spec["mode"].lower() in text
+        validation_found = spec["validation"].lower() in text
+        update_found = spec["update"].lower() in text
+        reset_found = spec["reset"].lower() in text
+        widget_found = spec["widget"].lower() in text
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": heading_found,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": production_found,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": executor_found,
+            "memoryStatus": spec["memory"],
+            "memoryStatusFound": memory_found,
+            "editingMode": spec["mode"],
+            "editingModeFound": mode_found,
+            "draftValidation": spec["validation"],
+            "draftValidationFound": validation_found,
             "disabledUpdate": spec["update"],
             "disabledUpdateFound": update_found,
             "disabledReset": spec["reset"],
@@ -924,6 +987,15 @@ def main() -> int:
         "activationDraftsAllExecutorUnwiredFound": False,
         "activationDraftsAllInMemoryOnlyFound": False,
         "activationDraftsAllDisabledActionsFound": False,
+        "activationDraftEditAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDraftEditAssertions": {},
+        "activationDraftEditsAllHeadingsFound": False,
+        "activationDraftEditsAllProductionDisabledFound": False,
+        "activationDraftEditsAllExecutorUnwiredFound": False,
+        "activationDraftEditsAllInMemoryOnlyFound": False,
+        "activationDraftEditsAllModeFound": False,
+        "activationDraftEditsAllValidationFound": False,
+        "activationDraftEditsAllDisabledActionsFound": False,
         "text": [],
         "error": None,
     }
@@ -1006,6 +1078,9 @@ def main() -> int:
         draft_assertions = activation_draft_assertions(
             result["text"] + result["textAfterNavigation"]
         )
+        draft_edit_assertions = activation_draft_edit_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
         result["approvalCardAssertions"] = approval_assertions
         result["approvalCardsAllHeadingsFound"] = all(
             card["headingFound"] for card in approval_assertions.values()
@@ -1081,6 +1156,29 @@ def main() -> int:
         result["activationDraftsAllDisabledActionsFound"] = all(
             card["disabledUpdateFound"] and card["disabledResetFound"]
             for card in draft_assertions.values()
+        )
+        result["activationDraftEditAssertions"] = draft_edit_assertions
+        result["activationDraftEditsAllHeadingsFound"] = all(
+            card["headingFound"] for card in draft_edit_assertions.values()
+        )
+        result["activationDraftEditsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in draft_edit_assertions.values()
+        )
+        result["activationDraftEditsAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in draft_edit_assertions.values()
+        )
+        result["activationDraftEditsAllInMemoryOnlyFound"] = all(
+            card["memoryStatusFound"] for card in draft_edit_assertions.values()
+        )
+        result["activationDraftEditsAllModeFound"] = all(
+            card["editingModeFound"] for card in draft_edit_assertions.values()
+        )
+        result["activationDraftEditsAllValidationFound"] = all(
+            card["draftValidationFound"] for card in draft_edit_assertions.values()
+        )
+        result["activationDraftEditsAllDisabledActionsFound"] = all(
+            card["disabledUpdateFound"] and card["disabledResetFound"]
+            for card in draft_edit_assertions.values()
         )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text

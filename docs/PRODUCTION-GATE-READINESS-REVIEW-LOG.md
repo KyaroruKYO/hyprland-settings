@@ -98,3 +98,11 @@ Production gate readiness now records real disabled GTK activation form fields f
 ## 2026-06-20 - Activation Draft Readiness
 
 Production gate readiness now records in-memory activation draft plumbing for source/include and duplicate. Drafts can update/reset request fields, acknowledgement fields, safety-plan text, and touched-file lists in memory, then validate through the existing form and control reviews as review-only. Draft cards are disabled, planned update/reset actions are insensitive, no disk persistence exists, executors remain `Unwired`, and production flags remain false.
+
+## 2026-06-20 - Activation Draft Edit Readiness
+
+Production gate readiness now records a still-disabled activation draft-edit layer for source/include and duplicate. Draft editing is disabled by default in the live UI; model tests can enter in-memory-only edit mode, update draft request and safety-plan values, recompute validation through the existing form/control pipeline, and reset to default draft state. Draft-edit cards are disabled, planned update/reset actions are insensitive, no disk persistence exists, executors remain `Unwired`, and production flags remain false.
+
+## 2026-06-20 - Remaining Dependency Scan
+
+The remaining dependency scan records that source/include, duplicate, structured-family writes, profile/mode switching, and runtime/reload production expansion are blocked by explicit production activation; high-risk/display is blocked by high-risk recovery proof; Hyprland 0.55.4 migration is blocked by missing official export data; and the core safe-release scope is otherwise capped.

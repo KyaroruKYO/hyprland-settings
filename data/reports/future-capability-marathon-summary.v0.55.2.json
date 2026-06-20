@@ -99,7 +99,9 @@
     "default_disabled_production_activation_control_review",
     "default_disabled_production_activation_form_state_machine",
     "default_disabled_production_activation_form_fields",
-    "default_disabled_production_activation_draft_state"
+    "default_disabled_production_activation_draft_state",
+    "default_disabled_production_activation_draft_edit_review",
+    "future_capability_remaining_dependency_scan"
   ],
   "phasesPartiallyCompleted": [],
   "phasesBlocked": [
@@ -145,7 +147,11 @@
     "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-FORM-FIELDS-REVIEW-LOG.md",
     "data/reports/default-disabled-production-activation-draft.v0.55.2.json",
-    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-DRAFT-REVIEW-LOG.md"
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-DRAFT-REVIEW-LOG.md",
+    "data/reports/default-disabled-production-activation-draft-edit.v0.55.2.json",
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-DRAFT-EDIT-REVIEW-LOG.md",
+    "data/reports/future-capability-remaining-dependency-scan.v0.55.2.json",
+    "docs/FUTURE-CAPABILITY-REMAINING-DEPENDENCY-SCAN.md"
   ],
   "testsAdded": [
     "tests/future_capability_marathon.rs",
@@ -164,7 +170,10 @@
     "source/include and duplicate disabled GTK activation form field source tests",
     "GTK screenshot/accessibility assertions for source/include and duplicate disabled activation form field labels",
     "source/include and duplicate in-memory activation draft model tests",
-    "GTK screenshot/accessibility assertions for source/include and duplicate activation draft cards"
+    "GTK screenshot/accessibility assertions for source/include and duplicate activation draft cards",
+    "source/include and duplicate activation draft-edit memory-only model tests",
+    "GTK screenshot/accessibility assertions for source/include and duplicate activation draft-edit cards",
+    "remaining dependency scan report assertions"
   ],
   "validation": {
     "cargoFmt": "passed",
@@ -174,11 +183,11 @@
     "cargoBuildRelease": "passed",
     "jqReports": "passed",
     "gitDiffCheck": "passed",
-    "gtkSafeEnvMatrix": "ran_with_at_spi_field_label_blocker",
-    "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260620_134347",
-    "gtkSafeEnvFieldLabelBlocker": "AT-SPI could not open the runtime bus socket, so live field-label proof was not available in this run."
+    "gtkSafeEnvMatrix": "passed_after_activation_draft_edit_ui",
+    "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260620_151212",
+    "gtkSafeEnvFieldLabelBlocker": "none"
   },
-  "nextRecommendedAction": "If interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.",
+  "nextRecommendedAction": "Connect live GTK field editing to the memory-only draft-edit model behind still-disabled controls, without persistence or executor wiring.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "98-98%",
@@ -206,14 +215,14 @@
       "evidence": "v0.1.0 tag and dist/v0.1.0 artifacts preserved."
     },
     "missingDefaultInsertion": {
-      "before": "97-98%",
-      "after": "99-99%",
-      "evidence": "Source/include activation draft plumbing updates/resets form data in memory only, validates through existing form/control reviews, keeps executor Unwired, and keeps production flag false."
+      "before": "99-99%",
+      "after": "99-100%",
+      "evidence": "Source/include activation draft-edit plumbing models in-memory-only edits, recomputes review-only validation through form/control reviews, keeps live fields disabled, keeps executor Unwired, and keeps production flag false."
     },
     "duplicateResolution": {
-      "before": "88-92%",
-      "after": "93-95%",
-      "evidence": "Duplicate activation draft plumbing updates/resets form data in memory only, validates through existing form/control reviews, keeps executor Unwired, and keeps production flag false."
+      "before": "93-95%",
+      "after": "94-95%",
+      "evidence": "Duplicate activation draft-edit plumbing models in-memory-only edits, recomputes review-only validation through form/control reviews, keeps live fields disabled, keeps executor Unwired, and keeps production flag false."
     },
     "highRiskDisplayRecovery": {
       "before": "61-70%",
@@ -267,6 +276,8 @@
     "explicitApprovalFlow": "implemented_but_disabled: approval scopes require exact target/command, copied or live proof, old/proposed state, restore plan, one-shot or expiry behavior, and never enable production by default.",
     "activationFormStateMachine": "implemented_but_disabled: source/include and duplicate activation form states collect request data, safety acknowledgements, backup/restore/reread/post-restore plans, dry-run summary, and touched-file lists, render through real disabled GTK fields, then validate through the final controls as review-only with executors Unwired.",
     "activationDraftState": "implemented_but_disabled: source/include and duplicate drafts can update/reset form values in memory only, validate through the existing form/control pipeline as review-only, and display disabled draft status cards; no persistence or executor wiring exists.",
+    "activationDraftEditReview": "implemented_but_disabled: source/include and duplicate draft-edit mode is disabled by default, can be modeled in memory only, recomputes form/control validation, displays disabled draft-edit status cards, and keeps persistence absent, executors Unwired, and production flags false.",
+    "remainingDependencyScan": "completed: all tracker categories were classified as capped, production-activation-blocked, high-risk-recovery-blocked, or missing-official-data-blocked; no additional independent production-safe implementation was selected.",
     "runtimeSocketDiagnosis": "live_readonly_evidence: sandbox EPERM explains the prior timeout; outside-sandbox hyprctl version, monitors, and getoption queries succeeded.",
     "runtimeLiveRestoreProof": "live_restore_proven: prior gaps_in value 5 and temporary value 6 were prepared with restore command first; keyword and assignment eval failed before value change, then hl.config eval succeeded and restored readback to 5."
   },
@@ -276,8 +287,8 @@
     "rowReadWriteModel": "future capability tests continue asserting SAFE_WRITABLE_ROWS remains 341; no row inventory changed",
     "safeNormalScalarWrites": "selected-target dry-run integrates with the existing missing/default insertion plan but does not write connected files",
     "releasePackagingTagArtifacts": "v0.1.0 tag and dist/v0.1.0 preserved; no release artifact mutation",
-    "missingDefaultInsertion": "source/include activation form/state machine produces review-only request and safety-plan data, renders it through disabled GTK fields, validates through the control layer, and keeps production source/include insertion blocked",
-    "duplicateResolution": "duplicate activation draft state updates and resets in memory, validates through the form/control layers, and keeps production duplicate writes blocked",
+    "missingDefaultInsertion": "source/include activation draft-edit mode models memory-only edits and validation recomputation while live fields remain disabled, persistence is absent, and production source/include insertion stays blocked",
+    "duplicateResolution": "duplicate activation draft-edit mode models memory-only edits and validation recomputation while live fields remain disabled, persistence is absent, and production duplicate writes stay blocked",
     "highRiskDisplayRecovery": "guarded no-op readiness executor added and requires out-of-band recovery before high-risk/display mutation",
     "structuredFamilyEditorsWrites": "guarded hl.bind temp executor added for reversible structured write proof; production structured writes remain blocked",
     "profileModeSwitching": "guarded temp symlink executor added and verifies restored target; real profile switching remains blocked",

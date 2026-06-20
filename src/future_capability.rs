@@ -4370,6 +4370,134 @@ impl ProductionActivationDraftReview {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationDraftEditMode {
+    DisabledByDefault,
+    EnabledInMemoryOnly,
+}
+
+impl ProductionActivationDraftEditMode {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::DisabledByDefault => "Draft editing disabled by default",
+            Self::EnabledInMemoryOnly => "Draft editing enabled in memory only",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationDraftEditStatus {
+    DraftEditingUnavailable,
+    DraftEditingDisabledByDefault,
+    DraftEditingEnabledInMemoryOnly,
+    DraftEditingDirty,
+    DraftEditingValidatedForReviewOnly,
+    DraftEditingBlockedProductionFlagTrue,
+    DraftEditingBlockedExecutorWired,
+    DraftEditingPersistenceUnavailable,
+}
+
+impl ProductionActivationDraftEditStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::DraftEditingUnavailable => "Draft editing unavailable",
+            Self::DraftEditingDisabledByDefault => "Draft editing disabled by default",
+            Self::DraftEditingEnabledInMemoryOnly => "Draft editing enabled in memory only",
+            Self::DraftEditingDirty => "Draft editing dirty",
+            Self::DraftEditingValidatedForReviewOnly => "Draft editing validated for review only",
+            Self::DraftEditingBlockedProductionFlagTrue => {
+                "Draft editing blocked because production flag is true"
+            }
+            Self::DraftEditingBlockedExecutorWired => {
+                "Draft editing blocked because executor is wired"
+            }
+            Self::DraftEditingPersistenceUnavailable => "Draft editing persistence unavailable",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ProductionActivationDraftEditAction {
+    EnterInMemoryEditMode,
+    ApplyUpdate(ProductionActivationDraftUpdate),
+    ResetToDefault,
+    ExitEditMode,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationDraftEditState {
+    pub draft: ProductionActivationDraftForm,
+    pub mode: ProductionActivationDraftEditMode,
+    pub dirty: bool,
+    pub persisted: bool,
+    pub production_action_enabled: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationDraftEditResult {
+    pub status: ProductionActivationDraftEditStatus,
+    pub state: ProductionActivationDraftEditState,
+    pub draft_validation_status: ProductionActivationDraftStatus,
+    pub persistence_status: String,
+    pub production_action_enabled: bool,
+    pub executor_wired: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationDraftEditReview {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub mode_widget_name: String,
+    pub disabled_update_widget_name: String,
+    pub disabled_reset_widget_name: String,
+    pub heading: String,
+    pub mode: ProductionActivationDraftEditMode,
+    pub status: ProductionActivationDraftEditStatus,
+    pub draft_status: ProductionActivationDraftStatus,
+    pub form_validation_status: ProductionActivationFormStatus,
+    pub control_validation_status: ProductionActivationControlStatus,
+    pub dirty_state: String,
+    pub persistence_status: String,
+    pub executor_wiring_status: ProductionExecutorWiringState,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_activation_enabled: bool,
+    pub category_production_enabled: bool,
+    pub disabled_update_label: String,
+    pub disabled_reset_label: String,
+}
+
+impl ProductionActivationDraftEditReview {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        vec![
+            self.heading.clone(),
+            format!("Editing mode: {}", self.mode.user_facing_label()),
+            format!("Edit status: {}", self.status.user_facing_label()),
+            format!("Draft dirty state: {}", self.dirty_state),
+            format!(
+                "Draft validation: {}",
+                self.draft_status.user_facing_label()
+            ),
+            self.persistence_status.clone(),
+            format!(
+                "Form validation: {}",
+                self.form_validation_status.user_facing_label()
+            ),
+            format!(
+                "Control validation: {}",
+                self.control_validation_status.user_facing_label()
+            ),
+            format!(
+                "Executor wiring: {}",
+                self.executor_wiring_status.user_facing_label()
+            ),
+            format!("{}: {}", self.production_label, self.production_status),
+            self.disabled_update_label.clone(),
+            self.disabled_reset_label.clone(),
+        ]
+    }
+}
+
 const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
     "data/reports/disabled-approval-ui-cards.v0.55.2.json";
 const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
@@ -4755,6 +4883,40 @@ pub fn production_activation_draft_reviews() -> Vec<ProductionActivationDraftRev
     ]
 }
 
+pub fn production_activation_draft_edit_reviews() -> Vec<ProductionActivationDraftEditReview> {
+    let paths = production_activation_path_reviews();
+    let source_path = paths
+        .iter()
+        .find(|path| path.widget_name.contains("source-include"));
+    let duplicate_path = paths
+        .iter()
+        .find(|path| path.widget_name.contains("duplicate"));
+    vec![
+        source_include_activation_draft_edit_review(
+            source_path,
+            production_activation_draft_edit_state_from_draft(
+                production_activation_draft_from_form_state(production_activation_form_state(
+                    ProductionActivationRequestScope::SourceIncludeInsertion,
+                    "sourceIncludeInsertion",
+                )),
+            ),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        ),
+        duplicate_activation_draft_edit_review(
+            duplicate_path,
+            production_activation_draft_edit_state_from_draft(
+                production_activation_draft_from_form_state(production_activation_form_state(
+                    ProductionActivationRequestScope::DuplicateReplacement,
+                    "duplicateReplacement",
+                )),
+            ),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        ),
+    ]
+}
+
 pub fn production_activation_form_state(
     scope: ProductionActivationRequestScope,
     decision_category: &str,
@@ -4874,6 +5036,67 @@ pub fn reset_production_activation_draft(draft: &mut ProductionActivationDraftFo
     *draft = empty_production_activation_draft();
 }
 
+pub fn production_activation_draft_edit_state_from_draft(
+    draft: ProductionActivationDraftForm,
+) -> ProductionActivationDraftEditState {
+    ProductionActivationDraftEditState {
+        draft,
+        mode: ProductionActivationDraftEditMode::DisabledByDefault,
+        dirty: false,
+        persisted: false,
+        production_action_enabled: false,
+    }
+}
+
+pub fn apply_production_activation_draft_edit_action(
+    state: &mut ProductionActivationDraftEditState,
+    action: ProductionActivationDraftEditAction,
+) -> ProductionActivationDraftEditResult {
+    let mut status = match action {
+        ProductionActivationDraftEditAction::EnterInMemoryEditMode => {
+            state.mode = ProductionActivationDraftEditMode::EnabledInMemoryOnly;
+            ProductionActivationDraftEditStatus::DraftEditingEnabledInMemoryOnly
+        }
+        ProductionActivationDraftEditAction::ApplyUpdate(update) => {
+            if state.mode == ProductionActivationDraftEditMode::EnabledInMemoryOnly {
+                apply_production_activation_draft_update(&mut state.draft, update);
+                state.dirty = true;
+                ProductionActivationDraftEditStatus::DraftEditingDirty
+            } else {
+                ProductionActivationDraftEditStatus::DraftEditingDisabledByDefault
+            }
+        }
+        ProductionActivationDraftEditAction::ResetToDefault => {
+            if state.mode == ProductionActivationDraftEditMode::EnabledInMemoryOnly {
+                reset_production_activation_draft(&mut state.draft);
+                state.dirty = false;
+                ProductionActivationDraftEditStatus::DraftEditingEnabledInMemoryOnly
+            } else {
+                ProductionActivationDraftEditStatus::DraftEditingDisabledByDefault
+            }
+        }
+        ProductionActivationDraftEditAction::ExitEditMode => {
+            state.mode = ProductionActivationDraftEditMode::DisabledByDefault;
+            ProductionActivationDraftEditStatus::DraftEditingDisabledByDefault
+        }
+    };
+
+    state.persisted = false;
+    state.production_action_enabled = false;
+    if state.persisted {
+        status = ProductionActivationDraftEditStatus::DraftEditingPersistenceUnavailable;
+    }
+
+    ProductionActivationDraftEditResult {
+        status,
+        state: state.clone(),
+        draft_validation_status: state.draft.last_validation_status.clone(),
+        persistence_status: "In-memory only".to_string(),
+        production_action_enabled: false,
+        executor_wired: false,
+    }
+}
+
 pub fn source_include_activation_draft_review(
     path: Option<&ProductionActivationPathReview>,
     draft: ProductionActivationDraftForm,
@@ -4901,6 +5124,35 @@ pub fn source_include_activation_draft_review(
     )
 }
 
+pub fn source_include_activation_draft_edit_review(
+    path: Option<&ProductionActivationPathReview>,
+    state: ProductionActivationDraftEditState,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+) -> ProductionActivationDraftEditReview {
+    activation_draft_edit_review(
+        path,
+        state,
+        executor_wiring,
+        production_activation_flag,
+        ActivationDraftEditSpec {
+            widget_name: "hyprland-settings-source-include-activation-draft-edit-disabled",
+            evidence_widget_name: "hyprland-settings-source-include-activation-draft-edit-evidence",
+            mode_widget_name:
+                "hyprland-settings-source-include-activation-draft-edit-mode-disabled",
+            disabled_update_widget_name:
+                "hyprland-settings-source-include-activation-draft-edit-update-disabled",
+            disabled_reset_widget_name:
+                "hyprland-settings-source-include-activation-draft-edit-reset-disabled",
+            heading: "Source/include activation draft editing",
+            production_label: "Production source/include insertion",
+            disabled_update_label: "Update source/include activation draft (planned)",
+            disabled_reset_label: "Reset source/include activation draft (planned)",
+            expected_scope: ProductionActivationRequestScope::SourceIncludeInsertion,
+        },
+    )
+}
+
 pub fn duplicate_activation_draft_review(
     path: Option<&ProductionActivationPathReview>,
     draft: ProductionActivationDraftForm,
@@ -4920,6 +5172,34 @@ pub fn duplicate_activation_draft_review(
             disabled_reset_widget_name:
                 "hyprland-settings-duplicate-activation-draft-reset-disabled",
             heading: "Duplicate activation draft",
+            production_label: "Production duplicate writes",
+            disabled_update_label: "Update duplicate activation draft (planned)",
+            disabled_reset_label: "Reset duplicate activation draft (planned)",
+            expected_scope: ProductionActivationRequestScope::DuplicateReplacement,
+        },
+    )
+}
+
+pub fn duplicate_activation_draft_edit_review(
+    path: Option<&ProductionActivationPathReview>,
+    state: ProductionActivationDraftEditState,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+) -> ProductionActivationDraftEditReview {
+    activation_draft_edit_review(
+        path,
+        state,
+        executor_wiring,
+        production_activation_flag,
+        ActivationDraftEditSpec {
+            widget_name: "hyprland-settings-duplicate-activation-draft-edit-disabled",
+            evidence_widget_name: "hyprland-settings-duplicate-activation-draft-edit-evidence",
+            mode_widget_name: "hyprland-settings-duplicate-activation-draft-edit-mode-disabled",
+            disabled_update_widget_name:
+                "hyprland-settings-duplicate-activation-draft-edit-update-disabled",
+            disabled_reset_widget_name:
+                "hyprland-settings-duplicate-activation-draft-edit-reset-disabled",
+            heading: "Duplicate activation draft editing",
             production_label: "Production duplicate writes",
             disabled_update_label: "Update duplicate activation draft (planned)",
             disabled_reset_label: "Reset duplicate activation draft (planned)",
@@ -5079,6 +5359,19 @@ struct ActivationDraftSpec {
     expected_scope: ProductionActivationRequestScope,
 }
 
+struct ActivationDraftEditSpec {
+    widget_name: &'static str,
+    evidence_widget_name: &'static str,
+    mode_widget_name: &'static str,
+    disabled_update_widget_name: &'static str,
+    disabled_reset_widget_name: &'static str,
+    heading: &'static str,
+    production_label: &'static str,
+    disabled_update_label: &'static str,
+    disabled_reset_label: &'static str,
+    expected_scope: ProductionActivationRequestScope,
+}
+
 fn activation_draft_review(
     path: Option<&ProductionActivationPathReview>,
     mut draft: ProductionActivationDraftForm,
@@ -5149,6 +5442,78 @@ fn activation_draft_review(
         executor_wiring_status: executor_wiring,
         production_label: spec.production_label.to_string(),
         production_status: form_review.production_status,
+        production_activation_enabled: false,
+        category_production_enabled: false,
+        disabled_update_label: spec.disabled_update_label.to_string(),
+        disabled_reset_label: spec.disabled_reset_label.to_string(),
+    }
+}
+
+fn activation_draft_edit_review(
+    path: Option<&ProductionActivationPathReview>,
+    mut state: ProductionActivationDraftEditState,
+    executor_wiring: ProductionExecutorWiringState,
+    production_activation_flag: bool,
+    spec: ActivationDraftEditSpec,
+) -> ProductionActivationDraftEditReview {
+    let draft_review = match spec.expected_scope {
+        ProductionActivationRequestScope::SourceIncludeInsertion => {
+            source_include_activation_draft_review(
+                path,
+                state.draft.clone(),
+                executor_wiring,
+                production_activation_flag,
+            )
+        }
+        ProductionActivationRequestScope::DuplicateReplacement => {
+            duplicate_activation_draft_review(
+                path,
+                state.draft.clone(),
+                executor_wiring,
+                production_activation_flag,
+            )
+        }
+    };
+    state.persisted = false;
+    state.production_action_enabled = false;
+
+    let status = if executor_wiring != ProductionExecutorWiringState::Unwired {
+        ProductionActivationDraftEditStatus::DraftEditingBlockedExecutorWired
+    } else if production_activation_flag {
+        ProductionActivationDraftEditStatus::DraftEditingBlockedProductionFlagTrue
+    } else if state.mode == ProductionActivationDraftEditMode::DisabledByDefault {
+        ProductionActivationDraftEditStatus::DraftEditingDisabledByDefault
+    } else if draft_review.status == ProductionActivationDraftStatus::DraftValidatedForReviewOnly {
+        ProductionActivationDraftEditStatus::DraftEditingValidatedForReviewOnly
+    } else if state.dirty || state.draft.dirty {
+        ProductionActivationDraftEditStatus::DraftEditingDirty
+    } else {
+        ProductionActivationDraftEditStatus::DraftEditingEnabledInMemoryOnly
+    };
+    let dirty_state = if state.dirty || state.draft.dirty {
+        "Dirty in-memory draft"
+    } else {
+        "Clean in-memory draft"
+    }
+    .to_string();
+
+    ProductionActivationDraftEditReview {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        mode_widget_name: spec.mode_widget_name.to_string(),
+        disabled_update_widget_name: spec.disabled_update_widget_name.to_string(),
+        disabled_reset_widget_name: spec.disabled_reset_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        mode: state.mode,
+        status,
+        draft_status: draft_review.status,
+        form_validation_status: draft_review.form_validation_status,
+        control_validation_status: draft_review.control_validation_status,
+        dirty_state,
+        persistence_status: "In-memory only".to_string(),
+        executor_wiring_status: executor_wiring,
+        production_label: spec.production_label.to_string(),
+        production_status: draft_review.production_status,
         production_activation_enabled: false,
         category_production_enabled: false,
         disabled_update_label: spec.disabled_update_label.to_string(),

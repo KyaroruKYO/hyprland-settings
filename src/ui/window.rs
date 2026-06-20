@@ -18,12 +18,13 @@ use crate::export::ExportBundle;
 use crate::future_capability::{
     disabled_future_approval_card_projections, duplicate_production_approval_gate,
     production_activation_control_reviews, production_activation_decision_reviews,
-    production_activation_draft_reviews, production_activation_form_reviews,
-    production_activation_path_reviews, proven_runtime_approval_evidence_summary,
-    source_include_insertion_review, source_include_selected_target_dry_run_plan,
-    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
-    DuplicateOccurrence, DuplicateProductionGateStatus, ProductionActivationControlReview,
-    ProductionActivationDecisionReview, ProductionActivationDraftReview,
+    production_activation_draft_edit_reviews, production_activation_draft_reviews,
+    production_activation_form_reviews, production_activation_path_reviews,
+    proven_runtime_approval_evidence_summary, source_include_insertion_review,
+    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
+    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
+    ProductionActivationControlReview, ProductionActivationDecisionReview,
+    ProductionActivationDraftEditReview, ProductionActivationDraftReview,
     ProductionActivationFormReview, ProductionActivationPathReview,
     SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
     SourceIncludeTargetCandidate,
@@ -1418,6 +1419,7 @@ fn production_activation_path_reviews_section() -> gtk::Frame {
     content.append(&production_activation_control_reviews_section());
     content.append(&production_activation_form_reviews_section());
     content.append(&production_activation_draft_reviews_section());
+    content.append(&production_activation_draft_edit_reviews_section());
 
     frame.set_child(Some(&content));
     frame
@@ -1621,6 +1623,108 @@ fn production_activation_draft_reviews_section() -> gtk::Frame {
     for review in production_activation_draft_reviews() {
         content.append(&production_activation_draft_review_card(&review));
     }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_draft_edit_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-draft-edit-section");
+    frame.set_tooltip_text(Some(
+        "Still-disabled activation draft editing. Edit updates are modeled in memory only and cannot persist or run executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Activation draft editing"));
+    content.append(&small_label(
+        "Editable draft mode is modeled for memory-only validation. Live fields and controls remain disabled.",
+    ));
+
+    for review in production_activation_draft_edit_reviews() {
+        content.append(&production_activation_draft_edit_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_draft_edit_review_card(
+    review: &ProductionActivationDraftEditReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled activation draft edit surface. This does not persist data or wire production executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Draft edit evidence. Editable updates are modeled in memory only.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(&content, "Editing mode", review.mode.user_facing_label());
+    append_detail_line(&content, "Draft dirty state", &review.dirty_state);
+    append_detail_line(
+        &content,
+        "Draft validation",
+        review.draft_status.user_facing_label(),
+    );
+    append_detail_line(&content, "In-memory only", &review.persistence_status);
+    append_detail_line(
+        &content,
+        "Form validation",
+        review.form_validation_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Control validation",
+        review.control_validation_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let mode = gtk::Button::with_label(review.mode.user_facing_label());
+    mode.set_widget_name(&review.mode_widget_name);
+    mode.set_tooltip_text(Some(
+        "Disabled draft editing mode control. This has no live edit callback.",
+    ));
+    mode.set_sensitive(false);
+    content.append(&mode);
+
+    let update = gtk::Button::with_label(&review.disabled_update_label);
+    update.set_widget_name(&review.disabled_update_widget_name);
+    update.set_tooltip_text(Some(
+        "Disabled planned draft edit update. This has no persistence, mutation, or executor handler.",
+    ));
+    update.set_sensitive(false);
+    content.append(&update);
+
+    let reset = gtk::Button::with_label(&review.disabled_reset_label);
+    reset.set_widget_name(&review.disabled_reset_widget_name);
+    reset.set_tooltip_text(Some(
+        "Disabled planned draft edit reset. This has no persistence, mutation, or executor handler.",
+    ));
+    reset.set_sensitive(false);
+    content.append(&reset);
 
     frame.set_child(Some(&content));
     frame

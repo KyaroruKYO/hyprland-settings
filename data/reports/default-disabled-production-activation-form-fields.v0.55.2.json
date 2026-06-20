@@ -20,7 +20,8 @@
     "latestGtkMatrixFieldLabelProof": "blocked_by_at_spi_bus",
     "latestGtkMatrixBlocker": "AT-SPI was unable to open the bus socket under /run/user/1000, so the live accessibility tree did not match the app in this run.",
     "activationDraftPlumbingExists": true,
-    "activationDraftReport": "data/reports/default-disabled-production-activation-draft.v0.55.2.json"
+    "activationDraftReport": "data/reports/default-disabled-production-activation-draft.v0.55.2.json",
+    "activationDraftEditReport": "data/reports/default-disabled-production-activation-draft-edit.v0.55.2.json"
   },
   "forms": {
     "sourceIncludeInsertion": {

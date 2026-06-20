@@ -1,0 +1,84 @@
+{
+  "artifactKind": "future-capability-remaining-dependency-scan",
+  "projectDataVersion": "v0.55.2",
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "branch": "future-capability-marathon",
+  "inputReports": [
+    "data/reports/future-capability-marathon-summary.v0.55.2.json",
+    "data/reports/future-capability-marathon-handoff.v0.55.2.json",
+    "data/reports/production-gate-readiness.v0.55.2.json",
+    "data/reports/future-capability-structured-families.v0.55.2.json",
+    "data/reports/future-capability-profile-mode-switching.v0.55.2.json",
+    "data/reports/future-capability-runtime-reload.v0.55.2.json",
+    "data/reports/future-capability-high-risk-recovery.v0.55.2.json",
+    "data/reports/future-capability-hyprland-0554-migration.json"
+  ],
+  "scanComplete": true,
+  "classifications": {
+    "coreAppShellUiNavigation": {
+      "classification": "already effectively capped for current safe-release scope",
+      "evidence": "UI/navigation is at 99-99%; remaining work would be polish or production activation surfaces, not safe-release-critical behavior."
+    },
+    "configDiscoverySourceAwareModel": {
+      "classification": "already effectively capped for current safe-release scope",
+      "evidence": "Source-aware discovery has copied-config-tree proof and report-backed review surfaces; remaining changes are production target activation."
+    },
+    "rowReadWriteModel": {
+      "classification": "already effectively capped for current safe-release scope",
+      "evidence": "341 readable / 341 writable / 0 blocked is preserved; future changes would alter production policy."
+    },
+    "safeNormalScalarWrites": {
+      "classification": "already effectively capped for current safe-release scope",
+      "evidence": "Safe normal scalar writes are release-ready within current guardrails; remaining source/include and duplicate expansion is production activation work."
+    },
+    "releasePackagingTagArtifacts": {
+      "classification": "already effectively capped for current safe-release scope",
+      "evidence": "v0.1.0 and dist/v0.1.0 are preserved; user explicitly forbids release/tag/artifact publication in this sprint."
+    },
+    "missingDefaultInsertion": {
+      "classification": "blocked by production activation",
+      "evidence": "Source/include insertion has decision/path/control/form/draft/edit review layers, but production insertion remains disabled and executors remain unwired."
+    },
+    "duplicateResolution": {
+      "classification": "blocked by production activation",
+      "evidence": "Duplicate replacement has decision/path/control/form/draft/edit review layers, but production duplicate writes remain disabled and executors remain unwired."
+    },
+    "highRiskDisplayRecovery": {
+      "classification": "blocked by high-risk recovery proof",
+      "evidence": "Low-risk runtime live-restore proof exists, but out-of-band recovery, dead-man timeout, restore command, backup, and runtime snapshot proof remain required before high-risk/display activation."
+    },
+    "structuredFamilyEditorsWrites": {
+      "classification": "blocked by production activation",
+      "evidence": "Structured hl.bind copied proof and disabled approval UI exist, but production structured writes remain disabled pending explicit activation and restore gates."
+    },
+    "profileModeSwitching": {
+      "classification": "blocked by production activation",
+      "evidence": "Copied symlink proof exists, but real profile switching remains disabled pending explicit activation and exact restore approval."
+    },
+    "runtimeReloadIntegration": {
+      "classification": "blocked by production activation",
+      "evidence": "Read-only runtime evidence and low-risk hl.config restore proof exist, but runtime/reload production remains disabled until explicit activation is added."
+    },
+    "hyprland0554Migration": {
+      "classification": "blocked by missing official data/export",
+      "evidence": "Runtime version and package evidence are advisory only; trusted official 0.55.4 export bundle, row-count diff, write-safety review, and safe-env evidence remain missing."
+    }
+  },
+  "safeIndependentExtraWork": {
+    "attempted": true,
+    "completed": "remaining dependency scan",
+    "reasonNoAdditionalAreaImplemented": "No single independent category was uniquely available after the draft-edit work; remaining categories are either capped for safe-release scope or blocked by production activation, official export data, or high-risk recovery proof.",
+    "productionBehaviorEnabled": false
+  },
+  "safety": {
+    "realConfigTouched": false,
+    "runtimeMutatedThisSprint": false,
+    "hyprctlReloadRun": false,
+    "diskPersistenceAdded": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "sourceIncludeExecutorWired": false,
+    "duplicateExecutorWired": false,
+    "v0552DefaultPreserved": true,
+    "hyprland0554MigrationActivated": false
+  }
+}

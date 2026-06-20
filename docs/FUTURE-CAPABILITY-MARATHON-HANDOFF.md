@@ -93,7 +93,7 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-If interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.
+Connect live GTK field editing to the memory-only draft-edit model behind still-disabled controls, without persistence, production actions, or executor wiring.
 
 ## Progress tracker
 - Core app shell / UI / navigation: 98-99% -> 99-99%
@@ -101,8 +101,8 @@ If interactive collection is desired, make the activation draft fields editable 
 - 341-row read/write model: 90-95% -> 90-95%
 - Safe normal-scalar writes: 92-96% -> 95-97%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
-- Missing/default insertion: 98-99% -> 99-99%
-- Duplicate resolution: 91-94% -> 93-95%
+- Missing/default insertion: 99-99% -> 99-100%
+- Duplicate resolution: 93-95% -> 94-95%
 - High-risk/display recovery: 61-70% -> 62-70%
 - Structured-family editors/writes: 63-73% -> 64-73%
 - Profile/mode switching: 64-73% -> 65-73%
@@ -112,10 +112,10 @@ If interactive collection is desired, make the activation draft fields editable 
 ## Validation status
 Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo build --release`, `jq empty data/reports/*.json`, and `git diff --check`.
 
-GTK matrix was run for the activation form field UI surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_134347`. The run did not mutate runtime/config, but live field-label proof was blocked because AT-SPI could not open the runtime bus socket.
+GTK matrix was run for the activation draft-edit UI surface; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_151212`. The run did not mutate runtime/config and screenshot plus AT-SPI accessibility-tree assertions passed for the draft-edit cards.
 
 ## Recommended next Codex prompt
-If interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.
+Connect live GTK field editing to the memory-only draft-edit model behind still-disabled controls, without persistence, production actions, or executor wiring.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 
@@ -146,3 +146,11 @@ The branch now renders source/include and duplicate activation form data through
 ## 2026-06-20 - Activation draft handoff
 
 The branch now includes in-memory activation draft plumbing for source/include and duplicate. Draft state can be created empty or from current form state, updated/reset in memory, converted into `ProductionActivationFormState`, and validated through the existing form/control reviews as review-only. The Config page displays disabled draft cards with draft status, validation, dirty state, in-memory-only copy, executor wiring `Unwired`, and production-disabled status. Planned update/reset controls are insensitive and have no persistence, mutation, or executor handler. Next exact work: if interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.
+
+## 2026-06-20 - Activation draft edit handoff
+
+The branch now includes a still-disabled activation draft-edit layer for source/include and duplicate. Draft editing is disabled by default in the UI, but model tests can enter an in-memory-only edit mode, update draft request/safety-plan fields, recompute validation through the existing form/control reviews, reset to defaults, and prove persistence remains absent. The Config page displays disabled draft-edit cards with editing mode, dirty state, validation, in-memory-only copy, executor wiring `Unwired`, and production-disabled status. Planned update/reset controls are insensitive and have no persistence, mutation, or executor handler. Next exact work: connect live GTK field editing to the memory-only draft-edit model behind still-disabled controls, without persistence, production actions, or executor wiring.
+
+## 2026-06-20 - Remaining dependency scan handoff
+
+The remaining dependency scan is recorded in `data/reports/future-capability-remaining-dependency-scan.v0.55.2.json` and `docs/FUTURE-CAPABILITY-REMAINING-DEPENDENCY-SCAN.md`. Core UI, config discovery, 341-row coverage, safe normal-scalar writes, and release packaging are effectively capped for this safe-release branch. Source/include, duplicate, structured, profile/mode, and runtime/reload are blocked by production activation. High-risk/display is blocked by high-risk recovery proof. Hyprland 0.55.4 migration is blocked by missing official export data.

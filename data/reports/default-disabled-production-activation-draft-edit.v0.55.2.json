@@ -1,39 +1,39 @@
 {
-  "artifactKind": "default-disabled-production-activation-draft",
+  "artifactKind": "default-disabled-production-activation-draft-edit",
   "projectDataVersion": "v0.55.2",
   "generatedAt": "2026-06-20T00:00:00Z",
   "branch": "future-capability-marathon",
-  "inputActivationFormReport": "data/reports/default-disabled-production-activation-form.v0.55.2.json",
-  "inputActivationFormFieldsReport": "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
+  "inputActivationDraftReport": "data/reports/default-disabled-production-activation-draft.v0.55.2.json",
   "implementation": {
-    "activationDraftModelExists": true,
-    "sourceIncludeActivationDraftExists": true,
-    "duplicateActivationDraftExists": true,
-    "draftUpdateModelExists": true,
-    "draftResetModelExists": true,
-    "draftStoreIsInMemoryOnly": true,
-    "activationDraftEditReviewExists": true,
-    "activationDraftEditReport": "data/reports/default-disabled-production-activation-draft-edit.v0.55.2.json",
+    "sourceIncludeDraftEditPlumbingExists": true,
+    "duplicateDraftEditPlumbingExists": true,
+    "draftEditingDisabledByDefault": true,
+    "draftEditingCanBeModeledInMemoryOnly": true,
+    "draftEditUpdateModelExists": true,
+    "draftEditResetModelExists": true,
+    "draftEditValidationRecomputesFormAndControl": true,
     "diskPersistenceAdded": false,
     "uiSurfaceExists": true,
-    "fieldsRemainDisabledOrReadOnly": true,
+    "liveGtkFieldsRemainDisabledOrReadOnly": true,
     "screenshotLevelAssertionsImplemented": true,
     "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
-    "latestGtkMatrixRun": "pending fresh matrix",
-    "latestGtkMatrixDraftProof": "pending"
+    "latestGtkMatrixRun": "/tmp/hyprland-settings-gtk-automation/20260620_151212",
+    "latestGtkMatrixDraftEditProof": "passed"
   },
-  "drafts": {
+  "draftEdits": {
     "sourceIncludeInsertion": {
-      "widgetName": "hyprland-settings-source-include-activation-draft-disabled",
-      "evidenceWidgetName": "hyprland-settings-source-include-activation-draft-evidence",
-      "status": "DraftValidatedForReviewOnly",
+      "widgetName": "hyprland-settings-source-include-activation-draft-edit-disabled",
+      "evidenceWidgetName": "hyprland-settings-source-include-activation-draft-edit-evidence",
+      "modeWidgetName": "hyprland-settings-source-include-activation-draft-edit-mode-disabled",
+      "defaultMode": "DraftEditingDisabledByDefault",
+      "memoryOnlyMode": "DraftEditingEnabledInMemoryOnly",
+      "validatedStatus": "DraftEditingValidatedForReviewOnly",
+      "draftStatus": "DraftValidatedForReviewOnly",
       "formValidationStatus": "ValidatedForReviewOnly",
       "controlValidationStatus": "ValidatedButExecutorUnwired",
-      "dirtyState": "Clean in-memory draft",
+      "dirtyStateAfterEdit": "Dirty in-memory draft",
       "persistenceStatus": "In-memory only",
       "updateResetStatus": "Modeled and tested in memory only",
-      "requestGenerationStatus": "ProductionActivationRequest generated for review only",
-      "safetyPlanGenerationStatus": "ProductionActivationSafetyPlan generated for review only",
       "executorWiringStatus": "Unwired",
       "productionStatus": "Disabled",
       "productionEnabled": false,
@@ -45,16 +45,18 @@
       "reviewOnly": true
     },
     "duplicateReplacement": {
-      "widgetName": "hyprland-settings-duplicate-activation-draft-disabled",
-      "evidenceWidgetName": "hyprland-settings-duplicate-activation-draft-evidence",
-      "status": "DraftValidatedForReviewOnly",
+      "widgetName": "hyprland-settings-duplicate-activation-draft-edit-disabled",
+      "evidenceWidgetName": "hyprland-settings-duplicate-activation-draft-edit-evidence",
+      "modeWidgetName": "hyprland-settings-duplicate-activation-draft-edit-mode-disabled",
+      "defaultMode": "DraftEditingDisabledByDefault",
+      "memoryOnlyMode": "DraftEditingEnabledInMemoryOnly",
+      "validatedStatus": "DraftEditingValidatedForReviewOnly",
+      "draftStatus": "DraftValidatedForReviewOnly",
       "formValidationStatus": "ValidatedForReviewOnly",
       "controlValidationStatus": "ValidatedButExecutorUnwired",
-      "dirtyState": "Clean in-memory draft",
+      "dirtyStateAfterEdit": "Dirty in-memory draft",
       "persistenceStatus": "In-memory only",
       "updateResetStatus": "Modeled and tested in memory only",
-      "requestGenerationStatus": "ProductionActivationRequest generated for review only",
-      "safetyPlanGenerationStatus": "ProductionActivationSafetyPlan generated for review only",
       "executorWiringStatus": "Unwired",
       "productionStatus": "Disabled",
       "productionEnabled": false,
@@ -69,11 +71,11 @@
   "screenshotLevelAssertions": {
     "sourceIncludeInsertion": true,
     "duplicateReplacement": true,
-    "sourceIncludeDraftSourceTested": true,
-    "duplicateDraftSourceTested": true,
-    "sourceIncludeDraftLiveGtkProof": false,
-    "duplicateDraftLiveGtkProof": false,
-    "latestLiveGtkBlocker": "pending fresh GTK matrix; if AT-SPI bus remains unavailable, source/model proof remains authoritative"
+    "sourceIncludeDraftEditSourceTested": true,
+    "duplicateDraftEditSourceTested": true,
+    "sourceIncludeDraftEditLiveGtkProof": true,
+    "duplicateDraftEditLiveGtkProof": true,
+    "latestLiveGtkBlocker": null
   },
   "safety": {
     "sourceIncludeProductionEnabled": false,
@@ -89,7 +91,7 @@
     "hyprland0554MigrationActivated": false
   },
   "nextRequiredWork": [
-    "If live interaction is desired, connect editable GTK fields to the existing memory-only draft-edit model while keeping persistence and executors disabled.",
+    "If live editing is introduced later, keep edits in memory only until separate persistence and production-executor approval gates exist.",
     "Do not wire source/include or duplicate production executors until byte-exact backup, write, reread, restore, and final approval proof exists."
   ]
 }

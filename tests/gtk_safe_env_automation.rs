@@ -114,6 +114,11 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("ACTIVATION_DRAFT_ASSERTIONS"));
     assert!(collector.contains("activationDraftAssertions"));
     assert!(collector.contains("activationDraftsAllInMemoryOnlyFound"));
+    assert!(collector.contains("ACTIVATION_DRAFT_EDIT_ASSERTIONS"));
+    assert!(collector.contains("activationDraftEditAssertions"));
+    assert!(collector.contains("activationDraftEditsAllInMemoryOnlyFound"));
+    assert!(collector.contains("activationDraftEditsAllModeFound"));
+    assert!(collector.contains("activationDraftEditsAllValidationFound"));
     for expected in [
         "Source/include approval review",
         "Duplicate approval review",
@@ -127,6 +132,10 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "Duplicate activation request form",
         "Source/include activation draft",
         "Duplicate activation draft",
+        "Source/include activation draft editing",
+        "Duplicate activation draft editing",
+        "Editing mode",
+        "Draft validation",
         "In-memory only",
         "Update source/include activation draft (planned)",
         "Reset source/include activation draft (planned)",
@@ -260,6 +269,15 @@ fn gtk_harness_records_screenshot_level_disabled_approval_card_assertions() {
         "activationDraftsAllExecutorUnwiredFound",
         "activationDraftsAllInMemoryOnlyFound",
         "activationDraftsAllDisabledActionsFound",
+        "activationDraftEditAssertionMethod",
+        "activationDraftEditResults",
+        "activationDraftEditsAllHeadingsFound",
+        "activationDraftEditsAllProductionDisabledFound",
+        "activationDraftEditsAllExecutorUnwiredFound",
+        "activationDraftEditsAllInMemoryOnlyFound",
+        "activationDraftEditsAllModeFound",
+        "activationDraftEditsAllValidationFound",
+        "activationDraftEditsAllDisabledActionsFound",
         "sourceIncludeInsertion",
         "duplicateReplacement",
         "structuredHlBindWrite",

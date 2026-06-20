@@ -3,13 +3,14 @@ use std::path::{Path, PathBuf};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use hyprland_settings::future_capability::{
-    apply_production_activation_draft_update, approval_decision_for_gate,
-    assess_hyprland_version_migration, copied_config_tree_files_restored,
-    copied_config_tree_originals_unchanged, copied_config_tree_report, copy_config_tree_for_proof,
-    current_v0552_data_bundle, disabled_future_approval_card_projections,
-    disabled_migration_review, disabled_missing_default_insertion_review,
-    disabled_profile_switch_review, disabled_profile_switch_selection_review,
-    duplicate_activation_control_review, duplicate_activation_decision_review,
+    apply_production_activation_draft_edit_action, apply_production_activation_draft_update,
+    approval_decision_for_gate, assess_hyprland_version_migration,
+    copied_config_tree_files_restored, copied_config_tree_originals_unchanged,
+    copied_config_tree_report, copy_config_tree_for_proof, current_v0552_data_bundle,
+    disabled_future_approval_card_projections, disabled_migration_review,
+    disabled_missing_default_insertion_review, disabled_profile_switch_review,
+    disabled_profile_switch_selection_review, duplicate_activation_control_review,
+    duplicate_activation_decision_review, duplicate_activation_draft_edit_review,
     duplicate_activation_draft_review, duplicate_activation_form_review,
     duplicate_activation_path_review, duplicate_approval_flow, duplicate_occurrence_confirmation,
     duplicate_occurrence_model, duplicate_occurrence_review, duplicate_production_approval_gate,
@@ -23,6 +24,7 @@ use hyprland_settings::future_capability::{
     local_hyprland_version_evidence, migration_comparison_review,
     production_activation_control_request, production_activation_control_reviews,
     production_activation_control_safety_plan, production_activation_decision_reviews,
+    production_activation_draft_edit_reviews, production_activation_draft_edit_state_from_draft,
     production_activation_draft_from_form_state, production_activation_draft_reviews,
     production_activation_form_reviews, production_activation_form_state,
     production_activation_path_reviews, profile_approval_flow, profile_production_gate_review,
@@ -34,20 +36,22 @@ use hyprland_settings::future_capability::{
     runtime_live_restore_attempt_review, runtime_live_restore_proof_review,
     runtime_production_gate_review, runtime_socket_diagnosis,
     source_include_activation_control_review, source_include_activation_decision_review,
-    source_include_activation_draft_review, source_include_activation_form_review,
-    source_include_activation_path_review, source_include_approval_flow,
-    source_include_insertion_review, source_include_production_gate_review,
-    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
-    structured_approval_flow, structured_family_model, structured_family_review,
-    structured_production_gate_review, switch_profile_symlink_guarded_temp,
-    switch_profile_symlink_safe_env, trusted_export_requirement,
-    validate_structured_edit_candidate, ApprovalCardReportLoadStatus, ApprovalEvidence,
-    ApprovalRequest, ApprovalScope, ApprovalStatus, ApprovalToken, ControlledLiveTestGuardRequest,
-    ControlledLiveTestKind, DuplicateOccurrenceApprovalState, DuplicateOccurrenceReviewState,
-    DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
-    DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
-    HighRiskProductionGateStatus, HyprlandVersionActivationStatus, MockWatchdog, MockWatchdogState,
-    ProductionActivationControlStatus, ProductionActivationDecisionStatus,
+    source_include_activation_draft_edit_review, source_include_activation_draft_review,
+    source_include_activation_form_review, source_include_activation_path_review,
+    source_include_approval_flow, source_include_insertion_review,
+    source_include_production_gate_review, source_include_selected_target_dry_run_plan,
+    source_include_target_selection_fixture_proof, structured_approval_flow,
+    structured_family_model, structured_family_review, structured_production_gate_review,
+    switch_profile_symlink_guarded_temp, switch_profile_symlink_safe_env,
+    trusted_export_requirement, validate_structured_edit_candidate, ApprovalCardReportLoadStatus,
+    ApprovalEvidence, ApprovalRequest, ApprovalScope, ApprovalStatus, ApprovalToken,
+    ControlledLiveTestGuardRequest, ControlledLiveTestKind, DuplicateOccurrenceApprovalState,
+    DuplicateOccurrenceReviewState, DuplicateProductionGateStatus, DuplicateReplacementOptions,
+    DuplicateReplacementRequest, DuplicateReplacementStatus, GuardedTempExecutionStatus,
+    HighRiskLiveReadinessStatus, HighRiskProductionGateStatus, HyprlandVersionActivationStatus,
+    MockWatchdog, MockWatchdogState, ProductionActivationControlStatus,
+    ProductionActivationDecisionStatus, ProductionActivationDraftEditAction,
+    ProductionActivationDraftEditMode, ProductionActivationDraftEditStatus,
     ProductionActivationDraftStatus, ProductionActivationDraftUpdate,
     ProductionActivationFormStatus, ProductionActivationPathStatus, ProductionActivationRequest,
     ProductionActivationRequestScope, ProductionActivationSafetyPlan,
@@ -5440,6 +5444,304 @@ fn default_activation_draft_reviews_are_in_memory_review_only() {
         assert!(!review.draft.persisted);
         let lines = review.user_facing_lines().join("\n");
         assert!(lines.contains("Draft status: Draft validated for review only"));
+        assert!(lines.contains("In-memory only"));
+        assert!(lines.contains("Executor wiring: Unwired"));
+    }
+}
+
+#[test]
+fn source_include_activation_draft_edit_mode_is_memory_only_and_review_safe() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    let source_card = report_backed
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("source-include"))
+        .expect("source/include card");
+    let decision = source_include_activation_decision_review(Some(source_card), "test-report");
+    let path = source_include_activation_path_review(
+        Some(&decision),
+        Some(source_card),
+        None,
+        None,
+        false,
+    );
+    let draft = production_activation_draft_from_form_state(production_activation_form_state(
+        ProductionActivationRequestScope::SourceIncludeInsertion,
+        "sourceIncludeInsertion",
+    ));
+    let mut state = production_activation_draft_edit_state_from_draft(draft);
+
+    let default_review = source_include_activation_draft_edit_review(
+        Some(&path),
+        state.clone(),
+        ProductionExecutorWiringState::Unwired,
+        false,
+    );
+    assert_eq!(
+        default_review.mode,
+        ProductionActivationDraftEditMode::DisabledByDefault
+    );
+    assert_eq!(
+        default_review.status,
+        ProductionActivationDraftEditStatus::DraftEditingDisabledByDefault
+    );
+    assert_eq!(
+        default_review.draft_status,
+        ProductionActivationDraftStatus::DraftValidatedForReviewOnly
+    );
+    assert_eq!(default_review.persistence_status, "In-memory only");
+    assert!(!default_review.production_activation_enabled);
+    assert!(!default_review.category_production_enabled);
+
+    let blocked_update = apply_production_activation_draft_edit_action(
+        &mut state,
+        ProductionActivationDraftEditAction::ApplyUpdate(
+            ProductionActivationDraftUpdate::UserFacingReason(
+                "should not update while disabled".to_string(),
+            ),
+        ),
+    );
+    assert_eq!(
+        blocked_update.status,
+        ProductionActivationDraftEditStatus::DraftEditingDisabledByDefault
+    );
+    assert_eq!(
+        state.draft.form_state.user_facing_reason,
+        "review-only activation form validation"
+    );
+
+    let enter = apply_production_activation_draft_edit_action(
+        &mut state,
+        ProductionActivationDraftEditAction::EnterInMemoryEditMode,
+    );
+    assert_eq!(
+        enter.status,
+        ProductionActivationDraftEditStatus::DraftEditingEnabledInMemoryOnly
+    );
+    assert_eq!(
+        state.mode,
+        ProductionActivationDraftEditMode::EnabledInMemoryOnly
+    );
+
+    let edit = apply_production_activation_draft_edit_action(
+        &mut state,
+        ProductionActivationDraftEditAction::ApplyUpdate(
+            ProductionActivationDraftUpdate::UserFacingReason(
+                "source/include edited in memory only".to_string(),
+            ),
+        ),
+    );
+    assert_eq!(
+        edit.status,
+        ProductionActivationDraftEditStatus::DraftEditingDirty
+    );
+    assert!(state.dirty);
+    assert!(!state.persisted);
+    assert!(!edit.production_action_enabled);
+    assert!(!edit.executor_wired);
+    assert_eq!(
+        state.draft.form_state.user_facing_reason,
+        "source/include edited in memory only"
+    );
+
+    let review = source_include_activation_draft_edit_review(
+        Some(&path),
+        state.clone(),
+        ProductionExecutorWiringState::Unwired,
+        false,
+    );
+    assert_eq!(
+        review.status,
+        ProductionActivationDraftEditStatus::DraftEditingValidatedForReviewOnly
+    );
+    assert_eq!(
+        review.form_validation_status,
+        ProductionActivationFormStatus::ValidatedForReviewOnly
+    );
+    assert_eq!(
+        review.control_validation_status,
+        ProductionActivationControlStatus::ValidatedButExecutorUnwired
+    );
+    assert_eq!(review.dirty_state, "Dirty in-memory draft");
+    assert_eq!(
+        review.executor_wiring_status,
+        ProductionExecutorWiringState::Unwired
+    );
+    assert_eq!(review.production_status, "Disabled");
+    assert!(!review.production_activation_enabled);
+    assert!(!review.category_production_enabled);
+
+    let blocked_flag = source_include_activation_draft_edit_review(
+        Some(&path),
+        state.clone(),
+        ProductionExecutorWiringState::Unwired,
+        true,
+    );
+    assert_eq!(
+        blocked_flag.status,
+        ProductionActivationDraftEditStatus::DraftEditingBlockedProductionFlagTrue
+    );
+    let blocked_executor = source_include_activation_draft_edit_review(
+        Some(&path),
+        state.clone(),
+        ProductionExecutorWiringState::WiredProduction,
+        false,
+    );
+    assert_eq!(
+        blocked_executor.status,
+        ProductionActivationDraftEditStatus::DraftEditingBlockedExecutorWired
+    );
+
+    let reset = apply_production_activation_draft_edit_action(
+        &mut state,
+        ProductionActivationDraftEditAction::ResetToDefault,
+    );
+    assert_eq!(
+        reset.status,
+        ProductionActivationDraftEditStatus::DraftEditingEnabledInMemoryOnly
+    );
+    assert_eq!(state.draft, empty_production_activation_draft());
+    assert!(!state.persisted);
+}
+
+#[test]
+fn duplicate_activation_draft_edit_mode_is_memory_only_and_review_safe() {
+    let report_backed = load_disabled_approval_cards_from_reports();
+    let duplicate_card = report_backed
+        .cards
+        .iter()
+        .find(|card| card.widget_name.contains("duplicate"))
+        .expect("duplicate card");
+    let decision = duplicate_activation_decision_review(Some(duplicate_card), "test-report");
+    let path =
+        duplicate_activation_path_review(Some(&decision), Some(duplicate_card), None, None, false);
+    let draft = production_activation_draft_from_form_state(production_activation_form_state(
+        ProductionActivationRequestScope::DuplicateReplacement,
+        "duplicateReplacement",
+    ));
+    let mut state = production_activation_draft_edit_state_from_draft(draft);
+
+    assert_eq!(
+        duplicate_activation_draft_edit_review(
+            Some(&path),
+            state.clone(),
+            ProductionExecutorWiringState::Unwired,
+            false,
+        )
+        .status,
+        ProductionActivationDraftEditStatus::DraftEditingDisabledByDefault
+    );
+    apply_production_activation_draft_edit_action(
+        &mut state,
+        ProductionActivationDraftEditAction::EnterInMemoryEditMode,
+    );
+    apply_production_activation_draft_edit_action(
+        &mut state,
+        ProductionActivationDraftEditAction::ApplyUpdate(
+            ProductionActivationDraftUpdate::FilesThatWouldBeTouched(vec![
+                "duplicate draft edited target".to_string(),
+            ]),
+        ),
+    );
+    assert!(state.dirty);
+    assert!(!state.persisted);
+    assert_eq!(
+        state.draft.form_state.files_that_would_be_touched,
+        vec!["duplicate draft edited target".to_string()]
+    );
+
+    let review = duplicate_activation_draft_edit_review(
+        Some(&path),
+        state.clone(),
+        ProductionExecutorWiringState::Unwired,
+        false,
+    );
+    assert_eq!(
+        review.status,
+        ProductionActivationDraftEditStatus::DraftEditingValidatedForReviewOnly
+    );
+    assert_eq!(
+        review.draft_status,
+        ProductionActivationDraftStatus::DraftValidatedForReviewOnly
+    );
+    assert_eq!(
+        review.form_validation_status,
+        ProductionActivationFormStatus::ValidatedForReviewOnly
+    );
+    assert_eq!(
+        review.control_validation_status,
+        ProductionActivationControlStatus::ValidatedButExecutorUnwired
+    );
+    assert_eq!(review.persistence_status, "In-memory only");
+    assert_eq!(review.production_status, "Disabled");
+    assert!(!review.production_activation_enabled);
+    assert!(!review.category_production_enabled);
+
+    assert_eq!(
+        duplicate_activation_draft_edit_review(
+            Some(&path),
+            state.clone(),
+            ProductionExecutorWiringState::Unwired,
+            true,
+        )
+        .status,
+        ProductionActivationDraftEditStatus::DraftEditingBlockedProductionFlagTrue
+    );
+    assert_eq!(
+        duplicate_activation_draft_edit_review(
+            Some(&path),
+            state.clone(),
+            ProductionExecutorWiringState::WiredForTestingOnly,
+            false,
+        )
+        .status,
+        ProductionActivationDraftEditStatus::DraftEditingBlockedExecutorWired
+    );
+
+    apply_production_activation_draft_edit_action(
+        &mut state,
+        ProductionActivationDraftEditAction::ResetToDefault,
+    );
+    assert_eq!(state.draft, empty_production_activation_draft());
+    assert!(!state.persisted);
+    assert!(!state.production_action_enabled);
+}
+
+#[test]
+fn default_activation_draft_edit_reviews_are_disabled_and_non_production() {
+    let reviews = production_activation_draft_edit_reviews();
+    assert_eq!(reviews.len(), 2);
+    for review in reviews {
+        assert_eq!(
+            review.mode,
+            ProductionActivationDraftEditMode::DisabledByDefault
+        );
+        assert_eq!(
+            review.status,
+            ProductionActivationDraftEditStatus::DraftEditingDisabledByDefault
+        );
+        assert_eq!(
+            review.draft_status,
+            ProductionActivationDraftStatus::DraftValidatedForReviewOnly
+        );
+        assert_eq!(
+            review.form_validation_status,
+            ProductionActivationFormStatus::ValidatedForReviewOnly
+        );
+        assert_eq!(
+            review.control_validation_status,
+            ProductionActivationControlStatus::ValidatedButExecutorUnwired
+        );
+        assert_eq!(review.persistence_status, "In-memory only");
+        assert_eq!(review.production_status, "Disabled");
+        assert_eq!(
+            review.executor_wiring_status,
+            ProductionExecutorWiringState::Unwired
+        );
+        assert!(!review.production_activation_enabled);
+        assert!(!review.category_production_enabled);
+        let lines = review.user_facing_lines().join("\n");
+        assert!(lines.contains("Editing mode: Draft editing disabled by default"));
         assert!(lines.contains("In-memory only"));
         assert!(lines.contains("Executor wiring: Unwired"));
     }

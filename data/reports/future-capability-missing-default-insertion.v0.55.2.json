@@ -162,7 +162,7 @@
     "Source/include insertion now has readiness model, disabled UI, fixture target-selection proof, selected-target dry-run planner, preview UI, temp-fixture guarded executor, copied-config-tree proof, and default-disabled production gate review, but production connected-file insertion remains disabled until explicit approval and live restoration proof exist.",
     "Managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
   ],
-  "nextRecommendedWork": "If interactive collection is desired, make source/include activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.",
+  "nextRecommendedWork": "If live interaction is desired, connect editable GTK fields to the existing source/include memory-only draft-edit model while keeping persistence and executors disabled.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": true,
@@ -202,6 +202,16 @@
     "status": "DraftValidatedForReviewOnly",
     "persistenceStatus": "In-memory only",
     "updateResetStatus": "Modeled and tested in memory only",
+    "controlValidationStatus": "ValidatedButExecutorUnwired",
+    "executorWiringStatus": "Unwired",
+    "productionEnabled": false,
+    "diskPersistenceAdded": false
+  },
+  "sourceIncludeActivationDraftEditReview": {
+    "report": "data/reports/default-disabled-production-activation-draft-edit.v0.55.2.json",
+    "defaultMode": "DraftEditingDisabledByDefault",
+    "memoryOnlyMode": "DraftEditingEnabledInMemoryOnly",
+    "validatedStatus": "DraftEditingValidatedForReviewOnly",
     "controlValidationStatus": "ValidatedButExecutorUnwired",
     "executorWiringStatus": "Unwired",
     "productionEnabled": false,

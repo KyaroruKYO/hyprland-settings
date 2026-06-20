@@ -100,3 +100,11 @@ Replaced the source/include and duplicate activation form projection surfaces wi
 ## 2026-06-20 - Activation draft state
 
 Added still-disabled in-memory activation draft plumbing for source/include insertion and duplicate replacement. Drafts can be created empty or from existing form state, updated/reset in memory, converted back into `ProductionActivationFormState`, and validated through the existing form/control pipeline as `DraftValidatedForReviewOnly` / `ValidatedButExecutorUnwired`. The Config page now shows disabled draft cards with draft status, validation, dirty state, in-memory-only status, executor wiring, and production-disabled copy. Update/reset controls are insensitive and have no persistence, mutation, or executor handler. Production flags remain false, executors remain `Unwired`, and no disk persistence, real config mutation, runtime mutation, reload, or migration activation was added.
+
+## 2026-06-20 - Activation draft edit review
+
+Added a still-disabled activation draft-edit layer for source/include insertion and duplicate replacement. Draft-edit mode is disabled by default in the live UI, but model tests can enter an in-memory-only edit mode, update request and safety-plan draft values, recompute form/control validation, reset back to default draft state, and prove no persistence or executor wiring is introduced. The Config page now shows disabled draft-edit status cards with editing mode, dirty state, validation, in-memory-only status, executor wiring, and production-disabled copy. Planned update/reset controls remain insensitive.
+
+## 2026-06-20 - Remaining dependency scan
+
+Added a remaining dependency scan across all tracker categories. Core UI, config discovery, 341-row coverage, safe normal-scalar writes, and release packaging are effectively capped for the current safe-release scope. Missing/default insertion, duplicate resolution, structured-family writes, profile/mode switching, and runtime/reload integration are blocked by explicit production activation. High-risk/display recovery is blocked by missing high-risk recovery proof. Hyprland 0.55.4 migration is blocked by missing official export data. No extra independent production-safe implementation was selected after the draft-edit layer because the remaining work is either capped or blocked by those dependencies.

@@ -238,5 +238,28 @@
       "productionFlag": false,
       "diskPersistenceAdded": false
     }
+  },
+  "activationDraftEditReview": {
+    "report": "data/reports/default-disabled-production-activation-draft-edit.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "defaultMode": "DraftEditingDisabledByDefault",
+      "memoryOnlyMode": "DraftEditingEnabledInMemoryOnly",
+      "validatedStatus": "DraftEditingValidatedForReviewOnly",
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "executorWiringStatus": "Unwired",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "diskPersistenceAdded": false
+    },
+    "duplicateReplacement": {
+      "defaultMode": "DraftEditingDisabledByDefault",
+      "memoryOnlyMode": "DraftEditingEnabledInMemoryOnly",
+      "validatedStatus": "DraftEditingValidatedForReviewOnly",
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "executorWiringStatus": "Unwired",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "diskPersistenceAdded": false
+    }
   }
 }
