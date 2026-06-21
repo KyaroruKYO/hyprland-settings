@@ -1,0 +1,44 @@
+{
+  "artifactKind": "future-capability-marathon-merge-complete",
+  "projectDataVersion": "v0.55.2",
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "mainBeforeMerge": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "mainAfterMerge": "288c31340077ced7e467447b0f705966540059d4",
+  "mergeCommit": "288c31340077ced7e467447b0f705966540059d4",
+  "featureBranchMerged": "future-capability-marathon",
+  "featureBranchAuditCommit": "a611bda81d90432bb948c48a46e800ffc6b1b720",
+  "validationOnMain": {
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "jqReports": "passed",
+    "gitDiffCheck": "passed",
+    "cargoBuildRelease": "passed",
+    "gtkMatrix": "not run; merge-complete report does not change visible UI"
+  },
+  "v010TagPreserved": true,
+  "distV010Preserved": true,
+  "productionFlagsRemainFalse": true,
+  "executorsRemainUnwired": true,
+  "draftPersistenceForbiddenByDefault": true,
+  "runtimeMutatedFalse": true,
+  "realConfigTouchedFalse": true,
+  "hyprctlReloadRunFalse": true,
+  "releaseCreatedFalse": true,
+  "tagCreatedFalse": true,
+  "hyprland0554MigrationInactive": true,
+  "v0552ModelPreserved": true,
+  "sourceIncludeRunwayClosed": true,
+  "duplicateRunwayClosed": true,
+  "futureProductionActivationRequiresSeparateApprovedPhase": true,
+  "activeNextWorkAfterMerge": "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.",
+  "releaseBoundary": {
+    "v010TagModified": false,
+    "distV010Modified": false,
+    "distV010Files": [
+      "SHA256SUMS",
+      "hyprland-settings-v0.1.0-linux-x86_64.tar.gz",
+      "hyprland-settings-v0.1.0-source.tar.gz"
+    ]
+  }
+}
