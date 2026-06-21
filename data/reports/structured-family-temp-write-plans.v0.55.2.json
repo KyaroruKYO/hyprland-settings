@@ -1,0 +1,87 @@
+{
+  "artifactKind": "structured-family-temp-write-plans",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "9b63b79699a28ffcdd160beabc2b56053bf2604d",
+  "latestCommitBeforeSprint": "9b63b79699a28ffcdd160beabc2b56053bf2604d",
+  "goal": "Add family-specific validators and temp-fixture write plans for all structured-family editors while keeping production writes blocked by default.",
+  "families": [
+    "hl.monitor",
+    "hl.bind",
+    "hl.animation",
+    "hl.curve",
+    "hl.gesture",
+    "hl.device",
+    "hl.permission"
+  ],
+  "validatorStatusByFamily": {
+    "hl.monitor": "StructuredFamilyValidationNotProvenYet with valid fixture records passing and incomplete/unsupported records preserved raw",
+    "hl.bind": "StructuredFamilyValidationNotProvenYet with valid fixture records passing and incomplete/unsupported records preserved raw",
+    "hl.animation": "StructuredFamilyValidationNotProvenYet with valid fixture records passing and incomplete/unsupported records preserved raw",
+    "hl.curve": "StructuredFamilyValidationNotProvenYet with valid fixture records passing and incomplete/unsupported records preserved raw",
+    "hl.gesture": "StructuredFamilyValidationNotProvenYet with valid fixture records passing and incomplete/unsupported records preserved raw",
+    "hl.device": "StructuredFamilyValidationNotProvenYet with valid fixture records passing and block boundaries or unknown options preserved raw",
+    "hl.permission": "StructuredFamilyValidationNotProvenYet with valid fixture records passing and incomplete/unsupported records preserved raw"
+  },
+  "tempWritePlanStatusByFamily": {
+    "hl.monitor": "StructuredFamilyTempWritePlanValidated",
+    "hl.bind": "StructuredFamilyTempWritePlanValidated",
+    "hl.animation": "StructuredFamilyTempWritePlanValidated",
+    "hl.curve": "StructuredFamilyTempWritePlanValidated",
+    "hl.gesture": "StructuredFamilyTempWritePlanValidated",
+    "hl.device": "StructuredFamilyTempWritePlanValidated",
+    "hl.permission": "StructuredFamilyTempWritePlanValidated"
+  },
+  "fixtureRenderRereadStatusByFamily": {
+    "hl.monitor": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
+    "hl.bind": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
+    "hl.animation": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
+    "hl.curve": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
+    "hl.gesture": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
+    "hl.device": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
+    "hl.permission": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified"
+  },
+  "pathGuardStatus": {
+    "tempOrTestOwnedTargetsAllowed": true,
+    "realHyprConfigTargetsRejected": true,
+    "realConfigPathExampleRejected": "/home/kyo/.config/hypr/hyprland.conf",
+    "status": "StructuredFamilyTempWritePlanBlockedFromRealConfig for real config targets"
+  },
+  "productionWritePolicy": {
+    "status": "StructuredFamilyProductionWritesBlockedByDefault",
+    "realStructuredFamilyWritesEnabled": false,
+    "productionExecutorWired": false,
+    "applySettingChangeIntegrated": false,
+    "writeFlowIntegrated": false,
+    "fixtureWritePlanEnablesProduction": false
+  },
+  "realConfigTouched": false,
+  "runtimeMutated": false,
+  "hyprctlReloadRun": false,
+  "productionBehaviorEnabled": false,
+  "filesChanged": [
+    "src/structured_family.rs",
+    "src/ui/model.rs",
+    "src/ui/window.rs",
+    "tests/structured_family_unified.rs",
+    "data/reports/structured-family-temp-write-plans.v0.55.2.json",
+    "docs/STRUCTURED-FAMILY-TEMP-WRITE-PLANS.md"
+  ],
+  "testsAdded": [
+    "all_structured_family_validators_classify_fixture_records_conservatively",
+    "all_structured_family_temp_write_plans_validate_render_and_reread_temp_fixtures_only",
+    "structured_family_temp_write_path_guard_rejects_real_config_targets",
+    "structured_family_temp_write_source_has_no_production_write_or_reload_integration"
+  ],
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "jq": "passed",
+    "gitDiffCheck": "passed",
+    "cargoBuildRelease": "passed"
+  },
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260621_001755",
+  "nextRecommendedWork": "Add review-only per-record editor forms for structured-family records while keeping real writes blocked."
+}

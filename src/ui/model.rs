@@ -10,7 +10,10 @@ use crate::export::{ExportBundle, InventoryEntry, TabEntry};
 use crate::screen_shader_advisory::{
     run_screen_shader_advisory_check, AdvisoryStatus, ScreenShaderAdvisoryRequest,
 };
-use crate::structured_family::{StructuredFamilyProjection, StructuredFamilyStatus};
+use crate::structured_family::{
+    build_structured_family_temp_write_plan, validate_structured_family_projection,
+    StructuredFamilyProjection,
+};
 use crate::validation::ValidationSummary;
 use crate::write_flow::{
     edit_projection_for_setting_with_config, review_block_reason, write_flow_config_setting,
@@ -158,6 +161,12 @@ pub struct UiStructuredFamily {
     pub fixture_parse_proof_status: String,
     pub fixture_render_proof_status: String,
     pub family_specific_validation_status: String,
+    pub temp_write_plan_status: String,
+    pub temp_fixture_render_reread_status: String,
+    pub path_guard_status: String,
+    pub real_config_target_status: String,
+    pub runtime_mutation_status: String,
+    pub reload_status: String,
     pub write_status: String,
     pub widget_name: String,
     pub review_button_label: String,
@@ -322,6 +331,20 @@ fn current_value_summary_from_settings(settings: &[UiSetting]) -> UiCurrentValue
 fn ui_structured_family_from_projection(
     projection: &StructuredFamilyProjection,
 ) -> UiStructuredFamily {
+    let validation = validate_structured_family_projection(projection);
+    let temp_target = std::env::temp_dir()
+        .join("hyprland-settings-structured-family")
+        .join(projection.family.family_id().replace('.', "-"))
+        .join("ui-review-only.conf");
+    let plan = build_structured_family_temp_write_plan(
+        projection,
+        projection
+            .records
+            .first()
+            .map(|record| record.source_path.clone())
+            .unwrap_or_default(),
+        temp_target,
+    );
     let entries = projection
         .records
         .iter()
@@ -348,23 +371,18 @@ fn ui_structured_family_from_projection(
         projection_status: projection.projection_status.as_str().to_string(),
         fixture_parse_proof_status: projection.fixture_parse_proof_status.as_str().to_string(),
         fixture_render_proof_status: projection.fixture_render_proof_status.as_str().to_string(),
-        family_specific_validation_status: family_validation_status(projection),
+        family_specific_validation_status: validation.status.as_str().to_string(),
+        temp_write_plan_status: plan.plan_status.as_str().to_string(),
+        temp_fixture_render_reread_status:
+            "StructuredFamilyTempWritePlanRenderedToTempFixture; StructuredFamilyTempWritePlanRereadVerified".to_string(),
+        path_guard_status: plan.path_guard_status.as_str().to_string(),
+        real_config_target_status: "Real config target not allowed".to_string(),
+        runtime_mutation_status: "Runtime mutation not allowed".to_string(),
+        reload_status: "Hyprland reload not allowed".to_string(),
         write_status: projection.write_status.as_str().to_string(),
         widget_name: projection.widget_name.clone(),
         review_button_label: projection.review_button_label.clone(),
         unproven_record_count: projection.unproven_record_count(),
-    }
-}
-
-fn family_validation_status(projection: &StructuredFamilyProjection) -> String {
-    if projection.unproven_record_count() == 0 {
-        StructuredFamilyStatus::EditorScaffoldReady
-            .as_str()
-            .to_string()
-    } else {
-        StructuredFamilyStatus::NeedsFamilySpecificValidation
-            .as_str()
-            .to_string()
     }
 }
 

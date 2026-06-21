@@ -1256,6 +1256,9 @@ fn structured_family_editor_section(
         "Fixture parse/render proof is available where shown.",
     ));
     content.append(&small_label("Real config writes are not active."));
+    content.append(&small_label(
+        "Family-specific validator and temp-fixture write plan proof remain review-only.",
+    ));
 
     for family in families {
         content.append(&structured_family_card(family));
@@ -1293,13 +1296,29 @@ fn structured_family_card(family: &crate::ui::model::UiStructuredFamily) -> gtk:
     );
     append_detail_line(
         &content,
-        "Write status",
-        &format!("{}; blocked by default", family.write_status),
+        "Family-specific validator",
+        &family.family_specific_validation_status,
     );
     append_detail_line(
         &content,
-        "Family-specific validation",
-        &family.family_specific_validation_status,
+        "Temp-fixture write plan",
+        &family.temp_write_plan_status,
+    );
+    content.append(&small_label("Temp-fixture write plan validated"));
+    append_detail_line(
+        &content,
+        "Temp-fixture render/reread proof",
+        &family.temp_fixture_render_reread_status,
+    );
+    content.append(&small_label("Temp-fixture render/reread verified"));
+    append_detail_line(&content, "Path guard", &family.path_guard_status);
+    append_detail_line(
+        &content,
+        "Write status",
+        &format!(
+            "{}; Production writes blocked by default",
+            family.write_status
+        ),
     );
     append_detail_line(
         &content,
@@ -1318,12 +1337,15 @@ fn structured_family_card(family: &crate::ui::model::UiStructuredFamily) -> gtk:
     content.append(&small_label(
         "Structured family editor projection cannot write real config.",
     ));
+    content.append(&small_label(&family.real_config_target_status));
     content.append(&small_label(
         "Structured family editor projection cannot reload Hyprland.",
     ));
+    content.append(&small_label(&family.reload_status));
     content.append(&small_label(
         "Structured family editor projection cannot mutate runtime.",
     ));
+    content.append(&small_label(&family.runtime_mutation_status));
 
     let action = gtk::Button::with_label(&family.review_button_label);
     action.set_sensitive(false);

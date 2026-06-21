@@ -118,17 +118,18 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "unified review-only editor scaffold now exists for seven families; writes blocked",
+      "currentStatus": "review-only validators and temp-fixture write plans are complete for seven families; writes blocked",
       "classification": "can_continue_now",
       "canContinueNow": true,
-      "reason": "Shared model, fixture parse/render proof, and UI scaffolding can advance without production writes.",
-      "blockingDependency": "fixture-only family-specific write proof before any production review",
-      "safeNextWork": "add family-specific temp-fixture write plans and validators while keeping writes blocked by default",
+      "reason": "Shared model, fixture parse/render proof, conservative validators, temp-fixture write plans, and UI status can advance without production writes.",
+      "blockingDependency": "per-record editor form design before any future fixture-only executor review",
+      "safeNextWork": "add review-only per-record editor forms for structured-family records while keeping real writes blocked",
       "mustNotDo": "do not enable real structured-family writes",
       "evidenceUsed": [
         "src/structured_family.rs",
         "tests/structured_family_unified.rs",
-        "data/reports/structured-family-editors-unified.v0.55.2.json"
+        "data/reports/structured-family-editors-unified.v0.55.2.json",
+        "data/reports/structured-family-temp-write-plans.v0.55.2.json"
       ]
     },
     {
@@ -175,5 +176,5 @@
     }
   ],
   "activeSafeArea": "Structured-family editors/writes",
-  "recommendedNextWork": "Add family-specific temp-fixture write plans and validators for structured-family editors while keeping production writes blocked by default."
+  "recommendedNextWork": "Add review-only per-record editor forms for structured-family records while keeping real writes blocked."
 }

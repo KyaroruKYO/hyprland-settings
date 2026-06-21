@@ -13,6 +13,15 @@
     "hyprctlReloadEnabled": false,
     "fixtureRenderRereadProofEnablesWrites": false
   },
+  "tempWritePlanPolicy": {
+    "status": "StructuredFamilyProductionWritesBlockedByDefault",
+    "familySpecificValidatorsAdded": true,
+    "tempFixtureWritePlansAdded": true,
+    "tempFixtureRenderRereadVerified": true,
+    "realConfigTargetsRejected": true,
+    "productionExecutorsWired": false,
+    "realConfigWritesEnabled": false
+  },
   "families": [
     {
       "familyId": "hl.monitor",
@@ -23,7 +32,9 @@
       "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
       "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
       "writeStatus": "StructuredFamilyWritesBlockedByDefault",
-      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "familySpecificValidationStatus": "StructuredFamilyValidationNotProvenYet",
+      "tempWritePlanStatus": "StructuredFamilyTempWritePlanValidated",
+      "tempRenderRereadStatus": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
       "syntaxDescription": "monitor = name/output, resolution, position, scale, options",
       "fieldsModeled": [
         "name/output",
@@ -49,7 +60,9 @@
       "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
       "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
       "writeStatus": "StructuredFamilyWritesBlockedByDefault",
-      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "familySpecificValidationStatus": "StructuredFamilyValidationNotProvenYet",
+      "tempWritePlanStatus": "StructuredFamilyTempWritePlanValidated",
+      "tempRenderRereadStatus": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
       "syntaxDescription": "bind* = modifier, key, dispatcher, argument",
       "fieldsModeled": [
         "modifier",
@@ -71,7 +84,9 @@
       "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
       "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
       "writeStatus": "StructuredFamilyWritesBlockedByDefault",
-      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "familySpecificValidationStatus": "StructuredFamilyValidationNotProvenYet",
+      "tempWritePlanStatus": "StructuredFamilyTempWritePlanValidated",
+      "tempRenderRereadStatus": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
       "syntaxDescription": "animation = name, enabled, bezier/curve, speed, style",
       "fieldsModeled": [
         "name",
@@ -93,7 +108,9 @@
       "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
       "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
       "writeStatus": "StructuredFamilyWritesBlockedByDefault",
-      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "familySpecificValidationStatus": "StructuredFamilyValidationNotProvenYet",
+      "tempWritePlanStatus": "StructuredFamilyTempWritePlanValidated",
+      "tempRenderRereadStatus": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
       "syntaxDescription": "bezier = name, x1, y1, x2, y2",
       "fieldsModeled": [
         "name",
@@ -114,7 +131,9 @@
       "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
       "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
       "writeStatus": "StructuredFamilyWritesBlockedByDefault",
-      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "familySpecificValidationStatus": "StructuredFamilyValidationNotProvenYet",
+      "tempWritePlanStatus": "StructuredFamilyTempWritePlanValidated",
+      "tempRenderRereadStatus": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
       "syntaxDescription": "gesture = fingers/name, direction, dispatcher/action, argument",
       "fieldsModeled": [
         "gesture name",
@@ -135,7 +154,9 @@
       "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
       "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
       "writeStatus": "StructuredFamilyWritesBlockedByDefault",
-      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "familySpecificValidationStatus": "StructuredFamilyValidationNotProvenYet",
+      "tempWritePlanStatus": "StructuredFamilyTempWritePlanValidated",
+      "tempRenderRereadStatus": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
       "syntaxDescription": "device { option = value }",
       "fieldsModeled": [
         "device name",
@@ -155,7 +176,9 @@
       "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
       "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
       "writeStatus": "StructuredFamilyWritesBlockedByDefault",
-      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "familySpecificValidationStatus": "StructuredFamilyValidationNotProvenYet",
+      "tempWritePlanStatus": "StructuredFamilyTempWritePlanValidated",
+      "tempRenderRereadStatus": "StructuredFamilyTempWritePlanRenderedToTempFixture and StructuredFamilyTempWritePlanRereadVerified",
       "syntaxDescription": "permission = target/application/rule, permission key, action",
       "fieldsModeled": [
         "target/application/rule",
@@ -170,6 +193,7 @@
     "fixtureDirectory": "tests/fixtures/structured_families",
     "parseProof": "all seven families parse into structured projections",
     "renderRereadProof": "all seven families render to temp fixture output and reread with family identity and record count preserved",
+    "tempWritePlanProof": "all seven families validate, render, and reread through temp-fixture write plans only",
     "realConfigTouched": false,
     "runtimeMutated": false,
     "hyprctlReloadRun": false
@@ -190,5 +214,5 @@
     "hyprctlReloadRun": false,
     "hyprland0554MigrationActivated": false
   },
-  "recommendedNextWork": "Add family-specific fixture write plans for structured-family editors using temp fixtures only; keep production writes blocked by default."
+  "recommendedNextWork": "Add review-only per-record editor forms for structured-family records while keeping real writes blocked."
 }
