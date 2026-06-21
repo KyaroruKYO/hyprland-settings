@@ -84,6 +84,9 @@
     "duplicateProductionEnabled": false,
     "sourceIncludeExecutorWired": false,
     "duplicateExecutorWired": false,
+    "productionActivationSafetyGateExists": true,
+    "sourceIncludeProductionActivationBlockedByDefault": true,
+    "duplicateProductionActivationBlockedByDefault": true,
     "unsafeProductionBehaviorEnabled": false,
     "diskPersistenceAdded": false,
     "realConfigTouched": false,
@@ -94,6 +97,6 @@
   },
   "nextRequiredWork": [
     "Keep activation draft state memory-only until the default-disabled persistence boundary has explicit opt-in, private storage, redaction, retention, delete, encryption, and no-executor-wiring proof.",
-    "Do not wire source/include or duplicate production executors until byte-exact backup, write, reread, restore, and final approval proof exists."
+    "Do not wire source/include or duplicate production executors until byte-exact backup, write, reread, restore, no-auto-apply, persisted-draft auto-apply, final approval, production flag, and executor wiring proof exists."
   ]
 }

@@ -117,6 +117,23 @@
     "sourceIncludeProductionEnabled": false,
     "duplicateProductionEnabled": false
   },
+  "productionActivationSafetyGates": {
+    "report": "data/reports/default-disabled-production-activation-safety-gates.v0.55.2.json",
+    "sourceIncludeSafetyGateExists": true,
+    "duplicateSafetyGateExists": true,
+    "sourceIncludeStatus": "ProductionActivationBlockedByDefault",
+    "duplicateStatus": "ProductionActivationBlockedByDefault",
+    "byteExactBackupProof": "missing/proof-required",
+    "writeRereadRestoreProof": "missing/proof-required",
+    "postRestoreVerificationProof": "missing/proof-required",
+    "noAutoApplyProof": "missing/proof-required",
+    "persistedDraftAutoApplyProof": "missing/proof-required",
+    "explicitFinalApproval": "missing/proof-required",
+    "executorWiringStatus": "Unwired",
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "draftPersistenceForbiddenByDefault": true
+  },
   "releaseBoundariesPreserved": {
     "mainModified": false,
     "v010TagModified": false,
@@ -124,7 +141,7 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Keep activation draft persistence forbidden by default until explicit opt-in, private storage, redaction, retention, delete, encryption, and no-executor-wiring proof exists.",
+  "nextRecommendedWork": "Prove byte-exact backup, write/reread/restore, post-restore verification, no-auto-apply, persisted-draft auto-apply prevention, final approval, production flag, and executor wiring decisions before any source/include or duplicate production activation can be reconsidered.",
   "activationDecisionReview": {
     "sourceIncludeInsertion": "ApprovedButDefaultDisabled",
     "duplicateReplacement": "ApprovedButDefaultDisabled",

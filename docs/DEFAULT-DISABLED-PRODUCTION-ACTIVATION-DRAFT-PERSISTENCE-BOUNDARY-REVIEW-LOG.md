@@ -50,3 +50,7 @@ This is a boundary only. It does not add draft persistence, storage paths, seria
 - No `hyprctl reload` was run.
 - The `v0.55.2` model remains default.
 - Hyprland 0.55.4 migration remains inactive.
+
+## Follow-Up Safety Gate
+
+The next review layer is now the default-disabled production activation safety gate. Source/include insertion and duplicate replacement remain blocked until byte-exact backup, write/reread/restore, post-restore verification, no-auto-apply, persisted-draft auto-apply, explicit final approval, production flag, executor wiring, rollback, and report-backed proof requirements are satisfied. Persistence remains forbidden by default while those gates are missing.

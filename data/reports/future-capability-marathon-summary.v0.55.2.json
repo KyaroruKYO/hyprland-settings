@@ -103,6 +103,7 @@
     "default_disabled_production_activation_draft_edit_review",
     "default_disabled_production_activation_live_draft_edit_bridge",
     "default_disabled_production_activation_draft_persistence_boundary",
+    "default_disabled_production_activation_safety_gates",
     "future_capability_remaining_dependency_scan"
   ],
   "phasesPartiallyCompleted": [],
@@ -156,6 +157,8 @@
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-LIVE-DRAFT-EDIT-REVIEW-LOG.md",
     "data/reports/default-disabled-production-activation-draft-persistence-boundary.v0.55.2.json",
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-DRAFT-PERSISTENCE-BOUNDARY-REVIEW-LOG.md",
+    "data/reports/default-disabled-production-activation-safety-gates.v0.55.2.json",
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-SAFETY-GATES-REVIEW-LOG.md",
     "data/reports/future-capability-remaining-dependency-scan.v0.55.2.json",
     "docs/FUTURE-CAPABILITY-REMAINING-DEPENDENCY-SCAN.md"
   ],

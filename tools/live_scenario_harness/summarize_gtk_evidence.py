@@ -305,6 +305,40 @@ def run_summary(run_dir):
             "activationDraftEditsAllDisabledActionsFound": bool(
                 accessibility.get("activationDraftEditsAllDisabledActionsFound")
             ),
+            "productionActivationSafetyGateAssertionMethod": accessibility.get(
+                "productionActivationSafetyGateAssertionMethod"
+            ),
+            "productionActivationSafetyGateAssertions": accessibility.get(
+                "productionActivationSafetyGateAssertions", {}
+            ),
+            "productionActivationSafetyGatesAllHeadingsFound": bool(
+                accessibility.get("productionActivationSafetyGatesAllHeadingsFound")
+            ),
+            "productionActivationSafetyGatesAllProductionDisabledFound": bool(
+                accessibility.get(
+                    "productionActivationSafetyGatesAllProductionDisabledFound"
+                )
+            ),
+            "productionActivationSafetyGatesAllExecutorUnwiredFound": bool(
+                accessibility.get(
+                    "productionActivationSafetyGatesAllExecutorUnwiredFound"
+                )
+            ),
+            "productionActivationSafetyGatesAllBlockedByDefaultFound": bool(
+                accessibility.get(
+                    "productionActivationSafetyGatesAllBlockedByDefaultFound"
+                )
+            ),
+            "productionActivationSafetyGatesAllRequiredProofFound": bool(
+                accessibility.get(
+                    "productionActivationSafetyGatesAllRequiredProofFound"
+                )
+            ),
+            "productionActivationSafetyGatesAllDisabledActionsFound": bool(
+                accessibility.get(
+                    "productionActivationSafetyGatesAllDisabledActionsFound"
+                )
+            ),
             "duplicateConflictDetailNavigationAttempted": bool(
                 accessibility.get("duplicateConflictDetailNavigationAttempted")
             ),
@@ -366,6 +400,9 @@ def aggregate(runs):
     activation_form_results = activation_form_assertion_results(runs)
     activation_draft_results = activation_draft_assertion_results(runs)
     activation_draft_edit_results = activation_draft_edit_assertion_results(runs)
+    production_activation_safety_gate_results = (
+        production_activation_safety_gate_assertion_results(runs)
+    )
 
     return {
         "appLaunchAttempted": bool(runs),
@@ -537,6 +574,32 @@ def aggregate(runs):
         "activationDraftEditsAllDisabledActionsFound": all(
             result["disabledActionsProof"] == "live_gtk_atspi_proof"
             for result in activation_draft_edit_results.values()
+        ),
+        "productionActivationSafetyGateAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationSafetyGateResults": production_activation_safety_gate_results,
+        "productionActivationSafetyGatesAllHeadingsFound": all(
+            result["headingProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_safety_gate_results.values()
+        ),
+        "productionActivationSafetyGatesAllProductionDisabledFound": all(
+            result["productionDisabledProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_safety_gate_results.values()
+        ),
+        "productionActivationSafetyGatesAllExecutorUnwiredFound": all(
+            result["executorWiringProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_safety_gate_results.values()
+        ),
+        "productionActivationSafetyGatesAllBlockedByDefaultFound": all(
+            result["blockedByDefaultProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_safety_gate_results.values()
+        ),
+        "productionActivationSafetyGatesAllRequiredProofFound": all(
+            result["requiredProofProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_safety_gate_results.values()
+        ),
+        "productionActivationSafetyGatesAllDisabledActionsFound": all(
+            result["disabledActionsProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_safety_gate_results.values()
         ),
         "fallbackProofUsed": any(level in {"source_model_fallback", "not_proven"} for level in by_area.values())
         or any(level in {"source_model_fallback", "not_proven"} for level in by_blocked_category.values()),
@@ -1119,6 +1182,141 @@ def activation_draft_edit_assertion_results(runs):
             "draftValidationEvidenceRun": validation_run["name"] if validation_run else None,
             "disabledUpdate": sample.get("disabledUpdate"),
             "disabledReset": sample.get("disabledReset"),
+            "disabledActionsProof": "live_gtk_atspi_proof" if action_run else "not_proven",
+            "disabledActionsEvidenceRun": action_run["name"] if action_run else None,
+            "widgetName": sample.get("widgetName"),
+            "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        }
+    return results
+
+
+def production_activation_safety_gate_assertion_results(runs):
+    gate_keys = [
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+    ]
+    results = {}
+    for key in gate_keys:
+        heading_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("productionActivationSafetyGateAssertions", {})
+                .get(key, {})
+                .get("headingFound")
+            ),
+            None,
+        )
+        production_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("productionActivationSafetyGateAssertions", {})
+                .get(key, {})
+                .get("productionDisabledFound")
+            ),
+            None,
+        )
+        executor_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("productionActivationSafetyGateAssertions", {})
+                .get(key, {})
+                .get("executorWiringFound")
+            ),
+            None,
+        )
+        blocked_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("productionActivationSafetyGateAssertions", {})
+                .get(key, {})
+                .get("gateStatusFound")
+            ),
+            None,
+        )
+        required_run = next(
+            (
+                run
+                for run in runs
+                if all(
+                    run["accessibility"]
+                    .get("productionActivationSafetyGateAssertions", {})
+                    .get(key, {})
+                    .get(field)
+                    for field in [
+                        "byteExactBackupFound",
+                        "writePlanFound",
+                        "rereadPlanFound",
+                        "restorePlanFound",
+                        "noAutoApplyProofFound",
+                        "persistenceAutoApplyProofFound",
+                        "finalApprovalFound",
+                    ]
+                )
+            ),
+            None,
+        )
+        action_run = next(
+            (
+                run
+                for run in runs
+                if run["accessibility"]
+                .get("productionActivationSafetyGateAssertions", {})
+                .get(key, {})
+                .get("disabledReviewFound")
+                and run["accessibility"]
+                .get("productionActivationSafetyGateAssertions", {})
+                .get(key, {})
+                .get("disabledEnableFound")
+            ),
+            None,
+        )
+        sample = {}
+        for run in runs:
+            sample = (
+                run["accessibility"]
+                .get("productionActivationSafetyGateAssertions", {})
+                .get(key, {})
+            )
+            if sample:
+                break
+        results[key] = {
+            "heading": sample.get("heading"),
+            "headingProof": "live_gtk_atspi_proof" if heading_run else "not_proven",
+            "headingEvidenceRun": heading_run["name"] if heading_run else None,
+            "productionDisabledText": sample.get("productionDisabledText"),
+            "productionDisabledProof": "live_gtk_atspi_proof"
+            if production_run
+            else "not_proven",
+            "productionDisabledEvidenceRun": production_run["name"] if production_run else None,
+            "executorWiring": sample.get("executorWiring"),
+            "executorWiringProof": "live_gtk_atspi_proof" if executor_run else "not_proven",
+            "executorWiringEvidenceRun": executor_run["name"] if executor_run else None,
+            "gateStatus": sample.get("gateStatus"),
+            "blockedByDefaultProof": "live_gtk_atspi_proof" if blocked_run else "not_proven",
+            "blockedByDefaultEvidenceRun": blocked_run["name"] if blocked_run else None,
+            "requiredProofLabels": [
+                sample.get("byteExactBackup"),
+                sample.get("writePlan"),
+                sample.get("rereadPlan"),
+                sample.get("restorePlan"),
+                sample.get("noAutoApplyProof"),
+                sample.get("persistenceAutoApplyProof"),
+                sample.get("finalApproval"),
+            ],
+            "requiredProofProof": "live_gtk_atspi_proof"
+            if required_run
+            else "not_proven",
+            "requiredProofEvidenceRun": required_run["name"] if required_run else None,
+            "disabledReview": sample.get("disabledReview"),
+            "disabledEnable": sample.get("disabledEnable"),
             "disabledActionsProof": "live_gtk_atspi_proof" if action_run else "not_proven",
             "disabledActionsEvidenceRun": action_run["name"] if action_run else None,
             "widgetName": sample.get("widgetName"),

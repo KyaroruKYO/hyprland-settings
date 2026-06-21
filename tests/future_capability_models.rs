@@ -30,7 +30,8 @@ use hyprland_settings::future_capability::{
     production_activation_draft_persistence_boundaries, production_activation_draft_reviews,
     production_activation_form_reviews, production_activation_form_state,
     production_activation_live_draft_gtk_reviews, production_activation_path_reviews,
-    profile_approval_flow, profile_production_gate_review, profile_target_approval_review,
+    production_activation_safety_gate_reviews, profile_approval_flow,
+    profile_production_gate_review, profile_target_approval_review,
     proven_runtime_approval_evidence_summary, render_structured_entry_lossless,
     replace_duplicate_occurrence_safe_env, replace_duplicate_occurrence_with_confirmation_safe_env,
     reset_production_activation_draft, runtime_action_policy, runtime_action_review,
@@ -60,16 +61,17 @@ use hyprland_settings::future_capability::{
     ProductionActivationDraftPersistenceScope, ProductionActivationDraftPersistenceStatus,
     ProductionActivationDraftStatus, ProductionActivationDraftUpdate,
     ProductionActivationFormStatus, ProductionActivationPathStatus, ProductionActivationRequest,
-    ProductionActivationRequestScope, ProductionActivationSafetyPlan,
-    ProductionExecutorWiringState, ProfileProductionGateStatus, ProfileSwitchStatus,
-    ProfileTargetReadiness, RuntimeAction, RuntimeApprovalReviewStatus, RuntimeCommandRisk,
-    RuntimeDirectIpcReadOnlyEvidence, RuntimeDryRunExecutor, RuntimeEvalSyntaxEvidence,
-    RuntimeLiveRestoreProof, RuntimeLiveRestoreStatus, RuntimeMutationCommandPair,
-    RuntimeMutationSyntaxCandidate, RuntimeMutationSyntaxStatus, RuntimeProductionGateStatus,
-    RuntimeReadOnlyEvidence, RuntimeSocketCandidate, RuntimeSocketDiagnosisStatus,
-    SourceIncludeInsertionReadiness, SourceIncludeProductionGateStatus,
-    SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
-    SourceIncludeTargetSelectionStatus, StructuredBindEditStatus, StructuredProductionGateStatus,
+    ProductionActivationRequestScope, ProductionActivationSafetyGateStatus,
+    ProductionActivationSafetyPlan, ProductionExecutorWiringState, ProfileProductionGateStatus,
+    ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction, RuntimeApprovalReviewStatus,
+    RuntimeCommandRisk, RuntimeDirectIpcReadOnlyEvidence, RuntimeDryRunExecutor,
+    RuntimeEvalSyntaxEvidence, RuntimeLiveRestoreProof, RuntimeLiveRestoreStatus,
+    RuntimeMutationCommandPair, RuntimeMutationSyntaxCandidate, RuntimeMutationSyntaxStatus,
+    RuntimeProductionGateStatus, RuntimeReadOnlyEvidence, RuntimeSocketCandidate,
+    RuntimeSocketDiagnosisStatus, SourceIncludeInsertionReadiness,
+    SourceIncludeProductionGateStatus, SourceIncludeSelectedTargetDryRunStatus,
+    SourceIncludeTargetCandidate, SourceIncludeTargetSelectionStatus, StructuredBindEditStatus,
+    StructuredProductionGateStatus,
 };
 use hyprland_settings::missing_default_insertion::{
     build_missing_default_insertion_plan, MissingDefaultInsertionRequest,
@@ -6437,4 +6439,77 @@ fn hyprland_0554_activation_gate_keeps_0552_default_until_all_trusted_inputs_and
     );
     assert!(current_gate.migration_activated);
     assert_eq!(current_gate.current_default_version, "0.55.2");
+}
+
+#[test]
+fn production_activation_safety_gates_are_blocked_by_default_without_executor_wiring() {
+    let gates = production_activation_safety_gate_reviews();
+    assert_eq!(gates.len(), 2);
+
+    for gate in gates {
+        assert_eq!(
+            gate.status,
+            ProductionActivationSafetyGateStatus::ProductionActivationBlockedByDefault
+        );
+        assert_eq!(
+            gate.executor_wiring_status,
+            ProductionExecutorWiringState::Unwired
+        );
+        assert_eq!(gate.production_status, "Disabled");
+        assert!(!gate.production_activation_enabled);
+        assert!(!gate.category_production_enabled);
+        assert!(!gate.executor_wired);
+        assert!(!gate.production_write_executed);
+        assert_eq!(
+            gate.draft_persistence_status,
+            ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault
+        );
+
+        for label in [
+            "Byte-exact backup",
+            "Pre-write snapshot",
+            "Target file identity proof",
+            "Target not generated/script-managed/unknown/ambiguous",
+            "Write plan",
+            "Diff preview",
+            "Reread plan",
+            "Restore plan",
+            "Post-restore verification",
+            "No auto-apply proof",
+            "Persistence auto-apply proof",
+            "Explicit final approval",
+            "Production flag decision",
+            "Executor wiring decision",
+            "Rollback availability",
+        ] {
+            let requirement = gate
+                .requirements
+                .iter()
+                .find(|requirement| requirement.label == label)
+                .unwrap_or_else(|| panic!("missing safety gate requirement: {label}"));
+            assert_eq!(requirement.status, "missing/proof-required");
+        }
+
+        assert!(gate
+            .requirements
+            .iter()
+            .any(|requirement| requirement.label == "Report-backed proof"
+                && requirement.status == "present but not sufficient for production activation"));
+        assert!(gate
+            .blockers
+            .iter()
+            .any(|blocker| blocker == "Byte-exact backup: missing/proof-required"));
+        assert!(gate
+            .blockers
+            .iter()
+            .any(|blocker| blocker == "No auto-apply proof: missing/proof-required"));
+        assert!(gate
+            .blockers
+            .iter()
+            .any(|blocker| blocker == "Persistence auto-apply proof: missing/proof-required"));
+        assert!(gate
+            .user_facing_lines()
+            .iter()
+            .any(|line| line.contains("Production activation blocked by default")));
+    }
 }

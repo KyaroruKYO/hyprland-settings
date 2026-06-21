@@ -87,12 +87,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Keep activation draft persistence forbidden by default until explicit opt-in, private storage, redaction, retention, delete, encryption, and no-executor-wiring proof exists; otherwise continue only with production activation safety gates."
+        "Prove source/include and duplicate production activation safety gates before any production executor wiring can be reconsidered."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("persistence forbidden by default"));
+        .contains("production activation safety gates"));
 }
 
 #[test]
@@ -1086,6 +1086,94 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         false
     );
 
+    let activation_safety_gates =
+        read_json("data/reports/default-disabled-production-activation-safety-gates.v0.55.2.json");
+    assert_eq!(activation_safety_gates["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        activation_safety_gates["implementation"]
+            ["sourceIncludeProductionActivationSafetyGateExists"],
+        true
+    );
+    assert_eq!(
+        activation_safety_gates["implementation"]["duplicateProductionActivationSafetyGateExists"],
+        true
+    );
+    assert_eq!(
+        activation_safety_gates["implementation"]
+            ["sourceIncludeProductionActivationBlockedByDefault"],
+        true
+    );
+    assert_eq!(
+        activation_safety_gates["implementation"]["duplicateProductionActivationBlockedByDefault"],
+        true
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_safety_gates["gates"][key]["status"],
+            "ProductionActivationBlockedByDefault"
+        );
+        assert_eq!(
+            activation_safety_gates["gates"][key]["byteExactBackupProof"],
+            "missing/proof-required"
+        );
+        assert_eq!(
+            activation_safety_gates["gates"][key]["writePlan"],
+            "missing/proof-required"
+        );
+        assert_eq!(
+            activation_safety_gates["gates"][key]["rereadPlan"],
+            "missing/proof-required"
+        );
+        assert_eq!(
+            activation_safety_gates["gates"][key]["restorePlan"],
+            "missing/proof-required"
+        );
+        assert_eq!(
+            activation_safety_gates["gates"][key]["noAutoApplyProof"],
+            "missing/proof-required"
+        );
+        assert_eq!(
+            activation_safety_gates["gates"][key]["persistedDraftAutoApplyProof"],
+            "missing/proof-required"
+        );
+        assert_eq!(
+            activation_safety_gates["gates"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(
+            activation_safety_gates["gates"][key]["productionFlag"],
+            false
+        );
+        assert_eq!(
+            activation_safety_gates["gates"][key]["executorWired"],
+            false
+        );
+        assert_eq!(
+            activation_safety_gates["gates"][key]["productionWriteExecuted"],
+            false
+        );
+    }
+    assert_eq!(
+        activation_safety_gates["draftPersistenceBoundary"]["status"],
+        "PersistenceForbiddenByDefault"
+    );
+    assert_eq!(
+        activation_safety_gates["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+    assert_eq!(
+        activation_safety_gates["safety"]["diskPersistenceAdded"],
+        false
+    );
+    assert_eq!(
+        activation_safety_gates["safety"]["sourceIncludeExecutorWired"],
+        false
+    );
+    assert_eq!(
+        activation_safety_gates["safety"]["duplicateExecutorWired"],
+        false
+    );
+
     let dependency_scan =
         read_json("data/reports/future-capability-remaining-dependency-scan.v0.55.2.json");
     assert_eq!(dependency_scan["projectDataVersion"], "v0.55.2");
@@ -1129,7 +1217,7 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     );
     assert_eq!(
         dependency_scan["safeIndependentExtraWork"]["completed"],
-        "activation draft persistence boundary"
+        "production activation safety gates"
     );
     assert_eq!(
         dependency_scan["safety"]["unsafeProductionBehaviorEnabled"],

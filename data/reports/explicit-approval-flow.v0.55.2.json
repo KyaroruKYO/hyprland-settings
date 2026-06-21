@@ -106,11 +106,18 @@
     "activationDraftPersistenceBoundaryExists": true,
     "activationDraftPersistenceEnabled": false,
     "activationDraftDataWrittenToDisk": false,
+    "productionActivationSafetyGateExists": true,
+    "sourceIncludeProductionActivationBlockedByDefault": true,
+    "duplicateProductionActivationBlockedByDefault": true,
+    "productionActivationByteExactBackupProof": "missing/proof-required",
+    "productionActivationWriteRereadRestoreProof": "missing/proof-required",
+    "productionActivationNoAutoApplyProof": "missing/proof-required",
+    "productionActivationPersistedDraftAutoApplyProof": "missing/proof-required",
     "sourceIncludeProductionEnabled": false,
     "duplicateProductionEnabled": false,
     "unsafeProductionBehaviorEnabled": false
   },
-  "nextRecommendedWork": "Keep activation draft persistence forbidden by default until explicit opt-in, storage, redaction, retention, delete, encryption, and no-executor-wiring proof exists.",
+  "nextRecommendedWork": "Keep explicit approval separate from production activation until byte-exact backup, write/reread/restore, no-auto-apply, persisted-draft auto-apply, final approval, production flag, and executor wiring gates are proven.",
   "testsAdded": [
     "production activation decision review tests for source/include and duplicate default-disabled paths"
   ],

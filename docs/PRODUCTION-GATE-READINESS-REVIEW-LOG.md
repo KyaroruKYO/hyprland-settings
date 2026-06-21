@@ -114,3 +114,7 @@ Production gate readiness now records a default-disabled activation draft persis
 ## 2026-06-20 - Remaining Dependency Scan
 
 The remaining dependency scan records that source/include, duplicate, structured-family writes, profile/mode switching, and runtime/reload production expansion are blocked by explicit production activation; high-risk/display is blocked by high-risk recovery proof; Hyprland 0.55.4 migration is blocked by missing official export data; and the core safe-release scope is otherwise capped.
+
+## 2026-06-20 - Production Activation Safety Gates
+
+Production gate readiness now records default-disabled production activation safety gates for source/include insertion and duplicate replacement. Both are blocked by default and require byte-exact backup, pre-write snapshot, target identity, target managed-state, write plan, diff preview, reread plan, restore plan, post-restore verification, no-auto-apply proof, persisted-draft auto-apply proof, explicit final approval, production flag decision, executor wiring decision, rollback availability, and report-backed proof before production activation can be reconsidered. Executors remain `Unwired`, production flags remain false, draft persistence remains forbidden by default, no disk persistence was added, no real config was touched, no runtime mutation was run, and no reload was run.

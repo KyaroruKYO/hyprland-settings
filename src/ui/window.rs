@@ -22,17 +22,18 @@ use crate::future_capability::{
     production_activation_draft_edit_reviews, production_activation_draft_persistence_boundaries,
     production_activation_draft_reviews, production_activation_form_reviews,
     production_activation_live_draft_gtk_reviews, production_activation_path_reviews,
-    proven_runtime_approval_evidence_summary, source_include_activation_draft_gtk_review,
-    source_include_insertion_review, source_include_selected_target_dry_run_plan,
-    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
-    DuplicateOccurrence, DuplicateProductionGateStatus, ProductionActivationControlReview,
-    ProductionActivationDecisionReview, ProductionActivationDraftEditReview,
-    ProductionActivationDraftGtkField, ProductionActivationDraftGtkReview,
-    ProductionActivationDraftGtkState, ProductionActivationDraftGtkUpdate,
-    ProductionActivationDraftPersistenceBoundary, ProductionActivationDraftReview,
-    ProductionActivationFormReview, ProductionActivationPathReview, ProductionExecutorWiringState,
-    SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
-    SourceIncludeTargetCandidate,
+    production_activation_safety_gate_reviews, proven_runtime_approval_evidence_summary,
+    source_include_activation_draft_gtk_review, source_include_insertion_review,
+    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
+    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
+    ProductionActivationControlReview, ProductionActivationDecisionReview,
+    ProductionActivationDraftEditReview, ProductionActivationDraftGtkField,
+    ProductionActivationDraftGtkReview, ProductionActivationDraftGtkState,
+    ProductionActivationDraftGtkUpdate, ProductionActivationDraftPersistenceBoundary,
+    ProductionActivationDraftReview, ProductionActivationFormReview,
+    ProductionActivationPathReview, ProductionActivationSafetyGateReview,
+    ProductionExecutorWiringState, SourceIncludeInsertionReadiness,
+    SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
 };
 use crate::guarded_write_review::{
     build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
@@ -1427,6 +1428,7 @@ fn production_activation_path_reviews_section() -> gtk::Frame {
     content.append(&production_activation_draft_edit_reviews_section());
     content.append(&production_activation_live_draft_edit_reviews_section());
     content.append(&production_activation_draft_persistence_boundary_section());
+    content.append(&production_activation_safety_gate_reviews_section());
 
     frame.set_child(Some(&content));
     frame
@@ -1871,6 +1873,99 @@ fn production_activation_draft_persistence_boundary_card(
     ));
     clear.set_sensitive(false);
     content.append(&clear);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_safety_gate_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-safety-gates-section");
+    frame.set_tooltip_text(Some(
+        "Default-disabled production activation safety gates. These show the missing proof required before production activation could ever be considered.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Production activation safety gates"));
+    content.append(&small_label(
+        "Production activation is blocked by default. Executors remain unwired, draft persistence remains forbidden, and no write path is available.",
+    ));
+    content.append(&small_label(
+        "Production activation blocked by default until every required proof item is satisfied.",
+    ));
+
+    for gate in production_activation_safety_gate_reviews() {
+        content.append(&production_activation_safety_gate_review_card(&gate));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_safety_gate_review_card(
+    gate: &ProductionActivationSafetyGateReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&gate.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled production activation safety gate. This has no persistence, mutation, production, compositor refresh, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&gate.evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&gate.heading));
+    append_detail_line(&content, "Gate status", gate.status.user_facing_label());
+    append_detail_line(
+        &content,
+        "Report-backed proof",
+        &gate.report_backed_proof_status,
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        gate.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(&content, &gate.production_label, &gate.production_status);
+    append_detail_line(
+        &content,
+        "Draft persistence boundary",
+        gate.draft_persistence_status.user_facing_label(),
+    );
+
+    content.append(&small_label("Required before production activation"));
+    for requirement in &gate.requirements {
+        append_detail_line(&content, &requirement.label, &requirement.status);
+    }
+
+    content.append(&small_label("Safety gate blockers"));
+    for blocker in &gate.blockers {
+        content.append(&small_label(blocker));
+    }
+
+    let review = gtk::Button::with_label(&gate.disabled_review_label);
+    review.set_widget_name(&gate.disabled_review_widget_name);
+    review.set_tooltip_text(Some(
+        "Gate review is not available. This button has no persistence, mutation, production, compositor refresh, or executor callback.",
+    ));
+    review.set_sensitive(false);
+    content.append(&review);
+
+    let enable = gtk::Button::with_label(&gate.disabled_enable_label);
+    enable.set_widget_name(&gate.disabled_enable_widget_name);
+    enable.set_tooltip_text(Some(
+        "Production activation is not available. This button has no write or executor callback.",
+    ));
+    enable.set_sensitive(false);
+    content.append(&enable);
 
     frame.set_child(Some(&content));
     frame

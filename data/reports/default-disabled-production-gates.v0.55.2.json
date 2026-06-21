@@ -162,7 +162,22 @@
     "hyprland0554UsesRuntimePackageAndTrustedDataStatus": true,
     "productionBehaviorEnabled": false
   },
-  "nextRecommendedWork": "If interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.",
+  "productionActivationSafetyGates": {
+    "report": "data/reports/default-disabled-production-activation-safety-gates.v0.55.2.json",
+    "sourceIncludeSafetyGateExists": true,
+    "duplicateSafetyGateExists": true,
+    "sourceIncludeStatus": "ProductionActivationBlockedByDefault",
+    "duplicateStatus": "ProductionActivationBlockedByDefault",
+    "byteExactBackupProof": "missing/proof-required",
+    "writeRereadRestoreProof": "missing/proof-required",
+    "noAutoApplyProof": "missing/proof-required",
+    "persistedDraftAutoApplyProof": "missing/proof-required",
+    "sourceIncludeExecutorWired": false,
+    "duplicateExecutorWired": false,
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false
+  },
+  "nextRecommendedWork": "Prove production activation safety gates before any source/include or duplicate production executor wiring can be reconsidered.",
   "activationDecisionReview": {
     "report": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
     "sourceIncludeInsertion": "ApprovedButDefaultDisabled; production flag false",

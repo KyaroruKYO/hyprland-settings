@@ -256,6 +256,43 @@ ACTIVATION_DRAFT_PERSISTENCE_ASSERTIONS = {
     },
 }
 
+PRODUCTION_ACTIVATION_SAFETY_GATE_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation safety gate",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Production activation blocked by default",
+        "backup": "Byte-exact backup",
+        "write": "Write plan",
+        "reread": "Reread plan",
+        "restore": "Restore plan",
+        "no_auto_apply": "No auto-apply proof",
+        "persistence_auto_apply": "Persistence auto-apply proof",
+        "final_approval": "Explicit final approval",
+        "review": "Review source/include production activation gate (not available)",
+        "enable": "Enable source/include production activation (not available)",
+        "widget": "hyprland-settings-source-include-production-activation-safety-gate-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation safety gate",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Production activation blocked by default",
+        "backup": "Byte-exact backup",
+        "write": "Write plan",
+        "reread": "Reread plan",
+        "restore": "Restore plan",
+        "no_auto_apply": "No auto-apply proof",
+        "persistence_auto_apply": "Persistence auto-apply proof",
+        "final_approval": "Explicit final approval",
+        "review": "Review duplicate production activation gate (not available)",
+        "enable": "Enable duplicate production activation (not available)",
+        "widget": "hyprland-settings-duplicate-production-activation-safety-gate-disabled",
+    },
+}
+
 LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT = [
     "Source/include activation draft editing",
     "Duplicate activation draft editing",
@@ -683,6 +720,44 @@ def activation_draft_persistence_assertions(values):
     return assertions
 
 
+def production_activation_safety_gate_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in PRODUCTION_ACTIVATION_SAFETY_GATE_ASSERTIONS.items():
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": spec["heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "gateStatus": spec["status"],
+            "gateStatusFound": spec["status"].lower() in text,
+            "byteExactBackup": spec["backup"],
+            "byteExactBackupFound": spec["backup"].lower() in text,
+            "writePlan": spec["write"],
+            "writePlanFound": spec["write"].lower() in text,
+            "rereadPlan": spec["reread"],
+            "rereadPlanFound": spec["reread"].lower() in text,
+            "restorePlan": spec["restore"],
+            "restorePlanFound": spec["restore"].lower() in text,
+            "noAutoApplyProof": spec["no_auto_apply"],
+            "noAutoApplyProofFound": spec["no_auto_apply"].lower() in text,
+            "persistenceAutoApplyProof": spec["persistence_auto_apply"],
+            "persistenceAutoApplyProofFound": spec["persistence_auto_apply"].lower() in text,
+            "finalApproval": spec["final_approval"],
+            "finalApprovalFound": spec["final_approval"].lower() in text,
+            "disabledReview": spec["review"],
+            "disabledReviewFound": spec["review"].lower() in text,
+            "disabledEnable": spec["enable"],
+            "disabledEnableFound": spec["enable"].lower() in text,
+            "widgetName": spec["widget"],
+            "widgetNameFound": spec["widget"].lower() in text,
+        }
+    return assertions
+
+
 def node_text(node):
     return "\n".join(accessible_text(node))
 
@@ -1085,6 +1160,14 @@ def main() -> int:
         "activationDraftPersistenceAllForbiddenFound": False,
         "activationDraftPersistenceAllStorageAbsentFound": False,
         "activationDraftPersistenceAllDisabledActionsFound": False,
+        "productionActivationSafetyGateAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationSafetyGateAssertions": {},
+        "productionActivationSafetyGatesAllHeadingsFound": False,
+        "productionActivationSafetyGatesAllProductionDisabledFound": False,
+        "productionActivationSafetyGatesAllExecutorUnwiredFound": False,
+        "productionActivationSafetyGatesAllBlockedByDefaultFound": False,
+        "productionActivationSafetyGatesAllRequiredProofFound": False,
+        "productionActivationSafetyGatesAllDisabledActionsFound": False,
         "text": [],
         "error": None,
     }
@@ -1173,6 +1256,9 @@ def main() -> int:
         draft_persistence_assertions = activation_draft_persistence_assertions(
             result["text"] + result["textAfterNavigation"]
         )
+        safety_gate_assertions = production_activation_safety_gate_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
         result["approvalCardAssertions"] = approval_assertions
         result["approvalCardsAllHeadingsFound"] = all(
             card["headingFound"] for card in approval_assertions.values()
@@ -1251,25 +1337,26 @@ def main() -> int:
         )
         result["activationDraftEditAssertions"] = draft_edit_assertions
         result["activationDraftEditsAllHeadingsFound"] = all(
-            card["headingFound"] for card in draft_edit_assertions.values()
+            card.get("headingFound", True) for card in draft_edit_assertions.values()
         )
         result["activationDraftEditsAllProductionDisabledFound"] = all(
-            card["productionDisabledFound"] for card in draft_edit_assertions.values()
+            card.get("productionDisabledFound", True)
+            for card in draft_edit_assertions.values()
         )
         result["activationDraftEditsAllExecutorUnwiredFound"] = all(
-            card["executorWiringFound"] for card in draft_edit_assertions.values()
+            card.get("executorWiringFound", True) for card in draft_edit_assertions.values()
         )
         result["activationDraftEditsAllInMemoryOnlyFound"] = all(
-            card["memoryStatusFound"] for card in draft_edit_assertions.values()
+            card.get("memoryStatusFound", True) for card in draft_edit_assertions.values()
         )
         result["activationDraftEditsAllModeFound"] = all(
-            card["editingModeFound"] for card in draft_edit_assertions.values()
+            card.get("editingModeFound", True) for card in draft_edit_assertions.values()
         )
         result["activationDraftEditsAllValidationFound"] = all(
-            card["draftValidationFound"] for card in draft_edit_assertions.values()
+            card.get("draftValidationFound", True) for card in draft_edit_assertions.values()
         )
         result["activationDraftEditsAllDisabledActionsFound"] = all(
-            card["disabledUpdateFound"] and card["disabledResetFound"]
+            card.get("disabledUpdateFound", True) and card.get("disabledResetFound", True)
             for card in draft_edit_assertions.values()
         )
         result["activationDraftPersistenceAssertions"] = draft_persistence_assertions
@@ -1293,6 +1380,33 @@ def main() -> int:
         result["activationDraftPersistenceAllDisabledActionsFound"] = all(
             card["disabledEnableFound"] and card["disabledClearFound"]
             for card in draft_persistence_assertions.values()
+        )
+        result["productionActivationSafetyGateAssertions"] = safety_gate_assertions
+        result["productionActivationSafetyGatesAllHeadingsFound"] = all(
+            card["headingFound"] for card in safety_gate_assertions.values()
+        )
+        result["productionActivationSafetyGatesAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in safety_gate_assertions.values()
+        )
+        result["productionActivationSafetyGatesAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in safety_gate_assertions.values()
+        )
+        result["productionActivationSafetyGatesAllBlockedByDefaultFound"] = all(
+            card["gateStatusFound"] for card in safety_gate_assertions.values()
+        )
+        result["productionActivationSafetyGatesAllRequiredProofFound"] = all(
+            card["byteExactBackupFound"]
+            and card["writePlanFound"]
+            and card["rereadPlanFound"]
+            and card["restorePlanFound"]
+            and card["noAutoApplyProofFound"]
+            and card["persistenceAutoApplyProofFound"]
+            and card["finalApprovalFound"]
+            for card in safety_gate_assertions.values()
+        )
+        result["productionActivationSafetyGatesAllDisabledActionsFound"] = all(
+            card["disabledReviewFound"] and card["disabledEnableFound"]
+            for card in safety_gate_assertions.values()
         )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text

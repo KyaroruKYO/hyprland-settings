@@ -111,7 +111,7 @@
   "branchState": {
     "branchCapped": false,
     "canContinue": true,
-    "nextSafeWork": "Design opt-in persistence requirements further or stop source/include and duplicate until production activation safety gates are ready."
+    "nextSafeWork": "Use the new default-disabled production activation safety gates; keep draft persistence forbidden until explicit opt-in, private storage, redaction, retention, delete, encryption, and no-executor-wiring proof exists."
   },
   "nonActions": [
     "No activation draft persistence was added.",

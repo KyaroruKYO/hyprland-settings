@@ -119,6 +119,11 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("activationDraftEditsAllInMemoryOnlyFound"));
     assert!(collector.contains("activationDraftEditsAllModeFound"));
     assert!(collector.contains("activationDraftEditsAllValidationFound"));
+    assert!(collector.contains("PRODUCTION_ACTIVATION_SAFETY_GATE_ASSERTIONS"));
+    assert!(collector.contains("productionActivationSafetyGateAssertionMethod"));
+    assert!(collector.contains("productionActivationSafetyGateAssertions"));
+    assert!(collector.contains("productionActivationSafetyGatesAllBlockedByDefaultFound"));
+    assert!(collector.contains("productionActivationSafetyGatesAllRequiredProofFound"));
     for expected in [
         "Source/include approval review",
         "Duplicate approval review",
@@ -138,6 +143,20 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "Duplicate live activation draft editing",
         "Source/include activation draft persistence boundary",
         "Duplicate activation draft persistence boundary",
+        "Source/include production activation safety gate",
+        "Duplicate production activation safety gate",
+        "Production activation blocked by default",
+        "Byte-exact backup",
+        "Write plan",
+        "Reread plan",
+        "Restore plan",
+        "No auto-apply proof",
+        "Persistence auto-apply proof",
+        "Explicit final approval",
+        "Review source/include production activation gate (not available)",
+        "Enable source/include production activation (not available)",
+        "Review duplicate production activation gate (not available)",
+        "Enable duplicate production activation (not available)",
         "Persistence forbidden by default",
         "Persistence enabled: false",
         "Draft written to disk: false",

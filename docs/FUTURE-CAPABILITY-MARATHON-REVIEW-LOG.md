@@ -116,3 +116,7 @@ Added a remaining dependency scan across all tracker categories. Core UI, config
 ## 2026-06-20 - Activation draft persistence boundary
 
 Added a default-disabled persistence boundary for source/include and duplicate activation drafts. Persistence is forbidden by default, persistence enabled is false, draft written to disk is false, storage path is none, no serializer/write path is added, executors remain `Unwired`, and production flags remain false. The Config page now shows disabled persistence-boundary cards, and the reports list the future requirements before persistence could ever be considered: explicit opt-in, private storage, redaction, retention, delete/clear controls, encryption, versioning, no-executor-wiring proof, no auto-apply proof, and production flags remaining false.
+
+## 2026-06-20 - Production activation safety gates
+
+Added default-disabled production activation safety gates for source/include insertion and duplicate replacement. The gates are visible on the Config page, blocked by default, and list missing/proof-required byte-exact backup, write/reread/restore, post-restore verification, no-auto-apply, persisted-draft auto-apply, final approval, production flag, executor wiring, rollback, and report-backed proof requirements. No production executor was wired, no production flag changed, no draft persistence was added, no real config was touched, no runtime mutation was run, and no reload was run.
