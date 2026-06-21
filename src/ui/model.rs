@@ -1,4 +1,4 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 use std::path::PathBuf;
 
 use crate::config_discovery::ConfigDiscovery;
@@ -10,6 +10,7 @@ use crate::export::{ExportBundle, InventoryEntry, TabEntry};
 use crate::screen_shader_advisory::{
     run_screen_shader_advisory_check, AdvisoryStatus, ScreenShaderAdvisoryRequest,
 };
+use crate::structured_family::{StructuredFamilyProjection, StructuredFamilyStatus};
 use crate::validation::ValidationSummary;
 use crate::write_flow::{
     edit_projection_for_setting_with_config, review_block_reason, write_flow_config_setting,
@@ -151,6 +152,16 @@ pub struct UiStructuredFamily {
     pub entries: Vec<UiStructuredEntry>,
     pub warning_count: usize,
     pub edit_status: String,
+    pub syntax_description: String,
+    pub field_schema: Vec<String>,
+    pub projection_status: String,
+    pub fixture_parse_proof_status: String,
+    pub fixture_render_proof_status: String,
+    pub family_specific_validation_status: String,
+    pub write_status: String,
+    pub widget_name: String,
+    pub review_button_label: String,
+    pub unproven_record_count: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -266,32 +277,10 @@ fn current_value_for_entry(
 fn structured_families_from_config(
     current_config: &CurrentConfigSnapshot,
 ) -> Vec<UiStructuredFamily> {
-    let mut groups: BTreeMap<String, Vec<UiStructuredEntry>> = BTreeMap::new();
-    for record in &current_config.structured_records {
-        let Some(family_id) = &record.normalized_setting_id else {
-            continue;
-        };
-        groups
-            .entry(family_id.clone())
-            .or_default()
-            .push(structured_entry_from_record(record));
-    }
-
-    groups
-        .into_iter()
-        .map(|(family_id, entries)| {
-            let warning_count = entries
-                .iter()
-                .filter(|entry| entry.warning.is_some())
-                .count();
-            UiStructuredFamily {
-                label: structured_family_label(&family_id).to_string(),
-                family_id,
-                entries,
-                warning_count,
-                edit_status: "read-only; structured editing is not implemented yet".to_string(),
-            }
-        })
+    current_config
+        .structured_family_projections()
+        .iter()
+        .map(ui_structured_family_from_projection)
         .collect()
 }
 
@@ -330,6 +319,56 @@ fn current_value_summary_from_settings(settings: &[UiSetting]) -> UiCurrentValue
     }
 }
 
+fn ui_structured_family_from_projection(
+    projection: &StructuredFamilyProjection,
+) -> UiStructuredFamily {
+    let entries = projection
+        .records
+        .iter()
+        .map(|record| UiStructuredEntry {
+            source_path: record.source_path.display().to_string(),
+            line_number: record.line_number,
+            raw_line: record.raw_line.clone(),
+            parser_status: record.validation_status.clone(),
+            warning: record.unsupported_reason.clone(),
+        })
+        .collect::<Vec<_>>();
+    let warning_count = entries
+        .iter()
+        .filter(|entry| entry.warning.is_some())
+        .count();
+    UiStructuredFamily {
+        family_id: projection.family_id.clone(),
+        label: projection.display_name.clone(),
+        entries,
+        warning_count,
+        edit_status: "read-only review editor scaffold; real writes are not active".to_string(),
+        syntax_description: projection.syntax_description.clone(),
+        field_schema: projection.field_schema.clone(),
+        projection_status: projection.projection_status.as_str().to_string(),
+        fixture_parse_proof_status: projection.fixture_parse_proof_status.as_str().to_string(),
+        fixture_render_proof_status: projection.fixture_render_proof_status.as_str().to_string(),
+        family_specific_validation_status: family_validation_status(projection),
+        write_status: projection.write_status.as_str().to_string(),
+        widget_name: projection.widget_name.clone(),
+        review_button_label: projection.review_button_label.clone(),
+        unproven_record_count: projection.unproven_record_count(),
+    }
+}
+
+fn family_validation_status(projection: &StructuredFamilyProjection) -> String {
+    if projection.unproven_record_count() == 0 {
+        StructuredFamilyStatus::EditorScaffoldReady
+            .as_str()
+            .to_string()
+    } else {
+        StructuredFamilyStatus::NeedsFamilySpecificValidation
+            .as_str()
+            .to_string()
+    }
+}
+
+#[allow(dead_code)]
 fn structured_entry_from_record(record: &ParsedConfigLine) -> UiStructuredEntry {
     UiStructuredEntry {
         source_path: record.path.display().to_string(),
@@ -337,20 +376,6 @@ fn structured_entry_from_record(record: &ParsedConfigLine) -> UiStructuredEntry 
         raw_line: record.raw_line.clone(),
         parser_status: "preserved raw structured entry".to_string(),
         warning: record.warning.clone(),
-    }
-}
-
-fn structured_family_label(family_id: &str) -> &str {
-    match family_id {
-        "hl.monitor" => "Monitors",
-        "hl.bind" => "Key bindings",
-        "hl.animation" => "Animations",
-        "hl.curve" => "Curves",
-        "hl.gesture" => "Gestures",
-        "hl.device" => "Devices",
-        "hl.permission" => "Permissions",
-        "hl.windowrule" => "Window rules",
-        _ => "Structured entries",
     }
 }
 

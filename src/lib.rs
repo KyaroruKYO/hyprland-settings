@@ -47,6 +47,7 @@ pub mod session_config_preview;
 pub mod session_value_projection;
 pub mod source_aware_current_config;
 pub mod source_values;
+pub mod structured_family;
 pub mod ui;
 pub mod validation;
 pub mod value;

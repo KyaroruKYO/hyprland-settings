@@ -138,12 +138,12 @@ fn parse_structured_line(
     let value = value.trim();
     let family = match key {
         "monitor" => "hl.monitor",
-        "bind" => "hl.bind",
         "windowrule" | "windowrulev2" => "hl.windowrule",
         "animation" => "hl.animation",
         "bezier" => "hl.curve",
         "gesture" => "hl.gesture",
         "permission" => "hl.permission",
+        _ if key.starts_with("bind") && !key.contains(':') => "hl.bind",
         _ => match block_key {
             Some("device") => "hl.device",
             _ => return None,

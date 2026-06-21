@@ -1,0 +1,179 @@
+{
+  "artifactKind": "project-area-continuation-scan",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "71c5161eaa407da984d3c5971de3751d23033a0c",
+  "areas": [
+    {
+      "areaName": "Core app shell / UI / navigation",
+      "currentStatus": "stable near-complete UI shell",
+      "classification": "capped",
+      "canContinueNow": false,
+      "reason": "Current shell/navigation is already at the safe-release cap unless a concrete UI defect is found.",
+      "blockingDependency": "none; capped for current scope",
+      "safeNextWork": "audit-only UI polish or accessibility assertions if a defect is proven",
+      "mustNotDo": "do not invent shell work without a proven UI defect",
+      "evidenceUsed": [
+        "docs/PROJECT-STATUS.md",
+        "merged future-capability closeout"
+      ]
+    },
+    {
+      "areaName": "Config discovery / source-aware model",
+      "currentStatus": "source-aware model is mature but not production-expanded for closed source/include activation",
+      "classification": "needs_audit",
+      "canContinueNow": true,
+      "reason": "Non-mutating graph/detail audits can continue, but source/include production activation is closed and must be separate.",
+      "blockingDependency": "production activation for source/include writes",
+      "safeNextWork": "report-only source graph consistency tests",
+      "mustNotDo": "do not enable source/include production insertion",
+      "evidenceUsed": [
+        "src/config_graph.rs",
+        "future-capability marathon closeout reports"
+      ]
+    },
+    {
+      "areaName": "341-row read/write model",
+      "currentStatus": "341 rows modeled and writable through existing scalar gates",
+      "classification": "capped",
+      "canContinueNow": false,
+      "reason": "No row-count or allowlist expansion is needed for this sprint.",
+      "blockingDependency": "none; capped for current scope",
+      "safeNextWork": "audit row metadata only if upstream data changes",
+      "mustNotDo": "do not change scalar write allowlist as part of structured-family editor work",
+      "evidenceUsed": [
+        "docs/PROJECT-STATUS.md",
+        "tests/all_341_unified_pipeline.rs"
+      ]
+    },
+    {
+      "areaName": "Safe normal-scalar writes",
+      "currentStatus": "normal-scalar writes remain proven through existing backup/reread flow",
+      "classification": "capped",
+      "canContinueNow": false,
+      "reason": "Structured-family work does not require changing normal-scalar write behavior.",
+      "blockingDependency": "none; capped for current scope",
+      "safeNextWork": "only regression tests if a scalar defect is found",
+      "mustNotDo": "do not modify scalar apply behavior for structured-family scaffolding",
+      "evidenceUsed": [
+        "src/write_flow.rs",
+        "tests/write_flow.rs"
+      ]
+    },
+    {
+      "areaName": "Release packaging/tag/artifacts",
+      "currentStatus": "v0.1.0 preserved; no release requested",
+      "classification": "blocked_by_release_decision",
+      "canContinueNow": false,
+      "reason": "Release work requires an explicit release decision.",
+      "blockingDependency": "user release decision",
+      "safeNextWork": "release-readiness audit only if requested",
+      "mustNotDo": "do not tag, create a release, or modify dist/v0.1.0",
+      "evidenceUsed": [
+        "v0.1.0 tag check",
+        "dist/v0.1.0 preservation check"
+      ]
+    },
+    {
+      "areaName": "Missing/default insertion",
+      "currentStatus": "source/include production runway closed by cap",
+      "classification": "capped",
+      "canContinueNow": false,
+      "reason": "Future source/include production activation must begin in a separate explicitly approved phase.",
+      "blockingDependency": "separate production activation phase",
+      "safeNextWork": "none on this branch except defect correction",
+      "mustNotDo": "do not continue source/include production activation runway",
+      "evidenceUsed": [
+        "data/reports/future-capability-marathon-closeout.v0.55.2.json",
+        "data/reports/future-capability-production-activation-cap.v0.55.2.json"
+      ]
+    },
+    {
+      "areaName": "Duplicate resolution",
+      "currentStatus": "duplicate production runway closed by cap",
+      "classification": "capped",
+      "canContinueNow": false,
+      "reason": "Future duplicate production activation must begin in a separate explicitly approved phase.",
+      "blockingDependency": "separate production activation phase",
+      "safeNextWork": "none on this branch except defect correction",
+      "mustNotDo": "do not continue duplicate production activation runway",
+      "evidenceUsed": [
+        "data/reports/future-capability-marathon-closeout.v0.55.2.json",
+        "data/reports/future-capability-production-activation-cap.v0.55.2.json"
+      ]
+    },
+    {
+      "areaName": "High-risk/display recovery",
+      "currentStatus": "blocked until high-risk recovery proof is complete",
+      "classification": "blocked_by_high_risk_recovery",
+      "canContinueNow": false,
+      "reason": "High-risk/display production writes require independent recovery and dead-man proof.",
+      "blockingDependency": "high-risk recovery proof",
+      "safeNextWork": "non-mutating recovery proof inventory",
+      "mustNotDo": "do not enable high-risk/display writes or runtime mutation",
+      "evidenceUsed": [
+        "docs/PROJECT-STATUS.md",
+        "high-risk recovery reports"
+      ]
+    },
+    {
+      "areaName": "Structured-family editors/writes",
+      "currentStatus": "unified review-only editor scaffold now exists for seven families; writes blocked",
+      "classification": "can_continue_now",
+      "canContinueNow": true,
+      "reason": "Shared model, fixture parse/render proof, and UI scaffolding can advance without production writes.",
+      "blockingDependency": "fixture-only family-specific write proof before any production review",
+      "safeNextWork": "add family-specific temp-fixture write plans and validators while keeping writes blocked by default",
+      "mustNotDo": "do not enable real structured-family writes",
+      "evidenceUsed": [
+        "src/structured_family.rs",
+        "tests/structured_family_unified.rs",
+        "data/reports/structured-family-editors-unified.v0.55.2.json"
+      ]
+    },
+    {
+      "areaName": "Profile/mode switching",
+      "currentStatus": "profile/mode production behavior remains disabled",
+      "classification": "blocked_by_production_activation",
+      "canContinueNow": false,
+      "reason": "Real profile/mode switching requires explicit production activation and live proof.",
+      "blockingDependency": "production activation and live proof",
+      "safeNextWork": "non-mutating profile readiness review only",
+      "mustNotDo": "do not switch real profiles or symlinks",
+      "evidenceUsed": [
+        "docs/FUTURE-CAPABILITY-MARATHON-HANDOFF.md",
+        "profile/mode reports"
+      ]
+    },
+    {
+      "areaName": "Runtime/reload integration",
+      "currentStatus": "read-only runtime evidence works; production mutation remains disabled",
+      "classification": "blocked_by_production_activation",
+      "canContinueNow": false,
+      "reason": "Runtime/reload production mutation requires explicit approval and must not be bundled with this scaffold.",
+      "blockingDependency": "production activation and live recovery policy",
+      "safeNextWork": "read-only runtime evidence refresh only",
+      "mustNotDo": "do not run hyprctl reload or mutating hyprctl commands",
+      "evidenceUsed": [
+        "read-only hyprctl preflight",
+        "runtime/reload reports"
+      ]
+    },
+    {
+      "areaName": "Hyprland 0.55.4 migration",
+      "currentStatus": "advisory only; v0.55.2 remains default",
+      "classification": "blocked_by_missing_official_data",
+      "canContinueNow": false,
+      "reason": "Migration requires trusted official export data and row/write-safety review.",
+      "blockingDependency": "trusted official 0.55.4 export data",
+      "safeNextWork": "inventory missing official data only",
+      "mustNotDo": "do not activate 0.55.4 migration",
+      "evidenceUsed": [
+        "Hyprland 0.55.4 migration reports",
+        "docs/PROJECT-STATUS.md"
+      ]
+    }
+  ],
+  "activeSafeArea": "Structured-family editors/writes",
+  "recommendedNextWork": "Add family-specific temp-fixture write plans and validators for structured-family editors while keeping production writes blocked by default."
+}

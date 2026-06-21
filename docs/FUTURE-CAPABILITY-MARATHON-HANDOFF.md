@@ -1,5 +1,11 @@
 # Future Capability Marathon Handoff
 
+## Post-merge note
+
+`future-capability-marathon` has been merged into `main` and is historical. Active work has moved to `structured-family-editors-unified`.
+
+Do not continue source/include or duplicate production-activation runway work from this handoff. Current active next work is: add family-specific temp-fixture write plans and validators for structured-family editors while keeping production writes blocked by default.
+
 ## Current state
 - Branch: future-capability-marathon
 - Starting commit: 895b67281f7551789e5b4a07c0ea849db1eab622

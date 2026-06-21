@@ -1,0 +1,194 @@
+{
+  "artifactKind": "structured-family-editors-unified",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "71c5161eaa407da984d3c5971de3751d23033a0c",
+  "frameworkStatus": "StructuredFamilyEditorScaffoldReady",
+  "sharedModelModule": "src/structured_family.rs",
+  "uiSectionWidgetName": "hyprland-settings-structured-family-section",
+  "writePolicy": {
+    "status": "StructuredFamilyWritesBlockedByDefault",
+    "realConfigWritesEnabled": false,
+    "runtimeMutationEnabled": false,
+    "hyprctlReloadEnabled": false,
+    "fixtureRenderRereadProofEnablesWrites": false
+  },
+  "families": [
+    {
+      "familyId": "hl.monitor",
+      "displayName": "hl.monitor",
+      "cardWidgetName": "hyprland-settings-structured-family-hl-monitor-card",
+      "projectionStatus": "StructuredFamilyReadOnlyProjectionReady",
+      "editorStatus": "StructuredFamilyEditorScaffoldReady",
+      "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
+      "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
+      "writeStatus": "StructuredFamilyWritesBlockedByDefault",
+      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "syntaxDescription": "monitor = name/output, resolution, position, scale, options",
+      "fieldsModeled": [
+        "name/output",
+        "resolution",
+        "position",
+        "scale",
+        "transform",
+        "mirror",
+        "bitdepth",
+        "vrr",
+        "workspace",
+        "reserved",
+        "additional raw options"
+      ],
+      "unknownUnsupportedFormsPreservedAsRaw": true
+    },
+    {
+      "familyId": "hl.bind",
+      "displayName": "hl.bind",
+      "cardWidgetName": "hyprland-settings-structured-family-hl-bind-card",
+      "projectionStatus": "StructuredFamilyReadOnlyProjectionReady",
+      "editorStatus": "StructuredFamilyEditorScaffoldReady",
+      "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
+      "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
+      "writeStatus": "StructuredFamilyWritesBlockedByDefault",
+      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "syntaxDescription": "bind* = modifier, key, dispatcher, argument",
+      "fieldsModeled": [
+        "modifier",
+        "key",
+        "dispatcher",
+        "argument",
+        "flags/type",
+        "description/comment if available",
+        "raw line"
+      ],
+      "unknownUnsupportedFormsPreservedAsRaw": true
+    },
+    {
+      "familyId": "hl.animation",
+      "displayName": "hl.animation",
+      "cardWidgetName": "hyprland-settings-structured-family-hl-animation-card",
+      "projectionStatus": "StructuredFamilyReadOnlyProjectionReady",
+      "editorStatus": "StructuredFamilyEditorScaffoldReady",
+      "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
+      "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
+      "writeStatus": "StructuredFamilyWritesBlockedByDefault",
+      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "syntaxDescription": "animation = name, enabled, bezier/curve, speed, style",
+      "fieldsModeled": [
+        "name",
+        "enabled",
+        "bezier/curve reference",
+        "speed",
+        "style",
+        "additional parameters",
+        "raw line"
+      ],
+      "unknownUnsupportedFormsPreservedAsRaw": true
+    },
+    {
+      "familyId": "hl.curve",
+      "displayName": "hl.curve",
+      "cardWidgetName": "hyprland-settings-structured-family-hl-curve-card",
+      "projectionStatus": "StructuredFamilyReadOnlyProjectionReady",
+      "editorStatus": "StructuredFamilyEditorScaffoldReady",
+      "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
+      "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
+      "writeStatus": "StructuredFamilyWritesBlockedByDefault",
+      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "syntaxDescription": "bezier = name, x1, y1, x2, y2",
+      "fieldsModeled": [
+        "name",
+        "x1",
+        "y1",
+        "x2",
+        "y2",
+        "raw line"
+      ],
+      "unknownUnsupportedFormsPreservedAsRaw": true
+    },
+    {
+      "familyId": "hl.gesture",
+      "displayName": "hl.gesture",
+      "cardWidgetName": "hyprland-settings-structured-family-hl-gesture-card",
+      "projectionStatus": "StructuredFamilyReadOnlyProjectionReady",
+      "editorStatus": "StructuredFamilyEditorScaffoldReady",
+      "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
+      "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
+      "writeStatus": "StructuredFamilyWritesBlockedByDefault",
+      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "syntaxDescription": "gesture = fingers/name, direction, dispatcher/action, argument",
+      "fieldsModeled": [
+        "gesture name",
+        "fingers",
+        "direction",
+        "dispatcher/action",
+        "argument",
+        "raw line"
+      ],
+      "unknownUnsupportedFormsPreservedAsRaw": true
+    },
+    {
+      "familyId": "hl.device",
+      "displayName": "hl.device",
+      "cardWidgetName": "hyprland-settings-structured-family-hl-device-card",
+      "projectionStatus": "StructuredFamilyReadOnlyProjectionReady",
+      "editorStatus": "StructuredFamilyEditorScaffoldReady",
+      "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
+      "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
+      "writeStatus": "StructuredFamilyWritesBlockedByDefault",
+      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "syntaxDescription": "device { option = value }",
+      "fieldsModeled": [
+        "device name",
+        "section/options",
+        "option key",
+        "option value",
+        "raw line"
+      ],
+      "unknownUnsupportedFormsPreservedAsRaw": true
+    },
+    {
+      "familyId": "hl.permission",
+      "displayName": "hl.permission",
+      "cardWidgetName": "hyprland-settings-structured-family-hl-permission-card",
+      "projectionStatus": "StructuredFamilyReadOnlyProjectionReady",
+      "editorStatus": "StructuredFamilyEditorScaffoldReady",
+      "fixtureParseProofStatus": "StructuredFamilyFixtureParseProofReady",
+      "fixtureRenderProofStatus": "StructuredFamilyFixtureRenderProofReady",
+      "writeStatus": "StructuredFamilyWritesBlockedByDefault",
+      "familySpecificValidationStatus": "StructuredFamilyNeedsFamilySpecificValidation",
+      "syntaxDescription": "permission = target/application/rule, permission key, action",
+      "fieldsModeled": [
+        "target/application/rule",
+        "permission key",
+        "permission value/action",
+        "raw line"
+      ],
+      "unknownUnsupportedFormsPreservedAsRaw": true
+    }
+  ],
+  "fixtureCoverage": {
+    "fixtureDirectory": "tests/fixtures/structured_families",
+    "parseProof": "all seven families parse into structured projections",
+    "renderRereadProof": "all seven families render to temp fixture output and reread with family identity and record count preserved",
+    "realConfigTouched": false,
+    "runtimeMutated": false,
+    "hyprctlReloadRun": false
+  },
+  "uiCoverage": {
+    "allSevenCardsVisible": true,
+    "stableWidgetNamesPresent": true,
+    "controlsReviewOnly": true,
+    "controlsConnectedToMutationHandlers": false
+  },
+  "productionSafety": {
+    "sourceIncludeProductionActivationEnabled": false,
+    "duplicateProductionActivationEnabled": false,
+    "structuredFamilyProductionWritesEnabled": false,
+    "draftPersistenceAdded": false,
+    "realConfigTouched": false,
+    "runtimeMutated": false,
+    "hyprctlReloadRun": false,
+    "hyprland0554MigrationActivated": false
+  },
+  "recommendedNextWork": "Add family-specific fixture write plans for structured-family editors using temp fixtures only; keep production writes blocked by default."
+}

@@ -1,6 +1,13 @@
 {
   "schemaVersion": 1,
   "artifactKind": "future-capability-marathon-handoff",
+  "postMergeStatus": {
+    "mergedIntoMain": true,
+    "historicalHandoff": true,
+    "activeWorkBranch": "structured-family-editors-unified",
+    "activeNextWork": "Add family-specific temp-fixture write plans and validators for structured-family editors while keeping production writes blocked by default.",
+    "doNotContinueSourceIncludeDuplicateRunway": true
+  },
   "currentBranch": "future-capability-marathon",
   "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
   "latestCommit": "see branch HEAD after final handoff commit",

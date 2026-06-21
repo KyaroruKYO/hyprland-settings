@@ -1,0 +1,32 @@
+{
+  "artifactKind": "current-project-handoff",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "71c5161eaa407da984d3c5971de3751d23033a0c",
+  "currentFocus": "unified structured-family editor foundation",
+  "completedThisSprint": [
+    "shared structured-family model for hl.monitor, hl.bind, hl.animation, hl.curve, hl.gesture, hl.device, and hl.permission",
+    "review-only Config page structured-family section with seven stable cards",
+    "fixture parse proof for all seven families",
+    "fixture render/reread proof for all seven families",
+    "project-area continuation scan"
+  ],
+  "safetyBoundaries": {
+    "realConfigTouched": false,
+    "runtimeMutated": false,
+    "hyprctlReloadRun": false,
+    "productionBehaviorEnabled": false,
+    "sourceIncludeProductionActivationEnabled": false,
+    "duplicateProductionActivationEnabled": false,
+    "structuredFamilyWritesEnabled": false,
+    "hyprland0554MigrationActivated": false
+  },
+  "activeNextWork": "Add family-specific temp-fixture write plans and validators for structured-family editors while keeping production writes blocked by default.",
+  "doNotContinue": [
+    "do not continue source/include production activation on this branch",
+    "do not continue duplicate production activation on this branch",
+    "do not enable real structured-family writes",
+    "do not run hyprctl reload",
+    "do not mutate real config or runtime"
+  ]
+}

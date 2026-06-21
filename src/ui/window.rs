@@ -599,6 +599,10 @@ fn build_config_view(
 
     content.append(&profile_mode_detail_section());
 
+    content.append(&structured_family_editor_section(
+        &model.structured_families,
+    ));
+
     content.append(&disabled_future_approval_cards_section());
 
     content.append(&config_section(
@@ -1225,6 +1229,110 @@ fn profile_mode_detail_section() -> gtk::Frame {
     frame.set_tooltip_text(Some(
         "Profile mode detail. Profile switching is not active yet. The app will not change profile files or symlinks.",
     ));
+    frame
+}
+
+fn structured_family_editor_section(
+    families: &[crate::ui::model::UiStructuredFamily],
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-structured-family-section");
+    frame.set_tooltip_text(Some(
+        "Structured family editors. These projections are review-only and cannot write config or reload Hyprland.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(12);
+    content.set_margin_bottom(12);
+    content.set_margin_start(12);
+    content.set_margin_end(12);
+
+    content.append(&title_label("Structured family editors"));
+    content.append(&body_label(
+        "These editors are available as review-only projections.",
+    ));
+    content.append(&small_label("Writes are blocked by default."));
+    content.append(&small_label(
+        "Fixture parse/render proof is available where shown.",
+    ));
+    content.append(&small_label("Real config writes are not active."));
+
+    for family in families {
+        content.append(&structured_family_card(family));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn structured_family_card(family: &crate::ui::model::UiStructuredFamily) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&family.widget_name);
+    frame.set_tooltip_text(Some(
+        "Structured family review card. This is review-only and cannot write config, mutate runtime, or reload Hyprland.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&family.label));
+    append_detail_line(&content, "Syntax", &family.syntax_description);
+    append_detail_line(&content, "Projection status", &family.projection_status);
+    append_detail_line(
+        &content,
+        "Fixture parse proof",
+        &family.fixture_parse_proof_status,
+    );
+    append_detail_line(
+        &content,
+        "Fixture render proof",
+        &family.fixture_render_proof_status,
+    );
+    append_detail_line(
+        &content,
+        "Write status",
+        &format!("{}; blocked by default", family.write_status),
+    );
+    append_detail_line(
+        &content,
+        "Family-specific validation",
+        &family.family_specific_validation_status,
+    );
+    append_detail_line(
+        &content,
+        "Records in current config",
+        &family.entries.len().to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Not proven yet",
+        &family.unproven_record_count.to_string(),
+    );
+    content.append(&small_label(&format!(
+        "Field schema: {}",
+        family.field_schema.join(", ")
+    )));
+    content.append(&small_label(
+        "Structured family editor projection cannot write real config.",
+    ));
+    content.append(&small_label(
+        "Structured family editor projection cannot reload Hyprland.",
+    ));
+    content.append(&small_label(
+        "Structured family editor projection cannot mutate runtime.",
+    ));
+
+    let action = gtk::Button::with_label(&family.review_button_label);
+    action.set_sensitive(false);
+    action.set_tooltip_text(Some(
+        "Review-only control. No config write, runtime mutation, reload, or executor callback is connected.",
+    ));
+    content.append(&action);
+
+    frame.set_child(Some(&content));
     frame
 }
 

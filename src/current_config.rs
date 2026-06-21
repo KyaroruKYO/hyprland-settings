@@ -6,6 +6,7 @@ use crate::config_parser::{
     parse_hyprland_config_file, ParseStatus, ParsedConfig, ParsedConfigLine,
 };
 use crate::source_values::{monitor_source_values_from_records, MonitorSourceValue};
+use crate::structured_family::{structured_family_projections, StructuredFamilyProjection};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CurrentConfigSnapshot {
@@ -184,6 +185,10 @@ impl CurrentConfigSnapshot {
             .collect::<Vec<_>>()
             .join(" · ");
         format!("Structured config entries preserved read-only: {entries}")
+    }
+
+    pub fn structured_family_projections(&self) -> Vec<StructuredFamilyProjection> {
+        structured_family_projections(self)
     }
 }
 

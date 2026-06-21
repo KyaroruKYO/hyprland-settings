@@ -3,6 +3,13 @@
   "artifactKind": "future-capability-marathon-summary",
   "generatedAt": "2026-06-20T00:00:00Z",
   "branch": "future-capability-marathon",
+  "postMergeStatus": {
+    "mergedIntoMain": true,
+    "historicalSummary": true,
+    "activeWorkBranch": "structured-family-editors-unified",
+    "activeNextWork": "Add family-specific temp-fixture write plans and validators for structured-family editors while keeping production writes blocked by default.",
+    "doNotContinueSourceIncludeDuplicateRunway": true
+  },
   "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
   "goal": "Attempt all remaining future capability tracks without activating unsafe production behavior.",
   "safeReleaseScopePreserved": true,
