@@ -31,9 +31,9 @@ use hyprland_settings::future_capability::{
     production_activation_draft_persistence_boundaries, production_activation_draft_reviews,
     production_activation_final_decision_reviews, production_activation_form_reviews,
     production_activation_form_state, production_activation_live_draft_gtk_reviews,
-    production_activation_path_reviews, production_activation_safety_gate_proof_reviews,
-    production_activation_safety_gate_reviews, profile_approval_flow,
-    profile_production_gate_review, profile_target_approval_review,
+    production_activation_opt_in_requirement_reviews, production_activation_path_reviews,
+    production_activation_safety_gate_proof_reviews, production_activation_safety_gate_reviews,
+    profile_approval_flow, profile_production_gate_review, profile_target_approval_review,
     proven_runtime_approval_evidence_summary, render_structured_entry_lossless,
     replace_duplicate_occurrence_safe_env, replace_duplicate_occurrence_with_confirmation_safe_env,
     reset_production_activation_draft, runtime_action_policy, runtime_action_review,
@@ -64,7 +64,8 @@ use hyprland_settings::future_capability::{
     ProductionActivationDraftPersistenceStatus, ProductionActivationDraftStatus,
     ProductionActivationDraftUpdate, ProductionActivationDryRunPolicyStatus,
     ProductionActivationFinalDecisionStatus, ProductionActivationFormStatus,
-    ProductionActivationPathStatus, ProductionActivationRequest, ProductionActivationRequestScope,
+    ProductionActivationOptInRequirementStatus, ProductionActivationPathStatus,
+    ProductionActivationRequest, ProductionActivationRequestScope,
     ProductionActivationSafetyGateProofOverallStatus, ProductionActivationSafetyGateProofStatus,
     ProductionActivationSafetyGateStatus, ProductionActivationSafetyPlan,
     ProductionExecutorWiringState, ProfileProductionGateStatus, ProfileSwitchStatus,
@@ -6827,5 +6828,137 @@ fn production_activation_approval_ux_and_dry_run_policy_stay_disabled() {
             .negative_proofs
             .iter()
             .any(|proof| proof == "dry-run policy design alone cannot authorize live dry-run"));
+    }
+}
+
+#[test]
+fn production_activation_opt_in_requirements_stay_designed_but_disabled() {
+    let reviews = production_activation_opt_in_requirement_reviews();
+    assert_eq!(reviews.len(), 2);
+
+    for review in reviews {
+        assert_eq!(
+            review.status,
+            ProductionActivationOptInRequirementStatus::OptInRequirementsDesignedButDisabled
+        );
+        assert_eq!(
+            review.production_flag_opt_in_status,
+            ProductionActivationOptInRequirementStatus::OptInRequiresExplicitUserAction
+        );
+        assert_eq!(
+            review.executor_wiring_opt_in_status,
+            ProductionActivationOptInRequirementStatus::OptInRequiresExplicitUserAction
+        );
+        assert_eq!(
+            review.separate_steps_status,
+            ProductionActivationOptInRequirementStatus::OptInRequiresSeparateFlagAndExecutorSteps
+        );
+        assert_eq!(
+            review.explicit_user_action_status,
+            ProductionActivationOptInRequirementStatus::OptInRequiresExplicitUserAction
+        );
+        assert_eq!(
+            review.typed_confirmation_status,
+            ProductionActivationOptInRequirementStatus::OptInRequiresTypedConfirmation
+        );
+        assert_eq!(
+            review.report_backed_proof_status,
+            ProductionActivationOptInRequirementStatus::OptInRequiresReportBackedProof
+        );
+        assert_eq!(
+            review.rollback_ready_status,
+            ProductionActivationOptInRequirementStatus::OptInRequiresRollbackReadyState
+        );
+        assert_eq!(
+            review.no_auto_apply_status,
+            ProductionActivationOptInRequirementStatus::OptInRequiresNoAutoApplyProof
+        );
+        assert_eq!(
+            review.copied_fixture_inference_status,
+            ProductionActivationOptInRequirementStatus::OptInCannotBeInferredFromCopiedFixtureProof
+        );
+        assert_eq!(
+            review.draft_state_inference_status,
+            ProductionActivationOptInRequirementStatus::OptInCannotBeInferredFromDraftState
+        );
+        assert_eq!(
+            review.persistence_boundary_inference_status,
+            ProductionActivationOptInRequirementStatus::OptInCannotBeInferredFromPersistenceBoundary
+        );
+        assert_eq!(
+            review.approval_ux_inference_status,
+            ProductionActivationOptInRequirementStatus::OptInCannotBeInferredFromApprovalUx
+        );
+        assert_eq!(
+            review.final_decision_status,
+            ProductionActivationFinalDecisionStatus::FinalDecisionProofSatisfiedButDecisionsMissing
+        );
+        assert_eq!(
+            review.approval_ux_status,
+            ProductionActivationApprovalUxStatus::ApprovalUxDesignedButDisabled
+        );
+        assert_eq!(
+            review.dry_run_policy_status,
+            ProductionActivationDryRunPolicyStatus::DryRunPolicyDesignedButDisabled
+        );
+        assert_eq!(
+            review.copied_fixture_proof_status,
+            ProductionActivationSafetyGateProofOverallStatus::ProductionActivationProofPartiallySatisfiedButDefaultDisabled
+        );
+        assert_eq!(
+            review.draft_persistence_status,
+            ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault
+        );
+        assert_eq!(
+            review.executor_wiring_status,
+            ProductionExecutorWiringState::Unwired
+        );
+        assert_eq!(review.production_status, "Disabled");
+        assert!(!review.production_flag);
+        assert!(!review.production_flag_enabled);
+        assert!(!review.executor_wired);
+        assert!(!review.production_activation_enabled);
+        assert!(!review.category_production_enabled);
+        assert!(!review.production_write_executed);
+        assert!(!review.real_config_touched);
+        assert!(!review.runtime_mutated);
+
+        let lines = review.user_facing_lines().join("\n");
+        assert!(
+            lines.contains("Opt-in requirements status: Opt-in requirements designed but disabled")
+        );
+        assert!(lines.contains("Production flag opt-in: Opt-in requires explicit user action"));
+        assert!(lines.contains("Executor wiring opt-in: Opt-in requires explicit user action"));
+        assert!(lines.contains(
+            "Flag and executor wiring must be separate future steps: Opt-in requires separate flag and executor steps"
+        ));
+        assert!(lines.contains("Explicit user action: Opt-in requires explicit user action"));
+        assert!(lines.contains("Typed confirmation: Opt-in requires typed confirmation"));
+        assert!(lines.contains("Report-backed proof: Opt-in requires report-backed proof"));
+        assert!(lines.contains("Rollback-ready state: Opt-in requires rollback-ready state"));
+        assert!(lines.contains("Production flag: false"));
+        assert!(lines.contains("Executor wiring: Unwired"));
+
+        for proof in [
+            "copied-fixture proof cannot set production flag",
+            "copied-fixture proof cannot wire executor",
+            "approval UX design cannot set production flag",
+            "approval UX design cannot wire executor",
+            "dry-run policy design cannot set production flag",
+            "dry-run policy design cannot wire executor",
+            "final-decision review cannot set production flag",
+            "final-decision review cannot wire executor",
+            "draft edit state cannot set production flag",
+            "draft edit state cannot wire executor",
+            "persistence boundary cannot set production flag",
+            "persistence boundary cannot wire executor",
+            "production flag opt-in cannot automatically wire executor",
+            "executor wiring opt-in cannot automatically set production flag",
+        ] {
+            assert!(
+                review.negative_proofs.iter().any(|item| item == proof),
+                "missing opt-in negative proof: {proof}"
+            );
+        }
     }
 }

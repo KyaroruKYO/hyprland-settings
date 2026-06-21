@@ -107,6 +107,7 @@
     "default_disabled_production_activation_safety_gate_proof",
     "default_disabled_production_activation_final_decisions",
     "default_disabled_production_activation_approval_ux_and_dry_run_policy",
+    "default_disabled_production_activation_opt_in_requirements",
     "future_capability_remaining_dependency_scan"
   ],
   "phasesPartiallyCompleted": [],
@@ -168,6 +169,8 @@
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-FINAL-DECISIONS-REVIEW-LOG.md",
     "data/reports/default-disabled-production-activation-approval-ux-and-dry-run-policy.v0.55.2.json",
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-APPROVAL-UX-AND-DRY-RUN-POLICY-REVIEW-LOG.md",
+    "data/reports/default-disabled-production-activation-opt-in-requirements.v0.55.2.json",
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-OPT-IN-REQUIREMENTS-REVIEW-LOG.md",
     "data/reports/future-capability-remaining-dependency-scan.v0.55.2.json",
     "docs/FUTURE-CAPABILITY-REMAINING-DEPENDENCY-SCAN.md"
   ],
@@ -194,6 +197,7 @@
     "source/include and duplicate activation draft persistence boundary model and UI tests",
     "source/include and duplicate production activation final decision model and UI tests",
     "source/include and duplicate approval UX and live dry-run policy model and UI tests",
+    "source/include and duplicate production flag and executor-wiring opt-in requirements model and UI tests",
     "GTK screenshot/accessibility assertions for source/include and duplicate activation draft-edit cards",
     "remaining dependency scan report assertions"
   ],
@@ -209,7 +213,7 @@
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260620_154855",
     "gtkSafeEnvFieldLabelBlocker": "none"
   },
-  "nextRecommendedAction": "Define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production.",
+  "nextRecommendedAction": "Define final production activation cap or stop condition for source/include and duplicate without enabling production.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "98-98%",
@@ -302,6 +306,7 @@
     "activationDraftPersistenceBoundary": "implemented_but_disabled: source/include and duplicate draft persistence is forbidden by default; no draft is written to disk, storage path is none, no serializer/write path exists, executors remain Unwired, and production flags remain false.",
     "productionActivationSafetyProof": "partially_satisfied_but_default_disabled: source/include and duplicate copied-fixture safety proof satisfies byte-exact backup, write/reread/restore, post-restore verification, rollback, no-auto-apply, and persisted-draft auto-apply proof while final approval, production flag, executor wiring, and live production dry-run remain required.",
     "productionActivationApprovalUxAndDryRunPolicy": "implemented_but_disabled: source/include and duplicate approval UX and live dry-run policy reviews are designed but disabled, require explicit user action, typed confirmation, production flag opt-in, executor wiring opt-in, rollback readiness, and no-real-config/no-reload/no-runtime-mutation dry-run boundaries.",
+    "productionActivationOptInRequirements": "implemented_but_disabled: source/include and duplicate production flag and executor-wiring opt-in requirements reviews are designed but disabled, require separate future steps, explicit user action, typed confirmation, report-backed proof, rollback-ready state, and no-auto-apply proof while keeping flags false and executors Unwired.",
     "remainingDependencyScan": "completed: all tracker categories were classified as capped, production-activation-blocked, high-risk-recovery-blocked, or missing-official-data-blocked; no additional independent production-safe implementation was selected.",
     "runtimeSocketDiagnosis": "live_readonly_evidence: sandbox EPERM explains the prior timeout; outside-sandbox hyprctl version, monitors, and getoption queries succeeded.",
     "runtimeLiveRestoreProof": "live_restore_proven: prior gaps_in value 5 and temporary value 6 were prepared with restore command first; keyword and assignment eval failed before value change, then hl.config eval succeeded and restored readback to 5."
@@ -312,8 +317,8 @@
     "rowReadWriteModel": "future capability tests continue asserting SAFE_WRITABLE_ROWS remains 341; no row inventory changed",
     "safeNormalScalarWrites": "selected-target dry-run integrates with the existing missing/default insertion plan but does not write connected files",
     "releasePackagingTagArtifacts": "v0.1.0 tag and dist/v0.1.0 preserved; no release artifact mutation",
-    "missingDefaultInsertion": "source/include approval UX and live dry-run policy are designed but disabled; production source/include insertion remains blocked with no production flag, no executor wiring, no real config touch, and no runtime mutation",
-    "duplicateResolution": "duplicate approval UX and live dry-run policy are designed but disabled; production duplicate writes remain blocked with no production flag, no executor wiring, no real config touch, and no runtime mutation",
+    "missingDefaultInsertion": "source/include opt-in requirements are designed but disabled; production source/include insertion remains blocked with no production flag, no executor wiring, no real config touch, and no runtime mutation",
+    "duplicateResolution": "duplicate opt-in requirements are designed but disabled; production duplicate writes remain blocked with no production flag, no executor wiring, no real config touch, and no runtime mutation",
     "highRiskDisplayRecovery": "guarded no-op readiness executor added and requires out-of-band recovery before high-risk/display mutation",
     "structuredFamilyEditorsWrites": "guarded hl.bind temp executor added for reversible structured write proof; production structured writes remain blocked",
     "profileModeSwitching": "guarded temp symlink executor added and verifies restored target; real profile switching remains blocked",

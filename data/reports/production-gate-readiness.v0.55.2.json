@@ -158,7 +158,7 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Define the future explicit user-approval UX and live production dry-run policy without wiring source/include or duplicate production executors.",
+  "nextRecommendedWork": "Define final production activation cap or stop condition for source/include and duplicate without enabling production.",
   "activationDecisionReview": {
     "sourceIncludeInsertion": "ApprovedButDefaultDisabled",
     "duplicateReplacement": "ApprovedButDefaultDisabled",

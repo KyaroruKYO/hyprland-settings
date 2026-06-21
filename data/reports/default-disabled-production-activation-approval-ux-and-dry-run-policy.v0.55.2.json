@@ -131,5 +131,5 @@
     "No runtime mutation was run.",
     "No hyprctl reload was run."
   ],
-  "nextRecommendedWork": "Define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production."
+  "nextRecommendedWork": "Define final production activation cap or stop condition for source/include and duplicate without enabling production."
 }

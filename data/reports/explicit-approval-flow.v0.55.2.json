@@ -122,7 +122,7 @@
     "duplicateProductionEnabled": false,
     "unsafeProductionBehaviorEnabled": false
   },
-  "nextRecommendedWork": "Keep explicit approval separate from production activation while designing the future final-approval UX and live production dry-run policy.",
+  "nextRecommendedWork": "Keep explicit approval separate from production activation while defining the final production activation cap or stop condition.",
   "testsAdded": [
     "production activation decision review tests for source/include and duplicate default-disabled paths"
   ],

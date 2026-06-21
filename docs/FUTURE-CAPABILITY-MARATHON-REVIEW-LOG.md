@@ -141,3 +141,12 @@ Added source/include and duplicate production activation safety proof. The proof
 - Live dry-run policy is designed but disabled and requires future explicit user action, real-config boundary decision, no-reload guarantee, no-runtime-mutation guarantee, rollback-ready state, and target/backup/restore proof.
 - Approval UX design alone cannot approve production, and dry-run policy design alone cannot authorize live dry-run.
 - Production flags remain false, executors remain `Unwired`, draft persistence remains forbidden by default, no real config was touched, no runtime mutation was run, and no reload was run.
+
+## 2026-06-20 - Production Activation Opt-In Requirements
+
+- Added source/include and duplicate production flag plus executor-wiring opt-in requirements reviews.
+- Opt-in requirements are designed but disabled.
+- Production flag opt-in and executor-wiring opt-in are separate future steps; neither can auto-enable the other.
+- Explicit user action, typed confirmation, report-backed proof, rollback-ready state, and no-auto-apply proof remain required.
+- Copied-fixture proof, approval UX design, dry-run policy design, final-decision review, draft edit state, and persistence-boundary state cannot set production flags or wire executors.
+- Production flags remain false, executors remain `Unwired`, draft persistence remains forbidden by default, no real config was touched, no runtime mutation was run, and no reload was run.

@@ -8,6 +8,8 @@ Project data version: `v0.55.2`
 
 This sprint adds source/include and duplicate approval UX and live production dry-run policy reviews.
 
+The next layer, `data/reports/default-disabled-production-activation-opt-in-requirements.v0.55.2.json`, defines the disabled production flag and executor-wiring opt-in implementation requirements. It keeps the approval UX and dry-run policy disabled and does not set flags, wire executors, persist drafts, touch real config, mutate runtime, or reload Hyprland.
+
 The reviews describe what future explicit approval and live dry-run policy would require, but they do not approve production, set production flags, wire executors, run live dry-runs, persist draft data, touch real config, reload Hyprland, or mutate runtime.
 
 ## Review State

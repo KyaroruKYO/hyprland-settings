@@ -93,7 +93,7 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production.
+Define final production activation cap or stop condition for source/include and duplicate without enabling production.
 
 ## Progress tracker
 - Core app shell / UI / navigation: 98-99% -> 99-99%
@@ -102,7 +102,7 @@ Define future explicit production flag and executor-wiring opt-in implementation
 - Safe normal-scalar writes: 92-96% -> 95-97%
 - Release packaging/tag/artifacts: 85-95% -> 85-95%
 - Missing/default insertion: 99-99% -> 99-100%
-- Duplicate resolution: 93-95% -> 94-95%
+- Duplicate resolution: 93-95% -> 95-95%
 - High-risk/display recovery: 61-70% -> 62-70%
 - Structured-family editors/writes: 63-73% -> 64-73%
 - Profile/mode switching: 64-73% -> 65-73%
@@ -174,10 +174,12 @@ The branch now includes `data/reports/default-disabled-production-activation-saf
 
 Source/include and duplicate now have final decision reviews after the copied-fixture safety proof layer. These reviews keep final approval, production flag opt-in, executor wiring opt-in, and live production dry-run policy missing/required. They explicitly prove copied-fixture proof, draft edit state, and persistence-boundary state cannot approve production, set production flags, wire executors, or authorize live dry-runs.
 
-Next exact work item: define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production.
+Next exact work item: define final production activation cap or stop condition for source/include and duplicate without enabling production.
 
 ## 2026-06-20 - Production Activation Approval UX And Dry-Run Policy
 
 Source/include and duplicate now have designed-but-disabled approval UX and live production dry-run policy reviews. The approval UX reviews require explicit future user action, typed confirmation, backup/restore acknowledgement, production flag opt-in, and executor wiring opt-in; copied-fixture proof, draft edit state, persistence-boundary state, and final-decision reports cannot approve production. The live dry-run policy reviews require explicit future user action, real-config boundary decision, no-reload guarantee, no-runtime-mutation guarantee, rollback-ready state, and target/backup/restore proof. Approval and dry-run controls remain disabled/not available, production flags remain false, executors remain `Unwired`, draft persistence remains forbidden by default, and no real config/runtime/reload path was added.
 
-Next exact work item: define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production.
+Source/include and duplicate now have designed-but-disabled production flag and executor-wiring opt-in requirements reviews. Flag opt-in and executor wiring must be separate future steps; neither can auto-enable the other, run writes, reload Hyprland, mutate runtime, or touch real config. Explicit user action, typed confirmation, report-backed proof, rollback-ready state, and no-auto-apply proof remain required. Production flags remain false, executors remain `Unwired`, draft persistence remains forbidden by default, and no persistence or production path was added.
+
+Next exact work item: define final production activation cap or stop condition for source/include and duplicate without enabling production.

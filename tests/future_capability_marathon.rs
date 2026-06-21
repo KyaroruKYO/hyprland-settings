@@ -87,12 +87,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production."
+        "Define final production activation cap or stop condition for source/include and duplicate without enabling production."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("executor-wiring opt-in"));
+        .contains("final production activation cap"));
 }
 
 #[test]
@@ -1421,6 +1421,101 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     );
     assert_eq!(
         approval_ux_and_dry_run["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+
+    let opt_in_requirements = read_json(
+        "data/reports/default-disabled-production-activation-opt-in-requirements.v0.55.2.json",
+    );
+    assert_eq!(opt_in_requirements["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        opt_in_requirements["implementation"]["sourceIncludeOptInRequirementsReviewExists"],
+        true
+    );
+    assert_eq!(
+        opt_in_requirements["implementation"]["duplicateOptInRequirementsReviewExists"],
+        true
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            opt_in_requirements["reviews"][key]["status"],
+            "OptInRequirementsDesignedButDisabled"
+        );
+        assert_eq!(
+            opt_in_requirements["reviews"][key]["productionFlagOptInRequired"],
+            true
+        );
+        assert_eq!(
+            opt_in_requirements["reviews"][key]["executorWiringOptInRequired"],
+            true
+        );
+        assert_eq!(
+            opt_in_requirements["reviews"][key]["separateFlagAndExecutorStepsRequired"],
+            true
+        );
+        assert_eq!(
+            opt_in_requirements["reviews"][key]["explicitUserActionRequired"],
+            true
+        );
+        assert_eq!(
+            opt_in_requirements["reviews"][key]["typedConfirmationRequired"],
+            true
+        );
+        assert_eq!(
+            opt_in_requirements["reviews"][key]["reportBackedProofRequired"],
+            true
+        );
+        assert_eq!(
+            opt_in_requirements["reviews"][key]["rollbackReadyStateRequired"],
+            true
+        );
+        assert_eq!(opt_in_requirements["reviews"][key]["productionFlag"], false);
+        assert_eq!(
+            opt_in_requirements["reviews"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(
+            opt_in_requirements["reviews"][key]["productionWriteExecuted"],
+            false
+        );
+        assert_eq!(
+            opt_in_requirements["reviews"][key]["realConfigTouched"],
+            false
+        );
+        assert_eq!(opt_in_requirements["reviews"][key]["runtimeMutated"], false);
+    }
+    assert_eq!(
+        opt_in_requirements["negativeProofs"]["copiedFixtureProofCannotSetProductionFlag"],
+        true
+    );
+    assert_eq!(
+        opt_in_requirements["negativeProofs"]["copiedFixtureProofCannotWireExecutor"],
+        true
+    );
+    assert_eq!(
+        opt_in_requirements["negativeProofs"]["approvalUxDesignCannotSetProductionFlag"],
+        true
+    );
+    assert_eq!(
+        opt_in_requirements["negativeProofs"]["dryRunPolicyDesignCannotWireExecutor"],
+        true
+    );
+    assert_eq!(
+        opt_in_requirements["negativeProofs"]["productionFlagOptInCannotAutomaticallyWireExecutor"],
+        true
+    );
+    assert_eq!(
+        opt_in_requirements["negativeProofs"]
+            ["executorWiringOptInCannotAutomaticallySetProductionFlag"],
+        true
+    );
+    assert_eq!(
+        opt_in_requirements["safety"]["productionFlagWasEnabled"],
+        false
+    );
+    assert_eq!(opt_in_requirements["safety"]["executorWasWired"], false);
+    assert_eq!(
+        opt_in_requirements["safety"]["unsafeProductionBehaviorEnabled"],
         false
     );
 

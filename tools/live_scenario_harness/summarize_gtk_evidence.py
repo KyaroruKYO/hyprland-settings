@@ -458,6 +458,43 @@ def run_summary(run_dir):
                     "productionActivationApprovalUxAndDryRunAllDisabledActionsFound"
                 )
             ),
+            "productionActivationOptInRequirementsAssertionMethod": accessibility.get(
+                "productionActivationOptInRequirementsAssertionMethod"
+            ),
+            "productionActivationOptInRequirementsAssertions": accessibility.get(
+                "productionActivationOptInRequirementsAssertions", {}
+            ),
+            "productionActivationOptInRequirementsAllHeadingsFound": bool(
+                accessibility.get("productionActivationOptInRequirementsAllHeadingsFound")
+            ),
+            "productionActivationOptInRequirementsAllProductionDisabledFound": bool(
+                accessibility.get(
+                    "productionActivationOptInRequirementsAllProductionDisabledFound"
+                )
+            ),
+            "productionActivationOptInRequirementsAllExecutorUnwiredFound": bool(
+                accessibility.get(
+                    "productionActivationOptInRequirementsAllExecutorUnwiredFound"
+                )
+            ),
+            "productionActivationOptInRequirementsAllStatusFound": bool(
+                accessibility.get("productionActivationOptInRequirementsAllStatusFound")
+            ),
+            "productionActivationOptInRequirementsAllRequirementLabelsFound": bool(
+                accessibility.get(
+                    "productionActivationOptInRequirementsAllRequirementLabelsFound"
+                )
+            ),
+            "productionActivationOptInRequirementsAllFlagFalseFound": bool(
+                accessibility.get(
+                    "productionActivationOptInRequirementsAllFlagFalseFound"
+                )
+            ),
+            "productionActivationOptInRequirementsAllDisabledActionsFound": bool(
+                accessibility.get(
+                    "productionActivationOptInRequirementsAllDisabledActionsFound"
+                )
+            ),
             "duplicateConflictDetailNavigationAttempted": bool(
                 accessibility.get("duplicateConflictDetailNavigationAttempted")
             ),
@@ -530,6 +567,9 @@ def aggregate(runs):
     )
     production_activation_approval_ux_and_dry_run_results = (
         production_activation_approval_ux_and_dry_run_assertion_results(runs)
+    )
+    production_activation_opt_in_requirements_results = (
+        production_activation_opt_in_requirements_assertion_results(runs)
     )
 
     return {
@@ -826,6 +866,36 @@ def aggregate(runs):
         "productionActivationApprovalUxAndDryRunAllDisabledActionsFound": all(
             result["disabledActionsProof"] == "live_gtk_atspi_proof"
             for result in production_activation_approval_ux_and_dry_run_results.values()
+        ),
+        "productionActivationOptInRequirementsAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationOptInRequirementsResults": production_activation_opt_in_requirements_results,
+        "productionActivationOptInRequirementsAllHeadingsFound": all(
+            result["headingProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_opt_in_requirements_results.values()
+        ),
+        "productionActivationOptInRequirementsAllProductionDisabledFound": all(
+            result["productionDisabledProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_opt_in_requirements_results.values()
+        ),
+        "productionActivationOptInRequirementsAllExecutorUnwiredFound": all(
+            result["executorWiringProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_opt_in_requirements_results.values()
+        ),
+        "productionActivationOptInRequirementsAllStatusFound": all(
+            result["statusProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_opt_in_requirements_results.values()
+        ),
+        "productionActivationOptInRequirementsAllRequirementLabelsFound": all(
+            result["requirementLabelsProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_opt_in_requirements_results.values()
+        ),
+        "productionActivationOptInRequirementsAllFlagFalseFound": all(
+            result["productionFlagFalseProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_opt_in_requirements_results.values()
+        ),
+        "productionActivationOptInRequirementsAllDisabledActionsFound": all(
+            result["disabledActionsProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_opt_in_requirements_results.values()
         ),
         "fallbackProofUsed": any(level in {"source_model_fallback", "not_proven"} for level in by_area.values())
         or any(level in {"source_model_fallback", "not_proven"} for level in by_blocked_category.values()),
@@ -1981,6 +2051,119 @@ def production_activation_approval_ux_and_dry_run_assertion_results(runs):
     return results
 
 
+def production_activation_opt_in_requirements_assertion_results(runs):
+    decision_keys = [
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+    ]
+    results = {}
+    for key in decision_keys:
+        def assertion_run(field):
+            return next(
+                (
+                    run
+                    for run in runs
+                    if run["accessibility"]
+                    .get("productionActivationOptInRequirementsAssertions", {})
+                    .get(key, {})
+                    .get(field)
+                ),
+                None,
+            )
+
+        heading_run = assertion_run("headingFound")
+        production_run = assertion_run("productionDisabledFound")
+        executor_run = assertion_run("executorWiringFound")
+        status_run = assertion_run("statusFound")
+        requirement_labels_run = next(
+            (
+                run
+                for run in runs
+                if all(
+                    run["accessibility"]
+                    .get("productionActivationOptInRequirementsAssertions", {})
+                    .get(key, {})
+                    .get(field)
+                    for field in [
+                        "productionFlagOptInFound",
+                        "executorWiringOptInFound",
+                        "separateFutureStepsFound",
+                        "explicitUserActionFound",
+                        "typedConfirmationFound",
+                        "reportBackedProofFound",
+                        "rollbackReadyStateFound",
+                    ]
+                )
+            ),
+            None,
+        )
+        flag_false_run = assertion_run("productionFlagFalseFound")
+        action_run = next(
+            (
+                run
+                for run in runs
+                if all(
+                    run["accessibility"]
+                    .get("productionActivationOptInRequirementsAssertions", {})
+                    .get(key, {})
+                    .get(field)
+                    for field in [
+                        "disabledProductionFlagFound",
+                        "disabledExecutorWiringFound",
+                        "disabledConfirmationFound",
+                    ]
+                )
+            ),
+            None,
+        )
+        sample = {}
+        for run in runs:
+            sample = (
+                run["accessibility"]
+                .get("productionActivationOptInRequirementsAssertions", {})
+                .get(key, {})
+            )
+            if sample:
+                break
+        results[key] = {
+            "heading": sample.get("heading"),
+            "headingProof": "live_gtk_atspi_proof" if heading_run else "not_proven",
+            "headingEvidenceRun": heading_run["name"] if heading_run else None,
+            "productionDisabledText": sample.get("productionDisabledText"),
+            "productionDisabledProof": "live_gtk_atspi_proof"
+            if production_run
+            else "not_proven",
+            "productionDisabledEvidenceRun": production_run["name"] if production_run else None,
+            "executorWiring": sample.get("executorWiring"),
+            "executorWiringProof": "live_gtk_atspi_proof" if executor_run else "not_proven",
+            "executorWiringEvidenceRun": executor_run["name"] if executor_run else None,
+            "status": sample.get("status"),
+            "statusProof": "live_gtk_atspi_proof" if status_run else "not_proven",
+            "statusEvidenceRun": status_run["name"] if status_run else None,
+            "requirementLabelsProof": "live_gtk_atspi_proof"
+            if requirement_labels_run
+            else "not_proven",
+            "requirementLabelsEvidenceRun": requirement_labels_run["name"]
+            if requirement_labels_run
+            else None,
+            "productionFlagFalse": sample.get("productionFlagFalse"),
+            "productionFlagFalseProof": "live_gtk_atspi_proof"
+            if flag_false_run
+            else "not_proven",
+            "productionFlagFalseEvidenceRun": flag_false_run["name"]
+            if flag_false_run
+            else None,
+            "disabledProductionFlag": sample.get("disabledProductionFlag"),
+            "disabledExecutorWiring": sample.get("disabledExecutorWiring"),
+            "disabledConfirmation": sample.get("disabledConfirmation"),
+            "disabledActionsProof": "live_gtk_atspi_proof" if action_run else "not_proven",
+            "disabledActionsEvidenceRun": action_run["name"] if action_run else None,
+            "widgetName": sample.get("widgetName"),
+            "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        }
+    return results
+
+
 def matching_category_run(runs, spec):
     for run in runs:
         if run["scenario"] == spec["scenario"] and run["navigationTarget"] == spec["target"]:
@@ -2347,6 +2530,33 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
         ],
         "productionActivationApprovalUxAndDryRunAllDisabledActionsFound": summary[
             "productionActivationApprovalUxAndDryRunAllDisabledActionsFound"
+        ],
+        "productionActivationOptInRequirementsAssertionMethod": summary[
+            "productionActivationOptInRequirementsAssertionMethod"
+        ],
+        "productionActivationOptInRequirementsResults": summary[
+            "productionActivationOptInRequirementsResults"
+        ],
+        "productionActivationOptInRequirementsAllHeadingsFound": summary[
+            "productionActivationOptInRequirementsAllHeadingsFound"
+        ],
+        "productionActivationOptInRequirementsAllProductionDisabledFound": summary[
+            "productionActivationOptInRequirementsAllProductionDisabledFound"
+        ],
+        "productionActivationOptInRequirementsAllExecutorUnwiredFound": summary[
+            "productionActivationOptInRequirementsAllExecutorUnwiredFound"
+        ],
+        "productionActivationOptInRequirementsAllStatusFound": summary[
+            "productionActivationOptInRequirementsAllStatusFound"
+        ],
+        "productionActivationOptInRequirementsAllRequirementLabelsFound": summary[
+            "productionActivationOptInRequirementsAllRequirementLabelsFound"
+        ],
+        "productionActivationOptInRequirementsAllFlagFalseFound": summary[
+            "productionActivationOptInRequirementsAllFlagFalseFound"
+        ],
+        "productionActivationOptInRequirementsAllDisabledActionsFound": summary[
+            "productionActivationOptInRequirementsAllDisabledActionsFound"
         ],
         "fallbackProofUsed": summary["fallbackProofUsed"],
         "issuesFound": issues(summary),

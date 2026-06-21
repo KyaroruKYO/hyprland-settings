@@ -5412,6 +5412,196 @@ impl ProductionActivationApprovalAndDryRunReview {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationOptInRequirementStatus {
+    OptInRequirementsMissing,
+    OptInRequirementsDesignedButDisabled,
+    OptInRequiresExplicitUserAction,
+    OptInRequiresTypedConfirmation,
+    OptInRequiresSeparateFlagAndExecutorSteps,
+    OptInRequiresReportBackedProof,
+    OptInRequiresRollbackReadyState,
+    OptInRequiresNoAutoApplyProof,
+    OptInCannotBeInferredFromCopiedFixtureProof,
+    OptInCannotBeInferredFromDraftState,
+    OptInCannotBeInferredFromPersistenceBoundary,
+    OptInCannotBeInferredFromApprovalUx,
+}
+
+impl ProductionActivationOptInRequirementStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::OptInRequirementsMissing => "Opt-in requirements missing",
+            Self::OptInRequirementsDesignedButDisabled => {
+                "Opt-in requirements designed but disabled"
+            }
+            Self::OptInRequiresExplicitUserAction => "Opt-in requires explicit user action",
+            Self::OptInRequiresTypedConfirmation => "Opt-in requires typed confirmation",
+            Self::OptInRequiresSeparateFlagAndExecutorSteps => {
+                "Opt-in requires separate flag and executor steps"
+            }
+            Self::OptInRequiresReportBackedProof => "Opt-in requires report-backed proof",
+            Self::OptInRequiresRollbackReadyState => "Opt-in requires rollback-ready state",
+            Self::OptInRequiresNoAutoApplyProof => "Opt-in requires no auto-apply proof",
+            Self::OptInCannotBeInferredFromCopiedFixtureProof => {
+                "Opt-in cannot be inferred from copied-fixture proof"
+            }
+            Self::OptInCannotBeInferredFromDraftState => {
+                "Opt-in cannot be inferred from draft state"
+            }
+            Self::OptInCannotBeInferredFromPersistenceBoundary => {
+                "Opt-in cannot be inferred from persistence boundary"
+            }
+            Self::OptInCannotBeInferredFromApprovalUx => {
+                "Opt-in cannot be inferred from approval UX"
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionFlagAndExecutorOptInReview {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub disabled_flag_widget_name: String,
+    pub disabled_executor_widget_name: String,
+    pub disabled_confirm_widget_name: String,
+    pub heading: String,
+    pub scope: ProductionActivationSafetyGateScope,
+    pub status: ProductionActivationOptInRequirementStatus,
+    pub production_flag_opt_in_status: ProductionActivationOptInRequirementStatus,
+    pub executor_wiring_opt_in_status: ProductionActivationOptInRequirementStatus,
+    pub separate_steps_status: ProductionActivationOptInRequirementStatus,
+    pub explicit_user_action_status: ProductionActivationOptInRequirementStatus,
+    pub typed_confirmation_status: ProductionActivationOptInRequirementStatus,
+    pub report_backed_proof_status: ProductionActivationOptInRequirementStatus,
+    pub rollback_ready_status: ProductionActivationOptInRequirementStatus,
+    pub no_auto_apply_status: ProductionActivationOptInRequirementStatus,
+    pub copied_fixture_inference_status: ProductionActivationOptInRequirementStatus,
+    pub draft_state_inference_status: ProductionActivationOptInRequirementStatus,
+    pub persistence_boundary_inference_status: ProductionActivationOptInRequirementStatus,
+    pub approval_ux_inference_status: ProductionActivationOptInRequirementStatus,
+    pub final_decision_status: ProductionActivationFinalDecisionStatus,
+    pub approval_ux_status: ProductionActivationApprovalUxStatus,
+    pub dry_run_policy_status: ProductionActivationDryRunPolicyStatus,
+    pub copied_fixture_proof_status: ProductionActivationSafetyGateProofOverallStatus,
+    pub draft_persistence_status: ProductionActivationDraftPersistenceStatus,
+    pub executor_wiring_status: ProductionExecutorWiringState,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_flag: bool,
+    pub production_activation_enabled: bool,
+    pub category_production_enabled: bool,
+    pub production_write_executed: bool,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub production_flag_enabled: bool,
+    pub executor_wired: bool,
+    pub requirements: Vec<String>,
+    pub negative_proofs: Vec<String>,
+    pub disabled_flag_label: String,
+    pub disabled_executor_label: String,
+    pub disabled_confirm_label: String,
+}
+
+impl ProductionFlagAndExecutorOptInReview {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        let mut lines = vec![
+            self.heading.clone(),
+            format!(
+                "Opt-in requirements status: {}",
+                self.status.user_facing_label()
+            ),
+            format!(
+                "Production flag opt-in: {}",
+                self.production_flag_opt_in_status.user_facing_label()
+            ),
+            format!(
+                "Executor wiring opt-in: {}",
+                self.executor_wiring_opt_in_status.user_facing_label()
+            ),
+            format!(
+                "Flag and executor wiring must be separate future steps: {}",
+                self.separate_steps_status.user_facing_label()
+            ),
+            format!(
+                "Explicit user action: {}",
+                self.explicit_user_action_status.user_facing_label()
+            ),
+            format!(
+                "Typed confirmation: {}",
+                self.typed_confirmation_status.user_facing_label()
+            ),
+            format!(
+                "Report-backed proof: {}",
+                self.report_backed_proof_status.user_facing_label()
+            ),
+            format!(
+                "Rollback-ready state: {}",
+                self.rollback_ready_status.user_facing_label()
+            ),
+            format!(
+                "No auto-apply proof: {}",
+                self.no_auto_apply_status.user_facing_label()
+            ),
+            format!(
+                "Copied-fixture proof cannot set production flag: {}",
+                self.copied_fixture_inference_status.user_facing_label()
+            ),
+            format!(
+                "Copied-fixture proof cannot wire executor: {}",
+                self.copied_fixture_inference_status.user_facing_label()
+            ),
+            format!(
+                "Approval UX cannot set production flag: {}",
+                self.approval_ux_inference_status.user_facing_label()
+            ),
+            format!(
+                "Approval UX cannot wire executor: {}",
+                self.approval_ux_inference_status.user_facing_label()
+            ),
+            format!(
+                "Draft edit cannot set production flag: {}",
+                self.draft_state_inference_status.user_facing_label()
+            ),
+            format!(
+                "Draft edit cannot wire executor: {}",
+                self.draft_state_inference_status.user_facing_label()
+            ),
+            format!(
+                "Persistence boundary cannot set production flag: {}",
+                self.persistence_boundary_inference_status
+                    .user_facing_label()
+            ),
+            format!(
+                "Persistence boundary cannot wire executor: {}",
+                self.persistence_boundary_inference_status
+                    .user_facing_label()
+            ),
+            format!("Production flag: {}", self.production_flag.to_string()),
+            format!(
+                "Executor wiring: {}",
+                self.executor_wiring_status.user_facing_label()
+            ),
+            format!("{}: {}", self.production_label, self.production_status),
+        ];
+        lines.extend(
+            self.requirements
+                .iter()
+                .map(|requirement| format!("Opt-in requirement: {requirement}")),
+        );
+        lines.extend(
+            self.negative_proofs
+                .iter()
+                .map(|proof| format!("Opt-in negative proof: {proof}")),
+        );
+        lines.push(self.disabled_flag_label.clone());
+        lines.push(self.disabled_executor_label.clone());
+        lines.push(self.disabled_confirm_label.clone());
+        lines
+    }
+}
+
 const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
     "data/reports/disabled-approval-ui-cards.v0.55.2.json";
 const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
@@ -5904,6 +6094,14 @@ pub fn production_activation_approval_and_dry_run_reviews(
     ]
 }
 
+pub fn production_activation_opt_in_requirement_reviews(
+) -> Vec<ProductionFlagAndExecutorOptInReview> {
+    vec![
+        source_include_production_activation_opt_in_requirements_review(),
+        duplicate_production_activation_opt_in_requirements_review(),
+    ]
+}
+
 pub fn source_include_production_activation_safety_gate() -> ProductionActivationSafetyGateReview {
     production_activation_safety_gate(SafetyGateSpec {
         widget_name: "hyprland-settings-source-include-production-activation-safety-gate-disabled",
@@ -6003,6 +6201,29 @@ pub fn source_include_production_activation_approval_and_dry_run_review(
     })
 }
 
+pub fn source_include_production_activation_opt_in_requirements_review(
+) -> ProductionFlagAndExecutorOptInReview {
+    production_activation_opt_in_requirements_review(OptInRequirementsSpec {
+        widget_name:
+            "hyprland-settings-source-include-production-activation-opt-in-requirements-disabled",
+        evidence_widget_name:
+            "hyprland-settings-source-include-production-activation-opt-in-requirements-evidence",
+        disabled_flag_widget_name:
+            "hyprland-settings-source-include-production-activation-opt-in-requirements-flag-disabled",
+        disabled_executor_widget_name:
+            "hyprland-settings-source-include-production-activation-opt-in-requirements-executor-disabled",
+        disabled_confirm_widget_name:
+            "hyprland-settings-source-include-production-activation-opt-in-requirements-confirm-disabled",
+        heading: "Source/include production flag and executor-wiring opt-in requirements",
+        scope: ProductionActivationSafetyGateScope::SourceIncludeInsertion,
+        production_label: "Production source/include insertion",
+        disabled_flag_label: "Set source/include production flag (not available)",
+        disabled_executor_label: "Wire source/include production executor (not available)",
+        disabled_confirm_label:
+            "Confirm source/include production opt-in requirements (not available)",
+    })
+}
+
 pub fn duplicate_production_activation_safety_gate() -> ProductionActivationSafetyGateReview {
     production_activation_safety_gate(SafetyGateSpec {
         widget_name: "hyprland-settings-duplicate-production-activation-safety-gate-disabled",
@@ -6094,6 +6315,29 @@ pub fn duplicate_production_activation_approval_and_dry_run_review(
         disabled_flag_label: "Opt in duplicate production flag (not available)",
         disabled_wiring_label: "Opt in duplicate executor wiring (not available)",
         disabled_dry_run_label: "Run duplicate live production dry-run (not available)",
+    })
+}
+
+pub fn duplicate_production_activation_opt_in_requirements_review(
+) -> ProductionFlagAndExecutorOptInReview {
+    production_activation_opt_in_requirements_review(OptInRequirementsSpec {
+        widget_name:
+            "hyprland-settings-duplicate-production-activation-opt-in-requirements-disabled",
+        evidence_widget_name:
+            "hyprland-settings-duplicate-production-activation-opt-in-requirements-evidence",
+        disabled_flag_widget_name:
+            "hyprland-settings-duplicate-production-activation-opt-in-requirements-flag-disabled",
+        disabled_executor_widget_name:
+            "hyprland-settings-duplicate-production-activation-opt-in-requirements-executor-disabled",
+        disabled_confirm_widget_name:
+            "hyprland-settings-duplicate-production-activation-opt-in-requirements-confirm-disabled",
+        heading: "Duplicate production flag and executor-wiring opt-in requirements",
+        scope: ProductionActivationSafetyGateScope::DuplicateReplacement,
+        production_label: "Production duplicate writes",
+        disabled_flag_label: "Set duplicate production flag (not available)",
+        disabled_executor_label: "Wire duplicate production executor (not available)",
+        disabled_confirm_label:
+            "Confirm duplicate production opt-in requirements (not available)",
     })
 }
 
@@ -6862,6 +7106,20 @@ struct ApprovalAndDryRunSpec {
     disabled_dry_run_label: &'static str,
 }
 
+struct OptInRequirementsSpec {
+    widget_name: &'static str,
+    evidence_widget_name: &'static str,
+    disabled_flag_widget_name: &'static str,
+    disabled_executor_widget_name: &'static str,
+    disabled_confirm_widget_name: &'static str,
+    heading: &'static str,
+    scope: ProductionActivationSafetyGateScope,
+    production_label: &'static str,
+    disabled_flag_label: &'static str,
+    disabled_executor_label: &'static str,
+    disabled_confirm_label: &'static str,
+}
+
 fn activation_draft_persistence_boundary(
     spec: PersistenceBoundarySpec,
 ) -> ProductionActivationDraftPersistenceBoundary {
@@ -7276,6 +7534,112 @@ fn production_activation_approval_and_dry_run_review(
         disabled_flag_label: spec.disabled_flag_label.to_string(),
         disabled_wiring_label: spec.disabled_wiring_label.to_string(),
         disabled_dry_run_label: spec.disabled_dry_run_label.to_string(),
+    }
+}
+
+fn production_activation_opt_in_requirements_review(
+    spec: OptInRequirementsSpec,
+) -> ProductionFlagAndExecutorOptInReview {
+    let final_decision = match spec.scope {
+        ProductionActivationSafetyGateScope::SourceIncludeInsertion => {
+            source_include_production_activation_final_decision()
+        }
+        ProductionActivationSafetyGateScope::DuplicateReplacement => {
+            duplicate_production_activation_final_decision()
+        }
+    };
+    let approval = match spec.scope {
+        ProductionActivationSafetyGateScope::SourceIncludeInsertion => {
+            source_include_production_activation_approval_and_dry_run_review()
+        }
+        ProductionActivationSafetyGateScope::DuplicateReplacement => {
+            duplicate_production_activation_approval_and_dry_run_review()
+        }
+    };
+
+    ProductionFlagAndExecutorOptInReview {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        disabled_flag_widget_name: spec.disabled_flag_widget_name.to_string(),
+        disabled_executor_widget_name: spec.disabled_executor_widget_name.to_string(),
+        disabled_confirm_widget_name: spec.disabled_confirm_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        scope: spec.scope,
+        status: ProductionActivationOptInRequirementStatus::OptInRequirementsDesignedButDisabled,
+        production_flag_opt_in_status:
+            ProductionActivationOptInRequirementStatus::OptInRequiresExplicitUserAction,
+        executor_wiring_opt_in_status:
+            ProductionActivationOptInRequirementStatus::OptInRequiresExplicitUserAction,
+        separate_steps_status:
+            ProductionActivationOptInRequirementStatus::OptInRequiresSeparateFlagAndExecutorSteps,
+        explicit_user_action_status:
+            ProductionActivationOptInRequirementStatus::OptInRequiresExplicitUserAction,
+        typed_confirmation_status:
+            ProductionActivationOptInRequirementStatus::OptInRequiresTypedConfirmation,
+        report_backed_proof_status:
+            ProductionActivationOptInRequirementStatus::OptInRequiresReportBackedProof,
+        rollback_ready_status:
+            ProductionActivationOptInRequirementStatus::OptInRequiresRollbackReadyState,
+        no_auto_apply_status:
+            ProductionActivationOptInRequirementStatus::OptInRequiresNoAutoApplyProof,
+        copied_fixture_inference_status:
+            ProductionActivationOptInRequirementStatus::OptInCannotBeInferredFromCopiedFixtureProof,
+        draft_state_inference_status:
+            ProductionActivationOptInRequirementStatus::OptInCannotBeInferredFromDraftState,
+        persistence_boundary_inference_status:
+            ProductionActivationOptInRequirementStatus::OptInCannotBeInferredFromPersistenceBoundary,
+        approval_ux_inference_status:
+            ProductionActivationOptInRequirementStatus::OptInCannotBeInferredFromApprovalUx,
+        final_decision_status: final_decision.status,
+        approval_ux_status: approval.approval_status,
+        dry_run_policy_status: approval.dry_run_status,
+        copied_fixture_proof_status: final_decision.copied_fixture_proof_status,
+        draft_persistence_status: final_decision.draft_persistence_status,
+        executor_wiring_status: ProductionExecutorWiringState::Unwired,
+        production_label: spec.production_label.to_string(),
+        production_status: "Disabled".to_string(),
+        production_flag: false,
+        production_activation_enabled: false,
+        category_production_enabled: false,
+        production_write_executed: false,
+        real_config_touched: false,
+        runtime_mutated: false,
+        production_flag_enabled: false,
+        executor_wired: false,
+        requirements: vec![
+            "production flag opt-in required".to_string(),
+            "executor wiring opt-in required".to_string(),
+            "flag and executor wiring must be separate future steps".to_string(),
+            "explicit user action required".to_string(),
+            "typed confirmation required".to_string(),
+            "report-backed proof required".to_string(),
+            "rollback-ready state required".to_string(),
+            "no auto-apply proof required".to_string(),
+            "no persistence auto-apply requirement".to_string(),
+            "no draft auto-apply requirement".to_string(),
+            "no copied-fixture auto-approval requirement".to_string(),
+            "no runtime mutation by default".to_string(),
+            "no real config mutation by default".to_string(),
+        ],
+        negative_proofs: vec![
+            "copied-fixture proof cannot set production flag".to_string(),
+            "copied-fixture proof cannot wire executor".to_string(),
+            "approval UX design cannot set production flag".to_string(),
+            "approval UX design cannot wire executor".to_string(),
+            "dry-run policy design cannot set production flag".to_string(),
+            "dry-run policy design cannot wire executor".to_string(),
+            "final-decision review cannot set production flag".to_string(),
+            "final-decision review cannot wire executor".to_string(),
+            "draft edit state cannot set production flag".to_string(),
+            "draft edit state cannot wire executor".to_string(),
+            "persistence boundary cannot set production flag".to_string(),
+            "persistence boundary cannot wire executor".to_string(),
+            "production flag opt-in cannot automatically wire executor".to_string(),
+            "executor wiring opt-in cannot automatically set production flag".to_string(),
+        ],
+        disabled_flag_label: spec.disabled_flag_label.to_string(),
+        disabled_executor_label: spec.disabled_executor_label.to_string(),
+        disabled_confirm_label: spec.disabled_confirm_label.to_string(),
     }
 }
 

@@ -426,6 +426,49 @@ PRODUCTION_ACTIVATION_APPROVAL_UX_AND_DRY_RUN_ASSERTIONS = {
     },
 }
 
+PRODUCTION_ACTIVATION_OPT_IN_REQUIREMENTS_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production flag and executor-wiring opt-in requirements",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Opt-in requirements status",
+        "designed": "designed but disabled",
+        "production_flag": "Production flag opt-in",
+        "executor_opt_in": "Executor wiring opt-in",
+        "separate": "Flag and executor wiring must be separate future steps",
+        "explicit_action": "Explicit user action",
+        "typed_confirmation": "Typed confirmation",
+        "report_backed": "Report-backed proof",
+        "rollback": "Rollback-ready state",
+        "production_flag_false": "Production flag: false",
+        "flag": "Set source/include production flag (not available)",
+        "executor_action": "Wire source/include production executor (not available)",
+        "confirm": "Confirm source/include production opt-in requirements (not available)",
+        "widget": "hyprland-settings-source-include-production-activation-opt-in-requirements-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production flag and executor-wiring opt-in requirements",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Opt-in requirements status",
+        "designed": "designed but disabled",
+        "production_flag": "Production flag opt-in",
+        "executor_opt_in": "Executor wiring opt-in",
+        "separate": "Flag and executor wiring must be separate future steps",
+        "explicit_action": "Explicit user action",
+        "typed_confirmation": "Typed confirmation",
+        "report_backed": "Report-backed proof",
+        "rollback": "Rollback-ready state",
+        "production_flag_false": "Production flag: false",
+        "flag": "Set duplicate production flag (not available)",
+        "executor_action": "Wire duplicate production executor (not available)",
+        "confirm": "Confirm duplicate production opt-in requirements (not available)",
+        "widget": "hyprland-settings-duplicate-production-activation-opt-in-requirements-disabled",
+    },
+}
+
 LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT = [
     "Source/include activation draft editing",
     "Duplicate activation draft editing",
@@ -1028,6 +1071,49 @@ def production_activation_approval_ux_and_dry_run_assertions(values):
     return assertions
 
 
+def production_activation_opt_in_requirements_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in PRODUCTION_ACTIVATION_OPT_IN_REQUIREMENTS_ASSERTIONS.items():
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": spec["heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "status": spec["status"],
+            "statusFound": spec["status"].lower() in text
+            and spec["designed"].lower() in text,
+            "productionFlagOptIn": spec["production_flag"],
+            "productionFlagOptInFound": spec["production_flag"].lower() in text,
+            "executorWiringOptIn": spec["executor_opt_in"],
+            "executorWiringOptInFound": spec["executor_opt_in"].lower() in text,
+            "separateFutureSteps": spec["separate"],
+            "separateFutureStepsFound": spec["separate"].lower() in text,
+            "explicitUserAction": spec["explicit_action"],
+            "explicitUserActionFound": spec["explicit_action"].lower() in text,
+            "typedConfirmation": spec["typed_confirmation"],
+            "typedConfirmationFound": spec["typed_confirmation"].lower() in text,
+            "reportBackedProof": spec["report_backed"],
+            "reportBackedProofFound": spec["report_backed"].lower() in text,
+            "rollbackReadyState": spec["rollback"],
+            "rollbackReadyStateFound": spec["rollback"].lower() in text,
+            "productionFlagFalse": spec["production_flag_false"],
+            "productionFlagFalseFound": spec["production_flag_false"].lower() in text,
+            "disabledProductionFlag": spec["flag"],
+            "disabledProductionFlagFound": spec["flag"].lower() in text,
+            "disabledExecutorWiring": spec["executor_action"],
+            "disabledExecutorWiringFound": spec["executor_action"].lower() in text,
+            "disabledConfirmation": spec["confirm"],
+            "disabledConfirmationFound": spec["confirm"].lower() in text,
+            "widgetName": spec["widget"],
+            "widgetNameFound": spec["widget"].lower() in text,
+        }
+    return assertions
+
+
 def node_text(node):
     return "\n".join(accessible_text(node))
 
@@ -1466,6 +1552,15 @@ def main() -> int:
         "productionActivationApprovalUxAndDryRunAllDryRunStatusFound": False,
         "productionActivationApprovalUxAndDryRunAllDryRunBoundariesFound": False,
         "productionActivationApprovalUxAndDryRunAllDisabledActionsFound": False,
+        "productionActivationOptInRequirementsAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationOptInRequirementsAssertions": {},
+        "productionActivationOptInRequirementsAllHeadingsFound": False,
+        "productionActivationOptInRequirementsAllProductionDisabledFound": False,
+        "productionActivationOptInRequirementsAllExecutorUnwiredFound": False,
+        "productionActivationOptInRequirementsAllStatusFound": False,
+        "productionActivationOptInRequirementsAllRequirementLabelsFound": False,
+        "productionActivationOptInRequirementsAllFlagFalseFound": False,
+        "productionActivationOptInRequirementsAllDisabledActionsFound": False,
         "text": [],
         "error": None,
     }
@@ -1567,6 +1662,9 @@ def main() -> int:
             production_activation_approval_ux_and_dry_run_assertions(
                 result["text"] + result["textAfterNavigation"]
             )
+        )
+        opt_in_requirements_assertions = production_activation_opt_in_requirements_assertions(
+            result["text"] + result["textAfterNavigation"]
         )
         result["approvalCardAssertions"] = approval_assertions
         result["approvalCardsAllHeadingsFound"] = all(
@@ -1825,6 +1923,40 @@ def main() -> int:
             and card["disabledExecutorWiringFound"]
             and card["disabledDryRunFound"]
             for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAssertions"] = (
+            opt_in_requirements_assertions
+        )
+        result["productionActivationOptInRequirementsAllHeadingsFound"] = all(
+            card["headingFound"] for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAllStatusFound"] = all(
+            card["statusFound"] for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAllRequirementLabelsFound"] = all(
+            card["productionFlagOptInFound"]
+            and card["executorWiringOptInFound"]
+            and card["separateFutureStepsFound"]
+            and card["explicitUserActionFound"]
+            and card["typedConfirmationFound"]
+            and card["reportBackedProofFound"]
+            and card["rollbackReadyStateFound"]
+            for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAllFlagFalseFound"] = all(
+            card["productionFlagFalseFound"] for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAllDisabledActionsFound"] = all(
+            card["disabledProductionFlagFound"]
+            and card["disabledExecutorWiringFound"]
+            and card["disabledConfirmationFound"]
+            for card in opt_in_requirements_assertions.values()
         )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text

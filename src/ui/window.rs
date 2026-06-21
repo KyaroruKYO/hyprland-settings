@@ -22,12 +22,12 @@ use crate::future_capability::{
     production_activation_decision_reviews, production_activation_draft_edit_reviews,
     production_activation_draft_persistence_boundaries, production_activation_draft_reviews,
     production_activation_final_decision_reviews, production_activation_form_reviews,
-    production_activation_live_draft_gtk_reviews, production_activation_path_reviews,
-    production_activation_safety_gate_proof_reviews, production_activation_safety_gate_reviews,
-    proven_runtime_approval_evidence_summary, source_include_activation_draft_gtk_review,
-    source_include_insertion_review, source_include_selected_target_dry_run_plan,
-    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
-    DuplicateOccurrence, DuplicateProductionGateStatus,
+    production_activation_live_draft_gtk_reviews, production_activation_opt_in_requirement_reviews,
+    production_activation_path_reviews, production_activation_safety_gate_proof_reviews,
+    production_activation_safety_gate_reviews, proven_runtime_approval_evidence_summary,
+    source_include_activation_draft_gtk_review, source_include_insertion_review,
+    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
+    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
     ProductionActivationApprovalAndDryRunReview, ProductionActivationControlReview,
     ProductionActivationDecisionReview, ProductionActivationDraftEditReview,
     ProductionActivationDraftGtkField, ProductionActivationDraftGtkReview,
@@ -36,8 +36,8 @@ use crate::future_capability::{
     ProductionActivationFinalDecisionReview, ProductionActivationFormReview,
     ProductionActivationPathReview, ProductionActivationSafetyGateProofReview,
     ProductionActivationSafetyGateReview, ProductionExecutorWiringState,
-    SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
-    SourceIncludeTargetCandidate,
+    ProductionFlagAndExecutorOptInReview, SourceIncludeInsertionReadiness,
+    SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
 };
 use crate::guarded_write_review::{
     build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
@@ -1908,6 +1908,7 @@ fn production_activation_safety_gate_reviews_section() -> gtk::Frame {
     content.append(&production_activation_safety_gate_proof_reviews_section());
     content.append(&production_activation_final_decision_reviews_section());
     content.append(&production_activation_approval_and_dry_run_reviews_section());
+    content.append(&production_activation_opt_in_requirement_reviews_section());
 
     frame.set_child(Some(&content));
     frame
@@ -2288,6 +2289,154 @@ fn production_activation_approval_and_dry_run_reviews_section() -> gtk::Frame {
             &review,
         ));
     }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_opt_in_requirement_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-opt-in-requirements-section");
+    frame.set_tooltip_text(Some(
+        "Default-disabled production flag and executor-wiring opt-in requirements. These cards cannot set flags or wire executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label(
+        "Production flag and executor-wiring opt-in requirements",
+    ));
+    content.append(&small_label(
+        "Production flag opt-in and executor wiring are separate future gates. Neither gate can auto-enable the other, run writes, reload Hyprland, mutate runtime, or touch real config.",
+    ));
+    content.append(&small_label(
+        "Opt-in requirements are designed but disabled; production flags remain false and executors remain Unwired.",
+    ));
+
+    for review in production_activation_opt_in_requirement_reviews() {
+        content.append(&production_activation_opt_in_requirement_review_card(
+            &review,
+        ));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_opt_in_requirement_review_card(
+    review: &ProductionFlagAndExecutorOptInReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Review-only opt-in requirements. This card has no persistence, mutation, production, compositor refresh, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    content.append(&small_label("Opt-in requirements designed but disabled"));
+    append_detail_line(
+        &content,
+        "Opt-in requirements status",
+        review.status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Production flag opt-in",
+        review.production_flag_opt_in_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring opt-in",
+        review.executor_wiring_opt_in_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Flag and executor wiring must be separate future steps",
+        review.separate_steps_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Explicit user action",
+        review.explicit_user_action_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Typed confirmation",
+        review.typed_confirmation_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Report-backed proof",
+        review.report_backed_proof_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Rollback-ready state",
+        review.rollback_ready_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "No auto-apply proof",
+        review.no_auto_apply_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Production flag",
+        &review.production_flag.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    content.append(&small_label("Opt-in requirements"));
+    for requirement in &review.requirements {
+        content.append(&small_label(requirement));
+    }
+    content.append(&small_label("Opt-in negative proofs"));
+    for proof in &review.negative_proofs {
+        content.append(&small_label(proof));
+    }
+
+    let flag = gtk::Button::with_label(&review.disabled_flag_label);
+    flag.set_widget_name(&review.disabled_flag_widget_name);
+    flag.set_tooltip_text(Some(
+        "Production flag opt-in is not available. This button does not change flags.",
+    ));
+    flag.set_sensitive(false);
+    content.append(&flag);
+
+    let executor = gtk::Button::with_label(&review.disabled_executor_label);
+    executor.set_widget_name(&review.disabled_executor_widget_name);
+    executor.set_tooltip_text(Some(
+        "Executor wiring is not available. This button has no executor callback.",
+    ));
+    executor.set_sensitive(false);
+    content.append(&executor);
+
+    let confirm = gtk::Button::with_label(&review.disabled_confirm_label);
+    confirm.set_widget_name(&review.disabled_confirm_widget_name);
+    confirm.set_tooltip_text(Some(
+        "Opt-in confirmation is not available. This button has no production callback.",
+    ));
+    confirm.set_sensitive(false);
+    content.append(&confirm);
 
     frame.set_child(Some(&content));
     frame
