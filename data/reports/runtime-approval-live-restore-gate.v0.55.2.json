@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "runtime-approval-live-restore-gate",
+  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "startingCommit": "e7f8b382e61aa9b3a0573e66dac432ac5d25bae8",
+  "projectDataVersion": "v0.55.2",
+  "countsPreserved": "341 readable / 341 writable / 0 blocked",
+  "runtimeEvidence": {
+    "allRuntimeWorkOutsideSandbox": true,
+    "hyprctlReadOnlyEvidenceSucceeded": true,
+    "hyprlandVersion": "0.55.4",
+    "setting": "general:gaps_in",
+    "priorValue": "5",
+    "temporaryValue": "6",
+    "successfulMutationSyntax": "hyprctl eval 'hl.config({ general = { gaps_in = VALUE } })'",
+    "mutationCommand": "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'",
+    "restoreCommand": "hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'",
+    "postMutationReadback": "css gap data: 6 6 6 6; set: true",
+    "postRestoreReadback": "css gap data: 5 5 5 5; set: true",
+    "restorationVerified": true,
+    "runtimeLeftRestored": true
+  },
+  "runtimeApprovalReview": {
+    "status": "approved_but_default_disabled",
+    "requiresExactSetting": true,
+    "requiresPriorValue": true,
+    "requiresTemporaryOrProposedValue": true,
+    "requiresMutationCommand": true,
+    "requiresRestoreCommand": true,
+    "requiresPostMutationReadback": true,
+    "requiresPostRestoreReadback": true,
+    "requiresRestorationVerified": true,
+    "requiresExplicitApprovalToken": true,
+    "requiresLiveRestoreProof": true,
+    "requiresEvalSyntaxEvidence": true,
+    "successfulMutationSyntax": "hyprctl eval 'hl.config({ general = { gaps_in = VALUE } })'",
+    "productionFlagDefault": false,
+    "productionRuntimeEnabled": false,
+    "runtimeReloadEnabled": false,
+    "approvalAloneCanEnableProduction": false
+  },
+  "runtimeApprovalUiSurface": {
+    "implemented": true,
+    "status": "implemented_but_disabled",
+    "widgetName": "hyprland-settings-runtime-approval-review-disabled",
+    "evidenceWidgetName": "hyprland-settings-runtime-live-restore-evidence",
+    "disabledActionWidgetName": "hyprland-settings-runtime-approval-enable-disabled",
+    "displaysProvenHlConfigEvalSyntax": true,
+    "displaysRestoreProof": true,
+    "productionRuntimeReloadEnabled": false
+  },
+  "tests": [
+    "runtime_live_restore_approval_review_consumes_proof_but_keeps_production_disabled",
+    "runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production",
+    "runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_production",
+    "runtime_approval_evidence_projection_includes_proof_without_enabling_production",
+    "runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled",
+    "runtime_approval_review_surface_is_called_from_detail_edit_section"
+  ],
+  "safety": {
+    "realConfigTouched": false,
+    "configFileEdited": false,
+    "hyprctlReloadRun": false,
+    "dispatchRun": false,
+    "runtimeTouchedByProof": true,
+    "runtimeRestored": true,
+    "runtimeReloadProductionEnabled": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "v0552DefaultPreserved": true,
+    "hyprland0554MigrationActivated": false
+  },
+  "blockers": [
+    "Production runtime/reload activation remains intentionally unwired.",
+    "Reload still requires config backup and restore proof.",
+    "Dispatch still requires command-specific recovery proof.",
+    "Any future production runtime mutation needs a separate explicit activation flag beyond approval review."
+  ],
+  "nextRecommendedWork": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
+}

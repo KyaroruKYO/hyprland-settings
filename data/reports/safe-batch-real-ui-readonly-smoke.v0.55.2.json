@@ -5,7 +5,7 @@
   "generatedAt": "2026-06-18T00:00:00-07:00",
   "highRiskBlockedCopyVisible": "Blocked: this setting needs a family-specific recovery path before the app can write it.",
   "liveUiSmokePerformed": false,
-  "missingLineDefaultBlockedCopyVisible": "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet.",
+  "missingLineDefaultBlockedCopyVisible": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion.",
   "oneTargetWordingInNewSafeBatchPath": false,
   "reasonLiveUiNotPerformed": "Source-level UI/accessibility wording proof was used to avoid any chance of interacting with Apply during blocker hardening.",
   "safeBatchWriteStatusVisibleInSource": true,

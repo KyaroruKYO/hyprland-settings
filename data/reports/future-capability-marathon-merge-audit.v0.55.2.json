@@ -1,0 +1,98 @@
+{
+  "artifactKind": "future-capability-marathon-merge-audit",
+  "projectDataVersion": "v0.55.2",
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "branch": "future-capability-marathon",
+  "startingCommit": "7e7fa9b68c3611bf1d1224ba54d6e8c6cd1d9950",
+  "targetMainBeforeMerge": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "featureBranchHead": "7e7fa9b68c3611bf1d1224ba54d6e8c6cd1d9950",
+  "auditDecision": "merge allowed",
+  "mergeAllowed": true,
+  "whyMergeAllowedOrBlocked": "future-capability-marathon is safe to merge as a non-production, default-disabled proof/report/UI branch because closeout says to stop source/include and duplicate runway work here, production flags remain false, executors remain Unwired, draft persistence is forbidden by default, real config was not touched, runtime was not mutated, hyprctl reload was not run, v0.55.2 remains preserved, Hyprland 0.55.4 migration remains inactive, v0.1.0 is preserved, dist/v0.1.0 is preserved, and pre-merge validation passed.",
+  "sourceIncludeRunwayClosed": true,
+  "duplicateRunwayClosed": true,
+  "sourceIncludeCapStatus": "BranchCappedForNonProductionRunway",
+  "duplicateCapStatus": "BranchCappedForNonProductionRunway",
+  "futureProductionActivationRequiresSeparateApprovedPhase": true,
+  "productionFlagsRemainFalse": true,
+  "executorsRemainUnwired": true,
+  "draftPersistenceForbiddenByDefault": true,
+  "realConfigTouchedFalse": true,
+  "runtimeMutatedFalse": true,
+  "hyprctlReloadRunFalse": true,
+  "v0552ModelPreserved": true,
+  "hyprland0554MigrationInactive": true,
+  "v010TagPreserved": true,
+  "distV010Preserved": true,
+  "reportsChecked": [
+    "data/reports/future-capability-marathon-closeout.v0.55.2.json",
+    "data/reports/future-capability-production-activation-cap.v0.55.2.json",
+    "data/reports/future-capability-marathon-handoff.v0.55.2.json",
+    "data/reports/future-capability-marathon-summary.v0.55.2.json",
+    "data/reports/future-capability-remaining-dependency-scan.v0.55.2.json"
+  ],
+  "docsChecked": [
+    "docs/FUTURE-CAPABILITY-MARATHON-CLOSEOUT.md",
+    "docs/FUTURE-CAPABILITY-PRODUCTION-ACTIVATION-CAP.md",
+    "docs/FUTURE-CAPABILITY-MARATHON-HANDOFF.md",
+    "docs/PROJECT-STATUS.md"
+  ],
+  "testsChecked": [
+    "tests/future_capability_models.rs",
+    "tests/future_capability_ui.rs",
+    "tests/future_capability_marathon.rs",
+    "tests/gtk_safe_env_automation.rs"
+  ],
+  "runtimeReadOnlyEvidence": {
+    "outsideSandbox": true,
+    "hyprctlVersionReadOnlySucceeded": true,
+    "hyprctlGetoptionGeneralGapsInSucceeded": true,
+    "runtimeMutated": false,
+    "hyprctlReloadRun": false
+  },
+  "unsafeSearchInterpretation": {
+    "activeProductionFlagTrueFound": false,
+    "activeSourceIncludeExecutorWiredFound": false,
+    "activeDuplicateExecutorWiredFound": false,
+    "activeProductionWriteExecutedFound": false,
+    "activeRealConfigTouchedTrueFound": false,
+    "activeRuntimeMutatedTrueFound": false,
+    "activeStaleRunwayContinuationPromptFound": false,
+    "notes": "Search hits for apply_setting_change, write_all, and hyprctl reload are existing write-flow, fixture, documentation, or negative-test references; the closeout/handoff active next work points away from continuing the source/include and duplicate runway."
+  },
+  "validationBeforeMerge": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "jqReports": "passed",
+    "gitDiffCheck": "passed",
+    "cargoBuildRelease": "passed",
+    "gtkMatrix": "not run; no visible UI changes in merge audit"
+  },
+  "mergePlan": [
+    "Commit and push this merge audit on future-capability-marathon.",
+    "Check out main.",
+    "Fast-forward local main from origin/main.",
+    "Merge future-capability-marathon with --no-ff using message Merge future capability marathon.",
+    "Run full validation on main.",
+    "Verify v0.1.0 tag and dist/v0.1.0 are preserved.",
+    "Push main if validation passes."
+  ],
+  "postMergeValidationPlan": [
+    "cargo fmt --check",
+    "cargo check",
+    "cargo test",
+    "jq empty data/reports/*.json",
+    "git diff --check",
+    "cargo build --release",
+    "git show --no-patch --format='%H %s' v0.1.0",
+    "find dist/v0.1.0 release artifact names"
+  ],
+  "releaseBoundary": {
+    "releaseCreated": false,
+    "tagCreated": false,
+    "v010TagModified": false,
+    "distV010Modified": false
+  }
+}

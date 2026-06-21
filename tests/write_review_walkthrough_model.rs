@@ -24,9 +24,11 @@ fn layered() -> LayeredSettingValues {
             LayeredValueOccurrence {
                 setting_id: "general.layout".to_string(),
                 raw_value: "dwindle".to_string(),
+                raw_line: "general:layout = dwindle".to_string(),
                 file_path: PathBuf::from("/tmp/main.conf"),
                 resolved_path: None,
                 line_number: 2,
+                source_depth: 0,
                 role_label: "Main config".to_string(),
                 read_only: true,
                 generated_or_script_managed: false,
@@ -35,9 +37,11 @@ fn layered() -> LayeredSettingValues {
             LayeredValueOccurrence {
                 setting_id: "general.layout".to_string(),
                 raw_value: "master".to_string(),
+                raw_line: "general:layout = master".to_string(),
                 file_path: PathBuf::from("/tmp/current.conf"),
                 resolved_path: Some(PathBuf::from("/tmp/desktop.conf")),
                 line_number: 1,
+                source_depth: 1,
                 role_label: "Current profile".to_string(),
                 read_only: true,
                 generated_or_script_managed: false,

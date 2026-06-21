@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "future-capability-phase-report",
+  "phase": "profile_mode_switching",
+  "startingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseStartingCommit": "895b67281f7551789e5b4a07c0ea849db1eab622",
+  "phaseEndingCommit": null,
+  "goal": "Implement safe design/scaffolding or safe-env-only profile switching proof.",
+  "filesChanged": [
+    "src/future_capability.rs",
+    "tests/future_capability_models.rs",
+    "tests/future_capability_marathon.rs",
+    "data/reports/future-capability-profile-mode-switching.v0.55.2.json"
+  ],
+  "implementationStatus": "safe_env_only",
+  "whatWasImplemented": [
+    "Added safe-env-only profile symlink switching proof for temporary profile fixtures.",
+    "Added restore verification for temp symlink switching.",
+    "Added disabled production profile switch review model.",
+    "Added a disabled profile switch selection review model with current profile, resolved target, selected target, and symlink path fields.",
+    "The selection review distinguishes no target selected from selected-target review while keeping confirmation, reload, and production switch disabled.",
+    "Added forced restore failure test coverage.",
+    "Recorded that real profile/mode switching remains disabled.",
+    "Kept profile/mode safe-batch blocking asserted by deterministic tests.",
+    "Defined safe-env symlink/profile switching as the next acceptable proof path.",
+    "Added a profile target approval review model that distinguishes no selection, missing target, target outside safe-env, and safe-env-only review states.",
+    "Added deterministic tests proving real-session profile paths are refused as outside safe-env and production switching remains disabled.",
+    "No additional production-safe profile switching step was available this sprint without explicit real-session switching approval.",
+    "This sprint rechecked profile/mode switching and found no safe production step without explicit real-session approval and restore protocol.",
+    "Controlled live-test guard requires original symlink targets before profile switching mutation.",
+    "Added a guarded temp-fixture profile switch executor that requires selected target, current symlink, original symlink snapshot, and guard approval, then switches, verifies, restores, and verifies the restored target.",
+    "Added copied-config-tree profile/mode proof that preserves a copied profile symlink, switches it to a copied target, restores the original copied symlink target, and verifies the real symlink remains untouched.",
+    "Added a default-disabled profile/mode production gate review that requires selected target, current symlink path, original symlink target snapshot, copied-config-tree symlink proof, restore proof, and future real-session live proof.",
+    "Connected profile/mode production gate review to the shared explicit approval-flow model; copied symlink proof can reach approved_but_default_disabled, never production enabled by default.",
+    "Added a disabled profile/mode approval review card on the Config page. It shows current symlink, original target, proposed target, copied symlink proof, restore proof, approval status, production-disabled state, blockers, and an insensitive planned enable action.",
+    "The profile/mode approval card is now fed from serialized report data and covered by GTK safe-env screenshot plus AT-SPI accessibility-tree assertions."
+  ],
+  "whatWasNotImplemented": [
+    "No real symlink was switched.",
+    "No real mode script was run.",
+    "No profile switching UI control was activated."
+  ],
+  "testsAdded": [
+    "tests/future_capability_models.rs",
+    "tests/future_capability_marathon.rs",
+    "controlled_live_test_guard_requires_reversible_proof_before_any_mutation",
+    "controlled_live_test_guard_has_category_specific_profile_runtime_and_migration_gates"
+  ],
+  "reportsAdded": [
+    "data/reports/future-capability-profile-mode-switching.v0.55.2.json",
+    "data/reports/explicit-approval-flow.v0.55.2.json",
+    "data/reports/report-backed-approval-card-data.v0.55.2.json",
+    "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json"
+  ],
+  "safetyBoundaries": {
+    "safeEnvProfileFixturesAllowed": true,
+    "disabledProfileSwitchReviewExists": true,
+    "disabledProfileSwitchSelectionReviewExists": true,
+    "confirmationEnabled": false,
+    "forcedRestoreFailureProofExists": true,
+    "realProfileSwitchingAllowed": false,
+    "realSymlinkSwitchingAllowed": false,
+    "reloadAfterSwitchAllowed": false,
+    "profileTargetApprovalReviewExists": true,
+    "realSessionProfileTargetRefused": true,
+    "safeEnvTargetReviewOnly": true,
+    "profileSwitchControlledLiveGuardRequiresSymlinkSnapshot": true,
+    "liveMutationExecutedThisSprint": false,
+    "restorationRequiredThisSprint": true,
+    "profileSwitchGuardedTempExecutorExists": true,
+    "profileSwitchGuardedTempExecutorRestoresSymlinkTarget": true,
+    "profileSwitchGuardedTempExecutorRequiresGuard": true,
+    "profileSwitchGuardedTempExecutorRefusesRealProfilePathByDefault": true,
+    "profileSwitchCopiedConfigTreeProofExists": true,
+    "profileSwitchCopiedConfigTreeRestoresSymlinkTarget": true,
+    "profileSwitchCopiedConfigTreeRealSymlinkUntouched": true,
+    "profileDefaultDisabledProductionGateExists": true,
+    "profileDefaultDisabledProductionGateReady": true,
+    "profileProductionSwitchEnabledByGate": false,
+    "profileExplicitApprovalFlowExists": true,
+    "profileApprovalCanEnableProductionByDefault": false,
+    "profileApprovalUiCardExists": true,
+    "profileApprovalUiCardEnabled": false,
+    "profileDeepApprovalCardDataExists": true,
+    "profileDeepApprovalCardShowsCopiedSymlinkProof": true,
+    "profileDeepApprovalCardShowsRealSymlinkUntouched": true,
+    "profileApprovalUiWidgetName": "hyprland-settings-profile-approval-review-disabled"
+  },
+  "validation": {
+    "phaseValidation": "pending batch validation"
+  },
+  "blockers": [
+    "Needs real-session live proof with exact symlink restoration before any real switch can be considered.",
+    "Needs explicit user approval before any real session profile switch.",
+    "Real mode scripts, reload, AGS restart, and Waybar restart remain blocked."
+  ],
+  "nextRecommendedWork": "Feed profile/mode approval card data from serialized copied symlink proof records while keeping real profile switching disabled by default.",
+  "whetherRealConfigTouched": false,
+  "whetherRuntimeTouched": false,
+  "whetherProductionBehaviorEnabled": false
+}

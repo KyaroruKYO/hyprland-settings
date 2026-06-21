@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "report_backed_approval_card_data",
+  "projectDataVersion": "v0.55.2",
+  "branch": "future-capability-marathon",
+  "startingCommit": "77819a17b97282324198802d8efae3df162e4c5d",
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "sourceReport": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+  "implementation": {
+    "typedAdapterExists": true,
+    "adapter": "load_disabled_approval_cards_from_reports",
+    "fallbackAdapterExists": true,
+    "missingFieldFallback": "Missing from report",
+    "cardsLoadedFromSerializedReport": true,
+    "uiRendersReportBackedProjection": true,
+    "activationDecisionReviewConsumesReportBackedCards": true,
+    "activationDecisionReviewScope": [
+      "sourceIncludeInsertion",
+      "duplicateReplacement"
+    ]
+  },
+  "cards": {
+    "sourceIncludeInsertion": {
+      "reportBacked": true,
+      "proofSource": "copied-config-tree proof",
+      "productionEnabled": false,
+      "screenshotLevelAssertion": "screenshot_plus_accessibility_tree_text_not_ocr"
+    },
+    "duplicateReplacement": {
+      "reportBacked": true,
+      "proofSource": "copied-config-tree proof",
+      "productionEnabled": false,
+      "screenshotLevelAssertion": "screenshot_plus_accessibility_tree_text_not_ocr"
+    },
+    "structuredHlBindWrite": {
+      "reportBacked": true,
+      "proofSource": "copied-config-tree proof",
+      "productionEnabled": false,
+      "screenshotLevelAssertion": "screenshot_plus_accessibility_tree_text_not_ocr"
+    },
+    "profileModeSwitch": {
+      "reportBacked": true,
+      "proofSource": "copied-config-tree profile/symlink proof",
+      "productionEnabled": false,
+      "screenshotLevelAssertion": "screenshot_plus_accessibility_tree_text_not_ocr"
+    },
+    "highRiskDisplayWrite": {
+      "reportBacked": true,
+      "proofSource": "high-risk readiness gate",
+      "productionEnabled": false,
+      "screenshotLevelAssertion": "screenshot_plus_accessibility_tree_text_not_ocr"
+    },
+    "hyprland0554Migration": {
+      "reportBacked": true,
+      "proofSource": "runtime/package/trusted-data records",
+      "productionEnabled": false,
+      "screenshotLevelAssertion": "screenshot_plus_accessibility_tree_text_not_ocr",
+      "activeModel": "v0.55.2",
+      "migrationStatus": "Inactive"
+    }
+  },
+  "screenshotLevelAssertions": {
+    "sourceIncludeInsertion": true,
+    "duplicateReplacement": true,
+    "structuredHlBindWrite": true,
+    "profileModeSwitch": true,
+    "highRiskDisplayWrite": true,
+    "hyprland0554Migration": true,
+    "method": "GTK safe-env screenshots plus AT-SPI accessibility-tree heading, production-disabled, and planned-action assertions; not OCR-based"
+  },
+  "safety": {
+    "allCardsRemainDisabled": true,
+    "unsafeProductionBehaviorEnabled": false,
+    "sourceIncludeInsertionEnabled": false,
+    "duplicateWritesEnabled": false,
+    "structuredWritesEnabled": false,
+    "profileSwitchingEnabled": false,
+    "highRiskDisplayWritesEnabled": false,
+    "runtimeReloadProductionEnabled": false,
+    "hyprland0554MigrationActivated": false,
+    "realConfigTouched": false,
+    "runtimeMutatedThisSprint": false,
+    "hyprctlReloadRun": false,
+    "v0552DefaultPreserved": true,
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false
+  },
+  "nextRecommendedWork": "If interactive collection is desired, convert the disabled GTK activation form field display into still-disabled in-memory draft form plumbing while keeping every production executor unwired.",
+  "activationDecisionReview": {
+    "report": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "inputCard": "hyprland-settings-source-include-approval-review-disabled",
+      "status": "ApprovedButDefaultDisabled",
+      "productionEnabled": false
+    },
+    "duplicateReplacement": {
+      "inputCard": "hyprland-settings-duplicate-approval-review-disabled",
+      "status": "ApprovedButDefaultDisabled",
+      "productionEnabled": false
+    }
+  },
+  "activationPathReview": {
+    "report": "data/reports/default-disabled-production-activation-path.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    },
+    "duplicateReplacement": {
+      "status": "ActivationPathNeedsExplicitProductionFlag",
+      "productionEnabled": false,
+      "productionFlag": false
+    }
+  },
+  "activationControlReview": {
+    "report": "data/reports/default-disabled-production-activation-control.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ValidatedButExecutorUnwired",
+      "requestValidationStatus": "Complete activation request",
+      "safetyPlanValidationStatus": "Complete safety plan",
+      "executorWiringStatus": "Unwired",
+      "productionEnabled": false
+    },
+    "duplicateReplacement": {
+      "status": "ValidatedButExecutorUnwired",
+      "requestValidationStatus": "Complete activation request",
+      "safetyPlanValidationStatus": "Complete safety plan",
+      "executorWiringStatus": "Unwired",
+      "productionEnabled": false
+    }
+  },
+  "activationFormReview": {
+    "report": "data/reports/default-disabled-production-activation-form.v0.55.2.json",
+    "fieldReport": "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ValidatedForReviewOnly",
+      "requestGenerated": true,
+      "safetyPlanGenerated": true,
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "productionEnabled": false
+    },
+    "duplicateReplacement": {
+      "status": "ValidatedForReviewOnly",
+      "requestGenerated": true,
+      "safetyPlanGenerated": true,
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "productionEnabled": false
+    }
+  }
+}

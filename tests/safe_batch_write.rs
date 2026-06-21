@@ -260,6 +260,206 @@ fn safe_batch_with_normal_scalar_changes_across_two_files_succeeds() {
 }
 
 #[test]
+fn safe_batch_inserts_missing_default_normal_scalar_into_explicit_root_file() {
+    let root = temp_root("missing-insertion-success");
+    let config = root.join("hyprland.conf");
+    write_file(&config, "decoration:blur:enabled = true\n");
+    let current = snapshot(vec![(
+        "decoration.blur.enabled",
+        "true",
+        &config,
+        1,
+        "decoration:blur:enabled = true",
+        CurrentValueStatus::Configured,
+    )]);
+    let graph = graph_for(vec![graph_file(&config, Vec::new())], config.clone());
+    let plan = plan_for(
+        &current,
+        &graph,
+        vec![SafeBatchChangeRequest::new(
+            "misc.disable_splash_rendering",
+            "true",
+        )],
+    );
+
+    assert!(plan.can_execute, "{:?}", plan.cannot_execute_reasons);
+    assert!(plan.eligible_changes.is_empty());
+    assert_eq!(plan.insertion_changes.len(), 1);
+    assert_eq!(plan.target_files.len(), 1);
+    assert_eq!(
+        plan.insertion_changes[0].insertion_line,
+        "misc:disable_splash_rendering = true"
+    );
+    assert!(plan.insertion_changes[0]
+        .review_copy
+        .contains("insert this missing/default setting"));
+
+    let report = execute_safe_batch_write_plan(
+        &plan,
+        &SafeBatchExecutionOptions {
+            backup_timestamp: "missing-insertion".to_string(),
+            ..SafeBatchExecutionOptions::default()
+        },
+    );
+
+    assert_eq!(report.status, SafeBatchWriteStatus::Succeeded);
+    assert_eq!(
+        report.verified_changes,
+        vec!["misc.disable_splash_rendering".to_string()]
+    );
+    assert_eq!(report.backups.len(), 1);
+    assert!(report.backups[0].bytes_equal);
+    assert!(!report.hyprland_reload_attempted);
+    assert!(!report.mutating_hyprctl_used);
+    assert!(!report.runtime_mutated);
+    let updated = fs::read_to_string(&config).expect("updated config should read");
+    assert!(updated.contains("# Added by Hyprland Settings safe-batch missing/default insertion"));
+    assert!(updated.contains("misc:disable_splash_rendering = true"));
+}
+
+#[test]
+fn safe_batch_missing_default_insertion_restores_after_verification_failure() {
+    let root = temp_root("missing-insertion-restore");
+    let config = root.join("hyprland.conf");
+    let original = "decoration:blur:enabled = true\n";
+    write_file(&config, original);
+    let current = snapshot(vec![(
+        "decoration.blur.enabled",
+        "true",
+        &config,
+        1,
+        "decoration:blur:enabled = true",
+        CurrentValueStatus::Configured,
+    )]);
+    let graph = graph_for(vec![graph_file(&config, Vec::new())], config.clone());
+    let plan = plan_for(
+        &current,
+        &graph,
+        vec![SafeBatchChangeRequest::new(
+            "misc.disable_splash_rendering",
+            "true",
+        )],
+    );
+
+    let report = execute_safe_batch_write_plan(
+        &plan,
+        &SafeBatchExecutionOptions {
+            backup_timestamp: "missing-verify-failure".to_string(),
+            force_verification_failure_for: Some("misc.disable_splash_rendering".to_string()),
+            ..SafeBatchExecutionOptions::default()
+        },
+    );
+
+    assert_eq!(report.status, SafeBatchWriteStatus::RecoveredFailure);
+    assert!(report.recovery_attempted);
+    assert!(report.recovery_succeeded);
+    assert!(report.restore_verification_succeeded);
+    assert_eq!(
+        fs::read_to_string(&config).expect("config should read"),
+        original
+    );
+}
+
+#[test]
+fn safe_batch_missing_default_insertion_blocks_managed_duplicate_and_ambiguous_targets() {
+    let root = temp_root("missing-insertion-blocked");
+    let normal = root.join("hyprland.conf");
+    let generated = root.join("generated.conf");
+    let script = root.join("script.conf");
+    let symlink = root.join("current.conf");
+    write_file(&normal, "decoration:blur:enabled = true\n");
+    write_file(&generated, "decoration:blur:enabled = true\n");
+    write_file(&script, "decoration:blur:enabled = true\n");
+    write_file(&symlink, "decoration:blur:enabled = true\n");
+    let current = snapshot(vec![(
+        "decoration.blur.enabled",
+        "true",
+        &normal,
+        1,
+        "decoration:blur:enabled = true",
+        CurrentValueStatus::Configured,
+    )]);
+
+    for (target, hints, reason) in [
+        (
+            generated.clone(),
+            vec![ConfigManagementHintKind::GeneratedFile],
+            SafeBatchEligibility::BlockedGeneratedFile,
+        ),
+        (
+            script.clone(),
+            vec![ConfigManagementHintKind::ScriptManaged],
+            SafeBatchEligibility::BlockedScriptManaged,
+        ),
+        (
+            symlink.clone(),
+            vec![ConfigManagementHintKind::SymlinkManaged],
+            SafeBatchEligibility::BlockedSymlinkManaged,
+        ),
+    ] {
+        let graph = graph_for(vec![graph_file(&target, hints)], target.clone());
+        let plan = plan_for(
+            &current,
+            &graph,
+            vec![SafeBatchChangeRequest::new(
+                "misc.disable_splash_rendering",
+                "true",
+            )],
+        );
+        assert!(!plan.can_execute);
+        assert!(plan.insertion_changes.is_empty());
+        assert!(plan
+            .blocked_changes
+            .iter()
+            .any(|change| change.reason == reason));
+    }
+
+    let duplicate_config = root.join("duplicate.conf");
+    write_file(&duplicate_config, "misc:disable_splash_rendering = false\n");
+    let duplicate_graph = graph_for(
+        vec![graph_file(&duplicate_config, Vec::new())],
+        duplicate_config,
+    );
+    let duplicate_plan = plan_for(
+        &current,
+        &duplicate_graph,
+        vec![SafeBatchChangeRequest::new(
+            "misc.disable_splash_rendering",
+            "true",
+        )],
+    );
+    assert!(!duplicate_plan.can_execute);
+    assert!(duplicate_plan.insertion_changes.is_empty());
+    assert!(duplicate_plan
+        .blocked_changes
+        .iter()
+        .any(|change| change.reason == SafeBatchEligibility::BlockedDuplicateConflict));
+
+    let included = root.join("appearance.conf");
+    write_file(&included, "decoration:shadow:enabled = false\n");
+    let ambiguous_graph = graph_for(
+        vec![
+            graph_file(&normal, Vec::new()),
+            graph_file(&included, Vec::new()),
+        ],
+        normal.clone(),
+    );
+    let ambiguous_plan = plan_for(
+        &current,
+        &ambiguous_graph,
+        vec![SafeBatchChangeRequest::new(
+            "misc.disable_splash_rendering",
+            "true",
+        )],
+    );
+    assert!(!ambiguous_plan.can_execute);
+    assert!(ambiguous_plan
+        .blocked_changes
+        .iter()
+        .any(|change| change.reason == SafeBatchEligibility::BlockedMissingLine));
+}
+
+#[test]
 fn blocked_categories_prevent_batch_execution_and_partial_apply_by_default() {
     let root = temp_root("blocked");
     let normal = root.join("normal.conf");

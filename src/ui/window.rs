@@ -15,8 +15,37 @@ use crate::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValueSourceStatus,
 };
 use crate::export::ExportBundle;
+use crate::future_capability::{
+    apply_production_activation_draft_gtk_update, disabled_future_approval_card_projections,
+    duplicate_activation_draft_gtk_review, duplicate_production_approval_gate,
+    production_activation_approval_and_dry_run_reviews, production_activation_cap_reviews,
+    production_activation_control_reviews, production_activation_decision_reviews,
+    production_activation_draft_edit_reviews, production_activation_draft_persistence_boundaries,
+    production_activation_draft_reviews, production_activation_final_decision_reviews,
+    production_activation_form_reviews, production_activation_live_draft_gtk_reviews,
+    production_activation_opt_in_requirement_reviews, production_activation_path_reviews,
+    production_activation_safety_gate_proof_reviews, production_activation_safety_gate_reviews,
+    proven_runtime_approval_evidence_summary, source_include_activation_draft_gtk_review,
+    source_include_insertion_review, source_include_selected_target_dry_run_plan,
+    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
+    DuplicateOccurrence, DuplicateProductionGateStatus,
+    ProductionActivationApprovalAndDryRunReview, ProductionActivationCapReview,
+    ProductionActivationControlReview, ProductionActivationDecisionReview,
+    ProductionActivationDraftEditReview, ProductionActivationDraftGtkField,
+    ProductionActivationDraftGtkReview, ProductionActivationDraftGtkState,
+    ProductionActivationDraftGtkUpdate, ProductionActivationDraftPersistenceBoundary,
+    ProductionActivationDraftReview, ProductionActivationFinalDecisionReview,
+    ProductionActivationFormReview, ProductionActivationPathReview,
+    ProductionActivationSafetyGateProofReview, ProductionActivationSafetyGateReview,
+    ProductionExecutorWiringState, ProductionFlagAndExecutorOptInReview,
+    SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
+    SourceIncludeTargetCandidate,
+};
 use crate::guarded_write_review::{
     build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
+};
+use crate::missing_default_insertion::{
+    build_missing_default_insertion_plan, MissingDefaultInsertionRequest,
 };
 use crate::one_target_pilot_live_visual_smoke::disabled_live_visual_smoke_review_ui_lines;
 use crate::one_target_pilot_manual_review::disabled_manual_smoke_review_ui_lines;
@@ -569,6 +598,8 @@ fn build_config_view(
     content.append(&connected_files_review_section(&model.config_discovery));
 
     content.append(&profile_mode_detail_section());
+
+    content.append(&disabled_future_approval_cards_section());
 
     content.append(&config_section(
         "Future changes",
@@ -1197,6 +1228,2340 @@ fn profile_mode_detail_section() -> gtk::Frame {
     frame
 }
 
+fn disabled_future_approval_cards_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-disabled-approval-cards-section");
+    frame.set_tooltip_text(Some(
+        "Disabled future approval reviews. These cards show proof and blockers without enabling production behavior.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(12);
+    content.set_margin_bottom(12);
+    content.set_margin_start(12);
+    content.set_margin_end(12);
+    content.append(&title_label("Future approval reviews"));
+    content.append(&body_label(
+        "These review cards show proof and blockers for future capabilities.",
+    ));
+    content.append(&small_label(
+        "All planned enable controls are disabled. No production behavior is enabled here.",
+    ));
+
+    for card in disabled_future_approval_card_projections() {
+        content.append(&disabled_future_approval_card(&card));
+    }
+    content.append(&production_activation_decision_reviews_section());
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn disabled_future_approval_card(card: &DisabledApprovalCardProjection) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&card.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled approval review card. This is review-only and cannot enable production behavior.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&card.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Approval evidence summary. This card is disabled and has no mutation handler.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&card.heading));
+    for line in &card.summary_lines {
+        content.append(&small_label(line));
+    }
+    append_detail_line(&content, "Proof source", &card.proof_record.source);
+    append_detail_line(&content, "Proof status", &card.proof_record.status);
+    for (label, value) in &card.proof_record.fields {
+        append_detail_line(&content, label, value);
+    }
+    if !card.preconditions.is_empty() {
+        content.append(&body_label("Preconditions"));
+        for precondition in &card.preconditions {
+            append_detail_line(
+                &content,
+                &precondition.label,
+                &format!("{} ({})", precondition.value, precondition.status),
+            );
+        }
+    }
+    if !card.restore_evidence.is_empty() {
+        content.append(&body_label("Restore and unchanged evidence"));
+        for evidence in &card.restore_evidence {
+            append_detail_line(&content, &evidence.label, &evidence.status);
+        }
+    }
+    for (label, value) in &card.evidence_lines {
+        append_detail_line(&content, label, value);
+    }
+    append_detail_line(&content, "Production status", &card.production_status);
+    content.append(&body_label("Blockers"));
+    for blocker in &card.blockers {
+        content.append(&small_label(blocker));
+    }
+
+    let enable = gtk::Button::with_label(&card.disabled_action_label);
+    enable.set_widget_name(&card.disabled_action_widget_name);
+    enable.set_tooltip_text(Some(
+        "Disabled future action. This does not enable production behavior or run any executor.",
+    ));
+    enable.set_sensitive(false);
+    content.append(&enable);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_decision_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-decision-section");
+    frame.set_tooltip_text(Some(
+        "Default-disabled future production activation decision reviews. These consume report-backed card data but cannot enable production behavior.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label(
+        "Future production activation decision reviews",
+    ));
+    content.append(&small_label(
+        "These reviews use report-backed approval card data as input. Production flags stay disabled.",
+    ));
+
+    for review in production_activation_decision_reviews() {
+        content.append(&production_activation_decision_review_card(&review));
+    }
+    content.append(&production_activation_path_reviews_section());
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_decision_review_card(
+    review: &ProductionActivationDecisionReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled production activation decision review. This is review-only and cannot run production executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Report-backed decision evidence. This review has no mutation handler.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(
+        &content,
+        "Decision status",
+        review.status.user_facing_label(),
+    );
+    append_detail_line(&content, "Decision input source", &review.input_source);
+    if !review.required_proof_summary.is_empty() {
+        content.append(&body_label("Required proof summary"));
+        for proof in &review.required_proof_summary {
+            content.append(&small_label(proof));
+        }
+    }
+    content.append(&body_label("Decision blockers"));
+    if review.blockers.is_empty() {
+        content.append(&small_label(
+            "No missing proof blockers; production remains disabled.",
+        ));
+    } else {
+        for blocker in &review.blockers {
+            content.append(&small_label(blocker));
+        }
+    }
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let enable = gtk::Button::with_label(&review.disabled_action_label);
+    enable.set_widget_name(&review.disabled_action_widget_name);
+    enable.set_tooltip_text(Some(
+        "Disabled planned activation. This does not enable production behavior.",
+    ));
+    enable.set_sensitive(false);
+    content.append(&enable);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_path_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-path-section");
+    frame.set_tooltip_text(Some(
+        "Default-disabled production activation path reviews. These show the future steps required before production activation could ever be considered.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Future production activation paths"));
+    content.append(&small_label(
+        "These paths consume approved decisions but do not enable production flags or run executors.",
+    ));
+
+    for review in production_activation_path_reviews() {
+        content.append(&production_activation_path_review_card(&review));
+    }
+    content.append(&production_activation_control_reviews_section());
+    content.append(&production_activation_form_reviews_section());
+    content.append(&production_activation_draft_reviews_section());
+    content.append(&production_activation_draft_edit_reviews_section());
+    content.append(&production_activation_live_draft_edit_reviews_section());
+    content.append(&production_activation_draft_persistence_boundary_section());
+    content.append(&production_activation_safety_gate_reviews_section());
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_path_review_card(review: &ProductionActivationPathReview) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled production activation path. This card cannot enable writes or run production executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Activation path evidence. This path is review-only and has no mutation handler.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(
+        &content,
+        "Input decision",
+        review.input_decision_status.user_facing_label(),
+    );
+    append_detail_line(&content, "Proof source", &review.input_proof_source);
+    append_detail_line(
+        &content,
+        "Activation path status",
+        review.status.user_facing_label(),
+    );
+    content.append(&body_label("Required before enabling"));
+    for requirement in &review.required_before_enabling {
+        content.append(&small_label(requirement));
+    }
+    content.append(&body_label("Activation path blockers"));
+    for blocker in &review.blockers {
+        content.append(&small_label(blocker));
+    }
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let start = gtk::Button::with_label(&review.disabled_action_label);
+    start.set_widget_name(&review.disabled_action_widget_name);
+    start.set_tooltip_text(Some(
+        "Disabled planned activation path. This does not enable production behavior.",
+    ));
+    start.set_sensitive(false);
+    content.append(&start);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_control_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-control-section");
+    frame.set_tooltip_text(Some(
+        "Default-disabled production activation controls. These validate request and safety-plan inputs but keep executors unwired.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Final production activation controls"));
+    content.append(&small_label(
+        "These controls validate complete inputs for review only. Production executors remain unwired.",
+    ));
+
+    for review in production_activation_control_reviews() {
+        content.append(&production_activation_control_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_control_review_card(
+    review: &ProductionActivationControlReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled production activation control. This card validates review inputs only and cannot run an executor.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Activation control evidence. Request and safety-plan validation are review-only.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(
+        &content,
+        "Input path status",
+        review.input_path_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Control status",
+        review.status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Request validation",
+        &review.request_validation_status,
+    );
+    append_detail_line(
+        &content,
+        "Safety plan validation",
+        &review.safety_plan_validation_status,
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    content.append(&body_label("Activation control blockers"));
+    if review.blockers.is_empty() {
+        content.append(&small_label(
+            "No review blockers; executor remains unwired and production remains disabled.",
+        ));
+    } else {
+        for blocker in &review.blockers {
+            content.append(&small_label(blocker));
+        }
+    }
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let validate = gtk::Button::with_label(&review.disabled_action_label);
+    validate.set_widget_name(&review.disabled_action_widget_name);
+    validate.set_tooltip_text(Some(
+        "Disabled planned validation control. This has no mutation handler.",
+    ));
+    validate.set_sensitive(false);
+    content.append(&validate);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_form_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-form-section");
+    frame.set_tooltip_text(Some(
+        "Review-only production activation forms. These collect request and safety-plan fields without wiring executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Review-only activation request forms"));
+    content.append(&small_label(
+        "These form projections collect activation request data for validation only. Production writes remain disabled.",
+    ));
+
+    for review in production_activation_form_reviews() {
+        content.append(&production_activation_form_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_draft_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-draft-section");
+    frame.set_tooltip_text(Some(
+        "In-memory activation drafts. These drafts are review-only, non-persistent, and cannot run executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("In-memory activation drafts"));
+    content.append(&small_label(
+        "These draft states model future form edits in memory only. The visible form fields remain disabled.",
+    ));
+
+    for review in production_activation_draft_reviews() {
+        content.append(&production_activation_draft_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_draft_edit_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-draft-edit-section");
+    frame.set_tooltip_text(Some(
+        "Still-disabled activation draft editing. Edit updates are modeled in memory only and cannot persist or run executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Activation draft editing"));
+    content.append(&small_label(
+        "Editable draft mode is modeled for memory-only validation. Live fields and controls remain disabled.",
+    ));
+
+    for review in production_activation_draft_edit_reviews() {
+        content.append(&production_activation_draft_edit_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_draft_edit_review_card(
+    review: &ProductionActivationDraftEditReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled activation draft edit surface. This does not persist data or wire production executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Draft edit evidence. Editable updates are modeled in memory only.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(&content, "Editing mode", review.mode.user_facing_label());
+    append_detail_line(&content, "Draft dirty state", &review.dirty_state);
+    append_detail_line(
+        &content,
+        "Draft validation",
+        review.draft_status.user_facing_label(),
+    );
+    append_detail_line(&content, "In-memory only", &review.persistence_status);
+    append_detail_line(
+        &content,
+        "Form validation",
+        review.form_validation_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Control validation",
+        review.control_validation_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let mode = gtk::Button::with_label(review.mode.user_facing_label());
+    mode.set_widget_name(&review.mode_widget_name);
+    mode.set_tooltip_text(Some(
+        "Disabled draft editing mode control. This has no live edit callback.",
+    ));
+    mode.set_sensitive(false);
+    content.append(&mode);
+
+    let update = gtk::Button::with_label(&review.disabled_update_label);
+    update.set_widget_name(&review.disabled_update_widget_name);
+    update.set_tooltip_text(Some(
+        "Disabled planned draft edit update. This has no persistence, mutation, or executor handler.",
+    ));
+    update.set_sensitive(false);
+    content.append(&update);
+
+    let reset = gtk::Button::with_label(&review.disabled_reset_label);
+    reset.set_widget_name(&review.disabled_reset_widget_name);
+    reset.set_tooltip_text(Some(
+        "Disabled planned draft edit reset. This has no persistence, mutation, or executor handler.",
+    ));
+    reset.set_sensitive(false);
+    content.append(&reset);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_live_draft_edit_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-live-draft-edit-section");
+    frame.set_tooltip_text(Some(
+        "Live activation draft field edits update memory only. No draft persistence or production executor is available.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Live memory-only activation draft editing"));
+    content.append(&small_label(
+        "These editable draft fields update in-memory review state only. They are not saved to disk and cannot run production writes.",
+    ));
+
+    for review in production_activation_live_draft_gtk_reviews() {
+        content.append(&production_activation_live_draft_edit_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_draft_persistence_boundary_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(
+        "hyprland-settings-production-activation-draft-persistence-boundary-section",
+    );
+    frame.set_tooltip_text(Some(
+        "Activation draft persistence is forbidden by default. This section adds no storage or serializer.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Activation draft persistence boundary"));
+    content.append(&small_label(
+        "Draft persistence is not available. No draft data is saved, no storage path exists, and production executors remain unwired.",
+    ));
+
+    for boundary in production_activation_draft_persistence_boundaries() {
+        content.append(&production_activation_draft_persistence_boundary_card(
+            &boundary,
+        ));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_draft_persistence_boundary_card(
+    boundary: &ProductionActivationDraftPersistenceBoundary,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&boundary.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled activation draft persistence boundary. This has no storage, serializer, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&boundary.evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&boundary.heading));
+    append_detail_line(
+        &content,
+        "Persistence status",
+        boundary.status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Persistence enabled",
+        &boundary.persistence_enabled.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Draft written to disk",
+        &boundary.draft_written_to_disk.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Storage path",
+        boundary.storage_path.as_deref().unwrap_or("none"),
+    );
+    append_detail_line(
+        &content,
+        "Serializer called",
+        &boundary.serializer_called.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Storage directory created",
+        &boundary.storage_directory_created.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        boundary.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &boundary.production_label,
+        &boundary.production_status,
+    );
+
+    content.append(&small_label("Required before persistence"));
+    for requirement in &boundary.required_before_persistence {
+        content.append(&small_label(&format!(
+            "Required before persistence: {requirement}"
+        )));
+    }
+
+    let enable = gtk::Button::with_label(&boundary.disabled_enable_label);
+    enable.set_widget_name(&format!("{}-enable-disabled", boundary.widget_name));
+    enable.set_tooltip_text(Some(
+        "Draft persistence is not available. This button has no persistence or executor callback.",
+    ));
+    enable.set_sensitive(false);
+    content.append(&enable);
+
+    let clear = gtk::Button::with_label(&boundary.disabled_clear_label);
+    clear.set_widget_name(&format!("{}-clear-disabled", boundary.widget_name));
+    clear.set_tooltip_text(Some(
+        "There is no persisted draft to clear. This button has no storage callback.",
+    ));
+    clear.set_sensitive(false);
+    content.append(&clear);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_safety_gate_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-safety-gates-section");
+    frame.set_tooltip_text(Some(
+        "Default-disabled production activation safety gates. These show the missing proof required before production activation could ever be considered.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Production activation safety gates"));
+    content.append(&small_label(
+        "Production activation is blocked by default. Executors remain unwired, draft persistence remains forbidden, and no write path is available.",
+    ));
+    content.append(&small_label(
+        "Production activation blocked by default until every required proof item is satisfied.",
+    ));
+
+    for gate in production_activation_safety_gate_reviews() {
+        content.append(&production_activation_safety_gate_review_card(&gate));
+    }
+    content.append(&production_activation_safety_gate_proof_reviews_section());
+    content.append(&production_activation_final_decision_reviews_section());
+    content.append(&production_activation_approval_and_dry_run_reviews_section());
+    content.append(&production_activation_opt_in_requirement_reviews_section());
+    content.append(&production_activation_cap_reviews_section());
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_safety_gate_review_card(
+    gate: &ProductionActivationSafetyGateReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&gate.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled production activation safety gate. This has no persistence, mutation, production, compositor refresh, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&gate.evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&gate.heading));
+    append_detail_line(&content, "Gate status", gate.status.user_facing_label());
+    append_detail_line(
+        &content,
+        "Report-backed proof",
+        &gate.report_backed_proof_status,
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        gate.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(&content, &gate.production_label, &gate.production_status);
+    append_detail_line(
+        &content,
+        "Draft persistence boundary",
+        gate.draft_persistence_status.user_facing_label(),
+    );
+
+    content.append(&small_label("Required before production activation"));
+    for requirement in &gate.requirements {
+        append_detail_line(&content, &requirement.label, &requirement.status);
+    }
+
+    content.append(&small_label("Safety gate blockers"));
+    for blocker in &gate.blockers {
+        content.append(&small_label(blocker));
+    }
+
+    let review = gtk::Button::with_label(&gate.disabled_review_label);
+    review.set_widget_name(&gate.disabled_review_widget_name);
+    review.set_tooltip_text(Some(
+        "Gate review is not available. This button has no persistence, mutation, production, compositor refresh, or executor callback.",
+    ));
+    review.set_sensitive(false);
+    content.append(&review);
+
+    let enable = gtk::Button::with_label(&gate.disabled_enable_label);
+    enable.set_widget_name(&gate.disabled_enable_widget_name);
+    enable.set_tooltip_text(Some(
+        "Production activation is not available. This button has no write or executor callback.",
+    ));
+    enable.set_sensitive(false);
+    content.append(&enable);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_safety_gate_proof_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-safety-proof-section");
+    frame.set_tooltip_text(Some(
+        "Copied-fixture production activation safety proof. This is review-only and has no production executor callback.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Production activation safety proof"));
+    content.append(&small_label(
+        "Copied-fixture proof can satisfy backup, dry-run, reread, restore, and post-restore checks without touching real config.",
+    ));
+    content.append(&small_label(
+        "Production activation proof partially satisfied but default-disabled.",
+    ));
+    content.append(&small_label(
+        "Final approval, production flag, executor wiring, and live production dry-run decisions remain unresolved.",
+    ));
+
+    for proof in production_activation_safety_gate_proof_reviews() {
+        content.append(&production_activation_safety_gate_proof_review_card(&proof));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_safety_gate_proof_review_card(
+    proof: &ProductionActivationSafetyGateProofReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&proof.widget_name);
+    frame.set_tooltip_text(Some(
+        "Review-only copied-fixture safety proof. This card has no persistence, mutation, production, compositor refresh, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&proof.evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&proof.heading));
+    append_detail_line(&content, "Proof status", proof.status.user_facing_label());
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        proof.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(&content, &proof.production_label, &proof.production_status);
+    append_detail_line(
+        &content,
+        "Draft persistence boundary",
+        proof.draft_persistence_status.user_facing_label(),
+    );
+
+    content.append(&small_label("Proof requirements"));
+    for item in &proof.proof_items {
+        append_detail_line(&content, &item.label, item.status.user_facing_label());
+    }
+
+    content.append(&small_label("Copied fixture evidence"));
+    append_detail_line(
+        &content,
+        "Byte-exact backup",
+        if proof.fixture_proof.backup_bytes_equal {
+            "satisfied in copied fixture"
+        } else {
+            "missing/proof-required"
+        },
+    );
+    append_detail_line(
+        &content,
+        "Dry-run write plan",
+        &proof.fixture_proof.planned_write,
+    );
+    append_detail_line(&content, "Diff preview", &proof.fixture_proof.diff_preview);
+    append_detail_line(
+        &content,
+        "Post-write reread",
+        if proof.fixture_proof.reread_verified {
+            "satisfied in copied fixture"
+        } else {
+            "missing/proof-required"
+        },
+    );
+    append_detail_line(
+        &content,
+        "Restore plan",
+        if proof.fixture_proof.restore_verified {
+            "satisfied in copied fixture"
+        } else {
+            "missing/proof-required"
+        },
+    );
+    append_detail_line(
+        &content,
+        "Post-restore verification",
+        if proof.fixture_proof.restore_verified {
+            "satisfied in copied fixture"
+        } else {
+            "missing/proof-required"
+        },
+    );
+    append_detail_line(
+        &content,
+        "Final approval still required",
+        "still requires explicit user approval",
+    );
+
+    content.append(&small_label("Safety proof blockers"));
+    for blocker in &proof.blockers {
+        content.append(&small_label(blocker));
+    }
+
+    let fixture = gtk::Button::with_label(&proof.disabled_fixture_proof_label);
+    fixture.set_widget_name(&proof.disabled_fixture_proof_widget_name);
+    fixture.set_tooltip_text(Some(
+        "Fixture proof running is not available from this UI. This button has no persistence, mutation, production, compositor refresh, or executor callback.",
+    ));
+    fixture.set_sensitive(false);
+    content.append(&fixture);
+
+    let enable = gtk::Button::with_label(&proof.disabled_enable_label);
+    enable.set_widget_name(&proof.disabled_enable_widget_name);
+    enable.set_tooltip_text(Some(
+        "Production activation is not available. This button has no write or executor callback.",
+    ));
+    enable.set_sensitive(false);
+    content.append(&enable);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_final_decision_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-final-decision-section");
+    frame.set_tooltip_text(Some(
+        "Default-disabled final activation decisions. These cannot approve production or wire executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Production activation final decisions"));
+    content.append(&small_label(
+        "Copied-fixture proof does not imply final approval, production flag opt-in, executor wiring, or live production dry-run permission.",
+    ));
+    content.append(&small_label(
+        "Final approval, production flag, executor wiring, and live production dry-run decisions remain missing/required.",
+    ));
+    content.append(&small_label(
+        "Final decision proof satisfied but decisions missing.",
+    ));
+
+    for decision in production_activation_final_decision_reviews() {
+        content.append(&production_activation_final_decision_review_card(&decision));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_final_decision_review_card(
+    decision: &ProductionActivationFinalDecisionReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&decision.widget_name);
+    frame.set_tooltip_text(Some(
+        "Review-only final activation decision. This card has no persistence, mutation, production, compositor refresh, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&decision.evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&decision.heading));
+    append_detail_line(
+        &content,
+        "Final decision status",
+        decision.status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Final approval",
+        decision.final_approval_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Production flag decision",
+        decision.production_flag_decision_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring decision",
+        decision.executor_wiring_decision_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live production dry-run policy",
+        decision.live_dry_run_policy_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Copied-fixture proof",
+        decision.copied_fixture_proof_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Form/control/draft proof",
+        &decision.form_control_draft_proof_status,
+    );
+    append_detail_line(
+        &content,
+        "Draft persistence",
+        decision.draft_persistence_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        decision.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &decision.production_label,
+        &decision.production_status,
+    );
+
+    content.append(&small_label("Final decision blockers"));
+    for blocker in &decision.blockers {
+        content.append(&small_label(blocker));
+    }
+
+    let approval = gtk::Button::with_label(&decision.disabled_final_approval_label);
+    approval.set_widget_name(&decision.disabled_final_approval_widget_name);
+    approval.set_tooltip_text(Some(
+        "Final approval is not available. This button has no production callback.",
+    ));
+    approval.set_sensitive(false);
+    content.append(&approval);
+
+    let flag = gtk::Button::with_label(&decision.disabled_production_flag_label);
+    flag.set_widget_name(&decision.disabled_production_flag_widget_name);
+    flag.set_tooltip_text(Some(
+        "Production flag opt-in is not available. This button does not change flags.",
+    ));
+    flag.set_sensitive(false);
+    content.append(&flag);
+
+    let wiring = gtk::Button::with_label(&decision.disabled_executor_wiring_label);
+    wiring.set_widget_name(&decision.disabled_executor_wiring_widget_name);
+    wiring.set_tooltip_text(Some(
+        "Executor wiring is not available. This button has no executor callback.",
+    ));
+    wiring.set_sensitive(false);
+    content.append(&wiring);
+
+    let dry_run = gtk::Button::with_label(&decision.disabled_live_dry_run_label);
+    dry_run.set_widget_name(&decision.disabled_live_dry_run_widget_name);
+    dry_run.set_tooltip_text(Some(
+        "Live production dry-run is not available. This button has no config, runtime, compositor refresh, or IPC callback.",
+    ));
+    dry_run.set_sensitive(false);
+    content.append(&dry_run);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_approval_and_dry_run_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(
+        "hyprland-settings-production-activation-approval-ux-and-dry-run-policy-section",
+    );
+    frame.set_tooltip_text(Some(
+        "Default-disabled approval UX and live dry-run policy. These cards cannot approve production or run live dry-runs.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label(
+        "Production activation approval UX and dry-run policy",
+    ));
+    content.append(&small_label(
+        "Approval UX and live production dry-run policy are designed but disabled.",
+    ));
+    content.append(&small_label(
+        "Approval controls and live dry-run controls are not available, executors remain Unwired, and production flags remain false.",
+    ));
+
+    for review in production_activation_approval_and_dry_run_reviews() {
+        content.append(&production_activation_approval_ux_review_card(&review));
+        content.append(&production_activation_live_dry_run_policy_review_card(
+            &review,
+        ));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_opt_in_requirement_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-opt-in-requirements-section");
+    frame.set_tooltip_text(Some(
+        "Default-disabled production flag and executor-wiring opt-in requirements. These cards cannot set flags or wire executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label(
+        "Production flag and executor-wiring opt-in requirements",
+    ));
+    content.append(&small_label(
+        "Production flag opt-in and executor wiring are separate future gates. Neither gate can auto-enable the other, run writes, reload Hyprland, mutate runtime, or touch real config.",
+    ));
+    content.append(&small_label(
+        "Opt-in requirements are designed but disabled; production flags remain false and executors remain Unwired.",
+    ));
+
+    for review in production_activation_opt_in_requirement_reviews() {
+        content.append(&production_activation_opt_in_requirement_review_card(
+            &review,
+        ));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_opt_in_requirement_review_card(
+    review: &ProductionFlagAndExecutorOptInReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Review-only opt-in requirements. This card has no persistence, mutation, production, compositor refresh, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    content.append(&small_label("Opt-in requirements designed but disabled"));
+    append_detail_line(
+        &content,
+        "Opt-in requirements status",
+        review.status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Production flag opt-in",
+        review.production_flag_opt_in_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring opt-in",
+        review.executor_wiring_opt_in_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Flag and executor wiring must be separate future steps",
+        review.separate_steps_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Explicit user action",
+        review.explicit_user_action_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Typed confirmation",
+        review.typed_confirmation_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Report-backed proof",
+        review.report_backed_proof_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Rollback-ready state",
+        review.rollback_ready_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "No auto-apply proof",
+        review.no_auto_apply_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Production flag",
+        &review.production_flag.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    content.append(&small_label("Opt-in requirements"));
+    for requirement in &review.requirements {
+        content.append(&small_label(requirement));
+    }
+    content.append(&small_label("Opt-in negative proofs"));
+    for proof in &review.negative_proofs {
+        content.append(&small_label(proof));
+    }
+
+    let flag = gtk::Button::with_label(&review.disabled_flag_label);
+    flag.set_widget_name(&review.disabled_flag_widget_name);
+    flag.set_tooltip_text(Some(
+        "Production flag opt-in is not available. This button does not change flags.",
+    ));
+    flag.set_sensitive(false);
+    content.append(&flag);
+
+    let executor = gtk::Button::with_label(&review.disabled_executor_label);
+    executor.set_widget_name(&review.disabled_executor_widget_name);
+    executor.set_tooltip_text(Some(
+        "Executor wiring is not available. This button has no executor callback.",
+    ));
+    executor.set_sensitive(false);
+    content.append(&executor);
+
+    let confirm = gtk::Button::with_label(&review.disabled_confirm_label);
+    confirm.set_widget_name(&review.disabled_confirm_widget_name);
+    confirm.set_tooltip_text(Some(
+        "Opt-in confirmation is not available. This button has no production callback.",
+    ));
+    confirm.set_sensitive(false);
+    content.append(&confirm);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_approval_ux_review_card(
+    review: &ProductionActivationApprovalAndDryRunReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.approval_widget_name);
+    frame.set_tooltip_text(Some(
+        "Review-only approval UX design. This card has no persistence, mutation, production, compositor refresh, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.approval_evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.approval_heading));
+    content.append(&small_label("Approval UX designed but disabled"));
+    append_detail_line(
+        &content,
+        "Approval UX status",
+        review.approval_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Explicit final approval",
+        review.approval_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Typed confirmation phrase",
+        review.typed_confirmation_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Backup/restore acknowledgement",
+        review
+            .backup_restore_acknowledgement_status
+            .user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Production flag opt-in",
+        review.production_flag_opt_in_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring opt-in",
+        review.executor_wiring_opt_in_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Copied-fixture proof cannot approve production",
+        review.proof_inference_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Draft edit cannot approve production",
+        review.proof_inference_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Persistence boundary cannot approve production",
+        review.proof_inference_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Draft persistence",
+        review.draft_persistence_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    content.append(&small_label("Approval UX requirements"));
+    for requirement in &review.approval_requirements {
+        content.append(&small_label(requirement));
+    }
+    content.append(&small_label("Approval UX negative proofs"));
+    for proof in &review.negative_proofs {
+        content.append(&small_label(proof));
+    }
+
+    let approval = gtk::Button::with_label(&review.disabled_approval_label);
+    approval.set_widget_name(&review.disabled_approval_widget_name);
+    approval.set_tooltip_text(Some(
+        "Approval is not available. This button has no production callback.",
+    ));
+    approval.set_sensitive(false);
+    content.append(&approval);
+
+    let confirmation = gtk::Button::with_label(&review.disabled_confirmation_label);
+    confirmation.set_widget_name(&review.disabled_confirmation_widget_name);
+    confirmation.set_tooltip_text(Some(
+        "Typed confirmation is not available. This button only documents a future requirement.",
+    ));
+    confirmation.set_sensitive(false);
+    content.append(&confirmation);
+
+    let flag = gtk::Button::with_label(&review.disabled_flag_label);
+    flag.set_widget_name(&review.disabled_flag_widget_name);
+    flag.set_tooltip_text(Some(
+        "Production flag opt-in is not available. This button does not change flags.",
+    ));
+    flag.set_sensitive(false);
+    content.append(&flag);
+
+    let wiring = gtk::Button::with_label(&review.disabled_wiring_label);
+    wiring.set_widget_name(&review.disabled_wiring_widget_name);
+    wiring.set_tooltip_text(Some(
+        "Executor wiring opt-in is not available. This button has no executor callback.",
+    ));
+    wiring.set_sensitive(false);
+    content.append(&wiring);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_live_dry_run_policy_review_card(
+    review: &ProductionActivationApprovalAndDryRunReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.dry_run_widget_name);
+    frame.set_tooltip_text(Some(
+        "Review-only live dry-run policy. This card has no config, runtime, compositor refresh, IPC, production, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.dry_run_evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.dry_run_heading));
+    content.append(&small_label("Dry-run policy designed but disabled"));
+    append_detail_line(
+        &content,
+        "Dry-run policy status",
+        review.dry_run_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live dry-run requires explicit user action",
+        review.dry_run_explicit_action_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live dry-run cannot run by default",
+        review.dry_run_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live dry-run cannot touch real config by default",
+        review
+            .dry_run_real_config_boundary_status
+            .user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live dry-run cannot reload Hyprland by default",
+        review.dry_run_no_reload_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live dry-run cannot mutate runtime by default",
+        review
+            .dry_run_no_runtime_mutation_status
+            .user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live dry-run requires rollback-ready state",
+        review.dry_run_rollback_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Copied-fixture proof is not live production dry-run",
+        review.copied_fixture_proof_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    content.append(&small_label("Live dry-run policy requirements"));
+    for requirement in &review.dry_run_requirements {
+        content.append(&small_label(requirement));
+    }
+
+    let dry_run = gtk::Button::with_label(&review.disabled_dry_run_label);
+    dry_run.set_widget_name(&review.disabled_dry_run_widget_name);
+    dry_run.set_tooltip_text(Some(
+        "Live production dry-run is not available. This button has no config, runtime, compositor refresh, IPC, production, or executor callback.",
+    ));
+    dry_run.set_sensitive(false);
+    content.append(&dry_run);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_cap_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-cap-section");
+    frame.set_tooltip_text(Some(
+        "Final non-production cap for source/include and duplicate activation runway. These cards cannot start a production phase.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Production activation cap"));
+    content.append(&small_label(
+        "Branch capped for non-production runway. Future production activation requires a separate approved phase.",
+    ));
+    content.append(&small_label(
+        "The cap does not set production flags, wire executors, persist drafts, run writes, reload Hyprland, mutate runtime, or touch real config.",
+    ));
+
+    for review in production_activation_cap_reviews() {
+        content.append(&production_activation_cap_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_cap_review_card(review: &ProductionActivationCapReview) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Review-only production activation cap. This card has no persistence, mutation, production, compositor refresh, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(&content, "Cap status", review.status.user_facing_label());
+    append_detail_line(
+        &content,
+        "Future production activation",
+        review.future_phase_requirement_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+    append_detail_line(
+        &content,
+        "Production flag",
+        &review.production_flag.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Draft persistence",
+        review.draft_persistence_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Real config touched",
+        &review.real_config_touched.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Runtime mutated",
+        &review.runtime_mutated.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Production write executed",
+        &review.production_write_executed.to_string(),
+    );
+
+    content.append(&small_label("Cap reasons"));
+    for reason in &review.cap_reasons {
+        content.append(&small_label(reason));
+    }
+    content.append(&small_label("Future phase requirements"));
+    for requirement in &review.future_phase_requirements {
+        content.append(&small_label(requirement));
+    }
+    content.append(&small_label("Cap negative proofs"));
+    for proof in &review.negative_proofs {
+        content.append(&small_label(proof));
+    }
+
+    let start = gtk::Button::with_label(&review.disabled_start_label);
+    start.set_widget_name(&review.disabled_start_widget_name);
+    start.set_tooltip_text(Some(
+        "Starting a production activation phase is not available from this branch.",
+    ));
+    start.set_sensitive(false);
+    content.append(&start);
+
+    let confirm = gtk::Button::with_label(&review.disabled_confirm_label);
+    confirm.set_widget_name(&review.disabled_confirm_widget_name);
+    confirm.set_tooltip_text(Some(
+        "Branch cap confirmation is review-only and has no production callback.",
+    ));
+    confirm.set_sensitive(false);
+    content.append(&confirm);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+#[derive(Clone)]
+struct LiveDraftStatusLabels {
+    bridge: gtk::Label,
+    dirty: gtk::Label,
+    draft: gtk::Label,
+    form: gtk::Label,
+    control: gtk::Label,
+}
+
+fn production_activation_live_draft_edit_review_card(
+    review: &ProductionActivationDraftGtkReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Memory-only activation draft edit bridge. This does not persist data or wire production executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Live draft edit bridge evidence. GTK field changes update only in-memory draft state.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    content.append(&small_label("Draft editing mode: memory-only"));
+    content.append(&small_label(&review.not_saved_status));
+
+    let labels = LiveDraftStatusLabels {
+        bridge: body_label(""),
+        dirty: body_label(""),
+        draft: body_label(""),
+        form: body_label(""),
+        control: body_label(""),
+    };
+    labels
+        .bridge
+        .set_widget_name("hyprland-settings-live-draft-bridge-status");
+    labels
+        .dirty
+        .set_widget_name("hyprland-settings-live-draft-dirty-state");
+    labels
+        .draft
+        .set_widget_name("hyprland-settings-live-draft-validation");
+    labels
+        .form
+        .set_widget_name("hyprland-settings-live-draft-form-validation");
+    labels
+        .control
+        .set_widget_name("hyprland-settings-live-draft-control-validation");
+    refresh_live_draft_status_labels(&labels, review);
+    content.append(&labels.bridge);
+    content.append(&labels.dirty);
+    content.append(&labels.draft);
+    content.append(&labels.form);
+    content.append(&labels.control);
+
+    append_detail_line(&content, "In-memory only", &review.persistence_status);
+    append_detail_line(&content, "Not saved to disk", &review.not_saved_status);
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let state = Rc::new(RefCell::new(review.state.clone()));
+    let refresh = live_draft_refresh(review);
+    append_live_draft_text_field(
+        &content,
+        "User-facing reason",
+        &review.state.edit_state.draft.form_state.user_facing_reason,
+        &live_draft_widget_name(review, "reason-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::UserFacingReason,
+    );
+    append_live_draft_text_field(
+        &content,
+        "Explicit activation phrase/token",
+        &review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .explicit_activation_token,
+        &live_draft_widget_name(review, "token-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::ExplicitActivationToken,
+    );
+    append_live_draft_check_field(
+        &content,
+        "Backup-before-write acknowledgement",
+        review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .backup_plan_acknowledged,
+        &live_draft_widget_name(review, "backup-check"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::BackupPlanAcknowledged,
+    );
+    append_live_draft_check_field(
+        &content,
+        "Restore-plan acknowledgement",
+        review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .restore_plan_acknowledged,
+        &live_draft_widget_name(review, "restore-check"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::RestorePlanAcknowledged,
+    );
+    append_live_draft_check_field(
+        &content,
+        "Post-write reread acknowledgement",
+        review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .reread_plan_acknowledged,
+        &live_draft_widget_name(review, "reread-check"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::RereadPlanAcknowledged,
+    );
+    append_live_draft_check_field(
+        &content,
+        "Post-restore verification acknowledgement",
+        review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .post_restore_verification_acknowledged,
+        &live_draft_widget_name(review, "post-restore-check"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::PostRestoreVerificationAcknowledged,
+    );
+    append_live_draft_check_field(
+        &content,
+        "Final confirmation acknowledgement",
+        review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .final_confirmation_acknowledged,
+        &live_draft_widget_name(review, "final-check"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::FinalConfirmationAcknowledged,
+    );
+    append_live_draft_multiline_field(
+        &content,
+        "Backup-before-write plan",
+        &review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .backup_before_write_plan,
+        &live_draft_widget_name(review, "backup-plan-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::BackupBeforeWritePlan,
+    );
+    append_live_draft_multiline_field(
+        &content,
+        "Restore plan",
+        &review.state.edit_state.draft.form_state.restore_plan,
+        &live_draft_widget_name(review, "restore-plan-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::RestorePlan,
+    );
+    append_live_draft_multiline_field(
+        &content,
+        "Post-write reread plan",
+        &review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .post_write_reread_plan,
+        &live_draft_widget_name(review, "reread-plan-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::PostWriteRereadPlan,
+    );
+    append_live_draft_multiline_field(
+        &content,
+        "Post-restore verification plan",
+        &review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .post_restore_verification_plan,
+        &live_draft_widget_name(review, "post-restore-plan-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::PostRestoreVerificationPlan,
+    );
+    append_live_draft_multiline_field(
+        &content,
+        "Dry-run summary",
+        &review.state.edit_state.draft.form_state.dry_run_summary,
+        &live_draft_widget_name(review, "dry-run-summary-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::DryRunSummary,
+    );
+    append_live_draft_multiline_field(
+        &content,
+        "Files that would be touched",
+        &review
+            .state
+            .edit_state
+            .draft
+            .form_state
+            .files_that_would_be_touched
+            .join("\n"),
+        &live_draft_widget_name(review, "touched-files-field"),
+        state.clone(),
+        labels.clone(),
+        refresh.clone(),
+        ProductionActivationDraftGtkField::FilesThatWouldBeTouched,
+    );
+
+    let update = gtk::Button::with_label(&review.update_label);
+    update.set_widget_name(&live_draft_widget_name(review, "update-memory-only"));
+    update.set_tooltip_text(Some(
+        "Recomputes in-memory draft review state only. This does not persist or run executors.",
+    ));
+    update.connect_clicked({
+        let state = state.clone();
+        let labels = labels.clone();
+        let refresh = refresh.clone();
+        move |_| {
+            let review = refresh(&state.borrow());
+            refresh_live_draft_status_labels(&labels, &review);
+        }
+    });
+    content.append(&update);
+
+    let reset = gtk::Button::with_label(&review.reset_label);
+    reset.set_widget_name(&live_draft_widget_name(review, "reset-memory-only"));
+    reset.set_tooltip_text(Some(
+        "Resets only the in-memory draft. This does not persist or run executors.",
+    ));
+    reset.connect_clicked({
+        let state = state.clone();
+        let labels = labels.clone();
+        let refresh = refresh.clone();
+        move |_| {
+            apply_production_activation_draft_gtk_update(
+                &mut state.borrow_mut(),
+                ProductionActivationDraftGtkUpdate::ResetToDefault,
+            );
+            let review = refresh(&state.borrow());
+            refresh_live_draft_status_labels(&labels, &review);
+        }
+    });
+    content.append(&reset);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn live_draft_widget_name(review: &ProductionActivationDraftGtkReview, suffix: &str) -> String {
+    let prefix = if review.widget_name.contains("source-include") {
+        "hyprland-settings-source-include-activation-live-draft-edit"
+    } else {
+        "hyprland-settings-duplicate-activation-live-draft-edit"
+    };
+    format!("{prefix}-{suffix}-disabled")
+}
+
+fn live_draft_refresh(
+    review: &ProductionActivationDraftGtkReview,
+) -> Rc<dyn Fn(&ProductionActivationDraftGtkState) -> ProductionActivationDraftGtkReview> {
+    let is_source = review.widget_name.contains("source-include");
+    Rc::new(move |state| {
+        if is_source {
+            source_include_activation_draft_gtk_review(
+                None,
+                state.clone(),
+                ProductionExecutorWiringState::Unwired,
+                false,
+            )
+        } else {
+            duplicate_activation_draft_gtk_review(
+                None,
+                state.clone(),
+                ProductionExecutorWiringState::Unwired,
+                false,
+            )
+        }
+    })
+}
+
+fn refresh_live_draft_status_labels(
+    labels: &LiveDraftStatusLabels,
+    review: &ProductionActivationDraftGtkReview,
+) {
+    labels.bridge.set_text(&format!(
+        "GTK bridge status: {}",
+        review.status.user_facing_label()
+    ));
+    labels
+        .dirty
+        .set_text(&format!("Draft dirty state: {}", review.dirty_state));
+    labels.draft.set_text(&format!(
+        "Draft validation: {}",
+        review.draft_status.user_facing_label()
+    ));
+    labels.form.set_text(&format!(
+        "Form validation: {}",
+        review.form_validation_status.user_facing_label()
+    ));
+    labels.control.set_text(&format!(
+        "Control validation: {}",
+        review.control_validation_status.user_facing_label()
+    ));
+}
+
+fn append_live_draft_text_field(
+    parent: &gtk::Box,
+    label: &str,
+    value: &str,
+    widget_name: &str,
+    state: Rc<RefCell<ProductionActivationDraftGtkState>>,
+    labels: LiveDraftStatusLabels,
+    refresh: Rc<dyn Fn(&ProductionActivationDraftGtkState) -> ProductionActivationDraftGtkReview>,
+    field: ProductionActivationDraftGtkField,
+) {
+    let row = gtk::Box::new(gtk::Orientation::Vertical, 3);
+    row.append(&small_label(label));
+    let entry = gtk::Entry::new();
+    entry.set_widget_name(widget_name);
+    entry.set_tooltip_text(Some(
+        "Memory-only activation draft field. This is not saved to disk.",
+    ));
+    entry.set_text(value);
+    entry.connect_changed(move |entry| {
+        apply_production_activation_draft_gtk_update(
+            &mut state.borrow_mut(),
+            ProductionActivationDraftGtkUpdate::Text {
+                field,
+                value: entry.text().to_string(),
+            },
+        );
+        let review = refresh(&state.borrow());
+        refresh_live_draft_status_labels(&labels, &review);
+    });
+    row.append(&entry);
+    parent.append(&row);
+}
+
+fn append_live_draft_multiline_field(
+    parent: &gtk::Box,
+    label: &str,
+    value: &str,
+    widget_name: &str,
+    state: Rc<RefCell<ProductionActivationDraftGtkState>>,
+    labels: LiveDraftStatusLabels,
+    refresh: Rc<dyn Fn(&ProductionActivationDraftGtkState) -> ProductionActivationDraftGtkReview>,
+    field: ProductionActivationDraftGtkField,
+) {
+    let row = gtk::Box::new(gtk::Orientation::Vertical, 3);
+    row.append(&small_label(label));
+    let text = gtk::TextView::new();
+    text.set_widget_name(widget_name);
+    text.set_tooltip_text(Some(
+        "Memory-only activation draft text field. This is not saved to disk.",
+    ));
+    text.set_wrap_mode(gtk::WrapMode::WordChar);
+    text.buffer().set_text(value);
+    text.buffer().connect_changed(move |buffer| {
+        let value = buffer.text(&buffer.start_iter(), &buffer.end_iter(), false);
+        apply_production_activation_draft_gtk_update(
+            &mut state.borrow_mut(),
+            ProductionActivationDraftGtkUpdate::Text {
+                field,
+                value: value.to_string(),
+            },
+        );
+        let review = refresh(&state.borrow());
+        refresh_live_draft_status_labels(&labels, &review);
+    });
+    row.append(&text);
+    parent.append(&row);
+}
+
+fn append_live_draft_check_field(
+    parent: &gtk::Box,
+    label: &str,
+    checked: bool,
+    widget_name: &str,
+    state: Rc<RefCell<ProductionActivationDraftGtkState>>,
+    labels: LiveDraftStatusLabels,
+    refresh: Rc<dyn Fn(&ProductionActivationDraftGtkState) -> ProductionActivationDraftGtkReview>,
+    field: ProductionActivationDraftGtkField,
+) {
+    let check = gtk::CheckButton::with_label(label);
+    check.set_widget_name(widget_name);
+    check.set_tooltip_text(Some(
+        "Memory-only activation draft acknowledgement. This is not saved to disk.",
+    ));
+    check.set_active(checked);
+    check.connect_toggled(move |check| {
+        apply_production_activation_draft_gtk_update(
+            &mut state.borrow_mut(),
+            ProductionActivationDraftGtkUpdate::Acknowledgement {
+                field,
+                value: check.is_active(),
+            },
+        );
+        let review = refresh(&state.borrow());
+        refresh_live_draft_status_labels(&labels, &review);
+    });
+    parent.append(&check);
+}
+
+fn production_activation_draft_review_card(review: &ProductionActivationDraftReview) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled activation draft. This card does not persist draft data or wire production executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "In-memory draft evidence. Draft validation is review-only.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(&content, "Draft status", review.status.user_facing_label());
+    append_detail_line(
+        &content,
+        "Draft validation",
+        review.form_validation_status.user_facing_label(),
+    );
+    append_detail_line(&content, "Dirty state", &review.dirty_state);
+    append_detail_line(&content, "In-memory only", &review.persistence_status);
+    content.append(&small_label(&review.persistence_status));
+    append_detail_line(
+        &content,
+        "Control validation",
+        review.control_validation_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let update = gtk::Button::with_label(&review.disabled_update_label);
+    update.set_widget_name(&review.disabled_update_widget_name);
+    update.set_tooltip_text(Some(
+        "Disabled planned draft update. This has no persistence, mutation, or executor handler.",
+    ));
+    update.set_sensitive(false);
+    content.append(&update);
+
+    let reset = gtk::Button::with_label(&review.disabled_reset_label);
+    reset.set_widget_name(&review.disabled_reset_widget_name);
+    reset.set_tooltip_text(Some(
+        "Disabled planned draft reset. This has no persistence, mutation, or executor handler.",
+    ));
+    reset.set_sensitive(false);
+    content.append(&reset);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_form_review_card(review: &ProductionActivationFormReview) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Disabled activation form. This review surface cannot run production executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_tooltip_text(Some(
+        "Activation form evidence. Request and safety-plan values are review-only.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(&content, "Form status", review.status.user_facing_label());
+    append_detail_line(
+        &content,
+        "Request generation",
+        &review.request_generation_status,
+    );
+    append_detail_line(
+        &content,
+        "Safety plan generation",
+        &review.safety_plan_generation_status,
+    );
+    append_detail_line(
+        &content,
+        "Control validation",
+        review.control_validation_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_disabled_activation_form_fields(&content, review);
+    content.append(&body_label("Required fields"));
+    if review.missing_fields.is_empty() {
+        content.append(&small_label("All required form fields are present."));
+    } else {
+        for field in &review.missing_fields {
+            content.append(&small_label(field));
+        }
+    }
+    content.append(&body_label("Request preview"));
+    for field in &review.request_preview {
+        content.append(&small_label(field));
+    }
+    content.append(&body_label("Safety plan preview"));
+    for field in &review.safety_plan_preview {
+        content.append(&small_label(field));
+    }
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    let validate = gtk::Button::with_label(&review.disabled_action_label);
+    validate.set_widget_name(&review.disabled_action_widget_name);
+    validate.set_tooltip_text(Some(
+        "Disabled planned form validation. This has no mutation handler.",
+    ));
+    validate.set_sensitive(false);
+    content.append(&validate);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn append_disabled_activation_form_fields(
+    parent: &gtk::Box,
+    review: &ProductionActivationFormReview,
+) {
+    let prefix = activation_form_widget_prefix(review);
+    parent.append(&body_label("Disabled activation form fields"));
+    parent.append(&small_label(
+        "These fields show the future activation request shape. They are read-only and cannot run production writes.",
+    ));
+    append_disabled_activation_text_field(
+        parent,
+        &prefix,
+        "scope-field",
+        "Scope/category",
+        review
+            .form_state
+            .scope
+            .as_ref()
+            .map(|scope| match scope {
+                crate::future_capability::ProductionActivationRequestScope::SourceIncludeInsertion => {
+                    "source/include"
+                }
+                crate::future_capability::ProductionActivationRequestScope::DuplicateReplacement => {
+                    "duplicate"
+                }
+            })
+            .unwrap_or("Missing from form"),
+    );
+    append_disabled_activation_text_field(
+        parent,
+        &prefix,
+        "reason-field",
+        "User-facing reason",
+        &review.form_state.user_facing_reason,
+    );
+    append_disabled_activation_text_field(
+        parent,
+        &prefix,
+        "token-field",
+        "Explicit activation phrase/token",
+        &review.form_state.explicit_activation_token,
+    );
+    append_disabled_activation_text_field(
+        parent,
+        &prefix,
+        "decision-category-field",
+        "Decision category",
+        &review.form_state.decision_category,
+    );
+    append_disabled_activation_check_field(
+        parent,
+        &prefix,
+        "backup-check",
+        "Backup-before-write acknowledgement",
+        review.form_state.backup_plan_acknowledged,
+    );
+    append_disabled_activation_check_field(
+        parent,
+        &prefix,
+        "restore-check",
+        "Restore-plan acknowledgement",
+        review.form_state.restore_plan_acknowledged,
+    );
+    append_disabled_activation_check_field(
+        parent,
+        &prefix,
+        "reread-check",
+        "Post-write reread acknowledgement",
+        review.form_state.reread_plan_acknowledged,
+    );
+    append_disabled_activation_check_field(
+        parent,
+        &prefix,
+        "post-restore-check",
+        "Post-restore verification acknowledgement",
+        review.form_state.post_restore_verification_acknowledged,
+    );
+    append_disabled_activation_check_field(
+        parent,
+        &prefix,
+        "final-check",
+        "Final confirmation acknowledgement",
+        review.form_state.final_confirmation_acknowledged,
+    );
+    append_disabled_activation_multiline_field(
+        parent,
+        &prefix,
+        "backup-plan-field",
+        "Backup-before-write plan",
+        &review.form_state.backup_before_write_plan,
+    );
+    append_disabled_activation_multiline_field(
+        parent,
+        &prefix,
+        "restore-plan-field",
+        "Restore plan",
+        &review.form_state.restore_plan,
+    );
+    append_disabled_activation_multiline_field(
+        parent,
+        &prefix,
+        "reread-plan-field",
+        "Post-write reread plan",
+        &review.form_state.post_write_reread_plan,
+    );
+    append_disabled_activation_multiline_field(
+        parent,
+        &prefix,
+        "post-restore-plan-field",
+        "Post-restore verification plan",
+        &review.form_state.post_restore_verification_plan,
+    );
+    append_disabled_activation_multiline_field(
+        parent,
+        &prefix,
+        "dry-run-summary-field",
+        "Dry-run summary",
+        &review.form_state.dry_run_summary,
+    );
+    append_disabled_activation_multiline_field(
+        parent,
+        &prefix,
+        "touched-files-field",
+        "Files that would be touched",
+        &review.form_state.files_that_would_be_touched.join(", "),
+    );
+}
+
+fn activation_form_widget_prefix(review: &ProductionActivationFormReview) -> String {
+    review
+        .widget_name
+        .strip_suffix("-disabled")
+        .unwrap_or(&review.widget_name)
+        .to_string()
+}
+
+fn append_disabled_activation_text_field(
+    parent: &gtk::Box,
+    prefix: &str,
+    suffix: &str,
+    label: &str,
+    value: &str,
+) {
+    let row = gtk::Box::new(gtk::Orientation::Vertical, 3);
+    row.append(&small_label(label));
+    let entry = gtk::Entry::new();
+    entry.set_widget_name(&format!("{prefix}-{suffix}-disabled"));
+    entry.set_tooltip_text(Some("Read-only future activation form field."));
+    entry.set_text(value);
+    entry.set_editable(false);
+    entry.set_sensitive(false);
+    row.append(&entry);
+    parent.append(&row);
+}
+
+fn append_disabled_activation_multiline_field(
+    parent: &gtk::Box,
+    prefix: &str,
+    suffix: &str,
+    label: &str,
+    value: &str,
+) {
+    let row = gtk::Box::new(gtk::Orientation::Vertical, 3);
+    row.append(&small_label(label));
+    let text = gtk::TextView::new();
+    text.set_widget_name(&format!("{prefix}-{suffix}-disabled"));
+    text.set_tooltip_text(Some("Read-only future activation safety-plan field."));
+    text.set_wrap_mode(gtk::WrapMode::WordChar);
+    text.set_editable(false);
+    text.set_cursor_visible(false);
+    text.set_sensitive(false);
+    text.buffer().set_text(value);
+    row.append(&text);
+    parent.append(&row);
+}
+
+fn append_disabled_activation_check_field(
+    parent: &gtk::Box,
+    prefix: &str,
+    suffix: &str,
+    label: &str,
+    checked: bool,
+) {
+    let check = gtk::CheckButton::with_label(label);
+    check.set_widget_name(&format!("{prefix}-{suffix}-disabled"));
+    check.set_tooltip_text(Some(
+        "Read-only acknowledgement for future activation review.",
+    ));
+    check.set_active(checked);
+    check.set_sensitive(false);
+    parent.append(&check);
+}
+
 fn append_connected_file_details(
     parent: &gtk::Box,
     file: &ConfigGraphFile,
@@ -1794,6 +4159,8 @@ fn render_detail(
 
     append_detail_section(detail_content, "Edit", |section| {
         append_user_facing_write_reason(&detail, section);
+        append_source_include_insertion_target_review(model, &detail, section);
+        append_runtime_approval_review_surface(&detail, section);
         append_pre_apply_review_scaffold(model, &detail, section);
         append_write_controls(model, &detail, section);
     });
@@ -1902,27 +4269,134 @@ fn append_layered_value_summary(
     section.append(&body_label(
         "This setting is controlled in more than one place.",
     ));
-    for occurrence in &layered.occurrences {
-        append_detail_line(
-            section,
-            &occurrence.role_label,
-            &format!(
-                "{} ({}:{})",
-                occurrence.raw_value,
-                occurrence.file_path.display(),
-                occurrence.line_number
-            ),
-        );
-        for note in occurrence.friendly_notes() {
-            section.append(&small_label(&note));
-        }
-    }
+    append_duplicate_occurrence_selector(&layered, section);
     if let Some(active) = &layered.currently_active_value {
         append_detail_line(section, "Currently active", active);
     }
     section.append(&small_label(
         "Choose where to save changes in a future version. This display is read-only.",
     ));
+}
+
+fn append_duplicate_occurrence_selector(
+    layered: &crate::config_layered_values::LayeredSettingValues,
+    section: &gtk::Box,
+) {
+    let selector = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    selector.set_widget_name("hyprland-settings-duplicate-occurrence-selector-disabled");
+    selector.set_tooltip_text(Some(
+        "Disabled duplicate occurrence selector. The app will not auto-choose a duplicate line.",
+    ));
+
+    selector.append(&body_label("Duplicate occurrences"));
+    selector.append(&small_label(
+        "The app will not auto-choose a duplicate line. Duplicate writes stay blocked until manual occurrence selection is reviewed.",
+    ));
+    selector.append(&body_label("Pre-Apply duplicate approval review"));
+    selector.append(&small_label(
+        "No duplicate target is confirmed for production. Production duplicate Apply remains disabled.",
+    ));
+
+    for (index, occurrence) in layered.occurrences.iter().enumerate() {
+        let duplicate_occurrence = duplicate_occurrence_from_layered(occurrence);
+        let gate = duplicate_production_approval_gate(Some(&duplicate_occurrence), None);
+        let card = gtk::Box::new(gtk::Orientation::Vertical, 4);
+        card.set_widget_name(&format!(
+            "hyprland-settings-duplicate-occurrence-{}",
+            index + 1
+        ));
+        card.set_tooltip_text(Some(
+            "Read-only duplicate occurrence detail. Choosing this occurrence is planned but disabled.",
+        ));
+        card.append(&body_label(&format!(
+            "Occurrence {} · {}",
+            index + 1,
+            occurrence.role_label
+        )));
+        card.append(&small_label(&format!(
+            "File: {}",
+            occurrence.file_path.display()
+        )));
+        card.append(&small_label(&format!("Line: {}", occurrence.line_number)));
+        card.append(&small_label(&format!("Value: {}", occurrence.raw_value)));
+        card.append(&small_label(&format!(
+            "Source depth: {}",
+            occurrence.source_depth
+        )));
+        card.append(&small_label(&format!("Raw line: {}", occurrence.raw_line)));
+        card.append(&small_label(&format!(
+            "Approval state: {}",
+            duplicate_gate_status_label(gate.status)
+        )));
+        card.append(&small_label(&format!(
+            "Precondition fingerprint: {}",
+            gate.precondition
+                .as_ref()
+                .map(|precondition| precondition.fingerprint.as_str())
+                .unwrap_or("not available")
+        )));
+        card.append(&small_label(&format!(
+            "Block reason: {}",
+            gate.block_reason
+        )));
+        for note in occurrence.friendly_notes() {
+            card.append(&small_label(&note));
+        }
+
+        let confirm = gtk::Button::with_label("Confirm duplicate target (planned)");
+        confirm.set_widget_name(&format!(
+            "hyprland-settings-duplicate-production-confirm-disabled-{}",
+            index + 1
+        ));
+        confirm.set_tooltip_text(Some(
+            "Disabled future action. This does not confirm a target or unblock Apply.",
+        ));
+        confirm.set_sensitive(false);
+        card.append(&confirm);
+
+        let choose = gtk::Button::with_label("Choose this occurrence (planned)");
+        choose.set_widget_name(&format!(
+            "hyprland-settings-duplicate-occurrence-choice-disabled-{}",
+            index + 1
+        ));
+        choose.set_tooltip_text(Some(
+            "Disabled future action. This does not write config or unblock Apply.",
+        ));
+        choose.set_sensitive(false);
+        card.append(&choose);
+        selector.append(&card);
+    }
+
+    section.append(&selector);
+}
+
+fn duplicate_occurrence_from_layered(
+    occurrence: &crate::config_layered_values::LayeredValueOccurrence,
+) -> DuplicateOccurrence {
+    DuplicateOccurrence {
+        setting_id: occurrence.setting_id.clone(),
+        path: occurrence.file_path.clone(),
+        line_number: occurrence.line_number,
+        raw_line: occurrence.raw_line.clone(),
+        raw_value: occurrence.raw_value.clone(),
+        source_depth: occurrence.source_depth,
+    }
+}
+
+fn duplicate_gate_status_label(status: DuplicateProductionGateStatus) -> &'static str {
+    match status {
+        DuplicateProductionGateStatus::MissingConfirmation => "missing confirmation",
+        DuplicateProductionGateStatus::PendingConfirmation => "pending confirmation",
+        DuplicateProductionGateStatus::ConfirmedButProductionDisabled => {
+            "confirmed but production disabled"
+        }
+        DuplicateProductionGateStatus::MissingCopiedProof => "missing copied proof",
+        DuplicateProductionGateStatus::CopiedProofMismatch => "copied proof mismatch",
+        DuplicateProductionGateStatus::ReadyButDefaultDisabled => "ready but default disabled",
+        DuplicateProductionGateStatus::Rejected => "rejected",
+        DuplicateProductionGateStatus::Expired => "expired",
+        DuplicateProductionGateStatus::FingerprintMismatch => "fingerprint mismatch",
+    }
 }
 
 fn append_session_value_projection_summary(
@@ -2145,6 +4619,312 @@ fn append_pre_apply_review_scaffold(
 
     frame.set_child(Some(&content));
     section.append(&frame);
+}
+
+fn append_runtime_approval_review_surface(detail: &RowDetailProjection, section: &gtk::Box) {
+    if detail.row_id != "appearance.gaps_in" && detail.official_setting != "general.gaps_in" {
+        return;
+    }
+
+    let evidence = proven_runtime_approval_evidence_summary();
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-runtime-approval-review-disabled");
+    frame.set_tooltip_text(Some(
+        "Disabled runtime approval review. This displays live-restore proof but does not enable runtime Apply.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    content.set_widget_name("hyprland-settings-runtime-live-restore-evidence");
+    content.set_tooltip_text(Some(
+        "Runtime live-restore evidence for general:gaps_in. Review-only; no hyprctl command runs.",
+    ));
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label("Runtime approval review"));
+    content.append(&small_label("Runtime changes are not enabled yet."));
+    content.append(&small_label("This setting has a proven live-restore test."));
+    content.append(&small_label("Production runtime/reload remains disabled."));
+    append_detail_line(&content, "Setting", &evidence.setting);
+    append_detail_line(&content, "Prior value", &evidence.prior_value);
+    append_detail_line(&content, "Temporary test value", &evidence.temporary_value);
+    append_detail_line(&content, "Mutation command", &evidence.mutation_command);
+    append_detail_line(&content, "Restore command", &evidence.restore_command);
+    append_detail_line(
+        &content,
+        "Post-mutation readback",
+        &evidence.post_mutation_readback,
+    );
+    append_detail_line(
+        &content,
+        "Post-restore readback",
+        &evidence.post_restore_readback,
+    );
+    append_detail_line(&content, "Approval status", &evidence.approval_status);
+    append_detail_line(
+        &content,
+        "Production runtime/reload",
+        &evidence.production_runtime_status,
+    );
+    content.append(&small_label(
+        "This review surface is proof display only and does not call hyprctl.",
+    ));
+
+    let enable = gtk::Button::with_label("Enable runtime apply (planned)");
+    enable.set_widget_name("hyprland-settings-runtime-approval-enable-disabled");
+    enable.set_tooltip_text(Some(
+        "Disabled future action. This does not enable runtime/reload Apply or run hyprctl.",
+    ));
+    enable.set_sensitive(false);
+    content.append(&enable);
+
+    frame.set_child(Some(&content));
+    section.append(&frame);
+}
+
+fn append_source_include_insertion_target_review(
+    model: &UiProjection,
+    detail: &RowDetailProjection,
+    section: &gtk::Box,
+) {
+    if detail.current_value.status != CurrentValueSourceStatus::NotConfigured {
+        return;
+    }
+    let Some(graph) = config_graph_for_discovery(&model.config_discovery) else {
+        return;
+    };
+    if graph.files.len() <= 1
+        && graph.source_references.is_empty()
+        && !graph.has_generated_hints
+        && !graph.has_script_managed_hints
+        && !graph.has_profile_hints
+        && !graph.has_mode_hints
+        && !graph.files.iter().any(|file| file.is_symlink)
+    {
+        return;
+    }
+
+    let candidate_targets: Vec<_> = graph.files.iter().map(|file| file.path.clone()).collect();
+    let target_candidates: Vec<_> = graph
+        .files
+        .iter()
+        .map(|file| SourceIncludeTargetCandidate {
+            path: file.path.clone(),
+            source_depth: file.source_depth,
+            generated_or_script_managed: connected_file_has_hint(
+                file,
+                ConfigManagementHintKind::GeneratedFile,
+            ) || connected_file_has_script_hint(file),
+            symlink_or_profile_managed: file.is_symlink
+                || connected_file_has_hint(file, ConfigManagementHintKind::CurrentProfile)
+                || connected_file_has_hint(file, ConfigManagementHintKind::ModeProfile)
+                || connected_file_has_hint(file, ConfigManagementHintKind::SymlinkManaged),
+        })
+        .collect::<Vec<_>>();
+    let managed_or_ambiguous = graph.has_generated_hints
+        || graph.has_script_managed_hints
+        || graph.has_profile_hints
+        || graph.has_mode_hints
+        || graph.files.iter().any(|file| file.is_symlink)
+        || !graph.unreadable_files.is_empty()
+        || !graph.cycles.is_empty()
+        || !graph.unsupported_sources.is_empty();
+    let review = source_include_insertion_review(
+        graph.root_path.clone(),
+        candidate_targets,
+        None,
+        managed_or_ambiguous,
+    );
+
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-source-include-insertion-review-disabled");
+    frame.set_tooltip_text(Some(
+        "Disabled source/include insertion target-selection review. This does not write connected files.",
+    ));
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label("Source/include insertion target review"));
+    content.append(&small_label(
+        "This setting uses Hyprland's default value, but this config uses connected files.",
+    ));
+    content.append(&small_label(
+        "Source/include insertion is not active yet. The app will not pick a connected file automatically.",
+    ));
+    append_detail_line(&content, "Root config", &friendly_path(&review.root_path));
+    append_detail_line(
+        &content,
+        "Readiness",
+        source_include_readiness_label(review.readiness),
+    );
+
+    for line in &review.review_lines {
+        content.append(&small_label(line));
+    }
+
+    if let Some(selected_target) = &review.selected_target {
+        append_detail_line(&content, "Selected target", &friendly_path(selected_target));
+    } else {
+        append_detail_line(&content, "Selected target", "none");
+    }
+
+    let selected_target_proof = source_include_target_selection_fixture_proof(
+        graph.root_path.clone(),
+        target_candidates,
+        review.selected_target.clone(),
+        managed_or_ambiguous,
+    );
+    let preview_target = review
+        .selected_target
+        .clone()
+        .or_else(|| review.candidate_targets.first().cloned())
+        .unwrap_or_else(|| graph.root_path.clone());
+    let proposed_value = detail.edit.proposed_value.clone().unwrap_or_else(|| {
+        detail
+            .current_value
+            .raw_value
+            .clone()
+            .unwrap_or_else(|| "<proposed value required>".to_string())
+    });
+    let insertion_plan = build_missing_default_insertion_plan(MissingDefaultInsertionRequest {
+        setting_id: detail.row_id.clone(),
+        proposed_value: proposed_value.clone(),
+        target_path: preview_target,
+        backup_stamp: "ui-preview".to_string(),
+    });
+    let dry_run_preview =
+        source_include_selected_target_dry_run_plan(&selected_target_proof, &insertion_plan);
+    let preview = gtk::Box::new(gtk::Orientation::Vertical, 4);
+    preview.set_widget_name(
+        "hyprland-settings-source-include-selected-target-dry-run-preview-disabled",
+    );
+    preview.set_tooltip_text(Some(
+        "Disabled selected-target insertion dry-run preview. This does not write connected files.",
+    ));
+    preview.append(&body_label("Selected-target insertion dry-run preview"));
+    append_detail_line(&preview, "Root path", &friendly_path(&graph.root_path));
+    append_detail_line(
+        &preview,
+        "Selected target path",
+        dry_run_preview
+            .selected_target
+            .as_ref()
+            .map(|path| friendly_path(path))
+            .as_deref()
+            .unwrap_or("none"),
+    );
+    append_detail_line(
+        &preview,
+        "Source depth",
+        &dry_run_preview
+            .source_depth
+            .map(|depth| depth.to_string())
+            .unwrap_or_else(|| "not selected".to_string()),
+    );
+    append_detail_line(&preview, "Proposed value", &proposed_value);
+    append_detail_line(
+        &preview,
+        "Planned inserted line",
+        dry_run_preview
+            .insertion_line
+            .as_deref()
+            .unwrap_or(insertion_plan.insertion_line.as_str()),
+    );
+    append_detail_line(
+        &preview,
+        "Dry-run status",
+        source_include_dry_run_status_label(dry_run_preview.status),
+    );
+    if let Some(line) = &dry_run_preview.dry_run_preview {
+        preview.append(&small_label(line));
+    }
+    if !dry_run_preview.blocked_reasons.is_empty() {
+        preview.append(&small_label(&format!(
+            "Blocked: {}",
+            dry_run_preview.blocked_reasons.join("; ")
+        )));
+    }
+    preview.append(&small_label(
+        "Production source/include insertion remains disabled. This preview does not write files.",
+    ));
+    let run_selected = gtk::Button::with_label("Run selected-target insertion (planned)");
+    run_selected.set_widget_name("hyprland-settings-source-include-selected-target-run-disabled");
+    run_selected.set_tooltip_text(Some(
+        "Disabled future action. This does not run insertion or unblock Apply.",
+    ));
+    run_selected.set_sensitive(false);
+    preview.append(&run_selected);
+    content.append(&preview);
+
+    content.append(&body_label("Candidate target files"));
+    for (index, target) in review.candidate_targets.iter().enumerate() {
+        let card = gtk::Box::new(gtk::Orientation::Vertical, 4);
+        card.set_widget_name(&format!(
+            "hyprland-settings-source-include-target-candidate-disabled-{}",
+            index + 1
+        ));
+        card.set_tooltip_text(Some(
+            "Read-only source/include insertion target candidate. Choosing it is planned but disabled.",
+        ));
+        card.append(&small_label(&format!(
+            "Candidate {}: {}",
+            index + 1,
+            friendly_path(target)
+        )));
+        let choose = gtk::Button::with_label("Use this target (planned)");
+        choose.set_widget_name(&format!(
+            "hyprland-settings-source-include-target-choice-disabled-{}",
+            index + 1
+        ));
+        choose.set_tooltip_text(Some(
+            "Disabled future action. This does not insert a config line or unblock Apply.",
+        ));
+        choose.set_sensitive(false);
+        card.append(&choose);
+        content.append(&card);
+    }
+
+    let choose_target = gtk::Button::with_label("Choose target file (planned)");
+    choose_target.set_widget_name("hyprland-settings-source-include-target-selection-disabled");
+    choose_target.set_tooltip_text(Some(
+        "Disabled source/include target selection. Production insertion remains limited to single-root configs.",
+    ));
+    choose_target.set_sensitive(false);
+    content.append(&choose_target);
+    frame.set_child(Some(&content));
+    section.append(&frame);
+}
+
+fn source_include_readiness_label(readiness: SourceIncludeInsertionReadiness) -> &'static str {
+    match readiness {
+        SourceIncludeInsertionReadiness::SingleRootEligible => "single-root eligible",
+        SourceIncludeInsertionReadiness::SourceIncludeTargetSelectionRequired => {
+            "target selection required"
+        }
+        SourceIncludeInsertionReadiness::ManagedTargetBlocked => "managed target blocked",
+        SourceIncludeInsertionReadiness::DuplicateOrAmbiguousBlocked => {
+            "duplicate or ambiguous target blocked"
+        }
+    }
+}
+
+fn source_include_dry_run_status_label(
+    status: SourceIncludeSelectedTargetDryRunStatus,
+) -> &'static str {
+    match status {
+        SourceIncludeSelectedTargetDryRunStatus::Planned => "planned for fixture dry-run",
+        SourceIncludeSelectedTargetDryRunStatus::SelectionBlocked => "selection blocked",
+        SourceIncludeSelectedTargetDryRunStatus::TargetMismatch => "target mismatch",
+        SourceIncludeSelectedTargetDryRunStatus::InsertionPlanBlocked => "insertion plan blocked",
+        SourceIncludeSelectedTargetDryRunStatus::NonFixtureTargetRefused => {
+            "non-fixture target refused"
+        }
+    }
 }
 
 fn inactive_session_value_projection(

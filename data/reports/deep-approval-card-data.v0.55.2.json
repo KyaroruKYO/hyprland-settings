@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "deep-approval-card-data",
+  "generatedAt": "2026-06-20T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "startingCommit": "d23af73a07c7edcf541a17ad297dcd3db53c18fb",
+  "projectDataVersion": "v0.55.2",
+  "countsPreserved": "341 readable / 341 writable / 0 blocked",
+  "implementation": {
+    "deepProjectionModelExists": true,
+    "proofRecordModelExists": true,
+    "preconditionModelExists": true,
+    "restoreEvidenceModelExists": true,
+    "uiRendersProofRecords": true,
+    "uiRendersReportBackedProofRecords": true,
+    "reportBackedProjectionModelExists": true,
+    "screenshotLevelAssertionsExist": true,
+    "stableWidgetNamesPreserved": true,
+    "allCardsRemainDisabled": true
+  },
+  "deepCards": {
+    "sourceIncludeInsertion": {
+      "proofSource": "copied-config-tree proof",
+      "requiredFieldsDisplayed": [
+        "root config",
+        "selected target",
+        "source depth",
+        "planned inserted line",
+        "proposed value",
+        "dry-run status",
+        "copied target restore",
+        "original real config unchanged"
+      ],
+      "productionEnabled": false
+    },
+    "duplicateReplacement": {
+      "proofSource": "copied-config-tree proof",
+      "requiredFieldsDisplayed": [
+        "selected occurrence",
+        "target path",
+        "source depth",
+        "line number",
+        "raw line",
+        "old value",
+        "proposed value",
+        "fingerprint/precondition status",
+        "copied replacement status",
+        "copied target restore",
+        "original real config unchanged"
+      ],
+      "productionEnabled": false
+    },
+    "structuredHlBindWrite": {
+      "proofSource": "copied-config-tree proof",
+      "requiredFieldsDisplayed": [
+        "target file",
+        "source depth",
+        "line number",
+        "old raw line",
+        "proposed raw line",
+        "candidate validation status",
+        "comment/order preservation status",
+        "copied edit status",
+        "copied target restore",
+        "original real config unchanged"
+      ],
+      "productionEnabled": false
+    },
+    "profileModeSwitch": {
+      "proofSource": "copied-config-tree profile/symlink proof",
+      "requiredFieldsDisplayed": [
+        "current symlink",
+        "original target",
+        "proposed target",
+        "copied switch status",
+        "copied symlink restore",
+        "real symlink untouched"
+      ],
+      "productionEnabled": false
+    },
+    "highRiskDisplayWrite": {
+      "proofSource": "high-risk readiness gate",
+      "requiredFieldsDisplayed": [
+        "runtime read-only evidence",
+        "low-risk runtime live-restore proof",
+        "insufficiency reason",
+        "out-of-band recovery",
+        "dead-man timeout",
+        "restore command",
+        "config backup",
+        "runtime snapshot"
+      ],
+      "productionEnabled": false
+    },
+    "hyprland0554Migration": {
+      "proofSource": "runtime/package/trusted-data records",
+      "requiredFieldsDisplayed": [
+        "runtime version evidence",
+        "package metadata evidence",
+        "current active app model",
+        "official 0.55.4 export bundle",
+        "row-count diff",
+        "write-safety review",
+        "safe-env evidence",
+        "migration activation"
+      ],
+      "productionEnabled": false
+    }
+  },
+  "safety": {
+    "realConfigTouched": false,
+    "runtimeMutatedThisSprint": false,
+    "hyprctlReloadRun": false,
+    "agsWaybarTouched": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "sourceIncludeInsertionEnabled": false,
+    "duplicateWritesEnabled": false,
+    "structuredWritesEnabled": false,
+    "profileSwitchingEnabled": false,
+    "highRiskDisplayWritesEnabled": false,
+    "runtimeReloadProductionEnabled": false,
+    "hyprland0554MigrationActivated": false,
+    "v0552DefaultPreserved": true
+  },
+  "tests": [
+    "disabled_future_approval_card_projections_cover_all_remaining_gates_without_enablement",
+    "disabled_future_approval_cards_are_visible_and_non_mutating",
+    "deep_approval_card_data_report_records_proof_backed_fields_without_enablement"
+  ],
+  "nextRecommendedWork": "Feed card projections from generated proof records or report data, then add screenshot-level assertions for each individual card while production behavior remains disabled."
+}

@@ -1,0 +1,102 @@
+{
+  "artifactKind": "default-disabled-production-activation-control",
+  "projectDataVersion": "v0.55.2",
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "branch": "future-capability-marathon",
+  "inputActivationPathReport": "data/reports/default-disabled-production-activation-path.v0.55.2.json",
+  "inputDecisionReport": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
+  "inputApprovalCardReport": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+  "implementation": {
+    "activationControlModelExists": true,
+    "activationRequestValidationExists": true,
+    "activationSafetyPlanValidationExists": true,
+    "executorWiringModelExists": true,
+    "sourceIncludeActivationControlExists": true,
+    "duplicateActivationControlExists": true,
+    "uiSurfaceExists": true,
+    "screenshotLevelAssertionsImplemented": true,
+    "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr"
+  },
+  "controls": {
+    "sourceIncludeInsertion": {
+      "widgetName": "hyprland-settings-source-include-activation-control-disabled",
+      "evidenceWidgetName": "hyprland-settings-source-include-activation-control-evidence",
+      "inputPathStatus": "ActivationPathNeedsExplicitProductionFlag",
+      "inputDecisionStatus": "ApprovedButDefaultDisabled",
+      "status": "ValidatedButExecutorUnwired",
+      "requestValidationStatus": "Complete activation request",
+      "safetyPlanValidationStatus": "Complete safety plan",
+      "executorWiringStatus": "Unwired",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "categoryProductionFlag": false,
+      "productionStatus": "Disabled",
+      "executorWired": false,
+      "disabledAction": "Validate source/include activation request (planned)",
+      "validatedForReviewOnly": true,
+      "productionExecutorReady": false,
+      "productionWriteReady": false
+    },
+    "duplicateReplacement": {
+      "widgetName": "hyprland-settings-duplicate-activation-control-disabled",
+      "evidenceWidgetName": "hyprland-settings-duplicate-activation-control-evidence",
+      "inputPathStatus": "ActivationPathNeedsExplicitProductionFlag",
+      "inputDecisionStatus": "ApprovedButDefaultDisabled",
+      "status": "ValidatedButExecutorUnwired",
+      "requestValidationStatus": "Complete activation request",
+      "safetyPlanValidationStatus": "Complete safety plan",
+      "executorWiringStatus": "Unwired",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "categoryProductionFlag": false,
+      "productionStatus": "Disabled",
+      "executorWired": false,
+      "disabledAction": "Validate duplicate activation request (planned)",
+      "validatedForReviewOnly": true,
+      "productionExecutorReady": false,
+      "productionWriteReady": false
+    }
+  },
+  "screenshotLevelAssertions": {
+    "sourceIncludeInsertion": true,
+    "duplicateReplacement": true
+  },
+  "activationFormReview": {
+    "report": "data/reports/default-disabled-production-activation-form.v0.55.2.json",
+    "fieldReport": "data/reports/default-disabled-production-activation-form-fields.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ValidatedForReviewOnly",
+      "requestGenerationStatus": "ProductionActivationRequest generated for review only",
+      "safetyPlanGenerationStatus": "ProductionActivationSafetyPlan generated for review only",
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "executorWiringStatus": "Unwired",
+      "productionEnabled": false,
+      "productionFlag": false
+    },
+    "duplicateReplacement": {
+      "status": "ValidatedForReviewOnly",
+      "requestGenerationStatus": "ProductionActivationRequest generated for review only",
+      "safetyPlanGenerationStatus": "ProductionActivationSafetyPlan generated for review only",
+      "controlValidationStatus": "ValidatedButExecutorUnwired",
+      "executorWiringStatus": "Unwired",
+      "productionEnabled": false,
+      "productionFlag": false
+    }
+  },
+  "safety": {
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "sourceIncludeExecutorWired": false,
+    "duplicateExecutorWired": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "realConfigTouched": false,
+    "runtimeMutatedThisSprint": false,
+    "hyprctlReloadRun": false,
+    "v0552DefaultPreserved": true,
+    "hyprland0554MigrationActivated": false
+  },
+  "nextRequiredWork": [
+    "Design the final explicit activation form/state machine that can collect real user request data while keeping production executors disabled.",
+    "Keep source/include and duplicate production executors unwired until live byte-exact backup, restore, reread, and final approval paths are proven end to end."
+  ]
+}

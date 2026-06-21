@@ -95,7 +95,7 @@ impl SafeBatchEligibility {
                 "Blocked: this setting appears in more than one place. Resolve the duplicate entries manually before applying."
             }
             Self::BlockedMissingLine => {
-                "Blocked: this setting is using Hyprland's default value. The app does not add new config lines yet."
+                "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
             }
             Self::BlockedStructuredFamily => {
                 "Blocked: structured settings are not part of safe-batch writing yet."
@@ -124,6 +124,17 @@ pub struct SafeBatchEligibleChange {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SafeBatchInsertionChange {
+    pub setting_id: String,
+    pub official_setting: String,
+    pub config_key: String,
+    pub target_path: PathBuf,
+    pub proposed_value: String,
+    pub insertion_line: String,
+    pub review_copy: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SafeBatchBlockedChange {
     pub setting_id: String,
     pub proposed_value: String,
@@ -144,6 +155,7 @@ pub struct SafeBatchWritePlan {
     pub batch_id: String,
     pub pending_changes: Vec<SafeBatchChangeRequest>,
     pub eligible_changes: Vec<SafeBatchEligibleChange>,
+    pub insertion_changes: Vec<SafeBatchInsertionChange>,
     pub blocked_changes: Vec<SafeBatchBlockedChange>,
     pub target_files: Vec<SafeBatchTargetFilePlan>,
     pub can_execute: bool,
@@ -229,17 +241,24 @@ pub fn build_safe_batch_write_plan(
 ) -> SafeBatchWritePlan {
     let batch_id = batch_id.into();
     let mut eligible_changes = Vec::new();
+    let mut insertion_changes = Vec::new();
     let mut blocked_changes = Vec::new();
 
     for request in &pending_changes {
         match classify_safe_batch_change(known_setting_ids, current_config, config_graph, request) {
-            Ok(change) => eligible_changes.push(change),
+            Ok(SafeBatchPlannedChange::ExistingScalar(change)) => eligible_changes.push(change),
+            Ok(SafeBatchPlannedChange::MissingDefaultInsertion(change)) => {
+                insertion_changes.push(change)
+            }
             Err(blocked) => blocked_changes.push(blocked),
         }
     }
 
     let mut file_counts: BTreeMap<PathBuf, usize> = BTreeMap::new();
     for change in &eligible_changes {
+        *file_counts.entry(change.target_path.clone()).or_default() += 1;
+    }
+    for change in &insertion_changes {
         *file_counts.entry(change.target_path.clone()).or_default() += 1;
     }
     let target_files = file_counts
@@ -255,7 +274,7 @@ pub fn build_safe_batch_write_plan(
     if pending_changes.is_empty() {
         cannot_execute_reasons.push("no pending changes were selected".to_string());
     }
-    if eligible_changes.is_empty() {
+    if eligible_changes.is_empty() && insertion_changes.is_empty() {
         cannot_execute_reasons
             .push("no eligible safe-batch scalar changes were selected".to_string());
     }
@@ -272,6 +291,7 @@ pub fn build_safe_batch_write_plan(
         batch_id,
         pending_changes,
         eligible_changes,
+        insertion_changes,
         blocked_changes,
         target_files,
         can_execute: cannot_execute_reasons.is_empty(),
@@ -329,7 +349,8 @@ pub fn execute_safe_batch_write_plan(
     let mut written_targets = Vec::new();
     for target in &plan.target_files {
         let changes = changes_for_target(&plan.eligible_changes, &target.target_path);
-        match write_target_file(&target.target_path, &changes) {
+        let insertions = insertions_for_target(&plan.insertion_changes, &target.target_path);
+        match write_target_file(&target.target_path, &changes, &insertions) {
             Ok(()) => {
                 written_targets.push(target.target_path.clone());
                 if options.fail_after_writing_target.as_ref() == Some(&target.target_path) {
@@ -354,6 +375,7 @@ pub fn execute_safe_batch_write_plan(
 
     match verify_written_values(
         &plan.eligible_changes,
+        &plan.insertion_changes,
         options.force_verification_failure_for.as_deref(),
     ) {
         Ok(verified_changes) => SafeBatchWriteReport {
@@ -386,12 +408,17 @@ pub fn execute_safe_batch_write_plan(
     }
 }
 
+enum SafeBatchPlannedChange {
+    ExistingScalar(SafeBatchEligibleChange),
+    MissingDefaultInsertion(SafeBatchInsertionChange),
+}
+
 fn classify_safe_batch_change(
     known_setting_ids: &BTreeSet<String>,
     current_config: &CurrentConfigSnapshot,
     config_graph: &ConfigGraphSummary,
     request: &SafeBatchChangeRequest,
-) -> Result<SafeBatchEligibleChange, SafeBatchBlockedChange> {
+) -> Result<SafeBatchPlannedChange, SafeBatchBlockedChange> {
     let setting_id = request.setting_id.as_str();
     if setting_id.starts_with("hl.") {
         return blocked(
@@ -452,6 +479,9 @@ fn classify_safe_batch_change(
         }
     }
     let CurrentValueSourceStatus::Configured = current_value.status else {
+        if current_value.status == CurrentValueSourceStatus::NotConfigured {
+            return classify_missing_default_insertion(config_graph, request, official_setting);
+        }
         let reason = match current_value.status {
             CurrentValueSourceStatus::DuplicateConflict => {
                 SafeBatchEligibility::BlockedDuplicateConflict
@@ -550,23 +580,122 @@ fn classify_safe_batch_change(
         },
     )?;
 
-    Ok(SafeBatchEligibleChange {
-        setting_id: setting_id.to_string(),
-        official_setting: official_setting.to_string(),
-        config_key: config_key_from_official_setting(official_setting),
-        target_path,
-        line_number,
-        old_value,
-        proposed_value: pending.proposed_value,
-        original_raw_line,
-    })
+    Ok(SafeBatchPlannedChange::ExistingScalar(
+        SafeBatchEligibleChange {
+            setting_id: setting_id.to_string(),
+            official_setting: official_setting.to_string(),
+            config_key: config_key_from_official_setting(official_setting),
+            target_path,
+            line_number,
+            old_value,
+            proposed_value: pending.proposed_value,
+            original_raw_line,
+        },
+    ))
 }
 
-fn blocked(
+fn classify_missing_default_insertion(
+    config_graph: &ConfigGraphSummary,
+    request: &SafeBatchChangeRequest,
+    official_setting: &str,
+) -> Result<SafeBatchPlannedChange, SafeBatchBlockedChange> {
+    let target_path = config_graph.root_path.clone();
+    let Some(file) = graph_file_for(config_graph, &target_path) else {
+        return blocked(
+            request,
+            SafeBatchEligibility::BlockedMissingLine,
+            "missing/default insertion requires an explicit reviewed root config file",
+        );
+    };
+    if config_graph.multi_file || file.source_depth != 0 {
+        return blocked(
+            request,
+            SafeBatchEligibility::BlockedMissingLine,
+            "missing/default insertion is limited to a single explicit root config file",
+        );
+    }
+    if file.is_symlink
+        || file.symlink_target.is_some()
+        || has_hint(file, ConfigManagementHintKind::SymlinkManaged)
+    {
+        return blocked(
+            request,
+            SafeBatchEligibility::BlockedSymlinkManaged,
+            "missing/default insertion target is symlink-managed",
+        );
+    }
+    if has_hint(file, ConfigManagementHintKind::GeneratedFile) {
+        return blocked(
+            request,
+            SafeBatchEligibility::BlockedGeneratedFile,
+            "missing/default insertion target is generated",
+        );
+    }
+    if has_hint(file, ConfigManagementHintKind::ScriptManaged)
+        || has_hint(file, ConfigManagementHintKind::ScriptReferenced)
+    {
+        return blocked(
+            request,
+            SafeBatchEligibility::BlockedScriptManaged,
+            "missing/default insertion target is script-managed or script-referenced",
+        );
+    }
+    if !file.readable {
+        return blocked(
+            request,
+            SafeBatchEligibility::BlockedUnknownTarget,
+            "missing/default insertion target is not readable",
+        );
+    }
+    let metadata = fs::symlink_metadata(&target_path).map_err(|error| {
+        blocked_value(
+            request,
+            SafeBatchEligibility::BlockedMissingLine,
+            format!("missing/default insertion target cannot be inspected: {error}"),
+        )
+    })?;
+    if !metadata.file_type().is_file() || metadata.file_type().is_symlink() {
+        return blocked(
+            request,
+            SafeBatchEligibility::BlockedMissingLine,
+            "missing/default insertion target must be an existing normal file",
+        );
+    }
+    if metadata.permissions().readonly() {
+        return blocked(
+            request,
+            SafeBatchEligibility::BlockedUnknownTarget,
+            "missing/default insertion target is not writable",
+        );
+    }
+    ensure_setting_absent_from_file(&target_path, official_setting).map_err(|error| {
+        blocked_value(
+            request,
+            SafeBatchEligibility::BlockedDuplicateConflict,
+            error.to_string(),
+        )
+    })?;
+    let config_key = config_key_from_official_setting(official_setting);
+    let insertion_line = format!("{config_key} = {}", request.proposed_value.trim());
+
+    Ok(SafeBatchPlannedChange::MissingDefaultInsertion(
+        SafeBatchInsertionChange {
+            setting_id: request.setting_id.clone(),
+            official_setting: official_setting.to_string(),
+            config_key,
+            target_path,
+            proposed_value: request.proposed_value.clone(),
+            insertion_line,
+            review_copy: "Apply will insert this missing/default setting into the reviewed root config file after creating and verifying a backup.".to_string(),
+        },
+    ))
+}
+
+fn blocked<T>(
     request: &SafeBatchChangeRequest,
     reason: SafeBatchEligibility,
     evidence: impl Into<String>,
-) -> Result<SafeBatchEligibleChange, SafeBatchBlockedChange> {
+) -> Result<T, SafeBatchBlockedChange> {
     Err(blocked_value(request, reason, evidence))
 }
 
@@ -677,7 +806,21 @@ fn changes_for_target<'a>(
     selected
 }
 
-fn write_target_file(target_path: &Path, changes: &[&SafeBatchEligibleChange]) -> Result<()> {
+fn insertions_for_target<'a>(
+    insertions: &'a [SafeBatchInsertionChange],
+    target_path: &Path,
+) -> Vec<&'a SafeBatchInsertionChange> {
+    insertions
+        .iter()
+        .filter(|change| change.target_path == target_path)
+        .collect::<Vec<_>>()
+}
+
+fn write_target_file(
+    target_path: &Path,
+    changes: &[&SafeBatchEligibleChange],
+    insertions: &[&SafeBatchInsertionChange],
+) -> Result<()> {
     let original = fs::read_to_string(target_path)
         .with_context(|| format!("failed to read {}", target_path.display()))?;
     let had_trailing_newline = original.ends_with('\n');
@@ -706,14 +849,23 @@ fn write_target_file(target_path: &Path, changes: &[&SafeBatchEligibleChange]) -
         lines[index] = replace_value_preserving_key(line, &change.proposed_value)?;
     }
     let mut updated = lines.join("\n");
-    if had_trailing_newline {
+    if had_trailing_newline || !updated.is_empty() {
         updated.push('\n');
+    }
+    if !insertions.is_empty() {
+        updated.push('\n');
+        updated.push_str("# Added by Hyprland Settings safe-batch missing/default insertion\n");
+        for insertion in insertions {
+            updated.push_str(&insertion.insertion_line);
+            updated.push('\n');
+        }
     }
     atomic_write(target_path, updated.as_bytes())
 }
 
 fn verify_written_values(
     changes: &[SafeBatchEligibleChange],
+    insertions: &[SafeBatchInsertionChange],
     force_verification_failure_for: Option<&str>,
 ) -> Result<Vec<String>> {
     let mut verified = Vec::new();
@@ -744,6 +896,47 @@ fn verify_written_values(
             ));
         }
         verified.push(change.setting_id.clone());
+    }
+    for insertion in insertions {
+        if force_verification_failure_for == Some(insertion.setting_id.as_str()) {
+            return Err(anyhow!(
+                "forced verification failure for {}",
+                insertion.setting_id
+            ));
+        }
+        let parsed = parse_hyprland_config_file(&insertion.target_path)
+            .with_context(|| format!("failed to reread {}", insertion.target_path.display()))?;
+        let matches = parsed
+            .scalar_records()
+            .filter(|record| {
+                record.status == ParseStatus::Scalar
+                    && record.normalized_setting_id.as_deref()
+                        == Some(insertion.official_setting.as_str())
+            })
+            .collect::<Vec<_>>();
+        if matches.len() != 1 {
+            return Err(anyhow!(
+                "expected one inserted setting for {}, got {}",
+                insertion.setting_id,
+                matches.len()
+            ));
+        }
+        let record = matches[0];
+        if record.raw_value.as_deref() != Some(insertion.proposed_value.as_str()) {
+            return Err(anyhow!(
+                "expected inserted {}={}, got {:?}",
+                insertion.setting_id,
+                insertion.proposed_value,
+                record.raw_value
+            ));
+        }
+        if record.raw_line.trim() != insertion.insertion_line {
+            return Err(anyhow!(
+                "inserted line did not match review line for {}",
+                insertion.setting_id
+            ));
+        }
+        verified.push(insertion.setting_id.clone());
     }
     Ok(verified)
 }
@@ -828,6 +1021,28 @@ fn verify_restored_backup(plan: &SafeBatchWritePlan, backup: &SafeBatchBackupRec
             &change.official_setting,
             &change.old_value,
         )?;
+    }
+    for insertion in plan
+        .insertion_changes
+        .iter()
+        .filter(|change| change.target_path == backup.target_path)
+    {
+        ensure_setting_absent_from_file(&backup.target_path, &insertion.official_setting)?;
+    }
+    Ok(())
+}
+
+fn ensure_setting_absent_from_file(target_path: &Path, official_setting: &str) -> Result<()> {
+    let parsed = parse_hyprland_config_file(target_path)
+        .with_context(|| format!("failed to read {}", target_path.display()))?;
+    let count = parsed
+        .scalar_records()
+        .filter(|record| record.normalized_setting_id.as_deref() == Some(official_setting))
+        .count();
+    if count > 0 {
+        return Err(anyhow!(
+            "setting is already present in target file; duplicate resolution is required"
+        ));
     }
     Ok(())
 }

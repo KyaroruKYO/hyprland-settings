@@ -96,6 +96,186 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("connectedFileScriptManagedDetailCollected"));
     assert!(collector.contains("connectedFileSymlinkDetailCollected"));
     assert!(collector.contains("profileModeDetailCollected"));
+    assert!(collector.contains("APPROVAL_CARD_ASSERTIONS"));
+    assert!(collector.contains("approvalCardAssertionMethod"));
+    assert!(collector.contains("approvalCardAssertions"));
+    assert!(collector.contains("ACTIVATION_DECISION_ASSERTIONS"));
+    assert!(collector.contains("activationDecisionAssertionMethod"));
+    assert!(collector.contains("activationDecisionAssertions"));
+    assert!(collector.contains("ACTIVATION_PATH_ASSERTIONS"));
+    assert!(collector.contains("activationPathAssertionMethod"));
+    assert!(collector.contains("activationPathAssertions"));
+    assert!(collector.contains("ACTIVATION_CONTROL_ASSERTIONS"));
+    assert!(collector.contains("activationControlAssertions"));
+    assert!(collector.contains("activationControlsAllExecutorUnwiredFound"));
+    assert!(collector.contains("ACTIVATION_FORM_ASSERTIONS"));
+    assert!(collector.contains("activationFormAssertions"));
+    assert!(collector.contains("activationFormsAllExecutorUnwiredFound"));
+    assert!(collector.contains("ACTIVATION_DRAFT_ASSERTIONS"));
+    assert!(collector.contains("activationDraftAssertions"));
+    assert!(collector.contains("activationDraftsAllInMemoryOnlyFound"));
+    assert!(collector.contains("ACTIVATION_DRAFT_EDIT_ASSERTIONS"));
+    assert!(collector.contains("activationDraftEditAssertions"));
+    assert!(collector.contains("activationDraftEditsAllInMemoryOnlyFound"));
+    assert!(collector.contains("activationDraftEditsAllModeFound"));
+    assert!(collector.contains("activationDraftEditsAllValidationFound"));
+    assert!(collector.contains("PRODUCTION_ACTIVATION_SAFETY_GATE_ASSERTIONS"));
+    assert!(collector.contains("PRODUCTION_ACTIVATION_SAFETY_PROOF_ASSERTIONS"));
+    assert!(collector.contains("PRODUCTION_ACTIVATION_FINAL_DECISION_ASSERTIONS"));
+    assert!(collector.contains("PRODUCTION_ACTIVATION_APPROVAL_UX_AND_DRY_RUN_ASSERTIONS"));
+    assert!(collector.contains("PRODUCTION_ACTIVATION_CAP_ASSERTIONS"));
+    assert!(collector.contains("productionActivationSafetyGateAssertionMethod"));
+    assert!(collector.contains("productionActivationSafetyGateAssertions"));
+    assert!(collector.contains("productionActivationSafetyGatesAllBlockedByDefaultFound"));
+    assert!(collector.contains("productionActivationSafetyGatesAllRequiredProofFound"));
+    assert!(collector.contains("productionActivationSafetyProofAssertions"));
+    assert!(collector.contains("productionActivationSafetyProofsAllCopiedFixtureProofFound"));
+    assert!(collector.contains("productionActivationSafetyProofsAllFinalApprovalFound"));
+    assert!(collector.contains("productionActivationFinalDecisionAssertions"));
+    assert!(collector.contains("productionActivationFinalDecisionsAllDecisionLabelsFound"));
+    assert!(collector.contains("productionActivationFinalDecisionsAllDisabledActionsFound"));
+    assert!(collector.contains("productionActivationApprovalUxAndDryRunAssertions"));
+    assert!(
+        collector.contains("productionActivationApprovalUxAndDryRunAllApprovalRequirementsFound")
+    );
+    assert!(collector.contains("productionActivationApprovalUxAndDryRunAllDryRunBoundariesFound"));
+    for expected in [
+        "Source/include approval review",
+        "Duplicate approval review",
+        "Source/include production activation decision",
+        "Duplicate production activation decision",
+        "Source/include production activation path",
+        "Duplicate production activation path",
+        "Source/include production activation control",
+        "Duplicate production activation control",
+        "Source/include activation request form",
+        "Duplicate activation request form",
+        "Source/include activation draft",
+        "Duplicate activation draft",
+        "Source/include activation draft editing",
+        "Duplicate activation draft editing",
+        "Source/include live activation draft editing",
+        "Duplicate live activation draft editing",
+        "Source/include activation draft persistence boundary",
+        "Duplicate activation draft persistence boundary",
+        "Source/include production activation safety gate",
+        "Duplicate production activation safety gate",
+        "Source/include production activation safety proof",
+        "Duplicate production activation safety proof",
+        "Source/include production activation final decision",
+        "Duplicate production activation final decision",
+        "Source/include production activation approval UX",
+        "Duplicate production activation approval UX",
+        "Source/include live production dry-run policy",
+        "Duplicate live production dry-run policy",
+        "Source/include production flag and executor-wiring opt-in requirements",
+        "Duplicate production flag and executor-wiring opt-in requirements",
+        "Source/include production activation cap",
+        "Duplicate production activation cap",
+        "Production activation proof partially satisfied but default-disabled",
+        "Final decision proof satisfied but decisions missing",
+        "Approval UX status",
+        "designed but disabled",
+        "Typed confirmation phrase",
+        "Production flag opt-in",
+        "Executor wiring opt-in",
+        "Dry-run policy status",
+        "Live dry-run cannot run by default",
+        "Live dry-run cannot touch real config by default",
+        "Live dry-run cannot reload Hyprland by default",
+        "Live dry-run cannot mutate runtime by default",
+        "Opt-in requirements status",
+        "separate future steps",
+        "Explicit user action",
+        "Typed confirmation",
+        "Report-backed proof",
+        "Rollback-ready state",
+        "Production flag: false",
+        "branch capped for non-production runway",
+        "Future production activation requires separate approved phase",
+        "Byte-exact backup",
+        "Write plan",
+        "Dry-run write plan",
+        "Diff preview",
+        "Post-write reread",
+        "Reread plan",
+        "Restore plan",
+        "Post-restore verification",
+        "No auto-apply proof",
+        "Persistence auto-apply proof",
+        "Persisted-draft auto-apply proof",
+        "Explicit final approval",
+        "Final approval still required",
+        "Production flag decision",
+        "Executor wiring decision",
+        "Live production dry-run policy",
+        "Copied-fixture proof",
+        "Draft persistence: Persistence forbidden by default",
+        "Approve source/include production activation (not available)",
+        "Set source/include production flag (not available)",
+        "Wire source/include production executor (not available)",
+        "Run source/include live production dry-run (not available)",
+        "Approve duplicate production activation (not available)",
+        "Set duplicate production flag (not available)",
+        "Wire duplicate production executor (not available)",
+        "Run duplicate live production dry-run (not available)",
+        "Confirm source/include production activation phrase (not available)",
+        "Opt in source/include production flag (not available)",
+        "Opt in source/include executor wiring (not available)",
+        "Confirm duplicate production activation phrase (not available)",
+        "Opt in duplicate production flag (not available)",
+        "Opt in duplicate executor wiring (not available)",
+        "Confirm source/include production opt-in requirements (not available)",
+        "Confirm duplicate production opt-in requirements (not available)",
+        "Start source/include production activation phase (not available)",
+        "Confirm source/include branch cap (not available)",
+        "Start duplicate production activation phase (not available)",
+        "Confirm duplicate branch cap (not available)",
+        "Run source/include production safety proof (fixture only, planned)",
+        "Run duplicate production safety proof (fixture only, planned)",
+        "Review source/include production activation gate (not available)",
+        "Enable source/include production activation (not available)",
+        "Review duplicate production activation gate (not available)",
+        "Enable duplicate production activation (not available)",
+        "Persistence forbidden by default",
+        "Persistence enabled: false",
+        "Draft written to disk: false",
+        "Storage path: none",
+        "Executor wiring: Unwired",
+        "Enable source/include draft persistence (not available)",
+        "Clear source/include persisted draft (not available)",
+        "Enable duplicate draft persistence (not available)",
+        "Clear duplicate persisted draft (not available)",
+        "Editing mode",
+        "Draft editing mode: memory-only",
+        "Draft validation",
+        "In-memory only",
+        "Not saved to disk",
+        "Update source/include activation draft (planned)",
+        "Reset source/include activation draft (planned)",
+        "Update duplicate activation draft (planned)",
+        "Reset duplicate activation draft (planned)",
+        "Update source/include activation draft (memory only)",
+        "Reset source/include activation draft (memory only)",
+        "Update duplicate activation draft (memory only)",
+        "Reset duplicate activation draft (memory only)",
+        "Executor wiring: Unwired",
+        "Structured hl.bind approval review",
+        "Profile/mode approval review",
+        "High-risk/display approval review",
+        "Hyprland 0.55.4 migration review",
+        "Production source/include insertion",
+        "Production duplicate writes",
+        "Production structured writes",
+        "Production profile switching",
+        "Production high-risk/display writes",
+        "Production migration activation",
+    ] {
+        assert!(
+            collector.contains(expected),
+            "collector should assert approval-card text: {expected}"
+        );
+    }
     assert!(collector.contains("\"proofSurface\""));
     assert!(collector.contains("refused to navigate to Apply"));
     assert!(collector.contains("refused to click node containing Apply"));
@@ -115,6 +295,7 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
         "data/reports/gtk-safe-env-evidence-derived-matrix.v0.55.2.json",
         "data/reports/gtk-safe-env-blocked-category-detail-proof.v0.55.2.json",
         "data/reports/gtk-safe-env-connected-file-detail-proof.v0.55.2.json",
+        "data/reports/gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
         "data/reports/completion-readiness-audit.v0.55.2.json",
         "data/reports/final-app-completion-wrap-up.v0.55.2.json",
         "data/reports/autonomous-safe-scope-continuation.v0.55.2.json",
@@ -164,6 +345,109 @@ fn gtk_reports_are_evidence_derived_and_preserve_project_model() {
         assert!(value["proofLevelByBlockedCategory"].is_object());
         assert!(value["proofSurfaceByBlockedCategory"].is_object());
         assert!(value["blockedCategoryResults"].is_object());
+    }
+}
+
+#[test]
+fn gtk_harness_records_screenshot_level_disabled_approval_card_assertions() {
+    let summarizer = fs::read_to_string("tools/live_scenario_harness/summarize_gtk_evidence.py")
+        .expect("summarizer should read");
+    for expected in [
+        "approval_card_assertion_results",
+        "gtk-safe-env-disabled-approval-card-proof.v0.55.2.json",
+        "screenshot_plus_accessibility_tree_text_not_ocr",
+        "approvalCardsAllHeadingsFound",
+        "approvalCardsAllProductionDisabledFound",
+        "approvalCardsAllDisabledActionsFound",
+        "activation_decision_assertion_results",
+        "activationDecisionsAllHeadingsFound",
+        "activationDecisionsAllProductionDisabledFound",
+        "activationDecisionsAllDisabledActionsFound",
+        "activation_path_assertion_results",
+        "activationPathsAllHeadingsFound",
+        "activationPathsAllProductionDisabledFound",
+        "activationPathsAllDisabledActionsFound",
+        "activation_control_assertion_results",
+        "activationControlsAllHeadingsFound",
+        "activationControlsAllProductionDisabledFound",
+        "activationControlsAllExecutorUnwiredFound",
+        "activationControlsAllDisabledActionsFound",
+        "activation_form_assertion_results",
+        "activationFormsAllHeadingsFound",
+        "activationFormsAllProductionDisabledFound",
+        "activationFormsAllExecutorUnwiredFound",
+        "activationFormsAllDisabledActionsFound",
+        "activationFormsAllFieldLabelsFound",
+        "fieldLabelsProof",
+        "fieldLabelResults",
+        "activationDraftAssertionMethod",
+        "activationDraftResults",
+        "activationDraftsAllHeadingsFound",
+        "activationDraftsAllProductionDisabledFound",
+        "activationDraftsAllExecutorUnwiredFound",
+        "activationDraftsAllInMemoryOnlyFound",
+        "activationDraftsAllDisabledActionsFound",
+        "activationDraftEditAssertionMethod",
+        "activationDraftEditResults",
+        "activationDraftEditsAllHeadingsFound",
+        "activationDraftEditsAllProductionDisabledFound",
+        "activationDraftEditsAllExecutorUnwiredFound",
+        "activationDraftEditsAllInMemoryOnlyFound",
+        "activationDraftEditsAllModeFound",
+        "activationDraftEditsAllValidationFound",
+        "activationDraftEditsAllDisabledActionsFound",
+        "production_activation_safety_gate_assertion_results",
+        "productionActivationSafetyGateResults",
+        "productionActivationSafetyGatesAllRequiredProofFound",
+        "production_activation_safety_proof_assertion_results",
+        "production_activation_final_decision_assertion_results",
+        "productionActivationSafetyProofAssertionMethod",
+        "productionActivationSafetyProofResults",
+        "productionActivationSafetyProofsAllHeadingsFound",
+        "productionActivationSafetyProofsAllCopiedFixtureProofFound",
+        "productionActivationSafetyProofsAllNoAutoApplyFound",
+        "productionActivationSafetyProofsAllFinalApprovalFound",
+        "productionActivationFinalDecisionAssertionMethod",
+        "productionActivationFinalDecisionResults",
+        "productionActivationFinalDecisionsAllHeadingsFound",
+        "productionActivationFinalDecisionsAllDecisionLabelsFound",
+        "productionActivationFinalDecisionsAllPersistenceFound",
+        "productionActivationFinalDecisionsAllDisabledActionsFound",
+        "production_activation_approval_ux_and_dry_run_assertion_results",
+        "productionActivationApprovalUxAndDryRunResults",
+        "productionActivationApprovalUxAndDryRunAllHeadingsFound",
+        "productionActivationApprovalUxAndDryRunAllApprovalRequirementsFound",
+        "productionActivationApprovalUxAndDryRunAllDryRunBoundariesFound",
+        "productionActivationApprovalUxAndDryRunAllDisabledActionsFound",
+        "productionActivationOptInRequirementsAssertionMethod",
+        "productionActivationOptInRequirementsResults",
+        "productionActivationOptInRequirementsAllHeadingsFound",
+        "productionActivationOptInRequirementsAllRequirementLabelsFound",
+        "productionActivationOptInRequirementsAllFlagFalseFound",
+        "productionActivationOptInRequirementsAllDisabledActionsFound",
+        "production_activation_cap_assertion_results",
+        "productionActivationCapAssertionMethod",
+        "productionActivationCapResults",
+        "productionActivationCapAllHeadingsFound",
+        "productionActivationCapAllStatusFound",
+        "productionActivationCapAllSeparatePhaseFound",
+        "productionActivationCapAllProductionDisabledFound",
+        "productionActivationCapAllFlagFalseFound",
+        "productionActivationCapAllExecutorUnwiredFound",
+        "productionActivationCapAllPersistenceFound",
+        "productionActivationCapAllNoMutationFound",
+        "productionActivationCapAllDisabledActionsFound",
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+        "structuredHlBindWrite",
+        "profileModeSwitch",
+        "highRiskDisplayWrite",
+        "hyprland0554Migration",
+    ] {
+        assert!(
+            summarizer.contains(expected),
+            "summarizer should preserve disabled approval card assertion evidence: {expected}"
+        );
     }
 }
 

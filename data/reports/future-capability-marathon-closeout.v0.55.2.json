@@ -1,0 +1,88 @@
+{
+  "artifactKind": "future-capability-marathon-closeout",
+  "projectDataVersion": "v0.55.2",
+  "generatedAt": "2026-06-20T00:00:00Z",
+  "branch": "future-capability-marathon",
+  "startingCommit": "1f8a05c15c79b2f768ebd3a3d908631f7e400156",
+  "latestCommitBeforeCloseout": "1f8a05c15c79b2f768ebd3a3d908631f7e400156",
+  "chosenCloseoutDecision": "stop source/include and duplicate non-production runway here",
+  "sourceIncludeCapStatus": "BranchCappedForNonProductionRunway",
+  "duplicateCapStatus": "BranchCappedForNonProductionRunway",
+  "shouldFutureCapabilityMarathonStopHere": true,
+  "futureProductionActivationRequiresSeparateApprovedPhase": true,
+  "futureProductionActivationRequiresFreshUserDecision": true,
+  "futureProductionActivationMustNotBeHiddenInContinuationSprints": true,
+  "futureProductionActivationMustNotBeInferredFromExistingProof": true,
+  "activeNextWorkAfterCloseout": "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.",
+  "closeoutReviews": {
+    "sourceIncludeInsertion": {
+      "capStatus": "BranchCappedForNonProductionRunway",
+      "futureSeparateApprovedPhaseRequired": true,
+      "productionFlag": false,
+      "executorWiring": "Unwired",
+      "draftPersistenceBoundary": "PersistenceForbiddenByDefault",
+      "productionWriteExecuted": false,
+      "realConfigTouched": false,
+      "runtimeMutated": false
+    },
+    "duplicateReplacement": {
+      "capStatus": "BranchCappedForNonProductionRunway",
+      "futureSeparateApprovedPhaseRequired": true,
+      "productionFlag": false,
+      "executorWiring": "Unwired",
+      "draftPersistenceBoundary": "PersistenceForbiddenByDefault",
+      "productionWriteExecuted": false,
+      "realConfigTouched": false,
+      "runtimeMutated": false
+    }
+  },
+  "safety": {
+    "sourceIncludeProductionFlag": false,
+    "duplicateProductionFlag": false,
+    "sourceIncludeExecutor": "Unwired",
+    "duplicateExecutor": "Unwired",
+    "sourceIncludeDraftPersistence": "PersistenceForbiddenByDefault",
+    "duplicateDraftPersistence": "PersistenceForbiddenByDefault",
+    "sourceIncludeProductionWriteExecuted": false,
+    "duplicateProductionWriteExecuted": false,
+    "sourceIncludeRealConfigTouched": false,
+    "duplicateRealConfigTouched": false,
+    "sourceIncludeRuntimeMutated": false,
+    "duplicateRuntimeMutated": false,
+    "hyprctlReloadRun": false,
+    "diskPersistenceAdded": false,
+    "storageDirectoryCreated": false,
+    "serializerOrWritePathAdded": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "v0552ModelPreserved": true,
+    "hyprland0554MigrationActivated": false
+  },
+  "doNotContinue": [
+    "Do not continue source/include production activation on future-capability-marathon.",
+    "Do not continue duplicate production activation on future-capability-marathon.",
+    "Do not add more source/include/duplicate production guardrails here unless correcting a proven defect.",
+    "Do not wire production executors here.",
+    "Do not set production flags here.",
+    "Do not reinterpret this branch as production activation approval."
+  ],
+  "futureSeparatePhaseRequirements": [
+    "A future production activation phase requires explicit user request.",
+    "A future production activation phase requires new branch or explicit phase marker.",
+    "A future production activation phase requires fresh preflight and real-config risk review.",
+    "A future production activation phase requires user-visible production warning.",
+    "A future production activation phase requires typed confirmation.",
+    "A future production activation phase requires rollback strategy reviewed at that time.",
+    "A future production activation phase must revalidate source/include and duplicate proofs at activation time."
+  ],
+  "nonInferenceProof": {
+    "copiedFixtureProofCannotApproveProduction": true,
+    "draftEditStateCannotApproveProduction": true,
+    "persistenceBoundaryCannotApproveProduction": true,
+    "approvalUxCannotApproveProduction": true,
+    "dryRunPolicyCannotApproveProduction": true,
+    "optInRequirementsCannotApproveProduction": true,
+    "finalDecisionReviewCannotApproveProduction": true,
+    "capReviewCannotApproveProduction": true,
+    "closeoutCannotApproveProduction": true
+  }
+}

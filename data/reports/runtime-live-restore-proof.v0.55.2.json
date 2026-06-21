@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "runtime-live-restore-proof",
+  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "projectDataVersion": "v0.55.2",
+  "candidate": "general:gaps_in",
+  "runtimeReadOnlyEvidence": {
+    "hyprctlBinary": "/usr/bin/hyprctl",
+    "hyprlandInstanceSignature": "a0136d8c04687bb36eb8a28eb9d1ff92aea99704_1781857006_1638495299",
+    "socketDirectoryObserved": true,
+    "readOnlyQueriesSucceeded": true,
+    "failure": null,
+    "version": "Hyprland 0.55.4 built from branch v0.55.4 at commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704 clean",
+    "priorValue": "5"
+  },
+  "liveRestoreProof": {
+    "status": "live_restore_proven",
+    "priorValueCaptured": true,
+    "priorValue": "5",
+    "temporaryValueSelected": true,
+    "temporaryValue": "6",
+    "restoreCommandGeneratedBeforeMutation": true,
+    "restoreCommand": "hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'",
+    "mutationCommand": "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'",
+    "postMutationReadbackAvailable": true,
+    "postMutationReadback": "css gap data: 6 6 6 6; set: true",
+    "postRestoreReadbackAvailable": true,
+    "postRestoreReadback": "css gap data: 5 5 5 5; set: true",
+    "liveMutationExecuted": true,
+    "mutatingHyprctlAttempted": true,
+    "mutationSyntaxTested": [
+      {
+        "command": "hyprctl keyword general:gaps_in 6",
+        "status": "failed_before_value_change",
+        "error": "keyword can't work with non-legacy parsers. Use eval."
+      },
+      {
+        "command": "hyprctl eval 'general:gaps_in = 6'",
+        "status": "failed_before_value_change",
+        "error": "error: function arguments expected near '='"
+      },
+      {
+        "command": "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'",
+        "restoreCommand": "hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'",
+        "status": "mutated_and_restored",
+        "postMutationReadback": "css gap data: 6 6 6 6; set: true",
+        "postRestoreReadback": "css gap data: 5 5 5 5; set: true"
+      }
+    ],
+    "runtimeTouched": true,
+    "restorationRequired": true,
+    "restorationVerified": true
+  },
+  "liveShellProof": {
+    "status": "live_restore_proven",
+    "priorValueCaptured": true,
+    "temporaryValueSelected": true,
+    "restoreCommandGeneratedBeforeMutation": true,
+    "postMutationReadbackAvailable": true,
+    "postRestoreReadbackAvailable": true,
+    "liveMutationExecuted": true,
+    "mutatingHyprctlRun": true,
+    "runtimeTouched": true,
+    "restorationRequired": true,
+    "restorationVerified": true
+  },
+  "modelProof": {
+    "runtimeLiveRestoreProofTypeExists": true,
+    "failedReadOnlyEvidenceBlocksMutation": true,
+    "readyButDefaultDisabledCanBeRepresentedWhenReadOnlyEvidenceAndRestorePlanExist": true,
+    "liveRestoreProvenCanBeRepresentedWhenPostRestoreReadbackMatchesPriorValue": true,
+    "failedMutationSyntaxCanBeRepresentedAsLiveRestoreBlocked": true,
+    "mutationSyntaxEvidenceCanRecordSuccessfulLuaConfigEval": true,
+    "statusWithSimulatedRestore": "live_restore_proven",
+    "productionRuntimeMutationDefaultEnabled": false
+  },
+  "productionGate": {
+    "runtimeMutationEnabled": false,
+    "runtimeReloadEnabled": false,
+    "requiresReadOnlyEvidence": true,
+    "requiresPriorValue": true,
+    "requiresRestoreCommand": true,
+    "requiresPostRestoreVerification": true
+  },
+  "tests": [
+    "runtime_live_restore_proof_blocks_failed_readonly_and_can_reach_ready_states_without_enabling_production",
+    "runtime_live_restore_attempt_records_failed_mutation_syntax_without_enabling_production",
+    "runtime_mutation_syntax_evidence_records_proven_lua_config_restore_without_enabling_production",
+    "runtime_approval_evidence_projection_includes_proof_without_enabling_production",
+    "runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled",
+    "runtime_high_risk_and_hyprland_approval_flows_keep_production_disabled"
+  ],
+  "runtimeApprovalUiSurface": {
+    "implemented": true,
+    "status": "implemented_but_disabled",
+    "displaysRestoreProof": true,
+    "productionRuntimeEnabled": false
+  },
+  "nextRecommendedWork": "Extend the disabled approval UI pattern to source/include, duplicate, structured, profile, high-risk, and 0.55.4 review cards without enabling production behavior."
+}

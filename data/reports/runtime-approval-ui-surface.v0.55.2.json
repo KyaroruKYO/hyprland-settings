@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "runtime-approval-ui-surface",
+  "generatedAt": "2026-06-19T00:00:00-07:00",
+  "branch": "future-capability-marathon",
+  "startingCommit": "59a95142aed8714c72e6871d87363765d08cea51",
+  "projectDataVersion": "v0.55.2",
+  "countsPreserved": "341 readable / 341 writable / 0 blocked",
+  "uiSurface": {
+    "implemented": true,
+    "location": "setting detail Edit section for appearance.gaps_in / general.gaps_in",
+    "widgetName": "hyprland-settings-runtime-approval-review-disabled",
+    "evidenceWidgetName": "hyprland-settings-runtime-live-restore-evidence",
+    "disabledActionWidgetName": "hyprland-settings-runtime-approval-enable-disabled",
+    "disabledActionLabel": "Enable runtime apply (planned)",
+    "disabledActionSensitive": false,
+    "productionRuntimeReloadEnabled": false
+  },
+  "visibleEvidence": {
+    "heading": "Runtime approval review",
+    "runtimeChangesEnabledCopy": "Runtime changes are not enabled yet.",
+    "liveRestoreCopy": "This setting has a proven live-restore test.",
+    "productionDisabledCopy": "Production runtime/reload remains disabled.",
+    "setting": "general:gaps_in",
+    "priorValue": "5",
+    "temporaryValue": "6",
+    "mutationCommand": "hyprctl eval 'hl.config({ general = { gaps_in = 6 } })'",
+    "restoreCommand": "hyprctl eval 'hl.config({ general = { gaps_in = 5 } })'",
+    "postMutationReadback": "css gap data: 6 6 6 6; set: true",
+    "postRestoreReadback": "css gap data: 5 5 5 5; set: true",
+    "approvalStatus": "Approved but default-disabled",
+    "productionRuntimeReload": "Disabled"
+  },
+  "tests": [
+    "runtime_approval_evidence_projection_includes_proof_without_enabling_production",
+    "runtime_approval_review_surface_displays_live_restore_evidence_and_stays_disabled",
+    "runtime_approval_review_surface_is_called_from_detail_edit_section"
+  ],
+  "safety": {
+    "realConfigTouched": false,
+    "runtimeMutatedThisSprint": false,
+    "hyprctlReloadRun": false,
+    "agsWaybarTouched": false,
+    "unsafeProductionBehaviorEnabled": false,
+    "runtimeReloadProductionEnabled": false,
+    "v0552DefaultPreserved": true,
+    "hyprland0554MigrationActivated": false
+  },
+  "relatedDisabledApprovalCards": {
+    "implementedForRemainingGatedCategories": true,
+    "report": "data/reports/disabled-approval-ui-cards.v0.55.2.json",
+    "deepDataReport": "data/reports/deep-approval-card-data.v0.55.2.json",
+    "deepDataImplemented": true,
+    "productionBehaviorEnabled": false
+  },
+  "nextRecommendedWork": "Feed disabled approval cards from serialized proof records or report data, then add screenshot-level assertions for each card while production behavior remains disabled."
+}

@@ -30,6 +30,490 @@ EXPECTED_TERMS = [
     "mode",
 ]
 
+APPROVAL_CARD_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include approval review",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "action": "Enable source/include insertion (planned)",
+        "widget": "hyprland-settings-source-include-approval-review-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate approval review",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "action": "Enable duplicate replacement (planned)",
+        "widget": "hyprland-settings-duplicate-approval-review-disabled",
+    },
+    "structuredHlBindWrite": {
+        "heading": "Structured hl.bind approval review",
+        "production": "Production structured writes",
+        "disabled": "Disabled",
+        "action": "Enable structured write (planned)",
+        "widget": "hyprland-settings-structured-approval-review-disabled",
+    },
+    "profileModeSwitch": {
+        "heading": "Profile/mode approval review",
+        "production": "Production profile switching",
+        "disabled": "Disabled",
+        "action": "Enable profile switching (planned)",
+        "widget": "hyprland-settings-profile-approval-review-disabled",
+    },
+    "highRiskDisplayWrite": {
+        "heading": "High-risk/display approval review",
+        "production": "Production high-risk/display writes",
+        "disabled": "Disabled",
+        "action": "Enable high-risk/display writes (planned)",
+        "widget": "hyprland-settings-high-risk-approval-review-disabled",
+    },
+    "hyprland0554Migration": {
+        "heading": "Hyprland 0.55.4 migration review",
+        "production": "Production migration activation",
+        "disabled": "Disabled",
+        "action": "Enable 0.55.4 migration (planned)",
+        "widget": "hyprland-settings-0554-approval-review-disabled",
+    },
+}
+
+ACTIVATION_DECISION_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation decision",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "action": "Enable source/include production activation (planned)",
+        "widget": "hyprland-settings-source-include-activation-decision-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation decision",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "action": "Enable duplicate production activation (planned)",
+        "widget": "hyprland-settings-duplicate-activation-decision-disabled",
+    },
+}
+
+ACTIVATION_PATH_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation path",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "action": "Start source/include production activation (planned)",
+        "widget": "hyprland-settings-source-include-activation-path-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation path",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "action": "Start duplicate production activation (planned)",
+        "widget": "hyprland-settings-duplicate-activation-path-disabled",
+    },
+}
+
+ACTIVATION_CONTROL_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation control",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "action": "Validate source/include activation request (planned)",
+        "widget": "hyprland-settings-source-include-activation-control-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation control",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "action": "Validate duplicate activation request (planned)",
+        "widget": "hyprland-settings-duplicate-activation-control-disabled",
+    },
+}
+
+ACTIVATION_FORM_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include activation request form",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "action": "Validate source/include activation form (planned)",
+        "widget": "hyprland-settings-source-include-activation-form-disabled",
+        "fields": [
+            "User-facing reason",
+            "Explicit activation phrase/token",
+            "Backup-before-write acknowledgement",
+            "Restore-plan acknowledgement",
+            "Post-write reread acknowledgement",
+            "Final confirmation acknowledgement",
+            "Backup-before-write plan",
+            "Restore plan",
+            "Post-write reread plan",
+            "Post-restore verification plan",
+            "Dry-run summary",
+            "Files that would be touched",
+        ],
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate activation request form",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "action": "Validate duplicate activation form (planned)",
+        "widget": "hyprland-settings-duplicate-activation-form-disabled",
+        "fields": [
+            "User-facing reason",
+            "Explicit activation phrase/token",
+            "Backup-before-write acknowledgement",
+            "Restore-plan acknowledgement",
+            "Post-write reread acknowledgement",
+            "Final confirmation acknowledgement",
+            "Backup-before-write plan",
+            "Restore plan",
+            "Post-write reread plan",
+            "Post-restore verification plan",
+            "Dry-run summary",
+            "Files that would be touched",
+        ],
+    },
+}
+
+ACTIVATION_DRAFT_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include activation draft",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "memory": "In-memory only",
+        "update": "Update source/include activation draft (planned)",
+        "reset": "Reset source/include activation draft (planned)",
+        "widget": "hyprland-settings-source-include-activation-draft-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate activation draft",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "memory": "In-memory only",
+        "update": "Update duplicate activation draft (planned)",
+        "reset": "Reset duplicate activation draft (planned)",
+        "widget": "hyprland-settings-duplicate-activation-draft-disabled",
+    },
+}
+
+ACTIVATION_DRAFT_EDIT_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include live activation draft editing",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "memory": "In-memory only",
+        "mode": "Draft editing mode: memory-only",
+        "validation": "Draft validation",
+        "not_saved": "Not saved to disk",
+        "update": "Update source/include activation draft (memory only)",
+        "reset": "Reset source/include activation draft (memory only)",
+        "widget": "hyprland-settings-source-include-activation-live-draft-edit-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate live activation draft editing",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "memory": "In-memory only",
+        "mode": "Draft editing mode: memory-only",
+        "validation": "Draft validation",
+        "not_saved": "Not saved to disk",
+        "update": "Update duplicate activation draft (memory only)",
+        "reset": "Reset duplicate activation draft (memory only)",
+        "widget": "hyprland-settings-duplicate-activation-live-draft-edit-disabled",
+    },
+}
+
+ACTIVATION_DRAFT_PERSISTENCE_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include activation draft persistence boundary",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Persistence forbidden by default",
+        "enabled": "Persistence enabled: false",
+        "written": "Draft written to disk: false",
+        "storage": "Storage path: none",
+        "enable": "Enable source/include draft persistence (not available)",
+        "clear": "Clear source/include persisted draft (not available)",
+        "widget": "hyprland-settings-source-include-activation-draft-persistence-boundary-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate activation draft persistence boundary",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Persistence forbidden by default",
+        "enabled": "Persistence enabled: false",
+        "written": "Draft written to disk: false",
+        "storage": "Storage path: none",
+        "enable": "Enable duplicate draft persistence (not available)",
+        "clear": "Clear duplicate persisted draft (not available)",
+        "widget": "hyprland-settings-duplicate-activation-draft-persistence-boundary-disabled",
+    },
+}
+
+PRODUCTION_ACTIVATION_SAFETY_GATE_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation safety gate",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Production activation proof partially satisfied but default-disabled",
+        "backup": "Byte-exact backup",
+        "write": "Write plan",
+        "reread": "Reread plan",
+        "restore": "Restore plan",
+        "no_auto_apply": "No auto-apply proof",
+        "persistence_auto_apply": "Persistence auto-apply proof",
+        "final_approval": "Explicit final approval",
+        "review": "Review source/include production activation gate (not available)",
+        "enable": "Enable source/include production activation (not available)",
+        "widget": "hyprland-settings-source-include-production-activation-safety-gate-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation safety gate",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Production activation proof partially satisfied but default-disabled",
+        "backup": "Byte-exact backup",
+        "write": "Write plan",
+        "reread": "Reread plan",
+        "restore": "Restore plan",
+        "no_auto_apply": "No auto-apply proof",
+        "persistence_auto_apply": "Persistence auto-apply proof",
+        "final_approval": "Explicit final approval",
+        "review": "Review duplicate production activation gate (not available)",
+        "enable": "Enable duplicate production activation (not available)",
+        "widget": "hyprland-settings-duplicate-production-activation-safety-gate-disabled",
+    },
+}
+
+PRODUCTION_ACTIVATION_SAFETY_PROOF_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation safety proof",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Production activation proof partially satisfied but default-disabled",
+        "backup": "Byte-exact backup",
+        "dry_run": "Dry-run write plan",
+        "diff": "Diff preview",
+        "reread": "Post-write reread",
+        "restore": "Restore plan",
+        "post_restore": "Post-restore verification",
+        "no_auto_apply": "No auto-apply proof",
+        "persistence_auto_apply": "Persisted-draft auto-apply proof",
+        "final_approval": "Final approval still required",
+        "run": "Run source/include production safety proof (fixture only, planned)",
+        "enable": "Enable source/include production activation (not available)",
+        "widget": "hyprland-settings-source-include-production-activation-safety-proof-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation safety proof",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Production activation proof partially satisfied but default-disabled",
+        "backup": "Byte-exact backup",
+        "dry_run": "Dry-run write plan",
+        "diff": "Diff preview",
+        "reread": "Post-write reread",
+        "restore": "Restore plan",
+        "post_restore": "Post-restore verification",
+        "no_auto_apply": "No auto-apply proof",
+        "persistence_auto_apply": "Persisted-draft auto-apply proof",
+        "final_approval": "Final approval still required",
+        "run": "Run duplicate production safety proof (fixture only, planned)",
+        "enable": "Enable duplicate production activation (not available)",
+        "widget": "hyprland-settings-duplicate-production-activation-safety-proof-disabled",
+    },
+}
+
+PRODUCTION_ACTIVATION_FINAL_DECISION_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation final decision",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Final decision proof satisfied but decisions missing",
+        "final_approval": "Final approval",
+        "production_flag": "Production flag decision",
+        "executor_decision": "Executor wiring decision",
+        "live_dry_run": "Live production dry-run policy",
+        "copied_fixture": "Copied-fixture proof",
+        "persistence": "Draft persistence: Persistence forbidden by default",
+        "approval": "Approve source/include production activation (not available)",
+        "flag": "Set source/include production flag (not available)",
+        "wiring": "Wire source/include production executor (not available)",
+        "dry_run": "Run source/include live production dry-run (not available)",
+        "widget": "hyprland-settings-source-include-production-activation-final-decision-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation final decision",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Final decision proof satisfied but decisions missing",
+        "final_approval": "Final approval",
+        "production_flag": "Production flag decision",
+        "executor_decision": "Executor wiring decision",
+        "live_dry_run": "Live production dry-run policy",
+        "copied_fixture": "Copied-fixture proof",
+        "persistence": "Draft persistence: Persistence forbidden by default",
+        "approval": "Approve duplicate production activation (not available)",
+        "flag": "Set duplicate production flag (not available)",
+        "wiring": "Wire duplicate production executor (not available)",
+        "dry_run": "Run duplicate live production dry-run (not available)",
+        "widget": "hyprland-settings-duplicate-production-activation-final-decision-disabled",
+    },
+}
+
+PRODUCTION_ACTIVATION_APPROVAL_UX_AND_DRY_RUN_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "approval_heading": "Source/include production activation approval UX",
+        "dry_run_heading": "Source/include live production dry-run policy",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "approval_status": "Approval UX status",
+        "approval_disabled": "designed but disabled",
+        "final_approval": "Explicit final approval",
+        "typed_confirmation": "Typed confirmation phrase",
+        "production_flag": "Production flag opt-in",
+        "executor_opt_in": "Executor wiring opt-in",
+        "dry_run_status": "Dry-run policy status",
+        "dry_run_default": "Live dry-run cannot run by default",
+        "dry_run_real_config": "Live dry-run cannot touch real config by default",
+        "dry_run_reload": "Live dry-run cannot reload Hyprland by default",
+        "dry_run_runtime": "Live dry-run cannot mutate runtime by default",
+        "approval": "Approve source/include production activation (not available)",
+        "confirmation": "Confirm source/include production activation phrase (not available)",
+        "flag": "Opt in source/include production flag (not available)",
+        "wiring": "Opt in source/include executor wiring (not available)",
+        "dry_run": "Run source/include live production dry-run (not available)",
+        "approval_widget": "hyprland-settings-source-include-production-activation-approval-ux-disabled",
+        "dry_run_widget": "hyprland-settings-source-include-production-activation-live-dry-run-policy-disabled",
+    },
+    "duplicateReplacement": {
+        "approval_heading": "Duplicate production activation approval UX",
+        "dry_run_heading": "Duplicate live production dry-run policy",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "approval_status": "Approval UX status",
+        "approval_disabled": "designed but disabled",
+        "final_approval": "Explicit final approval",
+        "typed_confirmation": "Typed confirmation phrase",
+        "production_flag": "Production flag opt-in",
+        "executor_opt_in": "Executor wiring opt-in",
+        "dry_run_status": "Dry-run policy status",
+        "dry_run_default": "Live dry-run cannot run by default",
+        "dry_run_real_config": "Live dry-run cannot touch real config by default",
+        "dry_run_reload": "Live dry-run cannot reload Hyprland by default",
+        "dry_run_runtime": "Live dry-run cannot mutate runtime by default",
+        "approval": "Approve duplicate production activation (not available)",
+        "confirmation": "Confirm duplicate production activation phrase (not available)",
+        "flag": "Opt in duplicate production flag (not available)",
+        "wiring": "Opt in duplicate executor wiring (not available)",
+        "dry_run": "Run duplicate live production dry-run (not available)",
+        "approval_widget": "hyprland-settings-duplicate-production-activation-approval-ux-disabled",
+        "dry_run_widget": "hyprland-settings-duplicate-production-activation-live-dry-run-policy-disabled",
+    },
+}
+
+PRODUCTION_ACTIVATION_OPT_IN_REQUIREMENTS_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production flag and executor-wiring opt-in requirements",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Opt-in requirements status",
+        "designed": "designed but disabled",
+        "production_flag": "Production flag opt-in",
+        "executor_opt_in": "Executor wiring opt-in",
+        "separate": "Flag and executor wiring must be separate future steps",
+        "explicit_action": "Explicit user action",
+        "typed_confirmation": "Typed confirmation",
+        "report_backed": "Report-backed proof",
+        "rollback": "Rollback-ready state",
+        "production_flag_false": "Production flag: false",
+        "flag": "Set source/include production flag (not available)",
+        "executor_action": "Wire source/include production executor (not available)",
+        "confirm": "Confirm source/include production opt-in requirements (not available)",
+        "widget": "hyprland-settings-source-include-production-activation-opt-in-requirements-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production flag and executor-wiring opt-in requirements",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Opt-in requirements status",
+        "designed": "designed but disabled",
+        "production_flag": "Production flag opt-in",
+        "executor_opt_in": "Executor wiring opt-in",
+        "separate": "Flag and executor wiring must be separate future steps",
+        "explicit_action": "Explicit user action",
+        "typed_confirmation": "Typed confirmation",
+        "report_backed": "Report-backed proof",
+        "rollback": "Rollback-ready state",
+        "production_flag_false": "Production flag: false",
+        "flag": "Set duplicate production flag (not available)",
+        "executor_action": "Wire duplicate production executor (not available)",
+        "confirm": "Confirm duplicate production opt-in requirements (not available)",
+        "widget": "hyprland-settings-duplicate-production-activation-opt-in-requirements-disabled",
+    },
+}
+
+PRODUCTION_ACTIVATION_CAP_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation cap",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "status": "branch capped for non-production runway",
+        "separate_phase": "Future production activation requires separate approved phase",
+        "production_flag_false": "Production flag: false",
+        "executor": "Executor wiring: Unwired",
+        "draft_persistence": "Draft persistence: Persistence forbidden by default",
+        "real_config": "Real config touched: false",
+        "runtime": "Runtime mutated: false",
+        "write": "Production write executed: false",
+        "start": "Start source/include production activation phase (not available)",
+        "confirm": "Confirm source/include branch cap (not available)",
+        "widget": "hyprland-settings-source-include-production-activation-cap-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation cap",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "status": "branch capped for non-production runway",
+        "separate_phase": "Future production activation requires separate approved phase",
+        "production_flag_false": "Production flag: false",
+        "executor": "Executor wiring: Unwired",
+        "draft_persistence": "Draft persistence: Persistence forbidden by default",
+        "real_config": "Real config touched: false",
+        "runtime": "Runtime mutated: false",
+        "write": "Production write executed: false",
+        "start": "Start duplicate production activation phase (not available)",
+        "confirm": "Confirm duplicate branch cap (not available)",
+        "widget": "hyprland-settings-duplicate-production-activation-cap-disabled",
+    },
+}
+
+LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT = [
+    "Source/include activation draft editing",
+    "Duplicate activation draft editing",
+    "Editing mode",
+    "Update source/include activation draft (planned)",
+    "Reset source/include activation draft (planned)",
+    "Update duplicate activation draft (planned)",
+    "Reset duplicate activation draft (planned)",
+]
+
 SAFE_NAVIGATION_TARGETS = {
     "Dashboard",
     "Config",
@@ -222,6 +706,483 @@ def matches_expected_app(app, values):
 def found_terms(values):
     lowered = "\n".join(values).lower()
     return sorted(term for term in EXPECTED_TERMS if term in lowered)
+
+def approval_card_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in APPROVAL_CARD_ASSERTIONS.items():
+        heading_found = spec["heading"].lower() in text
+        production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
+        action_found = spec["action"].lower() in text
+        widget_found = spec["widget"].lower() in text
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": heading_found,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": production_found,
+            "disabledAction": spec["action"],
+            "disabledActionFound": action_found,
+            "widgetName": spec["widget"],
+            "widgetNameFound": widget_found,
+        }
+    return assertions
+
+
+def activation_decision_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in ACTIVATION_DECISION_ASSERTIONS.items():
+        heading_found = spec["heading"].lower() in text
+        production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
+        action_found = spec["action"].lower() in text
+        widget_found = spec["widget"].lower() in text
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": heading_found,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": production_found,
+            "disabledAction": spec["action"],
+            "disabledActionFound": action_found,
+            "widgetName": spec["widget"],
+            "widgetNameFound": widget_found,
+        }
+    return assertions
+
+
+def activation_path_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in ACTIVATION_PATH_ASSERTIONS.items():
+        heading_found = spec["heading"].lower() in text
+        production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
+        action_found = spec["action"].lower() in text
+        widget_found = spec["widget"].lower() in text
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": heading_found,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": production_found,
+            "disabledAction": spec["action"],
+            "disabledActionFound": action_found,
+            "widgetName": spec["widget"],
+            "widgetNameFound": widget_found,
+        }
+    return assertions
+
+
+def activation_control_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in ACTIVATION_CONTROL_ASSERTIONS.items():
+        heading_found = spec["heading"].lower() in text
+        production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
+        executor_found = spec["executor"].lower() in text
+        action_found = spec["action"].lower() in text
+        widget_found = spec["widget"].lower() in text
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": heading_found,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": production_found,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": executor_found,
+            "disabledAction": spec["action"],
+            "disabledActionFound": action_found,
+            "widgetName": spec["widget"],
+            "widgetNameFound": widget_found,
+        }
+    return assertions
+
+
+def activation_form_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in ACTIVATION_FORM_ASSERTIONS.items():
+        heading_found = spec["heading"].lower() in text
+        production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
+        executor_found = spec["executor"].lower() in text
+        action_found = spec["action"].lower() in text
+        widget_found = spec["widget"].lower() in text
+        field_results = {
+            field: field.lower() in text
+            for field in spec.get("fields", [])
+        }
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": heading_found,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": production_found,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": executor_found,
+            "disabledAction": spec["action"],
+            "disabledActionFound": action_found,
+            "widgetName": spec["widget"],
+            "widgetNameFound": widget_found,
+            "fieldLabels": spec.get("fields", []),
+            "fieldLabelsFound": all(field_results.values()),
+            "fieldLabelResults": field_results,
+        }
+    return assertions
+
+
+def activation_draft_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in ACTIVATION_DRAFT_ASSERTIONS.items():
+        heading_found = spec["heading"].lower() in text
+        production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
+        executor_found = spec["executor"].lower() in text
+        memory_found = spec["memory"].lower() in text
+        update_found = spec["update"].lower() in text
+        reset_found = spec["reset"].lower() in text
+        widget_found = spec["widget"].lower() in text
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": heading_found,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": production_found,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": executor_found,
+            "memoryStatus": spec["memory"],
+            "memoryStatusFound": memory_found,
+            "disabledUpdate": spec["update"],
+            "disabledUpdateFound": update_found,
+            "disabledReset": spec["reset"],
+            "disabledResetFound": reset_found,
+            "widgetName": spec["widget"],
+            "widgetNameFound": widget_found,
+        }
+    return assertions
+
+
+def activation_draft_edit_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    assertions["legacyDraftEditSurface"] = {
+        "expectedText": LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT,
+        "expectedTextFound": {
+            expected: expected.lower() in text
+            for expected in LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT
+        },
+    }
+    for key, spec in ACTIVATION_DRAFT_EDIT_ASSERTIONS.items():
+        heading_found = spec["heading"].lower() in text
+        production_found = spec["production"].lower() in text and spec["disabled"].lower() in text
+        executor_found = spec["executor"].lower() in text
+        memory_found = spec["memory"].lower() in text
+        mode_found = spec["mode"].lower() in text
+        not_saved_found = spec["not_saved"].lower() in text
+        validation_found = spec["validation"].lower() in text
+        update_found = spec["update"].lower() in text
+        reset_found = spec["reset"].lower() in text
+        widget_found = spec["widget"].lower() in text
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": heading_found,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": production_found,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": executor_found,
+            "memoryStatus": spec["memory"],
+            "memoryStatusFound": memory_found,
+            "editingMode": spec["mode"],
+            "editingModeFound": mode_found,
+            "notSavedStatus": spec["not_saved"],
+            "notSavedStatusFound": not_saved_found,
+            "draftValidation": spec["validation"],
+            "draftValidationFound": validation_found,
+            "disabledUpdate": spec["update"],
+            "disabledUpdateFound": update_found,
+            "disabledReset": spec["reset"],
+            "disabledResetFound": reset_found,
+            "widgetName": spec["widget"],
+            "widgetNameFound": widget_found,
+        }
+    return assertions
+
+
+def activation_draft_persistence_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in ACTIVATION_DRAFT_PERSISTENCE_ASSERTIONS.items():
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": spec["heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "persistenceStatus": spec["status"],
+            "persistenceStatusFound": spec["status"].lower() in text,
+            "persistenceEnabled": spec["enabled"],
+            "persistenceEnabledFound": spec["enabled"].lower() in text,
+            "draftWritten": spec["written"],
+            "draftWrittenFound": spec["written"].lower() in text,
+            "storagePath": spec["storage"],
+            "storagePathFound": spec["storage"].lower() in text,
+            "disabledEnable": spec["enable"],
+            "disabledEnableFound": spec["enable"].lower() in text,
+            "disabledClear": spec["clear"],
+            "disabledClearFound": spec["clear"].lower() in text,
+            "widgetName": spec["widget"],
+            "widgetNameFound": spec["widget"].lower() in text,
+        }
+    return assertions
+
+
+def production_activation_safety_gate_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in PRODUCTION_ACTIVATION_SAFETY_GATE_ASSERTIONS.items():
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": spec["heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "gateStatus": spec["status"],
+            "gateStatusFound": spec["status"].lower() in text,
+            "byteExactBackup": spec["backup"],
+            "byteExactBackupFound": spec["backup"].lower() in text,
+            "writePlan": spec["write"],
+            "writePlanFound": spec["write"].lower() in text,
+            "rereadPlan": spec["reread"],
+            "rereadPlanFound": spec["reread"].lower() in text,
+            "restorePlan": spec["restore"],
+            "restorePlanFound": spec["restore"].lower() in text,
+            "noAutoApplyProof": spec["no_auto_apply"],
+            "noAutoApplyProofFound": spec["no_auto_apply"].lower() in text,
+            "persistenceAutoApplyProof": spec["persistence_auto_apply"],
+            "persistenceAutoApplyProofFound": spec["persistence_auto_apply"].lower() in text,
+            "finalApproval": spec["final_approval"],
+            "finalApprovalFound": spec["final_approval"].lower() in text,
+            "disabledReview": spec["review"],
+            "disabledReviewFound": spec["review"].lower() in text,
+            "disabledEnable": spec["enable"],
+            "disabledEnableFound": spec["enable"].lower() in text,
+            "widgetName": spec["widget"],
+            "widgetNameFound": spec["widget"].lower() in text,
+        }
+    return assertions
+
+
+def production_activation_safety_proof_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in PRODUCTION_ACTIVATION_SAFETY_PROOF_ASSERTIONS.items():
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": spec["heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "proofStatus": spec["status"],
+            "proofStatusFound": spec["status"].lower() in text,
+            "byteExactBackup": spec["backup"],
+            "byteExactBackupFound": spec["backup"].lower() in text,
+            "dryRunWritePlan": spec["dry_run"],
+            "dryRunWritePlanFound": spec["dry_run"].lower() in text,
+            "diffPreview": spec["diff"],
+            "diffPreviewFound": spec["diff"].lower() in text,
+            "postWriteReread": spec["reread"],
+            "postWriteRereadFound": spec["reread"].lower() in text,
+            "restorePlan": spec["restore"],
+            "restorePlanFound": spec["restore"].lower() in text,
+            "postRestoreVerification": spec["post_restore"],
+            "postRestoreVerificationFound": spec["post_restore"].lower() in text,
+            "noAutoApplyProof": spec["no_auto_apply"],
+            "noAutoApplyProofFound": spec["no_auto_apply"].lower() in text,
+            "persistenceAutoApplyProof": spec["persistence_auto_apply"],
+            "persistenceAutoApplyProofFound": spec["persistence_auto_apply"].lower() in text,
+            "finalApproval": spec["final_approval"],
+            "finalApprovalFound": spec["final_approval"].lower() in text,
+            "disabledRun": spec["run"],
+            "disabledRunFound": spec["run"].lower() in text,
+            "disabledEnable": spec["enable"],
+            "disabledEnableFound": spec["enable"].lower() in text,
+            "widgetName": spec["widget"],
+            "widgetNameFound": spec["widget"].lower() in text,
+        }
+    return assertions
+
+
+def production_activation_final_decision_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in PRODUCTION_ACTIVATION_FINAL_DECISION_ASSERTIONS.items():
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": spec["heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "finalDecisionStatus": spec["status"],
+            "finalDecisionStatusFound": spec["status"].lower() in text,
+            "finalApproval": spec["final_approval"],
+            "finalApprovalFound": spec["final_approval"].lower() in text,
+            "productionFlagDecision": spec["production_flag"],
+            "productionFlagDecisionFound": spec["production_flag"].lower() in text,
+            "executorWiringDecision": spec["executor_decision"],
+            "executorWiringDecisionFound": spec["executor_decision"].lower() in text,
+            "liveProductionDryRunPolicy": spec["live_dry_run"],
+            "liveProductionDryRunPolicyFound": spec["live_dry_run"].lower() in text,
+            "copiedFixtureProof": spec["copied_fixture"],
+            "copiedFixtureProofFound": spec["copied_fixture"].lower() in text,
+            "draftPersistence": spec["persistence"],
+            "draftPersistenceFound": spec["persistence"].lower() in text,
+            "disabledApproval": spec["approval"],
+            "disabledApprovalFound": spec["approval"].lower() in text,
+            "disabledProductionFlag": spec["flag"],
+            "disabledProductionFlagFound": spec["flag"].lower() in text,
+            "disabledExecutorWiring": spec["wiring"],
+            "disabledExecutorWiringFound": spec["wiring"].lower() in text,
+            "disabledLiveDryRun": spec["dry_run"],
+            "disabledLiveDryRunFound": spec["dry_run"].lower() in text,
+            "widgetName": spec["widget"],
+            "widgetNameFound": spec["widget"].lower() in text,
+        }
+    return assertions
+
+
+def production_activation_approval_ux_and_dry_run_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in PRODUCTION_ACTIVATION_APPROVAL_UX_AND_DRY_RUN_ASSERTIONS.items():
+        assertions[key] = {
+            "approvalHeading": spec["approval_heading"],
+            "approvalHeadingFound": spec["approval_heading"].lower() in text,
+            "dryRunHeading": spec["dry_run_heading"],
+            "dryRunHeadingFound": spec["dry_run_heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "approvalStatus": spec["approval_status"],
+            "approvalStatusFound": spec["approval_status"].lower() in text
+            and spec["approval_disabled"].lower() in text,
+            "finalApproval": spec["final_approval"],
+            "finalApprovalFound": spec["final_approval"].lower() in text,
+            "typedConfirmation": spec["typed_confirmation"],
+            "typedConfirmationFound": spec["typed_confirmation"].lower() in text,
+            "productionFlagOptIn": spec["production_flag"],
+            "productionFlagOptInFound": spec["production_flag"].lower() in text,
+            "executorWiringOptIn": spec["executor_opt_in"],
+            "executorWiringOptInFound": spec["executor_opt_in"].lower() in text,
+            "dryRunStatus": spec["dry_run_status"],
+            "dryRunStatusFound": spec["dry_run_status"].lower() in text
+            and spec["approval_disabled"].lower() in text,
+            "dryRunCannotRunByDefault": spec["dry_run_default"],
+            "dryRunCannotRunByDefaultFound": spec["dry_run_default"].lower() in text,
+            "dryRunCannotTouchRealConfig": spec["dry_run_real_config"],
+            "dryRunCannotTouchRealConfigFound": spec["dry_run_real_config"].lower()
+            in text,
+            "dryRunCannotReload": spec["dry_run_reload"],
+            "dryRunCannotReloadFound": spec["dry_run_reload"].lower() in text,
+            "dryRunCannotMutateRuntime": spec["dry_run_runtime"],
+            "dryRunCannotMutateRuntimeFound": spec["dry_run_runtime"].lower() in text,
+            "disabledApproval": spec["approval"],
+            "disabledApprovalFound": spec["approval"].lower() in text,
+            "disabledConfirmation": spec["confirmation"],
+            "disabledConfirmationFound": spec["confirmation"].lower() in text,
+            "disabledProductionFlag": spec["flag"],
+            "disabledProductionFlagFound": spec["flag"].lower() in text,
+            "disabledExecutorWiring": spec["wiring"],
+            "disabledExecutorWiringFound": spec["wiring"].lower() in text,
+            "disabledDryRun": spec["dry_run"],
+            "disabledDryRunFound": spec["dry_run"].lower() in text,
+            "approvalWidgetName": spec["approval_widget"],
+            "approvalWidgetNameFound": spec["approval_widget"].lower() in text,
+            "dryRunWidgetName": spec["dry_run_widget"],
+            "dryRunWidgetNameFound": spec["dry_run_widget"].lower() in text,
+        }
+    return assertions
+
+
+def production_activation_opt_in_requirements_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in PRODUCTION_ACTIVATION_OPT_IN_REQUIREMENTS_ASSERTIONS.items():
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": spec["heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "status": spec["status"],
+            "statusFound": spec["status"].lower() in text
+            and spec["designed"].lower() in text,
+            "productionFlagOptIn": spec["production_flag"],
+            "productionFlagOptInFound": spec["production_flag"].lower() in text,
+            "executorWiringOptIn": spec["executor_opt_in"],
+            "executorWiringOptInFound": spec["executor_opt_in"].lower() in text,
+            "separateFutureSteps": spec["separate"],
+            "separateFutureStepsFound": spec["separate"].lower() in text,
+            "explicitUserAction": spec["explicit_action"],
+            "explicitUserActionFound": spec["explicit_action"].lower() in text,
+            "typedConfirmation": spec["typed_confirmation"],
+            "typedConfirmationFound": spec["typed_confirmation"].lower() in text,
+            "reportBackedProof": spec["report_backed"],
+            "reportBackedProofFound": spec["report_backed"].lower() in text,
+            "rollbackReadyState": spec["rollback"],
+            "rollbackReadyStateFound": spec["rollback"].lower() in text,
+            "productionFlagFalse": spec["production_flag_false"],
+            "productionFlagFalseFound": spec["production_flag_false"].lower() in text,
+            "disabledProductionFlag": spec["flag"],
+            "disabledProductionFlagFound": spec["flag"].lower() in text,
+            "disabledExecutorWiring": spec["executor_action"],
+            "disabledExecutorWiringFound": spec["executor_action"].lower() in text,
+            "disabledConfirmation": spec["confirm"],
+            "disabledConfirmationFound": spec["confirm"].lower() in text,
+            "widgetName": spec["widget"],
+            "widgetNameFound": spec["widget"].lower() in text,
+        }
+    return assertions
+
+
+def production_activation_cap_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in PRODUCTION_ACTIVATION_CAP_ASSERTIONS.items():
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": spec["heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "status": spec["status"],
+            "statusFound": spec["status"].lower() in text,
+            "separatePhase": spec["separate_phase"],
+            "separatePhaseFound": spec["separate_phase"].lower() in text,
+            "productionFlagFalse": spec["production_flag_false"],
+            "productionFlagFalseFound": spec["production_flag_false"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "draftPersistence": spec["draft_persistence"],
+            "draftPersistenceFound": spec["draft_persistence"].lower() in text,
+            "realConfigTouched": spec["real_config"],
+            "realConfigTouchedFound": spec["real_config"].lower() in text,
+            "runtimeMutated": spec["runtime"],
+            "runtimeMutatedFound": spec["runtime"].lower() in text,
+            "productionWriteExecuted": spec["write"],
+            "productionWriteExecutedFound": spec["write"].lower() in text,
+            "disabledStart": spec["start"],
+            "disabledStartFound": spec["start"].lower() in text,
+            "disabledConfirm": spec["confirm"],
+            "disabledConfirmFound": spec["confirm"].lower() in text,
+            "widgetName": spec["widget"],
+            "widgetNameFound": spec["widget"].lower() in text,
+        }
+    return assertions
 
 
 def node_text(node):
@@ -442,14 +1403,14 @@ def open_blocked_category_detail(app, target):
     )
     if node is None:
         values = []
-        walk_accessible(app, values, 1200, set())
+        walk_accessible(app, values, 3000, set())
         if blocked_category_text_collected(values, target):
             return True, f"{target} blocker text found without row activation"
         return False, f"no allowlisted blocked-category row found for {target}"
     ok, message = safe_select_node(node, parent)
     if not ok:
         values = []
-        walk_accessible(app, values, 1200, set())
+        walk_accessible(app, values, 3000, set())
         if blocked_category_text_collected(values, target):
             return True, f"{target} blocker text found after safe row activation failed: {message}"
         return False, f"{target} row activation failed: {message}"
@@ -574,6 +1535,114 @@ def main() -> int:
         "duplicateConflictDetailNavigationSucceeded": False,
         "forbiddenApplyActionSeen": False,
         "fallbackProofUsed": False,
+        "approvalCardAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "approvalCardAssertions": {},
+        "approvalCardsAllHeadingsFound": False,
+        "approvalCardsAllProductionDisabledFound": False,
+        "approvalCardsAllDisabledActionsFound": False,
+        "activationDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDecisionAssertions": {},
+        "activationDecisionsAllHeadingsFound": False,
+        "activationDecisionsAllProductionDisabledFound": False,
+        "activationDecisionsAllDisabledActionsFound": False,
+        "activationPathAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationPathAssertions": {},
+        "activationPathsAllHeadingsFound": False,
+        "activationPathsAllProductionDisabledFound": False,
+        "activationPathsAllDisabledActionsFound": False,
+        "activationControlAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationControlAssertions": {},
+        "activationControlsAllHeadingsFound": False,
+        "activationControlsAllProductionDisabledFound": False,
+        "activationControlsAllExecutorUnwiredFound": False,
+        "activationControlsAllDisabledActionsFound": False,
+        "activationFormAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationFormAssertions": {},
+        "activationFormsAllHeadingsFound": False,
+        "activationFormsAllProductionDisabledFound": False,
+        "activationFormsAllExecutorUnwiredFound": False,
+        "activationFormsAllDisabledActionsFound": False,
+        "activationFormsAllFieldLabelsFound": False,
+        "activationDraftAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDraftAssertions": {},
+        "activationDraftsAllHeadingsFound": False,
+        "activationDraftsAllProductionDisabledFound": False,
+        "activationDraftsAllExecutorUnwiredFound": False,
+        "activationDraftsAllInMemoryOnlyFound": False,
+        "activationDraftsAllDisabledActionsFound": False,
+        "activationDraftEditAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDraftEditAssertions": {},
+        "activationDraftEditsAllHeadingsFound": False,
+        "activationDraftEditsAllProductionDisabledFound": False,
+        "activationDraftEditsAllExecutorUnwiredFound": False,
+        "activationDraftEditsAllInMemoryOnlyFound": False,
+        "activationDraftEditsAllModeFound": False,
+        "activationDraftEditsAllValidationFound": False,
+        "activationDraftEditsAllDisabledActionsFound": False,
+        "activationDraftPersistenceAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "activationDraftPersistenceAssertions": {},
+        "activationDraftPersistenceAllHeadingsFound": False,
+        "activationDraftPersistenceAllProductionDisabledFound": False,
+        "activationDraftPersistenceAllExecutorUnwiredFound": False,
+        "activationDraftPersistenceAllForbiddenFound": False,
+        "activationDraftPersistenceAllStorageAbsentFound": False,
+        "activationDraftPersistenceAllDisabledActionsFound": False,
+        "productionActivationSafetyGateAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationSafetyGateAssertions": {},
+        "productionActivationSafetyGatesAllHeadingsFound": False,
+        "productionActivationSafetyGatesAllProductionDisabledFound": False,
+        "productionActivationSafetyGatesAllExecutorUnwiredFound": False,
+        "productionActivationSafetyGatesAllBlockedByDefaultFound": False,
+        "productionActivationSafetyGatesAllRequiredProofFound": False,
+        "productionActivationSafetyGatesAllDisabledActionsFound": False,
+        "productionActivationSafetyProofAssertions": {},
+        "productionActivationSafetyProofsAllHeadingsFound": False,
+        "productionActivationSafetyProofsAllProductionDisabledFound": False,
+        "productionActivationSafetyProofsAllExecutorUnwiredFound": False,
+        "productionActivationSafetyProofsAllProofStatusFound": False,
+        "productionActivationSafetyProofsAllCopiedFixtureProofFound": False,
+        "productionActivationSafetyProofsAllNoAutoApplyFound": False,
+        "productionActivationSafetyProofsAllFinalApprovalFound": False,
+        "productionActivationSafetyProofsAllDisabledActionsFound": False,
+        "productionActivationFinalDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationFinalDecisionAssertions": {},
+        "productionActivationFinalDecisionsAllHeadingsFound": False,
+        "productionActivationFinalDecisionsAllProductionDisabledFound": False,
+        "productionActivationFinalDecisionsAllExecutorUnwiredFound": False,
+        "productionActivationFinalDecisionsAllStatusFound": False,
+        "productionActivationFinalDecisionsAllDecisionLabelsFound": False,
+        "productionActivationFinalDecisionsAllPersistenceFound": False,
+        "productionActivationFinalDecisionsAllDisabledActionsFound": False,
+        "productionActivationApprovalUxAndDryRunAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationApprovalUxAndDryRunAssertions": {},
+        "productionActivationApprovalUxAndDryRunAllHeadingsFound": False,
+        "productionActivationApprovalUxAndDryRunAllProductionDisabledFound": False,
+        "productionActivationApprovalUxAndDryRunAllExecutorUnwiredFound": False,
+        "productionActivationApprovalUxAndDryRunAllApprovalStatusFound": False,
+        "productionActivationApprovalUxAndDryRunAllApprovalRequirementsFound": False,
+        "productionActivationApprovalUxAndDryRunAllDryRunStatusFound": False,
+        "productionActivationApprovalUxAndDryRunAllDryRunBoundariesFound": False,
+        "productionActivationApprovalUxAndDryRunAllDisabledActionsFound": False,
+        "productionActivationOptInRequirementsAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationOptInRequirementsAssertions": {},
+        "productionActivationOptInRequirementsAllHeadingsFound": False,
+        "productionActivationOptInRequirementsAllProductionDisabledFound": False,
+        "productionActivationOptInRequirementsAllExecutorUnwiredFound": False,
+        "productionActivationOptInRequirementsAllStatusFound": False,
+        "productionActivationOptInRequirementsAllRequirementLabelsFound": False,
+        "productionActivationOptInRequirementsAllFlagFalseFound": False,
+        "productionActivationOptInRequirementsAllDisabledActionsFound": False,
+        "productionActivationCapAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationCapAssertions": {},
+        "productionActivationCapAllHeadingsFound": False,
+        "productionActivationCapAllStatusFound": False,
+        "productionActivationCapAllSeparatePhaseFound": False,
+        "productionActivationCapAllProductionDisabledFound": False,
+        "productionActivationCapAllFlagFalseFound": False,
+        "productionActivationCapAllExecutorUnwiredFound": False,
+        "productionActivationCapAllPersistenceFound": False,
+        "productionActivationCapAllNoMutationFound": False,
+        "productionActivationCapAllDisabledActionsFound": False,
         "text": [],
         "error": None,
     }
@@ -587,7 +1656,7 @@ def main() -> int:
         for app_index in range(desktop.childCount):
             app = desktop.getChildAtIndex(app_index)
             texts = []
-            walk_accessible(app, texts, 1200, set())
+            walk_accessible(app, texts, 3000, set())
             if matches_expected_app(app, texts):
                 if selected_app is None:
                     selected_app = app
@@ -640,10 +1709,372 @@ def main() -> int:
             if ok:
                 time.sleep(1)
                 after = []
-                walk_accessible(selected_app, after, 1200, set())
+                walk_accessible(selected_app, after, 3000, set())
                 result["textAfterNavigation"] = after
                 result["foundTermsAfterNavigation"] = found_terms(after)
         all_text = "\n".join(result["text"] + result["textAfterNavigation"]).lower()
+        approval_assertions = approval_card_assertions(result["text"] + result["textAfterNavigation"])
+        activation_assertions = activation_decision_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        path_assertions = activation_path_assertions(result["text"] + result["textAfterNavigation"])
+        control_assertions = activation_control_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        form_assertions = activation_form_assertions(result["text"] + result["textAfterNavigation"])
+        draft_assertions = activation_draft_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        draft_edit_assertions = activation_draft_edit_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        draft_persistence_assertions = activation_draft_persistence_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        safety_gate_assertions = production_activation_safety_gate_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        safety_proof_assertions = production_activation_safety_proof_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        final_decision_assertions = production_activation_final_decision_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        approval_ux_and_dry_run_assertions = (
+            production_activation_approval_ux_and_dry_run_assertions(
+                result["text"] + result["textAfterNavigation"]
+            )
+        )
+        opt_in_requirements_assertions = production_activation_opt_in_requirements_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        cap_assertions = production_activation_cap_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        result["approvalCardAssertions"] = approval_assertions
+        result["approvalCardsAllHeadingsFound"] = all(
+            card["headingFound"] for card in approval_assertions.values()
+        )
+        result["approvalCardsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in approval_assertions.values()
+        )
+        result["approvalCardsAllDisabledActionsFound"] = all(
+            card["disabledActionFound"] for card in approval_assertions.values()
+        )
+        result["activationDecisionAssertions"] = activation_assertions
+        result["activationDecisionsAllHeadingsFound"] = all(
+            card["headingFound"] for card in activation_assertions.values()
+        )
+        result["activationDecisionsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in activation_assertions.values()
+        )
+        result["activationDecisionsAllDisabledActionsFound"] = all(
+            card["disabledActionFound"] for card in activation_assertions.values()
+        )
+        result["activationPathAssertions"] = path_assertions
+        result["activationPathsAllHeadingsFound"] = all(
+            card["headingFound"] for card in path_assertions.values()
+        )
+        result["activationPathsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in path_assertions.values()
+        )
+        result["activationPathsAllDisabledActionsFound"] = all(
+            card["disabledActionFound"] for card in path_assertions.values()
+        )
+        result["activationControlAssertions"] = control_assertions
+        result["activationControlsAllHeadingsFound"] = all(
+            card["headingFound"] for card in control_assertions.values()
+        )
+        result["activationControlsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in control_assertions.values()
+        )
+        result["activationControlsAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in control_assertions.values()
+        )
+        result["activationControlsAllDisabledActionsFound"] = all(
+            card["disabledActionFound"] for card in control_assertions.values()
+        )
+        result["activationFormAssertions"] = form_assertions
+        result["activationFormsAllHeadingsFound"] = all(
+            card["headingFound"] for card in form_assertions.values()
+        )
+        result["activationFormsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in form_assertions.values()
+        )
+        result["activationFormsAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in form_assertions.values()
+        )
+        result["activationFormsAllDisabledActionsFound"] = all(
+            card["disabledActionFound"] for card in form_assertions.values()
+        )
+        result["activationFormsAllFieldLabelsFound"] = all(
+            card["fieldLabelsFound"] for card in form_assertions.values()
+        )
+        result["activationDraftAssertions"] = draft_assertions
+        result["activationDraftsAllHeadingsFound"] = all(
+            card["headingFound"] for card in draft_assertions.values()
+        )
+        result["activationDraftsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in draft_assertions.values()
+        )
+        result["activationDraftsAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in draft_assertions.values()
+        )
+        result["activationDraftsAllInMemoryOnlyFound"] = all(
+            card["memoryStatusFound"] for card in draft_assertions.values()
+        )
+        result["activationDraftsAllDisabledActionsFound"] = all(
+            card["disabledUpdateFound"] and card["disabledResetFound"]
+            for card in draft_assertions.values()
+        )
+        result["activationDraftEditAssertions"] = draft_edit_assertions
+        result["activationDraftEditsAllHeadingsFound"] = all(
+            card.get("headingFound", True) for card in draft_edit_assertions.values()
+        )
+        result["activationDraftEditsAllProductionDisabledFound"] = all(
+            card.get("productionDisabledFound", True)
+            for card in draft_edit_assertions.values()
+        )
+        result["activationDraftEditsAllExecutorUnwiredFound"] = all(
+            card.get("executorWiringFound", True) for card in draft_edit_assertions.values()
+        )
+        result["activationDraftEditsAllInMemoryOnlyFound"] = all(
+            card.get("memoryStatusFound", True) for card in draft_edit_assertions.values()
+        )
+        result["activationDraftEditsAllModeFound"] = all(
+            card.get("editingModeFound", True) for card in draft_edit_assertions.values()
+        )
+        result["activationDraftEditsAllValidationFound"] = all(
+            card.get("draftValidationFound", True) for card in draft_edit_assertions.values()
+        )
+        result["activationDraftEditsAllDisabledActionsFound"] = all(
+            card.get("disabledUpdateFound", True) and card.get("disabledResetFound", True)
+            for card in draft_edit_assertions.values()
+        )
+        result["activationDraftPersistenceAssertions"] = draft_persistence_assertions
+        result["activationDraftPersistenceAllHeadingsFound"] = all(
+            card["headingFound"] for card in draft_persistence_assertions.values()
+        )
+        result["activationDraftPersistenceAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in draft_persistence_assertions.values()
+        )
+        result["activationDraftPersistenceAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in draft_persistence_assertions.values()
+        )
+        result["activationDraftPersistenceAllForbiddenFound"] = all(
+            card["persistenceStatusFound"] and card["persistenceEnabledFound"]
+            for card in draft_persistence_assertions.values()
+        )
+        result["activationDraftPersistenceAllStorageAbsentFound"] = all(
+            card["draftWrittenFound"] and card["storagePathFound"]
+            for card in draft_persistence_assertions.values()
+        )
+        result["activationDraftPersistenceAllDisabledActionsFound"] = all(
+            card["disabledEnableFound"] and card["disabledClearFound"]
+            for card in draft_persistence_assertions.values()
+        )
+        result["productionActivationSafetyGateAssertions"] = safety_gate_assertions
+        result["productionActivationSafetyGatesAllHeadingsFound"] = all(
+            card["headingFound"] for card in safety_gate_assertions.values()
+        )
+        result["productionActivationSafetyGatesAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in safety_gate_assertions.values()
+        )
+        result["productionActivationSafetyGatesAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in safety_gate_assertions.values()
+        )
+        result["productionActivationSafetyGatesAllBlockedByDefaultFound"] = all(
+            card["gateStatusFound"] for card in safety_gate_assertions.values()
+        )
+        result["productionActivationSafetyGatesAllRequiredProofFound"] = all(
+            card["byteExactBackupFound"]
+            and card["writePlanFound"]
+            and card["rereadPlanFound"]
+            and card["restorePlanFound"]
+            and card["noAutoApplyProofFound"]
+            and card["persistenceAutoApplyProofFound"]
+            and card["finalApprovalFound"]
+            for card in safety_gate_assertions.values()
+        )
+        result["productionActivationSafetyGatesAllDisabledActionsFound"] = all(
+            card["disabledReviewFound"] and card["disabledEnableFound"]
+            for card in safety_gate_assertions.values()
+        )
+        result["productionActivationSafetyProofAssertions"] = safety_proof_assertions
+        result["productionActivationSafetyProofsAllHeadingsFound"] = all(
+            card["headingFound"] for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllProofStatusFound"] = all(
+            card["proofStatusFound"] for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllCopiedFixtureProofFound"] = all(
+            card["byteExactBackupFound"]
+            and card["dryRunWritePlanFound"]
+            and card["diffPreviewFound"]
+            and card["postWriteRereadFound"]
+            and card["restorePlanFound"]
+            and card["postRestoreVerificationFound"]
+            for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllNoAutoApplyFound"] = all(
+            card["noAutoApplyProofFound"] and card["persistenceAutoApplyProofFound"]
+            for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllFinalApprovalFound"] = all(
+            card["finalApprovalFound"] for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllDisabledActionsFound"] = all(
+            card["disabledRunFound"] and card["disabledEnableFound"]
+            for card in safety_proof_assertions.values()
+        )
+        result["productionActivationFinalDecisionAssertions"] = final_decision_assertions
+        result["productionActivationFinalDecisionsAllHeadingsFound"] = all(
+            card["headingFound"] for card in final_decision_assertions.values()
+        )
+        result["productionActivationFinalDecisionsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in final_decision_assertions.values()
+        )
+        result["productionActivationFinalDecisionsAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in final_decision_assertions.values()
+        )
+        result["productionActivationFinalDecisionsAllStatusFound"] = all(
+            card["finalDecisionStatusFound"] for card in final_decision_assertions.values()
+        )
+        result["productionActivationFinalDecisionsAllDecisionLabelsFound"] = all(
+            card["finalApprovalFound"]
+            and card["productionFlagDecisionFound"]
+            and card["executorWiringDecisionFound"]
+            and card["liveProductionDryRunPolicyFound"]
+            and card["copiedFixtureProofFound"]
+            for card in final_decision_assertions.values()
+        )
+        result["productionActivationFinalDecisionsAllPersistenceFound"] = all(
+            card["draftPersistenceFound"] for card in final_decision_assertions.values()
+        )
+        result["productionActivationFinalDecisionsAllDisabledActionsFound"] = all(
+            card["disabledApprovalFound"]
+            and card["disabledProductionFlagFound"]
+            and card["disabledExecutorWiringFound"]
+            and card["disabledLiveDryRunFound"]
+            for card in final_decision_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAssertions"] = (
+            approval_ux_and_dry_run_assertions
+        )
+        result["productionActivationApprovalUxAndDryRunAllHeadingsFound"] = all(
+            card["approvalHeadingFound"] and card["dryRunHeadingFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllApprovalStatusFound"] = all(
+            card["approvalStatusFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllApprovalRequirementsFound"] = all(
+            card["finalApprovalFound"]
+            and card["typedConfirmationFound"]
+            and card["productionFlagOptInFound"]
+            and card["executorWiringOptInFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllDryRunStatusFound"] = all(
+            card["dryRunStatusFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllDryRunBoundariesFound"] = all(
+            card["dryRunCannotRunByDefaultFound"]
+            and card["dryRunCannotTouchRealConfigFound"]
+            and card["dryRunCannotReloadFound"]
+            and card["dryRunCannotMutateRuntimeFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllDisabledActionsFound"] = all(
+            card["disabledApprovalFound"]
+            and card["disabledConfirmationFound"]
+            and card["disabledProductionFlagFound"]
+            and card["disabledExecutorWiringFound"]
+            and card["disabledDryRunFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAssertions"] = (
+            opt_in_requirements_assertions
+        )
+        result["productionActivationOptInRequirementsAllHeadingsFound"] = all(
+            card["headingFound"] for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAllStatusFound"] = all(
+            card["statusFound"] for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAllRequirementLabelsFound"] = all(
+            card["productionFlagOptInFound"]
+            and card["executorWiringOptInFound"]
+            and card["separateFutureStepsFound"]
+            and card["explicitUserActionFound"]
+            and card["typedConfirmationFound"]
+            and card["reportBackedProofFound"]
+            and card["rollbackReadyStateFound"]
+            for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAllFlagFalseFound"] = all(
+            card["productionFlagFalseFound"] for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationOptInRequirementsAllDisabledActionsFound"] = all(
+            card["disabledProductionFlagFound"]
+            and card["disabledExecutorWiringFound"]
+            and card["disabledConfirmationFound"]
+            for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationCapAssertions"] = cap_assertions
+        result["productionActivationCapAllHeadingsFound"] = all(
+            card["headingFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllStatusFound"] = all(
+            card["statusFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllSeparatePhaseFound"] = all(
+            card["separatePhaseFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllFlagFalseFound"] = all(
+            card["productionFlagFalseFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllPersistenceFound"] = all(
+            card["draftPersistenceFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllNoMutationFound"] = all(
+            card["realConfigTouchedFound"]
+            and card["runtimeMutatedFound"]
+            and card["productionWriteExecutedFound"]
+            for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllDisabledActionsFound"] = all(
+            card["disabledStartFound"] and card["disabledConfirmFound"]
+            for card in cap_assertions.values()
+        )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text
             and "will not write this setting until the duplicate entries are resolved manually"
