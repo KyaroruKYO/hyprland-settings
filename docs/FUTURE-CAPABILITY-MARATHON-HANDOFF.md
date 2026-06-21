@@ -93,7 +93,7 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.
+Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.
 
 ## Progress tracker
 - Core app shell / UI / navigation: 98-99% -> 99-99%
@@ -115,7 +115,7 @@ Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo bu
 GTK matrix was run for the live activation draft-edit bridge; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_154855`. The run did not mutate runtime/config and screenshot plus AT-SPI accessibility-tree assertions passed for the legacy draft-edit and live memory-only draft-edit cards.
 
 ## Recommended next Codex prompt
-Design explicit final-approval, production-flag, executor-wiring, and live production dry-run decisions before any source/include or duplicate production executor wiring can be reconsidered.
+Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 
@@ -133,7 +133,7 @@ Design explicit final-approval, production-flag, executor-wiring, and live produ
 
 ## 2026-06-20 - Activation control handoff
 
-The branch now includes final review-only activation controls for source/include and duplicate. The controls validate complete request and safety-plan inputs and require executor wiring to remain `Unwired`; both remain `ValidatedButExecutorUnwired`, with production source/include insertion and duplicate writes disabled. Next exact work: design the explicit activation form/state machine that can collect real user request data while keeping executors unwired by default.
+The branch now includes final review-only activation controls for source/include and duplicate. The controls validate complete request and safety-plan inputs and require executor wiring to remain `Unwired`; both remain `ValidatedButExecutorUnwired`, with production source/include insertion and duplicate writes disabled. Completed follow-up: explicit activation form/state-machine review was added later in this branch.
 
 ## 2026-06-20 - Activation form handoff
 
@@ -145,11 +145,11 @@ The branch now renders source/include and duplicate activation form data through
 
 ## 2026-06-20 - Activation draft handoff
 
-The branch now includes in-memory activation draft plumbing for source/include and duplicate. Draft state can be created empty or from current form state, updated/reset in memory, converted into `ProductionActivationFormState`, and validated through the existing form/control reviews as review-only. The Config page displays disabled draft cards with draft status, validation, dirty state, in-memory-only copy, executor wiring `Unwired`, and production-disabled status. Planned update/reset controls are insensitive and have no persistence, mutation, or executor handler. Next exact work: if interactive collection is desired, make the activation draft fields editable only behind a still-disabled UI state that updates memory without persistence or executor wiring.
+The branch now includes in-memory activation draft plumbing for source/include and duplicate. Draft state can be created empty or from current form state, updated/reset in memory, converted into `ProductionActivationFormState`, and validated through the existing form/control reviews as review-only. The Config page displays disabled draft cards with draft status, validation, dirty state, in-memory-only copy, executor wiring `Unwired`, and production-disabled status. Planned update/reset controls are insensitive and have no persistence, mutation, or executor handler. Completed follow-up: still-disabled draft edit and live memory-only GTK bridge reviews were added later in this branch.
 
 ## 2026-06-20 - Activation draft edit handoff
 
-The branch now includes a still-disabled activation draft-edit layer for source/include and duplicate. Draft editing is disabled by default in the UI, but model tests can enter an in-memory-only edit mode, update draft request/safety-plan fields, recompute validation through the existing form/control reviews, reset to defaults, and prove persistence remains absent. The Config page displays disabled draft-edit cards with editing mode, dirty state, validation, in-memory-only copy, executor wiring `Unwired`, and production-disabled status. Planned update/reset controls are insensitive and have no persistence, mutation, or executor handler. Next exact work: connect live GTK field editing to the memory-only draft-edit model behind still-disabled controls, without persistence, production actions, or executor wiring.
+The branch now includes a still-disabled activation draft-edit layer for source/include and duplicate. Draft editing is disabled by default in the UI, but model tests can enter an in-memory-only edit mode, update draft request/safety-plan fields, recompute validation through the existing form/control reviews, reset to defaults, and prove persistence remains absent. The Config page displays disabled draft-edit cards with editing mode, dirty state, validation, in-memory-only copy, executor wiring `Unwired`, and production-disabled status. Planned update/reset controls are insensitive and have no persistence, mutation, or executor handler. Completed follow-up: live GTK field editing was connected to the memory-only draft-edit bridge later in this branch.
 
 ## 2026-06-20 - Live activation draft edit bridge handoff
 
@@ -165,7 +165,7 @@ The branch now includes a default-disabled persistence boundary for source/inclu
 
 ## 2026-06-20 - Production activation safety gates handoff
 
-The branch now includes default-disabled production activation safety gates for source/include insertion and duplicate replacement. Both gates are `ProductionActivationProofPartiallySatisfiedButDefaultDisabled`; copied-fixture proof satisfies byte-exact backup, pre-write snapshot, target identity, write plan, diff preview, reread, restore, post-restore verification, and rollback checks without touching real config. Report-backed evidence satisfies no-auto-apply and persisted-draft auto-apply proof. Executors remain `Unwired`, production flags remain false, draft persistence remains forbidden by default, and no production write/reload/runtime/config path was added. Next exact work: design explicit final-approval, production-flag, executor-wiring, and live production dry-run decisions before any source/include or duplicate production executor wiring can be reconsidered.
+The branch now includes default-disabled production activation safety gates for source/include insertion and duplicate replacement. Both gates are `ProductionActivationProofPartiallySatisfiedButDefaultDisabled`; copied-fixture proof satisfies byte-exact backup, pre-write snapshot, target identity, write plan, diff preview, reread, restore, post-restore verification, and rollback checks without touching real config. Report-backed evidence satisfies no-auto-apply and persisted-draft auto-apply proof. Executors remain `Unwired`, production flags remain false, draft persistence remains forbidden by default, and no production write/reload/runtime/config path was added. Completed follow-up: final decisions, approval UX, dry-run policy, opt-in requirements, cap, and closeout were added later in this branch.
 
 ## 2026-06-20 - Production activation safety proof handoff
 
@@ -184,4 +184,6 @@ Source/include and duplicate now have designed-but-disabled production flag and 
 
 Source/include and duplicate now have final production activation cap reviews. The cap status is `BranchCappedForNonProductionRunway`, and the stop answer is yes: future-capability-marathon should stop here for source/include and duplicate non-production runway work. Future production activation must begin in a separate explicitly approved phase and require a fresh user decision, production flag opt-in, executor-wiring opt-in, rollback/no-auto-apply proof preservation, real-config risk re-check, and activation-time revalidation. The cap cannot set production flags, wire executors, run writes, authorize live dry-run, persist drafts, mutate runtime, reload Hyprland, or touch real config.
 
-Next exact work item: stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.
+## 2026-06-20 - Marathon Closeout
+
+The branch now includes `data/reports/future-capability-marathon-closeout.v0.55.2.json` and `docs/FUTURE-CAPABILITY-MARATHON-CLOSEOUT.md`. The closeout decision is to stop source/include and duplicate production-activation runway work on `future-capability-marathon`. Active next work must choose a different project area or explicitly start a separate production activation phase. The closeout keeps production flags false, executors `Unwired`, draft persistence forbidden by default, production writes false, real config untouched, runtime unmutated, and `hyprctl reload` not run.

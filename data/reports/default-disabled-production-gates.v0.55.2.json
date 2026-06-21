@@ -229,7 +229,7 @@
     "sourceIncludeProductionEnabled": false,
     "duplicateProductionEnabled": false
   },
-  "nextRecommendedWork": "Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.",
+  "nextRecommendedWork": "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.",
   "activationDecisionReview": {
     "report": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
     "sourceIncludeInsertion": "ApprovedButDefaultDisabled; production flag false",

@@ -109,6 +109,7 @@
     "default_disabled_production_activation_approval_ux_and_dry_run_policy",
     "default_disabled_production_activation_opt_in_requirements",
     "future_capability_production_activation_cap",
+    "future_capability_marathon_closeout",
     "future_capability_remaining_dependency_scan"
   ],
   "phasesPartiallyCompleted": [],
@@ -174,6 +175,8 @@
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-OPT-IN-REQUIREMENTS-REVIEW-LOG.md",
     "data/reports/future-capability-production-activation-cap.v0.55.2.json",
     "docs/FUTURE-CAPABILITY-PRODUCTION-ACTIVATION-CAP.md",
+    "data/reports/future-capability-marathon-closeout.v0.55.2.json",
+    "docs/FUTURE-CAPABILITY-MARATHON-CLOSEOUT.md",
     "data/reports/future-capability-remaining-dependency-scan.v0.55.2.json",
     "docs/FUTURE-CAPABILITY-REMAINING-DEPENDENCY-SCAN.md"
   ],
@@ -202,6 +205,7 @@
     "source/include and duplicate approval UX and live dry-run policy model and UI tests",
     "source/include and duplicate production flag and executor-wiring opt-in requirements model and UI tests",
     "source/include and duplicate production activation cap model, UI, and report tests",
+    "future capability marathon closeout report and active-next-work tests",
     "GTK screenshot/accessibility assertions for source/include and duplicate activation draft-edit cards",
     "remaining dependency scan report assertions"
   ],
@@ -217,7 +221,7 @@
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260620_154855",
     "gtkSafeEnvFieldLabelBlocker": "none"
   },
-  "nextRecommendedAction": "Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.",
+  "nextRecommendedAction": "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "98-98%",

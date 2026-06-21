@@ -43,4 +43,4 @@ This review defines future production flag and executor-wiring opt-in implementa
 
 ## Next Work
 
-The follow-up capstone is complete. Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.
+The follow-up capstone is complete. Stop source/include and duplicate production-activation runway work on `future-capability-marathon`; choose a different project area or explicitly start a separate production activation phase.

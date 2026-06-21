@@ -87,12 +87,234 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested."
+        "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("separately approved production activation phase"));
+        .contains("choose a different project area"));
+    assert!(!handoff["nextExactPhaseToContinue"]
+        .as_str()
+        .expect("next exact phase should be text")
+        .contains("define final production activation cap"));
+    assert!(!handoff["recommendedNextCodexPrompt"]
+        .as_str()
+        .expect("prompt should be text")
+        .contains("define production flag"));
+}
+
+#[test]
+fn closeout_report_caps_source_include_and_duplicate_runway() {
+    let closeout = read_json("data/reports/future-capability-marathon-closeout.v0.55.2.json");
+    assert_eq!(
+        closeout["artifactKind"],
+        "future-capability-marathon-closeout"
+    );
+    assert_eq!(closeout["projectDataVersion"], "v0.55.2");
+    assert_eq!(closeout["branch"], "future-capability-marathon");
+    assert_eq!(
+        closeout["startingCommit"],
+        "1f8a05c15c79b2f768ebd3a3d908631f7e400156"
+    );
+    assert_eq!(
+        closeout["latestCommitBeforeCloseout"],
+        "1f8a05c15c79b2f768ebd3a3d908631f7e400156"
+    );
+    assert_eq!(
+        closeout["chosenCloseoutDecision"],
+        "stop source/include and duplicate non-production runway here"
+    );
+    assert_eq!(
+        closeout["sourceIncludeCapStatus"],
+        "BranchCappedForNonProductionRunway"
+    );
+    assert_eq!(
+        closeout["duplicateCapStatus"],
+        "BranchCappedForNonProductionRunway"
+    );
+    assert_eq!(closeout["shouldFutureCapabilityMarathonStopHere"], true);
+    assert_eq!(
+        closeout["futureProductionActivationRequiresSeparateApprovedPhase"],
+        true
+    );
+    assert_eq!(
+        closeout["futureProductionActivationRequiresFreshUserDecision"],
+        true
+    );
+    assert_eq!(
+        closeout["futureProductionActivationMustNotBeHiddenInContinuationSprints"],
+        true
+    );
+    assert_eq!(
+        closeout["futureProductionActivationMustNotBeInferredFromExistingProof"],
+        true
+    );
+    assert_eq!(
+        closeout["activeNextWorkAfterCloseout"],
+        "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase."
+    );
+
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            closeout["closeoutReviews"][key]["capStatus"],
+            "BranchCappedForNonProductionRunway"
+        );
+        assert_eq!(
+            closeout["closeoutReviews"][key]["futureSeparateApprovedPhaseRequired"],
+            true
+        );
+        assert_eq!(closeout["closeoutReviews"][key]["productionFlag"], false);
+        assert_eq!(
+            closeout["closeoutReviews"][key]["executorWiring"],
+            "Unwired"
+        );
+        assert_eq!(
+            closeout["closeoutReviews"][key]["draftPersistenceBoundary"],
+            "PersistenceForbiddenByDefault"
+        );
+        assert_eq!(
+            closeout["closeoutReviews"][key]["productionWriteExecuted"],
+            false
+        );
+        assert_eq!(closeout["closeoutReviews"][key]["realConfigTouched"], false);
+        assert_eq!(closeout["closeoutReviews"][key]["runtimeMutated"], false);
+    }
+
+    assert_eq!(closeout["safety"]["sourceIncludeProductionFlag"], false);
+    assert_eq!(closeout["safety"]["duplicateProductionFlag"], false);
+    assert_eq!(closeout["safety"]["sourceIncludeExecutor"], "Unwired");
+    assert_eq!(closeout["safety"]["duplicateExecutor"], "Unwired");
+    assert_eq!(
+        closeout["safety"]["sourceIncludeDraftPersistence"],
+        "PersistenceForbiddenByDefault"
+    );
+    assert_eq!(
+        closeout["safety"]["duplicateDraftPersistence"],
+        "PersistenceForbiddenByDefault"
+    );
+    assert_eq!(
+        closeout["safety"]["sourceIncludeProductionWriteExecuted"],
+        false
+    );
+    assert_eq!(
+        closeout["safety"]["duplicateProductionWriteExecuted"],
+        false
+    );
+    assert_eq!(closeout["safety"]["sourceIncludeRealConfigTouched"], false);
+    assert_eq!(closeout["safety"]["duplicateRealConfigTouched"], false);
+    assert_eq!(closeout["safety"]["sourceIncludeRuntimeMutated"], false);
+    assert_eq!(closeout["safety"]["duplicateRuntimeMutated"], false);
+    assert_eq!(closeout["safety"]["hyprctlReloadRun"], false);
+    assert_eq!(closeout["safety"]["diskPersistenceAdded"], false);
+    assert_eq!(closeout["safety"]["storageDirectoryCreated"], false);
+    assert_eq!(closeout["safety"]["serializerOrWritePathAdded"], false);
+    assert_eq!(closeout["safety"]["unsafeProductionBehaviorEnabled"], false);
+    assert_eq!(closeout["safety"]["v0552ModelPreserved"], true);
+    assert_eq!(closeout["safety"]["hyprland0554MigrationActivated"], false);
+
+    let do_not_continue = closeout["doNotContinue"]
+        .as_array()
+        .expect("doNotContinue should be an array");
+    assert!(do_not_continue.iter().any(|entry| {
+        entry == "Do not continue source/include production activation on future-capability-marathon."
+    }));
+    assert!(do_not_continue.iter().any(|entry| {
+        entry == "Do not continue duplicate production activation on future-capability-marathon."
+    }));
+    assert!(do_not_continue
+        .iter()
+        .any(|entry| entry == "Do not wire production executors here."));
+    assert!(do_not_continue
+        .iter()
+        .any(|entry| entry == "Do not set production flags here."));
+
+    let future_requirements = closeout["futureSeparatePhaseRequirements"]
+        .as_array()
+        .expect("future requirements should be an array");
+    assert!(future_requirements.iter().any(|entry| {
+        entry == "A future production activation phase requires explicit user request."
+    }));
+    assert!(future_requirements.iter().any(|entry| {
+        entry == "A future production activation phase requires new branch or explicit phase marker."
+    }));
+    assert!(future_requirements.iter().any(|entry| {
+        entry == "A future production activation phase must revalidate source/include and duplicate proofs at activation time."
+    }));
+
+    assert_eq!(
+        closeout["nonInferenceProof"]["copiedFixtureProofCannotApproveProduction"],
+        true
+    );
+    assert_eq!(
+        closeout["nonInferenceProof"]["draftEditStateCannotApproveProduction"],
+        true
+    );
+    assert_eq!(
+        closeout["nonInferenceProof"]["persistenceBoundaryCannotApproveProduction"],
+        true
+    );
+    assert_eq!(
+        closeout["nonInferenceProof"]["closeoutCannotApproveProduction"],
+        true
+    );
+
+    let summary = read_json("data/reports/future-capability-marathon-summary.v0.55.2.json");
+    assert!(summary["phasesCompleted"]
+        .as_array()
+        .expect("phasesCompleted should be an array")
+        .iter()
+        .any(|phase| phase == "future_capability_marathon_closeout"));
+    assert_eq!(
+        summary["nextRecommendedAction"],
+        "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase."
+    );
+    assert!(!summary["nextRecommendedAction"]
+        .as_str()
+        .expect("nextRecommendedAction should be text")
+        .contains("continue production activation runway"));
+    assert!(!summary["nextRecommendedAction"]
+        .as_str()
+        .expect("nextRecommendedAction should be text")
+        .contains("define final production activation cap"));
+
+    let handoff = read_json("data/reports/future-capability-marathon-handoff.v0.55.2.json");
+    assert!(handoff["completedPhases"]
+        .as_array()
+        .expect("completedPhases should be an array")
+        .iter()
+        .any(|phase| phase == "future_capability_marathon_closeout"));
+    assert_eq!(
+        handoff["recommendedNextCodexPrompt"],
+        "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase."
+    );
+    assert!(!handoff["recommendedNextCodexPrompt"]
+        .as_str()
+        .expect("recommended prompt should be text")
+        .contains("define production flag/executor opt-in requirements"));
+
+    let dependency_scan =
+        read_json("data/reports/future-capability-remaining-dependency-scan.v0.55.2.json");
+    assert_eq!(
+        dependency_scan["closeout"]["report"],
+        "data/reports/future-capability-marathon-closeout.v0.55.2.json"
+    );
+    assert_eq!(
+        dependency_scan["closeout"]["shouldFutureCapabilityMarathonStopHere"],
+        true
+    );
+    assert_eq!(
+        dependency_scan["closeout"]["activeNextWorkAfterCloseout"],
+        "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase."
+    );
+    assert_eq!(
+        dependency_scan["closeout"]
+            ["futureProductionActivationMustNotBeHiddenInContinuationSprints"],
+        true
+    );
+    assert_eq!(
+        dependency_scan["closeout"]["futureProductionActivationMustNotBeInferredFromExistingProof"],
+        true
+    );
 }
 
 #[test]

@@ -67,7 +67,7 @@ Current future-capability tracker:
 - Runtime/reload integration: 66-76%
 - Hyprland 0.55.4 migration: 50-60%
 
-Next exact work item: stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.
+Next exact work item: stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 
@@ -126,3 +126,5 @@ Source/include and duplicate now have designed-but-disabled production flag and 
 ## 2026-06-20 - Production Activation Cap
 
 Source/include and duplicate are now capped for non-production runway work. The cap status is `BranchCappedForNonProductionRunway`, and the explicit stop answer is yes: `future-capability-marathon` should stop here for source/include and duplicate production-activation runway work. Future production activation must begin in a separate explicitly approved phase, require a fresh user decision, production flag opt-in, executor-wiring opt-in, rollback/no-auto-apply proof preservation, real-config risk re-check, and activation-time revalidation. The cap cannot set flags, wire executors, run writes, authorize live dry-run, persist drafts, mutate runtime, reload Hyprland, or touch real config.
+
+The closeout audit confirms the cap is the final source/include and duplicate state on `future-capability-marathon`. Active follow-up work must not ask Codex to keep extending this runway; it should choose a different project area or explicitly start a separate production activation phase.

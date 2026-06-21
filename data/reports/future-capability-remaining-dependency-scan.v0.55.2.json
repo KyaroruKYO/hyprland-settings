@@ -106,5 +106,13 @@
     "runtimeMutated": false,
     "hyprctlReloadRun": false,
     "draftPersistenceForbiddenByDefault": true
+  },
+  "closeout": {
+    "report": "data/reports/future-capability-marathon-closeout.v0.55.2.json",
+    "shouldFutureCapabilityMarathonStopHere": true,
+    "activeNextWorkAfterCloseout": "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.",
+    "futureProductionActivationRequiresSeparateApprovedPhase": true,
+    "futureProductionActivationMustNotBeHiddenInContinuationSprints": true,
+    "futureProductionActivationMustNotBeInferredFromExistingProof": true
   }
 }

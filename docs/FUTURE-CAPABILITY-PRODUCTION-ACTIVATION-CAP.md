@@ -43,4 +43,6 @@ Future source/include insertion or duplicate replacement production activation m
 
 ## Stop Answer
 
-Future-capability-marathon should stop here for source/include and duplicate non-production runway work. The next work item is not another continuation sprint; it is a separately approved production activation phase only if the user explicitly requests production enablement.
+Future-capability-marathon should stop here for source/include and duplicate non-production runway work. The next work item is not another continuation sprint. Active follow-up work should choose a different project area, or explicitly start a separate production activation phase if the user requests production enablement.
+
+The closeout record is `data/reports/future-capability-marathon-closeout.v0.55.2.json` and `docs/FUTURE-CAPABILITY-MARATHON-CLOSEOUT.md`.

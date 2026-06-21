@@ -159,3 +159,12 @@ Added source/include and duplicate production activation safety proof. The proof
 - Future production activation still requires production flag opt-in, executor-wiring opt-in, rollback/no-auto-apply proof preservation, real-config risk re-check, and activation-time revalidation.
 - The cap cannot set production flags, wire executors, run writes, authorize live dry-run, persist drafts, mutate runtime, reload Hyprland, or touch real config.
 - Stop answer: yes, future-capability-marathon should stop here for source/include and duplicate non-production runway work.
+
+## 2026-06-20 - Marathon Closeout
+
+- Added `data/reports/future-capability-marathon-closeout.v0.55.2.json`.
+- Added `docs/FUTURE-CAPABILITY-MARATHON-CLOSEOUT.md`.
+- Closeout decision: stop source/include and duplicate production-activation runway work on `future-capability-marathon`.
+- Active next work must choose a different project area or explicitly start a separate production activation phase.
+- Future production activation must not be hidden in continuation sprints and must not be inferred from existing proof.
+- Production flags remain false, executors remain `Unwired`, draft persistence remains forbidden by default, no real config was touched, no runtime mutation was run, and no reload was run.

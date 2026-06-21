@@ -61,7 +61,7 @@
 - `pacman -Q hyprland`: `hyprland 0.55.4-1`.
 
 ## Next exact work
-Use report-backed approval card data as the input for a future default-disabled production activation decision review, beginning with source/include and duplicate paths while keeping production flags false.
+Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.
 
 ## 2026-06-20 Report-backed approval card evidence
 - Source/include, duplicate, structured `hl.bind`, profile/mode, high-risk/display, and Hyprland 0.55.4 approval cards now render from serialized report data.
@@ -122,6 +122,8 @@ Production gate readiness now records default-disabled production activation saf
 ## 2026-06-20 - Production Activation Cap Readiness
 
 Production gate readiness now records the final source/include and duplicate production activation cap. The cap status is `BranchCappedForNonProductionRunway`; future production activation requires a separate explicitly approved phase, fresh user decision, production flag opt-in, executor-wiring opt-in, rollback/no-auto-apply proof preservation, real-config risk re-check, and activation-time revalidation. The cap cannot set flags, wire executors, run writes, authorize live dry-run, persist drafts, mutate runtime, reload Hyprland, or touch real config.
+
+Production gate readiness now records the closeout decision for source/include and duplicate on `future-capability-marathon`. Active next work must choose a different project area or explicitly start a separate production activation phase; it must not continue adding production-activation runway guardrails on this branch unless correcting a proven defect.
 
 ## 2026-06-20 - Production Activation Safety Proof
 

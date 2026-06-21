@@ -178,7 +178,7 @@
     "Source/include insertion now has readiness model, disabled UI, fixture target-selection proof, selected-target dry-run planner, preview UI, temp-fixture guarded executor, copied-config-tree proof, and default-disabled production gate review, but production connected-file insertion remains disabled until explicit approval and live restoration proof exist.",
     "Managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
   ],
-  "nextRecommendedWork": "Stop source/include non-production runway work here; open a separately approved production activation phase only if explicitly requested.",
+  "nextRecommendedWork": "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": true,

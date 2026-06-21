@@ -174,7 +174,7 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.",
+  "nextRecommendedWork": "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.",
   "activationDecisionReview": {
     "sourceIncludeInsertion": "ApprovedButDefaultDisabled",
     "duplicateReplacement": "ApprovedButDefaultDisabled",

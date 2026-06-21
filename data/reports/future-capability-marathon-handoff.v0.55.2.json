@@ -89,6 +89,7 @@
     "default_disabled_production_activation_approval_ux_and_dry_run_policy",
     "default_disabled_production_activation_opt_in_requirements",
     "future_capability_production_activation_cap",
+    "future_capability_marathon_closeout",
     "future_capability_remaining_dependency_scan"
   ],
   "partialPhases": [],
@@ -106,7 +107,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.",
+  "nextExactPhaseToContinue": "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -163,6 +164,8 @@
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-OPT-IN-REQUIREMENTS-REVIEW-LOG.md",
     "data/reports/future-capability-production-activation-cap.v0.55.2.json",
     "docs/FUTURE-CAPABILITY-PRODUCTION-ACTIVATION-CAP.md",
+    "data/reports/future-capability-marathon-closeout.v0.55.2.json",
+    "docs/FUTURE-CAPABILITY-MARATHON-CLOSEOUT.md",
     "data/reports/future-capability-remaining-dependency-scan.v0.55.2.json",
     "docs/FUTURE-CAPABILITY-REMAINING-DEPENDENCY-SCAN.md"
   ],
@@ -190,11 +193,12 @@
     "Production activation approval UX and live dry-run policy reviews now exist as designed-but-disabled surfaces for source/include and duplicate. They require explicit user action, typed confirmation, production flag opt-in, executor wiring opt-in, rollback readiness, and no-real-config/no-reload/no-runtime-mutation dry-run boundaries without enabling production.",
     "Production flag and executor-wiring opt-in requirements now exist as designed-but-disabled reviews for source/include and duplicate. They require separate future steps, explicit user action, typed confirmation, report-backed proof, rollback-ready state, and no-auto-apply proof while keeping production flags false and executors Unwired.",
     "Source/include and duplicate production activation are now capped for non-production runway work. Future production activation must begin in a separate explicitly approved phase and cannot be inferred from existing proof, set production flags, wire executors, persist drafts, run writes, reload Hyprland, mutate runtime, or touch real config.",
+    "Closeout now states that future-capability-marathon should stop here for source/include and duplicate non-production runway work. Active next work must choose a different project area or explicitly start a separate production activation phase.",
     "The remaining dependency scan classifies all tracker categories; no additional independent category was uniquely safe to implement after the draft-edit layer because remaining work is capped or blocked by production activation, high-risk recovery proof, or missing official 0.55.4 data."
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.",
+  "recommendedNextCodexPrompt": "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase.",
   "generatedAt": "2026-06-20T00:00:00Z",
   "reportsAdded": [
     "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
@@ -208,6 +212,8 @@
     "data/reports/default-disabled-production-activation-draft-persistence-boundary.v0.55.2.json",
     "data/reports/default-disabled-production-activation-safety-gates.v0.55.2.json",
     "data/reports/default-disabled-production-activation-approval-ux-and-dry-run-policy.v0.55.2.json",
+    "data/reports/future-capability-marathon-closeout.v0.55.2.json",
+    "docs/FUTURE-CAPABILITY-MARATHON-CLOSEOUT.md",
     "data/reports/future-capability-remaining-dependency-scan.v0.55.2.json"
   ],
   "summary": [
@@ -221,6 +227,7 @@
     "Source/include and duplicate activation live GTK draft edit bridges update memory-only draft state from field edits, recompute form/control validation, reset in memory, and keep persistence absent with executors Unwired.",
     "Source/include and duplicate activation draft persistence boundaries forbid persistence by default, expose no storage path, write no draft data to disk, call no serializer, and list the future opt-in/storage/redaction/retention/delete/encryption requirements.",
     "Source/include and duplicate production activation safety proof is visible and partially satisfied by copied fixtures; final approval, production flag, executor wiring, and live production dry-run decisions remain required.",
+    "Source/include and duplicate production-activation runway work is closed on future-capability-marathon; active next work must choose a different project area or explicitly start a separate production activation phase.",
     "The remaining dependency scan found no single safe independent category to advance beyond the draft-edit work; remaining tracks are capped or blocked by explicit production activation, high-risk recovery proof, or trusted 0.55.4 export data."
   ]
 }

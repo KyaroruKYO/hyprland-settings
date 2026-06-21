@@ -92,7 +92,7 @@
   "stopCondition": {
     "shouldStopHere": true,
     "answer": "Yes. The branch is capped for non-production runway work. Future source/include or duplicate production activation must begin in a separate explicitly approved phase.",
-    "nextExactWorkItem": "Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if the user explicitly requests production enablement."
+    "nextExactWorkItem": "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase."
   },
   "nonActions": [
     "No source/include production insertion was enabled.",

@@ -151,5 +151,5 @@
     "No hyprctl reload was run.",
     "Future production activation now requires a separate explicitly approved phase."
   ],
-  "nextRecommendedWork": "Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested."
+  "nextRecommendedWork": "Stop source/include and duplicate production-activation runway work on future-capability-marathon; choose a different project area or explicitly start a separate production activation phase."
 }
