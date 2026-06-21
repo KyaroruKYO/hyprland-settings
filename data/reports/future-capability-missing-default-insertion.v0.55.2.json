@@ -244,5 +244,24 @@
     "productionEnabled": false,
     "productionFlag": false,
     "diskPersistenceAdded": false
+  },
+  "sourceIncludeProductionActivationSafetyGateProof": {
+    "report": "data/reports/default-disabled-production-activation-safety-gate-proof.v0.55.2.json",
+    "status": "ProductionActivationProofPartiallySatisfiedButDefaultDisabled",
+    "byteExactBackupProof": "ProofSatisfiedInCopiedFixture",
+    "preWriteSnapshotProof": "ProofSatisfiedInCopiedFixture",
+    "targetIdentityProof": "ProofSatisfiedInCopiedFixture",
+    "dryRunDiffProof": "ProofSatisfiedInCopiedFixture",
+    "rereadRestorePostRestoreProof": "ProofSatisfiedInCopiedFixture",
+    "noAutoApplyProof": "ProofSatisfiedByReportBackedEvidence",
+    "persistedDraftAutoApplyProof": "ProofSatisfiedByReportBackedEvidence",
+    "finalApproval": "ProofStillRequiresExplicitUserApproval",
+    "productionFlagDecision": "ProofStillRequiresProductionFlagDecision",
+    "executorWiringDecision": "ProofStillRequiresExecutorDecision",
+    "executorWiringStatus": "Unwired",
+    "productionEnabled": false,
+    "productionFlag": false,
+    "realConfigTouched": false,
+    "runtimeMutated": false
   }
 }

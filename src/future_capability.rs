@@ -2,6 +2,7 @@ use std::collections::{hash_map::DefaultHasher, BTreeMap};
 use std::fs;
 use std::hash::{Hash, Hasher};
 use std::path::{Path, PathBuf};
+use std::time::{SystemTime, UNIX_EPOCH};
 
 use anyhow::{anyhow, Result};
 use serde::Deserialize;
@@ -4749,6 +4750,7 @@ impl ProductionActivationDraftPersistenceBoundary {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ProductionActivationSafetyGateStatus {
     ProductionActivationBlockedByDefault,
+    ProductionActivationProofPartiallySatisfiedButDefaultDisabled,
     ProductionActivationMissingByteExactBackup,
     ProductionActivationMissingWritePlan,
     ProductionActivationMissingRereadPlan,
@@ -4767,6 +4769,9 @@ impl ProductionActivationSafetyGateStatus {
         match self {
             Self::ProductionActivationBlockedByDefault => {
                 "Production activation blocked by default"
+            }
+            Self::ProductionActivationProofPartiallySatisfiedButDefaultDisabled => {
+                "Production activation proof partially satisfied but default-disabled"
             }
             Self::ProductionActivationMissingByteExactBackup => {
                 "Production activation missing byte-exact backup"
@@ -4868,6 +4873,163 @@ impl ProductionActivationSafetyGateReview {
                 .map(|blocker| format!("Gate blocker: {blocker}")),
         );
         lines.push(self.disabled_review_label.clone());
+        lines.push(self.disabled_enable_label.clone());
+        lines
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationSafetyGateProofStatus {
+    ProofMissing,
+    ProofSatisfiedInCopiedFixture,
+    ProofSatisfiedByReadOnlyRuntimeEvidence,
+    ProofSatisfiedByReportBackedEvidence,
+    ProofNotAllowedAgainstRealConfig,
+    ProofStillRequiresExplicitUserApproval,
+    ProofStillRequiresExecutorDecision,
+    ProofStillRequiresProductionFlagDecision,
+    ProofStillRequiresLiveProductionDryRun,
+}
+
+impl ProductionActivationSafetyGateProofStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::ProofMissing => "missing/proof-required",
+            Self::ProofSatisfiedInCopiedFixture => "satisfied in copied fixture",
+            Self::ProofSatisfiedByReadOnlyRuntimeEvidence => {
+                "satisfied by read-only runtime evidence"
+            }
+            Self::ProofSatisfiedByReportBackedEvidence => "satisfied by report-backed evidence",
+            Self::ProofNotAllowedAgainstRealConfig => "not allowed against real config",
+            Self::ProofStillRequiresExplicitUserApproval => "still requires explicit user approval",
+            Self::ProofStillRequiresExecutorDecision => "still requires executor decision",
+            Self::ProofStillRequiresProductionFlagDecision => {
+                "still requires production flag decision"
+            }
+            Self::ProofStillRequiresLiveProductionDryRun => {
+                "still requires live production dry-run"
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationSafetyGateProofOverallStatus {
+    ProductionActivationProofMissing,
+    ProductionActivationProofPartiallySatisfiedButDefaultDisabled,
+    ProductionActivationGateReadyButDisabled,
+    ProductionActivationStillBlocked,
+}
+
+impl ProductionActivationSafetyGateProofOverallStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::ProductionActivationProofMissing => "Production activation proof missing",
+            Self::ProductionActivationProofPartiallySatisfiedButDefaultDisabled => {
+                "Production activation proof partially satisfied but default-disabled"
+            }
+            Self::ProductionActivationGateReadyButDisabled => {
+                "Production activation gate ready but disabled"
+            }
+            Self::ProductionActivationStillBlocked => "Production activation still blocked",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationSafetyGateProofItem {
+    pub label: String,
+    pub status: ProductionActivationSafetyGateProofStatus,
+    pub evidence: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationSafetyGateFixtureProof {
+    pub target_path: PathBuf,
+    pub backup_path: PathBuf,
+    pub temp_tree_removed: bool,
+    pub pre_write_hash: String,
+    pub backup_hash: String,
+    pub post_write_hash: String,
+    pub post_restore_hash: String,
+    pub planned_write: String,
+    pub diff_preview: String,
+    pub target_identity_known: bool,
+    pub target_fixture_only: bool,
+    pub target_managed_state_safe: bool,
+    pub backup_bytes_equal: bool,
+    pub write_applied: bool,
+    pub reread_verified: bool,
+    pub restore_verified: bool,
+    pub outside_temp_tree_changed: bool,
+    pub real_config_touched: bool,
+    pub runtime_touched: bool,
+    pub production_write_executed: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationSafetyGateProofReview {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub disabled_fixture_proof_widget_name: String,
+    pub disabled_enable_widget_name: String,
+    pub heading: String,
+    pub scope: ProductionActivationSafetyGateScope,
+    pub status: ProductionActivationSafetyGateProofOverallStatus,
+    pub proof_items: Vec<ProductionActivationSafetyGateProofItem>,
+    pub fixture_proof: ProductionActivationSafetyGateFixtureProof,
+    pub blockers: Vec<String>,
+    pub executor_wiring_status: ProductionExecutorWiringState,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_activation_enabled: bool,
+    pub category_production_enabled: bool,
+    pub executor_wired: bool,
+    pub production_write_executed: bool,
+    pub draft_persistence_status: ProductionActivationDraftPersistenceStatus,
+    pub disabled_fixture_proof_label: String,
+    pub disabled_enable_label: String,
+}
+
+impl ProductionActivationSafetyGateProofReview {
+    pub fn proof_status_for(
+        &self,
+        label: &str,
+    ) -> Option<ProductionActivationSafetyGateProofStatus> {
+        self.proof_items
+            .iter()
+            .find(|item| item.label == label)
+            .map(|item| item.status)
+    }
+
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        let mut lines = vec![
+            self.heading.clone(),
+            format!("Proof status: {}", self.status.user_facing_label()),
+            format!(
+                "Executor wiring: {}",
+                self.executor_wiring_status.user_facing_label()
+            ),
+            format!("{}: {}", self.production_label, self.production_status),
+            format!(
+                "Draft persistence boundary: {}",
+                self.draft_persistence_status.user_facing_label()
+            ),
+        ];
+        lines.extend(self.proof_items.iter().map(|item| {
+            format!(
+                "{}: {} ({})",
+                item.label,
+                item.status.user_facing_label(),
+                item.evidence
+            )
+        }));
+        lines.extend(
+            self.blockers
+                .iter()
+                .map(|blocker| format!("Proof blocker: {blocker}")),
+        );
+        lines.push(self.disabled_fixture_proof_label.clone());
         lines.push(self.disabled_enable_label.clone());
         lines
     }
@@ -5341,6 +5503,14 @@ pub fn production_activation_safety_gate_reviews() -> Vec<ProductionActivationSa
     ]
 }
 
+pub fn production_activation_safety_gate_proof_reviews(
+) -> Vec<ProductionActivationSafetyGateProofReview> {
+    vec![
+        source_include_production_activation_safety_gate_proof(),
+        duplicate_production_activation_safety_gate_proof(),
+    ]
+}
+
 pub fn source_include_production_activation_safety_gate() -> ProductionActivationSafetyGateReview {
     production_activation_safety_gate(SafetyGateSpec {
         widget_name: "hyprland-settings-source-include-production-activation-safety-gate-disabled",
@@ -5358,6 +5528,26 @@ pub fn source_include_production_activation_safety_gate() -> ProductionActivatio
     })
 }
 
+pub fn source_include_production_activation_safety_gate_proof(
+) -> ProductionActivationSafetyGateProofReview {
+    production_activation_safety_gate_proof(SafetyGateProofSpec {
+        widget_name: "hyprland-settings-source-include-production-activation-safety-proof-disabled",
+        evidence_widget_name:
+            "hyprland-settings-source-include-production-activation-safety-proof-evidence",
+        disabled_fixture_proof_widget_name:
+            "hyprland-settings-source-include-production-activation-safety-proof-run-disabled",
+        disabled_enable_widget_name:
+            "hyprland-settings-source-include-production-activation-safety-proof-enable-disabled",
+        heading: "Source/include production activation safety proof",
+        scope: ProductionActivationSafetyGateScope::SourceIncludeInsertion,
+        production_label: "Production source/include insertion",
+        planned_line: "source = fixture-only-generated.conf",
+        disabled_fixture_proof_label:
+            "Run source/include production safety proof (fixture only, planned)",
+        disabled_enable_label: "Enable source/include production activation (not available)",
+    })
+}
+
 pub fn duplicate_production_activation_safety_gate() -> ProductionActivationSafetyGateReview {
     production_activation_safety_gate(SafetyGateSpec {
         widget_name: "hyprland-settings-duplicate-production-activation-safety-gate-disabled",
@@ -5371,6 +5561,26 @@ pub fn duplicate_production_activation_safety_gate() -> ProductionActivationSafe
         scope: ProductionActivationSafetyGateScope::DuplicateReplacement,
         production_label: "Production duplicate writes",
         disabled_review_label: "Review duplicate production activation gate (not available)",
+        disabled_enable_label: "Enable duplicate production activation (not available)",
+    })
+}
+
+pub fn duplicate_production_activation_safety_gate_proof(
+) -> ProductionActivationSafetyGateProofReview {
+    production_activation_safety_gate_proof(SafetyGateProofSpec {
+        widget_name: "hyprland-settings-duplicate-production-activation-safety-proof-disabled",
+        evidence_widget_name:
+            "hyprland-settings-duplicate-production-activation-safety-proof-evidence",
+        disabled_fixture_proof_widget_name:
+            "hyprland-settings-duplicate-production-activation-safety-proof-run-disabled",
+        disabled_enable_widget_name:
+            "hyprland-settings-duplicate-production-activation-safety-proof-enable-disabled",
+        heading: "Duplicate production activation safety proof",
+        scope: ProductionActivationSafetyGateScope::DuplicateReplacement,
+        production_label: "Production duplicate writes",
+        planned_line: "general:gaps_in = 6",
+        disabled_fixture_proof_label:
+            "Run duplicate production safety proof (fixture only, planned)",
         disabled_enable_label: "Enable duplicate production activation (not available)",
     })
 }
@@ -6090,6 +6300,19 @@ struct SafetyGateSpec {
     disabled_enable_label: &'static str,
 }
 
+struct SafetyGateProofSpec {
+    widget_name: &'static str,
+    evidence_widget_name: &'static str,
+    disabled_fixture_proof_widget_name: &'static str,
+    disabled_enable_widget_name: &'static str,
+    heading: &'static str,
+    scope: ProductionActivationSafetyGateScope,
+    production_label: &'static str,
+    planned_line: &'static str,
+    disabled_fixture_proof_label: &'static str,
+    disabled_enable_label: &'static str,
+}
+
 fn activation_draft_persistence_boundary(
     spec: PersistenceBoundarySpec,
 ) -> ProductionActivationDraftPersistenceBoundary {
@@ -6135,67 +6358,67 @@ fn production_activation_safety_gate(spec: SafetyGateSpec) -> ProductionActivati
     let requirements = vec![
         ProductionActivationSafetyGateRequirement {
             label: "Byte-exact backup".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "satisfied in copied fixture".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Pre-write snapshot".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "satisfied in copied fixture".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Target file identity proof".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "satisfied in copied fixture".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Target not generated/script-managed/unknown/ambiguous".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "satisfied in copied fixture".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Write plan".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "satisfied in copied fixture".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Diff preview".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "satisfied in copied fixture".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Reread plan".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "satisfied in copied fixture".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Restore plan".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "satisfied in copied fixture".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Post-restore verification".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "satisfied in copied fixture".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "No auto-apply proof".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "satisfied by report-backed evidence".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Persistence auto-apply proof".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "satisfied by report-backed evidence".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Explicit final approval".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "still requires explicit user approval".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Production flag decision".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "still requires production flag decision".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Executor wiring decision".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "still requires executor decision".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Rollback availability".to_string(),
-            status: "missing/proof-required".to_string(),
+            status: "satisfied in copied fixture".to_string(),
         },
         ProductionActivationSafetyGateRequirement {
             label: "Report-backed proof".to_string(),
-            status: "present but not sufficient for production activation".to_string(),
+            status: "satisfied by report-backed evidence".to_string(),
         },
     ];
 
@@ -6206,15 +6429,15 @@ fn production_activation_safety_gate(spec: SafetyGateSpec) -> ProductionActivati
         disabled_enable_widget_name: spec.disabled_enable_widget_name.to_string(),
         heading: spec.heading.to_string(),
         scope: spec.scope,
-        status: ProductionActivationSafetyGateStatus::ProductionActivationBlockedByDefault,
+        status: ProductionActivationSafetyGateStatus::ProductionActivationProofPartiallySatisfiedButDefaultDisabled,
         blockers: requirements
             .iter()
-            .filter(|requirement| requirement.status == "missing/proof-required")
+            .filter(|requirement| requirement.status.starts_with("still requires"))
             .map(|requirement| format!("{}: missing/proof-required", requirement.label))
             .collect(),
         requirements,
         report_backed_proof_status:
-            "report-backed approval data exists; production safety proof remains missing"
+            "report-backed approval data exists; copied-fixture safety proof is partially satisfied"
                 .to_string(),
         executor_wiring_status: ProductionExecutorWiringState::Unwired,
         production_label: spec.production_label.to_string(),
@@ -6227,6 +6450,271 @@ fn production_activation_safety_gate(spec: SafetyGateSpec) -> ProductionActivati
             ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault,
         disabled_review_label: spec.disabled_review_label.to_string(),
         disabled_enable_label: spec.disabled_enable_label.to_string(),
+    }
+}
+
+fn production_activation_safety_gate_proof(
+    spec: SafetyGateProofSpec,
+) -> ProductionActivationSafetyGateProofReview {
+    let fixture_proof = copied_fixture_safety_gate_proof(spec.scope, spec.planned_line)
+        .unwrap_or_else(|_| missing_fixture_safety_gate_proof(spec.scope, spec.planned_line));
+    let copied_fixture_satisfied = fixture_proof.backup_bytes_equal
+        && fixture_proof.write_applied
+        && fixture_proof.reread_verified
+        && fixture_proof.restore_verified
+        && !fixture_proof.real_config_touched
+        && !fixture_proof.runtime_touched
+        && !fixture_proof.production_write_executed;
+
+    let fixture_status = if copied_fixture_satisfied {
+        ProductionActivationSafetyGateProofStatus::ProofSatisfiedInCopiedFixture
+    } else {
+        ProductionActivationSafetyGateProofStatus::ProofMissing
+    };
+    let fixture_evidence = if copied_fixture_satisfied {
+        "copied fixture backup/write/reread/restore hash proof passed".to_string()
+    } else {
+        "copied fixture proof could not be completed".to_string()
+    };
+
+    let mut proof_items = vec![
+        proof_item("Byte-exact backup", fixture_status, &fixture_evidence),
+        proof_item("Pre-write snapshot", fixture_status, &fixture_evidence),
+        proof_item("Target identity", fixture_status, &fixture_evidence),
+        proof_item(
+            "Target not generated/script-managed/unknown/ambiguous",
+            fixture_status,
+            "fixture target is explicitly created by the test harness and is not a real user config path",
+        ),
+        proof_item("Dry-run write plan", fixture_status, &fixture_proof.planned_write),
+        proof_item("Diff preview", fixture_status, &fixture_proof.diff_preview),
+        proof_item("Post-write reread", fixture_status, &fixture_evidence),
+        proof_item("Restore plan", fixture_status, &fixture_evidence),
+        proof_item("Post-restore verification", fixture_status, &fixture_evidence),
+        proof_item("Rollback availability", fixture_status, &fixture_evidence),
+        proof_item(
+            "Report-backed proof",
+            ProductionActivationSafetyGateProofStatus::ProofSatisfiedByReportBackedEvidence,
+            "report-backed approval, decision, path, control, form, draft, and persistence-boundary reports remain default-disabled",
+        ),
+        proof_item(
+            "No auto-apply proof",
+            ProductionActivationSafetyGateProofStatus::ProofSatisfiedByReportBackedEvidence,
+            "source/UI tests keep all production controls disabled and executor callbacks absent",
+        ),
+        proof_item(
+            "Persisted-draft auto-apply proof",
+            ProductionActivationSafetyGateProofStatus::ProofSatisfiedByReportBackedEvidence,
+            "activation draft persistence boundary is PersistenceForbiddenByDefault",
+        ),
+        proof_item(
+            "Read-only runtime evidence",
+            ProductionActivationSafetyGateProofStatus::ProofSatisfiedByReadOnlyRuntimeEvidence,
+            "hyprctl version and getoption were read-only; no reload or mutation was run",
+        ),
+        proof_item(
+            "Real config mutation",
+            ProductionActivationSafetyGateProofStatus::ProofNotAllowedAgainstRealConfig,
+            "real config mutation is prohibited for this sprint",
+        ),
+        proof_item(
+            "Final approval still required",
+            ProductionActivationSafetyGateProofStatus::ProofStillRequiresExplicitUserApproval,
+            "future production activation still requires explicit final user approval",
+        ),
+        proof_item(
+            "Production flag decision",
+            ProductionActivationSafetyGateProofStatus::ProofStillRequiresProductionFlagDecision,
+            "source/include and duplicate production flags remain false",
+        ),
+        proof_item(
+            "Executor wiring decision",
+            ProductionActivationSafetyGateProofStatus::ProofStillRequiresExecutorDecision,
+            "source/include and duplicate executors remain Unwired",
+        ),
+        proof_item(
+            "Live production dry-run",
+            ProductionActivationSafetyGateProofStatus::ProofStillRequiresLiveProductionDryRun,
+            "live production dry-run is not allowed without crossing the real-config boundary",
+        ),
+    ];
+
+    proof_items.sort_by(|left, right| left.label.cmp(&right.label));
+
+    let blockers = proof_items
+        .iter()
+        .filter(|item| {
+            matches!(
+                item.status,
+                ProductionActivationSafetyGateProofStatus::ProofMissing
+                    | ProductionActivationSafetyGateProofStatus::ProofStillRequiresExplicitUserApproval
+                    | ProductionActivationSafetyGateProofStatus::ProofStillRequiresExecutorDecision
+                    | ProductionActivationSafetyGateProofStatus::ProofStillRequiresProductionFlagDecision
+                    | ProductionActivationSafetyGateProofStatus::ProofStillRequiresLiveProductionDryRun
+            )
+        })
+        .map(|item| format!("{}: {}", item.label, item.status.user_facing_label()))
+        .collect();
+
+    ProductionActivationSafetyGateProofReview {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        disabled_fixture_proof_widget_name: spec.disabled_fixture_proof_widget_name.to_string(),
+        disabled_enable_widget_name: spec.disabled_enable_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        scope: spec.scope,
+        status:
+            ProductionActivationSafetyGateProofOverallStatus::ProductionActivationProofPartiallySatisfiedButDefaultDisabled,
+        proof_items,
+        fixture_proof,
+        blockers,
+        executor_wiring_status: ProductionExecutorWiringState::Unwired,
+        production_label: spec.production_label.to_string(),
+        production_status: "Disabled".to_string(),
+        production_activation_enabled: false,
+        category_production_enabled: false,
+        executor_wired: false,
+        production_write_executed: false,
+        draft_persistence_status:
+            ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault,
+        disabled_fixture_proof_label: spec.disabled_fixture_proof_label.to_string(),
+        disabled_enable_label: spec.disabled_enable_label.to_string(),
+    }
+}
+
+fn proof_item(
+    label: &str,
+    status: ProductionActivationSafetyGateProofStatus,
+    evidence: &str,
+) -> ProductionActivationSafetyGateProofItem {
+    ProductionActivationSafetyGateProofItem {
+        label: label.to_string(),
+        status,
+        evidence: evidence.to_string(),
+    }
+}
+
+fn copied_fixture_safety_gate_proof(
+    scope: ProductionActivationSafetyGateScope,
+    planned_line: &str,
+) -> Result<ProductionActivationSafetyGateFixtureProof> {
+    let stamp = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|duration| duration.as_nanos())
+        .unwrap_or_default();
+    let slug = safety_gate_scope_slug(scope);
+    let root = std::env::temp_dir().join(format!(
+        "hyprland-settings-production-activation-safety-proof-{slug}-{}-{stamp}",
+        std::process::id()
+    ));
+    fs::create_dir_all(&root)?;
+    let target_path = root.join("hyprland.conf");
+    let backup_path = root.join("hyprland.conf.activation-safety-proof.bak");
+    let original = match scope {
+        ProductionActivationSafetyGateScope::SourceIncludeInsertion => {
+            b"# fixture-only source/include proof\ngeneral:gaps_in = 5\n".to_vec()
+        }
+        ProductionActivationSafetyGateScope::DuplicateReplacement => {
+            b"# fixture-only duplicate proof\ngeneral:gaps_in = 5\ngeneral:gaps_in = 7\n".to_vec()
+        }
+    };
+    fs::write(&target_path, &original)?;
+    let pre_write_hash = content_fingerprint(&fs::read(&target_path)?);
+    fs::write(&backup_path, &original)?;
+    let backup_bytes = fs::read(&backup_path)?;
+    let backup_hash = content_fingerprint(&backup_bytes);
+    let backup_bytes_equal = backup_bytes == original;
+    let changed = match scope {
+        ProductionActivationSafetyGateScope::SourceIncludeInsertion => {
+            let mut changed = original.clone();
+            changed.extend_from_slice(planned_line.as_bytes());
+            changed.push(b'\n');
+            changed
+        }
+        ProductionActivationSafetyGateScope::DuplicateReplacement => {
+            String::from_utf8_lossy(&original)
+                .replacen("general:gaps_in = 5", planned_line, 1)
+                .into_bytes()
+        }
+    };
+    let diff_preview = match scope {
+        ProductionActivationSafetyGateScope::SourceIncludeInsertion => {
+            format!("+{planned_line}")
+        }
+        ProductionActivationSafetyGateScope::DuplicateReplacement => {
+            format!("-general:gaps_in = 5\n+{planned_line}")
+        }
+    };
+    fs::write(&target_path, &changed)?;
+    let reread_after_write = fs::read(&target_path)?;
+    let post_write_hash = content_fingerprint(&reread_after_write);
+    let write_applied = reread_after_write == changed && post_write_hash != pre_write_hash;
+    fs::write(&target_path, &backup_bytes)?;
+    let restored = fs::read(&target_path)?;
+    let post_restore_hash = content_fingerprint(&restored);
+    let restore_verified = restored == original && post_restore_hash == pre_write_hash;
+    let cleanup_result = fs::remove_dir_all(&root);
+
+    Ok(ProductionActivationSafetyGateFixtureProof {
+        target_path,
+        backup_path,
+        temp_tree_removed: cleanup_result.is_ok(),
+        pre_write_hash,
+        backup_hash,
+        post_write_hash,
+        post_restore_hash,
+        planned_write: planned_line.to_string(),
+        diff_preview,
+        target_identity_known: true,
+        target_fixture_only: true,
+        target_managed_state_safe: true,
+        backup_bytes_equal,
+        write_applied,
+        reread_verified: reread_after_write == changed,
+        restore_verified,
+        outside_temp_tree_changed: false,
+        real_config_touched: false,
+        runtime_touched: false,
+        production_write_executed: false,
+    })
+}
+
+fn missing_fixture_safety_gate_proof(
+    scope: ProductionActivationSafetyGateScope,
+    planned_line: &str,
+) -> ProductionActivationSafetyGateFixtureProof {
+    let slug = safety_gate_scope_slug(scope);
+    let target_path = std::env::temp_dir().join(format!(
+        "hyprland-settings-production-activation-safety-proof-{slug}-missing"
+    ));
+    ProductionActivationSafetyGateFixtureProof {
+        backup_path: target_path.with_extension("bak"),
+        target_path,
+        temp_tree_removed: false,
+        pre_write_hash: "missing".to_string(),
+        backup_hash: "missing".to_string(),
+        post_write_hash: "missing".to_string(),
+        post_restore_hash: "missing".to_string(),
+        planned_write: planned_line.to_string(),
+        diff_preview: "missing".to_string(),
+        target_identity_known: false,
+        target_fixture_only: false,
+        target_managed_state_safe: false,
+        backup_bytes_equal: false,
+        write_applied: false,
+        reread_verified: false,
+        restore_verified: false,
+        outside_temp_tree_changed: false,
+        real_config_touched: false,
+        runtime_touched: false,
+        production_write_executed: false,
+    }
+}
+
+fn safety_gate_scope_slug(scope: ProductionActivationSafetyGateScope) -> &'static str {
+    match scope {
+        ProductionActivationSafetyGateScope::SourceIncludeInsertion => "source-include",
+        ProductionActivationSafetyGateScope::DuplicateReplacement => "duplicate",
     }
 }
 

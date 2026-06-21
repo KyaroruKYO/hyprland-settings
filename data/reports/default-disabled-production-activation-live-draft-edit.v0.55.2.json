@@ -85,8 +85,11 @@
     "sourceIncludeExecutorWired": false,
     "duplicateExecutorWired": false,
     "productionActivationSafetyGateExists": true,
-    "sourceIncludeProductionActivationBlockedByDefault": true,
-    "duplicateProductionActivationBlockedByDefault": true,
+    "productionActivationSafetyGateProofReport": "data/reports/default-disabled-production-activation-safety-gate-proof.v0.55.2.json",
+    "sourceIncludeProductionActivationBlockedByDefault": false,
+    "duplicateProductionActivationBlockedByDefault": false,
+    "sourceIncludeProductionActivationProofPartiallySatisfied": true,
+    "duplicateProductionActivationProofPartiallySatisfied": true,
     "unsafeProductionBehaviorEnabled": false,
     "diskPersistenceAdded": false,
     "realConfigTouched": false,
@@ -106,6 +109,6 @@
   ],
   "nextRequiredWork": [
     "Keep the live draft bridge memory-only until the default-disabled persistence boundary has explicit opt-in, storage, redaction, retention, delete, and encryption decisions.",
-    "Do not wire source/include or duplicate production executors until byte-exact backup, write, reread, restore, no-auto-apply, persisted-draft auto-apply, final approval, production flag, and executor wiring proof exists."
+    "Do not wire source/include or duplicate production executors until explicit final approval, production flag, executor wiring, and live production dry-run decisions exist."
   ]
 }

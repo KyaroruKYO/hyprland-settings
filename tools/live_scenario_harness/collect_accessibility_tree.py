@@ -262,7 +262,7 @@ PRODUCTION_ACTIVATION_SAFETY_GATE_ASSERTIONS = {
         "production": "Production source/include insertion",
         "disabled": "Disabled",
         "executor": "Executor wiring: Unwired",
-        "status": "Production activation blocked by default",
+        "status": "Production activation proof partially satisfied but default-disabled",
         "backup": "Byte-exact backup",
         "write": "Write plan",
         "reread": "Reread plan",
@@ -279,7 +279,7 @@ PRODUCTION_ACTIVATION_SAFETY_GATE_ASSERTIONS = {
         "production": "Production duplicate writes",
         "disabled": "Disabled",
         "executor": "Executor wiring: Unwired",
-        "status": "Production activation blocked by default",
+        "status": "Production activation proof partially satisfied but default-disabled",
         "backup": "Byte-exact backup",
         "write": "Write plan",
         "reread": "Reread plan",
@@ -290,6 +290,47 @@ PRODUCTION_ACTIVATION_SAFETY_GATE_ASSERTIONS = {
         "review": "Review duplicate production activation gate (not available)",
         "enable": "Enable duplicate production activation (not available)",
         "widget": "hyprland-settings-duplicate-production-activation-safety-gate-disabled",
+    },
+}
+
+PRODUCTION_ACTIVATION_SAFETY_PROOF_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation safety proof",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Production activation proof partially satisfied but default-disabled",
+        "backup": "Byte-exact backup",
+        "dry_run": "Dry-run write plan",
+        "diff": "Diff preview",
+        "reread": "Post-write reread",
+        "restore": "Restore plan",
+        "post_restore": "Post-restore verification",
+        "no_auto_apply": "No auto-apply proof",
+        "persistence_auto_apply": "Persisted-draft auto-apply proof",
+        "final_approval": "Final approval still required",
+        "run": "Run source/include production safety proof (fixture only, planned)",
+        "enable": "Enable source/include production activation (not available)",
+        "widget": "hyprland-settings-source-include-production-activation-safety-proof-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation safety proof",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Production activation proof partially satisfied but default-disabled",
+        "backup": "Byte-exact backup",
+        "dry_run": "Dry-run write plan",
+        "diff": "Diff preview",
+        "reread": "Post-write reread",
+        "restore": "Restore plan",
+        "post_restore": "Post-restore verification",
+        "no_auto_apply": "No auto-apply proof",
+        "persistence_auto_apply": "Persisted-draft auto-apply proof",
+        "final_approval": "Final approval still required",
+        "run": "Run duplicate production safety proof (fixture only, planned)",
+        "enable": "Enable duplicate production activation (not available)",
+        "widget": "hyprland-settings-duplicate-production-activation-safety-proof-disabled",
     },
 }
 
@@ -758,6 +799,48 @@ def production_activation_safety_gate_assertions(values):
     return assertions
 
 
+def production_activation_safety_proof_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in PRODUCTION_ACTIVATION_SAFETY_PROOF_ASSERTIONS.items():
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": spec["heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "proofStatus": spec["status"],
+            "proofStatusFound": spec["status"].lower() in text,
+            "byteExactBackup": spec["backup"],
+            "byteExactBackupFound": spec["backup"].lower() in text,
+            "dryRunWritePlan": spec["dry_run"],
+            "dryRunWritePlanFound": spec["dry_run"].lower() in text,
+            "diffPreview": spec["diff"],
+            "diffPreviewFound": spec["diff"].lower() in text,
+            "postWriteReread": spec["reread"],
+            "postWriteRereadFound": spec["reread"].lower() in text,
+            "restorePlan": spec["restore"],
+            "restorePlanFound": spec["restore"].lower() in text,
+            "postRestoreVerification": spec["post_restore"],
+            "postRestoreVerificationFound": spec["post_restore"].lower() in text,
+            "noAutoApplyProof": spec["no_auto_apply"],
+            "noAutoApplyProofFound": spec["no_auto_apply"].lower() in text,
+            "persistenceAutoApplyProof": spec["persistence_auto_apply"],
+            "persistenceAutoApplyProofFound": spec["persistence_auto_apply"].lower() in text,
+            "finalApproval": spec["final_approval"],
+            "finalApprovalFound": spec["final_approval"].lower() in text,
+            "disabledRun": spec["run"],
+            "disabledRunFound": spec["run"].lower() in text,
+            "disabledEnable": spec["enable"],
+            "disabledEnableFound": spec["enable"].lower() in text,
+            "widgetName": spec["widget"],
+            "widgetNameFound": spec["widget"].lower() in text,
+        }
+    return assertions
+
+
 def node_text(node):
     return "\n".join(accessible_text(node))
 
@@ -976,14 +1059,14 @@ def open_blocked_category_detail(app, target):
     )
     if node is None:
         values = []
-        walk_accessible(app, values, 1200, set())
+        walk_accessible(app, values, 3000, set())
         if blocked_category_text_collected(values, target):
             return True, f"{target} blocker text found without row activation"
         return False, f"no allowlisted blocked-category row found for {target}"
     ok, message = safe_select_node(node, parent)
     if not ok:
         values = []
-        walk_accessible(app, values, 1200, set())
+        walk_accessible(app, values, 3000, set())
         if blocked_category_text_collected(values, target):
             return True, f"{target} blocker text found after safe row activation failed: {message}"
         return False, f"{target} row activation failed: {message}"
@@ -1168,6 +1251,15 @@ def main() -> int:
         "productionActivationSafetyGatesAllBlockedByDefaultFound": False,
         "productionActivationSafetyGatesAllRequiredProofFound": False,
         "productionActivationSafetyGatesAllDisabledActionsFound": False,
+        "productionActivationSafetyProofAssertions": {},
+        "productionActivationSafetyProofsAllHeadingsFound": False,
+        "productionActivationSafetyProofsAllProductionDisabledFound": False,
+        "productionActivationSafetyProofsAllExecutorUnwiredFound": False,
+        "productionActivationSafetyProofsAllProofStatusFound": False,
+        "productionActivationSafetyProofsAllCopiedFixtureProofFound": False,
+        "productionActivationSafetyProofsAllNoAutoApplyFound": False,
+        "productionActivationSafetyProofsAllFinalApprovalFound": False,
+        "productionActivationSafetyProofsAllDisabledActionsFound": False,
         "text": [],
         "error": None,
     }
@@ -1181,7 +1273,7 @@ def main() -> int:
         for app_index in range(desktop.childCount):
             app = desktop.getChildAtIndex(app_index)
             texts = []
-            walk_accessible(app, texts, 1200, set())
+            walk_accessible(app, texts, 3000, set())
             if matches_expected_app(app, texts):
                 if selected_app is None:
                     selected_app = app
@@ -1234,7 +1326,7 @@ def main() -> int:
             if ok:
                 time.sleep(1)
                 after = []
-                walk_accessible(selected_app, after, 1200, set())
+                walk_accessible(selected_app, after, 3000, set())
                 result["textAfterNavigation"] = after
                 result["foundTermsAfterNavigation"] = found_terms(after)
         all_text = "\n".join(result["text"] + result["textAfterNavigation"]).lower()
@@ -1257,6 +1349,9 @@ def main() -> int:
             result["text"] + result["textAfterNavigation"]
         )
         safety_gate_assertions = production_activation_safety_gate_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        safety_proof_assertions = production_activation_safety_proof_assertions(
             result["text"] + result["textAfterNavigation"]
         )
         result["approvalCardAssertions"] = approval_assertions
@@ -1407,6 +1502,39 @@ def main() -> int:
         result["productionActivationSafetyGatesAllDisabledActionsFound"] = all(
             card["disabledReviewFound"] and card["disabledEnableFound"]
             for card in safety_gate_assertions.values()
+        )
+        result["productionActivationSafetyProofAssertions"] = safety_proof_assertions
+        result["productionActivationSafetyProofsAllHeadingsFound"] = all(
+            card["headingFound"] for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllProofStatusFound"] = all(
+            card["proofStatusFound"] for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllCopiedFixtureProofFound"] = all(
+            card["byteExactBackupFound"]
+            and card["dryRunWritePlanFound"]
+            and card["diffPreviewFound"]
+            and card["postWriteRereadFound"]
+            and card["restorePlanFound"]
+            and card["postRestoreVerificationFound"]
+            for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllNoAutoApplyFound"] = all(
+            card["noAutoApplyProofFound"] and card["persistenceAutoApplyProofFound"]
+            for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllFinalApprovalFound"] = all(
+            card["finalApprovalFound"] for card in safety_proof_assertions.values()
+        )
+        result["productionActivationSafetyProofsAllDisabledActionsFound"] = all(
+            card["disabledRunFound"] and card["disabledEnableFound"]
+            for card in safety_proof_assertions.values()
         )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text

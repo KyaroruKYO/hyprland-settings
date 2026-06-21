@@ -87,12 +87,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Prove source/include and duplicate production activation safety gates before any production executor wiring can be reconsidered."
+        "Design explicit final-approval, production-flag, executor-wiring, and live production dry-run decisions before any production executor wiring can be reconsidered."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("production activation safety gates"));
+        .contains("executor-wiring"));
 }
 
 #[test]
@@ -1101,40 +1101,40 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     assert_eq!(
         activation_safety_gates["implementation"]
             ["sourceIncludeProductionActivationBlockedByDefault"],
-        true
+        false
     );
     assert_eq!(
         activation_safety_gates["implementation"]["duplicateProductionActivationBlockedByDefault"],
-        true
+        false
     );
     for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
         assert_eq!(
             activation_safety_gates["gates"][key]["status"],
-            "ProductionActivationBlockedByDefault"
+            "ProductionActivationProofPartiallySatisfiedButDefaultDisabled"
         );
         assert_eq!(
             activation_safety_gates["gates"][key]["byteExactBackupProof"],
-            "missing/proof-required"
+            "satisfied in copied fixture"
         );
         assert_eq!(
             activation_safety_gates["gates"][key]["writePlan"],
-            "missing/proof-required"
+            "satisfied in copied fixture"
         );
         assert_eq!(
             activation_safety_gates["gates"][key]["rereadPlan"],
-            "missing/proof-required"
+            "satisfied in copied fixture"
         );
         assert_eq!(
             activation_safety_gates["gates"][key]["restorePlan"],
-            "missing/proof-required"
+            "satisfied in copied fixture"
         );
         assert_eq!(
             activation_safety_gates["gates"][key]["noAutoApplyProof"],
-            "missing/proof-required"
+            "satisfied by report-backed evidence"
         );
         assert_eq!(
             activation_safety_gates["gates"][key]["persistedDraftAutoApplyProof"],
-            "missing/proof-required"
+            "satisfied by report-backed evidence"
         );
         assert_eq!(
             activation_safety_gates["gates"][key]["executorWiringStatus"],
@@ -1150,6 +1150,74 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
         );
         assert_eq!(
             activation_safety_gates["gates"][key]["productionWriteExecuted"],
+            false
+        );
+    }
+
+    let activation_safety_proof = read_json(
+        "data/reports/default-disabled-production-activation-safety-gate-proof.v0.55.2.json",
+    );
+    assert_eq!(activation_safety_proof["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        activation_safety_proof["implementation"]
+            ["sourceIncludeProductionActivationSafetyProofExists"],
+        true
+    );
+    assert_eq!(
+        activation_safety_proof["implementation"]["duplicateProductionActivationSafetyProofExists"],
+        true
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["status"],
+            "ProductionActivationProofPartiallySatisfiedButDefaultDisabled"
+        );
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["byteExactBackupProof"],
+            "ProofSatisfiedInCopiedFixture"
+        );
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["preWriteSnapshotProof"],
+            "ProofSatisfiedInCopiedFixture"
+        );
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["targetIdentityProof"],
+            "ProofSatisfiedInCopiedFixture"
+        );
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["dryRunDiffProof"],
+            "ProofSatisfiedInCopiedFixture"
+        );
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["rereadRestorePostRestoreProof"],
+            "ProofSatisfiedInCopiedFixture"
+        );
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["noAutoApplyProof"],
+            "ProofSatisfiedByReportBackedEvidence"
+        );
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["persistedDraftAutoApplyProof"],
+            "ProofSatisfiedByReportBackedEvidence"
+        );
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["finalApproval"],
+            "ProofStillRequiresExplicitUserApproval"
+        );
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["productionFlag"],
+            false
+        );
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["realConfigTouched"],
+            false
+        );
+        assert_eq!(
+            activation_safety_proof["proofs"][key]["runtimeMutated"],
             false
         );
     }
@@ -1217,7 +1285,7 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     );
     assert_eq!(
         dependency_scan["safeIndependentExtraWork"]["completed"],
-        "production activation safety gates"
+        "production activation safety gate proof"
     );
     assert_eq!(
         dependency_scan["safety"]["unsafeProductionBehaviorEnabled"],

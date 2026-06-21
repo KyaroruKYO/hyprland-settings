@@ -120,10 +120,14 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("activationDraftEditsAllModeFound"));
     assert!(collector.contains("activationDraftEditsAllValidationFound"));
     assert!(collector.contains("PRODUCTION_ACTIVATION_SAFETY_GATE_ASSERTIONS"));
+    assert!(collector.contains("PRODUCTION_ACTIVATION_SAFETY_PROOF_ASSERTIONS"));
     assert!(collector.contains("productionActivationSafetyGateAssertionMethod"));
     assert!(collector.contains("productionActivationSafetyGateAssertions"));
     assert!(collector.contains("productionActivationSafetyGatesAllBlockedByDefaultFound"));
     assert!(collector.contains("productionActivationSafetyGatesAllRequiredProofFound"));
+    assert!(collector.contains("productionActivationSafetyProofAssertions"));
+    assert!(collector.contains("productionActivationSafetyProofsAllCopiedFixtureProofFound"));
+    assert!(collector.contains("productionActivationSafetyProofsAllFinalApprovalFound"));
     for expected in [
         "Source/include approval review",
         "Duplicate approval review",
@@ -145,14 +149,24 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "Duplicate activation draft persistence boundary",
         "Source/include production activation safety gate",
         "Duplicate production activation safety gate",
-        "Production activation blocked by default",
+        "Source/include production activation safety proof",
+        "Duplicate production activation safety proof",
+        "Production activation proof partially satisfied but default-disabled",
         "Byte-exact backup",
         "Write plan",
+        "Dry-run write plan",
+        "Diff preview",
+        "Post-write reread",
         "Reread plan",
         "Restore plan",
+        "Post-restore verification",
         "No auto-apply proof",
         "Persistence auto-apply proof",
+        "Persisted-draft auto-apply proof",
         "Explicit final approval",
+        "Final approval still required",
+        "Run source/include production safety proof (fixture only, planned)",
+        "Run duplicate production safety proof (fixture only, planned)",
         "Review source/include production activation gate (not available)",
         "Enable source/include production activation (not available)",
         "Review duplicate production activation gate (not available)",
@@ -316,6 +330,16 @@ fn gtk_harness_records_screenshot_level_disabled_approval_card_assertions() {
         "activationDraftEditsAllModeFound",
         "activationDraftEditsAllValidationFound",
         "activationDraftEditsAllDisabledActionsFound",
+        "production_activation_safety_gate_assertion_results",
+        "productionActivationSafetyGateResults",
+        "productionActivationSafetyGatesAllRequiredProofFound",
+        "production_activation_safety_proof_assertion_results",
+        "productionActivationSafetyProofAssertionMethod",
+        "productionActivationSafetyProofResults",
+        "productionActivationSafetyProofsAllHeadingsFound",
+        "productionActivationSafetyProofsAllCopiedFixtureProofFound",
+        "productionActivationSafetyProofsAllNoAutoApplyFound",
+        "productionActivationSafetyProofsAllFinalApprovalFound",
         "sourceIncludeInsertion",
         "duplicateReplacement",
         "structuredHlBindWrite",

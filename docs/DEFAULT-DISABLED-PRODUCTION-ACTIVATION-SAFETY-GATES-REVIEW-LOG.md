@@ -14,8 +14,8 @@ It does not enable production activation, persistence, executor wiring, runtime 
 
 - Source/include production activation safety gate exists.
 - Duplicate production activation safety gate exists.
-- Source/include production activation is blocked by default.
-- Duplicate production activation is blocked by default.
+- Source/include production activation proof is partially satisfied but default-disabled.
+- Duplicate production activation proof is partially satisfied but default-disabled.
 - Source/include executor remains unwired.
 - Duplicate executor remains unwired.
 - Source/include production flag remains false.
@@ -43,7 +43,11 @@ Both gates require these proof items before production activation could ever be 
 - Rollback availability.
 - Report-backed proof.
 
-All production-critical proof items are currently `missing/proof-required`.
+Copied-fixture proof now satisfies byte-exact backup, pre-write snapshot, target identity, dry-run write plan, diff preview, post-write reread, restore, post-restore verification, and rollback availability for source/include and duplicate without touching real config.
+
+Report-backed evidence satisfies no-auto-apply proof and persisted-draft auto-apply prevention proof because all production controls remain disabled, executors remain unwired, and activation draft persistence remains forbidden by default.
+
+Explicit final approval, production flag decision, executor wiring decision, and live production dry-run remain unresolved and required before production activation could ever be reconsidered.
 
 ## Non-Actions
 

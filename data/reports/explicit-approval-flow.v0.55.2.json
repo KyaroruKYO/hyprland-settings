@@ -242,5 +242,28 @@
       "executorWiringStatus": "Unwired",
       "diskPersistenceAdded": false
     }
+  },
+  "productionActivationSafetyGateProof": {
+    "report": "data/reports/default-disabled-production-activation-safety-gate-proof.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "ProductionActivationProofPartiallySatisfiedButDefaultDisabled",
+      "copiedFixtureBackupRereadRestoreProof": "ProofSatisfiedInCopiedFixture",
+      "noAutoApplyProof": "ProofSatisfiedByReportBackedEvidence",
+      "persistedDraftAutoApplyProof": "ProofSatisfiedByReportBackedEvidence",
+      "finalApproval": "ProofStillRequiresExplicitUserApproval",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWiringStatus": "Unwired"
+    },
+    "duplicateReplacement": {
+      "status": "ProductionActivationProofPartiallySatisfiedButDefaultDisabled",
+      "copiedFixtureBackupRereadRestoreProof": "ProofSatisfiedInCopiedFixture",
+      "noAutoApplyProof": "ProofSatisfiedByReportBackedEvidence",
+      "persistedDraftAutoApplyProof": "ProofSatisfiedByReportBackedEvidence",
+      "finalApproval": "ProofStillRequiresExplicitUserApproval",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWiringStatus": "Unwired"
+    }
   }
 }

@@ -51,6 +51,6 @@ This is a boundary only. It does not add draft persistence, storage paths, seria
 - The `v0.55.2` model remains default.
 - Hyprland 0.55.4 migration remains inactive.
 
-## Follow-Up Safety Gate
+## Follow-Up Safety Proof
 
-The next review layer is now the default-disabled production activation safety gate. Source/include insertion and duplicate replacement remain blocked until byte-exact backup, write/reread/restore, post-restore verification, no-auto-apply, persisted-draft auto-apply, explicit final approval, production flag, executor wiring, rollback, and report-backed proof requirements are satisfied. Persistence remains forbidden by default while those gates are missing.
+The next review layer now has copied-fixture production activation safety proof. Source/include insertion and duplicate replacement satisfy byte-exact backup, write/reread/restore, post-restore verification, rollback, no-auto-apply, and persisted-draft auto-apply proof without touching real config. Explicit final approval, production flag decision, executor wiring decision, and live production dry-run remain required. Persistence remains forbidden by default while those decisions are unresolved.

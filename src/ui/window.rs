@@ -22,16 +22,17 @@ use crate::future_capability::{
     production_activation_draft_edit_reviews, production_activation_draft_persistence_boundaries,
     production_activation_draft_reviews, production_activation_form_reviews,
     production_activation_live_draft_gtk_reviews, production_activation_path_reviews,
-    production_activation_safety_gate_reviews, proven_runtime_approval_evidence_summary,
-    source_include_activation_draft_gtk_review, source_include_insertion_review,
-    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
-    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
-    ProductionActivationControlReview, ProductionActivationDecisionReview,
-    ProductionActivationDraftEditReview, ProductionActivationDraftGtkField,
-    ProductionActivationDraftGtkReview, ProductionActivationDraftGtkState,
-    ProductionActivationDraftGtkUpdate, ProductionActivationDraftPersistenceBoundary,
-    ProductionActivationDraftReview, ProductionActivationFormReview,
-    ProductionActivationPathReview, ProductionActivationSafetyGateReview,
+    production_activation_safety_gate_proof_reviews, production_activation_safety_gate_reviews,
+    proven_runtime_approval_evidence_summary, source_include_activation_draft_gtk_review,
+    source_include_insertion_review, source_include_selected_target_dry_run_plan,
+    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
+    DuplicateOccurrence, DuplicateProductionGateStatus, ProductionActivationControlReview,
+    ProductionActivationDecisionReview, ProductionActivationDraftEditReview,
+    ProductionActivationDraftGtkField, ProductionActivationDraftGtkReview,
+    ProductionActivationDraftGtkState, ProductionActivationDraftGtkUpdate,
+    ProductionActivationDraftPersistenceBoundary, ProductionActivationDraftReview,
+    ProductionActivationFormReview, ProductionActivationPathReview,
+    ProductionActivationSafetyGateProofReview, ProductionActivationSafetyGateReview,
     ProductionExecutorWiringState, SourceIncludeInsertionReadiness,
     SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
 };
@@ -1901,6 +1902,7 @@ fn production_activation_safety_gate_reviews_section() -> gtk::Frame {
     for gate in production_activation_safety_gate_reviews() {
         content.append(&production_activation_safety_gate_review_card(&gate));
     }
+    content.append(&production_activation_safety_gate_proof_reviews_section());
 
     frame.set_child(Some(&content));
     frame
@@ -1961,6 +1963,146 @@ fn production_activation_safety_gate_review_card(
 
     let enable = gtk::Button::with_label(&gate.disabled_enable_label);
     enable.set_widget_name(&gate.disabled_enable_widget_name);
+    enable.set_tooltip_text(Some(
+        "Production activation is not available. This button has no write or executor callback.",
+    ));
+    enable.set_sensitive(false);
+    content.append(&enable);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_safety_gate_proof_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-safety-proof-section");
+    frame.set_tooltip_text(Some(
+        "Copied-fixture production activation safety proof. This is review-only and has no production executor callback.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Production activation safety proof"));
+    content.append(&small_label(
+        "Copied-fixture proof can satisfy backup, dry-run, reread, restore, and post-restore checks without touching real config.",
+    ));
+    content.append(&small_label(
+        "Production activation proof partially satisfied but default-disabled.",
+    ));
+    content.append(&small_label(
+        "Final approval, production flag, executor wiring, and live production dry-run decisions remain unresolved.",
+    ));
+
+    for proof in production_activation_safety_gate_proof_reviews() {
+        content.append(&production_activation_safety_gate_proof_review_card(&proof));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_safety_gate_proof_review_card(
+    proof: &ProductionActivationSafetyGateProofReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&proof.widget_name);
+    frame.set_tooltip_text(Some(
+        "Review-only copied-fixture safety proof. This card has no persistence, mutation, production, compositor refresh, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&proof.evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&proof.heading));
+    append_detail_line(&content, "Proof status", proof.status.user_facing_label());
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        proof.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(&content, &proof.production_label, &proof.production_status);
+    append_detail_line(
+        &content,
+        "Draft persistence boundary",
+        proof.draft_persistence_status.user_facing_label(),
+    );
+
+    content.append(&small_label("Proof requirements"));
+    for item in &proof.proof_items {
+        append_detail_line(&content, &item.label, item.status.user_facing_label());
+    }
+
+    content.append(&small_label("Copied fixture evidence"));
+    append_detail_line(
+        &content,
+        "Byte-exact backup",
+        if proof.fixture_proof.backup_bytes_equal {
+            "satisfied in copied fixture"
+        } else {
+            "missing/proof-required"
+        },
+    );
+    append_detail_line(
+        &content,
+        "Dry-run write plan",
+        &proof.fixture_proof.planned_write,
+    );
+    append_detail_line(&content, "Diff preview", &proof.fixture_proof.diff_preview);
+    append_detail_line(
+        &content,
+        "Post-write reread",
+        if proof.fixture_proof.reread_verified {
+            "satisfied in copied fixture"
+        } else {
+            "missing/proof-required"
+        },
+    );
+    append_detail_line(
+        &content,
+        "Restore plan",
+        if proof.fixture_proof.restore_verified {
+            "satisfied in copied fixture"
+        } else {
+            "missing/proof-required"
+        },
+    );
+    append_detail_line(
+        &content,
+        "Post-restore verification",
+        if proof.fixture_proof.restore_verified {
+            "satisfied in copied fixture"
+        } else {
+            "missing/proof-required"
+        },
+    );
+    append_detail_line(
+        &content,
+        "Final approval still required",
+        "still requires explicit user approval",
+    );
+
+    content.append(&small_label("Safety proof blockers"));
+    for blocker in &proof.blockers {
+        content.append(&small_label(blocker));
+    }
+
+    let fixture = gtk::Button::with_label(&proof.disabled_fixture_proof_label);
+    fixture.set_widget_name(&proof.disabled_fixture_proof_widget_name);
+    fixture.set_tooltip_text(Some(
+        "Fixture proof running is not available from this UI. This button has no persistence, mutation, production, compositor refresh, or executor callback.",
+    ));
+    fixture.set_sensitive(false);
+    content.append(&fixture);
+
+    let enable = gtk::Button::with_label(&proof.disabled_enable_label);
+    enable.set_widget_name(&proof.disabled_enable_widget_name);
     enable.set_tooltip_text(Some(
         "Production activation is not available. This button has no write or executor callback.",
     ));

@@ -67,7 +67,7 @@ Current future-capability tracker:
 - Runtime/reload integration: 66-76%
 - Hyprland 0.55.4 migration: 50-60%
 
-Next exact work item: prove source/include and duplicate production activation safety gates before any production executor wiring can be reconsidered.
+Next exact work item: design explicit final-approval, production-flag, executor-wiring, and live production dry-run decisions before any production executor wiring can be reconsidered.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 
@@ -110,3 +110,7 @@ The GTK matrix was run for the draft-edit UI at `/tmp/hyprland-settings-gtk-auto
 ## 2026-06-20 - Remaining Dependency Scan
 
 The remaining dependency scan classifies core UI, config discovery, 341-row coverage, safe normal-scalar writes, and release packaging as effectively capped for this safe-release branch. Missing/default insertion, duplicate resolution, structured-family writes, profile/mode switching, and runtime/reload integration are blocked by production activation. High-risk/display recovery is blocked by high-risk recovery proof. Hyprland 0.55.4 migration is blocked by missing official export data.
+
+## 2026-06-20 - Production Activation Safety Proof
+
+Source/include and duplicate production activation safety proof now runs against copied fixtures only. The proof satisfies byte-exact backup, pre-write snapshot, target identity, dry-run write plan, diff preview, post-write reread, restore, post-restore verification, and rollback checks without touching real config. No-auto-apply and persisted-draft auto-apply proof are satisfied by default-disabled report-backed UI/control evidence and the persistence boundary. Final approval, production flag decision, executor wiring decision, and live production dry-run remain unresolved; source/include insertion and duplicate writes remain disabled, executors remain `Unwired`, and draft persistence remains forbidden by default.

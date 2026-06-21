@@ -39,11 +39,11 @@
     },
     "missingDefaultInsertion": {
       "classification": "blocked by production activation",
-      "evidence": "Source/include insertion has decision/path/control/form/draft/edit/live-edit/persistence-boundary and production activation safety-gate review layers, but production insertion remains disabled, executors remain unwired, and byte-exact backup/write/reread/restore/no-auto-apply proof is still missing."
+      "evidence": "Source/include insertion has decision/path/control/form/draft/edit/live-edit/persistence-boundary and production activation safety-gate proof layers. Copied-fixture backup/write/reread/restore/no-auto-apply proof is partially satisfied, but production insertion remains disabled, executors remain unwired, and final approval, production flag, executor wiring, and live production dry-run decisions remain required."
     },
     "duplicateResolution": {
       "classification": "blocked by production activation",
-      "evidence": "Duplicate replacement has decision/path/control/form/draft/edit/live-edit/persistence-boundary and production activation safety-gate review layers, but production duplicate writes remain disabled, executors remain unwired, and byte-exact backup/write/reread/restore/no-auto-apply proof is still missing."
+      "evidence": "Duplicate replacement has decision/path/control/form/draft/edit/live-edit/persistence-boundary and production activation safety-gate proof layers. Copied-fixture backup/write/reread/restore/no-auto-apply proof is partially satisfied, but production duplicate writes remain disabled, executors remain unwired, and final approval, production flag, executor wiring, and live production dry-run decisions remain required."
     },
     "highRiskDisplayRecovery": {
       "classification": "blocked by high-risk recovery proof",
@@ -68,8 +68,8 @@
   },
   "safeIndependentExtraWork": {
     "attempted": true,
-    "completed": "production activation safety gates",
-    "reasonNoAdditionalAreaImplemented": "A safe independent boundary was available after the persistence-boundary work: define default-disabled production activation safety gates without wiring executors or enabling production writes. Remaining categories are otherwise capped for safe-release scope or blocked by production activation, official export data, or high-risk recovery proof.",
+    "completed": "production activation safety gate proof",
+    "reasonNoAdditionalAreaImplemented": "A safe independent proof layer was available after the safety-gate work: prove copied-fixture backup/write/reread/restore and no-auto-apply requirements without wiring executors or enabling production writes. Remaining categories are otherwise capped for safe-release scope or blocked by production activation decisions, official export data, or high-risk recovery proof.",
     "productionBehaviorEnabled": false
   },
   "safety": {
@@ -80,8 +80,10 @@
     "activationDraftPersistenceBoundaryExists": true,
     "activationDraftPersistenceEnabled": false,
     "productionActivationSafetyGateExists": true,
-    "sourceIncludeProductionActivationBlockedByDefault": true,
-    "duplicateProductionActivationBlockedByDefault": true,
+    "sourceIncludeProductionActivationBlockedByDefault": false,
+    "duplicateProductionActivationBlockedByDefault": false,
+    "sourceIncludeProductionActivationProofPartiallySatisfied": true,
+    "duplicateProductionActivationProofPartiallySatisfied": true,
     "unsafeProductionBehaviorEnabled": false,
     "sourceIncludeExecutorWired": false,
     "duplicateExecutorWired": false,

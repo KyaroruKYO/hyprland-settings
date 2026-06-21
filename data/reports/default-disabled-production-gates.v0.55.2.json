@@ -105,6 +105,24 @@
     "approvalUiSurfaceWidgetName": "hyprland-settings-0554-approval-review-disabled",
     "approvalUiSurfaceEnabled": false
   },
+  "productionActivationSafetyProof": {
+    "report": "data/reports/default-disabled-production-activation-safety-gate-proof.v0.55.2.json",
+    "sourceIncludeStatus": "ProductionActivationProofPartiallySatisfiedButDefaultDisabled",
+    "duplicateStatus": "ProductionActivationProofPartiallySatisfiedButDefaultDisabled",
+    "copiedFixtureBackupRereadRestoreProof": "satisfied in copied fixture",
+    "noAutoApplyProof": "satisfied by report-backed evidence",
+    "persistedDraftAutoApplyProof": "satisfied by report-backed evidence",
+    "finalApproval": "still requires explicit user approval",
+    "productionFlagDecision": "still requires production flag decision",
+    "executorWiringDecision": "still requires executor decision",
+    "liveProductionDryRun": "still requires live production dry-run",
+    "sourceIncludeExecutorWired": false,
+    "duplicateExecutorWired": false,
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "realConfigTouched": false,
+    "runtimeMutated": false
+  },
   "safety": {
     "realConfigTouched": false,
     "runtimeTouched": true,
@@ -177,7 +195,7 @@
     "sourceIncludeProductionEnabled": false,
     "duplicateProductionEnabled": false
   },
-  "nextRecommendedWork": "Prove production activation safety gates before any source/include or duplicate production executor wiring can be reconsidered.",
+  "nextRecommendedWork": "Design explicit final-approval, production-flag, executor-wiring, and live production dry-run decisions before any source/include or duplicate production executor wiring can be reconsidered.",
   "activationDecisionReview": {
     "report": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
     "sourceIncludeInsertion": "ApprovedButDefaultDisabled; production flag false",

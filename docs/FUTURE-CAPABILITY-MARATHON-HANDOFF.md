@@ -115,7 +115,7 @@ Passed: `cargo fmt`, `cargo fmt --check`, `cargo check`, `cargo test`, `cargo bu
 GTK matrix was run for the live activation draft-edit bridge; evidence root: `/tmp/hyprland-settings-gtk-automation/20260620_154855`. The run did not mutate runtime/config and screenshot plus AT-SPI accessibility-tree assertions passed for the legacy draft-edit and live memory-only draft-edit cards.
 
 ## Recommended next Codex prompt
-Keep activation draft persistence forbidden by default until explicit opt-in, private storage, redaction, retention, delete, encryption, and no-executor-wiring proof exists; otherwise continue only with production activation safety gates.
+Design explicit final-approval, production-flag, executor-wiring, and live production dry-run decisions before any source/include or duplicate production executor wiring can be reconsidered.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 
@@ -165,4 +165,8 @@ The branch now includes a default-disabled persistence boundary for source/inclu
 
 ## 2026-06-20 - Production activation safety gates handoff
 
-The branch now includes default-disabled production activation safety gates for source/include insertion and duplicate replacement. Both gates are `ProductionActivationBlockedByDefault`; both list byte-exact backup, pre-write snapshot, target identity, target managed-state, write plan, diff preview, reread, restore, post-restore verification, no-auto-apply, persisted-draft auto-apply, explicit final approval, production flag, executor wiring, rollback, and report-backed proof requirements. All production-critical proof remains `missing/proof-required`. Executors remain `Unwired`, production flags remain false, draft persistence remains forbidden by default, and no production write/reload/runtime/config path was added. Next exact work: prove the safety gates before any source/include or duplicate production executor wiring can be reconsidered.
+The branch now includes default-disabled production activation safety gates for source/include insertion and duplicate replacement. Both gates are `ProductionActivationProofPartiallySatisfiedButDefaultDisabled`; copied-fixture proof satisfies byte-exact backup, pre-write snapshot, target identity, write plan, diff preview, reread, restore, post-restore verification, and rollback checks without touching real config. Report-backed evidence satisfies no-auto-apply and persisted-draft auto-apply proof. Executors remain `Unwired`, production flags remain false, draft persistence remains forbidden by default, and no production write/reload/runtime/config path was added. Next exact work: design explicit final-approval, production-flag, executor-wiring, and live production dry-run decisions before any source/include or duplicate production executor wiring can be reconsidered.
+
+## 2026-06-20 - Production activation safety proof handoff
+
+The branch now includes `data/reports/default-disabled-production-activation-safety-gate-proof.v0.55.2.json` and disabled Config-page proof cards for source/include and duplicate production activation safety proof. The proof harness uses copied temp fixtures only, computes pre-write and backup hashes, applies a fixture-only write, rereads the target, restores from backup, verifies the restored hash equals the original hash, and records that no real config or runtime was touched. Explicit final approval, production flag decision, executor wiring decision, and live production dry-run remain required.

@@ -30,8 +30,8 @@ use hyprland_settings::future_capability::{
     production_activation_draft_persistence_boundaries, production_activation_draft_reviews,
     production_activation_form_reviews, production_activation_form_state,
     production_activation_live_draft_gtk_reviews, production_activation_path_reviews,
-    production_activation_safety_gate_reviews, profile_approval_flow,
-    profile_production_gate_review, profile_target_approval_review,
+    production_activation_safety_gate_proof_reviews, production_activation_safety_gate_reviews,
+    profile_approval_flow, profile_production_gate_review, profile_target_approval_review,
     proven_runtime_approval_evidence_summary, render_structured_entry_lossless,
     replace_duplicate_occurrence_safe_env, replace_duplicate_occurrence_with_confirmation_safe_env,
     reset_production_activation_draft, runtime_action_policy, runtime_action_review,
@@ -61,7 +61,8 @@ use hyprland_settings::future_capability::{
     ProductionActivationDraftPersistenceScope, ProductionActivationDraftPersistenceStatus,
     ProductionActivationDraftStatus, ProductionActivationDraftUpdate,
     ProductionActivationFormStatus, ProductionActivationPathStatus, ProductionActivationRequest,
-    ProductionActivationRequestScope, ProductionActivationSafetyGateStatus,
+    ProductionActivationRequestScope, ProductionActivationSafetyGateProofOverallStatus,
+    ProductionActivationSafetyGateProofStatus, ProductionActivationSafetyGateStatus,
     ProductionActivationSafetyPlan, ProductionExecutorWiringState, ProfileProductionGateStatus,
     ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction, RuntimeApprovalReviewStatus,
     RuntimeCommandRisk, RuntimeDirectIpcReadOnlyEvidence, RuntimeDryRunExecutor,
@@ -6442,14 +6443,14 @@ fn hyprland_0554_activation_gate_keeps_0552_default_until_all_trusted_inputs_and
 }
 
 #[test]
-fn production_activation_safety_gates_are_blocked_by_default_without_executor_wiring() {
+fn production_activation_safety_gates_are_partially_proven_without_executor_wiring() {
     let gates = production_activation_safety_gate_reviews();
     assert_eq!(gates.len(), 2);
 
     for gate in gates {
         assert_eq!(
             gate.status,
-            ProductionActivationSafetyGateStatus::ProductionActivationBlockedByDefault
+            ProductionActivationSafetyGateStatus::ProductionActivationProofPartiallySatisfiedButDefaultDisabled
         );
         assert_eq!(
             gate.executor_wiring_status,
@@ -6487,29 +6488,141 @@ fn production_activation_safety_gates_are_blocked_by_default_without_executor_wi
                 .iter()
                 .find(|requirement| requirement.label == label)
                 .unwrap_or_else(|| panic!("missing safety gate requirement: {label}"));
-            assert_eq!(requirement.status, "missing/proof-required");
+            let expected_status = match label {
+                "Explicit final approval" => "still requires explicit user approval",
+                "Production flag decision" => "still requires production flag decision",
+                "Executor wiring decision" => "still requires executor decision",
+                "No auto-apply proof" | "Persistence auto-apply proof" => {
+                    "satisfied by report-backed evidence"
+                }
+                _ => "satisfied in copied fixture",
+            };
+            assert_eq!(requirement.status, expected_status);
         }
 
         assert!(gate
             .requirements
             .iter()
             .any(|requirement| requirement.label == "Report-backed proof"
-                && requirement.status == "present but not sufficient for production activation"));
+                && requirement.status == "satisfied by report-backed evidence"));
         assert!(gate
             .blockers
             .iter()
-            .any(|blocker| blocker == "Byte-exact backup: missing/proof-required"));
+            .any(|blocker| blocker == "Explicit final approval: missing/proof-required"));
         assert!(gate
             .blockers
             .iter()
-            .any(|blocker| blocker == "No auto-apply proof: missing/proof-required"));
+            .any(|blocker| blocker == "Production flag decision: missing/proof-required"));
         assert!(gate
             .blockers
             .iter()
-            .any(|blocker| blocker == "Persistence auto-apply proof: missing/proof-required"));
-        assert!(gate
+            .any(|blocker| blocker == "Executor wiring decision: missing/proof-required"));
+        assert!(gate.user_facing_lines().iter().any(|line| line
+            .contains("Production activation proof partially satisfied but default-disabled")));
+    }
+}
+
+#[test]
+fn production_activation_safety_proofs_use_copied_fixture_evidence_without_enablement() {
+    let proofs = production_activation_safety_gate_proof_reviews();
+    assert_eq!(proofs.len(), 2);
+
+    for proof in proofs {
+        assert_eq!(
+            proof.status,
+            ProductionActivationSafetyGateProofOverallStatus::ProductionActivationProofPartiallySatisfiedButDefaultDisabled
+        );
+        assert_eq!(
+            proof.executor_wiring_status,
+            ProductionExecutorWiringState::Unwired
+        );
+        assert_eq!(proof.production_status, "Disabled");
+        assert!(!proof.production_activation_enabled);
+        assert!(!proof.category_production_enabled);
+        assert!(!proof.executor_wired);
+        assert!(!proof.production_write_executed);
+        assert_eq!(
+            proof.draft_persistence_status,
+            ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault
+        );
+
+        let fixture = &proof.fixture_proof;
+        assert!(fixture.target_identity_known);
+        assert!(fixture.target_fixture_only);
+        assert!(fixture.target_managed_state_safe);
+        assert!(fixture.backup_bytes_equal);
+        assert!(fixture.write_applied);
+        assert!(fixture.reread_verified);
+        assert!(fixture.restore_verified);
+        assert!(fixture.temp_tree_removed);
+        assert_ne!(fixture.pre_write_hash, fixture.post_write_hash);
+        assert_eq!(fixture.pre_write_hash, fixture.backup_hash);
+        assert_eq!(fixture.pre_write_hash, fixture.post_restore_hash);
+        assert!(!fixture.outside_temp_tree_changed);
+        assert!(!fixture.real_config_touched);
+        assert!(!fixture.runtime_touched);
+        assert!(!fixture.production_write_executed);
+
+        for label in [
+            "Byte-exact backup",
+            "Pre-write snapshot",
+            "Target identity",
+            "Dry-run write plan",
+            "Diff preview",
+            "Post-write reread",
+            "Restore plan",
+            "Post-restore verification",
+            "Rollback availability",
+        ] {
+            assert_eq!(
+                proof.proof_status_for(label),
+                Some(ProductionActivationSafetyGateProofStatus::ProofSatisfiedInCopiedFixture),
+                "unexpected safety proof status for {label}"
+            );
+        }
+        assert_eq!(
+            proof.proof_status_for("No auto-apply proof"),
+            Some(ProductionActivationSafetyGateProofStatus::ProofSatisfiedByReportBackedEvidence)
+        );
+        assert_eq!(
+            proof.proof_status_for("Persisted-draft auto-apply proof"),
+            Some(ProductionActivationSafetyGateProofStatus::ProofSatisfiedByReportBackedEvidence)
+        );
+        assert_eq!(
+            proof.proof_status_for("Read-only runtime evidence"),
+            Some(
+                ProductionActivationSafetyGateProofStatus::ProofSatisfiedByReadOnlyRuntimeEvidence
+            )
+        );
+        assert_eq!(
+            proof.proof_status_for("Real config mutation"),
+            Some(ProductionActivationSafetyGateProofStatus::ProofNotAllowedAgainstRealConfig)
+        );
+        assert_eq!(
+            proof.proof_status_for("Final approval still required"),
+            Some(ProductionActivationSafetyGateProofStatus::ProofStillRequiresExplicitUserApproval)
+        );
+        assert_eq!(
+            proof.proof_status_for("Production flag decision"),
+            Some(
+                ProductionActivationSafetyGateProofStatus::ProofStillRequiresProductionFlagDecision
+            )
+        );
+        assert_eq!(
+            proof.proof_status_for("Executor wiring decision"),
+            Some(ProductionActivationSafetyGateProofStatus::ProofStillRequiresExecutorDecision)
+        );
+        assert_eq!(
+            proof.proof_status_for("Live production dry-run"),
+            Some(ProductionActivationSafetyGateProofStatus::ProofStillRequiresLiveProductionDryRun)
+        );
+        assert!(proof
+            .blockers
+            .iter()
+            .any(|blocker| blocker.contains("Final approval still required")));
+        assert!(proof
             .user_facing_lines()
             .iter()
-            .any(|line| line.contains("Production activation blocked by default")));
+            .any(|line| line.contains("Production activation proof partially satisfied")));
     }
 }
