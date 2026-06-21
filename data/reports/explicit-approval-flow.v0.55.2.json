@@ -109,15 +109,20 @@
     "productionActivationSafetyGateExists": true,
     "sourceIncludeProductionActivationBlockedByDefault": true,
     "duplicateProductionActivationBlockedByDefault": true,
-    "productionActivationByteExactBackupProof": "missing/proof-required",
-    "productionActivationWriteRereadRestoreProof": "missing/proof-required",
-    "productionActivationNoAutoApplyProof": "missing/proof-required",
-    "productionActivationPersistedDraftAutoApplyProof": "missing/proof-required",
+    "productionActivationByteExactBackupProof": "satisfied in copied fixture",
+    "productionActivationWriteRereadRestoreProof": "satisfied in copied fixture",
+    "productionActivationNoAutoApplyProof": "satisfied by report-backed evidence",
+    "productionActivationPersistedDraftAutoApplyProof": "satisfied by report-backed evidence",
+    "productionActivationFinalDecisionReviewExists": true,
+    "finalApprovalMissingRequired": true,
+    "productionFlagDecisionMissingRequired": true,
+    "executorWiringDecisionMissingRequired": true,
+    "liveProductionDryRunPolicyMissingRequired": true,
     "sourceIncludeProductionEnabled": false,
     "duplicateProductionEnabled": false,
     "unsafeProductionBehaviorEnabled": false
   },
-  "nextRecommendedWork": "Keep explicit approval separate from production activation until byte-exact backup, write/reread/restore, no-auto-apply, persisted-draft auto-apply, final approval, production flag, and executor wiring gates are proven.",
+  "nextRecommendedWork": "Keep explicit approval separate from production activation while designing the future final-approval UX and live production dry-run policy.",
   "testsAdded": [
     "production activation decision review tests for source/include and duplicate default-disabled paths"
   ],
@@ -261,6 +266,29 @@
       "noAutoApplyProof": "ProofSatisfiedByReportBackedEvidence",
       "persistedDraftAutoApplyProof": "ProofSatisfiedByReportBackedEvidence",
       "finalApproval": "ProofStillRequiresExplicitUserApproval",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWiringStatus": "Unwired"
+    }
+  },
+  "productionActivationFinalDecisions": {
+    "report": "data/reports/default-disabled-production-activation-final-decisions.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "status": "FinalDecisionProofSatisfiedButDecisionsMissing",
+      "finalApproval": "missing/required",
+      "productionFlagDecision": "false / missing explicit opt-in",
+      "executorWiringDecision": "Unwired / missing explicit opt-in",
+      "liveProductionDryRunPolicy": "missing/required",
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWiringStatus": "Unwired"
+    },
+    "duplicateReplacement": {
+      "status": "FinalDecisionProofSatisfiedButDecisionsMissing",
+      "finalApproval": "missing/required",
+      "productionFlagDecision": "false / missing explicit opt-in",
+      "executorWiringDecision": "Unwired / missing explicit opt-in",
+      "liveProductionDryRunPolicy": "missing/required",
       "productionEnabled": false,
       "productionFlag": false,
       "executorWiringStatus": "Unwired"

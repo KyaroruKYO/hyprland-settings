@@ -105,6 +105,7 @@
     "default_disabled_production_activation_draft_persistence_boundary",
     "default_disabled_production_activation_safety_gates",
     "default_disabled_production_activation_safety_gate_proof",
+    "default_disabled_production_activation_final_decisions",
     "future_capability_remaining_dependency_scan"
   ],
   "phasesPartiallyCompleted": [],
@@ -162,6 +163,8 @@
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-SAFETY-GATES-REVIEW-LOG.md",
     "data/reports/default-disabled-production-activation-safety-gate-proof.v0.55.2.json",
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-SAFETY-GATE-PROOF-REVIEW-LOG.md",
+    "data/reports/default-disabled-production-activation-final-decisions.v0.55.2.json",
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-FINAL-DECISIONS-REVIEW-LOG.md",
     "data/reports/future-capability-remaining-dependency-scan.v0.55.2.json",
     "docs/FUTURE-CAPABILITY-REMAINING-DEPENDENCY-SCAN.md"
   ],
@@ -186,6 +189,7 @@
     "source/include and duplicate activation draft-edit memory-only model tests",
     "source/include and duplicate live GTK activation draft edit bridge model and source tests",
     "source/include and duplicate activation draft persistence boundary model and UI tests",
+    "source/include and duplicate production activation final decision model and UI tests",
     "GTK screenshot/accessibility assertions for source/include and duplicate activation draft-edit cards",
     "remaining dependency scan report assertions"
   ],
@@ -201,7 +205,7 @@
     "gtkSafeEnvEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260620_154855",
     "gtkSafeEnvFieldLabelBlocker": "none"
   },
-  "nextRecommendedAction": "Design explicit final-approval, production-flag, executor-wiring, and live production dry-run decisions before any source/include or duplicate production executor wiring can be reconsidered.",
+  "nextRecommendedAction": "Define the future explicit user-approval UX and live production dry-run policy without wiring source/include or duplicate production executors.",
   "progressTracker": {
     "coreAppShellUiNavigation": {
       "before": "98-98%",

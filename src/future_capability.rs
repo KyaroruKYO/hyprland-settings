@@ -5035,6 +5035,138 @@ impl ProductionActivationSafetyGateProofReview {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationFinalDecisionStatus {
+    FinalDecisionMissing,
+    FinalDecisionBlockedByDefault,
+    FinalDecisionRequiresExplicitUserApproval,
+    FinalDecisionRequiresProductionFlagOptIn,
+    FinalDecisionRequiresExecutorWiringOptIn,
+    FinalDecisionRequiresLiveProductionDryRunPolicy,
+    FinalDecisionRequiresNoPersistenceAutoApply,
+    FinalDecisionRequiresReportBackedProof,
+    FinalDecisionProofSatisfiedButDecisionsMissing,
+    FinalDecisionReadyButProductionDisabled,
+}
+
+impl ProductionActivationFinalDecisionStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::FinalDecisionMissing => "Final decision missing",
+            Self::FinalDecisionBlockedByDefault => "Final decision blocked by default",
+            Self::FinalDecisionRequiresExplicitUserApproval => {
+                "Final decision requires explicit user approval"
+            }
+            Self::FinalDecisionRequiresProductionFlagOptIn => {
+                "Final decision requires production flag opt-in"
+            }
+            Self::FinalDecisionRequiresExecutorWiringOptIn => {
+                "Final decision requires executor wiring opt-in"
+            }
+            Self::FinalDecisionRequiresLiveProductionDryRunPolicy => {
+                "Final decision requires live production dry-run policy"
+            }
+            Self::FinalDecisionRequiresNoPersistenceAutoApply => {
+                "Final decision requires no persistence auto-apply proof"
+            }
+            Self::FinalDecisionRequiresReportBackedProof => {
+                "Final decision requires report-backed proof"
+            }
+            Self::FinalDecisionProofSatisfiedButDecisionsMissing => {
+                "Final decision proof satisfied but decisions missing"
+            }
+            Self::FinalDecisionReadyButProductionDisabled => {
+                "Final decision ready but production disabled"
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationFinalDecisionReview {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub disabled_final_approval_widget_name: String,
+    pub disabled_production_flag_widget_name: String,
+    pub disabled_executor_wiring_widget_name: String,
+    pub disabled_live_dry_run_widget_name: String,
+    pub heading: String,
+    pub scope: ProductionActivationSafetyGateScope,
+    pub status: ProductionActivationFinalDecisionStatus,
+    pub final_approval_status: ProductionActivationFinalDecisionStatus,
+    pub production_flag_decision_status: ProductionActivationFinalDecisionStatus,
+    pub executor_wiring_decision_status: ProductionActivationFinalDecisionStatus,
+    pub live_dry_run_policy_status: ProductionActivationFinalDecisionStatus,
+    pub copied_fixture_proof_status: ProductionActivationSafetyGateProofOverallStatus,
+    pub form_control_draft_proof_status: String,
+    pub draft_persistence_status: ProductionActivationDraftPersistenceStatus,
+    pub blockers: Vec<String>,
+    pub executor_wiring_status: ProductionExecutorWiringState,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_activation_enabled: bool,
+    pub category_production_enabled: bool,
+    pub production_write_executed: bool,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub disabled_final_approval_label: String,
+    pub disabled_production_flag_label: String,
+    pub disabled_executor_wiring_label: String,
+    pub disabled_live_dry_run_label: String,
+}
+
+impl ProductionActivationFinalDecisionReview {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        let mut lines = vec![
+            self.heading.clone(),
+            format!("Final decision status: {}", self.status.user_facing_label()),
+            format!(
+                "Final approval: {}",
+                self.final_approval_status.user_facing_label()
+            ),
+            format!(
+                "Production flag decision: {}",
+                self.production_flag_decision_status.user_facing_label()
+            ),
+            format!(
+                "Executor wiring decision: {}",
+                self.executor_wiring_decision_status.user_facing_label()
+            ),
+            format!(
+                "Live production dry-run policy: {}",
+                self.live_dry_run_policy_status.user_facing_label()
+            ),
+            format!(
+                "Copied-fixture proof: {}",
+                self.copied_fixture_proof_status.user_facing_label()
+            ),
+            format!(
+                "Form/control/draft proof: {}",
+                self.form_control_draft_proof_status
+            ),
+            format!(
+                "Draft persistence: {}",
+                self.draft_persistence_status.user_facing_label()
+            ),
+            format!(
+                "Executor wiring: {}",
+                self.executor_wiring_status.user_facing_label()
+            ),
+            format!("{}: {}", self.production_label, self.production_status),
+        ];
+        lines.extend(
+            self.blockers
+                .iter()
+                .map(|blocker| format!("Final decision blocker: {blocker}")),
+        );
+        lines.push(self.disabled_final_approval_label.clone());
+        lines.push(self.disabled_production_flag_label.clone());
+        lines.push(self.disabled_executor_wiring_label.clone());
+        lines.push(self.disabled_live_dry_run_label.clone());
+        lines
+    }
+}
+
 const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
     "data/reports/disabled-approval-ui-cards.v0.55.2.json";
 const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
@@ -5511,6 +5643,14 @@ pub fn production_activation_safety_gate_proof_reviews(
     ]
 }
 
+pub fn production_activation_final_decision_reviews() -> Vec<ProductionActivationFinalDecisionReview>
+{
+    vec![
+        source_include_production_activation_final_decision(),
+        duplicate_production_activation_final_decision(),
+    ]
+}
+
 pub fn source_include_production_activation_safety_gate() -> ProductionActivationSafetyGateReview {
     production_activation_safety_gate(SafetyGateSpec {
         widget_name: "hyprland-settings-source-include-production-activation-safety-gate-disabled",
@@ -5548,6 +5688,34 @@ pub fn source_include_production_activation_safety_gate_proof(
     })
 }
 
+pub fn source_include_production_activation_final_decision(
+) -> ProductionActivationFinalDecisionReview {
+    production_activation_final_decision(FinalDecisionSpec {
+        widget_name: "hyprland-settings-source-include-production-activation-final-decision-disabled",
+        evidence_widget_name:
+            "hyprland-settings-source-include-production-activation-final-decision-evidence",
+        disabled_final_approval_widget_name:
+            "hyprland-settings-source-include-production-activation-final-decision-approval-disabled",
+        disabled_production_flag_widget_name:
+            "hyprland-settings-source-include-production-activation-final-decision-flag-disabled",
+        disabled_executor_wiring_widget_name:
+            "hyprland-settings-source-include-production-activation-final-decision-wiring-disabled",
+        disabled_live_dry_run_widget_name:
+            "hyprland-settings-source-include-production-activation-final-decision-dry-run-disabled",
+        heading: "Source/include production activation final decision",
+        scope: ProductionActivationSafetyGateScope::SourceIncludeInsertion,
+        production_label: "Production source/include insertion",
+        disabled_final_approval_label:
+            "Approve source/include production activation (not available)",
+        disabled_production_flag_label:
+            "Set source/include production flag (not available)",
+        disabled_executor_wiring_label:
+            "Wire source/include production executor (not available)",
+        disabled_live_dry_run_label:
+            "Run source/include live production dry-run (not available)",
+    })
+}
+
 pub fn duplicate_production_activation_safety_gate() -> ProductionActivationSafetyGateReview {
     production_activation_safety_gate(SafetyGateSpec {
         widget_name: "hyprland-settings-duplicate-production-activation-safety-gate-disabled",
@@ -5582,6 +5750,29 @@ pub fn duplicate_production_activation_safety_gate_proof(
         disabled_fixture_proof_label:
             "Run duplicate production safety proof (fixture only, planned)",
         disabled_enable_label: "Enable duplicate production activation (not available)",
+    })
+}
+
+pub fn duplicate_production_activation_final_decision() -> ProductionActivationFinalDecisionReview {
+    production_activation_final_decision(FinalDecisionSpec {
+        widget_name: "hyprland-settings-duplicate-production-activation-final-decision-disabled",
+        evidence_widget_name:
+            "hyprland-settings-duplicate-production-activation-final-decision-evidence",
+        disabled_final_approval_widget_name:
+            "hyprland-settings-duplicate-production-activation-final-decision-approval-disabled",
+        disabled_production_flag_widget_name:
+            "hyprland-settings-duplicate-production-activation-final-decision-flag-disabled",
+        disabled_executor_wiring_widget_name:
+            "hyprland-settings-duplicate-production-activation-final-decision-wiring-disabled",
+        disabled_live_dry_run_widget_name:
+            "hyprland-settings-duplicate-production-activation-final-decision-dry-run-disabled",
+        heading: "Duplicate production activation final decision",
+        scope: ProductionActivationSafetyGateScope::DuplicateReplacement,
+        production_label: "Production duplicate writes",
+        disabled_final_approval_label: "Approve duplicate production activation (not available)",
+        disabled_production_flag_label: "Set duplicate production flag (not available)",
+        disabled_executor_wiring_label: "Wire duplicate production executor (not available)",
+        disabled_live_dry_run_label: "Run duplicate live production dry-run (not available)",
     })
 }
 
@@ -6313,6 +6504,22 @@ struct SafetyGateProofSpec {
     disabled_enable_label: &'static str,
 }
 
+struct FinalDecisionSpec {
+    widget_name: &'static str,
+    evidence_widget_name: &'static str,
+    disabled_final_approval_widget_name: &'static str,
+    disabled_production_flag_widget_name: &'static str,
+    disabled_executor_wiring_widget_name: &'static str,
+    disabled_live_dry_run_widget_name: &'static str,
+    heading: &'static str,
+    scope: ProductionActivationSafetyGateScope,
+    production_label: &'static str,
+    disabled_final_approval_label: &'static str,
+    disabled_production_flag_label: &'static str,
+    disabled_executor_wiring_label: &'static str,
+    disabled_live_dry_run_label: &'static str,
+}
+
 fn activation_draft_persistence_boundary(
     spec: PersistenceBoundarySpec,
 ) -> ProductionActivationDraftPersistenceBoundary {
@@ -6579,6 +6786,62 @@ fn production_activation_safety_gate_proof(
             ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault,
         disabled_fixture_proof_label: spec.disabled_fixture_proof_label.to_string(),
         disabled_enable_label: spec.disabled_enable_label.to_string(),
+    }
+}
+
+fn production_activation_final_decision(
+    spec: FinalDecisionSpec,
+) -> ProductionActivationFinalDecisionReview {
+    let proof = match spec.scope {
+        ProductionActivationSafetyGateScope::SourceIncludeInsertion => {
+            source_include_production_activation_safety_gate_proof()
+        }
+        ProductionActivationSafetyGateScope::DuplicateReplacement => {
+            duplicate_production_activation_safety_gate_proof()
+        }
+    };
+
+    ProductionActivationFinalDecisionReview {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        disabled_final_approval_widget_name: spec.disabled_final_approval_widget_name.to_string(),
+        disabled_production_flag_widget_name: spec.disabled_production_flag_widget_name.to_string(),
+        disabled_executor_wiring_widget_name: spec.disabled_executor_wiring_widget_name.to_string(),
+        disabled_live_dry_run_widget_name: spec.disabled_live_dry_run_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        scope: spec.scope,
+        status: ProductionActivationFinalDecisionStatus::FinalDecisionProofSatisfiedButDecisionsMissing,
+        final_approval_status:
+            ProductionActivationFinalDecisionStatus::FinalDecisionRequiresExplicitUserApproval,
+        production_flag_decision_status:
+            ProductionActivationFinalDecisionStatus::FinalDecisionRequiresProductionFlagOptIn,
+        executor_wiring_decision_status:
+            ProductionActivationFinalDecisionStatus::FinalDecisionRequiresExecutorWiringOptIn,
+        live_dry_run_policy_status:
+            ProductionActivationFinalDecisionStatus::FinalDecisionRequiresLiveProductionDryRunPolicy,
+        copied_fixture_proof_status: proof.status,
+        form_control_draft_proof_status:
+            "form, control, draft, and live draft edit proof remain review-only".to_string(),
+        draft_persistence_status:
+            ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault,
+        blockers: vec![
+            "final approval must be an explicit future user action and cannot be inferred from copied-fixture proof".to_string(),
+            "production flag remains false and cannot be set by safety proof, draft edit, persistence boundary, or final decision review alone".to_string(),
+            "executor remains Unwired and copied-fixture/report-backed/draft proof does not wire it".to_string(),
+            "live production dry-run policy is missing and cannot touch real config, reload Hyprland, or mutate runtime by default".to_string(),
+        ],
+        executor_wiring_status: ProductionExecutorWiringState::Unwired,
+        production_label: spec.production_label.to_string(),
+        production_status: "Disabled".to_string(),
+        production_activation_enabled: false,
+        category_production_enabled: false,
+        production_write_executed: false,
+        real_config_touched: false,
+        runtime_mutated: false,
+        disabled_final_approval_label: spec.disabled_final_approval_label.to_string(),
+        disabled_production_flag_label: spec.disabled_production_flag_label.to_string(),
+        disabled_executor_wiring_label: spec.disabled_executor_wiring_label.to_string(),
+        disabled_live_dry_run_label: spec.disabled_live_dry_run_label.to_string(),
     }
 }
 

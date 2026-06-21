@@ -170,3 +170,8 @@ The branch now includes default-disabled production activation safety gates for 
 ## 2026-06-20 - Production activation safety proof handoff
 
 The branch now includes `data/reports/default-disabled-production-activation-safety-gate-proof.v0.55.2.json` and disabled Config-page proof cards for source/include and duplicate production activation safety proof. The proof harness uses copied temp fixtures only, computes pre-write and backup hashes, applies a fixture-only write, rereads the target, restores from backup, verifies the restored hash equals the original hash, and records that no real config or runtime was touched. Explicit final approval, production flag decision, executor wiring decision, and live production dry-run remain required.
+## 2026-06-20 - Production Activation Final Decisions
+
+Source/include and duplicate now have final decision reviews after the copied-fixture safety proof layer. These reviews keep final approval, production flag opt-in, executor wiring opt-in, and live production dry-run policy missing/required. They explicitly prove copied-fixture proof, draft edit state, and persistence-boundary state cannot approve production, set production flags, wire executors, or authorize live dry-runs.
+
+Next exact work item: define the future explicit user-approval UX and live production dry-run policy without wiring source/include or duplicate production executors.

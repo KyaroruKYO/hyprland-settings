@@ -28,6 +28,13 @@ The proof layer does not enable production activation, persistence, executor wir
 - Executor wiring decision is still required and current executors remain `Unwired`.
 - Live production dry-run remains unavailable because real config mutation is prohibited.
 
+## Follow-Up Decision Layer
+
+- Source/include final decision review now exists.
+- Duplicate final decision review now exists.
+- The final decision layer keeps final approval, production flag opt-in, executor wiring opt-in, and live production dry-run policy missing/required.
+- Copied-fixture proof alone cannot approve production, set production flags, wire executors, or authorize live dry-runs.
+
 ## Non-Actions
 
 - No source/include production insertion was enabled.

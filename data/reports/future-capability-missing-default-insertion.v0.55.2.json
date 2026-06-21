@@ -152,11 +152,12 @@
     "sourceIncludeActivationDraftWrittenToDisk": false,
     "sourceIncludeActivationDraftStoragePath": "none",
     "sourceIncludeProductionActivationSafetyGateExists": true,
-    "sourceIncludeProductionActivationGateStatus": "ProductionActivationBlockedByDefault",
-    "sourceIncludeByteExactBackupProof": "missing/proof-required",
-    "sourceIncludeWriteRereadRestoreProof": "missing/proof-required",
-    "sourceIncludeNoAutoApplyProof": "missing/proof-required",
-    "sourceIncludePersistedDraftAutoApplyProof": "missing/proof-required"
+    "sourceIncludeProductionActivationGateStatus": "ProductionActivationProofPartiallySatisfiedButDefaultDisabled",
+    "sourceIncludeByteExactBackupProof": "ProofSatisfiedInCopiedFixture",
+    "sourceIncludeWriteRereadRestoreProof": "ProofSatisfiedInCopiedFixture",
+    "sourceIncludeNoAutoApplyProof": "ProofSatisfiedByReportBackedEvidence",
+    "sourceIncludePersistedDraftAutoApplyProof": "ProofSatisfiedByReportBackedEvidence",
+    "sourceIncludeFinalDecisionStatus": "FinalDecisionProofSatisfiedButDecisionsMissing"
   },
   "validation": {
     "focusedSafeBatchWriteTests": "passed",
@@ -177,7 +178,7 @@
     "Source/include insertion now has readiness model, disabled UI, fixture target-selection proof, selected-target dry-run planner, preview UI, temp-fixture guarded executor, copied-config-tree proof, and default-disabled production gate review, but production connected-file insertion remains disabled until explicit approval and live restoration proof exist.",
     "Managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
   ],
-  "nextRecommendedWork": "Prove source/include production activation safety gates before any production executor wiring can be reconsidered.",
+  "nextRecommendedWork": "Define the future source/include final-approval UX and live production dry-run policy without wiring a production executor.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": true,
@@ -258,6 +259,21 @@
     "finalApproval": "ProofStillRequiresExplicitUserApproval",
     "productionFlagDecision": "ProofStillRequiresProductionFlagDecision",
     "executorWiringDecision": "ProofStillRequiresExecutorDecision",
+    "executorWiringStatus": "Unwired",
+    "productionEnabled": false,
+    "productionFlag": false,
+    "realConfigTouched": false,
+    "runtimeMutated": false
+  },
+  "sourceIncludeProductionActivationFinalDecision": {
+    "report": "data/reports/default-disabled-production-activation-final-decisions.v0.55.2.json",
+    "status": "FinalDecisionProofSatisfiedButDecisionsMissing",
+    "finalApproval": "FinalDecisionRequiresExplicitUserApproval",
+    "productionFlagDecision": "FinalDecisionRequiresProductionFlagOptIn",
+    "executorWiringDecision": "FinalDecisionRequiresExecutorWiringOptIn",
+    "liveProductionDryRunPolicy": "FinalDecisionRequiresLiveProductionDryRunPolicy",
+    "copiedFixtureProof": "ProductionActivationProofPartiallySatisfiedButDefaultDisabled",
+    "draftPersistenceBoundary": "PersistenceForbiddenByDefault",
     "executorWiringStatus": "Unwired",
     "productionEnabled": false,
     "productionFlag": false,

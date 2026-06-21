@@ -28,10 +28,11 @@ use hyprland_settings::future_capability::{
     production_activation_draft_edit_reviews, production_activation_draft_edit_state_from_draft,
     production_activation_draft_from_form_state, production_activation_draft_gtk_state_from_draft,
     production_activation_draft_persistence_boundaries, production_activation_draft_reviews,
-    production_activation_form_reviews, production_activation_form_state,
-    production_activation_live_draft_gtk_reviews, production_activation_path_reviews,
-    production_activation_safety_gate_proof_reviews, production_activation_safety_gate_reviews,
-    profile_approval_flow, profile_production_gate_review, profile_target_approval_review,
+    production_activation_final_decision_reviews, production_activation_form_reviews,
+    production_activation_form_state, production_activation_live_draft_gtk_reviews,
+    production_activation_path_reviews, production_activation_safety_gate_proof_reviews,
+    production_activation_safety_gate_reviews, profile_approval_flow,
+    profile_production_gate_review, profile_target_approval_review,
     proven_runtime_approval_evidence_summary, render_structured_entry_lossless,
     replace_duplicate_occurrence_safe_env, replace_duplicate_occurrence_with_confirmation_safe_env,
     reset_production_activation_draft, runtime_action_policy, runtime_action_review,
@@ -60,19 +61,19 @@ use hyprland_settings::future_capability::{
     ProductionActivationDraftGtkStatus, ProductionActivationDraftGtkUpdate,
     ProductionActivationDraftPersistenceScope, ProductionActivationDraftPersistenceStatus,
     ProductionActivationDraftStatus, ProductionActivationDraftUpdate,
-    ProductionActivationFormStatus, ProductionActivationPathStatus, ProductionActivationRequest,
-    ProductionActivationRequestScope, ProductionActivationSafetyGateProofOverallStatus,
-    ProductionActivationSafetyGateProofStatus, ProductionActivationSafetyGateStatus,
-    ProductionActivationSafetyPlan, ProductionExecutorWiringState, ProfileProductionGateStatus,
-    ProfileSwitchStatus, ProfileTargetReadiness, RuntimeAction, RuntimeApprovalReviewStatus,
-    RuntimeCommandRisk, RuntimeDirectIpcReadOnlyEvidence, RuntimeDryRunExecutor,
-    RuntimeEvalSyntaxEvidence, RuntimeLiveRestoreProof, RuntimeLiveRestoreStatus,
-    RuntimeMutationCommandPair, RuntimeMutationSyntaxCandidate, RuntimeMutationSyntaxStatus,
-    RuntimeProductionGateStatus, RuntimeReadOnlyEvidence, RuntimeSocketCandidate,
-    RuntimeSocketDiagnosisStatus, SourceIncludeInsertionReadiness,
-    SourceIncludeProductionGateStatus, SourceIncludeSelectedTargetDryRunStatus,
-    SourceIncludeTargetCandidate, SourceIncludeTargetSelectionStatus, StructuredBindEditStatus,
-    StructuredProductionGateStatus,
+    ProductionActivationFinalDecisionStatus, ProductionActivationFormStatus,
+    ProductionActivationPathStatus, ProductionActivationRequest, ProductionActivationRequestScope,
+    ProductionActivationSafetyGateProofOverallStatus, ProductionActivationSafetyGateProofStatus,
+    ProductionActivationSafetyGateStatus, ProductionActivationSafetyPlan,
+    ProductionExecutorWiringState, ProfileProductionGateStatus, ProfileSwitchStatus,
+    ProfileTargetReadiness, RuntimeAction, RuntimeApprovalReviewStatus, RuntimeCommandRisk,
+    RuntimeDirectIpcReadOnlyEvidence, RuntimeDryRunExecutor, RuntimeEvalSyntaxEvidence,
+    RuntimeLiveRestoreProof, RuntimeLiveRestoreStatus, RuntimeMutationCommandPair,
+    RuntimeMutationSyntaxCandidate, RuntimeMutationSyntaxStatus, RuntimeProductionGateStatus,
+    RuntimeReadOnlyEvidence, RuntimeSocketCandidate, RuntimeSocketDiagnosisStatus,
+    SourceIncludeInsertionReadiness, SourceIncludeProductionGateStatus,
+    SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
+    SourceIncludeTargetSelectionStatus, StructuredBindEditStatus, StructuredProductionGateStatus,
 };
 use hyprland_settings::missing_default_insertion::{
     build_missing_default_insertion_plan, MissingDefaultInsertionRequest,
@@ -6624,5 +6625,86 @@ fn production_activation_safety_proofs_use_copied_fixture_evidence_without_enabl
             .user_facing_lines()
             .iter()
             .any(|line| line.contains("Production activation proof partially satisfied")));
+    }
+}
+
+#[test]
+fn production_activation_final_decisions_keep_fixture_proof_from_authorizing_production() {
+    let decisions = production_activation_final_decision_reviews();
+    assert_eq!(decisions.len(), 2);
+
+    for decision in decisions {
+        assert_eq!(
+            decision.status,
+            ProductionActivationFinalDecisionStatus::FinalDecisionProofSatisfiedButDecisionsMissing
+        );
+        assert_eq!(
+            decision.final_approval_status,
+            ProductionActivationFinalDecisionStatus::FinalDecisionRequiresExplicitUserApproval
+        );
+        assert_eq!(
+            decision.production_flag_decision_status,
+            ProductionActivationFinalDecisionStatus::FinalDecisionRequiresProductionFlagOptIn
+        );
+        assert_eq!(
+            decision.executor_wiring_decision_status,
+            ProductionActivationFinalDecisionStatus::FinalDecisionRequiresExecutorWiringOptIn
+        );
+        assert_eq!(
+            decision.live_dry_run_policy_status,
+            ProductionActivationFinalDecisionStatus::FinalDecisionRequiresLiveProductionDryRunPolicy
+        );
+        assert_eq!(
+            decision.copied_fixture_proof_status,
+            ProductionActivationSafetyGateProofOverallStatus::ProductionActivationProofPartiallySatisfiedButDefaultDisabled
+        );
+        assert_eq!(
+            decision.draft_persistence_status,
+            ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault
+        );
+        assert_eq!(
+            decision.executor_wiring_status,
+            ProductionExecutorWiringState::Unwired
+        );
+        assert_eq!(decision.production_status, "Disabled");
+        assert!(!decision.production_activation_enabled);
+        assert!(!decision.category_production_enabled);
+        assert!(!decision.production_write_executed);
+        assert!(!decision.real_config_touched);
+        assert!(!decision.runtime_mutated);
+        assert!(decision
+            .form_control_draft_proof_status
+            .contains("review-only"));
+
+        let lines = decision.user_facing_lines().join("\n");
+        assert!(lines.contains("Final approval: Final decision requires explicit user approval"));
+        assert!(lines
+            .contains("Production flag decision: Final decision requires production flag opt-in"));
+        assert!(lines
+            .contains("Executor wiring decision: Final decision requires executor wiring opt-in"));
+        assert!(lines.contains(
+            "Live production dry-run policy: Final decision requires live production dry-run policy"
+        ));
+        assert!(lines.contains("Copied-fixture proof: Production activation proof partially satisfied but default-disabled"));
+        assert!(lines.contains("Draft persistence: Persistence forbidden by default"));
+        assert!(lines.contains("Executor wiring: Unwired"));
+        assert!(lines.contains("Disabled"));
+
+        assert!(decision
+            .blockers
+            .iter()
+            .any(|blocker| blocker.contains("cannot be inferred from copied-fixture proof")));
+        assert!(decision
+            .blockers
+            .iter()
+            .any(|blocker| blocker.contains("production flag remains false")));
+        assert!(decision
+            .blockers
+            .iter()
+            .any(|blocker| blocker.contains("executor remains Unwired")));
+        assert!(decision
+            .blockers
+            .iter()
+            .any(|blocker| blocker.contains("live production dry-run policy is missing")));
     }
 }

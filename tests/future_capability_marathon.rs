@@ -87,12 +87,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Design explicit final-approval, production-flag, executor-wiring, and live production dry-run decisions before any production executor wiring can be reconsidered."
+        "Define the future explicit user-approval UX and live production dry-run policy without wiring source/include or duplicate production executors."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("executor-wiring"));
+        .contains("live production dry-run policy"));
 }
 
 #[test]
@@ -1239,6 +1239,92 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     );
     assert_eq!(
         activation_safety_gates["safety"]["duplicateExecutorWired"],
+        false
+    );
+
+    let activation_final_decisions = read_json(
+        "data/reports/default-disabled-production-activation-final-decisions.v0.55.2.json",
+    );
+    assert_eq!(activation_final_decisions["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        activation_final_decisions["implementation"]["sourceIncludeFinalDecisionReviewExists"],
+        true
+    );
+    assert_eq!(
+        activation_final_decisions["implementation"]["duplicateFinalDecisionReviewExists"],
+        true
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_final_decisions["decisions"][key]["status"],
+            "FinalDecisionProofSatisfiedButDecisionsMissing"
+        );
+        assert_eq!(
+            activation_final_decisions["decisions"][key]["finalApproval"],
+            "FinalDecisionRequiresExplicitUserApproval"
+        );
+        assert_eq!(
+            activation_final_decisions["decisions"][key]["productionFlagDecision"],
+            "FinalDecisionRequiresProductionFlagOptIn"
+        );
+        assert_eq!(
+            activation_final_decisions["decisions"][key]["executorWiringDecision"],
+            "FinalDecisionRequiresExecutorWiringOptIn"
+        );
+        assert_eq!(
+            activation_final_decisions["decisions"][key]["liveProductionDryRunPolicy"],
+            "FinalDecisionRequiresLiveProductionDryRunPolicy"
+        );
+        assert_eq!(
+            activation_final_decisions["decisions"][key]["copiedFixtureProof"],
+            "ProductionActivationProofPartiallySatisfiedButDefaultDisabled"
+        );
+        assert_eq!(
+            activation_final_decisions["decisions"][key]["draftPersistenceBoundary"],
+            "PersistenceForbiddenByDefault"
+        );
+        assert_eq!(
+            activation_final_decisions["decisions"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(
+            activation_final_decisions["decisions"][key]["productionFlag"],
+            false
+        );
+        assert_eq!(
+            activation_final_decisions["decisions"][key]["productionWriteExecuted"],
+            false
+        );
+        assert_eq!(
+            activation_final_decisions["decisions"][key]["realConfigTouched"],
+            false
+        );
+        assert_eq!(
+            activation_final_decisions["decisions"][key]["runtimeMutated"],
+            false
+        );
+    }
+    assert_eq!(
+        activation_final_decisions["negativeProofs"]
+            ["copiedFixtureProofAloneCannotApproveProduction"],
+        true
+    );
+    assert_eq!(
+        activation_final_decisions["negativeProofs"]
+            ["copiedFixtureProofAloneCannotSetProductionFlag"],
+        true
+    );
+    assert_eq!(
+        activation_final_decisions["negativeProofs"]["copiedFixtureProofAloneCannotWireExecutor"],
+        true
+    );
+    assert_eq!(
+        activation_final_decisions["negativeProofs"]
+            ["copiedFixtureProofAloneCannotAuthorizeLiveDryRun"],
+        true
+    );
+    assert_eq!(
+        activation_final_decisions["safety"]["unsafeProductionBehaviorEnabled"],
         false
     );
 

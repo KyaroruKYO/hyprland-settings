@@ -146,11 +146,12 @@
     "duplicateActivationDraftWrittenToDisk": false,
     "duplicateActivationDraftStoragePath": "none",
     "duplicateProductionActivationSafetyGateExists": true,
-    "duplicateProductionActivationGateStatus": "ProductionActivationBlockedByDefault",
-    "duplicateByteExactBackupProof": "missing/proof-required",
-    "duplicateWriteRereadRestoreProof": "missing/proof-required",
-    "duplicateNoAutoApplyProof": "missing/proof-required",
-    "duplicatePersistedDraftAutoApplyProof": "missing/proof-required"
+    "duplicateProductionActivationGateStatus": "ProductionActivationProofPartiallySatisfiedButDefaultDisabled",
+    "duplicateByteExactBackupProof": "ProofSatisfiedInCopiedFixture",
+    "duplicateWriteRereadRestoreProof": "ProofSatisfiedInCopiedFixture",
+    "duplicateNoAutoApplyProof": "ProofSatisfiedByReportBackedEvidence",
+    "duplicatePersistedDraftAutoApplyProof": "ProofSatisfiedByReportBackedEvidence",
+    "duplicateFinalDecisionStatus": "FinalDecisionProofSatisfiedButDecisionsMissing"
   },
   "validation": {
     "phaseValidation": "pending batch validation"
@@ -160,7 +161,7 @@
     "Temp-fixture and copied-config-tree executors now prove stale line, raw-line mismatch, old-value mismatch, source-layer duplicate, and same-file duplicate preconditions; explicit production flag review is still required before production Apply integration.",
     "Needs production safe-batch integration review that still refuses real config unless explicitly approved."
   ],
-  "nextRecommendedWork": "Prove duplicate production activation safety gates before any production executor wiring can be reconsidered.",
+  "nextRecommendedWork": "Define the future duplicate final-approval UX and live production dry-run policy without wiring a production executor.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": false,
@@ -241,6 +242,21 @@
     "finalApproval": "ProofStillRequiresExplicitUserApproval",
     "productionFlagDecision": "ProofStillRequiresProductionFlagDecision",
     "executorWiringDecision": "ProofStillRequiresExecutorDecision",
+    "executorWiringStatus": "Unwired",
+    "productionEnabled": false,
+    "productionFlag": false,
+    "realConfigTouched": false,
+    "runtimeMutated": false
+  },
+  "duplicateProductionActivationFinalDecision": {
+    "report": "data/reports/default-disabled-production-activation-final-decisions.v0.55.2.json",
+    "status": "FinalDecisionProofSatisfiedButDecisionsMissing",
+    "finalApproval": "FinalDecisionRequiresExplicitUserApproval",
+    "productionFlagDecision": "FinalDecisionRequiresProductionFlagOptIn",
+    "executorWiringDecision": "FinalDecisionRequiresExecutorWiringOptIn",
+    "liveProductionDryRunPolicy": "FinalDecisionRequiresLiveProductionDryRunPolicy",
+    "copiedFixtureProof": "ProductionActivationProofPartiallySatisfiedButDefaultDisabled",
+    "draftPersistenceBoundary": "PersistenceForbiddenByDefault",
     "executorWiringStatus": "Unwired",
     "productionEnabled": false,
     "productionFlag": false,

@@ -124,3 +124,11 @@ Added default-disabled production activation safety gates for source/include ins
 ## 2026-06-20 - Production activation safety proof
 
 Added source/include and duplicate production activation safety proof. The proof layer uses copied temp fixtures only to satisfy byte-exact backup, pre-write snapshot, target identity, dry-run write plan, diff preview, post-write reread, restore, post-restore verification, and rollback checks. No-auto-apply and persisted-draft auto-apply proof are satisfied by default-disabled report-backed evidence and the persistence boundary. Explicit final approval, production flag decision, executor wiring decision, and live production dry-run remain required. No production executor was wired, no production flag changed, no draft persistence was added, no real config was touched, no runtime mutation was run, and no reload was run.
+## 2026-06-20 - Production Activation Final Decisions
+
+- Added source/include and duplicate final production activation decision reviews.
+- The reviews recognize copied-fixture safety proof as partial evidence, but keep final approval, production flag opt-in, executor wiring opt-in, and live production dry-run policy missing/required.
+- Copied-fixture proof alone cannot approve production, set production flags, wire executors, or authorize live dry-runs.
+- Draft edit state and draft persistence boundary state cannot approve production.
+- Config page now displays disabled/review-only final decision cards with stable widget names and no production, persistence, reload, real-config, runtime, or executor callbacks.
+- Production source/include insertion and duplicate writes remain disabled; executors remain `Unwired`, production flags remain false, draft persistence remains forbidden by default, no real config was touched, no runtime mutation was run, and no reload was run.

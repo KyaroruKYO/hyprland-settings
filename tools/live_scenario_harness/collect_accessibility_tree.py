@@ -334,6 +334,45 @@ PRODUCTION_ACTIVATION_SAFETY_PROOF_ASSERTIONS = {
     },
 }
 
+PRODUCTION_ACTIVATION_FINAL_DECISION_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation final decision",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Final decision proof satisfied but decisions missing",
+        "final_approval": "Final approval",
+        "production_flag": "Production flag decision",
+        "executor_decision": "Executor wiring decision",
+        "live_dry_run": "Live production dry-run policy",
+        "copied_fixture": "Copied-fixture proof",
+        "persistence": "Draft persistence: Persistence forbidden by default",
+        "approval": "Approve source/include production activation (not available)",
+        "flag": "Set source/include production flag (not available)",
+        "wiring": "Wire source/include production executor (not available)",
+        "dry_run": "Run source/include live production dry-run (not available)",
+        "widget": "hyprland-settings-source-include-production-activation-final-decision-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation final decision",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "status": "Final decision proof satisfied but decisions missing",
+        "final_approval": "Final approval",
+        "production_flag": "Production flag decision",
+        "executor_decision": "Executor wiring decision",
+        "live_dry_run": "Live production dry-run policy",
+        "copied_fixture": "Copied-fixture proof",
+        "persistence": "Draft persistence: Persistence forbidden by default",
+        "approval": "Approve duplicate production activation (not available)",
+        "flag": "Set duplicate production flag (not available)",
+        "wiring": "Wire duplicate production executor (not available)",
+        "dry_run": "Run duplicate live production dry-run (not available)",
+        "widget": "hyprland-settings-duplicate-production-activation-final-decision-disabled",
+    },
+}
+
 LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT = [
     "Source/include activation draft editing",
     "Duplicate activation draft editing",
@@ -841,6 +880,46 @@ def production_activation_safety_proof_assertions(values):
     return assertions
 
 
+def production_activation_final_decision_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in PRODUCTION_ACTIVATION_FINAL_DECISION_ASSERTIONS.items():
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": spec["heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "finalDecisionStatus": spec["status"],
+            "finalDecisionStatusFound": spec["status"].lower() in text,
+            "finalApproval": spec["final_approval"],
+            "finalApprovalFound": spec["final_approval"].lower() in text,
+            "productionFlagDecision": spec["production_flag"],
+            "productionFlagDecisionFound": spec["production_flag"].lower() in text,
+            "executorWiringDecision": spec["executor_decision"],
+            "executorWiringDecisionFound": spec["executor_decision"].lower() in text,
+            "liveProductionDryRunPolicy": spec["live_dry_run"],
+            "liveProductionDryRunPolicyFound": spec["live_dry_run"].lower() in text,
+            "copiedFixtureProof": spec["copied_fixture"],
+            "copiedFixtureProofFound": spec["copied_fixture"].lower() in text,
+            "draftPersistence": spec["persistence"],
+            "draftPersistenceFound": spec["persistence"].lower() in text,
+            "disabledApproval": spec["approval"],
+            "disabledApprovalFound": spec["approval"].lower() in text,
+            "disabledProductionFlag": spec["flag"],
+            "disabledProductionFlagFound": spec["flag"].lower() in text,
+            "disabledExecutorWiring": spec["wiring"],
+            "disabledExecutorWiringFound": spec["wiring"].lower() in text,
+            "disabledLiveDryRun": spec["dry_run"],
+            "disabledLiveDryRunFound": spec["dry_run"].lower() in text,
+            "widgetName": spec["widget"],
+            "widgetNameFound": spec["widget"].lower() in text,
+        }
+    return assertions
+
+
 def node_text(node):
     return "\n".join(accessible_text(node))
 
@@ -1260,6 +1339,15 @@ def main() -> int:
         "productionActivationSafetyProofsAllNoAutoApplyFound": False,
         "productionActivationSafetyProofsAllFinalApprovalFound": False,
         "productionActivationSafetyProofsAllDisabledActionsFound": False,
+        "productionActivationFinalDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationFinalDecisionAssertions": {},
+        "productionActivationFinalDecisionsAllHeadingsFound": False,
+        "productionActivationFinalDecisionsAllProductionDisabledFound": False,
+        "productionActivationFinalDecisionsAllExecutorUnwiredFound": False,
+        "productionActivationFinalDecisionsAllStatusFound": False,
+        "productionActivationFinalDecisionsAllDecisionLabelsFound": False,
+        "productionActivationFinalDecisionsAllPersistenceFound": False,
+        "productionActivationFinalDecisionsAllDisabledActionsFound": False,
         "text": [],
         "error": None,
     }
@@ -1352,6 +1440,9 @@ def main() -> int:
             result["text"] + result["textAfterNavigation"]
         )
         safety_proof_assertions = production_activation_safety_proof_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        final_decision_assertions = production_activation_final_decision_assertions(
             result["text"] + result["textAfterNavigation"]
         )
         result["approvalCardAssertions"] = approval_assertions
@@ -1535,6 +1626,37 @@ def main() -> int:
         result["productionActivationSafetyProofsAllDisabledActionsFound"] = all(
             card["disabledRunFound"] and card["disabledEnableFound"]
             for card in safety_proof_assertions.values()
+        )
+        result["productionActivationFinalDecisionAssertions"] = final_decision_assertions
+        result["productionActivationFinalDecisionsAllHeadingsFound"] = all(
+            card["headingFound"] for card in final_decision_assertions.values()
+        )
+        result["productionActivationFinalDecisionsAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in final_decision_assertions.values()
+        )
+        result["productionActivationFinalDecisionsAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in final_decision_assertions.values()
+        )
+        result["productionActivationFinalDecisionsAllStatusFound"] = all(
+            card["finalDecisionStatusFound"] for card in final_decision_assertions.values()
+        )
+        result["productionActivationFinalDecisionsAllDecisionLabelsFound"] = all(
+            card["finalApprovalFound"]
+            and card["productionFlagDecisionFound"]
+            and card["executorWiringDecisionFound"]
+            and card["liveProductionDryRunPolicyFound"]
+            and card["copiedFixtureProofFound"]
+            for card in final_decision_assertions.values()
+        )
+        result["productionActivationFinalDecisionsAllPersistenceFound"] = all(
+            card["draftPersistenceFound"] for card in final_decision_assertions.values()
+        )
+        result["productionActivationFinalDecisionsAllDisabledActionsFound"] = all(
+            card["disabledApprovalFound"]
+            and card["disabledProductionFlagFound"]
+            and card["disabledExecutorWiringFound"]
+            and card["disabledLiveDryRunFound"]
+            for card in final_decision_assertions.values()
         )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text

@@ -39,11 +39,11 @@
     },
     "missingDefaultInsertion": {
       "classification": "blocked by production activation",
-      "evidence": "Source/include insertion has decision/path/control/form/draft/edit/live-edit/persistence-boundary and production activation safety-gate proof layers. Copied-fixture backup/write/reread/restore/no-auto-apply proof is partially satisfied, but production insertion remains disabled, executors remain unwired, and final approval, production flag, executor wiring, and live production dry-run decisions remain required."
+      "evidence": "Source/include insertion has decision/path/control/form/draft/edit/live-edit/persistence-boundary, production activation safety-gate proof, and final-decision layers. Copied-fixture backup/write/reread/restore/no-auto-apply proof is partially satisfied, but production insertion remains disabled, executors remain unwired, and final approval, production flag, executor wiring, and live production dry-run policy remain missing/required."
     },
     "duplicateResolution": {
       "classification": "blocked by production activation",
-      "evidence": "Duplicate replacement has decision/path/control/form/draft/edit/live-edit/persistence-boundary and production activation safety-gate proof layers. Copied-fixture backup/write/reread/restore/no-auto-apply proof is partially satisfied, but production duplicate writes remain disabled, executors remain unwired, and final approval, production flag, executor wiring, and live production dry-run decisions remain required."
+      "evidence": "Duplicate replacement has decision/path/control/form/draft/edit/live-edit/persistence-boundary, production activation safety-gate proof, and final-decision layers. Copied-fixture backup/write/reread/restore/no-auto-apply proof is partially satisfied, but production duplicate writes remain disabled, executors remain unwired, and final approval, production flag, executor wiring, and live production dry-run policy remain missing/required."
     },
     "highRiskDisplayRecovery": {
       "classification": "blocked by high-risk recovery proof",

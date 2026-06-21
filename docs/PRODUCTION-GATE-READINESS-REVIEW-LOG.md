@@ -122,3 +122,15 @@ Production gate readiness now records default-disabled production activation saf
 ## 2026-06-20 - Production Activation Safety Proof
 
 Production gate readiness now records copied-fixture production activation safety proof for source/include insertion and duplicate replacement. Byte-exact backup, pre-write snapshot, target identity, dry-run write plan, diff preview, post-write reread, restore, post-restore verification, and rollback proof are satisfied in copied fixtures only. No-auto-apply proof and persisted-draft auto-apply prevention are satisfied by report-backed default-disabled UI/control evidence and `PersistenceForbiddenByDefault`. Explicit final approval, production flag decision, executor wiring decision, and live production dry-run remain required. Executors remain `Unwired`, production flags remain false, no disk persistence was added, no real config was touched, no runtime mutation was run, and no reload was run.
+## 2026-06-20 - Final Decisions
+
+- Source/include final decision review exists.
+- Duplicate final decision review exists.
+- Final approval remains missing/required for both categories.
+- Production flag opt-in remains missing/required and current production flags remain false.
+- Executor wiring opt-in remains missing/required and current executors remain `Unwired`.
+- Live production dry-run policy remains missing/required and cannot touch real config, reload Hyprland, or mutate runtime by default.
+- Copied-fixture proof remains partial/default-disabled and cannot approve production by itself.
+- Draft persistence remains forbidden by default.
+- No source/include production insertion or duplicate production write was enabled.
+- No disk persistence, storage directory, serializer/write path, real config mutation, runtime mutation, or reload was added.

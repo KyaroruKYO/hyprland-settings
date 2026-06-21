@@ -123,6 +123,24 @@
     "realConfigTouched": false,
     "runtimeMutated": false
   },
+  "productionActivationFinalDecisions": {
+    "report": "data/reports/default-disabled-production-activation-final-decisions.v0.55.2.json",
+    "sourceIncludeStatus": "FinalDecisionProofSatisfiedButDecisionsMissing",
+    "duplicateStatus": "FinalDecisionProofSatisfiedButDecisionsMissing",
+    "finalApproval": "missing/required",
+    "productionFlagDecision": "false / missing explicit opt-in",
+    "executorWiringDecision": "Unwired / missing explicit opt-in",
+    "liveProductionDryRunPolicy": "missing/required",
+    "copiedFixtureProof": "partially satisfied",
+    "draftPersistenceBoundary": "PersistenceForbiddenByDefault",
+    "sourceIncludeExecutorWired": false,
+    "duplicateExecutorWired": false,
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "productionWriteExecuted": false,
+    "realConfigTouched": false,
+    "runtimeMutated": false
+  },
   "safety": {
     "realConfigTouched": false,
     "runtimeTouched": true,
@@ -195,7 +213,7 @@
     "sourceIncludeProductionEnabled": false,
     "duplicateProductionEnabled": false
   },
-  "nextRecommendedWork": "Design explicit final-approval, production-flag, executor-wiring, and live production dry-run decisions before any source/include or duplicate production executor wiring can be reconsidered.",
+  "nextRecommendedWork": "Define the future explicit user-approval UX and live production dry-run policy without wiring source/include or duplicate production executors.",
   "activationDecisionReview": {
     "report": "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
     "sourceIncludeInsertion": "ApprovedButDefaultDisabled; production flag false",

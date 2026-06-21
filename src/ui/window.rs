@@ -20,17 +20,18 @@ use crate::future_capability::{
     duplicate_activation_draft_gtk_review, duplicate_production_approval_gate,
     production_activation_control_reviews, production_activation_decision_reviews,
     production_activation_draft_edit_reviews, production_activation_draft_persistence_boundaries,
-    production_activation_draft_reviews, production_activation_form_reviews,
-    production_activation_live_draft_gtk_reviews, production_activation_path_reviews,
-    production_activation_safety_gate_proof_reviews, production_activation_safety_gate_reviews,
-    proven_runtime_approval_evidence_summary, source_include_activation_draft_gtk_review,
-    source_include_insertion_review, source_include_selected_target_dry_run_plan,
-    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
-    DuplicateOccurrence, DuplicateProductionGateStatus, ProductionActivationControlReview,
-    ProductionActivationDecisionReview, ProductionActivationDraftEditReview,
-    ProductionActivationDraftGtkField, ProductionActivationDraftGtkReview,
-    ProductionActivationDraftGtkState, ProductionActivationDraftGtkUpdate,
-    ProductionActivationDraftPersistenceBoundary, ProductionActivationDraftReview,
+    production_activation_draft_reviews, production_activation_final_decision_reviews,
+    production_activation_form_reviews, production_activation_live_draft_gtk_reviews,
+    production_activation_path_reviews, production_activation_safety_gate_proof_reviews,
+    production_activation_safety_gate_reviews, proven_runtime_approval_evidence_summary,
+    source_include_activation_draft_gtk_review, source_include_insertion_review,
+    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
+    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
+    ProductionActivationControlReview, ProductionActivationDecisionReview,
+    ProductionActivationDraftEditReview, ProductionActivationDraftGtkField,
+    ProductionActivationDraftGtkReview, ProductionActivationDraftGtkState,
+    ProductionActivationDraftGtkUpdate, ProductionActivationDraftPersistenceBoundary,
+    ProductionActivationDraftReview, ProductionActivationFinalDecisionReview,
     ProductionActivationFormReview, ProductionActivationPathReview,
     ProductionActivationSafetyGateProofReview, ProductionActivationSafetyGateReview,
     ProductionExecutorWiringState, SourceIncludeInsertionReadiness,
@@ -1903,6 +1904,7 @@ fn production_activation_safety_gate_reviews_section() -> gtk::Frame {
         content.append(&production_activation_safety_gate_review_card(&gate));
     }
     content.append(&production_activation_safety_gate_proof_reviews_section());
+    content.append(&production_activation_final_decision_reviews_section());
 
     frame.set_child(Some(&content));
     frame
@@ -2108,6 +2110,146 @@ fn production_activation_safety_gate_proof_review_card(
     ));
     enable.set_sensitive(false);
     content.append(&enable);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_final_decision_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-final-decision-section");
+    frame.set_tooltip_text(Some(
+        "Default-disabled final activation decisions. These cannot approve production or wire executors.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Production activation final decisions"));
+    content.append(&small_label(
+        "Copied-fixture proof does not imply final approval, production flag opt-in, executor wiring, or live production dry-run permission.",
+    ));
+    content.append(&small_label(
+        "Final approval, production flag, executor wiring, and live production dry-run decisions remain missing/required.",
+    ));
+    content.append(&small_label(
+        "Final decision proof satisfied but decisions missing.",
+    ));
+
+    for decision in production_activation_final_decision_reviews() {
+        content.append(&production_activation_final_decision_review_card(&decision));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_final_decision_review_card(
+    decision: &ProductionActivationFinalDecisionReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&decision.widget_name);
+    frame.set_tooltip_text(Some(
+        "Review-only final activation decision. This card has no persistence, mutation, production, compositor refresh, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&decision.evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&decision.heading));
+    append_detail_line(
+        &content,
+        "Final decision status",
+        decision.status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Final approval",
+        decision.final_approval_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Production flag decision",
+        decision.production_flag_decision_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring decision",
+        decision.executor_wiring_decision_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live production dry-run policy",
+        decision.live_dry_run_policy_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Copied-fixture proof",
+        decision.copied_fixture_proof_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Form/control/draft proof",
+        &decision.form_control_draft_proof_status,
+    );
+    append_detail_line(
+        &content,
+        "Draft persistence",
+        decision.draft_persistence_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        decision.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &decision.production_label,
+        &decision.production_status,
+    );
+
+    content.append(&small_label("Final decision blockers"));
+    for blocker in &decision.blockers {
+        content.append(&small_label(blocker));
+    }
+
+    let approval = gtk::Button::with_label(&decision.disabled_final_approval_label);
+    approval.set_widget_name(&decision.disabled_final_approval_widget_name);
+    approval.set_tooltip_text(Some(
+        "Final approval is not available. This button has no production callback.",
+    ));
+    approval.set_sensitive(false);
+    content.append(&approval);
+
+    let flag = gtk::Button::with_label(&decision.disabled_production_flag_label);
+    flag.set_widget_name(&decision.disabled_production_flag_widget_name);
+    flag.set_tooltip_text(Some(
+        "Production flag opt-in is not available. This button does not change flags.",
+    ));
+    flag.set_sensitive(false);
+    content.append(&flag);
+
+    let wiring = gtk::Button::with_label(&decision.disabled_executor_wiring_label);
+    wiring.set_widget_name(&decision.disabled_executor_wiring_widget_name);
+    wiring.set_tooltip_text(Some(
+        "Executor wiring is not available. This button has no executor callback.",
+    ));
+    wiring.set_sensitive(false);
+    content.append(&wiring);
+
+    let dry_run = gtk::Button::with_label(&decision.disabled_live_dry_run_label);
+    dry_run.set_widget_name(&decision.disabled_live_dry_run_widget_name);
+    dry_run.set_tooltip_text(Some(
+        "Live production dry-run is not available. This button has no config, runtime, compositor refresh, or IPC callback.",
+    ));
+    dry_run.set_sensitive(false);
+    content.append(&dry_run);
 
     frame.set_child(Some(&content));
     frame

@@ -8,7 +8,8 @@
     "data/reports/default-disabled-production-activation-draft-persistence-boundary.v0.55.2.json",
     "data/reports/default-disabled-production-activation-live-draft-edit.v0.55.2.json",
     "data/reports/default-disabled-production-gates.v0.55.2.json",
-    "data/reports/explicit-approval-flow.v0.55.2.json"
+    "data/reports/explicit-approval-flow.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-final-decisions.v0.55.2.json"
   ],
   "implementation": {
     "sourceIncludeProductionActivationSafetyProofExists": true,
@@ -18,6 +19,7 @@
     "persistedDraftAutoApplyProofExplicit": true,
     "uiSurfaceExists": true,
     "screenshotLevelAssertionsImplemented": true,
+    "finalDecisionReviewExists": true,
     "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr"
   },
   "proofs": {
@@ -130,5 +132,5 @@
     "No runtime mutation was run.",
     "No hyprctl reload was run."
   ],
-  "nextRecommendedWork": "Design explicit final-approval, production-flag, executor-wiring, and live production dry-run decisions before production activation can be reconsidered."
+  "nextRecommendedWork": "Define the future explicit user-approval UX and live production dry-run policy without wiring production executors."
 }

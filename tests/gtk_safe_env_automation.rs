@@ -121,6 +121,7 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("activationDraftEditsAllValidationFound"));
     assert!(collector.contains("PRODUCTION_ACTIVATION_SAFETY_GATE_ASSERTIONS"));
     assert!(collector.contains("PRODUCTION_ACTIVATION_SAFETY_PROOF_ASSERTIONS"));
+    assert!(collector.contains("PRODUCTION_ACTIVATION_FINAL_DECISION_ASSERTIONS"));
     assert!(collector.contains("productionActivationSafetyGateAssertionMethod"));
     assert!(collector.contains("productionActivationSafetyGateAssertions"));
     assert!(collector.contains("productionActivationSafetyGatesAllBlockedByDefaultFound"));
@@ -128,6 +129,9 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("productionActivationSafetyProofAssertions"));
     assert!(collector.contains("productionActivationSafetyProofsAllCopiedFixtureProofFound"));
     assert!(collector.contains("productionActivationSafetyProofsAllFinalApprovalFound"));
+    assert!(collector.contains("productionActivationFinalDecisionAssertions"));
+    assert!(collector.contains("productionActivationFinalDecisionsAllDecisionLabelsFound"));
+    assert!(collector.contains("productionActivationFinalDecisionsAllDisabledActionsFound"));
     for expected in [
         "Source/include approval review",
         "Duplicate approval review",
@@ -151,7 +155,10 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "Duplicate production activation safety gate",
         "Source/include production activation safety proof",
         "Duplicate production activation safety proof",
+        "Source/include production activation final decision",
+        "Duplicate production activation final decision",
         "Production activation proof partially satisfied but default-disabled",
+        "Final decision proof satisfied but decisions missing",
         "Byte-exact backup",
         "Write plan",
         "Dry-run write plan",
@@ -165,6 +172,19 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "Persisted-draft auto-apply proof",
         "Explicit final approval",
         "Final approval still required",
+        "Production flag decision",
+        "Executor wiring decision",
+        "Live production dry-run policy",
+        "Copied-fixture proof",
+        "Draft persistence: Persistence forbidden by default",
+        "Approve source/include production activation (not available)",
+        "Set source/include production flag (not available)",
+        "Wire source/include production executor (not available)",
+        "Run source/include live production dry-run (not available)",
+        "Approve duplicate production activation (not available)",
+        "Set duplicate production flag (not available)",
+        "Wire duplicate production executor (not available)",
+        "Run duplicate live production dry-run (not available)",
         "Run source/include production safety proof (fixture only, planned)",
         "Run duplicate production safety proof (fixture only, planned)",
         "Review source/include production activation gate (not available)",
@@ -334,12 +354,19 @@ fn gtk_harness_records_screenshot_level_disabled_approval_card_assertions() {
         "productionActivationSafetyGateResults",
         "productionActivationSafetyGatesAllRequiredProofFound",
         "production_activation_safety_proof_assertion_results",
+        "production_activation_final_decision_assertion_results",
         "productionActivationSafetyProofAssertionMethod",
         "productionActivationSafetyProofResults",
         "productionActivationSafetyProofsAllHeadingsFound",
         "productionActivationSafetyProofsAllCopiedFixtureProofFound",
         "productionActivationSafetyProofsAllNoAutoApplyFound",
         "productionActivationSafetyProofsAllFinalApprovalFound",
+        "productionActivationFinalDecisionAssertionMethod",
+        "productionActivationFinalDecisionResults",
+        "productionActivationFinalDecisionsAllHeadingsFound",
+        "productionActivationFinalDecisionsAllDecisionLabelsFound",
+        "productionActivationFinalDecisionsAllPersistenceFound",
+        "productionActivationFinalDecisionsAllDisabledActionsFound",
         "sourceIncludeInsertion",
         "duplicateReplacement",
         "structuredHlBindWrite",

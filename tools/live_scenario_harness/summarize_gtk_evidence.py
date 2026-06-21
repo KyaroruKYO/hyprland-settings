@@ -377,6 +377,41 @@ def run_summary(run_dir):
                     "productionActivationSafetyProofsAllDisabledActionsFound"
                 )
             ),
+            "productionActivationFinalDecisionAssertionMethod": accessibility.get(
+                "productionActivationFinalDecisionAssertionMethod"
+            ),
+            "productionActivationFinalDecisionAssertions": accessibility.get(
+                "productionActivationFinalDecisionAssertions", {}
+            ),
+            "productionActivationFinalDecisionsAllHeadingsFound": bool(
+                accessibility.get("productionActivationFinalDecisionsAllHeadingsFound")
+            ),
+            "productionActivationFinalDecisionsAllProductionDisabledFound": bool(
+                accessibility.get(
+                    "productionActivationFinalDecisionsAllProductionDisabledFound"
+                )
+            ),
+            "productionActivationFinalDecisionsAllExecutorUnwiredFound": bool(
+                accessibility.get(
+                    "productionActivationFinalDecisionsAllExecutorUnwiredFound"
+                )
+            ),
+            "productionActivationFinalDecisionsAllStatusFound": bool(
+                accessibility.get("productionActivationFinalDecisionsAllStatusFound")
+            ),
+            "productionActivationFinalDecisionsAllDecisionLabelsFound": bool(
+                accessibility.get(
+                    "productionActivationFinalDecisionsAllDecisionLabelsFound"
+                )
+            ),
+            "productionActivationFinalDecisionsAllPersistenceFound": bool(
+                accessibility.get("productionActivationFinalDecisionsAllPersistenceFound")
+            ),
+            "productionActivationFinalDecisionsAllDisabledActionsFound": bool(
+                accessibility.get(
+                    "productionActivationFinalDecisionsAllDisabledActionsFound"
+                )
+            ),
             "duplicateConflictDetailNavigationAttempted": bool(
                 accessibility.get("duplicateConflictDetailNavigationAttempted")
             ),
@@ -443,6 +478,9 @@ def aggregate(runs):
     )
     production_activation_safety_proof_results = (
         production_activation_safety_proof_assertion_results(runs)
+    )
+    production_activation_final_decision_results = (
+        production_activation_final_decision_assertion_results(runs)
     )
 
     return {
@@ -675,6 +713,36 @@ def aggregate(runs):
         "productionActivationSafetyProofsAllDisabledActionsFound": all(
             result["disabledActionsProof"] == "live_gtk_atspi_proof"
             for result in production_activation_safety_proof_results.values()
+        ),
+        "productionActivationFinalDecisionAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationFinalDecisionResults": production_activation_final_decision_results,
+        "productionActivationFinalDecisionsAllHeadingsFound": all(
+            result["headingProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_final_decision_results.values()
+        ),
+        "productionActivationFinalDecisionsAllProductionDisabledFound": all(
+            result["productionDisabledProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_final_decision_results.values()
+        ),
+        "productionActivationFinalDecisionsAllExecutorUnwiredFound": all(
+            result["executorWiringProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_final_decision_results.values()
+        ),
+        "productionActivationFinalDecisionsAllStatusFound": all(
+            result["finalDecisionStatusProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_final_decision_results.values()
+        ),
+        "productionActivationFinalDecisionsAllDecisionLabelsFound": all(
+            result["decisionLabelsProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_final_decision_results.values()
+        ),
+        "productionActivationFinalDecisionsAllPersistenceFound": all(
+            result["draftPersistenceProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_final_decision_results.values()
+        ),
+        "productionActivationFinalDecisionsAllDisabledActionsFound": all(
+            result["disabledActionsProof"] == "live_gtk_atspi_proof"
+            for result in production_activation_final_decision_results.values()
         ),
         "fallbackProofUsed": any(level in {"source_model_fallback", "not_proven"} for level in by_area.values())
         or any(level in {"source_model_fallback", "not_proven"} for level in by_blocked_category.values()),
@@ -1541,6 +1609,124 @@ def production_activation_safety_proof_assertion_results(runs):
     return results
 
 
+def production_activation_final_decision_assertion_results(runs):
+    decision_keys = [
+        "sourceIncludeInsertion",
+        "duplicateReplacement",
+    ]
+    results = {}
+    for key in decision_keys:
+        def assertion_run(field):
+            return next(
+                (
+                    run
+                    for run in runs
+                    if run["accessibility"]
+                    .get("productionActivationFinalDecisionAssertions", {})
+                    .get(key, {})
+                    .get(field)
+                ),
+                None,
+            )
+
+        heading_run = assertion_run("headingFound")
+        production_run = assertion_run("productionDisabledFound")
+        executor_run = assertion_run("executorWiringFound")
+        status_run = assertion_run("finalDecisionStatusFound")
+        decisions_run = next(
+            (
+                run
+                for run in runs
+                if all(
+                    run["accessibility"]
+                    .get("productionActivationFinalDecisionAssertions", {})
+                    .get(key, {})
+                    .get(field)
+                    for field in [
+                        "finalApprovalFound",
+                        "productionFlagDecisionFound",
+                        "executorWiringDecisionFound",
+                        "liveProductionDryRunPolicyFound",
+                        "copiedFixtureProofFound",
+                    ]
+                )
+            ),
+            None,
+        )
+        persistence_run = assertion_run("draftPersistenceFound")
+        action_run = next(
+            (
+                run
+                for run in runs
+                if all(
+                    run["accessibility"]
+                    .get("productionActivationFinalDecisionAssertions", {})
+                    .get(key, {})
+                    .get(field)
+                    for field in [
+                        "disabledApprovalFound",
+                        "disabledProductionFlagFound",
+                        "disabledExecutorWiringFound",
+                        "disabledLiveDryRunFound",
+                    ]
+                )
+            ),
+            None,
+        )
+        sample = {}
+        for run in runs:
+            sample = (
+                run["accessibility"]
+                .get("productionActivationFinalDecisionAssertions", {})
+                .get(key, {})
+            )
+            if sample:
+                break
+        results[key] = {
+            "heading": sample.get("heading"),
+            "headingProof": "live_gtk_atspi_proof" if heading_run else "not_proven",
+            "headingEvidenceRun": heading_run["name"] if heading_run else None,
+            "productionDisabledText": sample.get("productionDisabledText"),
+            "productionDisabledProof": "live_gtk_atspi_proof"
+            if production_run
+            else "not_proven",
+            "productionDisabledEvidenceRun": production_run["name"] if production_run else None,
+            "executorWiring": sample.get("executorWiring"),
+            "executorWiringProof": "live_gtk_atspi_proof" if executor_run else "not_proven",
+            "executorWiringEvidenceRun": executor_run["name"] if executor_run else None,
+            "finalDecisionStatus": sample.get("finalDecisionStatus"),
+            "finalDecisionStatusProof": "live_gtk_atspi_proof"
+            if status_run
+            else "not_proven",
+            "finalDecisionStatusEvidenceRun": status_run["name"] if status_run else None,
+            "decisionLabels": [
+                sample.get("finalApproval"),
+                sample.get("productionFlagDecision"),
+                sample.get("executorWiringDecision"),
+                sample.get("liveProductionDryRunPolicy"),
+                sample.get("copiedFixtureProof"),
+            ],
+            "decisionLabelsProof": "live_gtk_atspi_proof"
+            if decisions_run
+            else "not_proven",
+            "decisionLabelsEvidenceRun": decisions_run["name"] if decisions_run else None,
+            "draftPersistence": sample.get("draftPersistence"),
+            "draftPersistenceProof": "live_gtk_atspi_proof"
+            if persistence_run
+            else "not_proven",
+            "draftPersistenceEvidenceRun": persistence_run["name"] if persistence_run else None,
+            "disabledApproval": sample.get("disabledApproval"),
+            "disabledProductionFlag": sample.get("disabledProductionFlag"),
+            "disabledExecutorWiring": sample.get("disabledExecutorWiring"),
+            "disabledLiveDryRun": sample.get("disabledLiveDryRun"),
+            "disabledActionsProof": "live_gtk_atspi_proof" if action_run else "not_proven",
+            "disabledActionsEvidenceRun": action_run["name"] if action_run else None,
+            "widgetName": sample.get("widgetName"),
+            "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        }
+    return results
+
+
 def matching_category_run(runs, spec):
     for run in runs:
         if run["scenario"] == spec["scenario"] and run["navigationTarget"] == spec["target"]:
@@ -1850,6 +2036,33 @@ def base_report(kind, evidence_root, summary, runs, extra=None):
         ],
         "productionActivationSafetyProofsAllDisabledActionsFound": summary[
             "productionActivationSafetyProofsAllDisabledActionsFound"
+        ],
+        "productionActivationFinalDecisionAssertionMethod": summary[
+            "productionActivationFinalDecisionAssertionMethod"
+        ],
+        "productionActivationFinalDecisionResults": summary[
+            "productionActivationFinalDecisionResults"
+        ],
+        "productionActivationFinalDecisionsAllHeadingsFound": summary[
+            "productionActivationFinalDecisionsAllHeadingsFound"
+        ],
+        "productionActivationFinalDecisionsAllProductionDisabledFound": summary[
+            "productionActivationFinalDecisionsAllProductionDisabledFound"
+        ],
+        "productionActivationFinalDecisionsAllExecutorUnwiredFound": summary[
+            "productionActivationFinalDecisionsAllExecutorUnwiredFound"
+        ],
+        "productionActivationFinalDecisionsAllStatusFound": summary[
+            "productionActivationFinalDecisionsAllStatusFound"
+        ],
+        "productionActivationFinalDecisionsAllDecisionLabelsFound": summary[
+            "productionActivationFinalDecisionsAllDecisionLabelsFound"
+        ],
+        "productionActivationFinalDecisionsAllPersistenceFound": summary[
+            "productionActivationFinalDecisionsAllPersistenceFound"
+        ],
+        "productionActivationFinalDecisionsAllDisabledActionsFound": summary[
+            "productionActivationFinalDecisionsAllDisabledActionsFound"
         ],
         "fallbackProofUsed": summary["fallbackProofUsed"],
         "issuesFound": issues(summary),
