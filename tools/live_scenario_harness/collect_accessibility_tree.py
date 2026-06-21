@@ -469,6 +469,41 @@ PRODUCTION_ACTIVATION_OPT_IN_REQUIREMENTS_ASSERTIONS = {
     },
 }
 
+PRODUCTION_ACTIVATION_CAP_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "heading": "Source/include production activation cap",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "status": "branch capped for non-production runway",
+        "separate_phase": "Future production activation requires separate approved phase",
+        "production_flag_false": "Production flag: false",
+        "executor": "Executor wiring: Unwired",
+        "draft_persistence": "Draft persistence: Persistence forbidden by default",
+        "real_config": "Real config touched: false",
+        "runtime": "Runtime mutated: false",
+        "write": "Production write executed: false",
+        "start": "Start source/include production activation phase (not available)",
+        "confirm": "Confirm source/include branch cap (not available)",
+        "widget": "hyprland-settings-source-include-production-activation-cap-disabled",
+    },
+    "duplicateReplacement": {
+        "heading": "Duplicate production activation cap",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "status": "branch capped for non-production runway",
+        "separate_phase": "Future production activation requires separate approved phase",
+        "production_flag_false": "Production flag: false",
+        "executor": "Executor wiring: Unwired",
+        "draft_persistence": "Draft persistence: Persistence forbidden by default",
+        "real_config": "Real config touched: false",
+        "runtime": "Runtime mutated: false",
+        "write": "Production write executed: false",
+        "start": "Start duplicate production activation phase (not available)",
+        "confirm": "Confirm duplicate branch cap (not available)",
+        "widget": "hyprland-settings-duplicate-production-activation-cap-disabled",
+    },
+}
+
 LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT = [
     "Source/include activation draft editing",
     "Duplicate activation draft editing",
@@ -1114,6 +1149,42 @@ def production_activation_opt_in_requirements_assertions(values):
     return assertions
 
 
+def production_activation_cap_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in PRODUCTION_ACTIVATION_CAP_ASSERTIONS.items():
+        assertions[key] = {
+            "heading": spec["heading"],
+            "headingFound": spec["heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "status": spec["status"],
+            "statusFound": spec["status"].lower() in text,
+            "separatePhase": spec["separate_phase"],
+            "separatePhaseFound": spec["separate_phase"].lower() in text,
+            "productionFlagFalse": spec["production_flag_false"],
+            "productionFlagFalseFound": spec["production_flag_false"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "draftPersistence": spec["draft_persistence"],
+            "draftPersistenceFound": spec["draft_persistence"].lower() in text,
+            "realConfigTouched": spec["real_config"],
+            "realConfigTouchedFound": spec["real_config"].lower() in text,
+            "runtimeMutated": spec["runtime"],
+            "runtimeMutatedFound": spec["runtime"].lower() in text,
+            "productionWriteExecuted": spec["write"],
+            "productionWriteExecutedFound": spec["write"].lower() in text,
+            "disabledStart": spec["start"],
+            "disabledStartFound": spec["start"].lower() in text,
+            "disabledConfirm": spec["confirm"],
+            "disabledConfirmFound": spec["confirm"].lower() in text,
+            "widgetName": spec["widget"],
+            "widgetNameFound": spec["widget"].lower() in text,
+        }
+    return assertions
+
+
 def node_text(node):
     return "\n".join(accessible_text(node))
 
@@ -1561,6 +1632,17 @@ def main() -> int:
         "productionActivationOptInRequirementsAllRequirementLabelsFound": False,
         "productionActivationOptInRequirementsAllFlagFalseFound": False,
         "productionActivationOptInRequirementsAllDisabledActionsFound": False,
+        "productionActivationCapAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationCapAssertions": {},
+        "productionActivationCapAllHeadingsFound": False,
+        "productionActivationCapAllStatusFound": False,
+        "productionActivationCapAllSeparatePhaseFound": False,
+        "productionActivationCapAllProductionDisabledFound": False,
+        "productionActivationCapAllFlagFalseFound": False,
+        "productionActivationCapAllExecutorUnwiredFound": False,
+        "productionActivationCapAllPersistenceFound": False,
+        "productionActivationCapAllNoMutationFound": False,
+        "productionActivationCapAllDisabledActionsFound": False,
         "text": [],
         "error": None,
     }
@@ -1664,6 +1746,9 @@ def main() -> int:
             )
         )
         opt_in_requirements_assertions = production_activation_opt_in_requirements_assertions(
+            result["text"] + result["textAfterNavigation"]
+        )
+        cap_assertions = production_activation_cap_assertions(
             result["text"] + result["textAfterNavigation"]
         )
         result["approvalCardAssertions"] = approval_assertions
@@ -1957,6 +2042,38 @@ def main() -> int:
             and card["disabledExecutorWiringFound"]
             and card["disabledConfirmationFound"]
             for card in opt_in_requirements_assertions.values()
+        )
+        result["productionActivationCapAssertions"] = cap_assertions
+        result["productionActivationCapAllHeadingsFound"] = all(
+            card["headingFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllStatusFound"] = all(
+            card["statusFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllSeparatePhaseFound"] = all(
+            card["separatePhaseFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllFlagFalseFound"] = all(
+            card["productionFlagFalseFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllPersistenceFound"] = all(
+            card["draftPersistenceFound"] for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllNoMutationFound"] = all(
+            card["realConfigTouchedFound"]
+            and card["runtimeMutatedFound"]
+            and card["productionWriteExecutedFound"]
+            for card in cap_assertions.values()
+        )
+        result["productionActivationCapAllDisabledActionsFound"] = all(
+            card["disabledStartFound"] and card["disabledConfirmFound"]
+            for card in cap_assertions.values()
         )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text

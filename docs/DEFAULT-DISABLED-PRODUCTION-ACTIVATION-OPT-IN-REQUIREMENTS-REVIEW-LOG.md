@@ -43,4 +43,4 @@ This review defines future production flag and executor-wiring opt-in implementa
 
 ## Next Work
 
-Define the final production activation cap or stop condition for source/include and duplicate without enabling production.
+The follow-up capstone is complete. Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.

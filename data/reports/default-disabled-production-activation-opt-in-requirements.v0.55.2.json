@@ -13,6 +13,8 @@
   "implementation": {
     "sourceIncludeOptInRequirementsReviewExists": true,
     "duplicateOptInRequirementsReviewExists": true,
+    "productionActivationCapReviewExists": true,
+    "futureProductionActivationRequiresSeparateApprovedPhase": true,
     "uiSurfaceExists": true,
     "screenshotLevelAssertionsImplemented": true,
     "assertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr"
@@ -146,7 +148,8 @@
     "No activation draft data was written to disk.",
     "No real config was touched.",
     "No runtime mutation was run.",
-    "No hyprctl reload was run."
+    "No hyprctl reload was run.",
+    "Future production activation now requires a separate explicitly approved phase."
   ],
-  "nextRecommendedWork": "Define final production activation cap or stop condition for source/include and duplicate without enabling production."
+  "nextRecommendedWork": "Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested."
 }

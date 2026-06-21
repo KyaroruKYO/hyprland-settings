@@ -178,7 +178,7 @@
     "Source/include insertion now has readiness model, disabled UI, fixture target-selection proof, selected-target dry-run planner, preview UI, temp-fixture guarded executor, copied-config-tree proof, and default-disabled production gate review, but production connected-file insertion remains disabled until explicit approval and live restoration proof exist.",
     "Managed-file insertion, duplicate insertion, high-risk/display insertion, structured insertion, profile/mode insertion, and runtime mutation remain blocked."
   ],
-  "nextRecommendedWork": "Define final production activation cap or stop condition for source/include insertion without enabling production.",
+  "nextRecommendedWork": "Stop source/include non-production runway work here; open a separately approved production activation phase only if explicitly requested.",
   "whetherRealConfigTouched": false,
   "whetherRuntimeTouched": false,
   "whetherProductionBehaviorEnabled": true,
@@ -295,5 +295,22 @@
     "productionEnabled": false,
     "productionFlag": false,
     "executorWiringStatus": "Unwired"
+  },
+  "productionActivationCap": {
+    "report": "data/reports/future-capability-production-activation-cap.v0.55.2.json",
+    "chosenDecision": "branch capped for non-production runway",
+    "shouldFutureCapabilityMarathonStopHere": true,
+    "futureProductionActivationRequiresSeparateApprovedPhase": true,
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "sourceIncludeExecutorWired": false,
+    "duplicateExecutorWired": false,
+    "productionFlagWasEnabled": false,
+    "executorWasWired": false,
+    "productionWriteExecuted": false,
+    "realConfigTouched": false,
+    "runtimeMutated": false,
+    "hyprctlReloadRun": false,
+    "draftPersistenceForbiddenByDefault": true
   }
 }

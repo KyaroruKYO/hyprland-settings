@@ -131,5 +131,22 @@
     "No runtime mutation was run.",
     "No hyprctl reload was run."
   ],
-  "nextRecommendedWork": "Define final production activation cap or stop condition for source/include and duplicate without enabling production."
+  "nextRecommendedWork": "Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.",
+  "productionActivationCap": {
+    "report": "data/reports/future-capability-production-activation-cap.v0.55.2.json",
+    "chosenDecision": "branch capped for non-production runway",
+    "shouldFutureCapabilityMarathonStopHere": true,
+    "futureProductionActivationRequiresSeparateApprovedPhase": true,
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "sourceIncludeExecutorWired": false,
+    "duplicateExecutorWired": false,
+    "productionFlagWasEnabled": false,
+    "executorWasWired": false,
+    "productionWriteExecuted": false,
+    "realConfigTouched": false,
+    "runtimeMutated": false,
+    "hyprctlReloadRun": false,
+    "draftPersistenceForbiddenByDefault": true
+  }
 }

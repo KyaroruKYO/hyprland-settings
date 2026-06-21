@@ -123,6 +123,7 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("PRODUCTION_ACTIVATION_SAFETY_PROOF_ASSERTIONS"));
     assert!(collector.contains("PRODUCTION_ACTIVATION_FINAL_DECISION_ASSERTIONS"));
     assert!(collector.contains("PRODUCTION_ACTIVATION_APPROVAL_UX_AND_DRY_RUN_ASSERTIONS"));
+    assert!(collector.contains("PRODUCTION_ACTIVATION_CAP_ASSERTIONS"));
     assert!(collector.contains("productionActivationSafetyGateAssertionMethod"));
     assert!(collector.contains("productionActivationSafetyGateAssertions"));
     assert!(collector.contains("productionActivationSafetyGatesAllBlockedByDefaultFound"));
@@ -169,6 +170,8 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "Duplicate live production dry-run policy",
         "Source/include production flag and executor-wiring opt-in requirements",
         "Duplicate production flag and executor-wiring opt-in requirements",
+        "Source/include production activation cap",
+        "Duplicate production activation cap",
         "Production activation proof partially satisfied but default-disabled",
         "Final decision proof satisfied but decisions missing",
         "Approval UX status",
@@ -188,6 +191,8 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "Report-backed proof",
         "Rollback-ready state",
         "Production flag: false",
+        "branch capped for non-production runway",
+        "Future production activation requires separate approved phase",
         "Byte-exact backup",
         "Write plan",
         "Dry-run write plan",
@@ -222,6 +227,10 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "Opt in duplicate executor wiring (not available)",
         "Confirm source/include production opt-in requirements (not available)",
         "Confirm duplicate production opt-in requirements (not available)",
+        "Start source/include production activation phase (not available)",
+        "Confirm source/include branch cap (not available)",
+        "Start duplicate production activation phase (not available)",
+        "Confirm duplicate branch cap (not available)",
         "Run source/include production safety proof (fixture only, planned)",
         "Run duplicate production safety proof (fixture only, planned)",
         "Review source/include production activation gate (not available)",
@@ -416,6 +425,18 @@ fn gtk_harness_records_screenshot_level_disabled_approval_card_assertions() {
         "productionActivationOptInRequirementsAllRequirementLabelsFound",
         "productionActivationOptInRequirementsAllFlagFalseFound",
         "productionActivationOptInRequirementsAllDisabledActionsFound",
+        "production_activation_cap_assertion_results",
+        "productionActivationCapAssertionMethod",
+        "productionActivationCapResults",
+        "productionActivationCapAllHeadingsFound",
+        "productionActivationCapAllStatusFound",
+        "productionActivationCapAllSeparatePhaseFound",
+        "productionActivationCapAllProductionDisabledFound",
+        "productionActivationCapAllFlagFalseFound",
+        "productionActivationCapAllExecutorUnwiredFound",
+        "productionActivationCapAllPersistenceFound",
+        "productionActivationCapAllNoMutationFound",
+        "productionActivationCapAllDisabledActionsFound",
         "sourceIncludeInsertion",
         "duplicateReplacement",
         "structuredHlBindWrite",

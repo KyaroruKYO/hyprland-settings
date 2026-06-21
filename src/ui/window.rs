@@ -18,26 +18,28 @@ use crate::export::ExportBundle;
 use crate::future_capability::{
     apply_production_activation_draft_gtk_update, disabled_future_approval_card_projections,
     duplicate_activation_draft_gtk_review, duplicate_production_approval_gate,
-    production_activation_approval_and_dry_run_reviews, production_activation_control_reviews,
-    production_activation_decision_reviews, production_activation_draft_edit_reviews,
-    production_activation_draft_persistence_boundaries, production_activation_draft_reviews,
-    production_activation_final_decision_reviews, production_activation_form_reviews,
-    production_activation_live_draft_gtk_reviews, production_activation_opt_in_requirement_reviews,
-    production_activation_path_reviews, production_activation_safety_gate_proof_reviews,
-    production_activation_safety_gate_reviews, proven_runtime_approval_evidence_summary,
-    source_include_activation_draft_gtk_review, source_include_insertion_review,
-    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
-    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
-    ProductionActivationApprovalAndDryRunReview, ProductionActivationControlReview,
-    ProductionActivationDecisionReview, ProductionActivationDraftEditReview,
-    ProductionActivationDraftGtkField, ProductionActivationDraftGtkReview,
-    ProductionActivationDraftGtkState, ProductionActivationDraftGtkUpdate,
-    ProductionActivationDraftPersistenceBoundary, ProductionActivationDraftReview,
-    ProductionActivationFinalDecisionReview, ProductionActivationFormReview,
-    ProductionActivationPathReview, ProductionActivationSafetyGateProofReview,
-    ProductionActivationSafetyGateReview, ProductionExecutorWiringState,
-    ProductionFlagAndExecutorOptInReview, SourceIncludeInsertionReadiness,
-    SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
+    production_activation_approval_and_dry_run_reviews, production_activation_cap_reviews,
+    production_activation_control_reviews, production_activation_decision_reviews,
+    production_activation_draft_edit_reviews, production_activation_draft_persistence_boundaries,
+    production_activation_draft_reviews, production_activation_final_decision_reviews,
+    production_activation_form_reviews, production_activation_live_draft_gtk_reviews,
+    production_activation_opt_in_requirement_reviews, production_activation_path_reviews,
+    production_activation_safety_gate_proof_reviews, production_activation_safety_gate_reviews,
+    proven_runtime_approval_evidence_summary, source_include_activation_draft_gtk_review,
+    source_include_insertion_review, source_include_selected_target_dry_run_plan,
+    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
+    DuplicateOccurrence, DuplicateProductionGateStatus,
+    ProductionActivationApprovalAndDryRunReview, ProductionActivationCapReview,
+    ProductionActivationControlReview, ProductionActivationDecisionReview,
+    ProductionActivationDraftEditReview, ProductionActivationDraftGtkField,
+    ProductionActivationDraftGtkReview, ProductionActivationDraftGtkState,
+    ProductionActivationDraftGtkUpdate, ProductionActivationDraftPersistenceBoundary,
+    ProductionActivationDraftReview, ProductionActivationFinalDecisionReview,
+    ProductionActivationFormReview, ProductionActivationPathReview,
+    ProductionActivationSafetyGateProofReview, ProductionActivationSafetyGateReview,
+    ProductionExecutorWiringState, ProductionFlagAndExecutorOptInReview,
+    SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
+    SourceIncludeTargetCandidate,
 };
 use crate::guarded_write_review::{
     build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
@@ -1909,6 +1911,7 @@ fn production_activation_safety_gate_reviews_section() -> gtk::Frame {
     content.append(&production_activation_final_decision_reviews_section());
     content.append(&production_activation_approval_and_dry_run_reviews_section());
     content.append(&production_activation_opt_in_requirement_reviews_section());
+    content.append(&production_activation_cap_reviews_section());
 
     frame.set_child(Some(&content));
     frame
@@ -2653,6 +2656,124 @@ fn production_activation_live_dry_run_policy_review_card(
     ));
     dry_run.set_sensitive(false);
     content.append(&dry_run);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_cap_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-production-activation-cap-section");
+    frame.set_tooltip_text(Some(
+        "Final non-production cap for source/include and duplicate activation runway. These cards cannot start a production phase.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label("Production activation cap"));
+    content.append(&small_label(
+        "Branch capped for non-production runway. Future production activation requires a separate approved phase.",
+    ));
+    content.append(&small_label(
+        "The cap does not set production flags, wire executors, persist drafts, run writes, reload Hyprland, mutate runtime, or touch real config.",
+    ));
+
+    for review in production_activation_cap_reviews() {
+        content.append(&production_activation_cap_review_card(&review));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_cap_review_card(review: &ProductionActivationCapReview) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.widget_name);
+    frame.set_tooltip_text(Some(
+        "Review-only production activation cap. This card has no persistence, mutation, production, compositor refresh, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.heading));
+    append_detail_line(&content, "Cap status", review.status.user_facing_label());
+    append_detail_line(
+        &content,
+        "Future production activation",
+        review.future_phase_requirement_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+    append_detail_line(
+        &content,
+        "Production flag",
+        &review.production_flag.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Draft persistence",
+        review.draft_persistence_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Real config touched",
+        &review.real_config_touched.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Runtime mutated",
+        &review.runtime_mutated.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "Production write executed",
+        &review.production_write_executed.to_string(),
+    );
+
+    content.append(&small_label("Cap reasons"));
+    for reason in &review.cap_reasons {
+        content.append(&small_label(reason));
+    }
+    content.append(&small_label("Future phase requirements"));
+    for requirement in &review.future_phase_requirements {
+        content.append(&small_label(requirement));
+    }
+    content.append(&small_label("Cap negative proofs"));
+    for proof in &review.negative_proofs {
+        content.append(&small_label(proof));
+    }
+
+    let start = gtk::Button::with_label(&review.disabled_start_label);
+    start.set_widget_name(&review.disabled_start_widget_name);
+    start.set_tooltip_text(Some(
+        "Starting a production activation phase is not available from this branch.",
+    ));
+    start.set_sensitive(false);
+    content.append(&start);
+
+    let confirm = gtk::Button::with_label(&review.disabled_confirm_label);
+    confirm.set_widget_name(&review.disabled_confirm_widget_name);
+    confirm.set_tooltip_text(Some(
+        "Branch cap confirmation is review-only and has no production callback.",
+    ));
+    confirm.set_sensitive(false);
+    content.append(&confirm);
 
     frame.set_child(Some(&content));
     frame

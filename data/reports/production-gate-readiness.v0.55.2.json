@@ -151,6 +151,22 @@
     "sourceIncludeProductionEnabled": false,
     "duplicateProductionEnabled": false
   },
+  "productionActivationCap": {
+    "report": "data/reports/future-capability-production-activation-cap.v0.55.2.json",
+    "sourceIncludeStatus": "BranchCappedForNonProductionRunway",
+    "duplicateStatus": "BranchCappedForNonProductionRunway",
+    "futureProductionActivationRequiresSeparateApprovedPhase": true,
+    "shouldFutureCapabilityMarathonStopHere": true,
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "sourceIncludeExecutorWired": false,
+    "duplicateExecutorWired": false,
+    "productionFlagWasEnabled": false,
+    "executorWasWired": false,
+    "productionWriteExecuted": false,
+    "realConfigTouched": false,
+    "runtimeMutated": false
+  },
   "releaseBoundariesPreserved": {
     "mainModified": false,
     "v010TagModified": false,
@@ -158,7 +174,7 @@
     "v0552DefaultPreserved": true,
     "hyprland0554Activated": false
   },
-  "nextRecommendedWork": "Define final production activation cap or stop condition for source/include and duplicate without enabling production.",
+  "nextRecommendedWork": "Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.",
   "activationDecisionReview": {
     "sourceIncludeInsertion": "ApprovedButDefaultDisabled",
     "duplicateReplacement": "ApprovedButDefaultDisabled",

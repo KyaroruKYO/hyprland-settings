@@ -122,7 +122,7 @@
     "duplicateProductionEnabled": false,
     "unsafeProductionBehaviorEnabled": false
   },
-  "nextRecommendedWork": "Keep explicit approval separate from production activation while defining the final production activation cap or stop condition.",
+  "nextRecommendedWork": "Explicit approval remains separate from production activation; source/include and duplicate are now capped for non-production runway work and any production activation requires a separate approved phase.",
   "testsAdded": [
     "production activation decision review tests for source/include and duplicate default-disabled paths"
   ],
@@ -320,5 +320,22 @@
       "dryRunControlsAvailable": false,
       "productionEnabled": false
     }
+  },
+  "productionActivationCap": {
+    "report": "data/reports/future-capability-production-activation-cap.v0.55.2.json",
+    "chosenDecision": "branch capped for non-production runway",
+    "shouldFutureCapabilityMarathonStopHere": true,
+    "futureProductionActivationRequiresSeparateApprovedPhase": true,
+    "sourceIncludeProductionEnabled": false,
+    "duplicateProductionEnabled": false,
+    "sourceIncludeExecutorWired": false,
+    "duplicateExecutorWired": false,
+    "productionFlagWasEnabled": false,
+    "executorWasWired": false,
+    "productionWriteExecuted": false,
+    "realConfigTouched": false,
+    "runtimeMutated": false,
+    "hyprctlReloadRun": false,
+    "draftPersistenceForbiddenByDefault": true
   }
 }

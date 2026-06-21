@@ -87,12 +87,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Define final production activation cap or stop condition for source/include and duplicate without enabling production."
+        "Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("final production activation cap"));
+        .contains("separately approved production activation phase"));
 }
 
 #[test]
@@ -1516,6 +1516,75 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     assert_eq!(opt_in_requirements["safety"]["executorWasWired"], false);
     assert_eq!(
         opt_in_requirements["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+
+    let activation_cap =
+        read_json("data/reports/future-capability-production-activation-cap.v0.55.2.json");
+    assert_eq!(activation_cap["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        activation_cap["chosenDecision"],
+        "branch capped for non-production runway"
+    );
+    assert_eq!(
+        activation_cap["shouldFutureCapabilityMarathonStopHere"],
+        true
+    );
+    assert_eq!(activation_cap["stopCondition"]["shouldStopHere"], true);
+    assert!(activation_cap["stopCondition"]["answer"]
+        .as_str()
+        .expect("stop answer should be text")
+        .contains("separate explicitly approved phase"));
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            activation_cap["reviews"][key]["status"],
+            "BranchCappedForNonProductionRunway"
+        );
+        assert_eq!(
+            activation_cap["reviews"][key]
+                ["futureProductionActivationRequiresSeparateApprovedPhase"],
+            true
+        );
+        assert_eq!(activation_cap["reviews"][key]["productionFlag"], false);
+        assert_eq!(
+            activation_cap["reviews"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(
+            activation_cap["reviews"][key]["draftPersistenceBoundary"],
+            "PersistenceForbiddenByDefault"
+        );
+        assert_eq!(
+            activation_cap["reviews"][key]["productionWriteExecuted"],
+            false
+        );
+        assert_eq!(activation_cap["reviews"][key]["realConfigTouched"], false);
+        assert_eq!(activation_cap["reviews"][key]["runtimeMutated"], false);
+    }
+    assert_eq!(
+        activation_cap["negativeProofs"]["capDecisionCannotSetProductionFlag"],
+        true
+    );
+    assert_eq!(
+        activation_cap["negativeProofs"]["capDecisionCannotWireExecutor"],
+        true
+    );
+    assert_eq!(
+        activation_cap["negativeProofs"]["capDecisionCannotRunWrite"],
+        true
+    );
+    assert_eq!(
+        activation_cap["negativeProofs"]["capDecisionCannotAuthorizeLiveDryRun"],
+        true
+    );
+    assert_eq!(
+        activation_cap["negativeProofs"]["capDecisionCannotPersistDraft"],
+        true
+    );
+    assert_eq!(activation_cap["safety"]["productionFlagWasEnabled"], false);
+    assert_eq!(activation_cap["safety"]["executorWasWired"], false);
+    assert_eq!(
+        activation_cap["safety"]["unsafeProductionBehaviorEnabled"],
         false
     );
 

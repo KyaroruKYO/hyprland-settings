@@ -150,3 +150,12 @@ Added source/include and duplicate production activation safety proof. The proof
 - Explicit user action, typed confirmation, report-backed proof, rollback-ready state, and no-auto-apply proof remain required.
 - Copied-fixture proof, approval UX design, dry-run policy design, final-decision review, draft edit state, and persistence-boundary state cannot set production flags or wire executors.
 - Production flags remain false, executors remain `Unwired`, draft persistence remains forbidden by default, no real config was touched, no runtime mutation was run, and no reload was run.
+
+## 2026-06-20 - Production Activation Cap
+
+- Added source/include and duplicate production activation cap reviews.
+- Cap status is `BranchCappedForNonProductionRunway`.
+- Future production activation requires a separate explicitly approved phase and a fresh user decision outside this branch.
+- Future production activation still requires production flag opt-in, executor-wiring opt-in, rollback/no-auto-apply proof preservation, real-config risk re-check, and activation-time revalidation.
+- The cap cannot set production flags, wire executors, run writes, authorize live dry-run, persist drafts, mutate runtime, reload Hyprland, or touch real config.
+- Stop answer: yes, future-capability-marathon should stop here for source/include and duplicate non-production runway work.

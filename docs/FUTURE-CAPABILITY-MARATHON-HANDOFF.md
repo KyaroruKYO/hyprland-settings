@@ -93,7 +93,7 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Define final production activation cap or stop condition for source/include and duplicate without enabling production.
+Stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.
 
 ## Progress tracker
 - Core app shell / UI / navigation: 98-99% -> 99-99%
@@ -174,12 +174,14 @@ The branch now includes `data/reports/default-disabled-production-activation-saf
 
 Source/include and duplicate now have final decision reviews after the copied-fixture safety proof layer. These reviews keep final approval, production flag opt-in, executor wiring opt-in, and live production dry-run policy missing/required. They explicitly prove copied-fixture proof, draft edit state, and persistence-boundary state cannot approve production, set production flags, wire executors, or authorize live dry-runs.
 
-Next exact work item: define final production activation cap or stop condition for source/include and duplicate without enabling production.
-
 ## 2026-06-20 - Production Activation Approval UX And Dry-Run Policy
 
 Source/include and duplicate now have designed-but-disabled approval UX and live production dry-run policy reviews. The approval UX reviews require explicit future user action, typed confirmation, backup/restore acknowledgement, production flag opt-in, and executor wiring opt-in; copied-fixture proof, draft edit state, persistence-boundary state, and final-decision reports cannot approve production. The live dry-run policy reviews require explicit future user action, real-config boundary decision, no-reload guarantee, no-runtime-mutation guarantee, rollback-ready state, and target/backup/restore proof. Approval and dry-run controls remain disabled/not available, production flags remain false, executors remain `Unwired`, draft persistence remains forbidden by default, and no real config/runtime/reload path was added.
 
 Source/include and duplicate now have designed-but-disabled production flag and executor-wiring opt-in requirements reviews. Flag opt-in and executor wiring must be separate future steps; neither can auto-enable the other, run writes, reload Hyprland, mutate runtime, or touch real config. Explicit user action, typed confirmation, report-backed proof, rollback-ready state, and no-auto-apply proof remain required. Production flags remain false, executors remain `Unwired`, draft persistence remains forbidden by default, and no persistence or production path was added.
 
-Next exact work item: define final production activation cap or stop condition for source/include and duplicate without enabling production.
+## 2026-06-20 - Production Activation Cap Handoff
+
+Source/include and duplicate now have final production activation cap reviews. The cap status is `BranchCappedForNonProductionRunway`, and the stop answer is yes: future-capability-marathon should stop here for source/include and duplicate non-production runway work. Future production activation must begin in a separate explicitly approved phase and require a fresh user decision, production flag opt-in, executor-wiring opt-in, rollback/no-auto-apply proof preservation, real-config risk re-check, and activation-time revalidation. The cap cannot set production flags, wire executors, run writes, authorize live dry-run, persist drafts, mutate runtime, reload Hyprland, or touch real config.
+
+Next exact work item: stop future-capability-marathon source/include and duplicate non-production runway work here; open a separately approved production activation phase only if explicitly requested.

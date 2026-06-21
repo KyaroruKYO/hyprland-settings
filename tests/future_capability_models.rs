@@ -23,11 +23,11 @@ use hyprland_settings::future_capability::{
     high_risk_recovery_workflow, hyprland_0554_approval_flow, hyprland_version_activation_gate,
     load_disabled_approval_cards_from_report_str, load_disabled_approval_cards_from_reports,
     local_hyprland_version_evidence, migration_comparison_review,
-    production_activation_approval_and_dry_run_reviews, production_activation_control_request,
-    production_activation_control_reviews, production_activation_control_safety_plan,
-    production_activation_decision_reviews, production_activation_draft_edit_reviews,
-    production_activation_draft_edit_state_from_draft, production_activation_draft_from_form_state,
-    production_activation_draft_gtk_state_from_draft,
+    production_activation_approval_and_dry_run_reviews, production_activation_cap_reviews,
+    production_activation_control_request, production_activation_control_reviews,
+    production_activation_control_safety_plan, production_activation_decision_reviews,
+    production_activation_draft_edit_reviews, production_activation_draft_edit_state_from_draft,
+    production_activation_draft_from_form_state, production_activation_draft_gtk_state_from_draft,
     production_activation_draft_persistence_boundaries, production_activation_draft_reviews,
     production_activation_final_decision_reviews, production_activation_form_reviews,
     production_activation_form_state, production_activation_live_draft_gtk_reviews,
@@ -56,16 +56,16 @@ use hyprland_settings::future_capability::{
     DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
     DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
     HighRiskProductionGateStatus, HyprlandVersionActivationStatus, MockWatchdog, MockWatchdogState,
-    ProductionActivationApprovalUxStatus, ProductionActivationControlStatus,
-    ProductionActivationDecisionStatus, ProductionActivationDraftEditAction,
-    ProductionActivationDraftEditMode, ProductionActivationDraftEditStatus,
-    ProductionActivationDraftGtkField, ProductionActivationDraftGtkStatus,
-    ProductionActivationDraftGtkUpdate, ProductionActivationDraftPersistenceScope,
-    ProductionActivationDraftPersistenceStatus, ProductionActivationDraftStatus,
-    ProductionActivationDraftUpdate, ProductionActivationDryRunPolicyStatus,
-    ProductionActivationFinalDecisionStatus, ProductionActivationFormStatus,
-    ProductionActivationOptInRequirementStatus, ProductionActivationPathStatus,
-    ProductionActivationRequest, ProductionActivationRequestScope,
+    ProductionActivationApprovalUxStatus, ProductionActivationCapStatus,
+    ProductionActivationControlStatus, ProductionActivationDecisionStatus,
+    ProductionActivationDraftEditAction, ProductionActivationDraftEditMode,
+    ProductionActivationDraftEditStatus, ProductionActivationDraftGtkField,
+    ProductionActivationDraftGtkStatus, ProductionActivationDraftGtkUpdate,
+    ProductionActivationDraftPersistenceScope, ProductionActivationDraftPersistenceStatus,
+    ProductionActivationDraftStatus, ProductionActivationDraftUpdate,
+    ProductionActivationDryRunPolicyStatus, ProductionActivationFinalDecisionStatus,
+    ProductionActivationFormStatus, ProductionActivationOptInRequirementStatus,
+    ProductionActivationPathStatus, ProductionActivationRequest, ProductionActivationRequestScope,
     ProductionActivationSafetyGateProofOverallStatus, ProductionActivationSafetyGateProofStatus,
     ProductionActivationSafetyGateStatus, ProductionActivationSafetyPlan,
     ProductionExecutorWiringState, ProfileProductionGateStatus, ProfileSwitchStatus,
@@ -6960,5 +6960,87 @@ fn production_activation_opt_in_requirements_stay_designed_but_disabled() {
                 "missing opt-in negative proof: {proof}"
             );
         }
+    }
+}
+
+#[test]
+fn production_activation_cap_reviews_stop_the_non_production_runway() {
+    let reviews = production_activation_cap_reviews();
+    assert_eq!(reviews.len(), 2);
+
+    for review in reviews {
+        assert_eq!(
+            review.status,
+            ProductionActivationCapStatus::BranchCappedForNonProductionRunway
+        );
+        assert_eq!(
+            review.future_phase_requirement_status,
+            ProductionActivationCapStatus::FutureProductionActivationRequiresSeparateApprovedPhase
+        );
+        assert!(review.should_stop_here);
+        assert_eq!(review.production_status, "Disabled");
+        assert!(!review.production_flag);
+        assert_eq!(
+            review.executor_wiring_status,
+            ProductionExecutorWiringState::Unwired
+        );
+        assert_eq!(
+            review.draft_persistence_status,
+            ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault
+        );
+        assert!(!review.production_write_executed);
+        assert!(!review.real_config_touched);
+        assert!(!review.runtime_mutated);
+        assert!(!review.hyprctl_reload_run);
+        assert!(!review.production_flag_enabled);
+        assert!(!review.executor_wired);
+        assert!(!review.disk_persistence_added);
+        assert!(!review.live_production_dry_run_run);
+
+        for requirement in [
+            "separate explicitly approved phase",
+            "fresh user decision outside this branch",
+            "production flag opt-in",
+            "executor-wiring opt-in",
+            "rollback and no-auto-apply proof preservation",
+            "real config risk re-check at activation time",
+            "revalidation at the time of activation",
+        ] {
+            assert!(
+                review
+                    .future_phase_requirements
+                    .iter()
+                    .any(|item| item == requirement),
+                "missing future phase requirement: {requirement}"
+            );
+        }
+
+        for proof in [
+            "cap decision cannot set production flag",
+            "cap decision cannot wire executor",
+            "cap decision cannot run write",
+            "cap decision cannot authorize live dry-run",
+            "cap decision cannot persist draft",
+            "cap decision cannot mutate runtime",
+            "cap decision cannot reload Hyprland",
+            "cap decision cannot touch real config",
+        ] {
+            assert!(
+                review.negative_proofs.iter().any(|item| item == proof),
+                "missing cap negative proof: {proof}"
+            );
+        }
+
+        let lines = review.user_facing_lines().join("\n");
+        assert!(lines.contains("Cap status: branch capped for non-production runway"));
+        assert!(lines.contains(
+            "Future production activation: future production activation requires separate approved phase"
+        ));
+        assert!(lines.contains("Production flag: false"));
+        assert!(lines.contains("Executor wiring: Unwired"));
+        assert!(lines.contains("Draft persistence: Persistence forbidden by default"));
+        assert!(lines.contains("Real config touched: false"));
+        assert!(lines.contains("Runtime mutated: false"));
+        assert!(lines.contains("Production write executed: false"));
     }
 }

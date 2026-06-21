@@ -5602,6 +5602,115 @@ impl ProductionFlagAndExecutorOptInReview {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationCapStatus {
+    CapDecisionMissing,
+    BranchCappedForNonProductionRunway,
+    FutureProductionActivationRequiresSeparateApprovedPhase,
+    ProductionActivationStillBlockedByUserDecision,
+    ProductionActivationStillBlockedByTrustedData,
+    ProductionActivationStillBlockedByHighRiskPolicy,
+}
+
+impl ProductionActivationCapStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::CapDecisionMissing => "Cap decision missing",
+            Self::BranchCappedForNonProductionRunway => "branch capped for non-production runway",
+            Self::FutureProductionActivationRequiresSeparateApprovedPhase => {
+                "future production activation requires separate approved phase"
+            }
+            Self::ProductionActivationStillBlockedByUserDecision => {
+                "production activation still blocked by user decision"
+            }
+            Self::ProductionActivationStillBlockedByTrustedData => {
+                "production activation still blocked by trusted data"
+            }
+            Self::ProductionActivationStillBlockedByHighRiskPolicy => {
+                "production activation still blocked by high-risk policy"
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationCapReview {
+    pub widget_name: String,
+    pub evidence_widget_name: String,
+    pub disabled_start_widget_name: String,
+    pub disabled_confirm_widget_name: String,
+    pub heading: String,
+    pub scope: ProductionActivationSafetyGateScope,
+    pub status: ProductionActivationCapStatus,
+    pub future_phase_requirement_status: ProductionActivationCapStatus,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_flag: bool,
+    pub executor_wiring_status: ProductionExecutorWiringState,
+    pub draft_persistence_status: ProductionActivationDraftPersistenceStatus,
+    pub production_write_executed: bool,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_flag_enabled: bool,
+    pub executor_wired: bool,
+    pub disk_persistence_added: bool,
+    pub live_production_dry_run_run: bool,
+    pub should_stop_here: bool,
+    pub cap_reasons: Vec<String>,
+    pub future_phase_requirements: Vec<String>,
+    pub negative_proofs: Vec<String>,
+    pub disabled_start_label: String,
+    pub disabled_confirm_label: String,
+}
+
+impl ProductionActivationCapReview {
+    pub fn user_facing_lines(&self) -> Vec<String> {
+        let mut lines = vec![
+            self.heading.clone(),
+            format!("Cap status: {}", self.status.user_facing_label()),
+            format!(
+                "Future production activation: {}",
+                self.future_phase_requirement_status.user_facing_label()
+            ),
+            format!("{}: {}", self.production_label, self.production_status),
+            format!("Production flag: {}", self.production_flag),
+            format!(
+                "Executor wiring: {}",
+                self.executor_wiring_status.user_facing_label()
+            ),
+            format!(
+                "Draft persistence: {}",
+                self.draft_persistence_status.user_facing_label()
+            ),
+            format!("Real config touched: {}", self.real_config_touched),
+            format!("Runtime mutated: {}", self.runtime_mutated),
+            format!(
+                "Production write executed: {}",
+                self.production_write_executed
+            ),
+        ];
+        lines.extend(
+            self.cap_reasons
+                .iter()
+                .map(|reason| format!("Cap reason: {reason}")),
+        );
+        lines.extend(
+            self.future_phase_requirements
+                .iter()
+                .map(|requirement| format!("Future phase requirement: {requirement}")),
+        );
+        lines.extend(
+            self.negative_proofs
+                .iter()
+                .map(|proof| format!("Cap negative proof: {proof}")),
+        );
+        lines.push(self.disabled_start_label.clone());
+        lines.push(self.disabled_confirm_label.clone());
+        lines
+    }
+}
+
 const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
     "data/reports/disabled-approval-ui-cards.v0.55.2.json";
 const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
@@ -6102,6 +6211,13 @@ pub fn production_activation_opt_in_requirement_reviews(
     ]
 }
 
+pub fn production_activation_cap_reviews() -> Vec<ProductionActivationCapReview> {
+    vec![
+        source_include_production_activation_cap_review(),
+        duplicate_production_activation_cap_review(),
+    ]
+}
+
 pub fn source_include_production_activation_safety_gate() -> ProductionActivationSafetyGateReview {
     production_activation_safety_gate(SafetyGateSpec {
         widget_name: "hyprland-settings-source-include-production-activation-safety-gate-disabled",
@@ -6224,6 +6340,22 @@ pub fn source_include_production_activation_opt_in_requirements_review(
     })
 }
 
+pub fn source_include_production_activation_cap_review() -> ProductionActivationCapReview {
+    production_activation_cap_review(CapReviewSpec {
+        widget_name: "hyprland-settings-source-include-production-activation-cap-disabled",
+        evidence_widget_name: "hyprland-settings-source-include-production-activation-cap-evidence",
+        disabled_start_widget_name:
+            "hyprland-settings-source-include-production-activation-cap-start-disabled",
+        disabled_confirm_widget_name:
+            "hyprland-settings-source-include-production-activation-cap-confirm-disabled",
+        heading: "Source/include production activation cap",
+        scope: ProductionActivationSafetyGateScope::SourceIncludeInsertion,
+        production_label: "Production source/include insertion",
+        disabled_start_label: "Start source/include production activation phase (not available)",
+        disabled_confirm_label: "Confirm source/include branch cap (not available)",
+    })
+}
+
 pub fn duplicate_production_activation_safety_gate() -> ProductionActivationSafetyGateReview {
     production_activation_safety_gate(SafetyGateSpec {
         widget_name: "hyprland-settings-duplicate-production-activation-safety-gate-disabled",
@@ -6338,6 +6470,22 @@ pub fn duplicate_production_activation_opt_in_requirements_review(
         disabled_executor_label: "Wire duplicate production executor (not available)",
         disabled_confirm_label:
             "Confirm duplicate production opt-in requirements (not available)",
+    })
+}
+
+pub fn duplicate_production_activation_cap_review() -> ProductionActivationCapReview {
+    production_activation_cap_review(CapReviewSpec {
+        widget_name: "hyprland-settings-duplicate-production-activation-cap-disabled",
+        evidence_widget_name: "hyprland-settings-duplicate-production-activation-cap-evidence",
+        disabled_start_widget_name:
+            "hyprland-settings-duplicate-production-activation-cap-start-disabled",
+        disabled_confirm_widget_name:
+            "hyprland-settings-duplicate-production-activation-cap-confirm-disabled",
+        heading: "Duplicate production activation cap",
+        scope: ProductionActivationSafetyGateScope::DuplicateReplacement,
+        production_label: "Production duplicate writes",
+        disabled_start_label: "Start duplicate production activation phase (not available)",
+        disabled_confirm_label: "Confirm duplicate branch cap (not available)",
     })
 }
 
@@ -7120,6 +7268,18 @@ struct OptInRequirementsSpec {
     disabled_confirm_label: &'static str,
 }
 
+struct CapReviewSpec {
+    widget_name: &'static str,
+    evidence_widget_name: &'static str,
+    disabled_start_widget_name: &'static str,
+    disabled_confirm_widget_name: &'static str,
+    heading: &'static str,
+    scope: ProductionActivationSafetyGateScope,
+    production_label: &'static str,
+    disabled_start_label: &'static str,
+    disabled_confirm_label: &'static str,
+}
+
 fn activation_draft_persistence_boundary(
     spec: PersistenceBoundarySpec,
 ) -> ProductionActivationDraftPersistenceBoundary {
@@ -7639,6 +7799,63 @@ fn production_activation_opt_in_requirements_review(
         ],
         disabled_flag_label: spec.disabled_flag_label.to_string(),
         disabled_executor_label: spec.disabled_executor_label.to_string(),
+        disabled_confirm_label: spec.disabled_confirm_label.to_string(),
+    }
+}
+
+fn production_activation_cap_review(spec: CapReviewSpec) -> ProductionActivationCapReview {
+    ProductionActivationCapReview {
+        widget_name: spec.widget_name.to_string(),
+        evidence_widget_name: spec.evidence_widget_name.to_string(),
+        disabled_start_widget_name: spec.disabled_start_widget_name.to_string(),
+        disabled_confirm_widget_name: spec.disabled_confirm_widget_name.to_string(),
+        heading: spec.heading.to_string(),
+        scope: spec.scope,
+        status: ProductionActivationCapStatus::BranchCappedForNonProductionRunway,
+        future_phase_requirement_status:
+            ProductionActivationCapStatus::FutureProductionActivationRequiresSeparateApprovedPhase,
+        production_label: spec.production_label.to_string(),
+        production_status: "Disabled".to_string(),
+        production_flag: false,
+        executor_wiring_status: ProductionExecutorWiringState::Unwired,
+        draft_persistence_status:
+            ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault,
+        production_write_executed: false,
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
+        production_flag_enabled: false,
+        executor_wired: false,
+        disk_persistence_added: false,
+        live_production_dry_run_run: false,
+        should_stop_here: true,
+        cap_reasons: vec![
+            "the branch is not production-activation work".to_string(),
+            "source/include and duplicate non-production runway proof is complete enough to stop"
+                .to_string(),
+            "future production activation must not be hidden in continuation sprints".to_string(),
+            "future production activation must not be inferred from existing proof".to_string(),
+        ],
+        future_phase_requirements: vec![
+            "separate explicitly approved phase".to_string(),
+            "fresh user decision outside this branch".to_string(),
+            "production flag opt-in".to_string(),
+            "executor-wiring opt-in".to_string(),
+            "rollback and no-auto-apply proof preservation".to_string(),
+            "real config risk re-check at activation time".to_string(),
+            "revalidation at the time of activation".to_string(),
+        ],
+        negative_proofs: vec![
+            "cap decision cannot set production flag".to_string(),
+            "cap decision cannot wire executor".to_string(),
+            "cap decision cannot run write".to_string(),
+            "cap decision cannot authorize live dry-run".to_string(),
+            "cap decision cannot persist draft".to_string(),
+            "cap decision cannot mutate runtime".to_string(),
+            "cap decision cannot reload Hyprland".to_string(),
+            "cap decision cannot touch real config".to_string(),
+        ],
+        disabled_start_label: spec.disabled_start_label.to_string(),
         disabled_confirm_label: spec.disabled_confirm_label.to_string(),
     }
 }
