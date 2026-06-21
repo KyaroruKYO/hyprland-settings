@@ -373,6 +373,59 @@ PRODUCTION_ACTIVATION_FINAL_DECISION_ASSERTIONS = {
     },
 }
 
+PRODUCTION_ACTIVATION_APPROVAL_UX_AND_DRY_RUN_ASSERTIONS = {
+    "sourceIncludeInsertion": {
+        "approval_heading": "Source/include production activation approval UX",
+        "dry_run_heading": "Source/include live production dry-run policy",
+        "production": "Production source/include insertion",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "approval_status": "Approval UX status",
+        "approval_disabled": "designed but disabled",
+        "final_approval": "Explicit final approval",
+        "typed_confirmation": "Typed confirmation phrase",
+        "production_flag": "Production flag opt-in",
+        "executor_opt_in": "Executor wiring opt-in",
+        "dry_run_status": "Dry-run policy status",
+        "dry_run_default": "Live dry-run cannot run by default",
+        "dry_run_real_config": "Live dry-run cannot touch real config by default",
+        "dry_run_reload": "Live dry-run cannot reload Hyprland by default",
+        "dry_run_runtime": "Live dry-run cannot mutate runtime by default",
+        "approval": "Approve source/include production activation (not available)",
+        "confirmation": "Confirm source/include production activation phrase (not available)",
+        "flag": "Opt in source/include production flag (not available)",
+        "wiring": "Opt in source/include executor wiring (not available)",
+        "dry_run": "Run source/include live production dry-run (not available)",
+        "approval_widget": "hyprland-settings-source-include-production-activation-approval-ux-disabled",
+        "dry_run_widget": "hyprland-settings-source-include-production-activation-live-dry-run-policy-disabled",
+    },
+    "duplicateReplacement": {
+        "approval_heading": "Duplicate production activation approval UX",
+        "dry_run_heading": "Duplicate live production dry-run policy",
+        "production": "Production duplicate writes",
+        "disabled": "Disabled",
+        "executor": "Executor wiring: Unwired",
+        "approval_status": "Approval UX status",
+        "approval_disabled": "designed but disabled",
+        "final_approval": "Explicit final approval",
+        "typed_confirmation": "Typed confirmation phrase",
+        "production_flag": "Production flag opt-in",
+        "executor_opt_in": "Executor wiring opt-in",
+        "dry_run_status": "Dry-run policy status",
+        "dry_run_default": "Live dry-run cannot run by default",
+        "dry_run_real_config": "Live dry-run cannot touch real config by default",
+        "dry_run_reload": "Live dry-run cannot reload Hyprland by default",
+        "dry_run_runtime": "Live dry-run cannot mutate runtime by default",
+        "approval": "Approve duplicate production activation (not available)",
+        "confirmation": "Confirm duplicate production activation phrase (not available)",
+        "flag": "Opt in duplicate production flag (not available)",
+        "wiring": "Opt in duplicate executor wiring (not available)",
+        "dry_run": "Run duplicate live production dry-run (not available)",
+        "approval_widget": "hyprland-settings-duplicate-production-activation-approval-ux-disabled",
+        "dry_run_widget": "hyprland-settings-duplicate-production-activation-live-dry-run-policy-disabled",
+    },
+}
+
 LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT = [
     "Source/include activation draft editing",
     "Duplicate activation draft editing",
@@ -920,6 +973,61 @@ def production_activation_final_decision_assertions(values):
     return assertions
 
 
+def production_activation_approval_ux_and_dry_run_assertions(values):
+    text = "\n".join(values).lower()
+    assertions = {}
+    for key, spec in PRODUCTION_ACTIVATION_APPROVAL_UX_AND_DRY_RUN_ASSERTIONS.items():
+        assertions[key] = {
+            "approvalHeading": spec["approval_heading"],
+            "approvalHeadingFound": spec["approval_heading"].lower() in text,
+            "dryRunHeading": spec["dry_run_heading"],
+            "dryRunHeadingFound": spec["dry_run_heading"].lower() in text,
+            "productionDisabledText": spec["production"] + ": " + spec["disabled"],
+            "productionDisabledFound": spec["production"].lower() in text
+            and spec["disabled"].lower() in text,
+            "executorWiring": spec["executor"],
+            "executorWiringFound": spec["executor"].lower() in text,
+            "approvalStatus": spec["approval_status"],
+            "approvalStatusFound": spec["approval_status"].lower() in text
+            and spec["approval_disabled"].lower() in text,
+            "finalApproval": spec["final_approval"],
+            "finalApprovalFound": spec["final_approval"].lower() in text,
+            "typedConfirmation": spec["typed_confirmation"],
+            "typedConfirmationFound": spec["typed_confirmation"].lower() in text,
+            "productionFlagOptIn": spec["production_flag"],
+            "productionFlagOptInFound": spec["production_flag"].lower() in text,
+            "executorWiringOptIn": spec["executor_opt_in"],
+            "executorWiringOptInFound": spec["executor_opt_in"].lower() in text,
+            "dryRunStatus": spec["dry_run_status"],
+            "dryRunStatusFound": spec["dry_run_status"].lower() in text
+            and spec["approval_disabled"].lower() in text,
+            "dryRunCannotRunByDefault": spec["dry_run_default"],
+            "dryRunCannotRunByDefaultFound": spec["dry_run_default"].lower() in text,
+            "dryRunCannotTouchRealConfig": spec["dry_run_real_config"],
+            "dryRunCannotTouchRealConfigFound": spec["dry_run_real_config"].lower()
+            in text,
+            "dryRunCannotReload": spec["dry_run_reload"],
+            "dryRunCannotReloadFound": spec["dry_run_reload"].lower() in text,
+            "dryRunCannotMutateRuntime": spec["dry_run_runtime"],
+            "dryRunCannotMutateRuntimeFound": spec["dry_run_runtime"].lower() in text,
+            "disabledApproval": spec["approval"],
+            "disabledApprovalFound": spec["approval"].lower() in text,
+            "disabledConfirmation": spec["confirmation"],
+            "disabledConfirmationFound": spec["confirmation"].lower() in text,
+            "disabledProductionFlag": spec["flag"],
+            "disabledProductionFlagFound": spec["flag"].lower() in text,
+            "disabledExecutorWiring": spec["wiring"],
+            "disabledExecutorWiringFound": spec["wiring"].lower() in text,
+            "disabledDryRun": spec["dry_run"],
+            "disabledDryRunFound": spec["dry_run"].lower() in text,
+            "approvalWidgetName": spec["approval_widget"],
+            "approvalWidgetNameFound": spec["approval_widget"].lower() in text,
+            "dryRunWidgetName": spec["dry_run_widget"],
+            "dryRunWidgetNameFound": spec["dry_run_widget"].lower() in text,
+        }
+    return assertions
+
+
 def node_text(node):
     return "\n".join(accessible_text(node))
 
@@ -1348,6 +1456,16 @@ def main() -> int:
         "productionActivationFinalDecisionsAllDecisionLabelsFound": False,
         "productionActivationFinalDecisionsAllPersistenceFound": False,
         "productionActivationFinalDecisionsAllDisabledActionsFound": False,
+        "productionActivationApprovalUxAndDryRunAssertionMethod": "screenshot_plus_accessibility_tree_text_not_ocr",
+        "productionActivationApprovalUxAndDryRunAssertions": {},
+        "productionActivationApprovalUxAndDryRunAllHeadingsFound": False,
+        "productionActivationApprovalUxAndDryRunAllProductionDisabledFound": False,
+        "productionActivationApprovalUxAndDryRunAllExecutorUnwiredFound": False,
+        "productionActivationApprovalUxAndDryRunAllApprovalStatusFound": False,
+        "productionActivationApprovalUxAndDryRunAllApprovalRequirementsFound": False,
+        "productionActivationApprovalUxAndDryRunAllDryRunStatusFound": False,
+        "productionActivationApprovalUxAndDryRunAllDryRunBoundariesFound": False,
+        "productionActivationApprovalUxAndDryRunAllDisabledActionsFound": False,
         "text": [],
         "error": None,
     }
@@ -1444,6 +1562,11 @@ def main() -> int:
         )
         final_decision_assertions = production_activation_final_decision_assertions(
             result["text"] + result["textAfterNavigation"]
+        )
+        approval_ux_and_dry_run_assertions = (
+            production_activation_approval_ux_and_dry_run_assertions(
+                result["text"] + result["textAfterNavigation"]
+            )
         )
         result["approvalCardAssertions"] = approval_assertions
         result["approvalCardsAllHeadingsFound"] = all(
@@ -1657,6 +1780,51 @@ def main() -> int:
             and card["disabledExecutorWiringFound"]
             and card["disabledLiveDryRunFound"]
             for card in final_decision_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAssertions"] = (
+            approval_ux_and_dry_run_assertions
+        )
+        result["productionActivationApprovalUxAndDryRunAllHeadingsFound"] = all(
+            card["approvalHeadingFound"] and card["dryRunHeadingFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllProductionDisabledFound"] = all(
+            card["productionDisabledFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllExecutorUnwiredFound"] = all(
+            card["executorWiringFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllApprovalStatusFound"] = all(
+            card["approvalStatusFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllApprovalRequirementsFound"] = all(
+            card["finalApprovalFound"]
+            and card["typedConfirmationFound"]
+            and card["productionFlagOptInFound"]
+            and card["executorWiringOptInFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllDryRunStatusFound"] = all(
+            card["dryRunStatusFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllDryRunBoundariesFound"] = all(
+            card["dryRunCannotRunByDefaultFound"]
+            and card["dryRunCannotTouchRealConfigFound"]
+            and card["dryRunCannotReloadFound"]
+            and card["dryRunCannotMutateRuntimeFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
+        )
+        result["productionActivationApprovalUxAndDryRunAllDisabledActionsFound"] = all(
+            card["disabledApprovalFound"]
+            and card["disabledConfirmationFound"]
+            and card["disabledProductionFlagFound"]
+            and card["disabledExecutorWiringFound"]
+            and card["disabledDryRunFound"]
+            for card in approval_ux_and_dry_run_assertions.values()
         )
         duplicate_text_collected = (
             "this setting appears more than once in your config" in all_text

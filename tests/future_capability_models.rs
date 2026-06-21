@@ -23,10 +23,11 @@ use hyprland_settings::future_capability::{
     high_risk_recovery_workflow, hyprland_0554_approval_flow, hyprland_version_activation_gate,
     load_disabled_approval_cards_from_report_str, load_disabled_approval_cards_from_reports,
     local_hyprland_version_evidence, migration_comparison_review,
-    production_activation_control_request, production_activation_control_reviews,
-    production_activation_control_safety_plan, production_activation_decision_reviews,
-    production_activation_draft_edit_reviews, production_activation_draft_edit_state_from_draft,
-    production_activation_draft_from_form_state, production_activation_draft_gtk_state_from_draft,
+    production_activation_approval_and_dry_run_reviews, production_activation_control_request,
+    production_activation_control_reviews, production_activation_control_safety_plan,
+    production_activation_decision_reviews, production_activation_draft_edit_reviews,
+    production_activation_draft_edit_state_from_draft, production_activation_draft_from_form_state,
+    production_activation_draft_gtk_state_from_draft,
     production_activation_draft_persistence_boundaries, production_activation_draft_reviews,
     production_activation_final_decision_reviews, production_activation_form_reviews,
     production_activation_form_state, production_activation_live_draft_gtk_reviews,
@@ -55,12 +56,13 @@ use hyprland_settings::future_capability::{
     DuplicateProductionGateStatus, DuplicateReplacementOptions, DuplicateReplacementRequest,
     DuplicateReplacementStatus, GuardedTempExecutionStatus, HighRiskLiveReadinessStatus,
     HighRiskProductionGateStatus, HyprlandVersionActivationStatus, MockWatchdog, MockWatchdogState,
-    ProductionActivationControlStatus, ProductionActivationDecisionStatus,
-    ProductionActivationDraftEditAction, ProductionActivationDraftEditMode,
-    ProductionActivationDraftEditStatus, ProductionActivationDraftGtkField,
-    ProductionActivationDraftGtkStatus, ProductionActivationDraftGtkUpdate,
-    ProductionActivationDraftPersistenceScope, ProductionActivationDraftPersistenceStatus,
-    ProductionActivationDraftStatus, ProductionActivationDraftUpdate,
+    ProductionActivationApprovalUxStatus, ProductionActivationControlStatus,
+    ProductionActivationDecisionStatus, ProductionActivationDraftEditAction,
+    ProductionActivationDraftEditMode, ProductionActivationDraftEditStatus,
+    ProductionActivationDraftGtkField, ProductionActivationDraftGtkStatus,
+    ProductionActivationDraftGtkUpdate, ProductionActivationDraftPersistenceScope,
+    ProductionActivationDraftPersistenceStatus, ProductionActivationDraftStatus,
+    ProductionActivationDraftUpdate, ProductionActivationDryRunPolicyStatus,
     ProductionActivationFinalDecisionStatus, ProductionActivationFormStatus,
     ProductionActivationPathStatus, ProductionActivationRequest, ProductionActivationRequestScope,
     ProductionActivationSafetyGateProofOverallStatus, ProductionActivationSafetyGateProofStatus,
@@ -6706,5 +6708,124 @@ fn production_activation_final_decisions_keep_fixture_proof_from_authorizing_pro
             .blockers
             .iter()
             .any(|blocker| blocker.contains("live production dry-run policy is missing")));
+    }
+}
+
+#[test]
+fn production_activation_approval_ux_and_dry_run_policy_stay_disabled() {
+    let reviews = production_activation_approval_and_dry_run_reviews();
+    assert_eq!(reviews.len(), 2);
+
+    for review in reviews {
+        assert_eq!(
+            review.approval_status,
+            ProductionActivationApprovalUxStatus::ApprovalUxDesignedButDisabled
+        );
+        assert_eq!(
+            review.typed_confirmation_status,
+            ProductionActivationApprovalUxStatus::ApprovalUxRequiresTypedConfirmation
+        );
+        assert_eq!(
+            review.backup_restore_acknowledgement_status,
+            ProductionActivationApprovalUxStatus::ApprovalUxRequiresBackupRestoreAcknowledgement
+        );
+        assert_eq!(
+            review.production_flag_opt_in_status,
+            ProductionActivationApprovalUxStatus::ApprovalUxRequiresProductionFlagOptIn
+        );
+        assert_eq!(
+            review.executor_wiring_opt_in_status,
+            ProductionActivationApprovalUxStatus::ApprovalUxRequiresExecutorWiringOptIn
+        );
+        assert_eq!(
+            review.proof_inference_status,
+            ProductionActivationApprovalUxStatus::ApprovalUxCannotBeInferredFromProof
+        );
+        assert_eq!(
+            review.dry_run_status,
+            ProductionActivationDryRunPolicyStatus::DryRunPolicyDesignedButDisabled
+        );
+        assert_eq!(
+            review.dry_run_explicit_action_status,
+            ProductionActivationDryRunPolicyStatus::DryRunPolicyRequiresExplicitUserAction
+        );
+        assert_eq!(
+            review.dry_run_real_config_boundary_status,
+            ProductionActivationDryRunPolicyStatus::DryRunPolicyRequiresRealConfigBoundaryDecision
+        );
+        assert_eq!(
+            review.dry_run_no_reload_status,
+            ProductionActivationDryRunPolicyStatus::DryRunPolicyRequiresNoReloadGuarantee
+        );
+        assert_eq!(
+            review.dry_run_no_runtime_mutation_status,
+            ProductionActivationDryRunPolicyStatus::DryRunPolicyRequiresNoRuntimeMutationGuarantee
+        );
+        assert_eq!(
+            review.dry_run_rollback_status,
+            ProductionActivationDryRunPolicyStatus::DryRunPolicyRequiresRollbackReadyState
+        );
+        assert_eq!(
+            review.final_decision_status,
+            ProductionActivationFinalDecisionStatus::FinalDecisionProofSatisfiedButDecisionsMissing
+        );
+        assert_eq!(
+            review.copied_fixture_proof_status,
+            ProductionActivationSafetyGateProofOverallStatus::ProductionActivationProofPartiallySatisfiedButDefaultDisabled
+        );
+        assert_eq!(
+            review.draft_persistence_status,
+            ProductionActivationDraftPersistenceStatus::PersistenceForbiddenByDefault
+        );
+        assert_eq!(
+            review.executor_wiring_status,
+            ProductionExecutorWiringState::Unwired
+        );
+        assert_eq!(review.production_status, "Disabled");
+        assert!(!review.production_activation_enabled);
+        assert!(!review.category_production_enabled);
+        assert!(!review.production_write_executed);
+        assert!(!review.real_config_touched);
+        assert!(!review.runtime_mutated);
+
+        let approval_lines = review.approval_user_facing_lines().join("\n");
+        assert!(approval_lines.contains("Approval UX status: Approval UX designed but disabled"));
+        assert!(
+            approval_lines.contains("Explicit final approval: Approval UX designed but disabled")
+        );
+        assert!(approval_lines
+            .contains("Typed confirmation phrase: Approval UX requires typed confirmation"));
+        assert!(approval_lines
+            .contains("Production flag opt-in: Approval UX requires production flag opt-in"));
+        assert!(approval_lines
+            .contains("Executor wiring opt-in: Approval UX requires executor wiring opt-in"));
+        assert!(approval_lines.contains("copied-fixture proof cannot approve production"));
+        assert!(approval_lines.contains("draft edit cannot approve production"));
+        assert!(approval_lines.contains("persistence boundary cannot approve production"));
+
+        let dry_run_lines = review.dry_run_user_facing_lines().join("\n");
+        assert!(
+            dry_run_lines.contains("Dry-run policy status: Dry-run policy designed but disabled")
+        );
+        assert!(dry_run_lines
+            .contains("Live dry-run cannot run by default: Dry-run policy designed but disabled"));
+        assert!(dry_run_lines.contains(
+            "Live dry-run cannot touch real config by default: Dry-run policy requires real-config boundary decision"
+        ));
+        assert!(dry_run_lines
+            .contains("Live dry-run reload boundary: Dry-run policy requires no-reload guarantee"));
+        assert!(dry_run_lines.contains(
+            "Live dry-run runtime-mutation boundary: Dry-run policy requires no-runtime-mutation guarantee"
+        ));
+        assert!(dry_run_lines.contains("Copied-fixture proof is not live production dry-run"));
+
+        assert!(review
+            .negative_proofs
+            .iter()
+            .any(|proof| proof == "approval UX design alone cannot approve production"));
+        assert!(review
+            .negative_proofs
+            .iter()
+            .any(|proof| proof == "dry-run policy design alone cannot authorize live dry-run"));
     }
 }

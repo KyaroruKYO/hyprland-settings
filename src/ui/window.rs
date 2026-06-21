@@ -18,24 +18,26 @@ use crate::export::ExportBundle;
 use crate::future_capability::{
     apply_production_activation_draft_gtk_update, disabled_future_approval_card_projections,
     duplicate_activation_draft_gtk_review, duplicate_production_approval_gate,
-    production_activation_control_reviews, production_activation_decision_reviews,
-    production_activation_draft_edit_reviews, production_activation_draft_persistence_boundaries,
-    production_activation_draft_reviews, production_activation_final_decision_reviews,
-    production_activation_form_reviews, production_activation_live_draft_gtk_reviews,
-    production_activation_path_reviews, production_activation_safety_gate_proof_reviews,
-    production_activation_safety_gate_reviews, proven_runtime_approval_evidence_summary,
-    source_include_activation_draft_gtk_review, source_include_insertion_review,
-    source_include_selected_target_dry_run_plan, source_include_target_selection_fixture_proof,
-    DisabledApprovalCardProjection, DuplicateOccurrence, DuplicateProductionGateStatus,
-    ProductionActivationControlReview, ProductionActivationDecisionReview,
-    ProductionActivationDraftEditReview, ProductionActivationDraftGtkField,
-    ProductionActivationDraftGtkReview, ProductionActivationDraftGtkState,
-    ProductionActivationDraftGtkUpdate, ProductionActivationDraftPersistenceBoundary,
-    ProductionActivationDraftReview, ProductionActivationFinalDecisionReview,
-    ProductionActivationFormReview, ProductionActivationPathReview,
-    ProductionActivationSafetyGateProofReview, ProductionActivationSafetyGateReview,
-    ProductionExecutorWiringState, SourceIncludeInsertionReadiness,
-    SourceIncludeSelectedTargetDryRunStatus, SourceIncludeTargetCandidate,
+    production_activation_approval_and_dry_run_reviews, production_activation_control_reviews,
+    production_activation_decision_reviews, production_activation_draft_edit_reviews,
+    production_activation_draft_persistence_boundaries, production_activation_draft_reviews,
+    production_activation_final_decision_reviews, production_activation_form_reviews,
+    production_activation_live_draft_gtk_reviews, production_activation_path_reviews,
+    production_activation_safety_gate_proof_reviews, production_activation_safety_gate_reviews,
+    proven_runtime_approval_evidence_summary, source_include_activation_draft_gtk_review,
+    source_include_insertion_review, source_include_selected_target_dry_run_plan,
+    source_include_target_selection_fixture_proof, DisabledApprovalCardProjection,
+    DuplicateOccurrence, DuplicateProductionGateStatus,
+    ProductionActivationApprovalAndDryRunReview, ProductionActivationControlReview,
+    ProductionActivationDecisionReview, ProductionActivationDraftEditReview,
+    ProductionActivationDraftGtkField, ProductionActivationDraftGtkReview,
+    ProductionActivationDraftGtkState, ProductionActivationDraftGtkUpdate,
+    ProductionActivationDraftPersistenceBoundary, ProductionActivationDraftReview,
+    ProductionActivationFinalDecisionReview, ProductionActivationFormReview,
+    ProductionActivationPathReview, ProductionActivationSafetyGateProofReview,
+    ProductionActivationSafetyGateReview, ProductionExecutorWiringState,
+    SourceIncludeInsertionReadiness, SourceIncludeSelectedTargetDryRunStatus,
+    SourceIncludeTargetCandidate,
 };
 use crate::guarded_write_review::{
     build_guarded_write_target_review, FixtureProofStatus, PRODUCTION_WRITE_TARGET_REVIEW_ENABLED,
@@ -1905,6 +1907,7 @@ fn production_activation_safety_gate_reviews_section() -> gtk::Frame {
     }
     content.append(&production_activation_safety_gate_proof_reviews_section());
     content.append(&production_activation_final_decision_reviews_section());
+    content.append(&production_activation_approval_and_dry_run_reviews_section());
 
     frame.set_child(Some(&content));
     frame
@@ -2247,6 +2250,257 @@ fn production_activation_final_decision_review_card(
     dry_run.set_widget_name(&decision.disabled_live_dry_run_widget_name);
     dry_run.set_tooltip_text(Some(
         "Live production dry-run is not available. This button has no config, runtime, compositor refresh, or IPC callback.",
+    ));
+    dry_run.set_sensitive(false);
+    content.append(&dry_run);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_approval_and_dry_run_reviews_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(
+        "hyprland-settings-production-activation-approval-ux-and-dry-run-policy-section",
+    );
+    frame.set_tooltip_text(Some(
+        "Default-disabled approval UX and live dry-run policy. These cards cannot approve production or run live dry-runs.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+    content.append(&title_label(
+        "Production activation approval UX and dry-run policy",
+    ));
+    content.append(&small_label(
+        "Approval UX and live production dry-run policy are designed but disabled.",
+    ));
+    content.append(&small_label(
+        "Approval controls and live dry-run controls are not available, executors remain Unwired, and production flags remain false.",
+    ));
+
+    for review in production_activation_approval_and_dry_run_reviews() {
+        content.append(&production_activation_approval_ux_review_card(&review));
+        content.append(&production_activation_live_dry_run_policy_review_card(
+            &review,
+        ));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_approval_ux_review_card(
+    review: &ProductionActivationApprovalAndDryRunReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.approval_widget_name);
+    frame.set_tooltip_text(Some(
+        "Review-only approval UX design. This card has no persistence, mutation, production, compositor refresh, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.approval_evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.approval_heading));
+    content.append(&small_label("Approval UX designed but disabled"));
+    append_detail_line(
+        &content,
+        "Approval UX status",
+        review.approval_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Explicit final approval",
+        review.approval_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Typed confirmation phrase",
+        review.typed_confirmation_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Backup/restore acknowledgement",
+        review
+            .backup_restore_acknowledgement_status
+            .user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Production flag opt-in",
+        review.production_flag_opt_in_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring opt-in",
+        review.executor_wiring_opt_in_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Copied-fixture proof cannot approve production",
+        review.proof_inference_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Draft edit cannot approve production",
+        review.proof_inference_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Persistence boundary cannot approve production",
+        review.proof_inference_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Draft persistence",
+        review.draft_persistence_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    content.append(&small_label("Approval UX requirements"));
+    for requirement in &review.approval_requirements {
+        content.append(&small_label(requirement));
+    }
+    content.append(&small_label("Approval UX negative proofs"));
+    for proof in &review.negative_proofs {
+        content.append(&small_label(proof));
+    }
+
+    let approval = gtk::Button::with_label(&review.disabled_approval_label);
+    approval.set_widget_name(&review.disabled_approval_widget_name);
+    approval.set_tooltip_text(Some(
+        "Approval is not available. This button has no production callback.",
+    ));
+    approval.set_sensitive(false);
+    content.append(&approval);
+
+    let confirmation = gtk::Button::with_label(&review.disabled_confirmation_label);
+    confirmation.set_widget_name(&review.disabled_confirmation_widget_name);
+    confirmation.set_tooltip_text(Some(
+        "Typed confirmation is not available. This button only documents a future requirement.",
+    ));
+    confirmation.set_sensitive(false);
+    content.append(&confirmation);
+
+    let flag = gtk::Button::with_label(&review.disabled_flag_label);
+    flag.set_widget_name(&review.disabled_flag_widget_name);
+    flag.set_tooltip_text(Some(
+        "Production flag opt-in is not available. This button does not change flags.",
+    ));
+    flag.set_sensitive(false);
+    content.append(&flag);
+
+    let wiring = gtk::Button::with_label(&review.disabled_wiring_label);
+    wiring.set_widget_name(&review.disabled_wiring_widget_name);
+    wiring.set_tooltip_text(Some(
+        "Executor wiring opt-in is not available. This button has no executor callback.",
+    ));
+    wiring.set_sensitive(false);
+    content.append(&wiring);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn production_activation_live_dry_run_policy_review_card(
+    review: &ProductionActivationApprovalAndDryRunReview,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&review.dry_run_widget_name);
+    frame.set_tooltip_text(Some(
+        "Review-only live dry-run policy. This card has no config, runtime, compositor refresh, IPC, production, or executor handler.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_widget_name(&review.dry_run_evidence_widget_name);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&review.dry_run_heading));
+    content.append(&small_label("Dry-run policy designed but disabled"));
+    append_detail_line(
+        &content,
+        "Dry-run policy status",
+        review.dry_run_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live dry-run requires explicit user action",
+        review.dry_run_explicit_action_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live dry-run cannot run by default",
+        review.dry_run_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live dry-run cannot touch real config by default",
+        review
+            .dry_run_real_config_boundary_status
+            .user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live dry-run cannot reload Hyprland by default",
+        review.dry_run_no_reload_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live dry-run cannot mutate runtime by default",
+        review
+            .dry_run_no_runtime_mutation_status
+            .user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Live dry-run requires rollback-ready state",
+        review.dry_run_rollback_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Copied-fixture proof is not live production dry-run",
+        review.copied_fixture_proof_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        "Executor wiring",
+        review.executor_wiring_status.user_facing_label(),
+    );
+    append_detail_line(
+        &content,
+        &review.production_label,
+        &review.production_status,
+    );
+
+    content.append(&small_label("Live dry-run policy requirements"));
+    for requirement in &review.dry_run_requirements {
+        content.append(&small_label(requirement));
+    }
+
+    let dry_run = gtk::Button::with_label(&review.disabled_dry_run_label);
+    dry_run.set_widget_name(&review.disabled_dry_run_widget_name);
+    dry_run.set_tooltip_text(Some(
+        "Live production dry-run is not available. This button has no config, runtime, compositor refresh, IPC, production, or executor callback.",
     ));
     dry_run.set_sensitive(false);
     content.append(&dry_run);

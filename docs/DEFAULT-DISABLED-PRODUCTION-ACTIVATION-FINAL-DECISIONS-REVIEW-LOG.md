@@ -14,6 +14,8 @@ The decision layer recognizes copied-fixture safety proof as partial evidence, b
 
 - Source/include final decision review exists.
 - Duplicate final decision review exists.
+- Source/include approval UX and live dry-run policy follow-on review exists.
+- Duplicate approval UX and live dry-run policy follow-on review exists.
 - Source/include final approval is missing/required.
 - Duplicate final approval is missing/required.
 - Source/include production flag remains false and is not set.
@@ -47,3 +49,7 @@ The decision layer recognizes copied-fixture safety proof as partial evidence, b
 - No `hyprctl reload` was run.
 - The `v0.55.2` app model remains default.
 - Hyprland 0.55.4 migration remains inactive.
+
+## Follow-On Disabled UX/Policy Layer
+
+`data/reports/default-disabled-production-activation-approval-ux-and-dry-run-policy.v0.55.2.json` now records designed-but-disabled approval UX and live dry-run policy reviews. Those reviews do not change the final decision safety result: approval still requires future explicit user action, typed confirmation, production flag opt-in, and executor wiring opt-in; live dry-run still cannot run by default or touch real config, reload Hyprland, or mutate runtime.

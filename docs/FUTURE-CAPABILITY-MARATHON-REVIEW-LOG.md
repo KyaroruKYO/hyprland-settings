@@ -132,3 +132,12 @@ Added source/include and duplicate production activation safety proof. The proof
 - Draft edit state and draft persistence boundary state cannot approve production.
 - Config page now displays disabled/review-only final decision cards with stable widget names and no production, persistence, reload, real-config, runtime, or executor callbacks.
 - Production source/include insertion and duplicate writes remain disabled; executors remain `Unwired`, production flags remain false, draft persistence remains forbidden by default, no real config was touched, no runtime mutation was run, and no reload was run.
+
+## 2026-06-20 - Production Activation Approval UX And Dry-Run Policy
+
+- Added source/include and duplicate approval UX reviews.
+- Added source/include and duplicate live production dry-run policy reviews.
+- Approval UX is designed but disabled and requires future explicit user action, typed confirmation, backup/restore acknowledgement, production flag opt-in, and executor wiring opt-in.
+- Live dry-run policy is designed but disabled and requires future explicit user action, real-config boundary decision, no-reload guarantee, no-runtime-mutation guarantee, rollback-ready state, and target/backup/restore proof.
+- Approval UX design alone cannot approve production, and dry-run policy design alone cannot authorize live dry-run.
+- Production flags remain false, executors remain `Unwired`, draft persistence remains forbidden by default, no real config was touched, no runtime mutation was run, and no reload was run.

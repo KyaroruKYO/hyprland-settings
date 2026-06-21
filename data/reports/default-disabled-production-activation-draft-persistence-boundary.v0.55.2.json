@@ -113,6 +113,9 @@
     "canContinue": true,
     "nextSafeWork": "Keep draft persistence forbidden by default; source/include and duplicate safety proof is partially satisfied, but final approval, production flag, executor wiring, and live production dry-run decisions remain required."
   },
+  "followOnReports": [
+    "data/reports/default-disabled-production-activation-approval-ux-and-dry-run-policy.v0.55.2.json"
+  ],
   "nonActions": [
     "No activation draft persistence was added.",
     "No activation draft data was written to disk.",

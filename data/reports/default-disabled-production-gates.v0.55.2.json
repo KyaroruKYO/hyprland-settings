@@ -341,5 +341,32 @@
       "productionFlag": false,
       "diskPersistenceAdded": false
     }
+  },
+  "productionActivationApprovalUxAndDryRunPolicy": {
+    "report": "data/reports/default-disabled-production-activation-approval-ux-and-dry-run-policy.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "approvalUxStatus": "ApprovalUxDesignedButDisabled",
+      "dryRunPolicyStatus": "DryRunPolicyDesignedButDisabled",
+      "explicitFinalApprovalRequired": true,
+      "typedConfirmationRequired": true,
+      "productionFlagOptInRequired": true,
+      "executorWiringOptInRequired": true,
+      "liveDryRunCannotRunByDefault": true,
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWiringStatus": "Unwired"
+    },
+    "duplicateReplacement": {
+      "approvalUxStatus": "ApprovalUxDesignedButDisabled",
+      "dryRunPolicyStatus": "DryRunPolicyDesignedButDisabled",
+      "explicitFinalApprovalRequired": true,
+      "typedConfirmationRequired": true,
+      "productionFlagOptInRequired": true,
+      "executorWiringOptInRequired": true,
+      "liveDryRunCannotRunByDefault": true,
+      "productionEnabled": false,
+      "productionFlag": false,
+      "executorWiringStatus": "Unwired"
+    }
   }
 }

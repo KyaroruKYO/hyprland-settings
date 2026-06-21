@@ -122,6 +122,7 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("PRODUCTION_ACTIVATION_SAFETY_GATE_ASSERTIONS"));
     assert!(collector.contains("PRODUCTION_ACTIVATION_SAFETY_PROOF_ASSERTIONS"));
     assert!(collector.contains("PRODUCTION_ACTIVATION_FINAL_DECISION_ASSERTIONS"));
+    assert!(collector.contains("PRODUCTION_ACTIVATION_APPROVAL_UX_AND_DRY_RUN_ASSERTIONS"));
     assert!(collector.contains("productionActivationSafetyGateAssertionMethod"));
     assert!(collector.contains("productionActivationSafetyGateAssertions"));
     assert!(collector.contains("productionActivationSafetyGatesAllBlockedByDefaultFound"));
@@ -132,6 +133,11 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
     assert!(collector.contains("productionActivationFinalDecisionAssertions"));
     assert!(collector.contains("productionActivationFinalDecisionsAllDecisionLabelsFound"));
     assert!(collector.contains("productionActivationFinalDecisionsAllDisabledActionsFound"));
+    assert!(collector.contains("productionActivationApprovalUxAndDryRunAssertions"));
+    assert!(
+        collector.contains("productionActivationApprovalUxAndDryRunAllApprovalRequirementsFound")
+    );
+    assert!(collector.contains("productionActivationApprovalUxAndDryRunAllDryRunBoundariesFound"));
     for expected in [
         "Source/include approval review",
         "Duplicate approval review",
@@ -157,8 +163,22 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "Duplicate production activation safety proof",
         "Source/include production activation final decision",
         "Duplicate production activation final decision",
+        "Source/include production activation approval UX",
+        "Duplicate production activation approval UX",
+        "Source/include live production dry-run policy",
+        "Duplicate live production dry-run policy",
         "Production activation proof partially satisfied but default-disabled",
         "Final decision proof satisfied but decisions missing",
+        "Approval UX status",
+        "designed but disabled",
+        "Typed confirmation phrase",
+        "Production flag opt-in",
+        "Executor wiring opt-in",
+        "Dry-run policy status",
+        "Live dry-run cannot run by default",
+        "Live dry-run cannot touch real config by default",
+        "Live dry-run cannot reload Hyprland by default",
+        "Live dry-run cannot mutate runtime by default",
         "Byte-exact backup",
         "Write plan",
         "Dry-run write plan",
@@ -185,6 +205,12 @@ fn gtk_automation_python_collectors_are_safe_and_compilable() {
         "Set duplicate production flag (not available)",
         "Wire duplicate production executor (not available)",
         "Run duplicate live production dry-run (not available)",
+        "Confirm source/include production activation phrase (not available)",
+        "Opt in source/include production flag (not available)",
+        "Opt in source/include executor wiring (not available)",
+        "Confirm duplicate production activation phrase (not available)",
+        "Opt in duplicate production flag (not available)",
+        "Opt in duplicate executor wiring (not available)",
         "Run source/include production safety proof (fixture only, planned)",
         "Run duplicate production safety proof (fixture only, planned)",
         "Review source/include production activation gate (not available)",
@@ -367,6 +393,12 @@ fn gtk_harness_records_screenshot_level_disabled_approval_card_assertions() {
         "productionActivationFinalDecisionsAllDecisionLabelsFound",
         "productionActivationFinalDecisionsAllPersistenceFound",
         "productionActivationFinalDecisionsAllDisabledActionsFound",
+        "production_activation_approval_ux_and_dry_run_assertion_results",
+        "productionActivationApprovalUxAndDryRunResults",
+        "productionActivationApprovalUxAndDryRunAllHeadingsFound",
+        "productionActivationApprovalUxAndDryRunAllApprovalRequirementsFound",
+        "productionActivationApprovalUxAndDryRunAllDryRunBoundariesFound",
+        "productionActivationApprovalUxAndDryRunAllDisabledActionsFound",
         "sourceIncludeInsertion",
         "duplicateReplacement",
         "structuredHlBindWrite",

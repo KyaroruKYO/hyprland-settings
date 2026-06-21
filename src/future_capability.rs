@@ -5167,6 +5167,251 @@ impl ProductionActivationFinalDecisionReview {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationApprovalUxStatus {
+    ApprovalUxMissing,
+    ApprovalUxDesignedButDisabled,
+    ApprovalUxRequiresExplicitUserAction,
+    ApprovalUxRequiresTypedConfirmation,
+    ApprovalUxRequiresBackupRestoreAcknowledgement,
+    ApprovalUxRequiresProductionFlagOptIn,
+    ApprovalUxRequiresExecutorWiringOptIn,
+    ApprovalUxCannotBeInferredFromProof,
+}
+
+impl ProductionActivationApprovalUxStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::ApprovalUxMissing => "Approval UX missing",
+            Self::ApprovalUxDesignedButDisabled => "Approval UX designed but disabled",
+            Self::ApprovalUxRequiresExplicitUserAction => {
+                "Approval UX requires explicit user action"
+            }
+            Self::ApprovalUxRequiresTypedConfirmation => "Approval UX requires typed confirmation",
+            Self::ApprovalUxRequiresBackupRestoreAcknowledgement => {
+                "Approval UX requires backup/restore acknowledgement"
+            }
+            Self::ApprovalUxRequiresProductionFlagOptIn => {
+                "Approval UX requires production flag opt-in"
+            }
+            Self::ApprovalUxRequiresExecutorWiringOptIn => {
+                "Approval UX requires executor wiring opt-in"
+            }
+            Self::ApprovalUxCannotBeInferredFromProof => {
+                "Approval UX cannot be inferred from proof"
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProductionActivationDryRunPolicyStatus {
+    DryRunPolicyMissing,
+    DryRunPolicyDesignedButDisabled,
+    DryRunPolicyRequiresExplicitUserAction,
+    DryRunPolicyRequiresRealConfigBoundaryDecision,
+    DryRunPolicyRequiresNoReloadGuarantee,
+    DryRunPolicyRequiresNoRuntimeMutationGuarantee,
+    DryRunPolicyRequiresRollbackReadyState,
+    DryRunPolicyCannotRunByDefault,
+}
+
+impl ProductionActivationDryRunPolicyStatus {
+    pub fn user_facing_label(&self) -> &'static str {
+        match self {
+            Self::DryRunPolicyMissing => "Dry-run policy missing",
+            Self::DryRunPolicyDesignedButDisabled => "Dry-run policy designed but disabled",
+            Self::DryRunPolicyRequiresExplicitUserAction => {
+                "Dry-run policy requires explicit user action"
+            }
+            Self::DryRunPolicyRequiresRealConfigBoundaryDecision => {
+                "Dry-run policy requires real-config boundary decision"
+            }
+            Self::DryRunPolicyRequiresNoReloadGuarantee => {
+                "Dry-run policy requires no-reload guarantee"
+            }
+            Self::DryRunPolicyRequiresNoRuntimeMutationGuarantee => {
+                "Dry-run policy requires no-runtime-mutation guarantee"
+            }
+            Self::DryRunPolicyRequiresRollbackReadyState => {
+                "Dry-run policy requires rollback-ready state"
+            }
+            Self::DryRunPolicyCannotRunByDefault => "Dry-run policy cannot run by default",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ProductionActivationApprovalAndDryRunReview {
+    pub approval_widget_name: String,
+    pub approval_evidence_widget_name: String,
+    pub dry_run_widget_name: String,
+    pub dry_run_evidence_widget_name: String,
+    pub disabled_approval_widget_name: String,
+    pub disabled_confirmation_widget_name: String,
+    pub disabled_flag_widget_name: String,
+    pub disabled_wiring_widget_name: String,
+    pub disabled_dry_run_widget_name: String,
+    pub approval_heading: String,
+    pub dry_run_heading: String,
+    pub scope: ProductionActivationSafetyGateScope,
+    pub approval_status: ProductionActivationApprovalUxStatus,
+    pub typed_confirmation_status: ProductionActivationApprovalUxStatus,
+    pub backup_restore_acknowledgement_status: ProductionActivationApprovalUxStatus,
+    pub production_flag_opt_in_status: ProductionActivationApprovalUxStatus,
+    pub executor_wiring_opt_in_status: ProductionActivationApprovalUxStatus,
+    pub proof_inference_status: ProductionActivationApprovalUxStatus,
+    pub dry_run_status: ProductionActivationDryRunPolicyStatus,
+    pub dry_run_explicit_action_status: ProductionActivationDryRunPolicyStatus,
+    pub dry_run_real_config_boundary_status: ProductionActivationDryRunPolicyStatus,
+    pub dry_run_no_reload_status: ProductionActivationDryRunPolicyStatus,
+    pub dry_run_no_runtime_mutation_status: ProductionActivationDryRunPolicyStatus,
+    pub dry_run_rollback_status: ProductionActivationDryRunPolicyStatus,
+    pub final_decision_status: ProductionActivationFinalDecisionStatus,
+    pub copied_fixture_proof_status: ProductionActivationSafetyGateProofOverallStatus,
+    pub draft_persistence_status: ProductionActivationDraftPersistenceStatus,
+    pub executor_wiring_status: ProductionExecutorWiringState,
+    pub production_label: String,
+    pub production_status: String,
+    pub production_activation_enabled: bool,
+    pub category_production_enabled: bool,
+    pub production_write_executed: bool,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub approval_requirements: Vec<String>,
+    pub dry_run_requirements: Vec<String>,
+    pub negative_proofs: Vec<String>,
+    pub disabled_approval_label: String,
+    pub disabled_confirmation_label: String,
+    pub disabled_flag_label: String,
+    pub disabled_wiring_label: String,
+    pub disabled_dry_run_label: String,
+}
+
+impl ProductionActivationApprovalAndDryRunReview {
+    pub fn approval_user_facing_lines(&self) -> Vec<String> {
+        let mut lines = vec![
+            self.approval_heading.clone(),
+            format!(
+                "Approval UX status: {}",
+                self.approval_status.user_facing_label()
+            ),
+            format!(
+                "Explicit final approval: {}",
+                self.approval_status.user_facing_label()
+            ),
+            format!(
+                "Typed confirmation phrase: {}",
+                self.typed_confirmation_status.user_facing_label()
+            ),
+            format!(
+                "Backup/restore acknowledgement: {}",
+                self.backup_restore_acknowledgement_status
+                    .user_facing_label()
+            ),
+            format!(
+                "Production flag opt-in: {}",
+                self.production_flag_opt_in_status.user_facing_label()
+            ),
+            format!(
+                "Executor wiring opt-in: {}",
+                self.executor_wiring_opt_in_status.user_facing_label()
+            ),
+            format!(
+                "Copied-fixture proof inference: {}",
+                self.proof_inference_status.user_facing_label()
+            ),
+            format!(
+                "Draft persistence: {}",
+                self.draft_persistence_status.user_facing_label()
+            ),
+            format!(
+                "Executor wiring: {}",
+                self.executor_wiring_status.user_facing_label()
+            ),
+            format!("{}: {}", self.production_label, self.production_status),
+        ];
+        lines.extend(
+            self.approval_requirements
+                .iter()
+                .map(|requirement| format!("Approval UX requirement: {requirement}")),
+        );
+        lines.extend(
+            self.negative_proofs
+                .iter()
+                .map(|proof| format!("Approval UX negative proof: {proof}")),
+        );
+        lines.push(self.disabled_approval_label.clone());
+        lines.push(self.disabled_confirmation_label.clone());
+        lines.push(self.disabled_flag_label.clone());
+        lines.push(self.disabled_wiring_label.clone());
+        lines
+    }
+
+    pub fn dry_run_user_facing_lines(&self) -> Vec<String> {
+        let mut lines = vec![
+            self.dry_run_heading.clone(),
+            format!(
+                "Dry-run policy status: {}",
+                self.dry_run_status.user_facing_label()
+            ),
+            format!(
+                "Live dry-run cannot run by default: {}",
+                self.dry_run_status.user_facing_label()
+            ),
+            format!(
+                "Live dry-run explicit action: {}",
+                self.dry_run_explicit_action_status.user_facing_label()
+            ),
+            format!(
+                "Live dry-run real-config boundary: {}",
+                self.dry_run_real_config_boundary_status.user_facing_label()
+            ),
+            format!(
+                "Live dry-run cannot touch real config by default: {}",
+                self.dry_run_real_config_boundary_status.user_facing_label()
+            ),
+            format!(
+                "Live dry-run reload boundary: {}",
+                self.dry_run_no_reload_status.user_facing_label()
+            ),
+            format!(
+                "Live dry-run cannot reload Hyprland by default: {}",
+                self.dry_run_no_reload_status.user_facing_label()
+            ),
+            format!(
+                "Live dry-run runtime-mutation boundary: {}",
+                self.dry_run_no_runtime_mutation_status.user_facing_label()
+            ),
+            format!(
+                "Live dry-run cannot mutate runtime by default: {}",
+                self.dry_run_no_runtime_mutation_status.user_facing_label()
+            ),
+            format!(
+                "Live dry-run rollback readiness: {}",
+                self.dry_run_rollback_status.user_facing_label()
+            ),
+            format!(
+                "Copied-fixture proof: {}",
+                self.copied_fixture_proof_status.user_facing_label()
+            ),
+            "Copied-fixture proof is not live production dry-run".to_string(),
+            format!(
+                "Executor wiring: {}",
+                self.executor_wiring_status.user_facing_label()
+            ),
+            format!("{}: {}", self.production_label, self.production_status),
+        ];
+        lines.extend(
+            self.dry_run_requirements
+                .iter()
+                .map(|requirement| format!("Dry-run policy requirement: {requirement}")),
+        );
+        lines.push(self.disabled_dry_run_label.clone());
+        lines
+    }
+}
+
 const DISABLED_APPROVAL_CARDS_REPORT_PATH: &str =
     "data/reports/disabled-approval-ui-cards.v0.55.2.json";
 const DISABLED_APPROVAL_CARDS_REPORT_JSON: &str =
@@ -5651,6 +5896,14 @@ pub fn production_activation_final_decision_reviews() -> Vec<ProductionActivatio
     ]
 }
 
+pub fn production_activation_approval_and_dry_run_reviews(
+) -> Vec<ProductionActivationApprovalAndDryRunReview> {
+    vec![
+        source_include_production_activation_approval_and_dry_run_review(),
+        duplicate_production_activation_approval_and_dry_run_review(),
+    ]
+}
+
 pub fn source_include_production_activation_safety_gate() -> ProductionActivationSafetyGateReview {
     production_activation_safety_gate(SafetyGateSpec {
         widget_name: "hyprland-settings-source-include-production-activation-safety-gate-disabled",
@@ -5716,6 +5969,40 @@ pub fn source_include_production_activation_final_decision(
     })
 }
 
+pub fn source_include_production_activation_approval_and_dry_run_review(
+) -> ProductionActivationApprovalAndDryRunReview {
+    production_activation_approval_and_dry_run_review(ApprovalAndDryRunSpec {
+        approval_widget_name:
+            "hyprland-settings-source-include-production-activation-approval-ux-disabled",
+        approval_evidence_widget_name:
+            "hyprland-settings-source-include-production-activation-approval-ux-evidence",
+        dry_run_widget_name:
+            "hyprland-settings-source-include-production-activation-live-dry-run-policy-disabled",
+        dry_run_evidence_widget_name:
+            "hyprland-settings-source-include-production-activation-live-dry-run-policy-evidence",
+        disabled_approval_widget_name:
+            "hyprland-settings-source-include-production-activation-approval-ux-approve-disabled",
+        disabled_confirmation_widget_name:
+            "hyprland-settings-source-include-production-activation-approval-ux-confirm-disabled",
+        disabled_flag_widget_name:
+            "hyprland-settings-source-include-production-activation-approval-ux-flag-disabled",
+        disabled_wiring_widget_name:
+            "hyprland-settings-source-include-production-activation-approval-ux-wiring-disabled",
+        disabled_dry_run_widget_name:
+            "hyprland-settings-source-include-production-activation-live-dry-run-policy-run-disabled",
+        approval_heading: "Source/include production activation approval UX",
+        dry_run_heading: "Source/include live production dry-run policy",
+        scope: ProductionActivationSafetyGateScope::SourceIncludeInsertion,
+        production_label: "Production source/include insertion",
+        disabled_approval_label: "Approve source/include production activation (not available)",
+        disabled_confirmation_label:
+            "Confirm source/include production activation phrase (not available)",
+        disabled_flag_label: "Opt in source/include production flag (not available)",
+        disabled_wiring_label: "Opt in source/include executor wiring (not available)",
+        disabled_dry_run_label: "Run source/include live production dry-run (not available)",
+    })
+}
+
 pub fn duplicate_production_activation_safety_gate() -> ProductionActivationSafetyGateReview {
     production_activation_safety_gate(SafetyGateSpec {
         widget_name: "hyprland-settings-duplicate-production-activation-safety-gate-disabled",
@@ -5773,6 +6060,40 @@ pub fn duplicate_production_activation_final_decision() -> ProductionActivationF
         disabled_production_flag_label: "Set duplicate production flag (not available)",
         disabled_executor_wiring_label: "Wire duplicate production executor (not available)",
         disabled_live_dry_run_label: "Run duplicate live production dry-run (not available)",
+    })
+}
+
+pub fn duplicate_production_activation_approval_and_dry_run_review(
+) -> ProductionActivationApprovalAndDryRunReview {
+    production_activation_approval_and_dry_run_review(ApprovalAndDryRunSpec {
+        approval_widget_name:
+            "hyprland-settings-duplicate-production-activation-approval-ux-disabled",
+        approval_evidence_widget_name:
+            "hyprland-settings-duplicate-production-activation-approval-ux-evidence",
+        dry_run_widget_name:
+            "hyprland-settings-duplicate-production-activation-live-dry-run-policy-disabled",
+        dry_run_evidence_widget_name:
+            "hyprland-settings-duplicate-production-activation-live-dry-run-policy-evidence",
+        disabled_approval_widget_name:
+            "hyprland-settings-duplicate-production-activation-approval-ux-approve-disabled",
+        disabled_confirmation_widget_name:
+            "hyprland-settings-duplicate-production-activation-approval-ux-confirm-disabled",
+        disabled_flag_widget_name:
+            "hyprland-settings-duplicate-production-activation-approval-ux-flag-disabled",
+        disabled_wiring_widget_name:
+            "hyprland-settings-duplicate-production-activation-approval-ux-wiring-disabled",
+        disabled_dry_run_widget_name:
+            "hyprland-settings-duplicate-production-activation-live-dry-run-policy-run-disabled",
+        approval_heading: "Duplicate production activation approval UX",
+        dry_run_heading: "Duplicate live production dry-run policy",
+        scope: ProductionActivationSafetyGateScope::DuplicateReplacement,
+        production_label: "Production duplicate writes",
+        disabled_approval_label: "Approve duplicate production activation (not available)",
+        disabled_confirmation_label:
+            "Confirm duplicate production activation phrase (not available)",
+        disabled_flag_label: "Opt in duplicate production flag (not available)",
+        disabled_wiring_label: "Opt in duplicate executor wiring (not available)",
+        disabled_dry_run_label: "Run duplicate live production dry-run (not available)",
     })
 }
 
@@ -6520,6 +6841,27 @@ struct FinalDecisionSpec {
     disabled_live_dry_run_label: &'static str,
 }
 
+struct ApprovalAndDryRunSpec {
+    approval_widget_name: &'static str,
+    approval_evidence_widget_name: &'static str,
+    dry_run_widget_name: &'static str,
+    dry_run_evidence_widget_name: &'static str,
+    disabled_approval_widget_name: &'static str,
+    disabled_confirmation_widget_name: &'static str,
+    disabled_flag_widget_name: &'static str,
+    disabled_wiring_widget_name: &'static str,
+    disabled_dry_run_widget_name: &'static str,
+    approval_heading: &'static str,
+    dry_run_heading: &'static str,
+    scope: ProductionActivationSafetyGateScope,
+    production_label: &'static str,
+    disabled_approval_label: &'static str,
+    disabled_confirmation_label: &'static str,
+    disabled_flag_label: &'static str,
+    disabled_wiring_label: &'static str,
+    disabled_dry_run_label: &'static str,
+}
+
 fn activation_draft_persistence_boundary(
     spec: PersistenceBoundarySpec,
 ) -> ProductionActivationDraftPersistenceBoundary {
@@ -6842,6 +7184,98 @@ fn production_activation_final_decision(
         disabled_production_flag_label: spec.disabled_production_flag_label.to_string(),
         disabled_executor_wiring_label: spec.disabled_executor_wiring_label.to_string(),
         disabled_live_dry_run_label: spec.disabled_live_dry_run_label.to_string(),
+    }
+}
+
+fn production_activation_approval_and_dry_run_review(
+    spec: ApprovalAndDryRunSpec,
+) -> ProductionActivationApprovalAndDryRunReview {
+    let final_decision = match spec.scope {
+        ProductionActivationSafetyGateScope::SourceIncludeInsertion => {
+            source_include_production_activation_final_decision()
+        }
+        ProductionActivationSafetyGateScope::DuplicateReplacement => {
+            duplicate_production_activation_final_decision()
+        }
+    };
+
+    ProductionActivationApprovalAndDryRunReview {
+        approval_widget_name: spec.approval_widget_name.to_string(),
+        approval_evidence_widget_name: spec.approval_evidence_widget_name.to_string(),
+        dry_run_widget_name: spec.dry_run_widget_name.to_string(),
+        dry_run_evidence_widget_name: spec.dry_run_evidence_widget_name.to_string(),
+        disabled_approval_widget_name: spec.disabled_approval_widget_name.to_string(),
+        disabled_confirmation_widget_name: spec.disabled_confirmation_widget_name.to_string(),
+        disabled_flag_widget_name: spec.disabled_flag_widget_name.to_string(),
+        disabled_wiring_widget_name: spec.disabled_wiring_widget_name.to_string(),
+        disabled_dry_run_widget_name: spec.disabled_dry_run_widget_name.to_string(),
+        approval_heading: spec.approval_heading.to_string(),
+        dry_run_heading: spec.dry_run_heading.to_string(),
+        scope: spec.scope,
+        approval_status: ProductionActivationApprovalUxStatus::ApprovalUxDesignedButDisabled,
+        typed_confirmation_status:
+            ProductionActivationApprovalUxStatus::ApprovalUxRequiresTypedConfirmation,
+        backup_restore_acknowledgement_status:
+            ProductionActivationApprovalUxStatus::ApprovalUxRequiresBackupRestoreAcknowledgement,
+        production_flag_opt_in_status:
+            ProductionActivationApprovalUxStatus::ApprovalUxRequiresProductionFlagOptIn,
+        executor_wiring_opt_in_status:
+            ProductionActivationApprovalUxStatus::ApprovalUxRequiresExecutorWiringOptIn,
+        proof_inference_status:
+            ProductionActivationApprovalUxStatus::ApprovalUxCannotBeInferredFromProof,
+        dry_run_status: ProductionActivationDryRunPolicyStatus::DryRunPolicyDesignedButDisabled,
+        dry_run_explicit_action_status:
+            ProductionActivationDryRunPolicyStatus::DryRunPolicyRequiresExplicitUserAction,
+        dry_run_real_config_boundary_status:
+            ProductionActivationDryRunPolicyStatus::DryRunPolicyRequiresRealConfigBoundaryDecision,
+        dry_run_no_reload_status:
+            ProductionActivationDryRunPolicyStatus::DryRunPolicyRequiresNoReloadGuarantee,
+        dry_run_no_runtime_mutation_status:
+            ProductionActivationDryRunPolicyStatus::DryRunPolicyRequiresNoRuntimeMutationGuarantee,
+        dry_run_rollback_status:
+            ProductionActivationDryRunPolicyStatus::DryRunPolicyRequiresRollbackReadyState,
+        final_decision_status: final_decision.status,
+        copied_fixture_proof_status: final_decision.copied_fixture_proof_status,
+        draft_persistence_status: final_decision.draft_persistence_status,
+        executor_wiring_status: ProductionExecutorWiringState::Unwired,
+        production_label: spec.production_label.to_string(),
+        production_status: "Disabled".to_string(),
+        production_activation_enabled: false,
+        category_production_enabled: false,
+        production_write_executed: false,
+        real_config_touched: false,
+        runtime_mutated: false,
+        approval_requirements: vec![
+            "explicit future user action".to_string(),
+            "typed confirmation phrase".to_string(),
+            "review summary acknowledgement".to_string(),
+            "irreversible action warning acknowledgement".to_string(),
+            "backup/restore acknowledgement".to_string(),
+            "production flag opt-in".to_string(),
+            "executor wiring opt-in".to_string(),
+        ],
+        dry_run_requirements: vec![
+            "explicit future user action".to_string(),
+            "real-config boundary decision".to_string(),
+            "no-reload guarantee".to_string(),
+            "no-runtime-mutation guarantee".to_string(),
+            "rollback-ready state".to_string(),
+            "target identity and backup/restore proof".to_string(),
+            "copied-fixture proof must not be treated as live production dry-run".to_string(),
+        ],
+        negative_proofs: vec![
+            "copied-fixture proof cannot approve production".to_string(),
+            "draft edit cannot approve production".to_string(),
+            "persistence boundary cannot approve production".to_string(),
+            "final-decision report cannot approve production".to_string(),
+            "approval UX design alone cannot approve production".to_string(),
+            "dry-run policy design alone cannot authorize live dry-run".to_string(),
+        ],
+        disabled_approval_label: spec.disabled_approval_label.to_string(),
+        disabled_confirmation_label: spec.disabled_confirmation_label.to_string(),
+        disabled_flag_label: spec.disabled_flag_label.to_string(),
+        disabled_wiring_label: spec.disabled_wiring_label.to_string(),
+        disabled_dry_run_label: spec.disabled_dry_run_label.to_string(),
     }
 }
 

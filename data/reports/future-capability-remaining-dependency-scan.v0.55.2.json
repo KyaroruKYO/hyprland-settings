@@ -39,11 +39,11 @@
     },
     "missingDefaultInsertion": {
       "classification": "blocked by production activation",
-      "evidence": "Source/include insertion has decision/path/control/form/draft/edit/live-edit/persistence-boundary, production activation safety-gate proof, and final-decision layers. Copied-fixture backup/write/reread/restore/no-auto-apply proof is partially satisfied, but production insertion remains disabled, executors remain unwired, and final approval, production flag, executor wiring, and live production dry-run policy remain missing/required."
+      "evidence": "Source/include insertion has decision/path/control/form/draft/edit/live-edit/persistence-boundary, production activation safety-gate proof, final-decision, approval UX, and live dry-run policy layers. Copied-fixture backup/write/reread/restore/no-auto-apply proof is partially satisfied and the future approval UX/dry-run policy is designed but disabled, but production insertion remains disabled, executors remain unwired, and production flag/executor-wiring opt-in implementation remains blocked by production activation."
     },
     "duplicateResolution": {
       "classification": "blocked by production activation",
-      "evidence": "Duplicate replacement has decision/path/control/form/draft/edit/live-edit/persistence-boundary, production activation safety-gate proof, and final-decision layers. Copied-fixture backup/write/reread/restore/no-auto-apply proof is partially satisfied, but production duplicate writes remain disabled, executors remain unwired, and final approval, production flag, executor wiring, and live production dry-run policy remain missing/required."
+      "evidence": "Duplicate replacement has decision/path/control/form/draft/edit/live-edit/persistence-boundary, production activation safety-gate proof, final-decision, approval UX, and live dry-run policy layers. Copied-fixture backup/write/reread/restore/no-auto-apply proof is partially satisfied and the future approval UX/dry-run policy is designed but disabled, but production duplicate writes remain disabled, executors remain unwired, and production flag/executor-wiring opt-in implementation remains blocked by production activation."
     },
     "highRiskDisplayRecovery": {
       "classification": "blocked by high-risk recovery proof",

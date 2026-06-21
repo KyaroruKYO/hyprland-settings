@@ -86,6 +86,7 @@
     "default_disabled_production_activation_safety_gates",
     "default_disabled_production_activation_safety_gate_proof",
     "default_disabled_production_activation_final_decisions",
+    "default_disabled_production_activation_approval_ux_and_dry_run_policy",
     "future_capability_remaining_dependency_scan"
   ],
   "partialPhases": [],
@@ -103,7 +104,7 @@
       "reason": "requires trusted 0.55.4 export/source evidence before app model migration"
     }
   ],
-  "nextExactPhaseToContinue": "Define the future explicit user-approval UX and live production dry-run policy without wiring source/include or duplicate production executors.",
+  "nextExactPhaseToContinue": "Define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production.",
   "filesChanged": [
     "tests/future_capability_marathon.rs",
     "docs/FUTURE-CAPABILITY-MARATHON-REVIEW-LOG.md",
@@ -154,6 +155,8 @@
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-SAFETY-GATE-PROOF-REVIEW-LOG.md",
     "data/reports/default-disabled-production-activation-final-decisions.v0.55.2.json",
     "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-FINAL-DECISIONS-REVIEW-LOG.md",
+    "data/reports/default-disabled-production-activation-approval-ux-and-dry-run-policy.v0.55.2.json",
+    "docs/DEFAULT-DISABLED-PRODUCTION-ACTIVATION-APPROVAL-UX-AND-DRY-RUN-POLICY-REVIEW-LOG.md",
     "data/reports/future-capability-remaining-dependency-scan.v0.55.2.json",
     "docs/FUTURE-CAPABILITY-REMAINING-DEPENDENCY-SCAN.md"
   ],
@@ -178,11 +181,12 @@
     "Activation draft persistence now has a default-disabled boundary: persistence is forbidden by default, no draft data is written to disk, storage path is none, no serializer/write path exists, executors remain Unwired, and production flags remain false.",
     "Production activation safety gates now exist for source/include and duplicate. Copied-fixture proof satisfies byte-exact backup, write/reread/restore, post-restore verification, rollback, no-auto-apply, persisted-draft auto-apply, and report-backed proof, but final approval, production flag, executor wiring, and live production dry-run decisions remain required.",
     "Production activation final decision reviews now explicitly keep final approval, production flag opt-in, executor wiring opt-in, and live production dry-run policy missing/required; copied-fixture proof cannot approve production, set flags, wire executors, or authorize live dry-runs.",
+    "Production activation approval UX and live dry-run policy reviews now exist as designed-but-disabled surfaces for source/include and duplicate. They require explicit user action, typed confirmation, production flag opt-in, executor wiring opt-in, rollback readiness, and no-real-config/no-reload/no-runtime-mutation dry-run boundaries without enabling production.",
     "The remaining dependency scan classifies all tracker categories; no additional independent category was uniquely safe to implement after the draft-edit layer because remaining work is capped or blocked by production activation, high-risk recovery proof, or missing official 0.55.4 data."
   ],
   "realConfigTouched": false,
   "runtimeTouched": false,
-  "recommendedNextCodexPrompt": "Define the future explicit user-approval UX and live production dry-run policy without wiring source/include or duplicate production executors.",
+  "recommendedNextCodexPrompt": "Define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production.",
   "generatedAt": "2026-06-20T00:00:00Z",
   "reportsAdded": [
     "data/reports/default-disabled-production-activation-decision.v0.55.2.json",
@@ -195,6 +199,7 @@
     "data/reports/default-disabled-production-activation-live-draft-edit.v0.55.2.json",
     "data/reports/default-disabled-production-activation-draft-persistence-boundary.v0.55.2.json",
     "data/reports/default-disabled-production-activation-safety-gates.v0.55.2.json",
+    "data/reports/default-disabled-production-activation-approval-ux-and-dry-run-policy.v0.55.2.json",
     "data/reports/future-capability-remaining-dependency-scan.v0.55.2.json"
   ],
   "summary": [
@@ -203,6 +208,7 @@
     "Source/include and duplicate activation controls validate complete review-only request and safety-plan inputs, prove executors remain unwired, and keep production disabled.",
     "Source/include and duplicate activation forms collect request and safety-plan field data, generate review-only request/plan values, validate through the controls as ValidatedButExecutorUnwired, and keep production disabled.",
     "Source/include and duplicate activation form values now render through real disabled GTK form fields while executors remain Unwired.",
+    "Source/include and duplicate approval UX and live dry-run policy reviews are designed but disabled; they require explicit future user action, typed confirmation, production flag opt-in, executor wiring opt-in, rollback readiness, and no-real-config/no-reload/no-runtime-mutation boundaries.",
     "Source/include and duplicate activation draft state can update/reset values in memory only and validates through the form/control pipeline as review-only.",
     "Source/include and duplicate activation live GTK draft edit bridges update memory-only draft state from field edits, recompute form/control validation, reset in memory, and keep persistence absent with executors Unwired.",
     "Source/include and duplicate activation draft persistence boundaries forbid persistence by default, expose no storage path, write no draft data to disk, call no serializer, and list the future opt-in/storage/redaction/retention/delete/encryption requirements.",

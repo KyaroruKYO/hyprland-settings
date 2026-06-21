@@ -293,5 +293,32 @@
       "productionFlag": false,
       "executorWiringStatus": "Unwired"
     }
+  },
+  "productionActivationApprovalUxAndDryRunPolicy": {
+    "report": "data/reports/default-disabled-production-activation-approval-ux-and-dry-run-policy.v0.55.2.json",
+    "sourceIncludeInsertion": {
+      "approvalUxStatus": "ApprovalUxDesignedButDisabled",
+      "dryRunPolicyStatus": "DryRunPolicyDesignedButDisabled",
+      "explicitFinalApprovalRequired": true,
+      "typedConfirmationRequired": true,
+      "productionFlagOptInRequired": true,
+      "executorWiringOptInRequired": true,
+      "liveDryRunRequiresExplicitUserAction": true,
+      "approvalControlsAvailable": false,
+      "dryRunControlsAvailable": false,
+      "productionEnabled": false
+    },
+    "duplicateReplacement": {
+      "approvalUxStatus": "ApprovalUxDesignedButDisabled",
+      "dryRunPolicyStatus": "DryRunPolicyDesignedButDisabled",
+      "explicitFinalApprovalRequired": true,
+      "typedConfirmationRequired": true,
+      "productionFlagOptInRequired": true,
+      "executorWiringOptInRequired": true,
+      "liveDryRunRequiresExplicitUserAction": true,
+      "approvalControlsAvailable": false,
+      "dryRunControlsAvailable": false,
+      "productionEnabled": false
+    }
   }
 }

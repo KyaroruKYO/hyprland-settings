@@ -132,5 +132,6 @@
     "No runtime mutation was run.",
     "No hyprctl reload was run."
   ],
-  "nextRecommendedWork": "Define the future explicit user-approval UX and live production dry-run policy without wiring production executors."
+  "approvalUxAndDryRunPolicyReport": "data/reports/default-disabled-production-activation-approval-ux-and-dry-run-policy.v0.55.2.json",
+  "nextRecommendedWork": "Define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production."
 }

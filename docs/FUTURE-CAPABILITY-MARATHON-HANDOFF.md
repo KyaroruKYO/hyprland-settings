@@ -93,7 +93,7 @@
 - Hyprland 0.55.4 migration requires trusted export/source proof before changing app data.
 
 ## Next exact work item
-Keep activation draft persistence forbidden by default until explicit opt-in, private storage, redaction, retention, delete, encryption, and no-executor-wiring proof exists; otherwise continue only with production activation safety gates.
+Define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production.
 
 ## Progress tracker
 - Core app shell / UI / navigation: 98-99% -> 99-99%
@@ -174,4 +174,10 @@ The branch now includes `data/reports/default-disabled-production-activation-saf
 
 Source/include and duplicate now have final decision reviews after the copied-fixture safety proof layer. These reviews keep final approval, production flag opt-in, executor wiring opt-in, and live production dry-run policy missing/required. They explicitly prove copied-fixture proof, draft edit state, and persistence-boundary state cannot approve production, set production flags, wire executors, or authorize live dry-runs.
 
-Next exact work item: define the future explicit user-approval UX and live production dry-run policy without wiring source/include or duplicate production executors.
+Next exact work item: define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production.
+
+## 2026-06-20 - Production Activation Approval UX And Dry-Run Policy
+
+Source/include and duplicate now have designed-but-disabled approval UX and live production dry-run policy reviews. The approval UX reviews require explicit future user action, typed confirmation, backup/restore acknowledgement, production flag opt-in, and executor wiring opt-in; copied-fixture proof, draft edit state, persistence-boundary state, and final-decision reports cannot approve production. The live dry-run policy reviews require explicit future user action, real-config boundary decision, no-reload guarantee, no-runtime-mutation guarantee, rollback-ready state, and target/backup/restore proof. Approval and dry-run controls remain disabled/not available, production flags remain false, executors remain `Unwired`, draft persistence remains forbidden by default, and no real config/runtime/reload path was added.
+
+Next exact work item: define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production.

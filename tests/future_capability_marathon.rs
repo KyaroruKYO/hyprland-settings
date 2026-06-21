@@ -87,12 +87,12 @@ fn handoff_identifies_next_concrete_work_without_enabling_runtime_paths() {
     assert_eq!(handoff["realConfigTouched"], false);
     assert_eq!(
         handoff["nextExactPhaseToContinue"],
-        "Define the future explicit user-approval UX and live production dry-run policy without wiring source/include or duplicate production executors."
+        "Define future explicit production flag and executor-wiring opt-in implementation requirements without enabling production."
     );
     assert!(handoff["recommendedNextCodexPrompt"]
         .as_str()
         .expect("prompt should be text")
-        .contains("live production dry-run policy"));
+        .contains("executor-wiring opt-in"));
 }
 
 #[test]
@@ -1325,6 +1325,102 @@ fn explicit_approval_and_live_restore_reports_record_default_disabled_runtime_pa
     );
     assert_eq!(
         activation_final_decisions["safety"]["unsafeProductionBehaviorEnabled"],
+        false
+    );
+
+    let approval_ux_and_dry_run = read_json(
+        "data/reports/default-disabled-production-activation-approval-ux-and-dry-run-policy.v0.55.2.json",
+    );
+    assert_eq!(approval_ux_and_dry_run["projectDataVersion"], "v0.55.2");
+    assert_eq!(
+        approval_ux_and_dry_run["implementation"]["sourceIncludeApprovalUxReviewExists"],
+        true
+    );
+    assert_eq!(
+        approval_ux_and_dry_run["implementation"]["duplicateApprovalUxReviewExists"],
+        true
+    );
+    assert_eq!(
+        approval_ux_and_dry_run["implementation"]["sourceIncludeLiveDryRunPolicyReviewExists"],
+        true
+    );
+    assert_eq!(
+        approval_ux_and_dry_run["implementation"]["duplicateLiveDryRunPolicyReviewExists"],
+        true
+    );
+    for key in ["sourceIncludeInsertion", "duplicateReplacement"] {
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["approvalUxStatus"],
+            "ApprovalUxDesignedButDisabled"
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["dryRunPolicyStatus"],
+            "DryRunPolicyDesignedButDisabled"
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["explicitFinalApprovalRequired"],
+            true
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["typedConfirmationRequired"],
+            true
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["productionFlagOptInRequired"],
+            true
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["executorWiringOptInRequired"],
+            true
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["liveDryRunCannotRunByDefault"],
+            true
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["liveDryRunCannotTouchRealConfigByDefault"],
+            true
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["liveDryRunCannotReloadHyprlandByDefault"],
+            true
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["liveDryRunCannotMutateRuntimeByDefault"],
+            true
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["executorWiringStatus"],
+            "Unwired"
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["productionFlag"],
+            false
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["productionWriteExecuted"],
+            false
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["realConfigTouched"],
+            false
+        );
+        assert_eq!(
+            approval_ux_and_dry_run["reviews"][key]["runtimeMutated"],
+            false
+        );
+    }
+    assert_eq!(
+        approval_ux_and_dry_run["negativeProofs"]["approvalUxDesignAloneCannotApproveProduction"],
+        true
+    );
+    assert_eq!(
+        approval_ux_and_dry_run["negativeProofs"]
+            ["dryRunPolicyDesignAloneCannotAuthorizeLiveDryRun"],
+        true
+    );
+    assert_eq!(
+        approval_ux_and_dry_run["safety"]["unsafeProductionBehaviorEnabled"],
         false
     );
 

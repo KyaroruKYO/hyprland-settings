@@ -107,6 +107,9 @@
     "No runtime mutation or reload is run.",
     "No production flag is enabled."
   ],
+  "followOnReports": [
+    "data/reports/default-disabled-production-activation-approval-ux-and-dry-run-policy.v0.55.2.json"
+  ],
   "nextRequiredWork": [
     "Keep the live draft bridge memory-only until the default-disabled persistence boundary has explicit opt-in, storage, redaction, retention, delete, and encryption decisions.",
     "Do not wire source/include or duplicate production executors until explicit final approval, production flag, executor wiring, and live production dry-run decisions exist."
