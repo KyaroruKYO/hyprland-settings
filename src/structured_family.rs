@@ -412,6 +412,49 @@ impl StructuredFamilyRecordDraftGtkBindingStatus {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyDraftRenderedRecordStatus {
+    Unavailable,
+    ReviewOnly,
+    PlanReady,
+    CreatedInMemory,
+    FixtureOnly,
+    FieldMapReady,
+    SyntaxProjected,
+    RawFallbackPreserved,
+    UnsupportedNotProvenYet,
+    ActionsDisabled,
+    WritesBlockedByDefault,
+    PersistenceForbidden,
+    RealConfigTargetForbidden,
+}
+
+impl StructuredFamilyDraftRenderedRecordStatus {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Unavailable => "StructuredFamilyDraftRenderedRecordUnavailable",
+            Self::ReviewOnly => "StructuredFamilyDraftRenderedRecordReviewOnly",
+            Self::PlanReady => "StructuredFamilyDraftRenderedRecordPlanReady",
+            Self::CreatedInMemory => "StructuredFamilyDraftRenderedRecordCreatedInMemory",
+            Self::FixtureOnly => "StructuredFamilyDraftRenderedRecordFixtureOnly",
+            Self::FieldMapReady => "StructuredFamilyDraftRenderedRecordFieldMapReady",
+            Self::SyntaxProjected => "StructuredFamilyDraftRenderedRecordSyntaxProjected",
+            Self::RawFallbackPreserved => "StructuredFamilyDraftRenderedRecordRawFallbackPreserved",
+            Self::UnsupportedNotProvenYet => {
+                "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenYet"
+            }
+            Self::ActionsDisabled => "StructuredFamilyDraftRenderedRecordActionsDisabled",
+            Self::WritesBlockedByDefault => {
+                "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+            }
+            Self::PersistenceForbidden => "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+            Self::RealConfigTargetForbidden => {
+                "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+            }
+        }
+    }
+}
+
 impl StructuredFamilyRecordEditorFieldKind {
     pub fn as_str(self) -> &'static str {
         match self {
@@ -673,6 +716,66 @@ pub struct StructuredFamilyRecordDraftGtkUpdateResult {
     pub hyprctl_reload_run: bool,
     pub production_executor_wired: bool,
     pub draft_written_to_disk: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordFieldMap {
+    pub field_name: String,
+    pub draft_value: String,
+    pub rendered_part: String,
+    pub status: StructuredFamilyDraftRenderedRecordStatus,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordPlan {
+    pub family: StructuredFamilyKind,
+    pub record_index: usize,
+    pub source_path: PathBuf,
+    pub line_number: usize,
+    pub raw_original_line: String,
+    pub parsed_key: String,
+    pub draft_fields: Vec<StructuredFamilyRecordDraftField>,
+    pub field_map: Vec<StructuredFamilyDraftRenderedRecordFieldMap>,
+    pub rendered_record_preview: String,
+    pub rendered_record_syntax_status: StructuredFamilyDraftRenderedRecordStatus,
+    pub raw_fallback_status: StructuredFamilyDraftRenderedRecordStatus,
+    pub unsupported_not_proven_status: StructuredFamilyDraftRenderedRecordStatus,
+    pub unsupported_reason: Option<String>,
+    pub fixture_only_status: StructuredFamilyDraftRenderedRecordStatus,
+    pub action_policy: StructuredFamilyDraftRenderedRecordStatus,
+    pub write_policy: StructuredFamilyDraftRenderedRecordStatus,
+    pub persistence_policy: StructuredFamilyDraftRenderedRecordStatus,
+    pub real_config_target_policy: StructuredFamilyDraftRenderedRecordStatus,
+    pub temp_fixture_plan_status: StructuredFamilyTempWritePlanStatus,
+    pub review_status: StructuredFamilyDraftRenderedRecordStatus,
+    pub plan_status: StructuredFamilyDraftRenderedRecordStatus,
+    pub created_status: StructuredFamilyDraftRenderedRecordStatus,
+    pub draft_written_to_disk: bool,
+    pub rendered_record_written_to_disk: bool,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordPlanProof {
+    pub family: StructuredFamilyKind,
+    pub plan_count: usize,
+    pub draft_count: usize,
+    pub field_map_count: usize,
+    pub raw_fallback_plan_count: usize,
+    pub unsupported_not_proven_plan_count: usize,
+    pub fixture_only_status: StructuredFamilyDraftRenderedRecordStatus,
+    pub write_policy: StructuredFamilyDraftRenderedRecordStatus,
+    pub persistence_policy: StructuredFamilyDraftRenderedRecordStatus,
+    pub real_config_target_policy: StructuredFamilyDraftRenderedRecordStatus,
+    pub draft_written_to_disk: bool,
+    pub rendered_record_written_to_disk: bool,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
 }
 
 impl StructuredFamilyProjection {
@@ -1270,6 +1373,210 @@ pub fn update_structured_family_record_draft_gtk_binding(
         production_executor_wired: false,
         draft_written_to_disk: false,
     }
+}
+
+pub fn structured_family_draft_rendered_record_plans(
+    drafts: &[StructuredFamilyRecordDraft],
+) -> Vec<StructuredFamilyDraftRenderedRecordPlan> {
+    drafts
+        .iter()
+        .map(structured_family_draft_rendered_record_plan)
+        .collect()
+}
+
+pub fn structured_family_draft_rendered_record_plan(
+    draft: &StructuredFamilyRecordDraft,
+) -> StructuredFamilyDraftRenderedRecordPlan {
+    let field_map = draft
+        .draft_fields
+        .iter()
+        .filter(|field| field.name != "parsed key")
+        .map(|field| StructuredFamilyDraftRenderedRecordFieldMap {
+            field_name: field.name.clone(),
+            draft_value: field.draft_value.clone(),
+            rendered_part: if field.name == "raw line" {
+                "raw fallback source".to_string()
+            } else {
+                format!("{}={}", field.name, field.draft_value)
+            },
+            status: StructuredFamilyDraftRenderedRecordStatus::FieldMapReady,
+        })
+        .collect::<Vec<_>>();
+    let unsupported = draft.unsupported_reason.is_some();
+    let rendered_record_preview = if unsupported {
+        draft.raw_original_line.clone()
+    } else {
+        rendered_record_preview_from_draft(draft).unwrap_or_else(|| draft.raw_original_line.clone())
+    };
+
+    StructuredFamilyDraftRenderedRecordPlan {
+        family: draft.family,
+        record_index: draft.record_index,
+        source_path: draft.source_path.clone(),
+        line_number: draft.line_number,
+        raw_original_line: draft.raw_original_line.clone(),
+        parsed_key: draft.parsed_key.clone(),
+        draft_fields: draft.draft_fields.clone(),
+        field_map,
+        rendered_record_preview,
+        rendered_record_syntax_status: if unsupported {
+            StructuredFamilyDraftRenderedRecordStatus::UnsupportedNotProvenYet
+        } else {
+            StructuredFamilyDraftRenderedRecordStatus::SyntaxProjected
+        },
+        raw_fallback_status: if unsupported {
+            StructuredFamilyDraftRenderedRecordStatus::RawFallbackPreserved
+        } else {
+            StructuredFamilyDraftRenderedRecordStatus::FieldMapReady
+        },
+        unsupported_not_proven_status: if unsupported {
+            StructuredFamilyDraftRenderedRecordStatus::UnsupportedNotProvenYet
+        } else {
+            StructuredFamilyDraftRenderedRecordStatus::FieldMapReady
+        },
+        unsupported_reason: draft.unsupported_reason.clone(),
+        fixture_only_status: StructuredFamilyDraftRenderedRecordStatus::FixtureOnly,
+        action_policy: StructuredFamilyDraftRenderedRecordStatus::ActionsDisabled,
+        write_policy: StructuredFamilyDraftRenderedRecordStatus::WritesBlockedByDefault,
+        persistence_policy: StructuredFamilyDraftRenderedRecordStatus::PersistenceForbidden,
+        real_config_target_policy:
+            StructuredFamilyDraftRenderedRecordStatus::RealConfigTargetForbidden,
+        temp_fixture_plan_status: draft.temp_fixture_plan_status,
+        review_status: StructuredFamilyDraftRenderedRecordStatus::ReviewOnly,
+        plan_status: StructuredFamilyDraftRenderedRecordStatus::PlanReady,
+        created_status: StructuredFamilyDraftRenderedRecordStatus::CreatedInMemory,
+        draft_written_to_disk: false,
+        rendered_record_written_to_disk: false,
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
+        production_executor_wired: false,
+    }
+}
+
+pub fn prove_structured_family_draft_rendered_record_plans(
+    drafts: &[StructuredFamilyRecordDraft],
+) -> StructuredFamilyDraftRenderedRecordPlanProof {
+    let family = drafts
+        .first()
+        .map(|draft| draft.family)
+        .unwrap_or(StructuredFamilyKind::Monitor);
+    let plans = structured_family_draft_rendered_record_plans(drafts);
+    StructuredFamilyDraftRenderedRecordPlanProof {
+        family,
+        plan_count: plans.len(),
+        draft_count: drafts.len(),
+        field_map_count: plans.iter().map(|plan| plan.field_map.len()).sum(),
+        raw_fallback_plan_count: plans
+            .iter()
+            .filter(|plan| {
+                plan.raw_fallback_status
+                    == StructuredFamilyDraftRenderedRecordStatus::RawFallbackPreserved
+            })
+            .count(),
+        unsupported_not_proven_plan_count: plans
+            .iter()
+            .filter(|plan| {
+                plan.unsupported_not_proven_status
+                    == StructuredFamilyDraftRenderedRecordStatus::UnsupportedNotProvenYet
+            })
+            .count(),
+        fixture_only_status: StructuredFamilyDraftRenderedRecordStatus::FixtureOnly,
+        write_policy: StructuredFamilyDraftRenderedRecordStatus::WritesBlockedByDefault,
+        persistence_policy: StructuredFamilyDraftRenderedRecordStatus::PersistenceForbidden,
+        real_config_target_policy:
+            StructuredFamilyDraftRenderedRecordStatus::RealConfigTargetForbidden,
+        draft_written_to_disk: false,
+        rendered_record_written_to_disk: false,
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
+        production_executor_wired: false,
+    }
+}
+
+fn rendered_record_preview_from_draft(draft: &StructuredFamilyRecordDraft) -> Option<String> {
+    match draft.family {
+        StructuredFamilyKind::Monitor => {
+            let output = draft_field_value(draft, "name/output")?;
+            let resolution = draft_field_value(draft, "resolution")?;
+            let position = draft_field_value(draft, "position")?;
+            let scale = draft_field_value(draft, "scale")?;
+            let extra = draft_field_value(draft, "additional raw options");
+            Some(match extra.filter(|value| !value.trim().is_empty()) {
+                Some(extra) => {
+                    format!("monitor = {output}, {resolution}, {position}, {scale}, {extra}")
+                }
+                None => format!("monitor = {output}, {resolution}, {position}, {scale}"),
+            })
+        }
+        StructuredFamilyKind::Bind => {
+            let modifier = draft_field_value(draft, "modifier")?;
+            let key = draft_field_value(draft, "key")?;
+            let dispatcher = draft_field_value(draft, "dispatcher")?;
+            let argument = draft_field_value(draft, "argument");
+            let variant = draft_field_value(draft, "flags/type")
+                .unwrap_or(draft.parsed_key.as_str())
+                .trim();
+            Some(match argument.filter(|value| !value.trim().is_empty()) {
+                Some(argument) => {
+                    format!("{variant} = {modifier}, {key}, {dispatcher}, {argument}")
+                }
+                None => format!("{variant} = {modifier}, {key}, {dispatcher}"),
+            })
+        }
+        StructuredFamilyKind::Animation => {
+            let name = draft_field_value(draft, "name")?;
+            let enabled = draft_field_value(draft, "enabled")?;
+            let curve = draft_field_value(draft, "bezier/curve reference")?;
+            let speed = draft_field_value(draft, "speed")?;
+            let style = draft_field_value(draft, "style");
+            let additional = draft_field_value(draft, "additional parameters");
+            let mut parts = vec![name, enabled, speed, curve];
+            if let Some(style) = style.filter(|value| !value.trim().is_empty()) {
+                parts.push(style);
+            }
+            if let Some(additional) = additional.filter(|value| !value.trim().is_empty()) {
+                parts.push(additional);
+            }
+            Some(format!("animation = {}", parts.join(", ")))
+        }
+        StructuredFamilyKind::Curve => {
+            let name = draft_field_value(draft, "name")?;
+            let x1 = draft_field_value(draft, "x1")?;
+            let y1 = draft_field_value(draft, "y1")?;
+            let x2 = draft_field_value(draft, "x2")?;
+            let y2 = draft_field_value(draft, "y2")?;
+            Some(format!("bezier = {name}, {x1}, {y1}, {x2}, {y2}"))
+        }
+        StructuredFamilyKind::Gesture => {
+            if !draft.raw_original_line.trim().is_empty() {
+                Some(draft.raw_original_line.clone())
+            } else {
+                None
+            }
+        }
+        StructuredFamilyKind::Device => {
+            let key = draft_field_value(draft, "option key")?;
+            let value = draft_field_value(draft, "option value")?;
+            Some(format!("{key} = {value}"))
+        }
+        StructuredFamilyKind::Permission => {
+            if !draft.raw_original_line.trim().is_empty() {
+                Some(draft.raw_original_line.clone())
+            } else {
+                None
+            }
+        }
+    }
+}
+
+fn draft_field_value<'a>(draft: &'a StructuredFamilyRecordDraft, name: &str) -> Option<&'a str> {
+    draft
+        .draft_fields
+        .iter()
+        .find(|field| field.name == name)
+        .map(|field| field.draft_value.as_str())
 }
 
 pub fn structured_family_render_target_allowed(path: &Path) -> bool {

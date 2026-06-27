@@ -55,4 +55,4 @@ Review-only in-memory draft models now consume those forms and keep draft persis
 
 ## Next Work
 
-Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked.
+Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked.

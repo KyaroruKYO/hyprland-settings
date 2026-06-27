@@ -52,4 +52,4 @@ All update, reset, persist, and apply controls are insensitive.
 
 ## Next Work
 
-Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked.
+Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked.

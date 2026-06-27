@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family disabled GTK draft-field binding foundation on `structured-family-editors-unified`.
+Structured-family fixture-only draft-to-rendered-record planning foundation on `structured-family-editors-unified`.
 
 ## Completed This Sprint
 
@@ -22,6 +22,9 @@ Structured-family disabled GTK draft-field binding foundation on `structured-fam
 - Added disabled live GTK draft-field binding projections for all seven families.
 - Added memory-only draft-field binding update proof for all seven families.
 - Kept GTK draft-field binding actions disabled and persistence forbidden.
+- Added fixture-only draft-to-rendered-record planning for all seven families.
+- Added in-memory rendered-record preview and field-map proof for all seven families.
+- Added rendered-record real config target forbidden policy for all seven families.
 - Added a project-area continuation scan.
 
 ## Safety Boundaries
@@ -35,4 +38,4 @@ Structured-family disabled GTK draft-field binding foundation on `structured-fam
 
 ## Next Exact Work
 
-Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked.
+Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked.

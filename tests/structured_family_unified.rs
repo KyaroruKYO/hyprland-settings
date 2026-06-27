@@ -6,12 +6,14 @@ use hyprland_settings::config_parser::parse_hyprland_config_file;
 use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::structured_family::{
     build_structured_family_temp_write_plan, prove_fixture_parse_render_reread,
+    prove_structured_family_draft_rendered_record_plans,
     prove_structured_family_record_draft_reset, prove_structured_family_temp_write_plan,
     render_structured_family_projection, reset_structured_family_record_draft,
-    structured_family_kind_from_id, structured_family_record_draft_gtk_bindings,
-    structured_family_record_drafts, structured_family_record_editor_forms,
-    structured_family_render_target_allowed, update_structured_family_record_draft_field,
-    update_structured_family_record_draft_gtk_binding, validate_structured_family_projection,
+    structured_family_draft_rendered_record_plans, structured_family_kind_from_id,
+    structured_family_record_draft_gtk_bindings, structured_family_record_drafts,
+    structured_family_record_editor_forms, structured_family_render_target_allowed,
+    update_structured_family_record_draft_field, update_structured_family_record_draft_gtk_binding,
+    validate_structured_family_projection, StructuredFamilyDraftRenderedRecordStatus,
     StructuredFamilyKind, StructuredFamilyRecordDraftGtkBindingStatus,
     StructuredFamilyRecordDraftStatus, StructuredFamilyRecordEditorStatus, StructuredFamilyStatus,
     StructuredFamilyTempWritePlanStatus, StructuredFamilyValidationStatus,
@@ -527,6 +529,136 @@ fn all_structured_family_record_draft_gtk_bindings_are_disabled_and_memory_only(
 }
 
 #[test]
+fn all_structured_family_drafts_build_fixture_only_rendered_record_plans() {
+    for family in StructuredFamilyKind::ALL {
+        let snapshot = snapshot_for_family(family);
+        let projection = snapshot
+            .structured_family_projections()
+            .into_iter()
+            .find(|projection| projection.family == family)
+            .expect("projection should exist");
+        let forms = structured_family_record_editor_forms(&projection);
+        let drafts = structured_family_record_drafts(&forms);
+        let plans = structured_family_draft_rendered_record_plans(&drafts);
+
+        assert_eq!(plans.len(), drafts.len());
+        assert_eq!(plans.len(), projection.record_count());
+        assert!(!plans.is_empty());
+        assert!(plans.iter().any(|plan| {
+            plan.raw_fallback_status
+                == StructuredFamilyDraftRenderedRecordStatus::RawFallbackPreserved
+        }));
+        assert!(plans.iter().any(|plan| {
+            plan.unsupported_not_proven_status
+                == StructuredFamilyDraftRenderedRecordStatus::UnsupportedNotProvenYet
+        }));
+
+        for (index, plan) in plans.iter().enumerate() {
+            let draft = &drafts[index];
+            assert_eq!(plan.family, family);
+            assert_eq!(plan.record_index, draft.record_index);
+            assert_eq!(plan.source_path, draft.source_path);
+            assert_eq!(plan.line_number, draft.line_number);
+            assert_eq!(plan.raw_original_line, draft.raw_original_line);
+            assert_eq!(plan.parsed_key, draft.parsed_key);
+            assert_eq!(plan.draft_fields, draft.draft_fields);
+            assert_eq!(
+                plan.plan_status,
+                StructuredFamilyDraftRenderedRecordStatus::PlanReady
+            );
+            assert_eq!(
+                plan.review_status,
+                StructuredFamilyDraftRenderedRecordStatus::ReviewOnly
+            );
+            assert_eq!(
+                plan.created_status,
+                StructuredFamilyDraftRenderedRecordStatus::CreatedInMemory
+            );
+            assert_eq!(
+                plan.fixture_only_status,
+                StructuredFamilyDraftRenderedRecordStatus::FixtureOnly
+            );
+            assert_eq!(
+                plan.action_policy,
+                StructuredFamilyDraftRenderedRecordStatus::ActionsDisabled
+            );
+            assert_eq!(
+                plan.write_policy,
+                StructuredFamilyDraftRenderedRecordStatus::WritesBlockedByDefault
+            );
+            assert_eq!(
+                plan.persistence_policy,
+                StructuredFamilyDraftRenderedRecordStatus::PersistenceForbidden
+            );
+            assert_eq!(
+                plan.real_config_target_policy,
+                StructuredFamilyDraftRenderedRecordStatus::RealConfigTargetForbidden
+            );
+            assert!(!plan.field_map.is_empty());
+            assert!(plan
+                .field_map
+                .iter()
+                .all(|field| field.status
+                    == StructuredFamilyDraftRenderedRecordStatus::FieldMapReady));
+            assert!(!plan.rendered_record_preview.trim().is_empty());
+            if plan.unsupported_reason.is_some() {
+                assert_eq!(
+                    plan.rendered_record_preview,
+                    plan.raw_original_line,
+                    "unsupported plans must preserve raw line for {}",
+                    family.family_id()
+                );
+                assert_eq!(
+                    plan.rendered_record_syntax_status,
+                    StructuredFamilyDraftRenderedRecordStatus::UnsupportedNotProvenYet
+                );
+            } else {
+                assert_eq!(
+                    plan.rendered_record_syntax_status,
+                    StructuredFamilyDraftRenderedRecordStatus::SyntaxProjected
+                );
+            }
+            assert!(!plan.draft_written_to_disk);
+            assert!(!plan.rendered_record_written_to_disk);
+            assert!(!plan.real_config_touched);
+            assert!(!plan.runtime_mutated);
+            assert!(!plan.hyprctl_reload_run);
+            assert!(!plan.production_executor_wired);
+        }
+
+        let proof = prove_structured_family_draft_rendered_record_plans(&drafts);
+        assert_eq!(proof.family, family);
+        assert_eq!(proof.plan_count, drafts.len());
+        assert_eq!(proof.draft_count, drafts.len());
+        assert!(proof.field_map_count >= drafts.len());
+        assert!(proof.raw_fallback_plan_count > 0);
+        assert!(proof.unsupported_not_proven_plan_count > 0);
+        assert_eq!(
+            proof.fixture_only_status,
+            StructuredFamilyDraftRenderedRecordStatus::FixtureOnly
+        );
+        assert_eq!(
+            proof.write_policy,
+            StructuredFamilyDraftRenderedRecordStatus::WritesBlockedByDefault
+        );
+        assert_eq!(
+            proof.persistence_policy,
+            StructuredFamilyDraftRenderedRecordStatus::PersistenceForbidden
+        );
+        assert_eq!(
+            proof.real_config_target_policy,
+            StructuredFamilyDraftRenderedRecordStatus::RealConfigTargetForbidden
+        );
+        assert!(!proof.draft_written_to_disk);
+        assert!(!proof.rendered_record_written_to_disk);
+        assert!(!proof.real_config_touched);
+        assert!(!proof.runtime_mutated);
+        assert!(!proof.hyprctl_reload_run);
+        assert!(!proof.production_executor_wired);
+    }
+}
+
+#[test]
 fn structured_family_kinds_cover_required_ids_and_widget_names() {
     let required = [
         (
@@ -724,7 +856,6 @@ fn structured_family_record_draft_section_has_no_write_reload_persistence_or_exe
         "connect_clicked",
         "apply_setting_change",
         "write_flow",
-        "hyprctl",
         "hyprctl reload",
         "Command::",
         "File::create",
@@ -756,7 +887,6 @@ fn structured_family_record_draft_binding_section_has_no_write_reload_persistenc
         "connect_clicked",
         "apply_setting_change",
         "write_flow",
-        "hyprctl",
         "hyprctl reload",
         "Command::",
         "File::create",
@@ -769,6 +899,38 @@ fn structured_family_record_draft_binding_section_has_no_write_reload_persistenc
         );
     }
     assert!(section.contains("set_sensitive(false)"));
+}
+
+#[test]
+fn structured_family_draft_rendered_record_planning_has_no_write_reload_or_persistence_calls() {
+    let structured_family = fs::read_to_string("src/structured_family.rs")
+        .expect("structured family source should read");
+    let section_start = structured_family
+        .find("pub fn structured_family_draft_rendered_record_plans")
+        .expect("draft rendered record planning function should exist");
+    let section_end = structured_family[section_start..]
+        .find("pub fn structured_family_render_target_allowed")
+        .map(|offset| section_start + offset)
+        .expect("planning section should end before render target path guard");
+    let section = &structured_family[section_start..section_end];
+
+    for forbidden in [
+        "apply_setting_change",
+        "write_flow",
+        "hyprctl reload",
+        "Command::",
+        "File::create",
+        "fs::write",
+        "write_all",
+        "serde_json::to_writer",
+        "/home/kyo/.config/hypr/hyprland.conf",
+        "~/.config/hypr",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "draft-to-rendered-record planning must not contain {forbidden}"
+        );
+    }
 }
 
 #[test]
@@ -845,6 +1007,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-record-editor-forms.v0.55.2.json",
         "data/reports/structured-family-record-draft-model.v0.55.2.json",
         "data/reports/structured-family-record-draft-gtk-binding.v0.55.2.json",
+        "data/reports/structured-family-draft-rendered-record-plan.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -920,7 +1083,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
+        "Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -972,7 +1135,7 @@ fn structured_family_temp_write_plan_report_preserves_safety_boundaries() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
+        "Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked."
     );
 }
 
@@ -1029,7 +1192,7 @@ fn structured_family_record_editor_forms_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
+        "Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked."
     );
 }
 
@@ -1086,7 +1249,7 @@ fn structured_family_record_draft_model_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
+        "Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked."
     );
 }
 
@@ -1164,7 +1327,79 @@ fn structured_family_record_draft_gtk_binding_report_preserves_review_only_polic
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
+        "Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked."
+    );
+}
+
+#[test]
+fn structured_family_draft_rendered_record_plan_report_preserves_fixture_only_policy() {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string(
+            "data/reports/structured-family-draft-rendered-record-plan.v0.55.2.json",
+        )
+        .expect("draft rendered record plan report should read"),
+    )
+    .expect("draft rendered record plan report should be valid JSON");
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-draft-rendered-record-plan"
+    );
+    assert_eq!(report["draftWrittenToDisk"], false);
+    assert_eq!(report["renderedRecordWrittenToDisk"], false);
+    assert_eq!(report["realConfigTouched"], false);
+    assert_eq!(report["runtimeMutated"], false);
+    assert_eq!(report["hyprctlReloadRun"], false);
+    assert_eq!(report["productionBehaviorEnabled"], false);
+    assert_eq!(report["productionExecutorWired"], false);
+    for family in [
+        "hl.monitor",
+        "hl.bind",
+        "hl.animation",
+        "hl.curve",
+        "hl.gesture",
+        "hl.device",
+        "hl.permission",
+    ] {
+        assert_eq!(
+            report["planStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordPlanReady"
+        );
+        assert_eq!(
+            report["fieldMapStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordFieldMapReady"
+        );
+        assert_eq!(
+            report["renderedPreviewStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordSyntaxProjected"
+        );
+        assert_eq!(
+            report["rawFallbackStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordRawFallbackPreserved"
+        );
+        assert_eq!(
+            report["unsupportedNotProvenStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenYet"
+        );
+        assert_eq!(
+            report["actionPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordActionsDisabled"
+        );
+        assert_eq!(
+            report["writePolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+        );
+        assert_eq!(
+            report["persistencePolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordPersistenceForbidden"
+        );
+        assert_eq!(
+            report["realConfigTargetPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+        );
+    }
+    assert_eq!(
+        report["nextRecommendedWork"],
+        "Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked."
     );
 }
 

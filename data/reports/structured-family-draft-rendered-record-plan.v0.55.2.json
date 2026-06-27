@@ -1,0 +1,127 @@
+{
+  "artifactKind": "structured-family-draft-rendered-record-plan",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "21e4b0f3241e6d99dff91106fd110a3b8560e635",
+  "latestCommitBeforeSprint": "21e4b0f3241e6d99dff91106fd110a3b8560e635",
+  "goal": "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked.",
+  "families": [
+    "hl.monitor",
+    "hl.bind",
+    "hl.animation",
+    "hl.curve",
+    "hl.gesture",
+    "hl.device",
+    "hl.permission"
+  ],
+  "planStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordPlanReady",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordPlanReady",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordPlanReady",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordPlanReady",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordPlanReady",
+    "hl.device": "StructuredFamilyDraftRenderedRecordPlanReady",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordPlanReady"
+  },
+  "fieldMapStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordFieldMapReady",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordFieldMapReady",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordFieldMapReady",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordFieldMapReady",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordFieldMapReady",
+    "hl.device": "StructuredFamilyDraftRenderedRecordFieldMapReady",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordFieldMapReady"
+  },
+  "renderedPreviewStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordSyntaxProjected",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordSyntaxProjected",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordSyntaxProjected",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordSyntaxProjected",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordSyntaxProjected",
+    "hl.device": "StructuredFamilyDraftRenderedRecordSyntaxProjected",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordSyntaxProjected"
+  },
+  "rawFallbackStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordRawFallbackPreserved",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordRawFallbackPreserved",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordRawFallbackPreserved",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordRawFallbackPreserved",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordRawFallbackPreserved",
+    "hl.device": "StructuredFamilyDraftRenderedRecordRawFallbackPreserved",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordRawFallbackPreserved"
+  },
+  "unsupportedNotProvenStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenYet",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenYet",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenYet",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenYet",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenYet",
+    "hl.device": "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenYet",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenYet"
+  },
+  "actionPolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.device": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordActionsDisabled"
+  },
+  "writePolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.device": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+  },
+  "persistencePolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.device": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordPersistenceForbidden"
+  },
+  "realConfigTargetPolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.device": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+  },
+  "draftWrittenToDisk": false,
+  "renderedRecordWrittenToDisk": false,
+  "realConfigTouched": false,
+  "runtimeMutated": false,
+  "hyprctlReloadRun": false,
+  "productionBehaviorEnabled": false,
+  "productionExecutorWired": false,
+  "filesChanged": [
+    "src/structured_family.rs",
+    "tests/structured_family_unified.rs",
+    "data/reports/structured-family-draft-rendered-record-plan.v0.55.2.json",
+    "docs/STRUCTURED-FAMILY-DRAFT-RENDERED-RECORD-PLAN.md"
+  ],
+  "testsAdded": [
+    "all_structured_family_drafts_build_fixture_only_rendered_record_plans",
+    "structured_family_draft_rendered_record_planning_has_no_write_reload_or_persistence_calls",
+    "structured_family_draft_rendered_record_plan_report_preserves_fixture_only_policy"
+  ],
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "jq": "passed",
+    "gitDiffCheck": "passed",
+    "cargoBuildRelease": "passed"
+  },
+  "gtkEvidenceRoot": null,
+  "nextRecommendedWork": "Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked."
+}
