@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family validator and temp-fixture write-plan foundation on `structured-family-editors-unified`.
+Structured-family review-only per-record editor form foundation on `structured-family-editors-unified`.
 
 ## Completed This Sprint
 
@@ -12,6 +12,9 @@ Structured-family validator and temp-fixture write-plan foundation on `structure
 - Added family-specific validators for all seven families.
 - Added temp-fixture write plans with path guards for all seven families.
 - Added temp-fixture render/reread proof through write plans for all seven families.
+- Added review-only per-record editor form projections for all seven families.
+- Added disabled per-record editor UI sections with stable family widgets.
+- Surfaced raw fallback status for unsupported or not-proven records.
 - Added a project-area continuation scan.
 
 ## Safety Boundaries
@@ -25,4 +28,4 @@ Structured-family validator and temp-fixture write-plan foundation on `structure
 
 ## Next Exact Work
 
-Add review-only per-record editor forms for structured-family records while keeping real writes blocked.
+Add review-only structured-family record edit-state/draft model while keeping real writes blocked.

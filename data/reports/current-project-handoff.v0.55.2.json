@@ -3,7 +3,7 @@
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
   "startingCommit": "71c5161eaa407da984d3c5971de3751d23033a0c",
-  "currentFocus": "structured-family validator and temp-fixture write-plan foundation",
+  "currentFocus": "structured-family review-only per-record editor form foundation",
   "completedThisSprint": [
     "shared structured-family model for hl.monitor, hl.bind, hl.animation, hl.curve, hl.gesture, hl.device, and hl.permission",
     "review-only Config page structured-family section with seven stable cards",
@@ -12,6 +12,9 @@
     "family-specific validators for all seven families",
     "temp-fixture write plans with path guards for all seven families",
     "temp-fixture render/reread proof through write plans for all seven families",
+    "review-only per-record editor form projections for all seven families",
+    "disabled per-record editor UI section with stable family widgets",
+    "raw fallback status surfaced for unsupported or not-proven records",
     "project-area continuation scan"
   ],
   "safetyBoundaries": {
@@ -24,7 +27,7 @@
     "structuredFamilyWritesEnabled": false,
     "hyprland0554MigrationActivated": false
   },
-  "activeNextWork": "Add review-only per-record editor forms for structured-family records while keeping real writes blocked.",
+  "activeNextWork": "Add review-only structured-family record edit-state/draft model while keeping real writes blocked.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",

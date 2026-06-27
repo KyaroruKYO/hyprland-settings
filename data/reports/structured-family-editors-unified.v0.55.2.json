@@ -201,6 +201,8 @@
   "uiCoverage": {
     "allSevenCardsVisible": true,
     "stableWidgetNamesPresent": true,
+    "recordEditorFormsVisible": true,
+    "recordEditorFormsStatus": "StructuredFamilyRecordEditorProjectionReady",
     "controlsReviewOnly": true,
     "controlsConnectedToMutationHandlers": false
   },
@@ -214,5 +216,5 @@
     "hyprctlReloadRun": false,
     "hyprland0554MigrationActivated": false
   },
-  "recommendedNextWork": "Add review-only per-record editor forms for structured-family records while keeping real writes blocked."
+  "recommendedNextWork": "Add review-only structured-family record edit-state/draft model while keeping real writes blocked."
 }

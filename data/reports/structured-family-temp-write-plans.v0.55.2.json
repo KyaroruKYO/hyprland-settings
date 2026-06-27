@@ -83,5 +83,7 @@
     "cargoBuildRelease": "passed"
   },
   "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260621_001755",
-  "nextRecommendedWork": "Add review-only per-record editor forms for structured-family records while keeping real writes blocked."
+  "recordEditorFormsStatus": "StructuredFamilyRecordEditorProjectionReady for all seven families",
+  "recordEditorFormsReport": "data/reports/structured-family-record-editor-forms.v0.55.2.json",
+  "nextRecommendedWork": "Add review-only structured-family record edit-state/draft model while keeping real writes blocked."
 }

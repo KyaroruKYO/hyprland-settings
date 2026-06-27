@@ -47,6 +47,10 @@ The path guard rejects `/home/kyo/.config/hypr/hyprland.conf` and `~/.config/hyp
 - `hyprctl reload` run: false.
 - Source/include and duplicate production activation remain capped and separate-phase only.
 
+## Follow-On Record Forms
+
+Review-only per-record editor form projections now consume the validator and temp-fixture plan status for all seven families. The forms expose source path, line number, raw line, validation status, family-specific fields, raw fallback status, and disabled action/write policy without enabling real writes.
+
 ## Next Work
 
-Add review-only per-record editor forms for structured-family records while keeping real writes blocked.
+Add review-only structured-family record edit-state/draft model while keeping real writes blocked.

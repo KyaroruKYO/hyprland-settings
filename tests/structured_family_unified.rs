@@ -7,8 +7,9 @@ use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::structured_family::{
     build_structured_family_temp_write_plan, prove_fixture_parse_render_reread,
     prove_structured_family_temp_write_plan, render_structured_family_projection,
-    structured_family_kind_from_id, structured_family_render_target_allowed,
-    validate_structured_family_projection, StructuredFamilyKind, StructuredFamilyStatus,
+    structured_family_kind_from_id, structured_family_record_editor_forms,
+    structured_family_render_target_allowed, validate_structured_family_projection,
+    StructuredFamilyKind, StructuredFamilyRecordEditorStatus, StructuredFamilyStatus,
     StructuredFamilyTempWritePlanStatus, StructuredFamilyValidationStatus,
 };
 
@@ -239,6 +240,66 @@ fn structured_family_temp_write_path_guard_rejects_real_config_targets() {
 }
 
 #[test]
+fn all_structured_family_record_editor_forms_project_fixture_records_read_only() {
+    for family in StructuredFamilyKind::ALL {
+        let snapshot = snapshot_for_family(family);
+        let projection = snapshot
+            .structured_family_projections()
+            .into_iter()
+            .find(|projection| projection.family == family)
+            .expect("projection should exist");
+        let forms = structured_family_record_editor_forms(&projection);
+
+        assert_eq!(forms.len(), projection.record_count());
+        assert!(!forms.is_empty());
+        assert!(forms.iter().any(|form| {
+            form.raw_fallback_status
+                == StructuredFamilyRecordEditorStatus::RawFallbackRequired.as_str()
+        }));
+
+        for (index, form) in forms.iter().enumerate() {
+            let record = &projection.records[index];
+            assert_eq!(form.family, family);
+            assert_eq!(form.record_index, index);
+            assert_eq!(form.source_path, record.source_path);
+            assert_eq!(form.line_number, record.line_number);
+            assert_eq!(form.raw_line, record.raw_line);
+            assert_eq!(form.parsed_key, record.parsed_key);
+            assert_eq!(form.validation_status, record.validation_status);
+            assert_eq!(form.unsupported_reason, record.unsupported_reason);
+            assert!(form.fields.iter().any(|field| field.name == "raw line"));
+            assert!(form.fields.iter().any(|field| field.name == "parsed key"));
+            assert!(form.fields.iter().any(|field| !field.value.is_empty()));
+            assert!(form.fields.iter().all(|field| !field.editable));
+            assert_eq!(
+                form.projection_status,
+                StructuredFamilyRecordEditorStatus::ProjectionReady
+            );
+            assert_eq!(
+                form.review_status,
+                StructuredFamilyRecordEditorStatus::ReviewOnly
+            );
+            assert_eq!(
+                form.action_policy,
+                StructuredFamilyRecordEditorStatus::ActionsDisabled
+            );
+            assert_eq!(
+                form.write_blocked_status,
+                StructuredFamilyRecordEditorStatus::WritesBlockedByDefault
+            );
+            assert_eq!(
+                form.temp_fixture_plan_status,
+                StructuredFamilyTempWritePlanStatus::Validated
+            );
+            assert!(!form.real_config_touched);
+            assert!(!form.runtime_mutated);
+            assert!(!form.hyprctl_reload_run);
+            assert!(!form.production_executor_wired);
+        }
+    }
+}
+
+#[test]
 fn structured_family_kinds_cover_required_ids_and_widget_names() {
     let required = [
         (
@@ -299,6 +360,14 @@ fn structured_family_ui_source_exposes_all_cards_without_write_handlers() {
         "hyprland-settings-structured-family-hl-gesture-card",
         "hyprland-settings-structured-family-hl-device-card",
         "hyprland-settings-structured-family-hl-permission-card",
+        "hyprland-settings-structured-family-record-editor-section",
+        "hyprland-settings-structured-family-hl-monitor-record-editor",
+        "hyprland-settings-structured-family-hl-bind-record-editor",
+        "hyprland-settings-structured-family-hl-animation-record-editor",
+        "hyprland-settings-structured-family-hl-curve-record-editor",
+        "hyprland-settings-structured-family-hl-gesture-record-editor",
+        "hyprland-settings-structured-family-hl-device-record-editor",
+        "hyprland-settings-structured-family-hl-permission-record-editor",
     ] {
         assert!(
             model.contains(widget_name)
@@ -322,6 +391,21 @@ fn structured_family_ui_source_exposes_all_cards_without_write_handlers() {
         "Structured family editor projection cannot write real config.",
         "Structured family editor projection cannot reload Hyprland.",
         "Structured family editor projection cannot mutate runtime.",
+        "Review-only per-record editor forms",
+        "Record editor projection ready",
+        "Family-specific fields projected",
+        "Raw fallback required where not proven",
+        "Editor actions disabled",
+        "Real writes blocked by default",
+        "source path",
+        "line number",
+        "raw line",
+        "validation status",
+        "field count",
+        "raw fallback status",
+        "write policy",
+        "Apply structured-family record change (not available)",
+        "Render structured-family record to real config (not available)",
     ] {
         assert!(
             window.contains(copy) || model.contains(copy) || structured_family.contains(copy),
@@ -341,6 +425,36 @@ fn structured_family_ui_source_exposes_all_cards_without_write_handlers() {
     assert!(!section.contains("apply_setting_change"));
     assert!(!section.contains("hyprctl"));
     assert!(!section.contains("Command::"));
+}
+
+#[test]
+fn structured_family_record_editor_section_has_no_write_reload_or_executor_handlers() {
+    let window = fs::read_to_string("src/ui/window.rs").expect("window source should read");
+    let section_start = window
+        .find("fn structured_family_record_editor_section")
+        .expect("record editor section should exist");
+    let section_end = window[section_start..]
+        .find("fn disabled_future_approval_cards_section")
+        .map(|offset| section_start + offset)
+        .expect("record editor section should end before future approval cards");
+    let section = &window[section_start..section_end];
+
+    for forbidden in [
+        "connect_clicked",
+        "apply_setting_change",
+        "write_flow",
+        "hyprctl",
+        "hyprctl reload",
+        "Command::",
+        "File::create",
+        "write_all",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "record editor section must not contain {forbidden}"
+        );
+    }
+    assert!(section.contains("set_sensitive(false)"));
 }
 
 #[test]
@@ -384,6 +498,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
     for path in [
         "data/reports/structured-family-editors-unified.v0.55.2.json",
         "data/reports/structured-family-temp-write-plans.v0.55.2.json",
+        "data/reports/structured-family-record-editor-forms.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -459,7 +574,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Add review-only per-record editor forms for structured-family records while keeping real writes blocked."
+        "Add review-only structured-family record edit-state/draft model while keeping real writes blocked."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -511,7 +626,64 @@ fn structured_family_temp_write_plan_report_preserves_safety_boundaries() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add review-only per-record editor forms for structured-family records while keeping real writes blocked."
+        "Add review-only structured-family record edit-state/draft model while keeping real writes blocked."
+    );
+}
+
+#[test]
+fn structured_family_record_editor_forms_report_preserves_review_only_policy() {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string("data/reports/structured-family-record-editor-forms.v0.55.2.json")
+            .expect("record editor forms report should read"),
+    )
+    .expect("record editor forms report should be valid JSON");
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-record-editor-forms"
+    );
+    assert_eq!(report["realConfigTouched"], false);
+    assert_eq!(report["runtimeMutated"], false);
+    assert_eq!(report["hyprctlReloadRun"], false);
+    assert_eq!(report["productionBehaviorEnabled"], false);
+    assert_eq!(report["productionExecutorWired"], false);
+    assert_eq!(
+        report["ui"]["sectionWidgetName"],
+        "hyprland-settings-structured-family-record-editor-section"
+    );
+    assert_eq!(report["ui"]["controlsConnectedToMutationHandlers"], false);
+    for family in [
+        "hl.monitor",
+        "hl.bind",
+        "hl.animation",
+        "hl.curve",
+        "hl.gesture",
+        "hl.device",
+        "hl.permission",
+    ] {
+        assert_eq!(
+            report["recordEditorStatusByFamily"][family],
+            "StructuredFamilyRecordEditorProjectionReady"
+        );
+        assert_eq!(
+            report["actionPolicyByFamily"][family],
+            "StructuredFamilyRecordEditorActionsDisabled"
+        );
+        assert_eq!(
+            report["writePolicyByFamily"][family],
+            "StructuredFamilyRecordEditorWritesBlockedByDefault"
+        );
+        assert!(report["recordEditorWidgetByFamily"][family]
+            .as_str()
+            .expect("record editor widget should be text")
+            .contains("-record-editor"));
+        assert!(report["rawFallbackStatusByFamily"][family]
+            .as_str()
+            .expect("raw fallback status should be text")
+            .contains("StructuredFamilyRecordEditorRawFallbackRequired"));
+    }
+    assert_eq!(
+        report["nextRecommendedWork"],
+        "Add review-only structured-family record edit-state/draft model while keeping real writes blocked."
     );
 }
 

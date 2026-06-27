@@ -118,18 +118,19 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "review-only validators and temp-fixture write plans are complete for seven families; writes blocked",
+      "currentStatus": "review-only validators, temp-fixture write plans, and per-record editor forms are complete for seven families; writes blocked",
       "classification": "can_continue_now",
       "canContinueNow": true,
-      "reason": "Shared model, fixture parse/render proof, conservative validators, temp-fixture write plans, and UI status can advance without production writes.",
-      "blockingDependency": "per-record editor form design before any future fixture-only executor review",
-      "safeNextWork": "add review-only per-record editor forms for structured-family records while keeping real writes blocked",
+      "reason": "Shared model, fixture parse/render proof, conservative validators, temp-fixture write plans, per-record form projections, and UI status can advance without production writes.",
+      "blockingDependency": "record edit-state/draft model before any future fixture-only executor review",
+      "safeNextWork": "add review-only structured-family record edit-state/draft model while keeping real writes blocked",
       "mustNotDo": "do not enable real structured-family writes",
       "evidenceUsed": [
         "src/structured_family.rs",
         "tests/structured_family_unified.rs",
         "data/reports/structured-family-editors-unified.v0.55.2.json",
-        "data/reports/structured-family-temp-write-plans.v0.55.2.json"
+        "data/reports/structured-family-temp-write-plans.v0.55.2.json",
+        "data/reports/structured-family-record-editor-forms.v0.55.2.json"
       ]
     },
     {
@@ -176,5 +177,5 @@
     }
   ],
   "activeSafeArea": "Structured-family editors/writes",
-  "recommendedNextWork": "Add review-only per-record editor forms for structured-family records while keeping real writes blocked."
+  "recommendedNextWork": "Add review-only structured-family record edit-state/draft model while keeping real writes blocked."
 }

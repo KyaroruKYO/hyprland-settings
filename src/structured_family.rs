@@ -61,6 +61,18 @@ impl StructuredFamilyKind {
         }
     }
 
+    pub fn record_editor_widget_name(self) -> &'static str {
+        match self {
+            Self::Monitor => "hyprland-settings-structured-family-hl-monitor-record-editor",
+            Self::Bind => "hyprland-settings-structured-family-hl-bind-record-editor",
+            Self::Animation => "hyprland-settings-structured-family-hl-animation-record-editor",
+            Self::Curve => "hyprland-settings-structured-family-hl-curve-record-editor",
+            Self::Gesture => "hyprland-settings-structured-family-hl-gesture-record-editor",
+            Self::Device => "hyprland-settings-structured-family-hl-device-record-editor",
+            Self::Permission => "hyprland-settings-structured-family-hl-permission-record-editor",
+        }
+    }
+
     pub fn syntax_description(self) -> &'static str {
         match self {
             Self::Monitor => "monitor = name/output, resolution, position, scale, options",
@@ -143,6 +155,18 @@ impl StructuredFamilyKind {
         }
     }
 
+    pub fn disabled_record_edit_label(self) -> &'static str {
+        match self {
+            Self::Monitor => "Edit monitor record (not available)",
+            Self::Bind => "Edit bind record (not available)",
+            Self::Animation => "Edit animation record (not available)",
+            Self::Curve => "Edit curve record (not available)",
+            Self::Gesture => "Edit gesture record (not available)",
+            Self::Device => "Edit device record (not available)",
+            Self::Permission => "Edit permission record (not available)",
+        }
+    }
+
     fn from_family_id(family_id: &str) -> Option<Self> {
         Self::ALL
             .iter()
@@ -218,6 +242,48 @@ impl StructuredFamilyTempWritePlanStatus {
             Self::ProductionWritesBlockedByDefault => {
                 "StructuredFamilyProductionWritesBlockedByDefault"
             }
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyRecordEditorStatus {
+    Unavailable,
+    ReviewOnly,
+    ProjectionReady,
+    ValidationReady,
+    RawFallbackRequired,
+    ActionsDisabled,
+    WritesBlockedByDefault,
+}
+
+impl StructuredFamilyRecordEditorStatus {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Unavailable => "StructuredFamilyRecordEditorUnavailable",
+            Self::ReviewOnly => "StructuredFamilyRecordEditorReviewOnly",
+            Self::ProjectionReady => "StructuredFamilyRecordEditorProjectionReady",
+            Self::ValidationReady => "StructuredFamilyRecordEditorValidationReady",
+            Self::RawFallbackRequired => "StructuredFamilyRecordEditorRawFallbackRequired",
+            Self::ActionsDisabled => "StructuredFamilyRecordEditorActionsDisabled",
+            Self::WritesBlockedByDefault => "StructuredFamilyRecordEditorWritesBlockedByDefault",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyRecordEditorFieldKind {
+    FamilySpecific,
+    ParsedKey,
+    RawLine,
+}
+
+impl StructuredFamilyRecordEditorFieldKind {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::FamilySpecific => "family-specific",
+            Self::ParsedKey => "parsed-key",
+            Self::RawLine => "raw-line",
         }
     }
 }
@@ -318,6 +384,39 @@ pub struct StructuredFamilyTempWriteProof {
     pub runtime_mutated: bool,
     pub hyprctl_reload_run: bool,
     pub production_write_enabled: bool,
+    pub production_executor_wired: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyRecordEditorField {
+    pub name: String,
+    pub value: String,
+    pub kind: StructuredFamilyRecordEditorFieldKind,
+    pub editable: bool,
+    pub editability_status: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyRecordEditorForm {
+    pub family: StructuredFamilyKind,
+    pub record_index: usize,
+    pub source_path: PathBuf,
+    pub line_number: usize,
+    pub raw_line: String,
+    pub parsed_key: String,
+    pub validation_status: String,
+    pub unsupported_reason: Option<String>,
+    pub fields: Vec<StructuredFamilyRecordEditorField>,
+    pub field_editability_status: String,
+    pub raw_fallback_status: String,
+    pub action_policy: StructuredFamilyRecordEditorStatus,
+    pub write_blocked_status: StructuredFamilyRecordEditorStatus,
+    pub temp_fixture_plan_status: StructuredFamilyTempWritePlanStatus,
+    pub projection_status: StructuredFamilyRecordEditorStatus,
+    pub review_status: StructuredFamilyRecordEditorStatus,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
     pub production_executor_wired: bool,
 }
 
@@ -624,6 +723,79 @@ pub fn prove_structured_family_temp_write_plan(
         runtime_mutated: false,
         hyprctl_reload_run: false,
         production_write_enabled: false,
+        production_executor_wired: false,
+    }
+}
+
+pub fn structured_family_record_editor_forms(
+    projection: &StructuredFamilyProjection,
+) -> Vec<StructuredFamilyRecordEditorForm> {
+    projection
+        .records
+        .iter()
+        .enumerate()
+        .map(|(index, record)| structured_family_record_editor_form(projection, index, record))
+        .collect()
+}
+
+pub fn structured_family_record_editor_form(
+    projection: &StructuredFamilyProjection,
+    record_index: usize,
+    record: &StructuredFamilyRecord,
+) -> StructuredFamilyRecordEditorForm {
+    let mut fields = record
+        .fields
+        .iter()
+        .map(|field| StructuredFamilyRecordEditorField {
+            name: field.name.clone(),
+            value: field.value.clone(),
+            kind: StructuredFamilyRecordEditorFieldKind::FamilySpecific,
+            editable: false,
+            editability_status: "review-only; editing disabled".to_string(),
+        })
+        .collect::<Vec<_>>();
+    fields.push(StructuredFamilyRecordEditorField {
+        name: "parsed key".to_string(),
+        value: record.parsed_key.clone(),
+        kind: StructuredFamilyRecordEditorFieldKind::ParsedKey,
+        editable: false,
+        editability_status: "review-only; editing disabled".to_string(),
+    });
+    fields.push(StructuredFamilyRecordEditorField {
+        name: "raw line".to_string(),
+        value: record.raw_line.clone(),
+        kind: StructuredFamilyRecordEditorFieldKind::RawLine,
+        editable: false,
+        editability_status: "review-only; editing disabled".to_string(),
+    });
+
+    let raw_fallback_status = if record.unsupported_reason.is_some() {
+        StructuredFamilyRecordEditorStatus::RawFallbackRequired.as_str()
+    } else {
+        "StructuredFamilyRecordEditorRawFallbackNotRequired"
+    };
+
+    StructuredFamilyRecordEditorForm {
+        family: projection.family,
+        record_index,
+        source_path: record.source_path.clone(),
+        line_number: record.line_number,
+        raw_line: record.raw_line.clone(),
+        parsed_key: record.parsed_key.clone(),
+        validation_status: record.validation_status.clone(),
+        unsupported_reason: record.unsupported_reason.clone(),
+        fields,
+        field_editability_status:
+            "Family-specific fields projected; review-only field editability disabled".to_string(),
+        raw_fallback_status: raw_fallback_status.to_string(),
+        action_policy: StructuredFamilyRecordEditorStatus::ActionsDisabled,
+        write_blocked_status: StructuredFamilyRecordEditorStatus::WritesBlockedByDefault,
+        temp_fixture_plan_status: StructuredFamilyTempWritePlanStatus::Validated,
+        projection_status: StructuredFamilyRecordEditorStatus::ProjectionReady,
+        review_status: StructuredFamilyRecordEditorStatus::ReviewOnly,
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
         production_executor_wired: false,
     }
 }

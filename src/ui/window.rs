@@ -1263,6 +1263,7 @@ fn structured_family_editor_section(
     for family in families {
         content.append(&structured_family_card(family));
     }
+    content.append(&structured_family_record_editor_section(families));
 
     frame.set_child(Some(&content));
     frame
@@ -1353,6 +1354,113 @@ fn structured_family_card(family: &crate::ui::model::UiStructuredFamily) -> gtk:
         "Review-only control. No config write, runtime mutation, reload, or executor callback is connected.",
     ));
     content.append(&action);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn structured_family_record_editor_section(
+    families: &[crate::ui::model::UiStructuredFamily],
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-structured-family-record-editor-section");
+    frame.set_tooltip_text(Some(
+        "Review-only per-record structured family editor forms. Real writes remain blocked.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(10);
+    content.set_margin_bottom(10);
+    content.set_margin_start(10);
+    content.set_margin_end(10);
+
+    content.append(&title_label("Review-only per-record editor forms"));
+    content.append(&small_label("Record editor projection ready"));
+    content.append(&small_label("Family-specific fields projected"));
+    content.append(&small_label("Raw fallback required where not proven"));
+    content.append(&small_label("Editor actions disabled"));
+    content.append(&small_label("Real writes blocked by default"));
+    content.append(&small_label("Production writes blocked by default"));
+    content.append(&small_label("Real config target not allowed"));
+    content.append(&small_label("Runtime mutation not allowed"));
+    content.append(&small_label("Hyprland reload not allowed"));
+
+    for family in families {
+        content.append(&structured_family_record_editor_family_card(family));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn structured_family_record_editor_family_card(
+    family: &crate::ui::model::UiStructuredFamily,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&family.record_editor_widget_name);
+    frame.set_tooltip_text(Some(
+        "Family record editor projection. This is review-only and has no write, reload, runtime, persistence, or executor callback.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&format!("{} record editor", family.label)));
+    append_detail_line(&content, "Status", &family.record_editor_status);
+    append_detail_line(
+        &content,
+        "Action policy",
+        &family.record_editor_action_policy_status,
+    );
+    append_detail_line(
+        &content,
+        "Form count",
+        &family.record_editor_form_count.to_string(),
+    );
+
+    if family.record_editor_forms.is_empty() {
+        content.append(&small_label("No records available for review-only forms."));
+    }
+
+    for form in &family.record_editor_forms {
+        content.append(&small_label(&format!("Record {}", form.record_index + 1)));
+        append_detail_line(&content, "source path", &form.source_path);
+        append_detail_line(&content, "line number", &form.line_number.to_string());
+        append_detail_line(&content, "raw line", &form.raw_line);
+        append_detail_line(&content, "validation status", &form.validation_status);
+        append_detail_line(&content, "field count", &form.field_count.to_string());
+        append_detail_line(&content, "raw fallback status", &form.raw_fallback_status);
+        append_detail_line(&content, "write policy", &form.write_policy);
+        append_detail_line(
+            &content,
+            "temp-fixture plan status",
+            &form.temp_fixture_plan_status,
+        );
+        if let Some(reason) = &form.unsupported_reason {
+            append_detail_line(&content, "not proven reason", reason);
+        }
+    }
+
+    let edit = gtk::Button::with_label(&family.disabled_record_edit_label);
+    edit.set_sensitive(false);
+    edit.set_tooltip_text(Some("Review-only placeholder. Editing is not available."));
+    content.append(&edit);
+
+    let apply = gtk::Button::with_label("Apply structured-family record change (not available)");
+    apply.set_sensitive(false);
+    apply.set_tooltip_text(Some("Disabled. This button has no write callback."));
+    content.append(&apply);
+
+    let render =
+        gtk::Button::with_label("Render structured-family record to real config (not available)");
+    render.set_sensitive(false);
+    render.set_tooltip_text(Some(
+        "Disabled. Real config render targets are not allowed.",
+    ));
+    content.append(&render);
 
     frame.set_child(Some(&content));
     frame

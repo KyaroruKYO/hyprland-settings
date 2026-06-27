@@ -1,0 +1,163 @@
+{
+  "artifactKind": "structured-family-record-editor-forms",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "8c3700b88d4994e5da6d955f5fccc9965d1d0aef",
+  "latestCommitBeforeSprint": "8c3700b88d4994e5da6d955f5fccc9965d1d0aef",
+  "goal": "Add review-only per-record editor form projections for all structured-family records while keeping real writes blocked.",
+  "families": [
+    "hl.monitor",
+    "hl.bind",
+    "hl.animation",
+    "hl.curve",
+    "hl.gesture",
+    "hl.device",
+    "hl.permission"
+  ],
+  "recordEditorStatusByFamily": {
+    "hl.monitor": "StructuredFamilyRecordEditorProjectionReady",
+    "hl.bind": "StructuredFamilyRecordEditorProjectionReady",
+    "hl.animation": "StructuredFamilyRecordEditorProjectionReady",
+    "hl.curve": "StructuredFamilyRecordEditorProjectionReady",
+    "hl.gesture": "StructuredFamilyRecordEditorProjectionReady",
+    "hl.device": "StructuredFamilyRecordEditorProjectionReady",
+    "hl.permission": "StructuredFamilyRecordEditorProjectionReady"
+  },
+  "recordEditorWidgetByFamily": {
+    "hl.monitor": "hyprland-settings-structured-family-hl-monitor-record-editor",
+    "hl.bind": "hyprland-settings-structured-family-hl-bind-record-editor",
+    "hl.animation": "hyprland-settings-structured-family-hl-animation-record-editor",
+    "hl.curve": "hyprland-settings-structured-family-hl-curve-record-editor",
+    "hl.gesture": "hyprland-settings-structured-family-hl-gesture-record-editor",
+    "hl.device": "hyprland-settings-structured-family-hl-device-record-editor",
+    "hl.permission": "hyprland-settings-structured-family-hl-permission-record-editor"
+  },
+  "recordEditorFieldProjectionByFamily": {
+    "hl.monitor": [
+      "name/output",
+      "resolution",
+      "position",
+      "scale",
+      "additional raw options",
+      "raw line"
+    ],
+    "hl.bind": [
+      "modifier",
+      "key",
+      "dispatcher",
+      "argument",
+      "flags/type",
+      "raw line"
+    ],
+    "hl.animation": [
+      "name",
+      "enabled",
+      "bezier/curve reference",
+      "speed",
+      "style",
+      "additional parameters",
+      "raw line"
+    ],
+    "hl.curve": [
+      "name",
+      "x1",
+      "y1",
+      "x2",
+      "y2",
+      "raw line"
+    ],
+    "hl.gesture": [
+      "gesture name",
+      "fingers",
+      "direction",
+      "dispatcher/action",
+      "argument",
+      "raw line"
+    ],
+    "hl.device": [
+      "device name",
+      "section/options",
+      "option key",
+      "option value",
+      "raw line"
+    ],
+    "hl.permission": [
+      "target/application/rule",
+      "permission key",
+      "permission value/action",
+      "raw line"
+    ]
+  },
+  "rawFallbackStatusByFamily": {
+    "hl.monitor": "StructuredFamilyRecordEditorRawFallbackRequired for unsupported fixture records",
+    "hl.bind": "StructuredFamilyRecordEditorRawFallbackRequired for unsupported fixture records",
+    "hl.animation": "StructuredFamilyRecordEditorRawFallbackRequired for unsupported fixture records",
+    "hl.curve": "StructuredFamilyRecordEditorRawFallbackRequired for unsupported fixture records",
+    "hl.gesture": "StructuredFamilyRecordEditorRawFallbackRequired for unsupported fixture records",
+    "hl.device": "StructuredFamilyRecordEditorRawFallbackRequired for block boundaries and unknown options",
+    "hl.permission": "StructuredFamilyRecordEditorRawFallbackRequired for unsupported fixture records"
+  },
+  "actionPolicyByFamily": {
+    "hl.monitor": "StructuredFamilyRecordEditorActionsDisabled",
+    "hl.bind": "StructuredFamilyRecordEditorActionsDisabled",
+    "hl.animation": "StructuredFamilyRecordEditorActionsDisabled",
+    "hl.curve": "StructuredFamilyRecordEditorActionsDisabled",
+    "hl.gesture": "StructuredFamilyRecordEditorActionsDisabled",
+    "hl.device": "StructuredFamilyRecordEditorActionsDisabled",
+    "hl.permission": "StructuredFamilyRecordEditorActionsDisabled"
+  },
+  "writePolicyByFamily": {
+    "hl.monitor": "StructuredFamilyRecordEditorWritesBlockedByDefault",
+    "hl.bind": "StructuredFamilyRecordEditorWritesBlockedByDefault",
+    "hl.animation": "StructuredFamilyRecordEditorWritesBlockedByDefault",
+    "hl.curve": "StructuredFamilyRecordEditorWritesBlockedByDefault",
+    "hl.gesture": "StructuredFamilyRecordEditorWritesBlockedByDefault",
+    "hl.device": "StructuredFamilyRecordEditorWritesBlockedByDefault",
+    "hl.permission": "StructuredFamilyRecordEditorWritesBlockedByDefault"
+  },
+  "ui": {
+    "sectionWidgetName": "hyprland-settings-structured-family-record-editor-section",
+    "visibleStrings": [
+      "Review-only per-record editor forms",
+      "Record editor projection ready",
+      "Family-specific fields projected",
+      "Raw fallback required where not proven",
+      "Editor actions disabled",
+      "Real writes blocked by default",
+      "Production writes blocked by default",
+      "Real config target not allowed",
+      "Runtime mutation not allowed",
+      "Hyprland reload not allowed"
+    ],
+    "controlsConnectedToMutationHandlers": false
+  },
+  "realConfigTouched": false,
+  "runtimeMutated": false,
+  "hyprctlReloadRun": false,
+  "productionBehaviorEnabled": false,
+  "productionExecutorWired": false,
+  "filesChanged": [
+    "src/structured_family.rs",
+    "src/ui/model.rs",
+    "src/ui/window.rs",
+    "tests/structured_family_unified.rs",
+    "data/reports/structured-family-record-editor-forms.v0.55.2.json",
+    "docs/STRUCTURED-FAMILY-RECORD-EDITOR-FORMS.md"
+  ],
+  "testsAdded": [
+    "all_structured_family_record_editor_forms_project_fixture_records_read_only",
+    "structured_family_record_editor_section_has_no_write_reload_or_executor_handlers",
+    "structured_family_record_editor_forms_report_preserves_review_only_policy"
+  ],
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "jq": "passed",
+    "gitDiffCheck": "passed",
+    "cargoBuildRelease": "passed"
+  },
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260627_005316",
+  "nextRecommendedWork": "Add review-only structured-family record edit-state/draft model while keeping real writes blocked."
+}

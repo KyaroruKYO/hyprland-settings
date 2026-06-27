@@ -11,8 +11,8 @@ use crate::screen_shader_advisory::{
     run_screen_shader_advisory_check, AdvisoryStatus, ScreenShaderAdvisoryRequest,
 };
 use crate::structured_family::{
-    build_structured_family_temp_write_plan, validate_structured_family_projection,
-    StructuredFamilyProjection,
+    build_structured_family_temp_write_plan, structured_family_record_editor_forms,
+    validate_structured_family_projection, StructuredFamilyProjection,
 };
 use crate::validation::ValidationSummary;
 use crate::write_flow::{
@@ -171,6 +171,44 @@ pub struct UiStructuredFamily {
     pub widget_name: String,
     pub review_button_label: String,
     pub unproven_record_count: usize,
+    pub record_editor_widget_name: String,
+    pub record_editor_status: String,
+    pub record_editor_action_policy_status: String,
+    pub record_editor_form_count: usize,
+    pub record_editor_forms: Vec<UiStructuredRecordEditorForm>,
+    pub disabled_record_edit_label: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct UiStructuredRecordEditorForm {
+    pub family_id: String,
+    pub record_index: usize,
+    pub source_path: String,
+    pub line_number: usize,
+    pub raw_line: String,
+    pub parsed_key: String,
+    pub validation_status: String,
+    pub unsupported_reason: Option<String>,
+    pub field_count: usize,
+    pub fields: Vec<UiStructuredRecordEditorField>,
+    pub field_editability_status: String,
+    pub raw_fallback_status: String,
+    pub action_policy: String,
+    pub write_policy: String,
+    pub temp_fixture_plan_status: String,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct UiStructuredRecordEditorField {
+    pub name: String,
+    pub value: String,
+    pub kind: String,
+    pub editable: bool,
+    pub editability_status: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -360,6 +398,40 @@ fn ui_structured_family_from_projection(
         .iter()
         .filter(|entry| entry.warning.is_some())
         .count();
+    let record_editor_forms = structured_family_record_editor_forms(projection)
+        .into_iter()
+        .map(|form| UiStructuredRecordEditorForm {
+            family_id: form.family.family_id().to_string(),
+            record_index: form.record_index,
+            source_path: form.source_path.display().to_string(),
+            line_number: form.line_number,
+            raw_line: form.raw_line,
+            parsed_key: form.parsed_key,
+            validation_status: form.validation_status,
+            unsupported_reason: form.unsupported_reason,
+            field_count: form.fields.len(),
+            fields: form
+                .fields
+                .into_iter()
+                .map(|field| UiStructuredRecordEditorField {
+                    name: field.name,
+                    value: field.value,
+                    kind: field.kind.as_str().to_string(),
+                    editable: field.editable,
+                    editability_status: field.editability_status,
+                })
+                .collect(),
+            field_editability_status: form.field_editability_status,
+            raw_fallback_status: form.raw_fallback_status,
+            action_policy: form.action_policy.as_str().to_string(),
+            write_policy: form.write_blocked_status.as_str().to_string(),
+            temp_fixture_plan_status: form.temp_fixture_plan_status.as_str().to_string(),
+            real_config_touched: form.real_config_touched,
+            runtime_mutated: form.runtime_mutated,
+            hyprctl_reload_run: form.hyprctl_reload_run,
+            production_executor_wired: form.production_executor_wired,
+        })
+        .collect::<Vec<_>>();
     UiStructuredFamily {
         family_id: projection.family_id.clone(),
         label: projection.display_name.clone(),
@@ -383,6 +455,13 @@ fn ui_structured_family_from_projection(
         widget_name: projection.widget_name.clone(),
         review_button_label: projection.review_button_label.clone(),
         unproven_record_count: projection.unproven_record_count(),
+        record_editor_widget_name: projection.family.record_editor_widget_name().to_string(),
+        record_editor_status: "StructuredFamilyRecordEditorProjectionReady".to_string(),
+        record_editor_action_policy_status: "StructuredFamilyRecordEditorActionsDisabled"
+            .to_string(),
+        record_editor_form_count: record_editor_forms.len(),
+        record_editor_forms,
+        disabled_record_edit_label: projection.family.disabled_record_edit_label().to_string(),
     }
 }
 
