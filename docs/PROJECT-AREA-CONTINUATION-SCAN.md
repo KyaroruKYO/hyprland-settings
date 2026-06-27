@@ -16,11 +16,11 @@ Structured-family work can advance because the current sprint adds a shared revi
 - Missing/default insertion: capped by source/include production activation closeout.
 - Duplicate resolution: capped by duplicate production activation closeout.
 - High-risk/display recovery: blocked by high-risk recovery proof.
-- Structured-family editors/writes: can continue now, with validators, temp-fixture write plans, per-record editor forms, in-memory draft models, disabled GTK draft-field binding, fixture-only draft-to-rendered-record planning, and fixture-only rendered-record render/reread proof complete while writes remain blocked by default, draft persistence remains forbidden, and real config targets remain forbidden.
+- Structured-family editors/writes: can continue now, with validators, temp-fixture write plans, per-record editor forms, in-memory draft models, disabled GTK draft-field binding, fixture-only draft-to-rendered-record planning, fixture-only rendered-record render/reread proof, and fixture-only rendered-record diff/review summaries complete while writes remain blocked by default, draft persistence remains forbidden, and real config targets remain forbidden.
 - Profile/mode switching: blocked by production activation and live proof.
 - Runtime/reload integration: blocked by production activation and live recovery policy.
 - Hyprland 0.55.4 migration: blocked by missing trusted official export data.
 
 ## Recommended Next Work
 
-Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked.
+Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked.

@@ -507,6 +507,63 @@ impl StructuredFamilyDraftRenderedRecordRenderRereadStatus {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyDraftRenderedRecordDiffReviewStatus {
+    Unavailable,
+    ReviewOnly,
+    Ready,
+    DiffReady,
+    ReviewSummaryReady,
+    Noop,
+    Changed,
+    FieldDiffReady,
+    RenderedPreviewCompared,
+    OriginalRawPreserved,
+    RawFallbackPreserved,
+    UnsupportedNotProvenYet,
+    RenderRereadProofLinked,
+    FixtureOnly,
+    ActionsDisabled,
+    WritesBlockedByDefault,
+    PersistenceForbidden,
+    RealConfigTargetForbidden,
+}
+
+impl StructuredFamilyDraftRenderedRecordDiffReviewStatus {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Unavailable => "StructuredFamilyDraftRenderedRecordDiffReviewUnavailable",
+            Self::ReviewOnly => "StructuredFamilyDraftRenderedRecordDiffReviewReviewOnly",
+            Self::Ready => "StructuredFamilyDraftRenderedRecordDiffReviewReady",
+            Self::DiffReady => "StructuredFamilyDraftRenderedRecordDiffReady",
+            Self::ReviewSummaryReady => "StructuredFamilyDraftRenderedRecordReviewSummaryReady",
+            Self::Noop => "StructuredFamilyDraftRenderedRecordNoop",
+            Self::Changed => "StructuredFamilyDraftRenderedRecordChanged",
+            Self::FieldDiffReady => "StructuredFamilyDraftRenderedRecordFieldDiffReady",
+            Self::RenderedPreviewCompared => {
+                "StructuredFamilyDraftRenderedRecordRenderedPreviewCompared"
+            }
+            Self::OriginalRawPreserved => "StructuredFamilyDraftRenderedRecordOriginalRawPreserved",
+            Self::RawFallbackPreserved => "StructuredFamilyDraftRenderedRecordRawFallbackPreserved",
+            Self::UnsupportedNotProvenYet => {
+                "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenYet"
+            }
+            Self::RenderRereadProofLinked => {
+                "StructuredFamilyDraftRenderedRecordRenderRereadProofLinked"
+            }
+            Self::FixtureOnly => "StructuredFamilyDraftRenderedRecordFixtureOnly",
+            Self::ActionsDisabled => "StructuredFamilyDraftRenderedRecordActionsDisabled",
+            Self::WritesBlockedByDefault => {
+                "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+            }
+            Self::PersistenceForbidden => "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+            Self::RealConfigTargetForbidden => {
+                "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+            }
+        }
+    }
+}
+
 impl StructuredFamilyRecordEditorFieldKind {
     pub fn as_str(self) -> &'static str {
         match self {
@@ -862,6 +919,77 @@ pub struct StructuredFamilyDraftRenderedRecordRenderRereadProof {
     pub persistence_policy: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
     pub real_config_target_policy: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
     pub draft_written_to_disk: bool,
+    pub rendered_record_written_to_temp_fixture: bool,
+    pub rendered_record_written_to_real_config: bool,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordFieldDiff {
+    pub field_name: String,
+    pub original_value: String,
+    pub draft_value: String,
+    pub rendered_part: String,
+    pub changed: bool,
+    pub status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordDiffReviewEntry {
+    pub family: StructuredFamilyKind,
+    pub record_index: usize,
+    pub source_path: PathBuf,
+    pub line_number: usize,
+    pub original_raw_line: String,
+    pub rendered_record_preview: String,
+    pub field_diffs: Vec<StructuredFamilyDraftRenderedRecordFieldDiff>,
+    pub changed: bool,
+    pub diff_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub field_diff_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub rendered_preview_compared_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub original_raw_preserved_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub raw_fallback_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub unsupported_not_proven_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub not_safe_for_full_synthesis: bool,
+    pub summary_text: String,
+    pub risk_summary: String,
+    pub review_decision_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordDiffReviewSummary {
+    pub family: StructuredFamilyKind,
+    pub source_draft_count: usize,
+    pub source_plan_count: usize,
+    pub render_reread_proof_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub review_entry_count: usize,
+    pub changed_entry_count: usize,
+    pub noop_entry_count: usize,
+    pub raw_fallback_entry_count: usize,
+    pub unsupported_not_proven_entry_count: usize,
+    pub field_diff_count: usize,
+    pub changed_field_diff_count: usize,
+    pub entries: Vec<StructuredFamilyDraftRenderedRecordDiffReviewEntry>,
+    pub summary_text: String,
+    pub risk_summary: String,
+    pub review_decision_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub diff_review_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub review_summary_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub field_diff_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub changed_entry_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub noop_entry_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub raw_fallback_review_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub unsupported_not_proven_review_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub fixture_only_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub action_policy: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub write_policy: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub persistence_policy: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub real_config_target_policy: StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    pub draft_written_to_disk: bool,
+    pub diff_summary_written_to_disk: bool,
     pub rendered_record_written_to_temp_fixture: bool,
     pub rendered_record_written_to_real_config: bool,
     pub real_config_touched: bool,
@@ -1856,6 +1984,190 @@ pub fn render_draft_rendered_record_fixture_text(
         output.push('\n');
     }
     output
+}
+
+pub fn structured_family_draft_rendered_record_diff_review_summary(
+    plans: &[StructuredFamilyDraftRenderedRecordPlan],
+    render_reread_proof: &StructuredFamilyDraftRenderedRecordRenderRereadProof,
+) -> StructuredFamilyDraftRenderedRecordDiffReviewSummary {
+    let family = plans
+        .first()
+        .map(|plan| plan.family)
+        .unwrap_or(render_reread_proof.family);
+    let entries = plans
+        .iter()
+        .map(structured_family_draft_rendered_record_diff_review_entry)
+        .collect::<Vec<_>>();
+    let changed_entry_count = entries.iter().filter(|entry| entry.changed).count();
+    let review_entry_count = entries.len();
+    let noop_entry_count = review_entry_count.saturating_sub(changed_entry_count);
+    let raw_fallback_entry_count = entries
+        .iter()
+        .filter(|entry| {
+            entry.raw_fallback_status
+                == StructuredFamilyDraftRenderedRecordDiffReviewStatus::RawFallbackPreserved
+        })
+        .count();
+    let unsupported_not_proven_entry_count = entries
+        .iter()
+        .filter(|entry| {
+            entry.unsupported_not_proven_status
+                == StructuredFamilyDraftRenderedRecordDiffReviewStatus::UnsupportedNotProvenYet
+        })
+        .count();
+    let field_diff_count = entries
+        .iter()
+        .map(|entry| entry.field_diffs.len())
+        .sum::<usize>();
+    let changed_field_diff_count = entries
+        .iter()
+        .flat_map(|entry| entry.field_diffs.iter())
+        .filter(|field_diff| field_diff.changed)
+        .count();
+    let summary_text = format!(
+        "{} fixture-only diff/review summary: {} entries, {} changed, {} noop, {} raw fallback, {} not proven.",
+        family.family_id(),
+        review_entry_count,
+        changed_entry_count,
+        noop_entry_count,
+        raw_fallback_entry_count,
+        unsupported_not_proven_entry_count
+    );
+    let risk_summary =
+        "review-only fixture diff; real writes, persistence, reload, runtime mutation, and production executors remain blocked"
+            .to_string();
+
+    StructuredFamilyDraftRenderedRecordDiffReviewSummary {
+        family,
+        source_draft_count: render_reread_proof.source_draft_count,
+        source_plan_count: render_reread_proof.source_plan_count,
+        render_reread_proof_status:
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::RenderRereadProofLinked,
+        review_entry_count,
+        changed_entry_count,
+        noop_entry_count,
+        raw_fallback_entry_count,
+        unsupported_not_proven_entry_count,
+        field_diff_count,
+        changed_field_diff_count,
+        entries,
+        summary_text,
+        risk_summary,
+        review_decision_status:
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::ReviewSummaryReady,
+        diff_review_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus::ReviewOnly,
+        review_summary_status:
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::ReviewSummaryReady,
+        field_diff_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus::FieldDiffReady,
+        changed_entry_status: if changed_entry_count > 0 {
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::Changed
+        } else {
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::Noop
+        },
+        noop_entry_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus::Noop,
+        raw_fallback_review_status:
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::RawFallbackPreserved,
+        unsupported_not_proven_review_status:
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::UnsupportedNotProvenYet,
+        fixture_only_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus::FixtureOnly,
+        action_policy: StructuredFamilyDraftRenderedRecordDiffReviewStatus::ActionsDisabled,
+        write_policy: StructuredFamilyDraftRenderedRecordDiffReviewStatus::WritesBlockedByDefault,
+        persistence_policy:
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::PersistenceForbidden,
+        real_config_target_policy:
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::RealConfigTargetForbidden,
+        draft_written_to_disk: false,
+        diff_summary_written_to_disk: false,
+        rendered_record_written_to_temp_fixture: render_reread_proof
+            .rendered_record_written_to_temp_fixture,
+        rendered_record_written_to_real_config: false,
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
+        production_executor_wired: false,
+    }
+}
+
+fn structured_family_draft_rendered_record_diff_review_entry(
+    plan: &StructuredFamilyDraftRenderedRecordPlan,
+) -> StructuredFamilyDraftRenderedRecordDiffReviewEntry {
+    let field_diffs = plan
+        .field_map
+        .iter()
+        .map(|field_map| {
+            let draft_field = plan
+                .draft_fields
+                .iter()
+                .find(|field| field.name == field_map.field_name);
+            let original_value = draft_field
+                .map(|field| field.original_value.clone())
+                .unwrap_or_default();
+            let draft_value = draft_field
+                .map(|field| field.draft_value.clone())
+                .unwrap_or_else(|| field_map.draft_value.clone());
+            StructuredFamilyDraftRenderedRecordFieldDiff {
+                field_name: field_map.field_name.clone(),
+                original_value: original_value.clone(),
+                draft_value: draft_value.clone(),
+                rendered_part: field_map.rendered_part.clone(),
+                changed: original_value != draft_value,
+                status: StructuredFamilyDraftRenderedRecordDiffReviewStatus::FieldDiffReady,
+            }
+        })
+        .collect::<Vec<_>>();
+    let field_changed = field_diffs.iter().any(|field_diff| field_diff.changed);
+    let preview_changed = plan.raw_original_line.trim() != plan.rendered_record_preview.trim();
+    let changed = preview_changed || field_changed;
+    let unsupported = plan.unsupported_reason.is_some()
+        || plan.unsupported_not_proven_status
+            == StructuredFamilyDraftRenderedRecordStatus::UnsupportedNotProvenYet;
+    let raw_fallback =
+        plan.raw_fallback_status == StructuredFamilyDraftRenderedRecordStatus::RawFallbackPreserved;
+
+    StructuredFamilyDraftRenderedRecordDiffReviewEntry {
+        family: plan.family,
+        record_index: plan.record_index,
+        source_path: plan.source_path.clone(),
+        line_number: plan.line_number,
+        original_raw_line: plan.raw_original_line.clone(),
+        rendered_record_preview: plan.rendered_record_preview.clone(),
+        field_diffs,
+        changed,
+        diff_status: if changed {
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::Changed
+        } else {
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::Noop
+        },
+        field_diff_status: StructuredFamilyDraftRenderedRecordDiffReviewStatus::FieldDiffReady,
+        rendered_preview_compared_status:
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::RenderedPreviewCompared,
+        original_raw_preserved_status:
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::OriginalRawPreserved,
+        raw_fallback_status: if raw_fallback {
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::RawFallbackPreserved
+        } else {
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::FieldDiffReady
+        },
+        unsupported_not_proven_status: if unsupported {
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::UnsupportedNotProvenYet
+        } else {
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::FieldDiffReady
+        },
+        not_safe_for_full_synthesis: unsupported,
+        summary_text: if changed {
+            "Rendered preview differs from original raw line or in-memory draft field values"
+                .to_string()
+        } else {
+            "Rendered preview matches original raw line and draft fields remain clean".to_string()
+        },
+        risk_summary: if unsupported {
+            "not proven yet; raw fallback preserved and full synthesis is not approved".to_string()
+        } else {
+            "fixture-only review entry; no real write is authorized".to_string()
+        },
+        review_decision_status:
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::ReviewSummaryReady,
+    }
 }
 
 fn structured_record_from_raw(

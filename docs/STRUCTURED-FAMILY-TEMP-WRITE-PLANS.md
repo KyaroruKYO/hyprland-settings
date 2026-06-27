@@ -55,4 +55,4 @@ Review-only in-memory draft models now consume those forms and keep draft persis
 
 ## Next Work
 
-Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked.
+Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked.

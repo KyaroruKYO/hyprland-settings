@@ -87,5 +87,5 @@
   "recordEditorFormsReport": "data/reports/structured-family-record-editor-forms.v0.55.2.json",
   "recordDraftModelStatus": "StructuredFamilyRecordDraftProjectionReady for all seven families",
   "recordDraftModelReport": "data/reports/structured-family-record-draft-model.v0.55.2.json",
-  "nextRecommendedWork": "Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked."
+  "nextRecommendedWork": "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
 }

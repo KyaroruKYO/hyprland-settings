@@ -123,5 +123,5 @@
     "cargoBuildRelease": "passed"
   },
   "gtkEvidenceRoot": null,
-  "nextRecommendedWork": "Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked."
+  "nextRecommendedWork": "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
 }

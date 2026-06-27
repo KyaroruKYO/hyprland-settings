@@ -29,6 +29,7 @@ The work is review-only. Structured-family writes remain blocked by default.
 - Disabled GTK draft-field binding: all seven families expose insensitive draft-field binding projections with memory-only update proof.
 - Draft rendered-record planning: all seven families map in-memory draft fields to fixture-only rendered-record previews.
 - Draft rendered-record render/reread proof: all seven families render previews to temp fixture text and reread through the parser/projection path with family identity and record count preserved.
+- Draft rendered-record diff/review summary: all seven families create in-memory changed/noop review entries with field diffs, raw fallback preservation, and unsupported/not-proven preservation.
 
 ## Safety
 
@@ -42,7 +43,8 @@ The work is review-only. Structured-family writes remain blocked by default.
 - Record editor forms are review-only and do not add write, reload, runtime mutation, persistence, or production executor callbacks.
 - Record draft models are in-memory only and do not write drafts to disk.
 - Draft rendered-record render/reread proof writes temp/test-owned fixture text only and does not write rendered records to real config.
+- Draft rendered-record diff/review summaries are in-memory only and do not persist summaries or authorize writes.
 
 ## Next Work
 
-Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked.
+Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked.

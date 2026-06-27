@@ -10,11 +10,13 @@ use hyprland_settings::structured_family::{
     prove_structured_family_draft_rendered_record_render_reread,
     prove_structured_family_record_draft_reset, prove_structured_family_temp_write_plan,
     render_draft_rendered_record_fixture_text, render_structured_family_projection,
-    reset_structured_family_record_draft, structured_family_draft_rendered_record_plans,
-    structured_family_kind_from_id, structured_family_record_draft_gtk_bindings,
-    structured_family_record_drafts, structured_family_record_editor_forms,
-    structured_family_render_target_allowed, update_structured_family_record_draft_field,
-    update_structured_family_record_draft_gtk_binding, validate_structured_family_projection,
+    reset_structured_family_record_draft,
+    structured_family_draft_rendered_record_diff_review_summary,
+    structured_family_draft_rendered_record_plans, structured_family_kind_from_id,
+    structured_family_record_draft_gtk_bindings, structured_family_record_drafts,
+    structured_family_record_editor_forms, structured_family_render_target_allowed,
+    update_structured_family_record_draft_field, update_structured_family_record_draft_gtk_binding,
+    validate_structured_family_projection, StructuredFamilyDraftRenderedRecordDiffReviewStatus,
     StructuredFamilyDraftRenderedRecordRenderRereadStatus,
     StructuredFamilyDraftRenderedRecordStatus, StructuredFamilyKind,
     StructuredFamilyRecordDraftGtkBindingStatus, StructuredFamilyRecordDraftStatus,
@@ -788,6 +790,211 @@ fn structured_family_rendered_record_reread_proof_rejects_real_config_targets() 
 }
 
 #[test]
+fn all_structured_family_rendered_record_plans_build_in_memory_diff_review_summaries() {
+    for family in StructuredFamilyKind::ALL {
+        let snapshot = snapshot_for_family(family);
+        let projection = snapshot
+            .structured_family_projections()
+            .into_iter()
+            .find(|projection| projection.family == family)
+            .expect("projection should exist");
+        let forms = structured_family_record_editor_forms(&projection);
+        let drafts = structured_family_record_drafts(&forms);
+        let plans = structured_family_draft_rendered_record_plans(&drafts);
+        let output_path = temp_output_path(family);
+        let proof =
+            prove_structured_family_draft_rendered_record_render_reread(&plans, &output_path);
+
+        let summary = structured_family_draft_rendered_record_diff_review_summary(&plans, &proof);
+        assert_eq!(summary.family, family);
+        assert_eq!(summary.source_draft_count, drafts.len());
+        assert_eq!(summary.source_plan_count, plans.len());
+        assert_eq!(summary.review_entry_count, plans.len());
+        assert_eq!(summary.entries.len(), plans.len());
+        assert_eq!(
+            summary.render_reread_proof_status,
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::RenderRereadProofLinked
+        );
+        assert_eq!(
+            summary.diff_review_status,
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::ReviewOnly
+        );
+        assert_eq!(
+            summary.review_summary_status,
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::ReviewSummaryReady
+        );
+        assert_eq!(
+            summary.field_diff_status,
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::FieldDiffReady
+        );
+        assert_eq!(
+            summary.raw_fallback_review_status,
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::RawFallbackPreserved
+        );
+        assert_eq!(
+            summary.unsupported_not_proven_review_status,
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::UnsupportedNotProvenYet
+        );
+        assert_eq!(
+            summary.fixture_only_status,
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::FixtureOnly
+        );
+        assert_eq!(
+            summary.action_policy,
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::ActionsDisabled
+        );
+        assert_eq!(
+            summary.write_policy,
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::WritesBlockedByDefault
+        );
+        assert_eq!(
+            summary.persistence_policy,
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::PersistenceForbidden
+        );
+        assert_eq!(
+            summary.real_config_target_policy,
+            StructuredFamilyDraftRenderedRecordDiffReviewStatus::RealConfigTargetForbidden
+        );
+        assert!(summary.field_diff_count >= plans.len());
+        assert_eq!(
+            summary.raw_fallback_entry_count,
+            proof.raw_fallback_plan_count
+        );
+        assert_eq!(
+            summary.unsupported_not_proven_entry_count,
+            proof.unsupported_not_proven_plan_count
+        );
+        assert!(summary.summary_text.contains(family.family_id()));
+        assert!(summary.risk_summary.contains("real writes"));
+        assert!(!summary.draft_written_to_disk);
+        assert!(!summary.diff_summary_written_to_disk);
+        assert!(summary.rendered_record_written_to_temp_fixture);
+        assert!(!summary.rendered_record_written_to_real_config);
+        assert!(!summary.real_config_touched);
+        assert!(!summary.runtime_mutated);
+        assert!(!summary.hyprctl_reload_run);
+        assert!(!summary.production_executor_wired);
+
+        for (index, entry) in summary.entries.iter().enumerate() {
+            let plan = &plans[index];
+            assert_eq!(entry.family, family);
+            assert_eq!(entry.record_index, plan.record_index);
+            assert_eq!(entry.source_path, plan.source_path);
+            assert_eq!(entry.line_number, plan.line_number);
+            assert_eq!(entry.original_raw_line, plan.raw_original_line);
+            assert_eq!(entry.rendered_record_preview, plan.rendered_record_preview);
+            assert!(!entry.field_diffs.is_empty());
+            assert_eq!(
+                entry.field_diff_status,
+                StructuredFamilyDraftRenderedRecordDiffReviewStatus::FieldDiffReady
+            );
+            assert_eq!(
+                entry.rendered_preview_compared_status,
+                StructuredFamilyDraftRenderedRecordDiffReviewStatus::RenderedPreviewCompared
+            );
+            assert_eq!(
+                entry.original_raw_preserved_status,
+                StructuredFamilyDraftRenderedRecordDiffReviewStatus::OriginalRawPreserved
+            );
+            assert_eq!(
+                entry.review_decision_status,
+                StructuredFamilyDraftRenderedRecordDiffReviewStatus::ReviewSummaryReady
+            );
+            if plan.unsupported_reason.is_some() {
+                assert_eq!(
+                    entry.raw_fallback_status,
+                    StructuredFamilyDraftRenderedRecordDiffReviewStatus::RawFallbackPreserved
+                );
+                assert_eq!(
+                    entry.unsupported_not_proven_status,
+                    StructuredFamilyDraftRenderedRecordDiffReviewStatus::UnsupportedNotProvenYet
+                );
+                assert!(entry.not_safe_for_full_synthesis);
+            }
+        }
+
+        fs::remove_file(output_path).expect("diff/review summary proof should clean up temp file");
+    }
+}
+
+#[test]
+fn structured_family_diff_review_summaries_detect_model_only_modified_drafts() {
+    for family in StructuredFamilyKind::ALL {
+        let snapshot = snapshot_for_family(family);
+        let projection = snapshot
+            .structured_family_projections()
+            .into_iter()
+            .find(|projection| projection.family == family)
+            .expect("projection should exist");
+        let forms = structured_family_record_editor_forms(&projection);
+        let drafts = structured_family_record_drafts(&forms);
+        let supported_index = drafts
+            .iter()
+            .position(|draft| draft.unsupported_reason.is_none())
+            .expect("fixture should include one supported record");
+        let field_name = drafts[supported_index]
+            .draft_fields
+            .iter()
+            .find(|field| field.name != "raw line" && field.name != "parsed key")
+            .expect("supported draft should expose a family-specific field")
+            .name
+            .clone();
+
+        let baseline_plans = structured_family_draft_rendered_record_plans(&drafts);
+        let baseline_output_path = temp_output_path(family);
+        let baseline_proof = prove_structured_family_draft_rendered_record_render_reread(
+            &baseline_plans,
+            &baseline_output_path,
+        );
+        let baseline_summary = structured_family_draft_rendered_record_diff_review_summary(
+            &baseline_plans,
+            &baseline_proof,
+        );
+
+        let mut modified_drafts = drafts.clone();
+        modified_drafts[supported_index] = update_structured_family_record_draft_field(
+            &modified_drafts[supported_index],
+            &field_name,
+            changed_fixture_value_for_family(family, &field_name),
+        );
+        let modified_plans = structured_family_draft_rendered_record_plans(&modified_drafts);
+        let modified_output_path = temp_output_path(family);
+        let modified_proof = prove_structured_family_draft_rendered_record_render_reread(
+            &modified_plans,
+            &modified_output_path,
+        );
+        let modified_summary = structured_family_draft_rendered_record_diff_review_summary(
+            &modified_plans,
+            &modified_proof,
+        );
+
+        assert!(modified_summary.changed_entry_count >= baseline_summary.changed_entry_count);
+        assert!(
+            modified_summary.changed_field_diff_count > baseline_summary.changed_field_diff_count,
+            "model-only field update should increase changed field-diff count for {}",
+            family.family_id()
+        );
+        assert!(modified_summary.entries[supported_index].changed);
+        assert!(modified_summary.entries[supported_index]
+            .field_diffs
+            .iter()
+            .any(|field_diff| field_diff.field_name == field_name && field_diff.changed));
+        assert!(!modified_summary.draft_written_to_disk);
+        assert!(!modified_summary.diff_summary_written_to_disk);
+        assert!(!modified_summary.rendered_record_written_to_real_config);
+        assert!(!modified_summary.real_config_touched);
+        assert!(!modified_summary.runtime_mutated);
+        assert!(!modified_summary.hyprctl_reload_run);
+        assert!(!modified_summary.production_executor_wired);
+
+        fs::remove_file(baseline_output_path)
+            .expect("baseline diff/review proof should clean up temp file");
+        fs::remove_file(modified_output_path)
+            .expect("modified diff/review proof should clean up temp file");
+    }
+}
+
+#[test]
 fn structured_family_kinds_cover_required_ids_and_widget_names() {
     let required = [
         (
@@ -1097,6 +1304,39 @@ fn structured_family_rendered_record_reread_proof_has_path_guard_and_no_real_wri
 }
 
 #[test]
+fn structured_family_rendered_record_diff_review_has_no_write_reload_or_persistence_calls() {
+    let structured_family = fs::read_to_string("src/structured_family.rs")
+        .expect("structured family source should read");
+    let section_start = structured_family
+        .find("pub fn structured_family_draft_rendered_record_diff_review_summary")
+        .expect("diff/review summary function should exist");
+    let section_end = structured_family[section_start..]
+        .find("fn structured_record_from_raw")
+        .map(|offset| section_start + offset)
+        .expect("diff/review summary section should end before parser helpers");
+    let section = &structured_family[section_start..section_end];
+
+    assert!(section.contains("StructuredFamilyDraftRenderedRecordDiffReviewSummary"));
+    for forbidden in [
+        "apply_setting_change",
+        "write_flow",
+        "hyprctl reload",
+        "Command::",
+        "fs::write",
+        "File::create",
+        "write_all",
+        "serde_json::to_writer",
+        "/home/kyo/.config/hypr/hyprland.conf",
+        "~/.config/hypr",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "diff/review summary must not contain {forbidden}"
+        );
+    }
+}
+
+#[test]
 fn structured_family_record_editor_section_has_no_write_reload_or_executor_handlers() {
     let window = fs::read_to_string("src/ui/window.rs").expect("window source should read");
     let section_start = window
@@ -1172,6 +1412,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-record-draft-gtk-binding.v0.55.2.json",
         "data/reports/structured-family-draft-rendered-record-plan.v0.55.2.json",
         "data/reports/structured-family-draft-rendered-record-render-reread.v0.55.2.json",
+        "data/reports/structured-family-draft-rendered-record-diff-review.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -1247,7 +1488,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked."
+        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -1299,7 +1540,7 @@ fn structured_family_temp_write_plan_report_preserves_safety_boundaries() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked."
+        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
     );
 }
 
@@ -1356,7 +1597,7 @@ fn structured_family_record_editor_forms_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked."
+        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
     );
 }
 
@@ -1413,7 +1654,7 @@ fn structured_family_record_draft_model_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked."
+        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
     );
 }
 
@@ -1491,7 +1732,7 @@ fn structured_family_record_draft_gtk_binding_report_preserves_review_only_polic
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked."
+        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
     );
 }
 
@@ -1563,7 +1804,7 @@ fn structured_family_draft_rendered_record_plan_report_preserves_fixture_only_po
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked."
+        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
     );
 }
 
@@ -1649,7 +1890,94 @@ fn structured_family_draft_rendered_record_render_reread_report_preserves_fixtur
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked."
+        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
+    );
+}
+
+#[test]
+fn structured_family_draft_rendered_record_diff_review_report_preserves_fixture_only_policy() {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string(
+            "data/reports/structured-family-draft-rendered-record-diff-review.v0.55.2.json",
+        )
+        .expect("draft rendered record diff/review report should read"),
+    )
+    .expect("draft rendered record diff/review report should be valid JSON");
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-draft-rendered-record-diff-review"
+    );
+    assert_eq!(report["draftWrittenToDisk"], false);
+    assert_eq!(report["diffSummaryWrittenToDisk"], false);
+    assert_eq!(report["renderedRecordWrittenToTempFixture"], true);
+    assert_eq!(report["renderedRecordWrittenToRealConfig"], false);
+    assert_eq!(report["realConfigTouched"], false);
+    assert_eq!(report["runtimeMutated"], false);
+    assert_eq!(report["hyprctlReloadRun"], false);
+    assert_eq!(report["productionBehaviorEnabled"], false);
+    assert_eq!(report["productionExecutorWired"], false);
+    assert_eq!(report["gtkEvidenceRoot"], "not-run-no-visible-ui-change");
+    for family in [
+        "hl.monitor",
+        "hl.bind",
+        "hl.animation",
+        "hl.curve",
+        "hl.gesture",
+        "hl.device",
+        "hl.permission",
+    ] {
+        assert_eq!(
+            report["diffReviewStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordDiffReviewReviewOnly"
+        );
+        assert_eq!(
+            report["reviewSummaryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordReviewSummaryReady"
+        );
+        assert_eq!(
+            report["fieldDiffStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordFieldDiffReady"
+        );
+        assert_eq!(
+            report["renderRereadProofLinkStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordRenderRereadProofLinked"
+        );
+        assert_eq!(
+            report["changedEntryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordChanged"
+        );
+        assert_eq!(
+            report["noopEntryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordNoop"
+        );
+        assert_eq!(
+            report["rawFallbackReviewStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordRawFallbackPreserved"
+        );
+        assert_eq!(
+            report["unsupportedNotProvenReviewStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenYet"
+        );
+        assert_eq!(
+            report["actionPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordActionsDisabled"
+        );
+        assert_eq!(
+            report["writePolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+        );
+        assert_eq!(
+            report["persistencePolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordPersistenceForbidden"
+        );
+        assert_eq!(
+            report["realConfigTargetPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+        );
+    }
+    assert_eq!(
+        report["nextRecommendedWork"],
+        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
     );
 }
 
@@ -1670,6 +1998,55 @@ fn fixture_path(family: StructuredFamilyKind) -> PathBuf {
         StructuredFamilyKind::Permission => "hl_permission.conf",
     };
     Path::new(FIXTURE_DIR).join(name)
+}
+
+fn changed_fixture_value_for_family(
+    family: StructuredFamilyKind,
+    field_name: &str,
+) -> &'static str {
+    match family {
+        StructuredFamilyKind::Monitor => match field_name {
+            "resolution" => "2560x1440@60",
+            "position" => "100x100",
+            "scale" => "1.25",
+            _ => "DP-1",
+        },
+        StructuredFamilyKind::Bind => match field_name {
+            "key" => "Space",
+            "dispatcher" => "exec",
+            "argument" => "kitty",
+            _ => "SUPER_SHIFT",
+        },
+        StructuredFamilyKind::Animation => match field_name {
+            "enabled" => "0",
+            "bezier/curve reference" => "snappy",
+            "speed" => "9",
+            "style" => "slide",
+            _ => "windows-diff",
+        },
+        StructuredFamilyKind::Curve => match field_name {
+            "x1" => "0.33",
+            "y1" => "0.77",
+            "x2" => "0.44",
+            "y2" => "0.99",
+            _ => "snappy-diff",
+        },
+        StructuredFamilyKind::Gesture => match field_name {
+            "direction" => "vertical",
+            "dispatcher/action" => "workspace",
+            "argument" => "+1",
+            _ => "4",
+        },
+        StructuredFamilyKind::Device => match field_name {
+            "option value" => "0.4",
+            _ => "sensitivity",
+        },
+        StructuredFamilyKind::Permission => match field_name {
+            "permission key" => "screencopy",
+            "permission value/action" => "deny",
+            _ => "class:test-app",
+        },
+    }
 }
 
 fn temp_output_path(family: StructuredFamilyKind) -> PathBuf {

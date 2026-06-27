@@ -3,7 +3,7 @@
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
   "startingCommit": "71c5161eaa407da984d3c5971de3751d23033a0c",
-  "currentFocus": "structured-family fixture-only draft rendered-record render/reread proof",
+  "currentFocus": "structured-family fixture-only draft rendered-record diff/review summary",
   "completedThisSprint": [
     "shared structured-family model for hl.monitor, hl.bind, hl.animation, hl.curve, hl.gesture, hl.device, and hl.permission",
     "review-only Config page structured-family section with seven stable cards",
@@ -27,6 +27,8 @@
     "rendered-record real config target forbidden policy for all seven families",
     "fixture-only draft rendered-record render/reread proof for all seven families",
     "temp/test-owned rendered-record reread through parser/projection path for all seven families",
+    "fixture-only rendered-record diff/review summaries for all seven families",
+    "in-memory changed/noop review entries and field-diff proof for all seven families",
     "project-area continuation scan"
   ],
   "safetyBoundaries": {
@@ -39,7 +41,7 @@
     "structuredFamilyWritesEnabled": false,
     "hyprland0554MigrationActivated": false
   },
-  "activeNextWork": "Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked.",
+  "activeNextWork": "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",
