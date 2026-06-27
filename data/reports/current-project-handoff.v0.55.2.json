@@ -3,7 +3,7 @@
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
   "startingCommit": "71c5161eaa407da984d3c5971de3751d23033a0c",
-  "currentFocus": "structured-family fixture-only rendered-record staged apply rollback/recovery review",
+  "currentFocus": "structured-family fixture-only rendered-record final executor-readiness audit",
   "completedThisSprint": [
     "shared structured-family model for hl.monitor, hl.bind, hl.animation, hl.curve, hl.gesture, hl.device, and hl.permission",
     "review-only Config page structured-family section with seven stable cards",
@@ -38,7 +38,9 @@
     "in-memory dry-run summaries for ready, rejected, invalid, and unsafe staged apply plans",
     "fixture-only staged apply rollback/recovery reviews for all seven families",
     "in-memory recovery-readiness summaries for ready and blocked dry-run reports",
-    "project-area continuation scan"
+    "project-area continuation scan",
+    "fixture-only final executor-readiness audits for all seven families",
+    "proof-chain completion, production activation required, executor-not-implemented, executor-not-wired, and not-production-ready findings for all seven families"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,
@@ -50,7 +52,7 @@
     "structuredFamilyWritesEnabled": false,
     "hyprland0554MigrationActivated": false
   },
-  "activeNextWork": "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked.",
+  "activeNextWork": "Stop for explicit user decision: structured-family production activation remains blocked until the user approves real-write activation scope.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",

@@ -50,4 +50,4 @@ Proven simple fixture records receive a preview string using family-specific syn
 
 ## Next Work
 
-Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked.
+Stop for explicit user decision: structured-family production activation remains blocked until the user approves real-write activation scope.

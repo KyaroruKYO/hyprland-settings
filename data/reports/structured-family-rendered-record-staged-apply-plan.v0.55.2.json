@@ -225,5 +225,5 @@
     "cargoBuildRelease": "passed"
   },
   "gtkEvidenceRoot": "not-run-no-visible-ui-change",
-  "nextRecommendedWork": "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
+  "nextRecommendedWork": "Stop for explicit user decision: structured-family production activation remains blocked until the user approves real-write activation scope."
 }

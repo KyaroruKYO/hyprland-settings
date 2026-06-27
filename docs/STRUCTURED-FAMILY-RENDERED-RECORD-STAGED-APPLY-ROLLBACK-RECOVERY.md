@@ -98,4 +98,4 @@ GTK evidence root: `not-run-no-visible-ui-change`.
 
 ## Next Work
 
-Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked.
+Stop for explicit user decision: structured-family production activation remains blocked until the user approves real-write activation scope.

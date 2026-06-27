@@ -118,13 +118,13 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "review-only validators, temp-fixture write plans, per-record editor forms, in-memory draft models, disabled GTK draft-field binding, fixture-only draft-to-rendered-record planning, fixture-only rendered-record render/reread proof, fixture-only diff/review summaries, fixture-only approval/confirmation models, fixture-only staged apply plans, fixture-only staged apply dry-run reports, and fixture-only staged apply rollback/recovery reviews are complete for seven families; writes blocked, draft persistence forbidden, real config target forbidden, staged apply execution disabled, dry-run execution disabled, rollback execution disabled, recovery execution disabled, backup creation disabled, and restore execution disabled",
-      "classification": "can_continue_now",
-      "canContinueNow": true,
-      "reason": "Shared model, fixture parse/render proof, conservative validators, temp-fixture write plans, per-record form projections, in-memory draft state, disabled GTK draft-field binding, draft-to-rendered-record planning, render/reread proof, diff/review summary, approval/confirmation model, staged apply plan, staged apply dry-run report, rollback/recovery review, and report-only status can advance without production writes.",
-      "blockingDependency": "fixture-only final executor-readiness audit before any future fixture-only executor review",
-      "safeNextWork": "add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked",
-      "mustNotDo": "do not enable real structured-family writes",
+      "currentStatus": "fixture-only rendered-record final executor-readiness audit complete; fixture-only proof chain complete; production writes remain blocked by default; draft persistence remains forbidden; real config target remains forbidden; executor is not implemented; executor is not wired; production activation is not approved; staged apply is not executed; dry-run is not executed; rollback is not executed; recovery is not executed; backup is not created; restore is not executed",
+      "classification": "blocked_by_production_activation_decision",
+      "canContinueNow": false,
+      "reason": "The fixture-only structured-family rendered-record proof chain is complete enough to ask for an explicit production activation decision later, but production writes remain blocked and no executor is implemented or wired.",
+      "blockingDependency": "explicit user production activation decision before any real-write activation scope",
+      "safeNextWork": "stop for explicit user decision: structured-family production activation remains blocked until the user approves real-write activation scope",
+      "mustNotDo": "do not enable real structured-family writes, production executors, reload, runtime mutation, backup/restore, or persistence without explicit production activation approval",
       "evidenceUsed": [
         "src/structured_family.rs",
         "tests/structured_family_unified.rs",
@@ -139,7 +139,8 @@
         "data/reports/structured-family-draft-rendered-record-approval-confirmation.v0.55.2.json",
         "data/reports/structured-family-rendered-record-staged-apply-plan.v0.55.2.json",
         "data/reports/structured-family-rendered-record-staged-apply-dry-run.v0.55.2.json",
-    "data/reports/structured-family-rendered-record-staged-apply-rollback-recovery.v0.55.2.json"
+        "data/reports/structured-family-rendered-record-staged-apply-rollback-recovery.v0.55.2.json",
+        "data/reports/structured-family-rendered-record-final-executor-readiness.v0.55.2.json"
       ]
     },
     {
@@ -185,6 +186,6 @@
       ]
     }
   ],
-  "activeSafeArea": "Structured-family editors/writes",
-  "recommendedNextWork": "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
+  "activeSafeArea": null,
+  "recommendedNextWork": "Stop for explicit user decision: structured-family production activation remains blocked until the user approves real-write activation scope."
 }
