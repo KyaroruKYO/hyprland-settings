@@ -203,6 +203,8 @@
     "stableWidgetNamesPresent": true,
     "recordEditorFormsVisible": true,
     "recordEditorFormsStatus": "StructuredFamilyRecordEditorProjectionReady",
+    "recordDraftsVisible": true,
+    "recordDraftStatus": "StructuredFamilyRecordDraftProjectionReady",
     "controlsReviewOnly": true,
     "controlsConnectedToMutationHandlers": false
   },
@@ -216,5 +218,5 @@
     "hyprctlReloadRun": false,
     "hyprland0554MigrationActivated": false
   },
-  "recommendedNextWork": "Add review-only structured-family record edit-state/draft model while keeping real writes blocked."
+  "recommendedNextWork": "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
 }

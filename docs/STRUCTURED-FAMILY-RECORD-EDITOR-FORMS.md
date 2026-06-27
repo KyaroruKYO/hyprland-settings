@@ -57,6 +57,10 @@ All edit, apply, and real-config render controls are insensitive.
 - `apply_setting_change` is not integrated.
 - `write_flow` is not integrated.
 
+## Follow-On Draft Model
+
+Review-only in-memory draft models now consume the record-editor forms for all seven families. Drafts start clean, track dirty state in model tests, reset to original projected fields, preserve raw fallback status, and keep draft persistence forbidden.
+
 ## Next Work
 
-Add a review-only structured-family record edit-state/draft model while keeping real writes blocked.
+Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked.

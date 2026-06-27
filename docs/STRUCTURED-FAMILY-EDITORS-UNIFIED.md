@@ -25,6 +25,7 @@ The work is review-only. Structured-family writes remain blocked by default.
 - Family-specific validators: conservative fixture-level validation for all seven families.
 - Temp-fixture write plans: all seven families can validate, render to temp/test-owned output, reread, and preserve family identity without enabling real writes.
 - Per-record editor forms: all seven families expose review-only form projections with family-specific fields, raw fallback status, validation status, source path, line number, and disabled action policy.
+- Record draft model: all seven families expose review-only in-memory draft projections with clean/dirty state, reset proof, raw fallback status, disabled actions, blocked writes, and forbidden persistence.
 
 ## Safety
 
@@ -36,7 +37,8 @@ The work is review-only. Structured-family writes remain blocked by default.
 - Real config render targets are rejected by the structured-family path guard.
 - Temp-fixture write plans do not call `apply_setting_change`, real `write_flow`, `hyprctl`, or reload command paths.
 - Record editor forms are review-only and do not add write, reload, runtime mutation, persistence, or production executor callbacks.
+- Record draft models are in-memory only and do not write drafts to disk.
 
 ## Next Work
 
-Add review-only structured-family record edit-state/draft model while keeping real writes blocked.
+Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked.

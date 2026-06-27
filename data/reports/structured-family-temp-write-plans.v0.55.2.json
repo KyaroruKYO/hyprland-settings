@@ -85,5 +85,7 @@
   "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260621_001755",
   "recordEditorFormsStatus": "StructuredFamilyRecordEditorProjectionReady for all seven families",
   "recordEditorFormsReport": "data/reports/structured-family-record-editor-forms.v0.55.2.json",
-  "nextRecommendedWork": "Add review-only structured-family record edit-state/draft model while keeping real writes blocked."
+  "recordDraftModelStatus": "StructuredFamilyRecordDraftProjectionReady for all seven families",
+  "recordDraftModelReport": "data/reports/structured-family-record-draft-model.v0.55.2.json",
+  "nextRecommendedWork": "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
 }

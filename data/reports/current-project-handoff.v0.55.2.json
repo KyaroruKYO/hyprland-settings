@@ -3,7 +3,7 @@
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
   "startingCommit": "71c5161eaa407da984d3c5971de3751d23033a0c",
-  "currentFocus": "structured-family review-only per-record editor form foundation",
+  "currentFocus": "structured-family review-only record draft model foundation",
   "completedThisSprint": [
     "shared structured-family model for hl.monitor, hl.bind, hl.animation, hl.curve, hl.gesture, hl.device, and hl.permission",
     "review-only Config page structured-family section with seven stable cards",
@@ -15,6 +15,10 @@
     "review-only per-record editor form projections for all seven families",
     "disabled per-record editor UI section with stable family widgets",
     "raw fallback status surfaced for unsupported or not-proven records",
+    "review-only in-memory record draft model for all seven families",
+    "model-only dirty state tracking and reset proof for all seven families",
+    "draft persistence forbidden policy for all seven families",
+    "disabled record draft UI section with stable family widgets",
     "project-area continuation scan"
   ],
   "safetyBoundaries": {
@@ -27,7 +31,7 @@
     "structuredFamilyWritesEnabled": false,
     "hyprland0554MigrationActivated": false
   },
-  "activeNextWork": "Add review-only structured-family record edit-state/draft model while keeping real writes blocked.",
+  "activeNextWork": "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",

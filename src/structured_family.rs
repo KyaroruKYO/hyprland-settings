@@ -73,6 +73,18 @@ impl StructuredFamilyKind {
         }
     }
 
+    pub fn record_draft_widget_name(self) -> &'static str {
+        match self {
+            Self::Monitor => "hyprland-settings-structured-family-hl-monitor-record-draft",
+            Self::Bind => "hyprland-settings-structured-family-hl-bind-record-draft",
+            Self::Animation => "hyprland-settings-structured-family-hl-animation-record-draft",
+            Self::Curve => "hyprland-settings-structured-family-hl-curve-record-draft",
+            Self::Gesture => "hyprland-settings-structured-family-hl-gesture-record-draft",
+            Self::Device => "hyprland-settings-structured-family-hl-device-record-draft",
+            Self::Permission => "hyprland-settings-structured-family-hl-permission-record-draft",
+        }
+    }
+
     pub fn syntax_description(self) -> &'static str {
         match self {
             Self::Monitor => "monitor = name/output, resolution, position, scale, options",
@@ -164,6 +176,18 @@ impl StructuredFamilyKind {
             Self::Gesture => "Edit gesture record (not available)",
             Self::Device => "Edit device record (not available)",
             Self::Permission => "Edit permission record (not available)",
+        }
+    }
+
+    pub fn disabled_record_draft_update_label(self) -> &'static str {
+        match self {
+            Self::Monitor => "Update monitor draft (not available)",
+            Self::Bind => "Update bind draft (not available)",
+            Self::Animation => "Update animation draft (not available)",
+            Self::Curve => "Update curve draft (not available)",
+            Self::Gesture => "Update gesture draft (not available)",
+            Self::Device => "Update device draft (not available)",
+            Self::Permission => "Update permission draft (not available)",
         }
     }
 
@@ -276,6 +300,43 @@ pub enum StructuredFamilyRecordEditorFieldKind {
     FamilySpecific,
     ParsedKey,
     RawLine,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyRecordDraftStatus {
+    Unavailable,
+    ReviewOnly,
+    ProjectionReady,
+    CreatedInMemory,
+    Dirty,
+    Clean,
+    ValidationReady,
+    ValidationPassed,
+    ValidationWarning,
+    RawFallbackRequired,
+    ActionsDisabled,
+    WritesBlockedByDefault,
+    PersistenceForbidden,
+}
+
+impl StructuredFamilyRecordDraftStatus {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Unavailable => "StructuredFamilyRecordDraftUnavailable",
+            Self::ReviewOnly => "StructuredFamilyRecordDraftReviewOnly",
+            Self::ProjectionReady => "StructuredFamilyRecordDraftProjectionReady",
+            Self::CreatedInMemory => "StructuredFamilyRecordDraftCreatedInMemory",
+            Self::Dirty => "StructuredFamilyRecordDraftDirty",
+            Self::Clean => "StructuredFamilyRecordDraftClean",
+            Self::ValidationReady => "StructuredFamilyRecordDraftValidationReady",
+            Self::ValidationPassed => "StructuredFamilyRecordDraftValidationPassed",
+            Self::ValidationWarning => "StructuredFamilyRecordDraftValidationWarning",
+            Self::RawFallbackRequired => "StructuredFamilyRecordDraftRawFallbackRequired",
+            Self::ActionsDisabled => "StructuredFamilyRecordDraftActionsDisabled",
+            Self::WritesBlockedByDefault => "StructuredFamilyRecordDraftWritesBlockedByDefault",
+            Self::PersistenceForbidden => "StructuredFamilyRecordDraftPersistenceForbidden",
+        }
+    }
 }
 
 impl StructuredFamilyRecordEditorFieldKind {
@@ -418,6 +479,59 @@ pub struct StructuredFamilyRecordEditorForm {
     pub runtime_mutated: bool,
     pub hyprctl_reload_run: bool,
     pub production_executor_wired: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyRecordDraftField {
+    pub name: String,
+    pub original_value: String,
+    pub draft_value: String,
+    pub kind: StructuredFamilyRecordEditorFieldKind,
+    pub dirty: bool,
+    pub editable: bool,
+    pub editability_status: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyRecordDraft {
+    pub family: StructuredFamilyKind,
+    pub record_index: usize,
+    pub source_path: PathBuf,
+    pub line_number: usize,
+    pub raw_original_line: String,
+    pub parsed_key: String,
+    pub original_fields: Vec<StructuredFamilyRecordDraftField>,
+    pub draft_fields: Vec<StructuredFamilyRecordDraftField>,
+    pub dirty_state: StructuredFamilyRecordDraftStatus,
+    pub validation_status: StructuredFamilyRecordDraftStatus,
+    pub unsupported_reason: Option<String>,
+    pub raw_fallback_status: String,
+    pub reset_status: String,
+    pub action_policy: StructuredFamilyRecordDraftStatus,
+    pub write_blocked_status: StructuredFamilyRecordDraftStatus,
+    pub persistence_policy: StructuredFamilyRecordDraftStatus,
+    pub temp_fixture_plan_status: StructuredFamilyTempWritePlanStatus,
+    pub projection_status: StructuredFamilyRecordDraftStatus,
+    pub review_status: StructuredFamilyRecordDraftStatus,
+    pub created_status: StructuredFamilyRecordDraftStatus,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+    pub draft_written_to_disk: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyRecordDraftResetProof {
+    pub family: StructuredFamilyKind,
+    pub record_index: usize,
+    pub original_fields_restored: bool,
+    pub dirty_state_after_reset: StructuredFamilyRecordDraftStatus,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+    pub draft_written_to_disk: bool,
 }
 
 impl StructuredFamilyProjection {
@@ -797,6 +911,131 @@ pub fn structured_family_record_editor_form(
         runtime_mutated: false,
         hyprctl_reload_run: false,
         production_executor_wired: false,
+    }
+}
+
+pub fn structured_family_record_drafts(
+    forms: &[StructuredFamilyRecordEditorForm],
+) -> Vec<StructuredFamilyRecordDraft> {
+    forms
+        .iter()
+        .map(structured_family_record_draft_from_form)
+        .collect()
+}
+
+pub fn structured_family_record_draft_from_form(
+    form: &StructuredFamilyRecordEditorForm,
+) -> StructuredFamilyRecordDraft {
+    let draft_fields = form
+        .fields
+        .iter()
+        .map(|field| StructuredFamilyRecordDraftField {
+            name: field.name.clone(),
+            original_value: field.value.clone(),
+            draft_value: field.value.clone(),
+            kind: field.kind,
+            dirty: false,
+            editable: false,
+            editability_status: "review-only in-memory draft; editing disabled".to_string(),
+        })
+        .collect::<Vec<_>>();
+    let raw_fallback_status = if form.unsupported_reason.is_some() {
+        StructuredFamilyRecordDraftStatus::RawFallbackRequired.as_str()
+    } else {
+        "StructuredFamilyRecordDraftRawFallbackNotRequired"
+    };
+
+    StructuredFamilyRecordDraft {
+        family: form.family,
+        record_index: form.record_index,
+        source_path: form.source_path.clone(),
+        line_number: form.line_number,
+        raw_original_line: form.raw_line.clone(),
+        parsed_key: form.parsed_key.clone(),
+        original_fields: draft_fields.clone(),
+        draft_fields,
+        dirty_state: StructuredFamilyRecordDraftStatus::Clean,
+        validation_status: StructuredFamilyRecordDraftStatus::ValidationReady,
+        unsupported_reason: form.unsupported_reason.clone(),
+        raw_fallback_status: raw_fallback_status.to_string(),
+        reset_status: "StructuredFamilyRecordDraftResetAvailableInMemoryOnly".to_string(),
+        action_policy: StructuredFamilyRecordDraftStatus::ActionsDisabled,
+        write_blocked_status: StructuredFamilyRecordDraftStatus::WritesBlockedByDefault,
+        persistence_policy: StructuredFamilyRecordDraftStatus::PersistenceForbidden,
+        temp_fixture_plan_status: form.temp_fixture_plan_status,
+        projection_status: StructuredFamilyRecordDraftStatus::ProjectionReady,
+        review_status: StructuredFamilyRecordDraftStatus::ReviewOnly,
+        created_status: StructuredFamilyRecordDraftStatus::CreatedInMemory,
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
+        production_executor_wired: false,
+        draft_written_to_disk: false,
+    }
+}
+
+pub fn update_structured_family_record_draft_field(
+    draft: &StructuredFamilyRecordDraft,
+    field_name: &str,
+    new_value: impl Into<String>,
+) -> StructuredFamilyRecordDraft {
+    let new_value = new_value.into();
+    let mut updated = draft.clone();
+    for field in &mut updated.draft_fields {
+        if field.name == field_name {
+            field.draft_value = new_value.clone();
+            field.dirty = field.draft_value != field.original_value;
+        }
+    }
+    let has_dirty_field = updated.draft_fields.iter().any(|field| field.dirty);
+    updated.dirty_state = if has_dirty_field {
+        StructuredFamilyRecordDraftStatus::Dirty
+    } else {
+        StructuredFamilyRecordDraftStatus::Clean
+    };
+    updated.validation_status = if updated.unsupported_reason.is_some() {
+        StructuredFamilyRecordDraftStatus::ValidationWarning
+    } else {
+        StructuredFamilyRecordDraftStatus::ValidationPassed
+    };
+    updated.real_config_touched = false;
+    updated.runtime_mutated = false;
+    updated.hyprctl_reload_run = false;
+    updated.production_executor_wired = false;
+    updated.draft_written_to_disk = false;
+    updated
+}
+
+pub fn reset_structured_family_record_draft(
+    draft: &StructuredFamilyRecordDraft,
+) -> StructuredFamilyRecordDraft {
+    let mut reset = draft.clone();
+    reset.draft_fields = reset.original_fields.clone();
+    reset.dirty_state = StructuredFamilyRecordDraftStatus::Clean;
+    reset.validation_status = StructuredFamilyRecordDraftStatus::ValidationReady;
+    reset.reset_status = "StructuredFamilyRecordDraftResetRestoredOriginalFields".to_string();
+    reset.real_config_touched = false;
+    reset.runtime_mutated = false;
+    reset.hyprctl_reload_run = false;
+    reset.production_executor_wired = false;
+    reset.draft_written_to_disk = false;
+    reset
+}
+
+pub fn prove_structured_family_record_draft_reset(
+    draft: &StructuredFamilyRecordDraft,
+) -> StructuredFamilyRecordDraftResetProof {
+    let reset = reset_structured_family_record_draft(draft);
+    StructuredFamilyRecordDraftResetProof {
+        family: reset.family,
+        record_index: reset.record_index,
+        original_fields_restored: reset.draft_fields == reset.original_fields,
+        dirty_state_after_reset: reset.dirty_state,
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
+        production_executor_wired: false,
+        draft_written_to_disk: false,
     }
 }
 

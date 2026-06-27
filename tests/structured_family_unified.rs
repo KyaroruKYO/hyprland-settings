@@ -6,11 +6,13 @@ use hyprland_settings::config_parser::parse_hyprland_config_file;
 use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::structured_family::{
     build_structured_family_temp_write_plan, prove_fixture_parse_render_reread,
-    prove_structured_family_temp_write_plan, render_structured_family_projection,
-    structured_family_kind_from_id, structured_family_record_editor_forms,
-    structured_family_render_target_allowed, validate_structured_family_projection,
-    StructuredFamilyKind, StructuredFamilyRecordEditorStatus, StructuredFamilyStatus,
-    StructuredFamilyTempWritePlanStatus, StructuredFamilyValidationStatus,
+    prove_structured_family_record_draft_reset, prove_structured_family_temp_write_plan,
+    render_structured_family_projection, reset_structured_family_record_draft,
+    structured_family_kind_from_id, structured_family_record_drafts,
+    structured_family_record_editor_forms, structured_family_render_target_allowed,
+    update_structured_family_record_draft_field, validate_structured_family_projection,
+    StructuredFamilyKind, StructuredFamilyRecordDraftStatus, StructuredFamilyRecordEditorStatus,
+    StructuredFamilyStatus, StructuredFamilyTempWritePlanStatus, StructuredFamilyValidationStatus,
 };
 
 const FIXTURE_DIR: &str = "tests/fixtures/structured_families";
@@ -300,6 +302,123 @@ fn all_structured_family_record_editor_forms_project_fixture_records_read_only()
 }
 
 #[test]
+fn all_structured_family_record_drafts_track_dirty_state_and_reset_in_memory_only() {
+    for family in StructuredFamilyKind::ALL {
+        let snapshot = snapshot_for_family(family);
+        let projection = snapshot
+            .structured_family_projections()
+            .into_iter()
+            .find(|projection| projection.family == family)
+            .expect("projection should exist");
+        let forms = structured_family_record_editor_forms(&projection);
+        let drafts = structured_family_record_drafts(&forms);
+
+        assert_eq!(drafts.len(), projection.record_count());
+        assert_eq!(drafts.len(), forms.len());
+        assert!(!drafts.is_empty());
+        assert!(drafts.iter().any(|draft| {
+            draft.raw_fallback_status
+                == StructuredFamilyRecordDraftStatus::RawFallbackRequired.as_str()
+        }));
+
+        for (index, draft) in drafts.iter().enumerate() {
+            let form = &forms[index];
+            assert_eq!(draft.family, family);
+            assert_eq!(draft.record_index, form.record_index);
+            assert_eq!(draft.source_path, form.source_path);
+            assert_eq!(draft.line_number, form.line_number);
+            assert_eq!(draft.raw_original_line, form.raw_line);
+            assert_eq!(draft.parsed_key, form.parsed_key);
+            assert_eq!(draft.unsupported_reason, form.unsupported_reason);
+            assert_eq!(draft.original_fields, draft.draft_fields);
+            assert_eq!(draft.dirty_state, StructuredFamilyRecordDraftStatus::Clean);
+            assert_eq!(
+                draft.validation_status,
+                StructuredFamilyRecordDraftStatus::ValidationReady
+            );
+            assert_eq!(
+                draft.action_policy,
+                StructuredFamilyRecordDraftStatus::ActionsDisabled
+            );
+            assert_eq!(
+                draft.write_blocked_status,
+                StructuredFamilyRecordDraftStatus::WritesBlockedByDefault
+            );
+            assert_eq!(
+                draft.persistence_policy,
+                StructuredFamilyRecordDraftStatus::PersistenceForbidden
+            );
+            assert_eq!(
+                draft.created_status,
+                StructuredFamilyRecordDraftStatus::CreatedInMemory
+            );
+            assert!(draft.draft_fields.iter().all(|field| !field.editable));
+            assert!(!draft.real_config_touched);
+            assert!(!draft.runtime_mutated);
+            assert!(!draft.hyprctl_reload_run);
+            assert!(!draft.production_executor_wired);
+            assert!(!draft.draft_written_to_disk);
+
+            let field_name = draft
+                .draft_fields
+                .iter()
+                .find(|field| field.name != "raw line")
+                .or_else(|| draft.draft_fields.first())
+                .expect("draft should expose fields")
+                .name
+                .clone();
+            let updated =
+                update_structured_family_record_draft_field(draft, &field_name, "fixture-draft");
+            assert_eq!(
+                updated.dirty_state,
+                StructuredFamilyRecordDraftStatus::Dirty
+            );
+            assert!(updated
+                .draft_fields
+                .iter()
+                .any(|field| field.name == field_name && field.dirty));
+            if updated.unsupported_reason.is_some() {
+                assert_eq!(
+                    updated.validation_status,
+                    StructuredFamilyRecordDraftStatus::ValidationWarning
+                );
+            } else {
+                assert_eq!(
+                    updated.validation_status,
+                    StructuredFamilyRecordDraftStatus::ValidationPassed
+                );
+            }
+            assert!(!updated.real_config_touched);
+            assert!(!updated.runtime_mutated);
+            assert!(!updated.hyprctl_reload_run);
+            assert!(!updated.production_executor_wired);
+            assert!(!updated.draft_written_to_disk);
+
+            let reset = reset_structured_family_record_draft(&updated);
+            assert_eq!(reset.draft_fields, draft.original_fields);
+            assert_eq!(reset.dirty_state, StructuredFamilyRecordDraftStatus::Clean);
+            assert_eq!(
+                reset.validation_status,
+                StructuredFamilyRecordDraftStatus::ValidationReady
+            );
+            assert!(!reset.draft_written_to_disk);
+
+            let proof = prove_structured_family_record_draft_reset(&updated);
+            assert!(proof.original_fields_restored);
+            assert_eq!(
+                proof.dirty_state_after_reset,
+                StructuredFamilyRecordDraftStatus::Clean
+            );
+            assert!(!proof.real_config_touched);
+            assert!(!proof.runtime_mutated);
+            assert!(!proof.hyprctl_reload_run);
+            assert!(!proof.production_executor_wired);
+            assert!(!proof.draft_written_to_disk);
+        }
+    }
+}
+
+#[test]
 fn structured_family_kinds_cover_required_ids_and_widget_names() {
     let required = [
         (
@@ -368,6 +487,14 @@ fn structured_family_ui_source_exposes_all_cards_without_write_handlers() {
         "hyprland-settings-structured-family-hl-gesture-record-editor",
         "hyprland-settings-structured-family-hl-device-record-editor",
         "hyprland-settings-structured-family-hl-permission-record-editor",
+        "hyprland-settings-structured-family-record-draft-section",
+        "hyprland-settings-structured-family-hl-monitor-record-draft",
+        "hyprland-settings-structured-family-hl-bind-record-draft",
+        "hyprland-settings-structured-family-hl-animation-record-draft",
+        "hyprland-settings-structured-family-hl-curve-record-draft",
+        "hyprland-settings-structured-family-hl-gesture-record-draft",
+        "hyprland-settings-structured-family-hl-device-record-draft",
+        "hyprland-settings-structured-family-hl-permission-record-draft",
     ] {
         assert!(
             model.contains(widget_name)
@@ -406,6 +533,25 @@ fn structured_family_ui_source_exposes_all_cards_without_write_handlers() {
         "write policy",
         "Apply structured-family record change (not available)",
         "Render structured-family record to real config (not available)",
+        "Review-only structured-family record drafts",
+        "Draft projection ready",
+        "Draft created in memory only",
+        "Draft starts clean",
+        "Draft dirty state tracked",
+        "Draft reset proof available",
+        "Draft validation ready",
+        "Draft actions disabled",
+        "Draft persistence forbidden",
+        "Update monitor draft (not available)",
+        "Update bind draft (not available)",
+        "Update animation draft (not available)",
+        "Update curve draft (not available)",
+        "Update gesture draft (not available)",
+        "Update device draft (not available)",
+        "Update permission draft (not available)",
+        "Reset structured-family draft (not available)",
+        "Persist structured-family draft (not available)",
+        "Apply structured-family draft to real config (not available)",
     ] {
         assert!(
             window.contains(copy) || model.contains(copy) || structured_family.contains(copy),
@@ -425,6 +571,37 @@ fn structured_family_ui_source_exposes_all_cards_without_write_handlers() {
     assert!(!section.contains("apply_setting_change"));
     assert!(!section.contains("hyprctl"));
     assert!(!section.contains("Command::"));
+}
+
+#[test]
+fn structured_family_record_draft_section_has_no_write_reload_persistence_or_executor_handlers() {
+    let window = fs::read_to_string("src/ui/window.rs").expect("window source should read");
+    let section_start = window
+        .find("fn structured_family_record_draft_section")
+        .expect("record draft section should exist");
+    let section_end = window[section_start..]
+        .find("fn disabled_future_approval_cards_section")
+        .map(|offset| section_start + offset)
+        .expect("record draft section should end before future approval cards");
+    let section = &window[section_start..section_end];
+
+    for forbidden in [
+        "connect_clicked",
+        "apply_setting_change",
+        "write_flow",
+        "hyprctl",
+        "hyprctl reload",
+        "Command::",
+        "File::create",
+        "write_all",
+        "serde_json::to_writer",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "record draft section must not contain {forbidden}"
+        );
+    }
+    assert!(section.contains("set_sensitive(false)"));
 }
 
 #[test]
@@ -499,6 +676,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-editors-unified.v0.55.2.json",
         "data/reports/structured-family-temp-write-plans.v0.55.2.json",
         "data/reports/structured-family-record-editor-forms.v0.55.2.json",
+        "data/reports/structured-family-record-draft-model.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -574,7 +752,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Add review-only structured-family record edit-state/draft model while keeping real writes blocked."
+        "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -626,7 +804,7 @@ fn structured_family_temp_write_plan_report_preserves_safety_boundaries() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add review-only structured-family record edit-state/draft model while keeping real writes blocked."
+        "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
     );
 }
 
@@ -683,7 +861,64 @@ fn structured_family_record_editor_forms_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add review-only structured-family record edit-state/draft model while keeping real writes blocked."
+        "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
+    );
+}
+
+#[test]
+fn structured_family_record_draft_model_report_preserves_review_only_policy() {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string("data/reports/structured-family-record-draft-model.v0.55.2.json")
+            .expect("record draft model report should read"),
+    )
+    .expect("record draft model report should be valid JSON");
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-record-draft-model"
+    );
+    assert_eq!(report["realConfigTouched"], false);
+    assert_eq!(report["runtimeMutated"], false);
+    assert_eq!(report["hyprctlReloadRun"], false);
+    assert_eq!(report["productionBehaviorEnabled"], false);
+    assert_eq!(report["productionExecutorWired"], false);
+    assert_eq!(report["draftWrittenToDisk"], false);
+    for family in [
+        "hl.monitor",
+        "hl.bind",
+        "hl.animation",
+        "hl.curve",
+        "hl.gesture",
+        "hl.device",
+        "hl.permission",
+    ] {
+        assert_eq!(
+            report["draftStatusByFamily"][family],
+            "StructuredFamilyRecordDraftProjectionReady"
+        );
+        assert_eq!(
+            report["dirtyStateStatusByFamily"][family],
+            "StructuredFamilyRecordDraftClean initially; StructuredFamilyRecordDraftDirty after model-only update"
+        );
+        assert_eq!(
+            report["resetProofStatusByFamily"][family],
+            "StructuredFamilyRecordDraftResetRestoredOriginalFields"
+        );
+        assert_eq!(
+            report["actionPolicyByFamily"][family],
+            "StructuredFamilyRecordDraftActionsDisabled"
+        );
+        assert_eq!(
+            report["writePolicyByFamily"][family],
+            "StructuredFamilyRecordDraftWritesBlockedByDefault"
+        );
+        assert_eq!(
+            report["persistencePolicyByFamily"][family],
+            "StructuredFamilyRecordDraftPersistenceForbidden"
+        );
+    }
+    assert_eq!(
+        report["nextRecommendedWork"],
+        "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
     );
 }
 

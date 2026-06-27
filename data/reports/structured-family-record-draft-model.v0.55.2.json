@@ -1,0 +1,196 @@
+{
+  "artifactKind": "structured-family-record-draft-model",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "c116c9b5bd1559860a2027bad8049462363a99bd",
+  "latestCommitBeforeSprint": "c116c9b5bd1559860a2027bad8049462363a99bd",
+  "goal": "Add review-only in-memory structured-family record edit-state and draft model while keeping persistence and real writes blocked.",
+  "families": [
+    "hl.monitor",
+    "hl.bind",
+    "hl.animation",
+    "hl.curve",
+    "hl.gesture",
+    "hl.device",
+    "hl.permission"
+  ],
+  "draftStatusByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftProjectionReady",
+    "hl.bind": "StructuredFamilyRecordDraftProjectionReady",
+    "hl.animation": "StructuredFamilyRecordDraftProjectionReady",
+    "hl.curve": "StructuredFamilyRecordDraftProjectionReady",
+    "hl.gesture": "StructuredFamilyRecordDraftProjectionReady",
+    "hl.device": "StructuredFamilyRecordDraftProjectionReady",
+    "hl.permission": "StructuredFamilyRecordDraftProjectionReady"
+  },
+  "draftWidgetByFamily": {
+    "hl.monitor": "hyprland-settings-structured-family-hl-monitor-record-draft",
+    "hl.bind": "hyprland-settings-structured-family-hl-bind-record-draft",
+    "hl.animation": "hyprland-settings-structured-family-hl-animation-record-draft",
+    "hl.curve": "hyprland-settings-structured-family-hl-curve-record-draft",
+    "hl.gesture": "hyprland-settings-structured-family-hl-gesture-record-draft",
+    "hl.device": "hyprland-settings-structured-family-hl-device-record-draft",
+    "hl.permission": "hyprland-settings-structured-family-hl-permission-record-draft"
+  },
+  "draftFieldProjectionByFamily": {
+    "hl.monitor": [
+      "name/output",
+      "resolution",
+      "position",
+      "scale",
+      "additional raw options",
+      "raw line"
+    ],
+    "hl.bind": [
+      "modifier",
+      "key",
+      "dispatcher",
+      "argument",
+      "flags/type",
+      "raw line"
+    ],
+    "hl.animation": [
+      "name",
+      "enabled",
+      "bezier/curve reference",
+      "speed",
+      "style",
+      "additional parameters",
+      "raw line"
+    ],
+    "hl.curve": [
+      "name",
+      "x1",
+      "y1",
+      "x2",
+      "y2",
+      "raw line"
+    ],
+    "hl.gesture": [
+      "gesture name",
+      "fingers",
+      "direction",
+      "dispatcher/action",
+      "argument",
+      "raw line"
+    ],
+    "hl.device": [
+      "device name",
+      "section/options",
+      "option key",
+      "option value",
+      "raw line"
+    ],
+    "hl.permission": [
+      "target/application/rule",
+      "permission key",
+      "permission value/action",
+      "raw line"
+    ]
+  },
+  "dirtyStateStatusByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftClean initially; StructuredFamilyRecordDraftDirty after model-only update",
+    "hl.bind": "StructuredFamilyRecordDraftClean initially; StructuredFamilyRecordDraftDirty after model-only update",
+    "hl.animation": "StructuredFamilyRecordDraftClean initially; StructuredFamilyRecordDraftDirty after model-only update",
+    "hl.curve": "StructuredFamilyRecordDraftClean initially; StructuredFamilyRecordDraftDirty after model-only update",
+    "hl.gesture": "StructuredFamilyRecordDraftClean initially; StructuredFamilyRecordDraftDirty after model-only update",
+    "hl.device": "StructuredFamilyRecordDraftClean initially; StructuredFamilyRecordDraftDirty after model-only update",
+    "hl.permission": "StructuredFamilyRecordDraftClean initially; StructuredFamilyRecordDraftDirty after model-only update"
+  },
+  "resetProofStatusByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftResetRestoredOriginalFields",
+    "hl.bind": "StructuredFamilyRecordDraftResetRestoredOriginalFields",
+    "hl.animation": "StructuredFamilyRecordDraftResetRestoredOriginalFields",
+    "hl.curve": "StructuredFamilyRecordDraftResetRestoredOriginalFields",
+    "hl.gesture": "StructuredFamilyRecordDraftResetRestoredOriginalFields",
+    "hl.device": "StructuredFamilyRecordDraftResetRestoredOriginalFields",
+    "hl.permission": "StructuredFamilyRecordDraftResetRestoredOriginalFields"
+  },
+  "rawFallbackStatusByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftRawFallbackRequired for unsupported fixture records",
+    "hl.bind": "StructuredFamilyRecordDraftRawFallbackRequired for unsupported fixture records",
+    "hl.animation": "StructuredFamilyRecordDraftRawFallbackRequired for unsupported fixture records",
+    "hl.curve": "StructuredFamilyRecordDraftRawFallbackRequired for unsupported fixture records",
+    "hl.gesture": "StructuredFamilyRecordDraftRawFallbackRequired for unsupported fixture records",
+    "hl.device": "StructuredFamilyRecordDraftRawFallbackRequired for block boundaries and unknown options",
+    "hl.permission": "StructuredFamilyRecordDraftRawFallbackRequired for unsupported fixture records"
+  },
+  "actionPolicyByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftActionsDisabled",
+    "hl.bind": "StructuredFamilyRecordDraftActionsDisabled",
+    "hl.animation": "StructuredFamilyRecordDraftActionsDisabled",
+    "hl.curve": "StructuredFamilyRecordDraftActionsDisabled",
+    "hl.gesture": "StructuredFamilyRecordDraftActionsDisabled",
+    "hl.device": "StructuredFamilyRecordDraftActionsDisabled",
+    "hl.permission": "StructuredFamilyRecordDraftActionsDisabled"
+  },
+  "writePolicyByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftWritesBlockedByDefault",
+    "hl.bind": "StructuredFamilyRecordDraftWritesBlockedByDefault",
+    "hl.animation": "StructuredFamilyRecordDraftWritesBlockedByDefault",
+    "hl.curve": "StructuredFamilyRecordDraftWritesBlockedByDefault",
+    "hl.gesture": "StructuredFamilyRecordDraftWritesBlockedByDefault",
+    "hl.device": "StructuredFamilyRecordDraftWritesBlockedByDefault",
+    "hl.permission": "StructuredFamilyRecordDraftWritesBlockedByDefault"
+  },
+  "persistencePolicyByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftPersistenceForbidden",
+    "hl.bind": "StructuredFamilyRecordDraftPersistenceForbidden",
+    "hl.animation": "StructuredFamilyRecordDraftPersistenceForbidden",
+    "hl.curve": "StructuredFamilyRecordDraftPersistenceForbidden",
+    "hl.gesture": "StructuredFamilyRecordDraftPersistenceForbidden",
+    "hl.device": "StructuredFamilyRecordDraftPersistenceForbidden",
+    "hl.permission": "StructuredFamilyRecordDraftPersistenceForbidden"
+  },
+  "ui": {
+    "sectionWidgetName": "hyprland-settings-structured-family-record-draft-section",
+    "visibleStrings": [
+      "Review-only structured-family record drafts",
+      "Draft projection ready",
+      "Draft created in memory only",
+      "Draft starts clean",
+      "Draft dirty state tracked",
+      "Draft reset proof available",
+      "Draft validation ready",
+      "Raw fallback required where not proven",
+      "Draft actions disabled",
+      "Draft persistence forbidden",
+      "Real writes blocked by default",
+      "Production writes blocked by default",
+      "Real config target not allowed",
+      "Runtime mutation not allowed",
+      "Hyprland reload not allowed"
+    ],
+    "controlsConnectedToMutationHandlers": false
+  },
+  "realConfigTouched": false,
+  "runtimeMutated": false,
+  "hyprctlReloadRun": false,
+  "productionBehaviorEnabled": false,
+  "productionExecutorWired": false,
+  "draftWrittenToDisk": false,
+  "filesChanged": [
+    "src/structured_family.rs",
+    "src/ui/model.rs",
+    "src/ui/window.rs",
+    "tests/structured_family_unified.rs",
+    "data/reports/structured-family-record-draft-model.v0.55.2.json",
+    "docs/STRUCTURED-FAMILY-RECORD-DRAFT-MODEL.md"
+  ],
+  "testsAdded": [
+    "all_structured_family_record_drafts_track_dirty_state_and_reset_in_memory_only",
+    "structured_family_record_draft_section_has_no_write_reload_persistence_or_executor_handlers",
+    "structured_family_record_draft_model_report_preserves_review_only_policy"
+  ],
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "jq": "passed",
+    "gitDiffCheck": "passed",
+    "cargoBuildRelease": "passed"
+  },
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260627_010824",
+  "nextRecommendedWork": "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
+}

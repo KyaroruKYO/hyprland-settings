@@ -11,8 +11,9 @@ use crate::screen_shader_advisory::{
     run_screen_shader_advisory_check, AdvisoryStatus, ScreenShaderAdvisoryRequest,
 };
 use crate::structured_family::{
-    build_structured_family_temp_write_plan, structured_family_record_editor_forms,
-    validate_structured_family_projection, StructuredFamilyProjection,
+    build_structured_family_temp_write_plan, structured_family_record_drafts,
+    structured_family_record_editor_forms, validate_structured_family_projection,
+    StructuredFamilyProjection,
 };
 use crate::validation::ValidationSummary;
 use crate::write_flow::{
@@ -177,6 +178,15 @@ pub struct UiStructuredFamily {
     pub record_editor_form_count: usize,
     pub record_editor_forms: Vec<UiStructuredRecordEditorForm>,
     pub disabled_record_edit_label: String,
+    pub record_draft_widget_name: String,
+    pub record_draft_status: String,
+    pub record_draft_action_policy_status: String,
+    pub record_draft_persistence_policy_status: String,
+    pub record_draft_count: usize,
+    pub dirty_draft_count: usize,
+    pub raw_fallback_draft_count: usize,
+    pub record_drafts: Vec<UiStructuredRecordDraft>,
+    pub disabled_record_draft_update_label: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -209,6 +219,32 @@ pub struct UiStructuredRecordEditorField {
     pub kind: String,
     pub editable: bool,
     pub editability_status: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct UiStructuredRecordDraft {
+    pub family_id: String,
+    pub record_index: usize,
+    pub source_path: String,
+    pub line_number: usize,
+    pub raw_original_line: String,
+    pub parsed_key: String,
+    pub original_field_count: usize,
+    pub draft_field_count: usize,
+    pub dirty_state: String,
+    pub validation_status: String,
+    pub unsupported_reason: Option<String>,
+    pub raw_fallback_status: String,
+    pub reset_status: String,
+    pub action_policy: String,
+    pub write_policy: String,
+    pub persistence_policy: String,
+    pub temp_fixture_plan_status: String,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+    pub draft_written_to_disk: bool,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -398,7 +434,9 @@ fn ui_structured_family_from_projection(
         .iter()
         .filter(|entry| entry.warning.is_some())
         .count();
-    let record_editor_forms = structured_family_record_editor_forms(projection)
+    let record_editor_forms_for_drafts = structured_family_record_editor_forms(projection);
+    let record_editor_forms = record_editor_forms_for_drafts
+        .clone()
         .into_iter()
         .map(|form| UiStructuredRecordEditorForm {
             family_id: form.family.family_id().to_string(),
@@ -432,6 +470,43 @@ fn ui_structured_family_from_projection(
             production_executor_wired: form.production_executor_wired,
         })
         .collect::<Vec<_>>();
+    let record_drafts = structured_family_record_drafts(&record_editor_forms_for_drafts)
+        .into_iter()
+        .map(|draft| UiStructuredRecordDraft {
+            family_id: draft.family.family_id().to_string(),
+            record_index: draft.record_index,
+            source_path: draft.source_path.display().to_string(),
+            line_number: draft.line_number,
+            raw_original_line: draft.raw_original_line,
+            parsed_key: draft.parsed_key,
+            original_field_count: draft.original_fields.len(),
+            draft_field_count: draft.draft_fields.len(),
+            dirty_state: draft.dirty_state.as_str().to_string(),
+            validation_status: draft.validation_status.as_str().to_string(),
+            unsupported_reason: draft.unsupported_reason,
+            raw_fallback_status: draft.raw_fallback_status,
+            reset_status: draft.reset_status,
+            action_policy: draft.action_policy.as_str().to_string(),
+            write_policy: draft.write_blocked_status.as_str().to_string(),
+            persistence_policy: draft.persistence_policy.as_str().to_string(),
+            temp_fixture_plan_status: draft.temp_fixture_plan_status.as_str().to_string(),
+            real_config_touched: draft.real_config_touched,
+            runtime_mutated: draft.runtime_mutated,
+            hyprctl_reload_run: draft.hyprctl_reload_run,
+            production_executor_wired: draft.production_executor_wired,
+            draft_written_to_disk: draft.draft_written_to_disk,
+        })
+        .collect::<Vec<_>>();
+    let dirty_draft_count = record_drafts
+        .iter()
+        .filter(|draft| draft.dirty_state == "StructuredFamilyRecordDraftDirty")
+        .count();
+    let raw_fallback_draft_count = record_drafts
+        .iter()
+        .filter(|draft| {
+            draft.raw_fallback_status == "StructuredFamilyRecordDraftRawFallbackRequired"
+        })
+        .count();
     UiStructuredFamily {
         family_id: projection.family_id.clone(),
         label: projection.display_name.clone(),
@@ -462,6 +537,20 @@ fn ui_structured_family_from_projection(
         record_editor_form_count: record_editor_forms.len(),
         record_editor_forms,
         disabled_record_edit_label: projection.family.disabled_record_edit_label().to_string(),
+        record_draft_widget_name: projection.family.record_draft_widget_name().to_string(),
+        record_draft_status: "StructuredFamilyRecordDraftProjectionReady".to_string(),
+        record_draft_action_policy_status: "StructuredFamilyRecordDraftActionsDisabled"
+            .to_string(),
+        record_draft_persistence_policy_status: "StructuredFamilyRecordDraftPersistenceForbidden"
+            .to_string(),
+        record_draft_count: record_drafts.len(),
+        dirty_draft_count,
+        raw_fallback_draft_count,
+        record_drafts,
+        disabled_record_draft_update_label: projection
+            .family
+            .disabled_record_draft_update_label()
+            .to_string(),
     }
 }
 

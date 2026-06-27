@@ -51,6 +51,8 @@ The path guard rejects `/home/kyo/.config/hypr/hyprland.conf` and `~/.config/hyp
 
 Review-only per-record editor form projections now consume the validator and temp-fixture plan status for all seven families. The forms expose source path, line number, raw line, validation status, family-specific fields, raw fallback status, and disabled action/write policy without enabling real writes.
 
+Review-only in-memory draft models now consume those forms and keep draft persistence forbidden while proving dirty-state and reset behavior in model tests.
+
 ## Next Work
 
-Add review-only structured-family record edit-state/draft model while keeping real writes blocked.
+Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked.

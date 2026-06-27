@@ -1264,6 +1264,7 @@ fn structured_family_editor_section(
         content.append(&structured_family_card(family));
     }
     content.append(&structured_family_record_editor_section(families));
+    content.append(&structured_family_record_draft_section(families));
 
     frame.set_child(Some(&content));
     frame
@@ -1461,6 +1462,131 @@ fn structured_family_record_editor_family_card(
         "Disabled. Real config render targets are not allowed.",
     ));
     content.append(&render);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn structured_family_record_draft_section(
+    families: &[crate::ui::model::UiStructuredFamily],
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-structured-family-record-draft-section");
+    frame.set_tooltip_text(Some(
+        "Review-only in-memory structured family record drafts. Persistence and real writes remain blocked.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(10);
+    content.set_margin_bottom(10);
+    content.set_margin_start(10);
+    content.set_margin_end(10);
+
+    content.append(&title_label("Review-only structured-family record drafts"));
+    content.append(&small_label("Draft projection ready"));
+    content.append(&small_label("Draft created in memory only"));
+    content.append(&small_label("Draft starts clean"));
+    content.append(&small_label("Draft dirty state tracked"));
+    content.append(&small_label("Draft reset proof available"));
+    content.append(&small_label("Draft validation ready"));
+    content.append(&small_label("Raw fallback required where not proven"));
+    content.append(&small_label("Draft actions disabled"));
+    content.append(&small_label("Draft persistence forbidden"));
+    content.append(&small_label("Real writes blocked by default"));
+    content.append(&small_label("Production writes blocked by default"));
+    content.append(&small_label("Real config target not allowed"));
+    content.append(&small_label("Runtime mutation not allowed"));
+    content.append(&small_label("Hyprland reload not allowed"));
+
+    for family in families {
+        content.append(&structured_family_record_draft_family_card(family));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn structured_family_record_draft_family_card(
+    family: &crate::ui::model::UiStructuredFamily,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&family.record_draft_widget_name);
+    frame.set_tooltip_text(Some(
+        "Family record draft projection. This is in-memory and review-only with no persistence, write, reload, runtime, or executor callback.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&format!("{} record drafts", family.label)));
+    append_detail_line(&content, "family", &family.family_id);
+    append_detail_line(&content, "record count", &family.entries.len().to_string());
+    append_detail_line(
+        &content,
+        "draft count",
+        &family.record_draft_count.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "dirty draft count",
+        &family.dirty_draft_count.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "raw fallback draft count",
+        &family.raw_fallback_draft_count.to_string(),
+    );
+    append_detail_line(&content, "write policy", &family.write_status);
+    append_detail_line(
+        &content,
+        "persistence policy",
+        &family.record_draft_persistence_policy_status,
+    );
+    append_detail_line(
+        &content,
+        "action policy",
+        &family.record_draft_action_policy_status,
+    );
+
+    for draft in &family.record_drafts {
+        content.append(&small_label(&format!("Draft {}", draft.record_index + 1)));
+        append_detail_line(&content, "dirty state", &draft.dirty_state);
+        append_detail_line(&content, "validation status", &draft.validation_status);
+        append_detail_line(&content, "raw fallback status", &draft.raw_fallback_status);
+        append_detail_line(&content, "reset status", &draft.reset_status);
+        append_detail_line(&content, "draft written to disk", "false");
+        if let Some(reason) = &draft.unsupported_reason {
+            append_detail_line(&content, "not proven reason", reason);
+        }
+    }
+
+    let update = gtk::Button::with_label(&family.disabled_record_draft_update_label);
+    update.set_sensitive(false);
+    update.set_tooltip_text(Some(
+        "Review-only placeholder. Draft field updates are model-only and not available in GTK.",
+    ));
+    content.append(&update);
+
+    let reset = gtk::Button::with_label("Reset structured-family draft (not available)");
+    reset.set_sensitive(false);
+    reset.set_tooltip_text(Some("Disabled. This button has no reset callback."));
+    content.append(&reset);
+
+    let persist = gtk::Button::with_label("Persist structured-family draft (not available)");
+    persist.set_sensitive(false);
+    persist.set_tooltip_text(Some(
+        "Disabled. Structured-family draft persistence is forbidden.",
+    ));
+    content.append(&persist);
+
+    let apply =
+        gtk::Button::with_label("Apply structured-family draft to real config (not available)");
+    apply.set_sensitive(false);
+    apply.set_tooltip_text(Some("Disabled. This button has no write callback."));
+    content.append(&apply);
 
     frame.set_child(Some(&content));
     frame
