@@ -5,18 +5,24 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use hyprland_settings::config_parser::parse_hyprland_config_file;
 use hyprland_settings::current_config::CurrentConfigSnapshot;
 use hyprland_settings::structured_family::{
+    accept_structured_family_draft_rendered_record_confirmation,
     build_structured_family_temp_write_plan, prove_fixture_parse_render_reread,
     prove_structured_family_draft_rendered_record_plans,
     prove_structured_family_draft_rendered_record_render_reread,
     prove_structured_family_record_draft_reset, prove_structured_family_temp_write_plan,
+    reject_structured_family_draft_rendered_record_confirmation,
     render_draft_rendered_record_fixture_text, render_structured_family_projection,
-    reset_structured_family_record_draft,
+    reset_structured_family_record_draft, structured_family_draft_rendered_record_approval_draft,
+    structured_family_draft_rendered_record_confirmation_invalidation_reasons,
+    structured_family_draft_rendered_record_confirmation_request,
     structured_family_draft_rendered_record_diff_review_summary,
     structured_family_draft_rendered_record_plans, structured_family_kind_from_id,
     structured_family_record_draft_gtk_bindings, structured_family_record_drafts,
     structured_family_record_editor_forms, structured_family_render_target_allowed,
     update_structured_family_record_draft_field, update_structured_family_record_draft_gtk_binding,
-    validate_structured_family_projection, StructuredFamilyDraftRenderedRecordDiffReviewStatus,
+    validate_structured_family_projection, StructuredFamilyDraftRenderedRecordApprovalStatus,
+    StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason,
+    StructuredFamilyDraftRenderedRecordDiffReviewStatus,
     StructuredFamilyDraftRenderedRecordRenderRereadStatus,
     StructuredFamilyDraftRenderedRecordStatus, StructuredFamilyKind,
     StructuredFamilyRecordDraftGtkBindingStatus, StructuredFamilyRecordDraftStatus,
@@ -995,6 +1001,243 @@ fn structured_family_diff_review_summaries_detect_model_only_modified_drafts() {
 }
 
 #[test]
+fn all_structured_family_diff_reviews_create_fixture_only_approval_confirmations() {
+    for family in StructuredFamilyKind::ALL {
+        let summary = diff_review_summary_for_family(family);
+        let approval = structured_family_draft_rendered_record_approval_draft(&summary);
+
+        assert_eq!(approval.family, family);
+        assert_eq!(approval.source_draft_count, summary.source_draft_count);
+        assert_eq!(approval.source_plan_count, summary.source_plan_count);
+        assert_eq!(approval.review_entry_count, summary.review_entry_count);
+        assert_eq!(approval.changed_entry_count, summary.changed_entry_count);
+        assert_eq!(approval.noop_entry_count, summary.noop_entry_count);
+        assert_eq!(
+            approval.raw_fallback_entry_count,
+            summary.raw_fallback_entry_count
+        );
+        assert_eq!(
+            approval.unsupported_not_proven_entry_count,
+            summary.unsupported_not_proven_entry_count
+        );
+        assert_eq!(approval.field_diff_count, summary.field_diff_count);
+        assert!(approval.diff_review_summary_linked);
+        assert!(approval.render_reread_proof_linked);
+        assert_eq!(
+            approval.approval_status,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::ReviewOnly
+        );
+        assert_eq!(
+            approval.confirmation_status,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::ConfirmationDraftReady
+        );
+        assert_eq!(
+            approval.fixture_only_status,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::FixtureOnly
+        );
+        assert_eq!(
+            approval.action_policy,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::ActionsDisabled
+        );
+        assert_eq!(
+            approval.write_policy,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::WritesBlockedByDefault
+        );
+        assert_eq!(
+            approval.persistence_policy,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::PersistenceForbidden
+        );
+        assert_eq!(
+            approval.real_config_target_policy,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::RealConfigTargetForbidden
+        );
+        assert_eq!(
+            approval.production_executor_policy,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::ProductionExecutorForbidden
+        );
+        assert_eq!(
+            approval.raw_fallback_acknowledged,
+            approval.raw_fallback_entry_count == 0
+        );
+        assert_eq!(
+            approval.unsupported_not_proven_acknowledged,
+            approval.unsupported_not_proven_entry_count == 0
+        );
+        assert!(approval
+            .summary_text
+            .contains("fixture-only next-stage review only"));
+        assert!(approval
+            .risk_summary
+            .contains("does not authorize real config writes"));
+        assert!(!approval.draft_written_to_disk);
+        assert!(!approval.approval_written_to_disk);
+        assert!(!approval.confirmation_written_to_disk);
+        assert!(!approval.rendered_record_written_to_real_config);
+        assert!(!approval.real_config_touched);
+        assert!(!approval.runtime_mutated);
+        assert!(!approval.hyprctl_reload_run);
+        assert!(!approval.production_executor_wired);
+
+        let request = structured_family_draft_rendered_record_confirmation_request(&approval);
+        let accepted =
+            accept_structured_family_draft_rendered_record_confirmation(&approval, &request);
+        assert_eq!(accepted.family, family);
+        assert_eq!(
+            accepted.confirmation_status,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::ConfirmationAcceptedInMemory
+        );
+        assert!(accepted.confirmation_accepted_in_memory);
+        assert!(!accepted.confirmation_rejected_in_memory);
+        assert!(accepted.confirmation_invalidation_reasons.is_empty());
+        assert!(accepted.changed_entries_acknowledged);
+        assert!(accepted.noop_entries_acknowledged);
+        assert!(accepted.raw_fallback_acknowledged);
+        assert!(accepted.unsupported_not_proven_acknowledged);
+        assert_eq!(
+            accepted.fixture_only_status,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::FixtureOnly
+        );
+        assert_eq!(
+            accepted.write_policy,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::WritesBlockedByDefault
+        );
+        assert_eq!(
+            accepted.persistence_policy,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::PersistenceForbidden
+        );
+        assert_eq!(
+            accepted.real_config_target_policy,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::RealConfigTargetForbidden
+        );
+        assert_eq!(
+            accepted.production_executor_policy,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::ProductionExecutorForbidden
+        );
+        assert!(!accepted.draft_written_to_disk);
+        assert!(!accepted.approval_written_to_disk);
+        assert!(!accepted.confirmation_written_to_disk);
+        assert!(!accepted.rendered_record_written_to_real_config);
+        assert!(!accepted.real_config_touched);
+        assert!(!accepted.runtime_mutated);
+        assert!(!accepted.hyprctl_reload_run);
+        assert!(!accepted.production_executor_wired);
+
+        let rejected =
+            reject_structured_family_draft_rendered_record_confirmation(&approval, &request);
+        assert_eq!(
+            rejected.confirmation_status,
+            StructuredFamilyDraftRenderedRecordApprovalStatus::ConfirmationRejectedInMemory
+        );
+        assert!(!rejected.confirmation_accepted_in_memory);
+        assert!(rejected.confirmation_rejected_in_memory);
+        assert!(!rejected.rendered_record_written_to_real_config);
+        assert!(!rejected.real_config_touched);
+        assert!(!rejected.runtime_mutated);
+        assert!(!rejected.hyprctl_reload_run);
+        assert!(!rejected.production_executor_wired);
+    }
+}
+
+#[test]
+fn structured_family_approval_confirmations_report_required_invalidation_reasons() {
+    let approval = structured_family_draft_rendered_record_approval_draft(
+        &diff_review_summary_for_family(StructuredFamilyKind::Bind),
+    );
+    let valid_request = structured_family_draft_rendered_record_confirmation_request(&approval);
+
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.family = StructuredFamilyKind::Monitor,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::MismatchedFamily,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.source_plan_count += 1,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::MismatchedSourcePlanCount,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.review_entry_count += 1,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::MismatchedReviewEntryCount,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.changed_entry_count += 1,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::MismatchedChangedEntryCount,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.raw_fallback_entry_count += 1,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::MismatchedRawFallbackCount,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.unsupported_not_proven_entry_count += 1,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::MismatchedUnsupportedNotProvenCount,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.diff_review_summary_linked = false,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::MissingDiffReviewSummary,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.render_reread_proof_linked = false,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::MissingRenderRereadProofLink,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.raw_fallback_acknowledged = false,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::RawFallbackRequiresAcknowledgement,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.unsupported_not_proven_acknowledged = false,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::UnsupportedNotProvenRequiresAcknowledgement,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.real_config_target_forbidden = false,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::RealConfigTargetNotAllowed,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.persistence_forbidden = false,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::PersistenceNotAllowed,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.runtime_mutation_forbidden = false,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::RuntimeMutationNotAllowed,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request.clone(),
+        |request| request.hyprland_reload_forbidden = false,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::HyprlandReloadNotAllowed,
+    );
+    assert_confirmation_invalid_reason(
+        &approval,
+        valid_request,
+        |request| request.production_executor_forbidden = false,
+        StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason::ProductionExecutorNotAllowed,
+    );
+}
+
+#[test]
 fn structured_family_kinds_cover_required_ids_and_widget_names() {
     let required = [
         (
@@ -1337,6 +1580,41 @@ fn structured_family_rendered_record_diff_review_has_no_write_reload_or_persiste
 }
 
 #[test]
+fn structured_family_rendered_record_approval_confirmation_has_no_write_reload_or_persistence_calls(
+) {
+    let structured_family = fs::read_to_string("src/structured_family.rs")
+        .expect("structured family source should read");
+    let section_start = structured_family
+        .find("pub fn structured_family_draft_rendered_record_approval_draft")
+        .expect("approval/confirmation function should exist");
+    let section_end = structured_family[section_start..]
+        .find("fn structured_record_from_raw")
+        .map(|offset| section_start + offset)
+        .expect("approval/confirmation section should end before parser helpers");
+    let section = &structured_family[section_start..section_end];
+
+    assert!(section.contains("StructuredFamilyDraftRenderedRecordApprovalDraft"));
+    assert!(section.contains("StructuredFamilyDraftRenderedRecordConfirmation"));
+    for forbidden in [
+        "apply_setting_change",
+        "write_flow",
+        "hyprctl reload",
+        "Command::",
+        "fs::write",
+        "File::create",
+        "write_all",
+        "serde_json::to_writer",
+        "/home/kyo/.config/hypr/hyprland.conf",
+        "~/.config/hypr",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "approval/confirmation model must not contain {forbidden}"
+        );
+    }
+}
+
+#[test]
 fn structured_family_record_editor_section_has_no_write_reload_or_executor_handlers() {
     let window = fs::read_to_string("src/ui/window.rs").expect("window source should read");
     let section_start = window
@@ -1413,6 +1691,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-draft-rendered-record-plan.v0.55.2.json",
         "data/reports/structured-family-draft-rendered-record-render-reread.v0.55.2.json",
         "data/reports/structured-family-draft-rendered-record-diff-review.v0.55.2.json",
+        "data/reports/structured-family-draft-rendered-record-approval-confirmation.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -1488,7 +1767,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -1540,7 +1819,7 @@ fn structured_family_temp_write_plan_report_preserves_safety_boundaries() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked."
     );
 }
 
@@ -1597,7 +1876,7 @@ fn structured_family_record_editor_forms_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked."
     );
 }
 
@@ -1654,7 +1933,7 @@ fn structured_family_record_draft_model_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked."
     );
 }
 
@@ -1732,7 +2011,7 @@ fn structured_family_record_draft_gtk_binding_report_preserves_review_only_polic
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked."
     );
 }
 
@@ -1804,7 +2083,7 @@ fn structured_family_draft_rendered_record_plan_report_preserves_fixture_only_po
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked."
     );
 }
 
@@ -1890,7 +2169,7 @@ fn structured_family_draft_rendered_record_render_reread_report_preserves_fixtur
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked."
     );
 }
 
@@ -1977,8 +2256,163 @@ fn structured_family_draft_rendered_record_diff_review_report_preserves_fixture_
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked."
     );
+}
+
+#[test]
+fn structured_family_draft_rendered_record_approval_confirmation_report_preserves_fixture_only_policy(
+) {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string(
+            "data/reports/structured-family-draft-rendered-record-approval-confirmation.v0.55.2.json",
+        )
+        .expect("draft rendered record approval/confirmation report should read"),
+    )
+    .expect("draft rendered record approval/confirmation report should be valid JSON");
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-draft-rendered-record-approval-confirmation"
+    );
+    assert_eq!(report["draftWrittenToDisk"], false);
+    assert_eq!(report["approvalWrittenToDisk"], false);
+    assert_eq!(report["confirmationWrittenToDisk"], false);
+    assert_eq!(report["renderedRecordWrittenToRealConfig"], false);
+    assert_eq!(report["realConfigTouched"], false);
+    assert_eq!(report["runtimeMutated"], false);
+    assert_eq!(report["hyprctlReloadRun"], false);
+    assert_eq!(report["productionBehaviorEnabled"], false);
+    assert_eq!(report["productionExecutorWired"], false);
+    assert_eq!(report["gtkEvidenceRoot"], "not-run-no-visible-ui-change");
+    for family in [
+        "hl.monitor",
+        "hl.bind",
+        "hl.animation",
+        "hl.curve",
+        "hl.gesture",
+        "hl.device",
+        "hl.permission",
+    ] {
+        assert_eq!(
+            report["approvalStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordApprovalReviewOnly"
+        );
+        assert_eq!(
+            report["confirmationDraftStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordConfirmationDraftReady"
+        );
+        assert_eq!(
+            report["acceptedConfirmationStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordConfirmationAcceptedInMemory"
+        );
+        assert_eq!(
+            report["rejectedConfirmationStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordConfirmationRejectedInMemory"
+        );
+        assert_eq!(
+            report["invalidConfirmationStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordConfirmationInvalidated"
+        );
+        assert_eq!(
+            report["diffReviewLinkStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordDiffReviewLinked"
+        );
+        assert_eq!(
+            report["renderRereadProofLinkStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordRenderRereadProofLinked"
+        );
+        assert_eq!(
+            report["changedEntriesAcknowledgementStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordChangedEntriesAcknowledged"
+        );
+        assert_eq!(
+            report["noopEntriesAcknowledgementStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordNoopEntriesAcknowledged"
+        );
+        assert_eq!(
+            report["rawFallbackAcknowledgementStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordRawFallbackAcknowledged"
+        );
+        assert_eq!(
+            report["unsupportedNotProvenAcknowledgementStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenAcknowledged"
+        );
+        assert_eq!(
+            report["actionPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordActionsDisabled"
+        );
+        assert_eq!(
+            report["writePolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+        );
+        assert_eq!(
+            report["persistencePolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordPersistenceForbidden"
+        );
+        assert_eq!(
+            report["realConfigTargetPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+        );
+        assert_eq!(
+            report["productionExecutorPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden"
+        );
+    }
+    assert_eq!(
+        report["nextRecommendedWork"],
+        "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked."
+    );
+}
+
+fn diff_review_summary_for_family(
+    family: StructuredFamilyKind,
+) -> hyprland_settings::structured_family::StructuredFamilyDraftRenderedRecordDiffReviewSummary {
+    let snapshot = snapshot_for_family(family);
+    let projection = snapshot
+        .structured_family_projections()
+        .into_iter()
+        .find(|projection| projection.family == family)
+        .expect("projection should exist");
+    let forms = structured_family_record_editor_forms(&projection);
+    let drafts = structured_family_record_drafts(&forms);
+    let plans = structured_family_draft_rendered_record_plans(&drafts);
+    let output_path = temp_output_path(family);
+    let proof = prove_structured_family_draft_rendered_record_render_reread(&plans, &output_path);
+    let summary = structured_family_draft_rendered_record_diff_review_summary(&plans, &proof);
+    fs::remove_file(output_path).expect("diff/review helper should clean up temp file");
+    summary
+}
+
+fn assert_confirmation_invalid_reason(
+    approval: &hyprland_settings::structured_family::StructuredFamilyDraftRenderedRecordApprovalDraft,
+    mut request: hyprland_settings::structured_family::StructuredFamilyDraftRenderedRecordConfirmationRequest,
+    mutate: impl FnOnce(
+        &mut hyprland_settings::structured_family::StructuredFamilyDraftRenderedRecordConfirmationRequest,
+    ),
+    expected: StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason,
+) {
+    mutate(&mut request);
+    let reasons = structured_family_draft_rendered_record_confirmation_invalidation_reasons(
+        approval, &request,
+    );
+    assert!(
+        reasons.contains(&expected),
+        "expected invalidation reason {} in {:?}",
+        expected.as_str(),
+        reasons
+    );
+    let confirmation =
+        accept_structured_family_draft_rendered_record_confirmation(approval, &request);
+    assert_eq!(
+        confirmation.confirmation_status,
+        StructuredFamilyDraftRenderedRecordApprovalStatus::ConfirmationInvalidated
+    );
+    assert!(!confirmation.confirmation_accepted_in_memory);
+    assert!(!confirmation.rendered_record_written_to_real_config);
+    assert!(!confirmation.real_config_touched);
+    assert!(!confirmation.runtime_mutated);
+    assert!(!confirmation.hyprctl_reload_run);
+    assert!(!confirmation.production_executor_wired);
 }
 
 fn snapshot_for_family(family: StructuredFamilyKind) -> CurrentConfigSnapshot {

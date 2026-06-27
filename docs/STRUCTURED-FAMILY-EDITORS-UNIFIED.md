@@ -47,4 +47,4 @@ The work is review-only. Structured-family writes remain blocked by default.
 
 ## Next Work
 
-Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked.
+Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked.

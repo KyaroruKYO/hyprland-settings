@@ -50,4 +50,4 @@ Proven simple fixture records receive a preview string using family-specific syn
 
 ## Next Work
 
-Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked.
+Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked.

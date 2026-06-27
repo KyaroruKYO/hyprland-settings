@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family fixture-only draft rendered-record diff/review summary on `structured-family-editors-unified`.
+Structured-family fixture-only draft rendered-record approval/confirmation model on `structured-family-editors-unified`.
 
 ## Completed This Sprint
 
@@ -29,6 +29,8 @@ Structured-family fixture-only draft rendered-record diff/review summary on `str
 - Reread rendered-record temp fixture text through the parser/projection path for all seven families.
 - Added fixture-only rendered-record diff/review summaries for all seven families.
 - Added in-memory changed/noop review entries and field-diff proof for all seven families.
+- Added fixture-only rendered-record approval/confirmation models for all seven families.
+- Added in-memory accepted, rejected, and invalidated confirmation proof for all seven families.
 - Added a project-area continuation scan.
 
 ## Safety Boundaries
@@ -42,4 +44,4 @@ Structured-family fixture-only draft rendered-record diff/review summary on `str
 
 ## Next Exact Work
 
-Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked.
+Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked.

@@ -63,4 +63,4 @@ Review-only in-memory draft models now consume the record-editor forms for all s
 
 ## Next Work
 
-Add fixture-only structured-family draft rendered-record approval/confirmation model while keeping real writes blocked.
+Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked.
