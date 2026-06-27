@@ -19,16 +19,21 @@ use hyprland_settings::structured_family::{
     structured_family_draft_rendered_record_plans,
     structured_family_draft_rendered_record_staged_apply_blockers,
     structured_family_draft_rendered_record_staged_apply_dry_run_report,
-    structured_family_draft_rendered_record_staged_apply_plan, structured_family_kind_from_id,
-    structured_family_record_draft_gtk_bindings, structured_family_record_drafts,
-    structured_family_record_editor_forms, structured_family_render_target_allowed,
-    update_structured_family_record_draft_field, update_structured_family_record_draft_gtk_binding,
-    validate_structured_family_projection, StructuredFamilyDraftRenderedRecordApprovalStatus,
+    structured_family_draft_rendered_record_staged_apply_plan,
+    structured_family_draft_rendered_record_staged_apply_rollback_recovery_review,
+    structured_family_kind_from_id, structured_family_record_draft_gtk_bindings,
+    structured_family_record_drafts, structured_family_record_editor_forms,
+    structured_family_render_target_allowed, update_structured_family_record_draft_field,
+    update_structured_family_record_draft_gtk_binding, validate_structured_family_projection,
+    StructuredFamilyDraftRenderedRecordApprovalStatus,
     StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason,
     StructuredFamilyDraftRenderedRecordDiffReviewStatus,
     StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker,
+    StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement,
     StructuredFamilyDraftRenderedRecordStagedApplyBlocker,
     StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
     StructuredFamilyDraftRenderedRecordStagedApplyStatus,
     StructuredFamilyDraftRenderedRecordStatus, StructuredFamilyKind,
     StructuredFamilyRecordDraftGtkBindingStatus, StructuredFamilyRecordDraftStatus,
@@ -1707,6 +1712,272 @@ fn structured_family_staged_apply_dry_run_reports_summarize_blocked_plans() {
 }
 
 #[test]
+fn all_structured_family_dry_run_reports_create_fixture_only_rollback_recovery_reviews() {
+    for family in StructuredFamilyKind::ALL {
+        let summary = diff_review_summary_for_family(family);
+        let approval = structured_family_draft_rendered_record_approval_draft(&summary);
+        let request = structured_family_draft_rendered_record_confirmation_request(&approval);
+        let accepted =
+            accept_structured_family_draft_rendered_record_confirmation(&approval, &request);
+        let plan = structured_family_draft_rendered_record_staged_apply_plan(&accepted, &summary);
+        let dry_run = structured_family_draft_rendered_record_staged_apply_dry_run_report(&plan);
+        let review =
+            structured_family_draft_rendered_record_staged_apply_rollback_recovery_review(&dry_run);
+
+        assert_eq!(review.family, family);
+        assert_eq!(review.source_draft_count, dry_run.source_draft_count);
+        assert_eq!(review.source_plan_count, dry_run.source_plan_count);
+        assert_eq!(review.review_entry_count, dry_run.review_entry_count);
+        assert_eq!(review.changed_entry_count, dry_run.changed_entry_count);
+        assert_eq!(review.noop_entry_count, dry_run.noop_entry_count);
+        assert_eq!(
+            review.raw_fallback_entry_count,
+            dry_run.raw_fallback_entry_count
+        );
+        assert_eq!(
+            review.unsupported_not_proven_entry_count,
+            dry_run.unsupported_not_proven_entry_count
+        );
+        assert_eq!(review.field_diff_count, dry_run.field_diff_count);
+        assert!(review.dry_run_report_linked);
+        assert!(review.staged_apply_plan_linked);
+        assert_eq!(review.stage_count, dry_run.stage_count);
+        assert_eq!(review.operation_count, dry_run.operation_count);
+        assert_eq!(
+            review.changed_operation_count,
+            dry_run.changed_operation_count
+        );
+        assert_eq!(review.noop_operation_count, dry_run.noop_operation_count);
+        assert_eq!(
+            review.raw_fallback_preservation_operation_count,
+            dry_run.raw_fallback_preservation_operation_count
+        );
+        assert_eq!(
+            review.unsupported_not_proven_preservation_operation_count,
+            dry_run.unsupported_not_proven_preservation_operation_count
+        );
+        assert_eq!(review.blocked_plan_count, dry_run.blocked_plan_count);
+        assert_eq!(review.rollback_review_entry_count, dry_run.entries.len());
+        assert!(review.recovery_requirement_count >= 9);
+        assert_eq!(review.backup_requirement_count, 1);
+        assert_eq!(review.restore_requirement_count, 1);
+        assert_eq!(review.blocked_recovery_reason_count, 0);
+        assert!(review.executor_unavailable_by_design);
+        assert!(review.recovery_requirements.contains(
+            &StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::BackupRequiredBeforeFutureApply
+        ));
+        assert!(review.recovery_requirements.contains(
+            &StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::RestoreRequiredBeforeFutureRecovery
+        ));
+        assert!(review.recovery_requirements.contains(
+            &StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::DryRunMustRemainNotExecuted
+        ));
+        assert!(review.recovery_requirements.contains(
+            &StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::StagedApplyMustRemainNotExecuted
+        ));
+        if dry_run.raw_fallback_entry_count > 0 {
+            assert!(review.recovery_requirements.contains(
+                &StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::RawFallbackRequiresPreservation
+            ));
+        }
+        if dry_run.unsupported_not_proven_entry_count > 0 {
+            assert!(review.recovery_requirements.contains(
+                &StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::UnsupportedNotProvenRequiresPreservation
+            ));
+        }
+        assert_eq!(
+            review.rollback_recovery_review_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::ReviewReady
+        );
+        assert_eq!(
+            review.dry_run_link_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::DryRunLinked
+        );
+        assert_eq!(
+            review.staged_apply_plan_link_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::PlanLinked
+        );
+        assert_eq!(
+            review.rollback_plan_summary_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::RollbackPlanSummarized
+        );
+        assert_eq!(
+            review.recovery_path_summary_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::RecoveryPathSummarized
+        );
+        assert_eq!(
+            review.backup_requirement_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::BackupRequirementReady
+        );
+        assert_eq!(
+            review.restore_requirement_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::RestoreRequirementReady
+        );
+        assert_eq!(
+            review.blocked_plan_preservation_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::BlockedPlanPreserved
+        );
+        assert_eq!(
+            review.executor_availability_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::ExecutorUnavailable
+        );
+        assert_eq!(
+            review.execution_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::NotExecuted
+        );
+        assert_eq!(
+            review.fixture_only_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::FixtureOnly
+        );
+        assert_eq!(
+            review.action_policy,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::ActionsDisabled
+        );
+        assert_eq!(
+            review.write_policy,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::WritesBlockedByDefault
+        );
+        assert_eq!(
+            review.persistence_policy,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::PersistenceForbidden
+        );
+        assert_eq!(
+            review.real_config_target_policy,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::RealConfigTargetForbidden
+        );
+        assert_eq!(
+            review.production_executor_policy,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::ProductionExecutorForbidden
+        );
+        assert!(review
+            .summary_text
+            .contains("rollback/recovery review generated"));
+        assert!(review.summary_text.contains("rollback executed false"));
+        assert!(review.summary_text.contains("recovery executed false"));
+        assert!(review.summary_text.contains("backup created false"));
+        assert!(review.summary_text.contains("restore executed false"));
+        assert!(review
+            .risk_summary
+            .contains("executor unavailable by design"));
+        assert!(!review.draft_written_to_disk);
+        assert!(!review.rollback_recovery_review_written_to_disk);
+        assert!(!review.dry_run_report_written_to_disk);
+        assert!(!review.staged_apply_plan_written_to_disk);
+        assert!(!review.staged_apply_executed);
+        assert!(!review.dry_run_executed);
+        assert!(!review.rollback_executed);
+        assert!(!review.recovery_executed);
+        assert!(!review.backup_created);
+        assert!(!review.restore_executed);
+        assert!(!review.rendered_record_written_to_real_config);
+        assert!(!review.real_config_touched);
+        assert!(!review.runtime_mutated);
+        assert!(!review.hyprctl_reload_run);
+        assert!(!review.production_executor_wired);
+    }
+}
+
+#[test]
+fn structured_family_rollback_recovery_reviews_preserve_blocked_dry_run_reports() {
+    let summary = diff_review_summary_for_family(StructuredFamilyKind::Bind);
+    let approval = structured_family_draft_rendered_record_approval_draft(&summary);
+    let request = structured_family_draft_rendered_record_confirmation_request(&approval);
+    let accepted = accept_structured_family_draft_rendered_record_confirmation(&approval, &request);
+    let rejected = reject_structured_family_draft_rendered_record_confirmation(&approval, &request);
+    let invalid_request = {
+        let mut request = request.clone();
+        request.changed_entry_count += 1;
+        request
+    };
+    let invalid =
+        accept_structured_family_draft_rendered_record_confirmation(&approval, &invalid_request);
+
+    for confirmation in [rejected, invalid] {
+        let plan =
+            structured_family_draft_rendered_record_staged_apply_plan(&confirmation, &summary);
+        let dry_run = structured_family_draft_rendered_record_staged_apply_dry_run_report(&plan);
+        let review =
+            structured_family_draft_rendered_record_staged_apply_rollback_recovery_review(&dry_run);
+        assert_eq!(
+            review.rollback_recovery_review_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::BlockedPlanPreserved
+        );
+        assert_eq!(review.blocked_plan_count, 1);
+        assert!(review.recovery_blockers.contains(
+            &StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::BlockedStagedApplyPlan
+        ));
+        assert_eq!(review.staged_apply_blockers, dry_run.blockers);
+        assert!(!review.staged_apply_executed);
+        assert!(!review.dry_run_executed);
+        assert!(!review.rollback_executed);
+        assert!(!review.recovery_executed);
+        assert!(!review.backup_created);
+        assert!(!review.restore_executed);
+        assert!(!review.real_config_touched);
+        assert!(!review.runtime_mutated);
+        assert!(!review.hyprctl_reload_run);
+        assert!(!review.production_executor_wired);
+    }
+
+    assert_rollback_recovery_blocker(
+        &accepted,
+        &summary,
+        |dry_run| dry_run.staged_apply_plan_linked = false,
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::MissingStagedApplyPlanLink,
+    );
+    assert_rollback_recovery_blocker(
+        &accepted,
+        &summary,
+        |dry_run| {
+            dry_run.blocked_plan_count = 1;
+            dry_run
+                .blockers
+                .push(StructuredFamilyDraftRenderedRecordStagedApplyBlocker::RejectedConfirmation);
+        },
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::BlockedStagedApplyPlan,
+    );
+    assert_rollback_recovery_blocker(
+        &accepted,
+        &summary,
+        |dry_run| {
+            dry_run.real_config_target_policy =
+                StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::Ready
+        },
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::RealConfigTargetNotAllowed,
+    );
+    assert_rollback_recovery_blocker(
+        &accepted,
+        &summary,
+        |dry_run| {
+            dry_run.persistence_policy =
+                StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::Ready
+        },
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::PersistenceNotAllowed,
+    );
+    assert_rollback_recovery_blocker(
+        &accepted,
+        &summary,
+        |dry_run| dry_run.runtime_mutated = true,
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::RuntimeMutationNotAllowed,
+    );
+    assert_rollback_recovery_blocker(
+        &accepted,
+        &summary,
+        |dry_run| dry_run.hyprctl_reload_run = true,
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::HyprlandReloadNotAllowed,
+    );
+    assert_rollback_recovery_blocker(
+        &accepted,
+        &summary,
+        |dry_run| {
+            dry_run.production_executor_policy =
+                StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::Ready
+        },
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::ProductionExecutorNotAllowed,
+    );
+}
+
+#[test]
 fn structured_family_kinds_cover_required_ids_and_widget_names() {
     let required = [
         (
@@ -2151,6 +2422,44 @@ fn structured_family_rendered_record_staged_apply_dry_run_has_no_write_reload_or
 }
 
 #[test]
+fn structured_family_rendered_record_staged_apply_rollback_recovery_has_no_write_reload_or_persistence_calls(
+) {
+    let structured_family = fs::read_to_string("src/structured_family.rs")
+        .expect("structured family source should read");
+    let section_start = structured_family
+        .find(
+            "pub fn structured_family_draft_rendered_record_staged_apply_rollback_recovery_review",
+        )
+        .expect("rollback/recovery review function should exist");
+    let section_end = structured_family[section_start..]
+        .find("fn structured_record_from_raw")
+        .map(|offset| section_start + offset)
+        .expect("rollback/recovery review section should end before parser helpers");
+    let section = &structured_family[section_start..section_end];
+
+    assert!(
+        section.contains("StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryReview")
+    );
+    for forbidden in [
+        "apply_setting_change",
+        "write_flow",
+        "hyprctl reload",
+        "Command::",
+        "fs::write",
+        "File::create",
+        "write_all",
+        "serde_json::to_writer",
+        "/home/kyo/.config/hypr/hyprland.conf",
+        "~/.config/hypr",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "rollback/recovery review model must not contain {forbidden}"
+        );
+    }
+}
+
+#[test]
 fn structured_family_record_editor_section_has_no_write_reload_or_executor_handlers() {
     let window = fs::read_to_string("src/ui/window.rs").expect("window source should read");
     let section_start = window
@@ -2230,6 +2539,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-draft-rendered-record-approval-confirmation.v0.55.2.json",
         "data/reports/structured-family-rendered-record-staged-apply-plan.v0.55.2.json",
         "data/reports/structured-family-rendered-record-staged-apply-dry-run.v0.55.2.json",
+        "data/reports/structured-family-rendered-record-staged-apply-rollback-recovery.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -2305,7 +2615,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -2357,7 +2667,7 @@ fn structured_family_temp_write_plan_report_preserves_safety_boundaries() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
     );
 }
 
@@ -2414,7 +2724,7 @@ fn structured_family_record_editor_forms_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
     );
 }
 
@@ -2471,7 +2781,7 @@ fn structured_family_record_draft_model_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
     );
 }
 
@@ -2549,7 +2859,7 @@ fn structured_family_record_draft_gtk_binding_report_preserves_review_only_polic
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
     );
 }
 
@@ -2621,7 +2931,7 @@ fn structured_family_draft_rendered_record_plan_report_preserves_fixture_only_po
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
     );
 }
 
@@ -2707,7 +3017,7 @@ fn structured_family_draft_rendered_record_render_reread_report_preserves_fixtur
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
     );
 }
 
@@ -2794,7 +3104,7 @@ fn structured_family_draft_rendered_record_diff_review_report_preserves_fixture_
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
     );
 }
 
@@ -2898,7 +3208,7 @@ fn structured_family_draft_rendered_record_approval_confirmation_report_preserve
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
     );
 }
 
@@ -3017,7 +3327,7 @@ fn structured_family_rendered_record_staged_apply_plan_report_preserves_fixture_
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
     );
 }
 
@@ -3126,7 +3436,118 @@ fn structured_family_rendered_record_staged_apply_dry_run_report_preserves_fixtu
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
+    );
+}
+
+#[test]
+fn structured_family_rendered_record_staged_apply_rollback_recovery_report_preserves_fixture_only_policy(
+) {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string(
+            "data/reports/structured-family-rendered-record-staged-apply-rollback-recovery.v0.55.2.json",
+        )
+        .expect("staged apply rollback/recovery report should read"),
+    )
+    .expect("staged apply rollback/recovery report should be valid JSON");
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-rendered-record-staged-apply-rollback-recovery"
+    );
+    assert_eq!(report["draftWrittenToDisk"], false);
+    assert_eq!(report["rollbackRecoveryReviewWrittenToDisk"], false);
+    assert_eq!(report["dryRunReportWrittenToDisk"], false);
+    assert_eq!(report["stagedApplyPlanWrittenToDisk"], false);
+    assert_eq!(report["stagedApplyExecuted"], false);
+    assert_eq!(report["dryRunExecuted"], false);
+    assert_eq!(report["rollbackExecuted"], false);
+    assert_eq!(report["recoveryExecuted"], false);
+    assert_eq!(report["backupCreated"], false);
+    assert_eq!(report["restoreExecuted"], false);
+    assert_eq!(report["renderedRecordWrittenToRealConfig"], false);
+    assert_eq!(report["realConfigTouched"], false);
+    assert_eq!(report["runtimeMutated"], false);
+    assert_eq!(report["hyprctlReloadRun"], false);
+    assert_eq!(report["productionBehaviorEnabled"], false);
+    assert_eq!(report["productionExecutorWired"], false);
+    assert_eq!(report["gtkEvidenceRoot"], "not-run-no-visible-ui-change");
+    for family in [
+        "hl.monitor",
+        "hl.bind",
+        "hl.animation",
+        "hl.curve",
+        "hl.gesture",
+        "hl.device",
+        "hl.permission",
+    ] {
+        assert_eq!(
+            report["rollbackRecoveryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryReviewOnly"
+        );
+        assert_eq!(
+            report["rollbackRecoveryReviewStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryReviewReady"
+        );
+        assert_eq!(
+            report["dryRunReportLinkStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryDryRunLinked"
+        );
+        assert_eq!(
+            report["stagedApplyPlanLinkStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryPlanLinked"
+        );
+        assert_eq!(
+            report["rollbackPlanSummaryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryRollbackPlanSummarized"
+        );
+        assert_eq!(
+            report["recoveryPathSummaryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryRecoveryPathSummarized"
+        );
+        assert_eq!(
+            report["backupRequirementStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryBackupRequirementReady"
+        );
+        assert_eq!(
+            report["restoreRequirementStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryRestoreRequirementReady"
+        );
+        assert_eq!(
+            report["blockedPlanPreservationStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryBlockedPlanPreserved"
+        );
+        assert_eq!(
+            report["executorAvailabilityStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryExecutorUnavailable"
+        );
+        assert_eq!(
+            report["executionStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryNotExecuted"
+        );
+        assert_eq!(
+            report["actionPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordActionsDisabled"
+        );
+        assert_eq!(
+            report["writePolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+        );
+        assert_eq!(
+            report["persistencePolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordPersistenceForbidden"
+        );
+        assert_eq!(
+            report["realConfigTargetPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+        );
+        assert_eq!(
+            report["productionExecutorPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden"
+        );
+    }
+    assert_eq!(
+        report["nextRecommendedWork"],
+        "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
     );
 }
 
@@ -3244,6 +3665,46 @@ fn assert_staged_apply_dry_run_blocker(
     assert!(!dry_run.runtime_mutated);
     assert!(!dry_run.hyprctl_reload_run);
     assert!(!dry_run.production_executor_wired);
+}
+
+fn assert_rollback_recovery_blocker(
+    confirmation: &hyprland_settings::structured_family::StructuredFamilyDraftRenderedRecordConfirmation,
+    summary: &hyprland_settings::structured_family::StructuredFamilyDraftRenderedRecordDiffReviewSummary,
+    mutate: impl FnOnce(
+        &mut hyprland_settings::structured_family::StructuredFamilyDraftRenderedRecordStagedApplyDryRunReport,
+    ),
+    expected: StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker,
+) {
+    let plan = structured_family_draft_rendered_record_staged_apply_plan(confirmation, summary);
+    let mut dry_run = structured_family_draft_rendered_record_staged_apply_dry_run_report(&plan);
+    mutate(&mut dry_run);
+    let review =
+        structured_family_draft_rendered_record_staged_apply_rollback_recovery_review(&dry_run);
+    assert!(
+        review.recovery_blockers.contains(&expected),
+        "expected rollback/recovery blocker {} in {:?}",
+        expected.as_str(),
+        review.recovery_blockers
+    );
+    assert_eq!(
+        review.rollback_recovery_review_status,
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::BlockedPlanPreserved
+    );
+    assert!(!review.draft_written_to_disk);
+    assert!(!review.rollback_recovery_review_written_to_disk);
+    assert!(!review.dry_run_report_written_to_disk);
+    assert!(!review.staged_apply_plan_written_to_disk);
+    assert!(!review.staged_apply_executed);
+    assert!(!review.dry_run_executed);
+    assert!(!review.rollback_executed);
+    assert!(!review.recovery_executed);
+    assert!(!review.backup_created);
+    assert!(!review.restore_executed);
+    assert!(!review.rendered_record_written_to_real_config);
+    assert!(!review.real_config_touched);
+    assert!(!review.runtime_mutated);
+    assert!(!review.hyprctl_reload_run);
+    assert!(!review.production_executor_wired);
 }
 
 fn snapshot_for_family(family: StructuredFamilyKind) -> CurrentConfigSnapshot {

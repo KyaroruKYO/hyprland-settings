@@ -63,4 +63,4 @@ Review-only in-memory draft models now consume the record-editor forms for all s
 
 ## Next Work
 
-Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked.
+Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked.

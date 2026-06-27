@@ -68,4 +68,4 @@ GTK evidence root: `not-run-no-visible-ui-change`.
 
 ## Next Work
 
-Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked.
+Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked.

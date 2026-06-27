@@ -876,6 +876,161 @@ impl StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus {
+    Unavailable,
+    ReviewOnly,
+    Ready,
+    ReviewReady,
+    DryRunLinked,
+    PlanLinked,
+    RollbackPlanSummarized,
+    RecoveryPathSummarized,
+    BackupRequirementReady,
+    RestoreRequirementReady,
+    BlockedPlanPreserved,
+    ExecutorUnavailable,
+    NotExecuted,
+    FixtureOnly,
+    ActionsDisabled,
+    WritesBlockedByDefault,
+    PersistenceForbidden,
+    RealConfigTargetForbidden,
+    ProductionExecutorForbidden,
+}
+
+impl StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Unavailable => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryUnavailable"
+            }
+            Self::ReviewOnly => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryReviewOnly"
+            }
+            Self::Ready => "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryReady",
+            Self::ReviewReady => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryReviewReady"
+            }
+            Self::DryRunLinked => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryDryRunLinked"
+            }
+            Self::PlanLinked => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryPlanLinked"
+            }
+            Self::RollbackPlanSummarized => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryRollbackPlanSummarized"
+            }
+            Self::RecoveryPathSummarized => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryRecoveryPathSummarized"
+            }
+            Self::BackupRequirementReady => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryBackupRequirementReady"
+            }
+            Self::RestoreRequirementReady => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryRestoreRequirementReady"
+            }
+            Self::BlockedPlanPreserved => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryBlockedPlanPreserved"
+            }
+            Self::ExecutorUnavailable => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryExecutorUnavailable"
+            }
+            Self::NotExecuted => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryNotExecuted"
+            }
+            Self::FixtureOnly => "StructuredFamilyDraftRenderedRecordFixtureOnly",
+            Self::ActionsDisabled => "StructuredFamilyDraftRenderedRecordActionsDisabled",
+            Self::WritesBlockedByDefault => {
+                "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+            }
+            Self::PersistenceForbidden => "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+            Self::RealConfigTargetForbidden => {
+                "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+            }
+            Self::ProductionExecutorForbidden => {
+                "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden"
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement {
+    BackupRequiredBeforeFutureApply,
+    RestoreRequiredBeforeFutureRecovery,
+    ReloadForbiddenInCurrentSprint,
+    RuntimeMutationForbiddenInCurrentSprint,
+    RealConfigTargetForbiddenInCurrentSprint,
+    ProductionExecutorForbiddenInCurrentSprint,
+    FixtureOnlyReviewRequired,
+    UnsupportedNotProvenRequiresPreservation,
+    RawFallbackRequiresPreservation,
+    DryRunMustRemainNotExecuted,
+    StagedApplyMustRemainNotExecuted,
+}
+
+impl StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::BackupRequiredBeforeFutureApply => "BackupRequiredBeforeFutureApply",
+            Self::RestoreRequiredBeforeFutureRecovery => "RestoreRequiredBeforeFutureRecovery",
+            Self::ReloadForbiddenInCurrentSprint => "ReloadForbiddenInCurrentSprint",
+            Self::RuntimeMutationForbiddenInCurrentSprint => {
+                "RuntimeMutationForbiddenInCurrentSprint"
+            }
+            Self::RealConfigTargetForbiddenInCurrentSprint => {
+                "RealConfigTargetForbiddenInCurrentSprint"
+            }
+            Self::ProductionExecutorForbiddenInCurrentSprint => {
+                "ProductionExecutorForbiddenInCurrentSprint"
+            }
+            Self::FixtureOnlyReviewRequired => "FixtureOnlyReviewRequired",
+            Self::UnsupportedNotProvenRequiresPreservation => {
+                "UnsupportedNotProvenRequiresPreservation"
+            }
+            Self::RawFallbackRequiresPreservation => "RawFallbackRequiresPreservation",
+            Self::DryRunMustRemainNotExecuted => "DryRunMustRemainNotExecuted",
+            Self::StagedApplyMustRemainNotExecuted => "StagedApplyMustRemainNotExecuted",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker {
+    MissingDryRunReportLink,
+    MissingStagedApplyPlanLink,
+    BlockedStagedApplyPlan,
+    RealConfigTargetNotAllowed,
+    PersistenceNotAllowed,
+    RuntimeMutationNotAllowed,
+    HyprlandReloadNotAllowed,
+    ProductionExecutorNotAllowed,
+    StagedApplyAlreadyExecuted,
+    DryRunAlreadyExecuted,
+    BackupAlreadyCreated,
+    RestoreAlreadyExecuted,
+}
+
+impl StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::MissingDryRunReportLink => "MissingDryRunReportLink",
+            Self::MissingStagedApplyPlanLink => "MissingStagedApplyPlanLink",
+            Self::BlockedStagedApplyPlan => "BlockedStagedApplyPlan",
+            Self::RealConfigTargetNotAllowed => "RealConfigTargetNotAllowed",
+            Self::PersistenceNotAllowed => "PersistenceNotAllowed",
+            Self::RuntimeMutationNotAllowed => "RuntimeMutationNotAllowed",
+            Self::HyprlandReloadNotAllowed => "HyprlandReloadNotAllowed",
+            Self::ProductionExecutorNotAllowed => "ProductionExecutorNotAllowed",
+            Self::StagedApplyAlreadyExecuted => "StagedApplyAlreadyExecuted",
+            Self::DryRunAlreadyExecuted => "DryRunAlreadyExecuted",
+            Self::BackupAlreadyCreated => "BackupAlreadyCreated",
+            Self::RestoreAlreadyExecuted => "RestoreAlreadyExecuted",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum StructuredFamilyDraftRenderedRecordApplyStageKind {
     Preflight,
     Review,
@@ -1576,6 +1731,99 @@ pub struct StructuredFamilyDraftRenderedRecordStagedApplyDryRunReport {
     pub staged_apply_plan_written_to_disk: bool,
     pub staged_apply_executed: bool,
     pub dry_run_executed: bool,
+    pub rendered_record_written_to_real_config: bool,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryEntry {
+    pub family: StructuredFamilyKind,
+    pub record_index: usize,
+    pub stage_kind: StructuredFamilyDraftRenderedRecordApplyStageKind,
+    pub operation_kind: String,
+    pub original_raw_line: String,
+    pub rendered_record_preview: String,
+    pub status: StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub action_policy: StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub write_policy: StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub persistence_policy: StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub real_config_target_policy:
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub production_executor_policy:
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryReview {
+    pub family: StructuredFamilyKind,
+    pub source_draft_count: usize,
+    pub source_plan_count: usize,
+    pub review_entry_count: usize,
+    pub changed_entry_count: usize,
+    pub noop_entry_count: usize,
+    pub raw_fallback_entry_count: usize,
+    pub unsupported_not_proven_entry_count: usize,
+    pub field_diff_count: usize,
+    pub dry_run_report_linked: bool,
+    pub staged_apply_plan_linked: bool,
+    pub stage_count: usize,
+    pub operation_count: usize,
+    pub changed_operation_count: usize,
+    pub noop_operation_count: usize,
+    pub raw_fallback_preservation_operation_count: usize,
+    pub unsupported_not_proven_preservation_operation_count: usize,
+    pub blocked_plan_count: usize,
+    pub rollback_review_entry_count: usize,
+    pub recovery_requirement_count: usize,
+    pub backup_requirement_count: usize,
+    pub restore_requirement_count: usize,
+    pub blocked_recovery_reason_count: usize,
+    pub executor_unavailable_by_design: bool,
+    pub rollback_recovery_review_status:
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub dry_run_link_status: StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub staged_apply_plan_link_status:
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub rollback_plan_summary_status:
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub recovery_path_summary_status:
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub backup_requirement_status:
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub restore_requirement_status:
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub blocked_plan_preservation_status:
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub executor_availability_status:
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub execution_status: StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub summary_text: String,
+    pub risk_summary: String,
+    pub recovery_requirements: Vec<StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement>,
+    pub entries: Vec<StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryEntry>,
+    pub fixture_only_status: StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub action_policy: StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub write_policy: StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub persistence_policy: StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub real_config_target_policy:
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub production_executor_policy:
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
+    pub staged_apply_blockers: Vec<StructuredFamilyDraftRenderedRecordStagedApplyBlocker>,
+    pub recovery_blockers: Vec<StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker>,
+    pub draft_written_to_disk: bool,
+    pub rollback_recovery_review_written_to_disk: bool,
+    pub dry_run_report_written_to_disk: bool,
+    pub staged_apply_plan_written_to_disk: bool,
+    pub staged_apply_executed: bool,
+    pub dry_run_executed: bool,
+    pub rollback_executed: bool,
+    pub recovery_executed: bool,
+    pub backup_created: bool,
+    pub restore_executed: bool,
     pub rendered_record_written_to_real_config: bool,
     pub real_config_touched: bool,
     pub runtime_mutated: bool,
@@ -3495,6 +3743,254 @@ fn structured_family_draft_rendered_record_staged_apply_dry_run_entry(
             StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::RealConfigTargetForbidden,
         production_executor_policy:
             StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ProductionExecutorForbidden,
+    }
+}
+
+pub fn structured_family_draft_rendered_record_staged_apply_rollback_recovery_review(
+    dry_run: &StructuredFamilyDraftRenderedRecordStagedApplyDryRunReport,
+) -> StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryReview {
+    let recovery_requirements =
+        structured_family_draft_rendered_record_rollback_recovery_requirements(dry_run);
+    let recovery_blockers =
+        structured_family_draft_rendered_record_rollback_recovery_blockers(dry_run);
+    let ready = recovery_blockers.is_empty()
+        && dry_run.blockers.is_empty()
+        && dry_run.dry_run_report_status
+            == StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ReportReady;
+    let review_status = if ready {
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::ReviewReady
+    } else {
+        StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::BlockedPlanPreserved
+    };
+    let entries = dry_run
+        .entries
+        .iter()
+        .map(structured_family_draft_rendered_record_staged_apply_rollback_recovery_entry)
+        .collect::<Vec<_>>();
+    let backup_requirement_count = recovery_requirements
+        .iter()
+        .filter(|requirement| {
+            **requirement
+                == StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::BackupRequiredBeforeFutureApply
+        })
+        .count();
+    let restore_requirement_count = recovery_requirements
+        .iter()
+        .filter(|requirement| {
+            **requirement
+                == StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::RestoreRequiredBeforeFutureRecovery
+        })
+        .count();
+
+    StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryReview {
+        family: dry_run.family,
+        source_draft_count: dry_run.source_draft_count,
+        source_plan_count: dry_run.source_plan_count,
+        review_entry_count: dry_run.review_entry_count,
+        changed_entry_count: dry_run.changed_entry_count,
+        noop_entry_count: dry_run.noop_entry_count,
+        raw_fallback_entry_count: dry_run.raw_fallback_entry_count,
+        unsupported_not_proven_entry_count: dry_run.unsupported_not_proven_entry_count,
+        field_diff_count: dry_run.field_diff_count,
+        dry_run_report_linked: true,
+        staged_apply_plan_linked: dry_run.staged_apply_plan_linked,
+        stage_count: dry_run.stage_count,
+        operation_count: dry_run.operation_count,
+        changed_operation_count: dry_run.changed_operation_count,
+        noop_operation_count: dry_run.noop_operation_count,
+        raw_fallback_preservation_operation_count: dry_run
+            .raw_fallback_preservation_operation_count,
+        unsupported_not_proven_preservation_operation_count: dry_run
+            .unsupported_not_proven_preservation_operation_count,
+        blocked_plan_count: dry_run.blocked_plan_count,
+        rollback_review_entry_count: entries.len(),
+        recovery_requirement_count: recovery_requirements.len(),
+        backup_requirement_count,
+        restore_requirement_count,
+        blocked_recovery_reason_count: recovery_blockers.len(),
+        executor_unavailable_by_design: true,
+        rollback_recovery_review_status: review_status,
+        dry_run_link_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::DryRunLinked,
+        staged_apply_plan_link_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::PlanLinked,
+        rollback_plan_summary_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::RollbackPlanSummarized,
+        recovery_path_summary_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::RecoveryPathSummarized,
+        backup_requirement_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::BackupRequirementReady,
+        restore_requirement_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::RestoreRequirementReady,
+        blocked_plan_preservation_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::BlockedPlanPreserved,
+        executor_availability_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::ExecutorUnavailable,
+        execution_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::NotExecuted,
+        summary_text: format!(
+            "{} rollback/recovery review generated for fixture-only recovery review only: {} operations, {} recovery requirements, {} blockers; rollback executed false, recovery executed false, backup created false, restore executed false, staged apply executed false, and dry-run executed false.",
+            dry_run.family.family_id(),
+            dry_run.operation_count,
+            recovery_requirements.len(),
+            recovery_blockers.len()
+        ),
+        risk_summary:
+            "rollback/recovery review is review-only and in memory; backup and restore requirements are represented for future review only; executor unavailable by design; real config writes, persistence, staged apply execution, dry-run execution, rollback execution, recovery execution, runtime mutation, reload, and production executors remain blocked"
+                .to_string(),
+        recovery_requirements,
+        entries,
+        fixture_only_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::FixtureOnly,
+        action_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::ActionsDisabled,
+        write_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::WritesBlockedByDefault,
+        persistence_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::PersistenceForbidden,
+        real_config_target_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::RealConfigTargetForbidden,
+        production_executor_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::ProductionExecutorForbidden,
+        staged_apply_blockers: dry_run.blockers.clone(),
+        recovery_blockers,
+        draft_written_to_disk: false,
+        rollback_recovery_review_written_to_disk: false,
+        dry_run_report_written_to_disk: false,
+        staged_apply_plan_written_to_disk: false,
+        staged_apply_executed: false,
+        dry_run_executed: false,
+        rollback_executed: false,
+        recovery_executed: false,
+        backup_created: false,
+        restore_executed: false,
+        rendered_record_written_to_real_config: false,
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
+        production_executor_wired: false,
+    }
+}
+
+fn structured_family_draft_rendered_record_rollback_recovery_requirements(
+    dry_run: &StructuredFamilyDraftRenderedRecordStagedApplyDryRunReport,
+) -> Vec<StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement> {
+    let mut requirements = vec![
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::BackupRequiredBeforeFutureApply,
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::RestoreRequiredBeforeFutureRecovery,
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::ReloadForbiddenInCurrentSprint,
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::RuntimeMutationForbiddenInCurrentSprint,
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::RealConfigTargetForbiddenInCurrentSprint,
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::ProductionExecutorForbiddenInCurrentSprint,
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::FixtureOnlyReviewRequired,
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::DryRunMustRemainNotExecuted,
+        StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::StagedApplyMustRemainNotExecuted,
+    ];
+    if dry_run.raw_fallback_entry_count > 0 {
+        requirements.push(
+            StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::RawFallbackRequiresPreservation,
+        );
+    }
+    if dry_run.unsupported_not_proven_entry_count > 0 {
+        requirements.push(
+            StructuredFamilyDraftRenderedRecordRollbackRecoveryRequirement::UnsupportedNotProvenRequiresPreservation,
+        );
+    }
+    requirements
+}
+
+fn structured_family_draft_rendered_record_rollback_recovery_blockers(
+    dry_run: &StructuredFamilyDraftRenderedRecordStagedApplyDryRunReport,
+) -> Vec<StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker> {
+    let mut blockers = Vec::new();
+    if !dry_run.staged_apply_plan_linked {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::MissingStagedApplyPlanLink,
+        );
+    }
+    if dry_run.blocked_plan_count > 0
+        || dry_run.dry_run_report_status
+            == StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::BlockedPlanSummarized
+        || !dry_run.blockers.is_empty()
+    {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::BlockedStagedApplyPlan,
+        );
+    }
+    if dry_run.real_config_target_policy
+        != StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::RealConfigTargetForbidden
+    {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::RealConfigTargetNotAllowed,
+        );
+    }
+    if dry_run.persistence_policy
+        != StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::PersistenceForbidden
+    {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::PersistenceNotAllowed,
+        );
+    }
+    if dry_run.runtime_mutated {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::RuntimeMutationNotAllowed,
+        );
+    }
+    if dry_run.hyprctl_reload_run {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::HyprlandReloadNotAllowed,
+        );
+    }
+    if dry_run.production_executor_policy
+        != StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ProductionExecutorForbidden
+        || dry_run.production_executor_wired
+    {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::ProductionExecutorNotAllowed,
+        );
+    }
+    if dry_run.staged_apply_executed {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::StagedApplyAlreadyExecuted,
+        );
+    }
+    if dry_run.dry_run_executed {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordRollbackRecoveryBlocker::DryRunAlreadyExecuted,
+        );
+    }
+    blockers
+}
+
+fn structured_family_draft_rendered_record_staged_apply_rollback_recovery_entry(
+    entry: &StructuredFamilyDraftRenderedRecordStagedApplyDryRunEntry,
+) -> StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryEntry {
+    StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryEntry {
+        family: entry.family,
+        record_index: entry.record_index,
+        stage_kind: entry.stage_kind,
+        operation_kind: entry.operation_kind.clone(),
+        original_raw_line: entry.original_raw_line.clone(),
+        rendered_record_preview: entry.rendered_record_preview.clone(),
+        status: match entry.status {
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::RawFallbackPreserved => {
+                StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::BlockedPlanPreserved
+            }
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::UnsupportedNotProvenPreserved => {
+                StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::BlockedPlanPreserved
+            }
+            _ => StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::RecoveryPathSummarized,
+        },
+        action_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::ActionsDisabled,
+        write_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::WritesBlockedByDefault,
+        persistence_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::PersistenceForbidden,
+        real_config_target_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::RealConfigTargetForbidden,
+        production_executor_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus::ProductionExecutorForbidden,
     }
 }
 

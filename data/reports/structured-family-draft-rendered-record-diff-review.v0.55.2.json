@@ -153,5 +153,5 @@
     "cargoBuildRelease": "passed"
   },
   "gtkEvidenceRoot": "not-run-no-visible-ui-change",
-  "nextRecommendedWork": "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+  "nextRecommendedWork": "Add fixture-only structured-family rendered-record final executor-readiness audit while keeping real writes blocked."
 }
