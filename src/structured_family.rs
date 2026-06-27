@@ -680,6 +680,153 @@ impl StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyDraftRenderedRecordStagedApplyStatus {
+    Unavailable,
+    ReviewOnly,
+    Ready,
+    PlanReady,
+    OperationsReady,
+    PreflightReady,
+    ConfirmationLinked,
+    DiffReviewLinked,
+    RenderRereadLinked,
+    AcceptedConfirmationRequired,
+    RejectedConfirmationBlocked,
+    InvalidConfirmationBlocked,
+    RawFallbackPreserved,
+    UnsupportedNotProvenPreserved,
+    RollbackPlanReady,
+    DryRunOnly,
+    FixtureOnly,
+    ActionsDisabled,
+    WritesBlockedByDefault,
+    PersistenceForbidden,
+    RealConfigTargetForbidden,
+    ProductionExecutorForbidden,
+}
+
+impl StructuredFamilyDraftRenderedRecordStagedApplyStatus {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Unavailable => "StructuredFamilyDraftRenderedRecordStagedApplyUnavailable",
+            Self::ReviewOnly => "StructuredFamilyDraftRenderedRecordStagedApplyReviewOnly",
+            Self::Ready => "StructuredFamilyDraftRenderedRecordStagedApplyReady",
+            Self::PlanReady => "StructuredFamilyDraftRenderedRecordStagedApplyPlanReady",
+            Self::OperationsReady => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyOperationsReady"
+            }
+            Self::PreflightReady => "StructuredFamilyDraftRenderedRecordStagedApplyPreflightReady",
+            Self::ConfirmationLinked => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyConfirmationLinked"
+            }
+            Self::DiffReviewLinked => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked"
+            }
+            Self::RenderRereadLinked => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked"
+            }
+            Self::AcceptedConfirmationRequired => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyAcceptedConfirmationRequired"
+            }
+            Self::RejectedConfirmationBlocked => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRejectedConfirmationBlocked"
+            }
+            Self::InvalidConfirmationBlocked => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyInvalidConfirmationBlocked"
+            }
+            Self::RawFallbackPreserved => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRawFallbackPreserved"
+            }
+            Self::UnsupportedNotProvenPreserved => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyUnsupportedNotProvenPreserved"
+            }
+            Self::RollbackPlanReady => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyRollbackPlanReady"
+            }
+            Self::DryRunOnly => "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOnly",
+            Self::FixtureOnly => "StructuredFamilyDraftRenderedRecordFixtureOnly",
+            Self::ActionsDisabled => "StructuredFamilyDraftRenderedRecordActionsDisabled",
+            Self::WritesBlockedByDefault => {
+                "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+            }
+            Self::PersistenceForbidden => "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+            Self::RealConfigTargetForbidden => {
+                "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+            }
+            Self::ProductionExecutorForbidden => {
+                "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden"
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyDraftRenderedRecordStagedApplyBlocker {
+    MissingAcceptedConfirmation,
+    RejectedConfirmation,
+    InvalidConfirmation,
+    MissingDiffReviewSummary,
+    MissingRenderRereadProof,
+    MissingApprovalAcknowledgement,
+    RawFallbackRequiresPreservation,
+    UnsupportedNotProvenRequiresPreservation,
+    RealConfigTargetNotAllowed,
+    PersistenceNotAllowed,
+    RuntimeMutationNotAllowed,
+    HyprlandReloadNotAllowed,
+    ProductionExecutorNotAllowed,
+    ExecutorNotAvailableByDesign,
+}
+
+impl StructuredFamilyDraftRenderedRecordStagedApplyBlocker {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::MissingAcceptedConfirmation => "MissingAcceptedConfirmation",
+            Self::RejectedConfirmation => "RejectedConfirmation",
+            Self::InvalidConfirmation => "InvalidConfirmation",
+            Self::MissingDiffReviewSummary => "MissingDiffReviewSummary",
+            Self::MissingRenderRereadProof => "MissingRenderRereadProof",
+            Self::MissingApprovalAcknowledgement => "MissingApprovalAcknowledgement",
+            Self::RawFallbackRequiresPreservation => "RawFallbackRequiresPreservation",
+            Self::UnsupportedNotProvenRequiresPreservation => {
+                "UnsupportedNotProvenRequiresPreservation"
+            }
+            Self::RealConfigTargetNotAllowed => "RealConfigTargetNotAllowed",
+            Self::PersistenceNotAllowed => "PersistenceNotAllowed",
+            Self::RuntimeMutationNotAllowed => "RuntimeMutationNotAllowed",
+            Self::HyprlandReloadNotAllowed => "HyprlandReloadNotAllowed",
+            Self::ProductionExecutorNotAllowed => "ProductionExecutorNotAllowed",
+            Self::ExecutorNotAvailableByDesign => "ExecutorNotAvailableByDesign",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyDraftRenderedRecordApplyStageKind {
+    Preflight,
+    Review,
+    RenderPreview,
+    RawFallbackPreservation,
+    UnsupportedNotProvenPreservation,
+    DryRunOnlyApply,
+    RollbackPlan,
+}
+
+impl StructuredFamilyDraftRenderedRecordApplyStageKind {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Preflight => "preflight",
+            Self::Review => "review",
+            Self::RenderPreview => "render-preview",
+            Self::RawFallbackPreservation => "raw-fallback-preservation",
+            Self::UnsupportedNotProvenPreservation => "unsupported-not-proven-preservation",
+            Self::DryRunOnlyApply => "dry-run-only-apply",
+            Self::RollbackPlan => "rollback-plan",
+        }
+    }
+}
+
 impl StructuredFamilyRecordEditorFieldKind {
     pub fn as_str(self) -> &'static str {
         match self {
@@ -1206,6 +1353,84 @@ pub struct StructuredFamilyDraftRenderedRecordConfirmation {
     pub draft_written_to_disk: bool,
     pub approval_written_to_disk: bool,
     pub confirmation_written_to_disk: bool,
+    pub rendered_record_written_to_real_config: bool,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordStagedApplyOperation {
+    pub family: StructuredFamilyKind,
+    pub record_index: usize,
+    pub stage_kind: StructuredFamilyDraftRenderedRecordApplyStageKind,
+    pub operation_kind: String,
+    pub original_raw_line: String,
+    pub rendered_record_preview: String,
+    pub field_diff_count: usize,
+    pub status: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub action_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub write_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub persistence_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub real_config_target_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub production_executor_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordStagedApplyStage {
+    pub family: StructuredFamilyKind,
+    pub stage_kind: StructuredFamilyDraftRenderedRecordApplyStageKind,
+    pub status: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub operation_count: usize,
+    pub summary_text: String,
+    pub risk_summary: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordStagedApplyPlan {
+    pub family: StructuredFamilyKind,
+    pub source_draft_count: usize,
+    pub source_plan_count: usize,
+    pub review_entry_count: usize,
+    pub changed_entry_count: usize,
+    pub noop_entry_count: usize,
+    pub raw_fallback_entry_count: usize,
+    pub unsupported_not_proven_entry_count: usize,
+    pub field_diff_count: usize,
+    pub accepted_confirmation_linked: bool,
+    pub diff_review_summary_linked: bool,
+    pub render_reread_proof_linked: bool,
+    pub stage_count: usize,
+    pub operation_count: usize,
+    pub changed_operation_count: usize,
+    pub noop_operation_count: usize,
+    pub raw_fallback_preservation_operation_count: usize,
+    pub unsupported_not_proven_preservation_operation_count: usize,
+    pub preflight_stage: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub review_stage: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub render_preview_stage: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub raw_fallback_preservation_stage: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub unsupported_not_proven_preservation_stage:
+        StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub dry_run_only_apply_stage: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub rollback_plan_stage: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub stages: Vec<StructuredFamilyDraftRenderedRecordStagedApplyStage>,
+    pub operations: Vec<StructuredFamilyDraftRenderedRecordStagedApplyOperation>,
+    pub summary_text: String,
+    pub risk_summary: String,
+    pub blockers: Vec<StructuredFamilyDraftRenderedRecordStagedApplyBlocker>,
+    pub staged_apply_status: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub fixture_only_status: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub action_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub write_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub persistence_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub real_config_target_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub production_executor_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub executor_availability_status: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+    pub draft_written_to_disk: bool,
+    pub staged_apply_plan_written_to_disk: bool,
+    pub staged_apply_executed: bool,
     pub rendered_record_written_to_real_config: bool,
     pub real_config_touched: bool,
     pub runtime_mutated: bool,
@@ -2621,6 +2846,378 @@ fn structured_family_draft_rendered_record_confirmation(
         runtime_mutated: false,
         hyprctl_reload_run: false,
         production_executor_wired: false,
+    }
+}
+
+pub fn structured_family_draft_rendered_record_staged_apply_plan(
+    confirmation: &StructuredFamilyDraftRenderedRecordConfirmation,
+    summary: &StructuredFamilyDraftRenderedRecordDiffReviewSummary,
+) -> StructuredFamilyDraftRenderedRecordStagedApplyPlan {
+    let blockers =
+        structured_family_draft_rendered_record_staged_apply_blockers(confirmation, summary);
+    let ready = blockers.is_empty();
+    let stages = structured_family_draft_rendered_record_staged_apply_stages(
+        confirmation.family,
+        summary,
+        ready,
+    );
+    let operations = structured_family_draft_rendered_record_staged_apply_operations(summary);
+    let changed_operation_count = operations
+        .iter()
+        .filter(|operation| operation.operation_kind == "changed review operation")
+        .count();
+    let noop_operation_count = operations
+        .iter()
+        .filter(|operation| operation.operation_kind == "noop preservation operation")
+        .count();
+    let raw_fallback_preservation_operation_count = operations
+        .iter()
+        .filter(|operation| operation.operation_kind == "raw fallback preservation operation")
+        .count();
+    let unsupported_not_proven_preservation_operation_count = operations
+        .iter()
+        .filter(|operation| {
+            operation.operation_kind == "unsupported/not-proven preservation operation"
+        })
+        .count();
+    let staged_apply_status = if ready {
+        StructuredFamilyDraftRenderedRecordStagedApplyStatus::PlanReady
+    } else if confirmation.confirmation_status
+        == StructuredFamilyDraftRenderedRecordApprovalStatus::ConfirmationRejectedInMemory
+    {
+        StructuredFamilyDraftRenderedRecordStagedApplyStatus::RejectedConfirmationBlocked
+    } else if confirmation.confirmation_status
+        == StructuredFamilyDraftRenderedRecordApprovalStatus::ConfirmationInvalidated
+    {
+        StructuredFamilyDraftRenderedRecordStagedApplyStatus::InvalidConfirmationBlocked
+    } else {
+        StructuredFamilyDraftRenderedRecordStagedApplyStatus::AcceptedConfirmationRequired
+    };
+
+    StructuredFamilyDraftRenderedRecordStagedApplyPlan {
+        family: confirmation.family,
+        source_draft_count: confirmation.source_draft_count,
+        source_plan_count: confirmation.source_plan_count,
+        review_entry_count: confirmation.review_entry_count,
+        changed_entry_count: confirmation.changed_entry_count,
+        noop_entry_count: confirmation.noop_entry_count,
+        raw_fallback_entry_count: confirmation.raw_fallback_entry_count,
+        unsupported_not_proven_entry_count: confirmation.unsupported_not_proven_entry_count,
+        field_diff_count: confirmation.field_diff_count,
+        accepted_confirmation_linked: confirmation.confirmation_accepted_in_memory && ready,
+        diff_review_summary_linked: confirmation.diff_review_summary_linked,
+        render_reread_proof_linked: confirmation.render_reread_proof_linked,
+        stage_count: stages.len(),
+        operation_count: operations.len(),
+        changed_operation_count,
+        noop_operation_count,
+        raw_fallback_preservation_operation_count,
+        unsupported_not_proven_preservation_operation_count,
+        preflight_stage: StructuredFamilyDraftRenderedRecordStagedApplyStatus::PreflightReady,
+        review_stage: StructuredFamilyDraftRenderedRecordStagedApplyStatus::DiffReviewLinked,
+        render_preview_stage: StructuredFamilyDraftRenderedRecordStagedApplyStatus::RenderRereadLinked,
+        raw_fallback_preservation_stage:
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::RawFallbackPreserved,
+        unsupported_not_proven_preservation_stage:
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::UnsupportedNotProvenPreserved,
+        dry_run_only_apply_stage: StructuredFamilyDraftRenderedRecordStagedApplyStatus::DryRunOnly,
+        rollback_plan_stage: StructuredFamilyDraftRenderedRecordStagedApplyStatus::RollbackPlanReady,
+        stages,
+        operations,
+        summary_text: format!(
+            "{} staged apply plan generated for fixture-only review: {} stages, {} operations, execution disabled.",
+            confirmation.family.family_id(),
+            7,
+            changed_operation_count
+                + noop_operation_count
+                + raw_fallback_preservation_operation_count
+                + unsupported_not_proven_preservation_operation_count
+        ),
+        risk_summary:
+            "staged apply plan is review-only and in memory; real config writes, persistence, runtime mutation, reload, and production executors remain blocked"
+                .to_string(),
+        blockers,
+        staged_apply_status,
+        fixture_only_status: StructuredFamilyDraftRenderedRecordStagedApplyStatus::FixtureOnly,
+        action_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus::ActionsDisabled,
+        write_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus::WritesBlockedByDefault,
+        persistence_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus::PersistenceForbidden,
+        real_config_target_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::RealConfigTargetForbidden,
+        production_executor_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::ProductionExecutorForbidden,
+        executor_availability_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::ProductionExecutorForbidden,
+        draft_written_to_disk: false,
+        staged_apply_plan_written_to_disk: false,
+        staged_apply_executed: false,
+        rendered_record_written_to_real_config: false,
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
+        production_executor_wired: false,
+    }
+}
+
+pub fn structured_family_draft_rendered_record_staged_apply_blockers(
+    confirmation: &StructuredFamilyDraftRenderedRecordConfirmation,
+    summary: &StructuredFamilyDraftRenderedRecordDiffReviewSummary,
+) -> Vec<StructuredFamilyDraftRenderedRecordStagedApplyBlocker> {
+    let mut blockers = Vec::new();
+    if confirmation.family != summary.family
+        || confirmation.source_plan_count != summary.source_plan_count
+        || confirmation.review_entry_count != summary.review_entry_count
+        || confirmation.changed_entry_count != summary.changed_entry_count
+        || confirmation.raw_fallback_entry_count != summary.raw_fallback_entry_count
+        || confirmation.unsupported_not_proven_entry_count
+            != summary.unsupported_not_proven_entry_count
+    {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordStagedApplyBlocker::MissingAcceptedConfirmation,
+        );
+    }
+    match confirmation.confirmation_status {
+        StructuredFamilyDraftRenderedRecordApprovalStatus::ConfirmationAcceptedInMemory => {
+            if !confirmation.confirmation_accepted_in_memory {
+                blockers.push(
+                    StructuredFamilyDraftRenderedRecordStagedApplyBlocker::MissingAcceptedConfirmation,
+                );
+            }
+        }
+        StructuredFamilyDraftRenderedRecordApprovalStatus::ConfirmationRejectedInMemory => {
+            blockers
+                .push(StructuredFamilyDraftRenderedRecordStagedApplyBlocker::RejectedConfirmation);
+        }
+        StructuredFamilyDraftRenderedRecordApprovalStatus::ConfirmationInvalidated => {
+            blockers
+                .push(StructuredFamilyDraftRenderedRecordStagedApplyBlocker::InvalidConfirmation);
+        }
+        _ => blockers.push(
+            StructuredFamilyDraftRenderedRecordStagedApplyBlocker::MissingAcceptedConfirmation,
+        ),
+    }
+    if !confirmation.confirmation_invalidation_reasons.is_empty() {
+        blockers.push(StructuredFamilyDraftRenderedRecordStagedApplyBlocker::InvalidConfirmation);
+    }
+    if !confirmation.diff_review_summary_linked {
+        blockers
+            .push(StructuredFamilyDraftRenderedRecordStagedApplyBlocker::MissingDiffReviewSummary);
+    }
+    if !confirmation.render_reread_proof_linked {
+        blockers
+            .push(StructuredFamilyDraftRenderedRecordStagedApplyBlocker::MissingRenderRereadProof);
+    }
+    if confirmation.raw_fallback_entry_count > 0 && !confirmation.raw_fallback_acknowledged {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordStagedApplyBlocker::MissingApprovalAcknowledgement,
+        );
+    }
+    if confirmation.unsupported_not_proven_entry_count > 0
+        && !confirmation.unsupported_not_proven_acknowledged
+    {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordStagedApplyBlocker::MissingApprovalAcknowledgement,
+        );
+    }
+    if summary.raw_fallback_entry_count > 0
+        && !summary.entries.iter().any(|entry| {
+            entry.raw_fallback_status
+                == StructuredFamilyDraftRenderedRecordDiffReviewStatus::RawFallbackPreserved
+        })
+    {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordStagedApplyBlocker::RawFallbackRequiresPreservation,
+        );
+    }
+    if summary.unsupported_not_proven_entry_count > 0
+        && !summary.entries.iter().any(|entry| {
+            entry.unsupported_not_proven_status
+                == StructuredFamilyDraftRenderedRecordDiffReviewStatus::UnsupportedNotProvenYet
+        })
+    {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordStagedApplyBlocker::UnsupportedNotProvenRequiresPreservation,
+        );
+    }
+    if confirmation.real_config_target_policy
+        != StructuredFamilyDraftRenderedRecordApprovalStatus::RealConfigTargetForbidden
+        || confirmation.rendered_record_written_to_real_config
+        || confirmation.real_config_touched
+    {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordStagedApplyBlocker::RealConfigTargetNotAllowed,
+        );
+    }
+    if confirmation.persistence_policy
+        != StructuredFamilyDraftRenderedRecordApprovalStatus::PersistenceForbidden
+        || confirmation.draft_written_to_disk
+        || confirmation.approval_written_to_disk
+        || confirmation.confirmation_written_to_disk
+    {
+        blockers.push(StructuredFamilyDraftRenderedRecordStagedApplyBlocker::PersistenceNotAllowed);
+    }
+    if confirmation.runtime_mutated {
+        blockers
+            .push(StructuredFamilyDraftRenderedRecordStagedApplyBlocker::RuntimeMutationNotAllowed);
+    }
+    if confirmation.hyprctl_reload_run {
+        blockers
+            .push(StructuredFamilyDraftRenderedRecordStagedApplyBlocker::HyprlandReloadNotAllowed);
+    }
+    if confirmation.production_executor_policy
+        != StructuredFamilyDraftRenderedRecordApprovalStatus::ProductionExecutorForbidden
+        || confirmation.production_executor_wired
+    {
+        blockers.push(
+            StructuredFamilyDraftRenderedRecordStagedApplyBlocker::ProductionExecutorNotAllowed,
+        );
+    }
+    blockers
+}
+
+fn structured_family_draft_rendered_record_staged_apply_stages(
+    family: StructuredFamilyKind,
+    summary: &StructuredFamilyDraftRenderedRecordDiffReviewSummary,
+    ready: bool,
+) -> Vec<StructuredFamilyDraftRenderedRecordStagedApplyStage> {
+    [
+        (
+            StructuredFamilyDraftRenderedRecordApplyStageKind::Preflight,
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::PreflightReady,
+            "confirm fixture-only inputs and no-write policies",
+            0,
+        ),
+        (
+            StructuredFamilyDraftRenderedRecordApplyStageKind::Review,
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::DiffReviewLinked,
+            "review diff entries and acknowledgements",
+            summary.review_entry_count,
+        ),
+        (
+            StructuredFamilyDraftRenderedRecordApplyStageKind::RenderPreview,
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::RenderRereadLinked,
+            "link rendered-record previews to render/reread proof",
+            summary.review_entry_count,
+        ),
+        (
+            StructuredFamilyDraftRenderedRecordApplyStageKind::RawFallbackPreservation,
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::RawFallbackPreserved,
+            "preserve raw fallback entries without synthesis",
+            summary.raw_fallback_entry_count,
+        ),
+        (
+            StructuredFamilyDraftRenderedRecordApplyStageKind::UnsupportedNotProvenPreservation,
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::UnsupportedNotProvenPreserved,
+            "preserve unsupported or not-proven entries",
+            summary.unsupported_not_proven_entry_count,
+        ),
+        (
+            StructuredFamilyDraftRenderedRecordApplyStageKind::DryRunOnlyApply,
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::DryRunOnly,
+            "represent dry-run-only apply stage without execution",
+            summary.review_entry_count,
+        ),
+        (
+            StructuredFamilyDraftRenderedRecordApplyStageKind::RollbackPlan,
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::RollbackPlanReady,
+            "represent in-memory rollback plan for future fixture-only review",
+            0,
+        ),
+    ]
+    .into_iter()
+    .map(|(stage_kind, status, summary_text, operation_count)| {
+        StructuredFamilyDraftRenderedRecordStagedApplyStage {
+            family,
+            stage_kind,
+            status: if ready {
+                status
+            } else {
+                StructuredFamilyDraftRenderedRecordStagedApplyStatus::AcceptedConfirmationRequired
+            },
+            operation_count,
+            summary_text: format!("{}: {summary_text}", stage_kind.as_str()),
+            risk_summary:
+                "stage is review-only; it does not execute, persist, reload, or mutate runtime"
+                    .to_string(),
+        }
+    })
+    .collect()
+}
+
+fn structured_family_draft_rendered_record_staged_apply_operations(
+    summary: &StructuredFamilyDraftRenderedRecordDiffReviewSummary,
+) -> Vec<StructuredFamilyDraftRenderedRecordStagedApplyOperation> {
+    let mut operations = Vec::new();
+    for entry in &summary.entries {
+        operations.push(
+            structured_family_draft_rendered_record_staged_apply_operation(
+                entry,
+                if entry.changed {
+                    "changed review operation"
+                } else {
+                    "noop preservation operation"
+                },
+                if entry.changed {
+                    StructuredFamilyDraftRenderedRecordApplyStageKind::Review
+                } else {
+                    StructuredFamilyDraftRenderedRecordApplyStageKind::Review
+                },
+                if entry.changed {
+                    StructuredFamilyDraftRenderedRecordStagedApplyStatus::OperationsReady
+                } else {
+                    StructuredFamilyDraftRenderedRecordStagedApplyStatus::OperationsReady
+                },
+            ),
+        );
+        if entry.raw_fallback_status
+            == StructuredFamilyDraftRenderedRecordDiffReviewStatus::RawFallbackPreserved
+        {
+            operations.push(
+                structured_family_draft_rendered_record_staged_apply_operation(
+                    entry,
+                    "raw fallback preservation operation",
+                    StructuredFamilyDraftRenderedRecordApplyStageKind::RawFallbackPreservation,
+                    StructuredFamilyDraftRenderedRecordStagedApplyStatus::RawFallbackPreserved,
+                ),
+            );
+        }
+        if entry.unsupported_not_proven_status
+            == StructuredFamilyDraftRenderedRecordDiffReviewStatus::UnsupportedNotProvenYet
+        {
+            operations.push(structured_family_draft_rendered_record_staged_apply_operation(
+                entry,
+                "unsupported/not-proven preservation operation",
+                StructuredFamilyDraftRenderedRecordApplyStageKind::UnsupportedNotProvenPreservation,
+                StructuredFamilyDraftRenderedRecordStagedApplyStatus::UnsupportedNotProvenPreserved,
+            ));
+        }
+    }
+    operations
+}
+
+fn structured_family_draft_rendered_record_staged_apply_operation(
+    entry: &StructuredFamilyDraftRenderedRecordDiffReviewEntry,
+    operation_kind: &str,
+    stage_kind: StructuredFamilyDraftRenderedRecordApplyStageKind,
+    status: StructuredFamilyDraftRenderedRecordStagedApplyStatus,
+) -> StructuredFamilyDraftRenderedRecordStagedApplyOperation {
+    StructuredFamilyDraftRenderedRecordStagedApplyOperation {
+        family: entry.family,
+        record_index: entry.record_index,
+        stage_kind,
+        operation_kind: operation_kind.to_string(),
+        original_raw_line: entry.original_raw_line.clone(),
+        rendered_record_preview: entry.rendered_record_preview.clone(),
+        field_diff_count: entry.field_diffs.len(),
+        status,
+        action_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus::ActionsDisabled,
+        write_policy: StructuredFamilyDraftRenderedRecordStagedApplyStatus::WritesBlockedByDefault,
+        persistence_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::PersistenceForbidden,
+        real_config_target_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::RealConfigTargetForbidden,
+        production_executor_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::ProductionExecutorForbidden,
     }
 }
 

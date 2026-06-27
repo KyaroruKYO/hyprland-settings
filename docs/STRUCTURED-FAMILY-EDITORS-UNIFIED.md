@@ -30,6 +30,8 @@ The work is review-only. Structured-family writes remain blocked by default.
 - Draft rendered-record planning: all seven families map in-memory draft fields to fixture-only rendered-record previews.
 - Draft rendered-record render/reread proof: all seven families render previews to temp fixture text and reread through the parser/projection path with family identity and record count preserved.
 - Draft rendered-record diff/review summary: all seven families create in-memory changed/noop review entries with field diffs, raw fallback preservation, and unsupported/not-proven preservation.
+- Draft rendered-record approval/confirmation: all seven families create fixture-only approval drafts plus accepted, rejected, and invalidated in-memory confirmations.
+- Rendered-record staged apply planning: all seven families create fixture-only staged apply plans from accepted confirmations, with ordered review-only stages, per-entry operations, blocked rejected/invalid plans, a dry-run-only apply stage represented but not executed, and rollback plans represented in memory only.
 
 ## Safety
 
@@ -44,7 +46,9 @@ The work is review-only. Structured-family writes remain blocked by default.
 - Record draft models are in-memory only and do not write drafts to disk.
 - Draft rendered-record render/reread proof writes temp/test-owned fixture text only and does not write rendered records to real config.
 - Draft rendered-record diff/review summaries are in-memory only and do not persist summaries or authorize writes.
+- Approval/confirmation models are in-memory only and do not approve real config writes.
+- Staged apply plans are in-memory only, are not executors, and do not execute staged apply behavior.
 
 ## Next Work
 
-Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked.
+Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked.

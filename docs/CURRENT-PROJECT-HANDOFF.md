@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family fixture-only draft rendered-record approval/confirmation model on `structured-family-editors-unified`.
+Structured-family fixture-only rendered-record staged apply plan on `structured-family-editors-unified`.
 
 ## Completed This Sprint
 
@@ -31,6 +31,9 @@ Structured-family fixture-only draft rendered-record approval/confirmation model
 - Added in-memory changed/noop review entries and field-diff proof for all seven families.
 - Added fixture-only rendered-record approval/confirmation models for all seven families.
 - Added in-memory accepted, rejected, and invalidated confirmation proof for all seven families.
+- Added fixture-only rendered-record staged apply plans for all seven families.
+- Added in-memory ordered apply stages and operations for all seven families.
+- Added blocked staged apply plan proof for rejected, invalid, and unsafe confirmations.
 - Added a project-area continuation scan.
 
 ## Safety Boundaries
@@ -44,4 +47,4 @@ Structured-family fixture-only draft rendered-record approval/confirmation model
 
 ## Next Exact Work
 
-Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked.
+Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked.

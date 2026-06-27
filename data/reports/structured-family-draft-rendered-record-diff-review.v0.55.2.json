@@ -153,5 +153,5 @@
     "cargoBuildRelease": "passed"
   },
   "gtkEvidenceRoot": "not-run-no-visible-ui-change",
-  "nextRecommendedWork": "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked."
+  "nextRecommendedWork": "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
 }

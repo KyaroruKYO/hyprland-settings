@@ -118,12 +118,12 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "review-only validators, temp-fixture write plans, per-record editor forms, in-memory draft models, disabled GTK draft-field binding, fixture-only draft-to-rendered-record planning, fixture-only rendered-record render/reread proof, fixture-only diff/review summaries, and fixture-only approval/confirmation models are complete for seven families; writes blocked, draft persistence forbidden, and real config target forbidden",
+      "currentStatus": "review-only validators, temp-fixture write plans, per-record editor forms, in-memory draft models, disabled GTK draft-field binding, fixture-only draft-to-rendered-record planning, fixture-only rendered-record render/reread proof, fixture-only diff/review summaries, fixture-only approval/confirmation models, and fixture-only staged apply plans are complete for seven families; writes blocked, draft persistence forbidden, real config target forbidden, and staged apply execution disabled",
       "classification": "can_continue_now",
       "canContinueNow": true,
-      "reason": "Shared model, fixture parse/render proof, conservative validators, temp-fixture write plans, per-record form projections, in-memory draft state, disabled GTK draft-field binding, draft-to-rendered-record planning, render/reread proof, diff/review summary, approval/confirmation model, and report-only status can advance without production writes.",
-      "blockingDependency": "fixture-only rendered-record staged apply plan before any future fixture-only executor review",
-      "safeNextWork": "add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked",
+      "reason": "Shared model, fixture parse/render proof, conservative validators, temp-fixture write plans, per-record form projections, in-memory draft state, disabled GTK draft-field binding, draft-to-rendered-record planning, render/reread proof, diff/review summary, approval/confirmation model, staged apply plan, and report-only status can advance without production writes.",
+      "blockingDependency": "fixture-only staged apply dry-run report before any future fixture-only executor review",
+      "safeNextWork": "add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked",
       "mustNotDo": "do not enable real structured-family writes",
       "evidenceUsed": [
         "src/structured_family.rs",
@@ -136,7 +136,8 @@
         "data/reports/structured-family-draft-rendered-record-plan.v0.55.2.json",
         "data/reports/structured-family-draft-rendered-record-render-reread.v0.55.2.json",
         "data/reports/structured-family-draft-rendered-record-diff-review.v0.55.2.json",
-        "data/reports/structured-family-draft-rendered-record-approval-confirmation.v0.55.2.json"
+        "data/reports/structured-family-draft-rendered-record-approval-confirmation.v0.55.2.json",
+        "data/reports/structured-family-rendered-record-staged-apply-plan.v0.55.2.json"
       ]
     },
     {
@@ -183,5 +184,5 @@
     }
   ],
   "activeSafeArea": "Structured-family editors/writes",
-  "recommendedNextWork": "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked."
+  "recommendedNextWork": "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
 }

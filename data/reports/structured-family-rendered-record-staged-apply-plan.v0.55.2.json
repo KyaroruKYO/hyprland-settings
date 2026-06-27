@@ -1,0 +1,229 @@
+{
+  "artifactKind": "structured-family-rendered-record-staged-apply-plan",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "7dc392dc5f5ad28f974dac0568a315468bd14020",
+  "latestCommitBeforeSprint": "7dc392dc5f5ad28f974dac0568a315468bd14020",
+  "goal": "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked.",
+  "families": [
+    "hl.monitor",
+    "hl.bind",
+    "hl.animation",
+    "hl.curve",
+    "hl.gesture",
+    "hl.device",
+    "hl.permission"
+  ],
+  "stagedApplyStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyReviewOnly",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyReviewOnly",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyReviewOnly",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyReviewOnly",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyReviewOnly",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyReviewOnly",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyReviewOnly"
+  },
+  "stagedApplyPlanStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyPlanReady",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyPlanReady",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyPlanReady",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyPlanReady",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyPlanReady",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyPlanReady",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyPlanReady"
+  },
+  "operationStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyOperationsReady",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyOperationsReady",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyOperationsReady",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyOperationsReady",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyOperationsReady",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyOperationsReady",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyOperationsReady"
+  },
+  "preflightStageStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyPreflightReady",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyPreflightReady",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyPreflightReady",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyPreflightReady",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyPreflightReady",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyPreflightReady",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyPreflightReady"
+  },
+  "reviewStageStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked"
+  },
+  "renderPreviewStageStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked"
+  },
+  "rawFallbackPreservationStageStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyRawFallbackPreserved",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyRawFallbackPreserved",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyRawFallbackPreserved",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyRawFallbackPreserved",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyRawFallbackPreserved",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyRawFallbackPreserved",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyRawFallbackPreserved"
+  },
+  "unsupportedNotProvenPreservationStageStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyUnsupportedNotProvenPreserved",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyUnsupportedNotProvenPreserved",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyUnsupportedNotProvenPreserved",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyUnsupportedNotProvenPreserved",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyUnsupportedNotProvenPreserved",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyUnsupportedNotProvenPreserved",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyUnsupportedNotProvenPreserved"
+  },
+  "dryRunOnlyApplyStageStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOnly",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOnly",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOnly",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOnly",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOnly",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOnly",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOnly"
+  },
+  "rollbackPlanStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyRollbackPlanReady",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyRollbackPlanReady",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyRollbackPlanReady",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyRollbackPlanReady",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyRollbackPlanReady",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyRollbackPlanReady",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyRollbackPlanReady"
+  },
+  "acceptedConfirmationLinkStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyConfirmationLinked",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyConfirmationLinked",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyConfirmationLinked",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyConfirmationLinked",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyConfirmationLinked",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyConfirmationLinked",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyConfirmationLinked"
+  },
+  "diffReviewLinkStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDiffReviewLinked"
+  },
+  "renderRereadProofLinkStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyRenderRereadLinked"
+  },
+  "blockedPlanStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyRejectedConfirmationBlocked; StructuredFamilyDraftRenderedRecordStagedApplyInvalidConfirmationBlocked",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyRejectedConfirmationBlocked; StructuredFamilyDraftRenderedRecordStagedApplyInvalidConfirmationBlocked",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyRejectedConfirmationBlocked; StructuredFamilyDraftRenderedRecordStagedApplyInvalidConfirmationBlocked",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyRejectedConfirmationBlocked; StructuredFamilyDraftRenderedRecordStagedApplyInvalidConfirmationBlocked",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyRejectedConfirmationBlocked; StructuredFamilyDraftRenderedRecordStagedApplyInvalidConfirmationBlocked",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyRejectedConfirmationBlocked; StructuredFamilyDraftRenderedRecordStagedApplyInvalidConfirmationBlocked",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyRejectedConfirmationBlocked; StructuredFamilyDraftRenderedRecordStagedApplyInvalidConfirmationBlocked"
+  },
+  "executorAvailabilityStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.device": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden"
+  },
+  "actionPolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.device": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordActionsDisabled"
+  },
+  "writePolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.device": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+  },
+  "persistencePolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.device": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordPersistenceForbidden"
+  },
+  "realConfigTargetPolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.device": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+  },
+  "productionExecutorPolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.device": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden"
+  },
+  "draftWrittenToDisk": false,
+  "stagedApplyPlanWrittenToDisk": false,
+  "stagedApplyExecuted": false,
+  "renderedRecordWrittenToRealConfig": false,
+  "realConfigTouched": false,
+  "runtimeMutated": false,
+  "hyprctlReloadRun": false,
+  "productionBehaviorEnabled": false,
+  "productionExecutorWired": false,
+  "filesChanged": [
+    "src/structured_family.rs",
+    "tests/structured_family_unified.rs",
+    "data/reports/structured-family-rendered-record-staged-apply-plan.v0.55.2.json",
+    "docs/STRUCTURED-FAMILY-RENDERED-RECORD-STAGED-APPLY-PLAN.md"
+  ],
+  "testsAdded": [
+    "all_structured_family_accepted_confirmations_create_fixture_only_staged_apply_plans",
+    "structured_family_staged_apply_plans_block_rejected_invalid_and_unsafe_confirmations",
+    "structured_family_rendered_record_staged_apply_plan_has_no_write_reload_or_persistence_calls",
+    "structured_family_rendered_record_staged_apply_plan_report_preserves_fixture_only_policy"
+  ],
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "jq": "passed",
+    "gitDiffCheck": "passed",
+    "cargoBuildRelease": "passed"
+  },
+  "gtkEvidenceRoot": "not-run-no-visible-ui-change",
+  "nextRecommendedWork": "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
+}

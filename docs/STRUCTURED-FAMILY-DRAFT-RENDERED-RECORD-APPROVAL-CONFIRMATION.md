@@ -68,4 +68,4 @@ GTK evidence root: `not-run-no-visible-ui-change`.
 
 ## Next Work
 
-Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked.
+Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked.

@@ -196,6 +196,8 @@
     "tempWritePlanProof": "all seven families validate, render, and reread through temp-fixture write plans only",
     "draftRenderedRecordRenderRereadProof": "all seven families render draft rendered-record previews to temp fixture text and reread through parser/projection path with family identity and record count preserved",
     "draftRenderedRecordDiffReviewProof": "all seven families create in-memory fixture-only diff/review summaries with changed/noop entries, field diffs, raw fallback preservation, and unsupported/not-proven preservation",
+    "draftRenderedRecordApprovalConfirmationProof": "all seven families create fixture-only approval drafts plus accepted, rejected, and invalidated in-memory confirmations",
+    "renderedRecordStagedApplyPlanProof": "all seven families create fixture-only staged apply plans from accepted confirmations, with ordered review-only stages, per-entry operations, blocked rejected/invalid plans, dry-run-only apply stage represented but not executed, and rollback plan represented in memory only",
     "realConfigTouched": false,
     "runtimeMutated": false,
     "hyprctlReloadRun": false
@@ -214,11 +216,12 @@
     "sourceIncludeProductionActivationEnabled": false,
     "duplicateProductionActivationEnabled": false,
     "structuredFamilyProductionWritesEnabled": false,
+    "stagedApplyExecuted": false,
     "draftPersistenceAdded": false,
     "realConfigTouched": false,
     "runtimeMutated": false,
     "hyprctlReloadRun": false,
     "hyprland0554MigrationActivated": false
   },
-  "recommendedNextWork": "Add fixture-only structured-family rendered-record staged apply plan while keeping real writes blocked."
+  "recommendedNextWork": "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
 }
