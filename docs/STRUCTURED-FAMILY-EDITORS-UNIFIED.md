@@ -26,6 +26,9 @@ The work is review-only. Structured-family writes remain blocked by default.
 - Temp-fixture write plans: all seven families can validate, render to temp/test-owned output, reread, and preserve family identity without enabling real writes.
 - Per-record editor forms: all seven families expose review-only form projections with family-specific fields, raw fallback status, validation status, source path, line number, and disabled action policy.
 - Record draft model: all seven families expose review-only in-memory draft projections with clean/dirty state, reset proof, raw fallback status, disabled actions, blocked writes, and forbidden persistence.
+- Disabled GTK draft-field binding: all seven families expose insensitive draft-field binding projections with memory-only update proof.
+- Draft rendered-record planning: all seven families map in-memory draft fields to fixture-only rendered-record previews.
+- Draft rendered-record render/reread proof: all seven families render previews to temp fixture text and reread through the parser/projection path with family identity and record count preserved.
 
 ## Safety
 
@@ -38,7 +41,8 @@ The work is review-only. Structured-family writes remain blocked by default.
 - Temp-fixture write plans do not call `apply_setting_change`, real `write_flow`, `hyprctl`, or reload command paths.
 - Record editor forms are review-only and do not add write, reload, runtime mutation, persistence, or production executor callbacks.
 - Record draft models are in-memory only and do not write drafts to disk.
+- Draft rendered-record render/reread proof writes temp/test-owned fixture text only and does not write rendered records to real config.
 
 ## Next Work
 
-Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked.
+Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked.

@@ -1,6 +1,7 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 
+use crate::config_parser::parse_hyprland_config_file;
 use crate::current_config::CurrentConfigSnapshot;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -455,6 +456,57 @@ impl StructuredFamilyDraftRenderedRecordStatus {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyDraftRenderedRecordRenderRereadStatus {
+    Unavailable,
+    ReviewOnly,
+    Ready,
+    RenderedToTempFixture,
+    RereadFromTempFixture,
+    FamilyPreserved,
+    RecordCountPreserved,
+    FieldMapPreserved,
+    RawFallbackPreserved,
+    UnsupportedNotProvenYet,
+    FixtureOnly,
+    ActionsDisabled,
+    WritesBlockedByDefault,
+    PersistenceForbidden,
+    RealConfigTargetForbidden,
+}
+
+impl StructuredFamilyDraftRenderedRecordRenderRereadStatus {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Unavailable => "StructuredFamilyDraftRenderedRecordRenderRereadUnavailable",
+            Self::ReviewOnly => "StructuredFamilyDraftRenderedRecordRenderRereadReviewOnly",
+            Self::Ready => "StructuredFamilyDraftRenderedRecordRenderRereadReady",
+            Self::RenderedToTempFixture => {
+                "StructuredFamilyDraftRenderedRecordRenderedToTempFixture"
+            }
+            Self::RereadFromTempFixture => {
+                "StructuredFamilyDraftRenderedRecordRereadFromTempFixture"
+            }
+            Self::FamilyPreserved => "StructuredFamilyDraftRenderedRecordFamilyPreserved",
+            Self::RecordCountPreserved => "StructuredFamilyDraftRenderedRecordRecordCountPreserved",
+            Self::FieldMapPreserved => "StructuredFamilyDraftRenderedRecordFieldMapPreserved",
+            Self::RawFallbackPreserved => "StructuredFamilyDraftRenderedRecordRawFallbackPreserved",
+            Self::UnsupportedNotProvenYet => {
+                "StructuredFamilyDraftRenderedRecordUnsupportedNotProvenYet"
+            }
+            Self::FixtureOnly => "StructuredFamilyDraftRenderedRecordFixtureOnly",
+            Self::ActionsDisabled => "StructuredFamilyDraftRenderedRecordActionsDisabled",
+            Self::WritesBlockedByDefault => {
+                "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+            }
+            Self::PersistenceForbidden => "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+            Self::RealConfigTargetForbidden => {
+                "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+            }
+        }
+    }
+}
+
 impl StructuredFamilyRecordEditorFieldKind {
     pub fn as_str(self) -> &'static str {
         match self {
@@ -772,6 +824,46 @@ pub struct StructuredFamilyDraftRenderedRecordPlanProof {
     pub real_config_target_policy: StructuredFamilyDraftRenderedRecordStatus,
     pub draft_written_to_disk: bool,
     pub rendered_record_written_to_disk: bool,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordRenderRereadProof {
+    pub family: StructuredFamilyKind,
+    pub source_draft_count: usize,
+    pub source_plan_count: usize,
+    pub rendered_fixture_path: PathBuf,
+    pub rendered_fixture_text: String,
+    pub reread_projection_family: StructuredFamilyKind,
+    pub reread_record_count: usize,
+    pub field_map_count: usize,
+    pub raw_fallback_plan_count: usize,
+    pub unsupported_not_proven_plan_count: usize,
+    pub family_preserved: bool,
+    pub record_count_preserved: bool,
+    pub field_map_preserved: bool,
+    pub raw_fallback_preserved: bool,
+    pub unsupported_not_proven_preserved: bool,
+    pub render_reread_status: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub rendered_temp_fixture_status: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub reread_status: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub family_preservation_status: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub record_count_preservation_status: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub field_map_preservation_status: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub raw_fallback_preservation_status: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub unsupported_not_proven_preservation_status:
+        StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub fixture_only_status: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub action_policy: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub write_policy: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub persistence_policy: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub real_config_target_policy: StructuredFamilyDraftRenderedRecordRenderRereadStatus,
+    pub draft_written_to_disk: bool,
+    pub rendered_record_written_to_temp_fixture: bool,
+    pub rendered_record_written_to_real_config: bool,
     pub real_config_touched: bool,
     pub runtime_mutated: bool,
     pub hyprctl_reload_run: bool,
@@ -1609,6 +1701,161 @@ pub fn structured_family_render_target_allowed(path: &Path) -> bool {
         }
     }
     false
+}
+
+pub fn prove_structured_family_draft_rendered_record_render_reread(
+    plans: &[StructuredFamilyDraftRenderedRecordPlan],
+    rendered_fixture_path: impl AsRef<Path>,
+) -> StructuredFamilyDraftRenderedRecordRenderRereadProof {
+    let family = plans
+        .first()
+        .map(|plan| plan.family)
+        .unwrap_or(StructuredFamilyKind::Monitor);
+    let rendered_fixture_path = rendered_fixture_path.as_ref().to_path_buf();
+    let rendered_fixture_text = render_draft_rendered_record_fixture_text(plans);
+    let source_plan_count = plans.len();
+    let field_map_count = plans.iter().map(|plan| plan.field_map.len()).sum::<usize>();
+    let raw_fallback_plan_count = plans
+        .iter()
+        .filter(|plan| {
+            plan.raw_fallback_status
+                == StructuredFamilyDraftRenderedRecordStatus::RawFallbackPreserved
+        })
+        .count();
+    let unsupported_not_proven_plan_count = plans
+        .iter()
+        .filter(|plan| {
+            plan.unsupported_not_proven_status
+                == StructuredFamilyDraftRenderedRecordStatus::UnsupportedNotProvenYet
+        })
+        .count();
+
+    let mut proof = StructuredFamilyDraftRenderedRecordRenderRereadProof {
+        family,
+        source_draft_count: source_plan_count,
+        source_plan_count,
+        rendered_fixture_path,
+        rendered_fixture_text,
+        reread_projection_family: family,
+        reread_record_count: 0,
+        field_map_count,
+        raw_fallback_plan_count,
+        unsupported_not_proven_plan_count,
+        family_preserved: false,
+        record_count_preserved: false,
+        field_map_preserved: field_map_count > 0,
+        raw_fallback_preserved: raw_fallback_plan_count > 0,
+        unsupported_not_proven_preserved: unsupported_not_proven_plan_count > 0,
+        render_reread_status: StructuredFamilyDraftRenderedRecordRenderRereadStatus::Ready,
+        rendered_temp_fixture_status:
+            StructuredFamilyDraftRenderedRecordRenderRereadStatus::Unavailable,
+        reread_status: StructuredFamilyDraftRenderedRecordRenderRereadStatus::Unavailable,
+        family_preservation_status:
+            StructuredFamilyDraftRenderedRecordRenderRereadStatus::Unavailable,
+        record_count_preservation_status:
+            StructuredFamilyDraftRenderedRecordRenderRereadStatus::Unavailable,
+        field_map_preservation_status:
+            StructuredFamilyDraftRenderedRecordRenderRereadStatus::FieldMapPreserved,
+        raw_fallback_preservation_status:
+            StructuredFamilyDraftRenderedRecordRenderRereadStatus::RawFallbackPreserved,
+        unsupported_not_proven_preservation_status:
+            StructuredFamilyDraftRenderedRecordRenderRereadStatus::UnsupportedNotProvenYet,
+        fixture_only_status: StructuredFamilyDraftRenderedRecordRenderRereadStatus::FixtureOnly,
+        action_policy: StructuredFamilyDraftRenderedRecordRenderRereadStatus::ActionsDisabled,
+        write_policy: StructuredFamilyDraftRenderedRecordRenderRereadStatus::WritesBlockedByDefault,
+        persistence_policy:
+            StructuredFamilyDraftRenderedRecordRenderRereadStatus::PersistenceForbidden,
+        real_config_target_policy:
+            StructuredFamilyDraftRenderedRecordRenderRereadStatus::RealConfigTargetForbidden,
+        draft_written_to_disk: false,
+        rendered_record_written_to_temp_fixture: false,
+        rendered_record_written_to_real_config: false,
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
+        production_executor_wired: false,
+    };
+
+    if !structured_family_render_target_allowed(&proof.rendered_fixture_path) {
+        proof.render_reread_status =
+            StructuredFamilyDraftRenderedRecordRenderRereadStatus::RealConfigTargetForbidden;
+        return proof;
+    }
+
+    let render_result = proof
+        .rendered_fixture_path
+        .parent()
+        .ok_or_else(|| {
+            std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "render target has no parent",
+            )
+        })
+        .and_then(|parent| fs::create_dir_all(parent))
+        .and_then(|_| {
+            fs::write(
+                &proof.rendered_fixture_path,
+                proof.rendered_fixture_text.as_bytes(),
+            )
+        });
+
+    if render_result.is_err() {
+        proof.render_reread_status =
+            StructuredFamilyDraftRenderedRecordRenderRereadStatus::Unavailable;
+        return proof;
+    }
+
+    proof.rendered_record_written_to_temp_fixture = true;
+    proof.rendered_temp_fixture_status =
+        StructuredFamilyDraftRenderedRecordRenderRereadStatus::RenderedToTempFixture;
+
+    let reread_projection = parse_hyprland_config_file(&proof.rendered_fixture_path)
+        .map(CurrentConfigSnapshot::from_parsed)
+        .map(|snapshot| {
+            snapshot
+                .structured_family_projections()
+                .into_iter()
+                .find(|projection| projection.family == family)
+        })
+        .ok()
+        .flatten();
+
+    let Some(reread_projection) = reread_projection else {
+        return proof;
+    };
+
+    proof.reread_projection_family = reread_projection.family;
+    proof.reread_record_count = reread_projection.record_count();
+    proof.family_preserved = reread_projection.family == family;
+    proof.record_count_preserved = proof.reread_record_count == source_plan_count;
+    proof.reread_status =
+        StructuredFamilyDraftRenderedRecordRenderRereadStatus::RereadFromTempFixture;
+    proof.family_preservation_status = if proof.family_preserved {
+        StructuredFamilyDraftRenderedRecordRenderRereadStatus::FamilyPreserved
+    } else {
+        StructuredFamilyDraftRenderedRecordRenderRereadStatus::Unavailable
+    };
+    proof.record_count_preservation_status = if proof.record_count_preserved {
+        StructuredFamilyDraftRenderedRecordRenderRereadStatus::RecordCountPreserved
+    } else {
+        StructuredFamilyDraftRenderedRecordRenderRereadStatus::Unavailable
+    };
+    proof.render_reread_status = StructuredFamilyDraftRenderedRecordRenderRereadStatus::ReviewOnly;
+    proof
+}
+
+pub fn render_draft_rendered_record_fixture_text(
+    plans: &[StructuredFamilyDraftRenderedRecordPlan],
+) -> String {
+    let mut output = plans
+        .iter()
+        .map(|plan| plan.rendered_record_preview.as_str())
+        .collect::<Vec<_>>()
+        .join("\n");
+    if !output.is_empty() {
+        output.push('\n');
+    }
+    output
 }
 
 fn structured_record_from_raw(

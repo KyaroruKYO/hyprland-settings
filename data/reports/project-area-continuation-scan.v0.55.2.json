@@ -118,12 +118,12 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "review-only validators, temp-fixture write plans, per-record editor forms, in-memory draft models, disabled GTK draft-field binding, and fixture-only draft-to-rendered-record planning are complete for seven families; writes blocked, draft persistence forbidden, and real config target forbidden",
+      "currentStatus": "review-only validators, temp-fixture write plans, per-record editor forms, in-memory draft models, disabled GTK draft-field binding, fixture-only draft-to-rendered-record planning, and fixture-only rendered-record render/reread proof are complete for seven families; writes blocked, draft persistence forbidden, and real config target forbidden",
       "classification": "can_continue_now",
       "canContinueNow": true,
-      "reason": "Shared model, fixture parse/render proof, conservative validators, temp-fixture write plans, per-record form projections, in-memory draft state, disabled GTK draft-field binding, draft-to-rendered-record planning, and report-only status can advance without production writes.",
-      "blockingDependency": "fixture-only rendered-record render/reread proof before any future fixture-only executor review",
-      "safeNextWork": "add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked",
+      "reason": "Shared model, fixture parse/render proof, conservative validators, temp-fixture write plans, per-record form projections, in-memory draft state, disabled GTK draft-field binding, draft-to-rendered-record planning, render/reread proof, and report-only status can advance without production writes.",
+      "blockingDependency": "fixture-only rendered-record diff/review summary before any future fixture-only executor review",
+      "safeNextWork": "add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked",
       "mustNotDo": "do not enable real structured-family writes",
       "evidenceUsed": [
         "src/structured_family.rs",
@@ -133,7 +133,8 @@
         "data/reports/structured-family-record-editor-forms.v0.55.2.json",
         "data/reports/structured-family-record-draft-model.v0.55.2.json",
         "data/reports/structured-family-record-draft-gtk-binding.v0.55.2.json",
-        "data/reports/structured-family-draft-rendered-record-plan.v0.55.2.json"
+        "data/reports/structured-family-draft-rendered-record-plan.v0.55.2.json",
+        "data/reports/structured-family-draft-rendered-record-render-reread.v0.55.2.json"
       ]
     },
     {
@@ -180,5 +181,5 @@
     }
   ],
   "activeSafeArea": "Structured-family editors/writes",
-  "recommendedNextWork": "Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked."
+  "recommendedNextWork": "Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked."
 }

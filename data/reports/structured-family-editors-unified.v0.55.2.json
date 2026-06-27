@@ -194,6 +194,7 @@
     "parseProof": "all seven families parse into structured projections",
     "renderRereadProof": "all seven families render to temp fixture output and reread with family identity and record count preserved",
     "tempWritePlanProof": "all seven families validate, render, and reread through temp-fixture write plans only",
+    "draftRenderedRecordRenderRereadProof": "all seven families render draft rendered-record previews to temp fixture text and reread through parser/projection path with family identity and record count preserved",
     "realConfigTouched": false,
     "runtimeMutated": false,
     "hyprctlReloadRun": false
@@ -218,5 +219,5 @@
     "hyprctlReloadRun": false,
     "hyprland0554MigrationActivated": false
   },
-  "recommendedNextWork": "Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked."
+  "recommendedNextWork": "Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked."
 }

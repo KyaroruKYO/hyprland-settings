@@ -50,4 +50,4 @@ Proven simple fixture records receive a preview string using family-specific syn
 
 ## Next Work
 
-Add fixture-only structured-family draft rendered-record render/reread proof while keeping real writes blocked.
+Add fixture-only structured-family draft rendered-record diff/review summary while keeping real writes blocked.
