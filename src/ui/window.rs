@@ -1265,6 +1265,7 @@ fn structured_family_editor_section(
     }
     content.append(&structured_family_record_editor_section(families));
     content.append(&structured_family_record_draft_section(families));
+    content.append(&structured_family_record_draft_binding_section(families));
 
     frame.set_child(Some(&content));
     frame
@@ -1584,6 +1585,174 @@ fn structured_family_record_draft_family_card(
 
     let apply =
         gtk::Button::with_label("Apply structured-family draft to real config (not available)");
+    apply.set_sensitive(false);
+    apply.set_tooltip_text(Some("Disabled. This button has no write callback."));
+    content.append(&apply);
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn structured_family_record_draft_binding_section(
+    families: &[crate::ui::model::UiStructuredFamily],
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-structured-family-record-draft-binding-section");
+    frame.set_tooltip_text(Some(
+        "Disabled live GTK draft-field binding projections. Draft updates are memory-only in model tests and real writes remain blocked.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(10);
+    content.set_margin_bottom(10);
+    content.set_margin_start(10);
+    content.set_margin_end(10);
+
+    content.append(&title_label("Disabled live GTK draft-field binding"));
+    content.append(&small_label("Draft-field binding projection ready"));
+    content.append(&small_label("Draft-field widgets insensitive"));
+    content.append(&small_label("Draft-field update is memory-only"));
+    content.append(&small_label("Draft dirty state recomputed"));
+    content.append(&small_label("Draft validation recomputed"));
+    content.append(&small_label("Raw fallback preserved"));
+    content.append(&small_label("Draft binding actions disabled"));
+    content.append(&small_label("Draft binding persistence forbidden"));
+    content.append(&small_label("Real writes blocked by default"));
+    content.append(&small_label("Production writes blocked by default"));
+    content.append(&small_label("Real config target not allowed"));
+    content.append(&small_label("Runtime mutation not allowed"));
+    content.append(&small_label("Hyprland reload not allowed"));
+
+    for family in families {
+        content.append(&structured_family_record_draft_binding_family_card(family));
+    }
+
+    frame.set_child(Some(&content));
+    frame
+}
+
+fn structured_family_record_draft_binding_family_card(
+    family: &crate::ui::model::UiStructuredFamily,
+) -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name(&family.record_draft_binding_widget_name);
+    frame.set_tooltip_text(Some(
+        "Family draft-field binding projection. All widgets are insensitive and no write, reload, runtime, persistence, or executor callback is connected.",
+    ));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 5);
+    content.set_margin_top(8);
+    content.set_margin_bottom(8);
+    content.set_margin_start(8);
+    content.set_margin_end(8);
+
+    content.append(&body_label(&format!(
+        "{} draft-field binding",
+        family.label
+    )));
+    append_detail_line(&content, "family", &family.family_id);
+    append_detail_line(&content, "record count", &family.entries.len().to_string());
+    append_detail_line(
+        &content,
+        "draft count",
+        &family.record_draft_count.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "bound field count",
+        &family.bound_field_count.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "insensitive widget count",
+        &family.insensitive_widget_count.to_string(),
+    );
+    append_detail_line(
+        &content,
+        "dirty state",
+        "StructuredFamilyRecordDraftGtkBindingDirtyStateRecomputed",
+    );
+    append_detail_line(
+        &content,
+        "validation status",
+        "StructuredFamilyRecordDraftGtkBindingValidationRecomputed",
+    );
+    append_detail_line(
+        &content,
+        "raw fallback status",
+        "StructuredFamilyRecordDraftGtkBindingRawFallbackPreserved",
+    );
+    append_detail_line(&content, "write policy", "Real writes blocked by default");
+    append_detail_line(
+        &content,
+        "persistence policy",
+        &family.record_draft_binding_persistence_policy_status,
+    );
+    append_detail_line(
+        &content,
+        "action policy",
+        &family.record_draft_binding_action_policy_status,
+    );
+
+    for binding in &family.record_draft_bindings {
+        content.append(&small_label(&format!(
+            "Draft binding {}",
+            binding.record_index + 1
+        )));
+        append_detail_line(&content, "binding status", &binding.binding_status);
+        append_detail_line(&content, "dirty state", &binding.dirty_state);
+        append_detail_line(&content, "validation status", &binding.validation_status);
+        append_detail_line(
+            &content,
+            "raw fallback status",
+            &binding.raw_fallback_status,
+        );
+        for field in binding.fields.iter().take(2) {
+            let field_label = format!(
+                "{} draft field",
+                family
+                    .family_id
+                    .strip_prefix("hl.")
+                    .unwrap_or(&family.family_id)
+            );
+            content.append(&small_label(&field_label));
+            let entry = gtk::Entry::new();
+            entry.set_text(&field.display_value);
+            entry.set_sensitive(false);
+            entry.set_tooltip_text(Some(
+                "Insensitive draft-field widget. Model-only tests prove memory-only updates.",
+            ));
+            content.append(&entry);
+            append_detail_line(&content, "field", &field.field_name);
+            append_detail_line(&content, "widget kind", &field.widget_kind);
+            append_detail_line(&content, "widget sensitive", "false");
+        }
+    }
+
+    let update = gtk::Button::with_label(&family.disabled_record_draft_binding_update_label);
+    update.set_sensitive(false);
+    update.set_tooltip_text(Some(
+        "Disabled. Draft-field updates are memory-only in model tests.",
+    ));
+    content.append(&update);
+
+    let reset =
+        gtk::Button::with_label("Reset structured-family GTK draft binding (not available)");
+    reset.set_sensitive(false);
+    reset.set_tooltip_text(Some("Disabled. This button has no reset callback."));
+    content.append(&reset);
+
+    let persist =
+        gtk::Button::with_label("Persist structured-family GTK draft binding (not available)");
+    persist.set_sensitive(false);
+    persist.set_tooltip_text(Some(
+        "Disabled. Structured-family draft binding persistence is forbidden.",
+    ));
+    content.append(&persist);
+
+    let apply = gtk::Button::with_label(
+        "Apply structured-family GTK draft binding to real config (not available)",
+    );
     apply.set_sensitive(false);
     apply.set_tooltip_text(Some("Disabled. This button has no write callback."));
     content.append(&apply);

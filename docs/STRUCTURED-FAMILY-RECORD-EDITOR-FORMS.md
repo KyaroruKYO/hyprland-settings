@@ -63,4 +63,4 @@ Review-only in-memory draft models now consume the record-editor forms for all s
 
 ## Next Work
 
-Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked.
+Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked.

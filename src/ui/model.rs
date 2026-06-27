@@ -11,9 +11,9 @@ use crate::screen_shader_advisory::{
     run_screen_shader_advisory_check, AdvisoryStatus, ScreenShaderAdvisoryRequest,
 };
 use crate::structured_family::{
-    build_structured_family_temp_write_plan, structured_family_record_drafts,
-    structured_family_record_editor_forms, validate_structured_family_projection,
-    StructuredFamilyProjection,
+    build_structured_family_temp_write_plan, structured_family_record_draft_gtk_bindings,
+    structured_family_record_drafts, structured_family_record_editor_forms,
+    validate_structured_family_projection, StructuredFamilyProjection,
 };
 use crate::validation::ValidationSummary;
 use crate::write_flow::{
@@ -187,6 +187,15 @@ pub struct UiStructuredFamily {
     pub raw_fallback_draft_count: usize,
     pub record_drafts: Vec<UiStructuredRecordDraft>,
     pub disabled_record_draft_update_label: String,
+    pub record_draft_binding_widget_name: String,
+    pub record_draft_binding_status: String,
+    pub record_draft_binding_action_policy_status: String,
+    pub record_draft_binding_persistence_policy_status: String,
+    pub record_draft_binding_count: usize,
+    pub bound_field_count: usize,
+    pub insensitive_widget_count: usize,
+    pub record_draft_bindings: Vec<UiStructuredRecordDraftGtkBinding>,
+    pub disabled_record_draft_binding_update_label: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -245,6 +254,47 @@ pub struct UiStructuredRecordDraft {
     pub hyprctl_reload_run: bool,
     pub production_executor_wired: bool,
     pub draft_written_to_disk: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct UiStructuredRecordDraftGtkBinding {
+    pub family_id: String,
+    pub record_index: usize,
+    pub source_path: String,
+    pub line_number: usize,
+    pub field_count: usize,
+    pub fields: Vec<UiStructuredRecordDraftGtkField>,
+    pub binding_status: String,
+    pub dirty_state: String,
+    pub validation_status: String,
+    pub raw_fallback_status: String,
+    pub action_policy: String,
+    pub write_policy: String,
+    pub persistence_policy: String,
+    pub reset_status: String,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+    pub draft_written_to_disk: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct UiStructuredRecordDraftGtkField {
+    pub field_name: String,
+    pub field_kind: String,
+    pub original_value: String,
+    pub display_value: String,
+    pub draft_value: String,
+    pub widget_kind: String,
+    pub widget_sensitive: bool,
+    pub binding_status: String,
+    pub dirty_state: String,
+    pub validation_status: String,
+    pub raw_fallback_status: String,
+    pub action_policy: String,
+    pub write_policy: String,
+    pub persistence_policy: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -470,7 +520,60 @@ fn ui_structured_family_from_projection(
             production_executor_wired: form.production_executor_wired,
         })
         .collect::<Vec<_>>();
-    let record_drafts = structured_family_record_drafts(&record_editor_forms_for_drafts)
+    let record_draft_models = structured_family_record_drafts(&record_editor_forms_for_drafts);
+    let record_draft_bindings = structured_family_record_draft_gtk_bindings(&record_draft_models)
+        .into_iter()
+        .map(|binding| UiStructuredRecordDraftGtkBinding {
+            family_id: binding.family.family_id().to_string(),
+            record_index: binding.record_index,
+            source_path: binding.source_path.display().to_string(),
+            line_number: binding.line_number,
+            field_count: binding.fields.len(),
+            fields: binding
+                .fields
+                .into_iter()
+                .map(|field| UiStructuredRecordDraftGtkField {
+                    field_name: field.field_name,
+                    field_kind: field.field_kind.as_str().to_string(),
+                    original_value: field.original_value,
+                    display_value: field.display_value,
+                    draft_value: field.draft_value,
+                    widget_kind: field.widget_kind,
+                    widget_sensitive: field.widget_sensitive,
+                    binding_status: field.binding_status.as_str().to_string(),
+                    dirty_state: field.dirty_state.as_str().to_string(),
+                    validation_status: field.validation_status.as_str().to_string(),
+                    raw_fallback_status: field.raw_fallback_status,
+                    action_policy: field.action_policy.as_str().to_string(),
+                    write_policy: field.write_policy.as_str().to_string(),
+                    persistence_policy: field.persistence_policy.as_str().to_string(),
+                })
+                .collect(),
+            binding_status: binding.binding_status.as_str().to_string(),
+            dirty_state: binding.dirty_state.as_str().to_string(),
+            validation_status: binding.validation_status.as_str().to_string(),
+            raw_fallback_status: binding.raw_fallback_status,
+            action_policy: binding.action_policy.as_str().to_string(),
+            write_policy: binding.write_policy.as_str().to_string(),
+            persistence_policy: binding.persistence_policy.as_str().to_string(),
+            reset_status: binding.reset_status,
+            real_config_touched: binding.real_config_touched,
+            runtime_mutated: binding.runtime_mutated,
+            hyprctl_reload_run: binding.hyprctl_reload_run,
+            production_executor_wired: binding.production_executor_wired,
+            draft_written_to_disk: binding.draft_written_to_disk,
+        })
+        .collect::<Vec<_>>();
+    let bound_field_count = record_draft_bindings
+        .iter()
+        .map(|binding| binding.field_count)
+        .sum();
+    let insensitive_widget_count = record_draft_bindings
+        .iter()
+        .flat_map(|binding| binding.fields.iter())
+        .filter(|field| !field.widget_sensitive)
+        .count();
+    let record_drafts = record_draft_models
         .into_iter()
         .map(|draft| UiStructuredRecordDraft {
             family_id: draft.family.family_id().to_string(),
@@ -550,6 +653,24 @@ fn ui_structured_family_from_projection(
         disabled_record_draft_update_label: projection
             .family
             .disabled_record_draft_update_label()
+            .to_string(),
+        record_draft_binding_widget_name: projection
+            .family
+            .record_draft_binding_widget_name()
+            .to_string(),
+        record_draft_binding_status: "StructuredFamilyRecordDraftGtkBindingProjectionReady"
+            .to_string(),
+        record_draft_binding_action_policy_status:
+            "StructuredFamilyRecordDraftGtkBindingActionsDisabled".to_string(),
+        record_draft_binding_persistence_policy_status:
+            "StructuredFamilyRecordDraftGtkBindingPersistenceForbidden".to_string(),
+        record_draft_binding_count: record_draft_bindings.len(),
+        bound_field_count,
+        insensitive_widget_count,
+        record_draft_bindings,
+        disabled_record_draft_binding_update_label: projection
+            .family
+            .disabled_record_draft_binding_update_label()
             .to_string(),
     }
 }

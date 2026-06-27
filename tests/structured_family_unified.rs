@@ -8,11 +8,13 @@ use hyprland_settings::structured_family::{
     build_structured_family_temp_write_plan, prove_fixture_parse_render_reread,
     prove_structured_family_record_draft_reset, prove_structured_family_temp_write_plan,
     render_structured_family_projection, reset_structured_family_record_draft,
-    structured_family_kind_from_id, structured_family_record_drafts,
-    structured_family_record_editor_forms, structured_family_render_target_allowed,
-    update_structured_family_record_draft_field, validate_structured_family_projection,
-    StructuredFamilyKind, StructuredFamilyRecordDraftStatus, StructuredFamilyRecordEditorStatus,
-    StructuredFamilyStatus, StructuredFamilyTempWritePlanStatus, StructuredFamilyValidationStatus,
+    structured_family_kind_from_id, structured_family_record_draft_gtk_bindings,
+    structured_family_record_drafts, structured_family_record_editor_forms,
+    structured_family_render_target_allowed, update_structured_family_record_draft_field,
+    update_structured_family_record_draft_gtk_binding, validate_structured_family_projection,
+    StructuredFamilyKind, StructuredFamilyRecordDraftGtkBindingStatus,
+    StructuredFamilyRecordDraftStatus, StructuredFamilyRecordEditorStatus, StructuredFamilyStatus,
+    StructuredFamilyTempWritePlanStatus, StructuredFamilyValidationStatus,
 };
 
 const FIXTURE_DIR: &str = "tests/fixtures/structured_families";
@@ -419,6 +421,112 @@ fn all_structured_family_record_drafts_track_dirty_state_and_reset_in_memory_onl
 }
 
 #[test]
+fn all_structured_family_record_draft_gtk_bindings_are_disabled_and_memory_only() {
+    for family in StructuredFamilyKind::ALL {
+        let snapshot = snapshot_for_family(family);
+        let projection = snapshot
+            .structured_family_projections()
+            .into_iter()
+            .find(|projection| projection.family == family)
+            .expect("projection should exist");
+        let forms = structured_family_record_editor_forms(&projection);
+        let drafts = structured_family_record_drafts(&forms);
+        let bindings = structured_family_record_draft_gtk_bindings(&drafts);
+
+        assert_eq!(bindings.len(), drafts.len());
+        assert_eq!(bindings.len(), projection.record_count());
+        assert!(!bindings.is_empty());
+        assert!(bindings.iter().any(|binding| {
+            binding.raw_fallback_status
+                == StructuredFamilyRecordDraftStatus::RawFallbackRequired.as_str()
+        }));
+
+        for (index, binding) in bindings.iter().enumerate() {
+            let draft = &drafts[index];
+            assert_eq!(binding.family, family);
+            assert_eq!(binding.record_index, draft.record_index);
+            assert_eq!(binding.source_path, draft.source_path);
+            assert_eq!(binding.line_number, draft.line_number);
+            assert_eq!(binding.fields.len(), draft.draft_fields.len());
+            assert_eq!(
+                binding.binding_status,
+                StructuredFamilyRecordDraftGtkBindingStatus::ProjectionReady
+            );
+            assert_eq!(
+                binding.review_status,
+                StructuredFamilyRecordDraftGtkBindingStatus::ReviewOnly
+            );
+            assert_eq!(
+                binding.created_status,
+                StructuredFamilyRecordDraftGtkBindingStatus::CreatedInMemory
+            );
+            assert!(!binding.widget_sensitive);
+            assert_eq!(
+                binding.action_policy,
+                StructuredFamilyRecordDraftGtkBindingStatus::ActionsDisabled
+            );
+            assert_eq!(
+                binding.write_policy,
+                StructuredFamilyRecordDraftGtkBindingStatus::WritesBlockedByDefault
+            );
+            assert_eq!(
+                binding.persistence_policy,
+                StructuredFamilyRecordDraftGtkBindingStatus::PersistenceForbidden
+            );
+            assert!(binding.fields.iter().all(|field| !field.widget_sensitive));
+            assert!(binding.fields.iter().all(|field| {
+                field.binding_status == StructuredFamilyRecordDraftGtkBindingStatus::Disabled
+            }));
+            assert!(!binding.real_config_touched);
+            assert!(!binding.runtime_mutated);
+            assert!(!binding.hyprctl_reload_run);
+            assert!(!binding.production_executor_wired);
+            assert!(!binding.draft_written_to_disk);
+
+            let field_name = draft
+                .draft_fields
+                .iter()
+                .find(|field| field.name != "raw line")
+                .or_else(|| draft.draft_fields.first())
+                .expect("draft should expose fields")
+                .name
+                .clone();
+            let update = update_structured_family_record_draft_gtk_binding(
+                draft,
+                &field_name,
+                "fixture-gtk-binding",
+            );
+            assert_eq!(
+                update.update_status,
+                StructuredFamilyRecordDraftGtkBindingStatus::CanUpdateMemoryOnly
+            );
+            assert_eq!(
+                update.dirty_state_recomputed,
+                StructuredFamilyRecordDraftGtkBindingStatus::DirtyStateRecomputed
+            );
+            assert_eq!(
+                update.validation_recomputed,
+                StructuredFamilyRecordDraftGtkBindingStatus::ValidationRecomputed
+            );
+            assert_eq!(
+                update.raw_fallback_preserved,
+                StructuredFamilyRecordDraftGtkBindingStatus::RawFallbackPreserved
+            );
+            assert_eq!(
+                update.updated_draft.dirty_state,
+                StructuredFamilyRecordDraftStatus::Dirty
+            );
+            assert!(update.reset_restores_original_fields);
+            assert!(!update.real_config_touched);
+            assert!(!update.runtime_mutated);
+            assert!(!update.hyprctl_reload_run);
+            assert!(!update.production_executor_wired);
+            assert!(!update.draft_written_to_disk);
+        }
+    }
+}
+
+#[test]
 fn structured_family_kinds_cover_required_ids_and_widget_names() {
     let required = [
         (
@@ -495,6 +603,14 @@ fn structured_family_ui_source_exposes_all_cards_without_write_handlers() {
         "hyprland-settings-structured-family-hl-gesture-record-draft",
         "hyprland-settings-structured-family-hl-device-record-draft",
         "hyprland-settings-structured-family-hl-permission-record-draft",
+        "hyprland-settings-structured-family-record-draft-binding-section",
+        "hyprland-settings-structured-family-hl-monitor-record-draft-binding",
+        "hyprland-settings-structured-family-hl-bind-record-draft-binding",
+        "hyprland-settings-structured-family-hl-animation-record-draft-binding",
+        "hyprland-settings-structured-family-hl-curve-record-draft-binding",
+        "hyprland-settings-structured-family-hl-gesture-record-draft-binding",
+        "hyprland-settings-structured-family-hl-device-record-draft-binding",
+        "hyprland-settings-structured-family-hl-permission-record-draft-binding",
     ] {
         assert!(
             model.contains(widget_name)
@@ -552,6 +668,25 @@ fn structured_family_ui_source_exposes_all_cards_without_write_handlers() {
         "Reset structured-family draft (not available)",
         "Persist structured-family draft (not available)",
         "Apply structured-family draft to real config (not available)",
+        "Disabled live GTK draft-field binding",
+        "Draft-field binding projection ready",
+        "Draft-field widgets insensitive",
+        "Draft-field update is memory-only",
+        "Draft dirty state recomputed",
+        "Draft validation recomputed",
+        "Raw fallback preserved",
+        "Draft binding actions disabled",
+        "Draft binding persistence forbidden",
+        "Update monitor draft field (not available)",
+        "Update bind draft field (not available)",
+        "Update animation draft field (not available)",
+        "Update curve draft field (not available)",
+        "Update gesture draft field (not available)",
+        "Update device draft field (not available)",
+        "Update permission draft field (not available)",
+        "Reset structured-family GTK draft binding (not available)",
+        "Persist structured-family GTK draft binding (not available)",
+        "Apply structured-family GTK draft binding to real config (not available)",
     ] {
         assert!(
             window.contains(copy) || model.contains(copy) || structured_family.contains(copy),
@@ -599,6 +734,38 @@ fn structured_family_record_draft_section_has_no_write_reload_persistence_or_exe
         assert!(
             !section.contains(forbidden),
             "record draft section must not contain {forbidden}"
+        );
+    }
+    assert!(section.contains("set_sensitive(false)"));
+}
+
+#[test]
+fn structured_family_record_draft_binding_section_has_no_write_reload_persistence_or_executor_handlers(
+) {
+    let window = fs::read_to_string("src/ui/window.rs").expect("window source should read");
+    let section_start = window
+        .find("fn structured_family_record_draft_binding_section")
+        .expect("record draft binding section should exist");
+    let section_end = window[section_start..]
+        .find("fn disabled_future_approval_cards_section")
+        .map(|offset| section_start + offset)
+        .expect("record draft binding section should end before future approval cards");
+    let section = &window[section_start..section_end];
+
+    for forbidden in [
+        "connect_clicked",
+        "apply_setting_change",
+        "write_flow",
+        "hyprctl",
+        "hyprctl reload",
+        "Command::",
+        "File::create",
+        "write_all",
+        "serde_json::to_writer",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "record draft binding section must not contain {forbidden}"
         );
     }
     assert!(section.contains("set_sensitive(false)"));
@@ -677,6 +844,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-temp-write-plans.v0.55.2.json",
         "data/reports/structured-family-record-editor-forms.v0.55.2.json",
         "data/reports/structured-family-record-draft-model.v0.55.2.json",
+        "data/reports/structured-family-record-draft-gtk-binding.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -752,7 +920,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
+        "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -804,7 +972,7 @@ fn structured_family_temp_write_plan_report_preserves_safety_boundaries() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
+        "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
     );
 }
 
@@ -861,7 +1029,7 @@ fn structured_family_record_editor_forms_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
+        "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
     );
 }
 
@@ -918,7 +1086,85 @@ fn structured_family_record_draft_model_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
+        "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
+    );
+}
+
+#[test]
+fn structured_family_record_draft_gtk_binding_report_preserves_review_only_policy() {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string("data/reports/structured-family-record-draft-gtk-binding.v0.55.2.json")
+            .expect("record draft GTK binding report should read"),
+    )
+    .expect("record draft GTK binding report should be valid JSON");
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-record-draft-gtk-binding"
+    );
+    assert_eq!(report["realConfigTouched"], false);
+    assert_eq!(report["runtimeMutated"], false);
+    assert_eq!(report["hyprctlReloadRun"], false);
+    assert_eq!(report["productionBehaviorEnabled"], false);
+    assert_eq!(report["productionExecutorWired"], false);
+    assert_eq!(report["draftWrittenToDisk"], false);
+    assert_eq!(
+        report["ui"]["sectionWidgetName"],
+        "hyprland-settings-structured-family-record-draft-binding-section"
+    );
+    assert_eq!(report["ui"]["controlsConnectedToMutationHandlers"], false);
+    for family in [
+        "hl.monitor",
+        "hl.bind",
+        "hl.animation",
+        "hl.curve",
+        "hl.gesture",
+        "hl.device",
+        "hl.permission",
+    ] {
+        assert_eq!(
+            report["bindingStatusByFamily"][family],
+            "StructuredFamilyRecordDraftGtkBindingProjectionReady"
+        );
+        assert!(report["bindingWidgetByFamily"][family]
+            .as_str()
+            .expect("binding widget should be text")
+            .contains("-record-draft-binding"));
+        assert_eq!(
+            report["insensitiveWidgetStatusByFamily"][family],
+            "StructuredFamilyRecordDraftGtkBindingDisabled"
+        );
+        assert_eq!(
+            report["dirtyStateRecomputeStatusByFamily"][family],
+            "StructuredFamilyRecordDraftGtkBindingDirtyStateRecomputed"
+        );
+        assert_eq!(
+            report["validationRecomputeStatusByFamily"][family],
+            "StructuredFamilyRecordDraftGtkBindingValidationRecomputed"
+        );
+        assert_eq!(
+            report["resetProofStatusByFamily"][family],
+            "StructuredFamilyRecordDraftResetRestoredOriginalFields"
+        );
+        assert_eq!(
+            report["rawFallbackStatusByFamily"][family],
+            "StructuredFamilyRecordDraftGtkBindingRawFallbackPreserved"
+        );
+        assert_eq!(
+            report["actionPolicyByFamily"][family],
+            "StructuredFamilyRecordDraftGtkBindingActionsDisabled"
+        );
+        assert_eq!(
+            report["writePolicyByFamily"][family],
+            "StructuredFamilyRecordDraftGtkBindingWritesBlockedByDefault"
+        );
+        assert_eq!(
+            report["persistencePolicyByFamily"][family],
+            "StructuredFamilyRecordDraftGtkBindingPersistenceForbidden"
+        );
+    }
+    assert_eq!(
+        report["nextRecommendedWork"],
+        "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
     );
 }
 

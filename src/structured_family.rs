@@ -85,6 +85,22 @@ impl StructuredFamilyKind {
         }
     }
 
+    pub fn record_draft_binding_widget_name(self) -> &'static str {
+        match self {
+            Self::Monitor => "hyprland-settings-structured-family-hl-monitor-record-draft-binding",
+            Self::Bind => "hyprland-settings-structured-family-hl-bind-record-draft-binding",
+            Self::Animation => {
+                "hyprland-settings-structured-family-hl-animation-record-draft-binding"
+            }
+            Self::Curve => "hyprland-settings-structured-family-hl-curve-record-draft-binding",
+            Self::Gesture => "hyprland-settings-structured-family-hl-gesture-record-draft-binding",
+            Self::Device => "hyprland-settings-structured-family-hl-device-record-draft-binding",
+            Self::Permission => {
+                "hyprland-settings-structured-family-hl-permission-record-draft-binding"
+            }
+        }
+    }
+
     pub fn syntax_description(self) -> &'static str {
         match self {
             Self::Monitor => "monitor = name/output, resolution, position, scale, options",
@@ -188,6 +204,18 @@ impl StructuredFamilyKind {
             Self::Gesture => "Update gesture draft (not available)",
             Self::Device => "Update device draft (not available)",
             Self::Permission => "Update permission draft (not available)",
+        }
+    }
+
+    pub fn disabled_record_draft_binding_update_label(self) -> &'static str {
+        match self {
+            Self::Monitor => "Update monitor draft field (not available)",
+            Self::Bind => "Update bind draft field (not available)",
+            Self::Animation => "Update animation draft field (not available)",
+            Self::Curve => "Update curve draft field (not available)",
+            Self::Gesture => "Update gesture draft field (not available)",
+            Self::Device => "Update device draft field (not available)",
+            Self::Permission => "Update permission draft field (not available)",
         }
     }
 
@@ -335,6 +363,51 @@ impl StructuredFamilyRecordDraftStatus {
             Self::ActionsDisabled => "StructuredFamilyRecordDraftActionsDisabled",
             Self::WritesBlockedByDefault => "StructuredFamilyRecordDraftWritesBlockedByDefault",
             Self::PersistenceForbidden => "StructuredFamilyRecordDraftPersistenceForbidden",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyRecordDraftGtkBindingStatus {
+    Unavailable,
+    ReviewOnly,
+    ProjectionReady,
+    CreatedInMemory,
+    Disabled,
+    CanUpdateMemoryOnly,
+    DirtyStateRecomputed,
+    ValidationRecomputed,
+    RawFallbackPreserved,
+    ActionsDisabled,
+    WritesBlockedByDefault,
+    PersistenceForbidden,
+}
+
+impl StructuredFamilyRecordDraftGtkBindingStatus {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Unavailable => "StructuredFamilyRecordDraftGtkBindingUnavailable",
+            Self::ReviewOnly => "StructuredFamilyRecordDraftGtkBindingReviewOnly",
+            Self::ProjectionReady => "StructuredFamilyRecordDraftGtkBindingProjectionReady",
+            Self::CreatedInMemory => "StructuredFamilyRecordDraftGtkBindingCreatedInMemory",
+            Self::Disabled => "StructuredFamilyRecordDraftGtkBindingDisabled",
+            Self::CanUpdateMemoryOnly => "StructuredFamilyRecordDraftGtkBindingCanUpdateMemoryOnly",
+            Self::DirtyStateRecomputed => {
+                "StructuredFamilyRecordDraftGtkBindingDirtyStateRecomputed"
+            }
+            Self::ValidationRecomputed => {
+                "StructuredFamilyRecordDraftGtkBindingValidationRecomputed"
+            }
+            Self::RawFallbackPreserved => {
+                "StructuredFamilyRecordDraftGtkBindingRawFallbackPreserved"
+            }
+            Self::ActionsDisabled => "StructuredFamilyRecordDraftGtkBindingActionsDisabled",
+            Self::WritesBlockedByDefault => {
+                "StructuredFamilyRecordDraftGtkBindingWritesBlockedByDefault"
+            }
+            Self::PersistenceForbidden => {
+                "StructuredFamilyRecordDraftGtkBindingPersistenceForbidden"
+            }
         }
     }
 }
@@ -527,6 +600,74 @@ pub struct StructuredFamilyRecordDraftResetProof {
     pub record_index: usize,
     pub original_fields_restored: bool,
     pub dirty_state_after_reset: StructuredFamilyRecordDraftStatus,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+    pub draft_written_to_disk: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyRecordDraftGtkField {
+    pub family: StructuredFamilyKind,
+    pub record_index: usize,
+    pub source_path: PathBuf,
+    pub line_number: usize,
+    pub field_name: String,
+    pub field_kind: StructuredFamilyRecordEditorFieldKind,
+    pub original_value: String,
+    pub display_value: String,
+    pub draft_value: String,
+    pub widget_kind: String,
+    pub widget_sensitive: bool,
+    pub binding_status: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub dirty_state: StructuredFamilyRecordDraftStatus,
+    pub validation_status: StructuredFamilyRecordDraftStatus,
+    pub raw_fallback_status: String,
+    pub action_policy: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub write_policy: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub persistence_policy: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+    pub draft_written_to_disk: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyRecordDraftGtkBinding {
+    pub family: StructuredFamilyKind,
+    pub record_index: usize,
+    pub source_path: PathBuf,
+    pub line_number: usize,
+    pub fields: Vec<StructuredFamilyRecordDraftGtkField>,
+    pub binding_status: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub review_status: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub created_status: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub widget_sensitive: bool,
+    pub dirty_state: StructuredFamilyRecordDraftStatus,
+    pub validation_status: StructuredFamilyRecordDraftStatus,
+    pub raw_fallback_status: String,
+    pub action_policy: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub write_policy: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub persistence_policy: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub reset_status: String,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+    pub draft_written_to_disk: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyRecordDraftGtkUpdateResult {
+    pub updated_draft: StructuredFamilyRecordDraft,
+    pub binding: StructuredFamilyRecordDraftGtkBinding,
+    pub update_status: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub dirty_state_recomputed: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub validation_recomputed: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub raw_fallback_preserved: StructuredFamilyRecordDraftGtkBindingStatus,
+    pub reset_restores_original_fields: bool,
     pub real_config_touched: bool,
     pub runtime_mutated: bool,
     pub hyprctl_reload_run: bool,
@@ -1031,6 +1172,98 @@ pub fn prove_structured_family_record_draft_reset(
         record_index: reset.record_index,
         original_fields_restored: reset.draft_fields == reset.original_fields,
         dirty_state_after_reset: reset.dirty_state,
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
+        production_executor_wired: false,
+        draft_written_to_disk: false,
+    }
+}
+
+pub fn structured_family_record_draft_gtk_bindings(
+    drafts: &[StructuredFamilyRecordDraft],
+) -> Vec<StructuredFamilyRecordDraftGtkBinding> {
+    drafts
+        .iter()
+        .map(structured_family_record_draft_gtk_binding)
+        .collect()
+}
+
+pub fn structured_family_record_draft_gtk_binding(
+    draft: &StructuredFamilyRecordDraft,
+) -> StructuredFamilyRecordDraftGtkBinding {
+    let fields = draft
+        .draft_fields
+        .iter()
+        .map(|field| StructuredFamilyRecordDraftGtkField {
+            family: draft.family,
+            record_index: draft.record_index,
+            source_path: draft.source_path.clone(),
+            line_number: draft.line_number,
+            field_name: field.name.clone(),
+            field_kind: field.kind,
+            original_value: field.original_value.clone(),
+            display_value: field.draft_value.clone(),
+            draft_value: field.draft_value.clone(),
+            widget_kind: "gtk::Entry (insensitive)".to_string(),
+            widget_sensitive: false,
+            binding_status: StructuredFamilyRecordDraftGtkBindingStatus::Disabled,
+            dirty_state: draft.dirty_state,
+            validation_status: draft.validation_status,
+            raw_fallback_status: draft.raw_fallback_status.clone(),
+            action_policy: StructuredFamilyRecordDraftGtkBindingStatus::ActionsDisabled,
+            write_policy: StructuredFamilyRecordDraftGtkBindingStatus::WritesBlockedByDefault,
+            persistence_policy: StructuredFamilyRecordDraftGtkBindingStatus::PersistenceForbidden,
+            real_config_touched: false,
+            runtime_mutated: false,
+            hyprctl_reload_run: false,
+            production_executor_wired: false,
+            draft_written_to_disk: false,
+        })
+        .collect::<Vec<_>>();
+
+    StructuredFamilyRecordDraftGtkBinding {
+        family: draft.family,
+        record_index: draft.record_index,
+        source_path: draft.source_path.clone(),
+        line_number: draft.line_number,
+        fields,
+        binding_status: StructuredFamilyRecordDraftGtkBindingStatus::ProjectionReady,
+        review_status: StructuredFamilyRecordDraftGtkBindingStatus::ReviewOnly,
+        created_status: StructuredFamilyRecordDraftGtkBindingStatus::CreatedInMemory,
+        widget_sensitive: false,
+        dirty_state: draft.dirty_state,
+        validation_status: draft.validation_status,
+        raw_fallback_status: draft.raw_fallback_status.clone(),
+        action_policy: StructuredFamilyRecordDraftGtkBindingStatus::ActionsDisabled,
+        write_policy: StructuredFamilyRecordDraftGtkBindingStatus::WritesBlockedByDefault,
+        persistence_policy: StructuredFamilyRecordDraftGtkBindingStatus::PersistenceForbidden,
+        reset_status: draft.reset_status.clone(),
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
+        production_executor_wired: false,
+        draft_written_to_disk: false,
+    }
+}
+
+pub fn update_structured_family_record_draft_gtk_binding(
+    draft: &StructuredFamilyRecordDraft,
+    field_name: &str,
+    new_value: impl Into<String>,
+) -> StructuredFamilyRecordDraftGtkUpdateResult {
+    let updated_draft = update_structured_family_record_draft_field(draft, field_name, new_value);
+    let binding = structured_family_record_draft_gtk_binding(&updated_draft);
+    let reset = reset_structured_family_record_draft(&updated_draft);
+
+    StructuredFamilyRecordDraftGtkUpdateResult {
+        updated_draft,
+        binding,
+        update_status: StructuredFamilyRecordDraftGtkBindingStatus::CanUpdateMemoryOnly,
+        dirty_state_recomputed: StructuredFamilyRecordDraftGtkBindingStatus::DirtyStateRecomputed,
+        validation_recomputed: StructuredFamilyRecordDraftGtkBindingStatus::ValidationRecomputed,
+        raw_fallback_preserved: StructuredFamilyRecordDraftGtkBindingStatus::RawFallbackPreserved,
+        reset_restores_original_fields: reset.draft_fields == reset.original_fields,
         real_config_touched: false,
         runtime_mutated: false,
         hyprctl_reload_run: false,

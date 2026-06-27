@@ -1,0 +1,213 @@
+{
+  "artifactKind": "structured-family-record-draft-gtk-binding",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "0fd1dbdcd5f2073adad1d5e478f371b0d9ebc8ea",
+  "latestCommitBeforeSprint": "0fd1dbdcd5f2073adad1d5e478f371b0d9ebc8ea",
+  "goal": "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked.",
+  "families": [
+    "hl.monitor",
+    "hl.bind",
+    "hl.animation",
+    "hl.curve",
+    "hl.gesture",
+    "hl.device",
+    "hl.permission"
+  ],
+  "bindingStatusByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftGtkBindingProjectionReady",
+    "hl.bind": "StructuredFamilyRecordDraftGtkBindingProjectionReady",
+    "hl.animation": "StructuredFamilyRecordDraftGtkBindingProjectionReady",
+    "hl.curve": "StructuredFamilyRecordDraftGtkBindingProjectionReady",
+    "hl.gesture": "StructuredFamilyRecordDraftGtkBindingProjectionReady",
+    "hl.device": "StructuredFamilyRecordDraftGtkBindingProjectionReady",
+    "hl.permission": "StructuredFamilyRecordDraftGtkBindingProjectionReady"
+  },
+  "bindingWidgetByFamily": {
+    "hl.monitor": "hyprland-settings-structured-family-hl-monitor-record-draft-binding",
+    "hl.bind": "hyprland-settings-structured-family-hl-bind-record-draft-binding",
+    "hl.animation": "hyprland-settings-structured-family-hl-animation-record-draft-binding",
+    "hl.curve": "hyprland-settings-structured-family-hl-curve-record-draft-binding",
+    "hl.gesture": "hyprland-settings-structured-family-hl-gesture-record-draft-binding",
+    "hl.device": "hyprland-settings-structured-family-hl-device-record-draft-binding",
+    "hl.permission": "hyprland-settings-structured-family-hl-permission-record-draft-binding"
+  },
+  "boundFieldProjectionByFamily": {
+    "hl.monitor": [
+      "name/output",
+      "resolution",
+      "position",
+      "scale",
+      "additional raw options",
+      "raw line"
+    ],
+    "hl.bind": [
+      "modifier",
+      "key",
+      "dispatcher",
+      "argument",
+      "flags/type",
+      "raw line"
+    ],
+    "hl.animation": [
+      "name",
+      "enabled",
+      "bezier/curve reference",
+      "speed",
+      "style",
+      "additional parameters",
+      "raw line"
+    ],
+    "hl.curve": [
+      "name",
+      "x1",
+      "y1",
+      "x2",
+      "y2",
+      "raw line"
+    ],
+    "hl.gesture": [
+      "gesture name",
+      "fingers",
+      "direction",
+      "dispatcher/action",
+      "argument",
+      "raw line"
+    ],
+    "hl.device": [
+      "device name",
+      "section/options",
+      "option key",
+      "option value",
+      "raw line"
+    ],
+    "hl.permission": [
+      "target/application/rule",
+      "permission key",
+      "permission value/action",
+      "raw line"
+    ]
+  },
+  "insensitiveWidgetStatusByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftGtkBindingDisabled",
+    "hl.bind": "StructuredFamilyRecordDraftGtkBindingDisabled",
+    "hl.animation": "StructuredFamilyRecordDraftGtkBindingDisabled",
+    "hl.curve": "StructuredFamilyRecordDraftGtkBindingDisabled",
+    "hl.gesture": "StructuredFamilyRecordDraftGtkBindingDisabled",
+    "hl.device": "StructuredFamilyRecordDraftGtkBindingDisabled",
+    "hl.permission": "StructuredFamilyRecordDraftGtkBindingDisabled"
+  },
+  "dirtyStateRecomputeStatusByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftGtkBindingDirtyStateRecomputed",
+    "hl.bind": "StructuredFamilyRecordDraftGtkBindingDirtyStateRecomputed",
+    "hl.animation": "StructuredFamilyRecordDraftGtkBindingDirtyStateRecomputed",
+    "hl.curve": "StructuredFamilyRecordDraftGtkBindingDirtyStateRecomputed",
+    "hl.gesture": "StructuredFamilyRecordDraftGtkBindingDirtyStateRecomputed",
+    "hl.device": "StructuredFamilyRecordDraftGtkBindingDirtyStateRecomputed",
+    "hl.permission": "StructuredFamilyRecordDraftGtkBindingDirtyStateRecomputed"
+  },
+  "validationRecomputeStatusByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftGtkBindingValidationRecomputed",
+    "hl.bind": "StructuredFamilyRecordDraftGtkBindingValidationRecomputed",
+    "hl.animation": "StructuredFamilyRecordDraftGtkBindingValidationRecomputed",
+    "hl.curve": "StructuredFamilyRecordDraftGtkBindingValidationRecomputed",
+    "hl.gesture": "StructuredFamilyRecordDraftGtkBindingValidationRecomputed",
+    "hl.device": "StructuredFamilyRecordDraftGtkBindingValidationRecomputed",
+    "hl.permission": "StructuredFamilyRecordDraftGtkBindingValidationRecomputed"
+  },
+  "resetProofStatusByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftResetRestoredOriginalFields",
+    "hl.bind": "StructuredFamilyRecordDraftResetRestoredOriginalFields",
+    "hl.animation": "StructuredFamilyRecordDraftResetRestoredOriginalFields",
+    "hl.curve": "StructuredFamilyRecordDraftResetRestoredOriginalFields",
+    "hl.gesture": "StructuredFamilyRecordDraftResetRestoredOriginalFields",
+    "hl.device": "StructuredFamilyRecordDraftResetRestoredOriginalFields",
+    "hl.permission": "StructuredFamilyRecordDraftResetRestoredOriginalFields"
+  },
+  "rawFallbackStatusByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftGtkBindingRawFallbackPreserved",
+    "hl.bind": "StructuredFamilyRecordDraftGtkBindingRawFallbackPreserved",
+    "hl.animation": "StructuredFamilyRecordDraftGtkBindingRawFallbackPreserved",
+    "hl.curve": "StructuredFamilyRecordDraftGtkBindingRawFallbackPreserved",
+    "hl.gesture": "StructuredFamilyRecordDraftGtkBindingRawFallbackPreserved",
+    "hl.device": "StructuredFamilyRecordDraftGtkBindingRawFallbackPreserved",
+    "hl.permission": "StructuredFamilyRecordDraftGtkBindingRawFallbackPreserved"
+  },
+  "actionPolicyByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftGtkBindingActionsDisabled",
+    "hl.bind": "StructuredFamilyRecordDraftGtkBindingActionsDisabled",
+    "hl.animation": "StructuredFamilyRecordDraftGtkBindingActionsDisabled",
+    "hl.curve": "StructuredFamilyRecordDraftGtkBindingActionsDisabled",
+    "hl.gesture": "StructuredFamilyRecordDraftGtkBindingActionsDisabled",
+    "hl.device": "StructuredFamilyRecordDraftGtkBindingActionsDisabled",
+    "hl.permission": "StructuredFamilyRecordDraftGtkBindingActionsDisabled"
+  },
+  "writePolicyByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftGtkBindingWritesBlockedByDefault",
+    "hl.bind": "StructuredFamilyRecordDraftGtkBindingWritesBlockedByDefault",
+    "hl.animation": "StructuredFamilyRecordDraftGtkBindingWritesBlockedByDefault",
+    "hl.curve": "StructuredFamilyRecordDraftGtkBindingWritesBlockedByDefault",
+    "hl.gesture": "StructuredFamilyRecordDraftGtkBindingWritesBlockedByDefault",
+    "hl.device": "StructuredFamilyRecordDraftGtkBindingWritesBlockedByDefault",
+    "hl.permission": "StructuredFamilyRecordDraftGtkBindingWritesBlockedByDefault"
+  },
+  "persistencePolicyByFamily": {
+    "hl.monitor": "StructuredFamilyRecordDraftGtkBindingPersistenceForbidden",
+    "hl.bind": "StructuredFamilyRecordDraftGtkBindingPersistenceForbidden",
+    "hl.animation": "StructuredFamilyRecordDraftGtkBindingPersistenceForbidden",
+    "hl.curve": "StructuredFamilyRecordDraftGtkBindingPersistenceForbidden",
+    "hl.gesture": "StructuredFamilyRecordDraftGtkBindingPersistenceForbidden",
+    "hl.device": "StructuredFamilyRecordDraftGtkBindingPersistenceForbidden",
+    "hl.permission": "StructuredFamilyRecordDraftGtkBindingPersistenceForbidden"
+  },
+  "ui": {
+    "sectionWidgetName": "hyprland-settings-structured-family-record-draft-binding-section",
+    "visibleStrings": [
+      "Disabled live GTK draft-field binding",
+      "Draft-field binding projection ready",
+      "Draft-field widgets insensitive",
+      "Draft-field update is memory-only",
+      "Draft dirty state recomputed",
+      "Draft validation recomputed",
+      "Raw fallback preserved",
+      "Draft binding actions disabled",
+      "Draft binding persistence forbidden",
+      "Real writes blocked by default",
+      "Production writes blocked by default",
+      "Real config target not allowed",
+      "Runtime mutation not allowed",
+      "Hyprland reload not allowed"
+    ],
+    "controlsConnectedToMutationHandlers": false
+  },
+  "realConfigTouched": false,
+  "runtimeMutated": false,
+  "hyprctlReloadRun": false,
+  "productionBehaviorEnabled": false,
+  "productionExecutorWired": false,
+  "draftWrittenToDisk": false,
+  "filesChanged": [
+    "src/structured_family.rs",
+    "src/ui/model.rs",
+    "src/ui/window.rs",
+    "tests/structured_family_unified.rs",
+    "data/reports/structured-family-record-draft-gtk-binding.v0.55.2.json",
+    "docs/STRUCTURED-FAMILY-RECORD-DRAFT-GTK-BINDING.md"
+  ],
+  "testsAdded": [
+    "all_structured_family_record_draft_gtk_bindings_are_disabled_and_memory_only",
+    "structured_family_record_draft_binding_section_has_no_write_reload_persistence_or_executor_handlers",
+    "structured_family_record_draft_gtk_binding_report_preserves_review_only_policy"
+  ],
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "jq": "passed",
+    "gitDiffCheck": "passed",
+    "cargoBuildRelease": "passed"
+  },
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260627_015128",
+  "nextRecommendedWork": "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
+}

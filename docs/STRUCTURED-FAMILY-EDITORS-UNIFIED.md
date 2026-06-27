@@ -41,4 +41,4 @@ The work is review-only. Structured-family writes remain blocked by default.
 
 ## Next Work
 
-Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked.
+Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked.

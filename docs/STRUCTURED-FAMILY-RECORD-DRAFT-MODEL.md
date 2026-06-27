@@ -54,4 +54,4 @@ All update, reset, persist, and apply controls are insensitive.
 
 ## Next Work
 
-Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked.
+Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked.

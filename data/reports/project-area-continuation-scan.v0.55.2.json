@@ -118,12 +118,12 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "review-only validators, temp-fixture write plans, per-record editor forms, and in-memory draft models are complete for seven families; writes blocked and draft persistence forbidden",
+      "currentStatus": "review-only validators, temp-fixture write plans, per-record editor forms, in-memory draft models, and disabled GTK draft-field binding are complete for seven families; writes blocked and draft persistence forbidden",
       "classification": "can_continue_now",
       "canContinueNow": true,
-      "reason": "Shared model, fixture parse/render proof, conservative validators, temp-fixture write plans, per-record form projections, in-memory draft state, and UI status can advance without production writes.",
-      "blockingDependency": "disabled live GTK draft-field binding before any future fixture-only executor review",
-      "safeNextWork": "add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked",
+      "reason": "Shared model, fixture parse/render proof, conservative validators, temp-fixture write plans, per-record form projections, in-memory draft state, disabled GTK draft-field binding, and UI status can advance without production writes.",
+      "blockingDependency": "fixture-only draft-to-rendered-record planning before any future fixture-only executor review",
+      "safeNextWork": "add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked",
       "mustNotDo": "do not enable real structured-family writes",
       "evidenceUsed": [
         "src/structured_family.rs",
@@ -131,7 +131,8 @@
         "data/reports/structured-family-editors-unified.v0.55.2.json",
         "data/reports/structured-family-temp-write-plans.v0.55.2.json",
         "data/reports/structured-family-record-editor-forms.v0.55.2.json",
-        "data/reports/structured-family-record-draft-model.v0.55.2.json"
+        "data/reports/structured-family-record-draft-model.v0.55.2.json",
+        "data/reports/structured-family-record-draft-gtk-binding.v0.55.2.json"
       ]
     },
     {
@@ -178,5 +179,5 @@
     }
   ],
   "activeSafeArea": "Structured-family editors/writes",
-  "recommendedNextWork": "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
+  "recommendedNextWork": "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
 }

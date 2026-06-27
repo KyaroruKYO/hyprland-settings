@@ -218,5 +218,5 @@
     "hyprctlReloadRun": false,
     "hyprland0554MigrationActivated": false
   },
-  "recommendedNextWork": "Add disabled live GTK draft-field binding for structured-family record drafts while keeping persistence and real writes blocked."
+  "recommendedNextWork": "Add fixture-only structured-family draft-to-rendered-record planning while keeping real writes blocked."
 }
