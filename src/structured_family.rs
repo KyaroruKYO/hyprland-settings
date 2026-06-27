@@ -803,6 +803,79 @@ impl StructuredFamilyDraftRenderedRecordStagedApplyBlocker {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus {
+    Unavailable,
+    ReviewOnly,
+    Ready,
+    ReportReady,
+    PlanLinked,
+    StagesSummarized,
+    OperationsSummarized,
+    ChangedOperationsSummarized,
+    NoopOperationsSummarized,
+    RawFallbackPreserved,
+    UnsupportedNotProvenPreserved,
+    BlockedPlanSummarized,
+    ExecutorUnavailable,
+    NotExecuted,
+    FixtureOnly,
+    ActionsDisabled,
+    WritesBlockedByDefault,
+    PersistenceForbidden,
+    RealConfigTargetForbidden,
+    ProductionExecutorForbidden,
+}
+
+impl StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Unavailable => "StructuredFamilyDraftRenderedRecordStagedApplyDryRunUnavailable",
+            Self::ReviewOnly => "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReviewOnly",
+            Self::Ready => "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReady",
+            Self::ReportReady => "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReportReady",
+            Self::PlanLinked => "StructuredFamilyDraftRenderedRecordStagedApplyDryRunPlanLinked",
+            Self::StagesSummarized => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyDryRunStagesSummarized"
+            }
+            Self::OperationsSummarized => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOperationsSummarized"
+            }
+            Self::ChangedOperationsSummarized => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyDryRunChangedOperationsSummarized"
+            }
+            Self::NoopOperationsSummarized => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNoopOperationsSummarized"
+            }
+            Self::RawFallbackPreserved => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyDryRunRawFallbackPreserved"
+            }
+            Self::UnsupportedNotProvenPreserved => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyDryRunUnsupportedNotProvenPreserved"
+            }
+            Self::BlockedPlanSummarized => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyDryRunBlockedPlanSummarized"
+            }
+            Self::ExecutorUnavailable => {
+                "StructuredFamilyDraftRenderedRecordStagedApplyDryRunExecutorUnavailable"
+            }
+            Self::NotExecuted => "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNotExecuted",
+            Self::FixtureOnly => "StructuredFamilyDraftRenderedRecordFixtureOnly",
+            Self::ActionsDisabled => "StructuredFamilyDraftRenderedRecordActionsDisabled",
+            Self::WritesBlockedByDefault => {
+                "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+            }
+            Self::PersistenceForbidden => "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+            Self::RealConfigTargetForbidden => {
+                "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+            }
+            Self::ProductionExecutorForbidden => {
+                "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden"
+            }
+        }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum StructuredFamilyDraftRenderedRecordApplyStageKind {
     Preflight,
     Review,
@@ -1431,6 +1504,78 @@ pub struct StructuredFamilyDraftRenderedRecordStagedApplyPlan {
     pub draft_written_to_disk: bool,
     pub staged_apply_plan_written_to_disk: bool,
     pub staged_apply_executed: bool,
+    pub rendered_record_written_to_real_config: bool,
+    pub real_config_touched: bool,
+    pub runtime_mutated: bool,
+    pub hyprctl_reload_run: bool,
+    pub production_executor_wired: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordStagedApplyDryRunEntry {
+    pub family: StructuredFamilyKind,
+    pub record_index: usize,
+    pub stage_kind: StructuredFamilyDraftRenderedRecordApplyStageKind,
+    pub operation_kind: String,
+    pub original_raw_line: String,
+    pub rendered_record_preview: String,
+    pub status: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub action_policy: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub write_policy: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub persistence_policy: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub real_config_target_policy: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub production_executor_policy: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyDraftRenderedRecordStagedApplyDryRunReport {
+    pub family: StructuredFamilyKind,
+    pub source_draft_count: usize,
+    pub source_plan_count: usize,
+    pub review_entry_count: usize,
+    pub changed_entry_count: usize,
+    pub noop_entry_count: usize,
+    pub raw_fallback_entry_count: usize,
+    pub unsupported_not_proven_entry_count: usize,
+    pub field_diff_count: usize,
+    pub staged_apply_plan_linked: bool,
+    pub stage_count: usize,
+    pub operation_count: usize,
+    pub changed_operation_count: usize,
+    pub noop_operation_count: usize,
+    pub raw_fallback_preservation_operation_count: usize,
+    pub unsupported_not_proven_preservation_operation_count: usize,
+    pub blocked_plan_count: usize,
+    pub executor_unavailable_by_design: bool,
+    pub dry_run_report_status: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub plan_status: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub stage_summary_status: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub operation_summary_status: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub changed_operation_summary_status:
+        StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub noop_operation_summary_status: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub raw_fallback_preservation_summary_status:
+        StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub unsupported_not_proven_preservation_summary_status:
+        StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub blocked_plan_summary_status: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub executor_availability_status: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub dry_run_execution_status: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub entries: Vec<StructuredFamilyDraftRenderedRecordStagedApplyDryRunEntry>,
+    pub summary_text: String,
+    pub risk_summary: String,
+    pub fixture_only_status: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub action_policy: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub write_policy: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub persistence_policy: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub real_config_target_policy: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub production_executor_policy: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
+    pub blockers: Vec<StructuredFamilyDraftRenderedRecordStagedApplyBlocker>,
+    pub draft_written_to_disk: bool,
+    pub dry_run_report_written_to_disk: bool,
+    pub staged_apply_plan_written_to_disk: bool,
+    pub staged_apply_executed: bool,
+    pub dry_run_executed: bool,
     pub rendered_record_written_to_real_config: bool,
     pub real_config_touched: bool,
     pub runtime_mutated: bool,
@@ -3218,6 +3363,138 @@ fn structured_family_draft_rendered_record_staged_apply_operation(
             StructuredFamilyDraftRenderedRecordStagedApplyStatus::RealConfigTargetForbidden,
         production_executor_policy:
             StructuredFamilyDraftRenderedRecordStagedApplyStatus::ProductionExecutorForbidden,
+    }
+}
+
+pub fn structured_family_draft_rendered_record_staged_apply_dry_run_report(
+    plan: &StructuredFamilyDraftRenderedRecordStagedApplyPlan,
+) -> StructuredFamilyDraftRenderedRecordStagedApplyDryRunReport {
+    let ready = plan.blockers.is_empty()
+        && plan.staged_apply_status
+            == StructuredFamilyDraftRenderedRecordStagedApplyStatus::PlanReady;
+    let blocked_plan_count = usize::from(!ready);
+    let entries = plan
+        .operations
+        .iter()
+        .map(structured_family_draft_rendered_record_staged_apply_dry_run_entry)
+        .collect::<Vec<_>>();
+    let dry_run_report_status = if ready {
+        StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ReportReady
+    } else {
+        StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::BlockedPlanSummarized
+    };
+
+    StructuredFamilyDraftRenderedRecordStagedApplyDryRunReport {
+        family: plan.family,
+        source_draft_count: plan.source_draft_count,
+        source_plan_count: plan.source_plan_count,
+        review_entry_count: plan.review_entry_count,
+        changed_entry_count: plan.changed_entry_count,
+        noop_entry_count: plan.noop_entry_count,
+        raw_fallback_entry_count: plan.raw_fallback_entry_count,
+        unsupported_not_proven_entry_count: plan.unsupported_not_proven_entry_count,
+        field_diff_count: plan.field_diff_count,
+        staged_apply_plan_linked: true,
+        stage_count: plan.stage_count,
+        operation_count: plan.operation_count,
+        changed_operation_count: plan.changed_operation_count,
+        noop_operation_count: plan.noop_operation_count,
+        raw_fallback_preservation_operation_count: plan
+            .raw_fallback_preservation_operation_count,
+        unsupported_not_proven_preservation_operation_count: plan
+            .unsupported_not_proven_preservation_operation_count,
+        blocked_plan_count,
+        executor_unavailable_by_design: true,
+        dry_run_report_status,
+        plan_status: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::PlanLinked,
+        stage_summary_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::StagesSummarized,
+        operation_summary_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::OperationsSummarized,
+        changed_operation_summary_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ChangedOperationsSummarized,
+        noop_operation_summary_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::NoopOperationsSummarized,
+        raw_fallback_preservation_summary_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::RawFallbackPreserved,
+        unsupported_not_proven_preservation_summary_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::UnsupportedNotProvenPreserved,
+        blocked_plan_summary_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::BlockedPlanSummarized,
+        executor_availability_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ExecutorUnavailable,
+        dry_run_execution_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::NotExecuted,
+        entries,
+        summary_text: format!(
+            "{} dry-run report generated for fixture-only report review only: {} stages, {} operations, {} blockers; dry-run executed false and staged apply executed false.",
+            plan.family.family_id(),
+            plan.stage_count,
+            plan.operation_count,
+            plan.blockers.len()
+        ),
+        risk_summary:
+            "dry-run report is review-only and in memory; executor unavailable by design; real config writes, persistence, staged apply execution, dry-run execution, runtime mutation, reload, and production executors remain blocked"
+                .to_string(),
+        fixture_only_status:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::FixtureOnly,
+        action_policy: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ActionsDisabled,
+        write_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::WritesBlockedByDefault,
+        persistence_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::PersistenceForbidden,
+        real_config_target_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::RealConfigTargetForbidden,
+        production_executor_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ProductionExecutorForbidden,
+        blockers: plan.blockers.clone(),
+        draft_written_to_disk: false,
+        dry_run_report_written_to_disk: false,
+        staged_apply_plan_written_to_disk: false,
+        staged_apply_executed: false,
+        dry_run_executed: false,
+        rendered_record_written_to_real_config: false,
+        real_config_touched: false,
+        runtime_mutated: false,
+        hyprctl_reload_run: false,
+        production_executor_wired: false,
+    }
+}
+
+fn structured_family_draft_rendered_record_staged_apply_dry_run_entry(
+    operation: &StructuredFamilyDraftRenderedRecordStagedApplyOperation,
+) -> StructuredFamilyDraftRenderedRecordStagedApplyDryRunEntry {
+    StructuredFamilyDraftRenderedRecordStagedApplyDryRunEntry {
+        family: operation.family,
+        record_index: operation.record_index,
+        stage_kind: operation.stage_kind,
+        operation_kind: operation.operation_kind.clone(),
+        original_raw_line: operation.original_raw_line.clone(),
+        rendered_record_preview: operation.rendered_record_preview.clone(),
+        status: match operation.status {
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::RawFallbackPreserved => {
+                StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::RawFallbackPreserved
+            }
+            StructuredFamilyDraftRenderedRecordStagedApplyStatus::UnsupportedNotProvenPreserved => {
+                StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::UnsupportedNotProvenPreserved
+            }
+            _ if operation.operation_kind == "changed review operation" => {
+                StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ChangedOperationsSummarized
+            }
+            _ if operation.operation_kind == "noop preservation operation" => {
+                StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::NoopOperationsSummarized
+            }
+            _ => StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::OperationsSummarized,
+        },
+        action_policy: StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ActionsDisabled,
+        write_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::WritesBlockedByDefault,
+        persistence_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::PersistenceForbidden,
+        real_config_target_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::RealConfigTargetForbidden,
+        production_executor_policy:
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ProductionExecutorForbidden,
     }
 }
 

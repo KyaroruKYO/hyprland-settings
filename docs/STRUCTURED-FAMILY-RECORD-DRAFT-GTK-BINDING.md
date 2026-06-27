@@ -52,4 +52,4 @@ All update, reset, persist, and apply controls are insensitive.
 
 ## Next Work
 
-Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked.
+Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked.

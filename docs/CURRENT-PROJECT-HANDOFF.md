@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family fixture-only rendered-record staged apply plan on `structured-family-editors-unified`.
+Structured-family fixture-only rendered-record staged apply dry-run report on `structured-family-editors-unified`.
 
 ## Completed This Sprint
 
@@ -34,6 +34,8 @@ Structured-family fixture-only rendered-record staged apply plan on `structured-
 - Added fixture-only rendered-record staged apply plans for all seven families.
 - Added in-memory ordered apply stages and operations for all seven families.
 - Added blocked staged apply plan proof for rejected, invalid, and unsafe confirmations.
+- Added fixture-only staged apply dry-run reports for all seven families.
+- Added in-memory dry-run summaries for ready, rejected, invalid, and unsafe staged apply plans.
 - Added a project-area continuation scan.
 
 ## Safety Boundaries
@@ -47,4 +49,4 @@ Structured-family fixture-only rendered-record staged apply plan on `structured-
 
 ## Next Exact Work
 
-Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked.
+Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked.

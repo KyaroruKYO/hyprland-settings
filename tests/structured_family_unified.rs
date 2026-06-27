@@ -18,6 +18,7 @@ use hyprland_settings::structured_family::{
     structured_family_draft_rendered_record_diff_review_summary,
     structured_family_draft_rendered_record_plans,
     structured_family_draft_rendered_record_staged_apply_blockers,
+    structured_family_draft_rendered_record_staged_apply_dry_run_report,
     structured_family_draft_rendered_record_staged_apply_plan, structured_family_kind_from_id,
     structured_family_record_draft_gtk_bindings, structured_family_record_drafts,
     structured_family_record_editor_forms, structured_family_render_target_allowed,
@@ -27,6 +28,7 @@ use hyprland_settings::structured_family::{
     StructuredFamilyDraftRenderedRecordDiffReviewStatus,
     StructuredFamilyDraftRenderedRecordRenderRereadStatus,
     StructuredFamilyDraftRenderedRecordStagedApplyBlocker,
+    StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus,
     StructuredFamilyDraftRenderedRecordStagedApplyStatus,
     StructuredFamilyDraftRenderedRecordStatus, StructuredFamilyKind,
     StructuredFamilyRecordDraftGtkBindingStatus, StructuredFamilyRecordDraftStatus,
@@ -1477,6 +1479,234 @@ fn structured_family_staged_apply_plans_block_rejected_invalid_and_unsafe_confir
 }
 
 #[test]
+fn all_structured_family_staged_apply_plans_create_fixture_only_dry_run_reports() {
+    for family in StructuredFamilyKind::ALL {
+        let summary = diff_review_summary_for_family(family);
+        let approval = structured_family_draft_rendered_record_approval_draft(&summary);
+        let request = structured_family_draft_rendered_record_confirmation_request(&approval);
+        let accepted =
+            accept_structured_family_draft_rendered_record_confirmation(&approval, &request);
+        let plan = structured_family_draft_rendered_record_staged_apply_plan(&accepted, &summary);
+        let dry_run = structured_family_draft_rendered_record_staged_apply_dry_run_report(&plan);
+
+        assert_eq!(dry_run.family, family);
+        assert_eq!(dry_run.source_draft_count, plan.source_draft_count);
+        assert_eq!(dry_run.source_plan_count, plan.source_plan_count);
+        assert_eq!(dry_run.review_entry_count, plan.review_entry_count);
+        assert_eq!(dry_run.changed_entry_count, plan.changed_entry_count);
+        assert_eq!(dry_run.noop_entry_count, plan.noop_entry_count);
+        assert_eq!(
+            dry_run.raw_fallback_entry_count,
+            plan.raw_fallback_entry_count
+        );
+        assert_eq!(
+            dry_run.unsupported_not_proven_entry_count,
+            plan.unsupported_not_proven_entry_count
+        );
+        assert_eq!(dry_run.field_diff_count, plan.field_diff_count);
+        assert!(dry_run.staged_apply_plan_linked);
+        assert_eq!(dry_run.stage_count, plan.stage_count);
+        assert_eq!(dry_run.operation_count, plan.operation_count);
+        assert_eq!(
+            dry_run.changed_operation_count,
+            plan.changed_operation_count
+        );
+        assert_eq!(dry_run.noop_operation_count, plan.noop_operation_count);
+        assert_eq!(
+            dry_run.raw_fallback_preservation_operation_count,
+            plan.raw_fallback_preservation_operation_count
+        );
+        assert_eq!(
+            dry_run.unsupported_not_proven_preservation_operation_count,
+            plan.unsupported_not_proven_preservation_operation_count
+        );
+        assert_eq!(dry_run.entries.len(), plan.operation_count);
+        assert_eq!(dry_run.blocked_plan_count, 0);
+        assert!(dry_run.executor_unavailable_by_design);
+        assert_eq!(
+            dry_run.dry_run_report_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ReportReady
+        );
+        assert_eq!(
+            dry_run.plan_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::PlanLinked
+        );
+        assert_eq!(
+            dry_run.stage_summary_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::StagesSummarized
+        );
+        assert_eq!(
+            dry_run.operation_summary_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::OperationsSummarized
+        );
+        assert_eq!(
+            dry_run.changed_operation_summary_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ChangedOperationsSummarized
+        );
+        assert_eq!(
+            dry_run.noop_operation_summary_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::NoopOperationsSummarized
+        );
+        assert_eq!(
+            dry_run.raw_fallback_preservation_summary_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::RawFallbackPreserved
+        );
+        assert_eq!(
+            dry_run.unsupported_not_proven_preservation_summary_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::UnsupportedNotProvenPreserved
+        );
+        assert_eq!(
+            dry_run.executor_availability_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ExecutorUnavailable
+        );
+        assert_eq!(
+            dry_run.dry_run_execution_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::NotExecuted
+        );
+        assert_eq!(
+            dry_run.fixture_only_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::FixtureOnly
+        );
+        assert_eq!(
+            dry_run.action_policy,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ActionsDisabled
+        );
+        assert_eq!(
+            dry_run.write_policy,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::WritesBlockedByDefault
+        );
+        assert_eq!(
+            dry_run.persistence_policy,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::PersistenceForbidden
+        );
+        assert_eq!(
+            dry_run.real_config_target_policy,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::RealConfigTargetForbidden
+        );
+        assert_eq!(
+            dry_run.production_executor_policy,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::ProductionExecutorForbidden
+        );
+        assert!(dry_run.summary_text.contains("dry-run report generated"));
+        assert!(dry_run.summary_text.contains("dry-run executed false"));
+        assert!(dry_run
+            .risk_summary
+            .contains("executor unavailable by design"));
+        assert!(!dry_run.draft_written_to_disk);
+        assert!(!dry_run.dry_run_report_written_to_disk);
+        assert!(!dry_run.staged_apply_plan_written_to_disk);
+        assert!(!dry_run.staged_apply_executed);
+        assert!(!dry_run.dry_run_executed);
+        assert!(!dry_run.rendered_record_written_to_real_config);
+        assert!(!dry_run.real_config_touched);
+        assert!(!dry_run.runtime_mutated);
+        assert!(!dry_run.hyprctl_reload_run);
+        assert!(!dry_run.production_executor_wired);
+    }
+}
+
+#[test]
+fn structured_family_staged_apply_dry_run_reports_summarize_blocked_plans() {
+    let summary = diff_review_summary_for_family(StructuredFamilyKind::Bind);
+    let approval = structured_family_draft_rendered_record_approval_draft(&summary);
+    let request = structured_family_draft_rendered_record_confirmation_request(&approval);
+    let accepted = accept_structured_family_draft_rendered_record_confirmation(&approval, &request);
+    let rejected = reject_structured_family_draft_rendered_record_confirmation(&approval, &request);
+    let invalid_request = {
+        let mut request = request.clone();
+        request.changed_entry_count += 1;
+        request
+    };
+    let invalid =
+        accept_structured_family_draft_rendered_record_confirmation(&approval, &invalid_request);
+
+    for (confirmation, expected) in [
+        (
+            rejected,
+            StructuredFamilyDraftRenderedRecordStagedApplyBlocker::RejectedConfirmation,
+        ),
+        (
+            invalid,
+            StructuredFamilyDraftRenderedRecordStagedApplyBlocker::InvalidConfirmation,
+        ),
+    ] {
+        let plan =
+            structured_family_draft_rendered_record_staged_apply_plan(&confirmation, &summary);
+        let dry_run = structured_family_draft_rendered_record_staged_apply_dry_run_report(&plan);
+        assert!(dry_run.blockers.contains(&expected));
+        assert_eq!(dry_run.blocked_plan_count, 1);
+        assert_eq!(
+            dry_run.dry_run_report_status,
+            StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::BlockedPlanSummarized
+        );
+        assert!(!dry_run.staged_apply_executed);
+        assert!(!dry_run.dry_run_executed);
+        assert!(!dry_run.real_config_touched);
+        assert!(!dry_run.runtime_mutated);
+        assert!(!dry_run.hyprctl_reload_run);
+        assert!(!dry_run.production_executor_wired);
+    }
+
+    assert_staged_apply_dry_run_blocker(
+        &accepted,
+        &summary,
+        |confirmation| confirmation.confirmation_accepted_in_memory = false,
+        StructuredFamilyDraftRenderedRecordStagedApplyBlocker::MissingAcceptedConfirmation,
+    );
+    assert_staged_apply_dry_run_blocker(
+        &accepted,
+        &summary,
+        |confirmation| confirmation.diff_review_summary_linked = false,
+        StructuredFamilyDraftRenderedRecordStagedApplyBlocker::MissingDiffReviewSummary,
+    );
+    assert_staged_apply_dry_run_blocker(
+        &accepted,
+        &summary,
+        |confirmation| confirmation.render_reread_proof_linked = false,
+        StructuredFamilyDraftRenderedRecordStagedApplyBlocker::MissingRenderRereadProof,
+    );
+    assert_staged_apply_dry_run_blocker(
+        &accepted,
+        &summary,
+        |confirmation| {
+            confirmation.real_config_target_policy =
+                StructuredFamilyDraftRenderedRecordApprovalStatus::Ready
+        },
+        StructuredFamilyDraftRenderedRecordStagedApplyBlocker::RealConfigTargetNotAllowed,
+    );
+    assert_staged_apply_dry_run_blocker(
+        &accepted,
+        &summary,
+        |confirmation| {
+            confirmation.persistence_policy =
+                StructuredFamilyDraftRenderedRecordApprovalStatus::Ready
+        },
+        StructuredFamilyDraftRenderedRecordStagedApplyBlocker::PersistenceNotAllowed,
+    );
+    assert_staged_apply_dry_run_blocker(
+        &accepted,
+        &summary,
+        |confirmation| confirmation.runtime_mutated = true,
+        StructuredFamilyDraftRenderedRecordStagedApplyBlocker::RuntimeMutationNotAllowed,
+    );
+    assert_staged_apply_dry_run_blocker(
+        &accepted,
+        &summary,
+        |confirmation| confirmation.hyprctl_reload_run = true,
+        StructuredFamilyDraftRenderedRecordStagedApplyBlocker::HyprlandReloadNotAllowed,
+    );
+    assert_staged_apply_dry_run_blocker(
+        &accepted,
+        &summary,
+        |confirmation| {
+            confirmation.production_executor_policy =
+                StructuredFamilyDraftRenderedRecordApprovalStatus::Ready
+        },
+        StructuredFamilyDraftRenderedRecordStagedApplyBlocker::ProductionExecutorNotAllowed,
+    );
+}
+
+#[test]
 fn structured_family_kinds_cover_required_ids_and_widget_names() {
     let required = [
         (
@@ -1887,6 +2117,40 @@ fn structured_family_rendered_record_staged_apply_plan_has_no_write_reload_or_pe
 }
 
 #[test]
+fn structured_family_rendered_record_staged_apply_dry_run_has_no_write_reload_or_persistence_calls()
+{
+    let structured_family = fs::read_to_string("src/structured_family.rs")
+        .expect("structured family source should read");
+    let section_start = structured_family
+        .find("pub fn structured_family_draft_rendered_record_staged_apply_dry_run_report")
+        .expect("staged apply dry-run report function should exist");
+    let section_end = structured_family[section_start..]
+        .find("fn structured_record_from_raw")
+        .map(|offset| section_start + offset)
+        .expect("dry-run report section should end before parser helpers");
+    let section = &structured_family[section_start..section_end];
+
+    assert!(section.contains("StructuredFamilyDraftRenderedRecordStagedApplyDryRunReport"));
+    for forbidden in [
+        "apply_setting_change",
+        "write_flow",
+        "hyprctl reload",
+        "Command::",
+        "fs::write",
+        "File::create",
+        "write_all",
+        "serde_json::to_writer",
+        "/home/kyo/.config/hypr/hyprland.conf",
+        "~/.config/hypr",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "staged apply dry-run report model must not contain {forbidden}"
+        );
+    }
+}
+
+#[test]
 fn structured_family_record_editor_section_has_no_write_reload_or_executor_handlers() {
     let window = fs::read_to_string("src/ui/window.rs").expect("window source should read");
     let section_start = window
@@ -1965,6 +2229,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-draft-rendered-record-diff-review.v0.55.2.json",
         "data/reports/structured-family-draft-rendered-record-approval-confirmation.v0.55.2.json",
         "data/reports/structured-family-rendered-record-staged-apply-plan.v0.55.2.json",
+        "data/reports/structured-family-rendered-record-staged-apply-dry-run.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -2040,7 +2305,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -2092,7 +2357,7 @@ fn structured_family_temp_write_plan_report_preserves_safety_boundaries() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
     );
 }
 
@@ -2149,7 +2414,7 @@ fn structured_family_record_editor_forms_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
     );
 }
 
@@ -2206,7 +2471,7 @@ fn structured_family_record_draft_model_report_preserves_review_only_policy() {
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
     );
 }
 
@@ -2284,7 +2549,7 @@ fn structured_family_record_draft_gtk_binding_report_preserves_review_only_polic
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
     );
 }
 
@@ -2356,7 +2621,7 @@ fn structured_family_draft_rendered_record_plan_report_preserves_fixture_only_po
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
     );
 }
 
@@ -2442,7 +2707,7 @@ fn structured_family_draft_rendered_record_render_reread_report_preserves_fixtur
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
     );
 }
 
@@ -2529,7 +2794,7 @@ fn structured_family_draft_rendered_record_diff_review_report_preserves_fixture_
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
     );
 }
 
@@ -2633,7 +2898,7 @@ fn structured_family_draft_rendered_record_approval_confirmation_report_preserve
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
     );
 }
 
@@ -2752,7 +3017,116 @@ fn structured_family_rendered_record_staged_apply_plan_report_preserves_fixture_
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
+        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+    );
+}
+
+#[test]
+fn structured_family_rendered_record_staged_apply_dry_run_report_preserves_fixture_only_policy() {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string(
+            "data/reports/structured-family-rendered-record-staged-apply-dry-run.v0.55.2.json",
+        )
+        .expect("staged apply dry-run report should read"),
+    )
+    .expect("staged apply dry-run report should be valid JSON");
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-rendered-record-staged-apply-dry-run"
+    );
+    assert_eq!(report["draftWrittenToDisk"], false);
+    assert_eq!(report["dryRunReportWrittenToDisk"], false);
+    assert_eq!(report["stagedApplyPlanWrittenToDisk"], false);
+    assert_eq!(report["stagedApplyExecuted"], false);
+    assert_eq!(report["dryRunExecuted"], false);
+    assert_eq!(report["renderedRecordWrittenToRealConfig"], false);
+    assert_eq!(report["realConfigTouched"], false);
+    assert_eq!(report["runtimeMutated"], false);
+    assert_eq!(report["hyprctlReloadRun"], false);
+    assert_eq!(report["productionBehaviorEnabled"], false);
+    assert_eq!(report["productionExecutorWired"], false);
+    assert_eq!(report["gtkEvidenceRoot"], "not-run-no-visible-ui-change");
+    for family in [
+        "hl.monitor",
+        "hl.bind",
+        "hl.animation",
+        "hl.curve",
+        "hl.gesture",
+        "hl.device",
+        "hl.permission",
+    ] {
+        assert_eq!(
+            report["dryRunStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReviewOnly"
+        );
+        assert_eq!(
+            report["dryRunReportStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReportReady"
+        );
+        assert_eq!(
+            report["stagedApplyPlanLinkStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyDryRunPlanLinked"
+        );
+        assert_eq!(
+            report["stageSummaryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyDryRunStagesSummarized"
+        );
+        assert_eq!(
+            report["operationSummaryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOperationsSummarized"
+        );
+        assert_eq!(
+            report["changedOperationSummaryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyDryRunChangedOperationsSummarized"
+        );
+        assert_eq!(
+            report["noopOperationSummaryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNoopOperationsSummarized"
+        );
+        assert_eq!(
+            report["rawFallbackPreservationSummaryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyDryRunRawFallbackPreserved"
+        );
+        assert_eq!(
+            report["unsupportedNotProvenPreservationSummaryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyDryRunUnsupportedNotProvenPreserved"
+        );
+        assert_eq!(
+            report["blockedPlanSummaryStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyDryRunBlockedPlanSummarized"
+        );
+        assert_eq!(
+            report["executorAvailabilityStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyDryRunExecutorUnavailable"
+        );
+        assert_eq!(
+            report["dryRunExecutionStatusByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNotExecuted"
+        );
+        assert_eq!(
+            report["actionPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordActionsDisabled"
+        );
+        assert_eq!(
+            report["writePolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+        );
+        assert_eq!(
+            report["persistencePolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordPersistenceForbidden"
+        );
+        assert_eq!(
+            report["realConfigTargetPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+        );
+        assert_eq!(
+            report["productionExecutorPolicyByFamily"][family],
+            "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden"
+        );
+    }
+    assert_eq!(
+        report["nextRecommendedWork"],
+        "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
     );
 }
 
@@ -2835,6 +3209,41 @@ fn assert_staged_apply_blocker(
     assert!(!plan.runtime_mutated);
     assert!(!plan.hyprctl_reload_run);
     assert!(!plan.production_executor_wired);
+}
+
+fn assert_staged_apply_dry_run_blocker(
+    confirmation: &hyprland_settings::structured_family::StructuredFamilyDraftRenderedRecordConfirmation,
+    summary: &hyprland_settings::structured_family::StructuredFamilyDraftRenderedRecordDiffReviewSummary,
+    mutate: impl FnOnce(
+        &mut hyprland_settings::structured_family::StructuredFamilyDraftRenderedRecordConfirmation,
+    ),
+    expected: StructuredFamilyDraftRenderedRecordStagedApplyBlocker,
+) {
+    let mut confirmation = confirmation.clone();
+    mutate(&mut confirmation);
+    let plan = structured_family_draft_rendered_record_staged_apply_plan(&confirmation, summary);
+    let dry_run = structured_family_draft_rendered_record_staged_apply_dry_run_report(&plan);
+    assert!(
+        dry_run.blockers.contains(&expected),
+        "expected dry-run blocker {} in {:?}",
+        expected.as_str(),
+        dry_run.blockers
+    );
+    assert_eq!(dry_run.blocked_plan_count, 1);
+    assert_eq!(
+        dry_run.dry_run_report_status,
+        StructuredFamilyDraftRenderedRecordStagedApplyDryRunStatus::BlockedPlanSummarized
+    );
+    assert!(!dry_run.draft_written_to_disk);
+    assert!(!dry_run.dry_run_report_written_to_disk);
+    assert!(!dry_run.staged_apply_plan_written_to_disk);
+    assert!(!dry_run.staged_apply_executed);
+    assert!(!dry_run.dry_run_executed);
+    assert!(!dry_run.rendered_record_written_to_real_config);
+    assert!(!dry_run.real_config_touched);
+    assert!(!dry_run.runtime_mutated);
+    assert!(!dry_run.hyprctl_reload_run);
+    assert!(!dry_run.production_executor_wired);
 }
 
 fn snapshot_for_family(family: StructuredFamilyKind) -> CurrentConfigSnapshot {

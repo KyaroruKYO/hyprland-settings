@@ -123,5 +123,5 @@
     "cargoBuildRelease": "passed"
   },
   "gtkEvidenceRoot": null,
-  "nextRecommendedWork": "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked."
+  "nextRecommendedWork": "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
 }

@@ -1,0 +1,204 @@
+{
+  "artifactKind": "structured-family-rendered-record-staged-apply-dry-run",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "768990502c365e9ef48a54b1c7e91018a98db796",
+  "latestCommitBeforeSprint": "768990502c365e9ef48a54b1c7e91018a98db796",
+  "goal": "Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked.",
+  "families": [
+    "hl.monitor",
+    "hl.bind",
+    "hl.animation",
+    "hl.curve",
+    "hl.gesture",
+    "hl.device",
+    "hl.permission"
+  ],
+  "dryRunStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReviewOnly",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReviewOnly",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReviewOnly",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReviewOnly",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReviewOnly",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReviewOnly",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReviewOnly"
+  },
+  "dryRunReportStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReportReady",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReportReady",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReportReady",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReportReady",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReportReady",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReportReady",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunReportReady"
+  },
+  "stagedApplyPlanLinkStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunPlanLinked",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunPlanLinked",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunPlanLinked",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunPlanLinked",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunPlanLinked",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunPlanLinked",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunPlanLinked"
+  },
+  "stageSummaryStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunStagesSummarized",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunStagesSummarized",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunStagesSummarized",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunStagesSummarized",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunStagesSummarized",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunStagesSummarized",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunStagesSummarized"
+  },
+  "operationSummaryStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOperationsSummarized",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOperationsSummarized",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOperationsSummarized",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOperationsSummarized",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOperationsSummarized",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOperationsSummarized",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunOperationsSummarized"
+  },
+  "changedOperationSummaryStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunChangedOperationsSummarized",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunChangedOperationsSummarized",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunChangedOperationsSummarized",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunChangedOperationsSummarized",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunChangedOperationsSummarized",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunChangedOperationsSummarized",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunChangedOperationsSummarized"
+  },
+  "noopOperationSummaryStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNoopOperationsSummarized",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNoopOperationsSummarized",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNoopOperationsSummarized",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNoopOperationsSummarized",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNoopOperationsSummarized",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNoopOperationsSummarized",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNoopOperationsSummarized"
+  },
+  "rawFallbackPreservationSummaryStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunRawFallbackPreserved",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunRawFallbackPreserved",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunRawFallbackPreserved",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunRawFallbackPreserved",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunRawFallbackPreserved",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunRawFallbackPreserved",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunRawFallbackPreserved"
+  },
+  "unsupportedNotProvenPreservationSummaryStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunUnsupportedNotProvenPreserved",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunUnsupportedNotProvenPreserved",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunUnsupportedNotProvenPreserved",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunUnsupportedNotProvenPreserved",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunUnsupportedNotProvenPreserved",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunUnsupportedNotProvenPreserved",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunUnsupportedNotProvenPreserved"
+  },
+  "blockedPlanSummaryStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunBlockedPlanSummarized",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunBlockedPlanSummarized",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunBlockedPlanSummarized",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunBlockedPlanSummarized",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunBlockedPlanSummarized",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunBlockedPlanSummarized",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunBlockedPlanSummarized"
+  },
+  "executorAvailabilityStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunExecutorUnavailable",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunExecutorUnavailable",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunExecutorUnavailable",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunExecutorUnavailable",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunExecutorUnavailable",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunExecutorUnavailable",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunExecutorUnavailable"
+  },
+  "dryRunExecutionStatusByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNotExecuted",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNotExecuted",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNotExecuted",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNotExecuted",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNotExecuted",
+    "hl.device": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNotExecuted",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordStagedApplyDryRunNotExecuted"
+  },
+  "actionPolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.device": "StructuredFamilyDraftRenderedRecordActionsDisabled",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordActionsDisabled"
+  },
+  "writePolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.device": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordWritesBlockedByDefault"
+  },
+  "persistencePolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.device": "StructuredFamilyDraftRenderedRecordPersistenceForbidden",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordPersistenceForbidden"
+  },
+  "realConfigTargetPolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.device": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordRealConfigTargetForbidden"
+  },
+  "productionExecutorPolicyByFamily": {
+    "hl.monitor": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.bind": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.animation": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.curve": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.gesture": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.device": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden",
+    "hl.permission": "StructuredFamilyDraftRenderedRecordProductionExecutorForbidden"
+  },
+  "draftWrittenToDisk": false,
+  "dryRunReportWrittenToDisk": false,
+  "stagedApplyPlanWrittenToDisk": false,
+  "stagedApplyExecuted": false,
+  "dryRunExecuted": false,
+  "renderedRecordWrittenToRealConfig": false,
+  "realConfigTouched": false,
+  "runtimeMutated": false,
+  "hyprctlReloadRun": false,
+  "productionBehaviorEnabled": false,
+  "productionExecutorWired": false,
+  "filesChanged": [
+    "src/structured_family.rs",
+    "tests/structured_family_unified.rs",
+    "data/reports/structured-family-rendered-record-staged-apply-dry-run.v0.55.2.json",
+    "docs/STRUCTURED-FAMILY-RENDERED-RECORD-STAGED-APPLY-DRY-RUN.md"
+  ],
+  "testsAdded": [
+    "all_structured_family_staged_apply_plans_create_fixture_only_dry_run_reports",
+    "structured_family_staged_apply_dry_run_reports_summarize_blocked_plans",
+    "structured_family_rendered_record_staged_apply_dry_run_has_no_write_reload_or_persistence_calls",
+    "structured_family_rendered_record_staged_apply_dry_run_report_preserves_fixture_only_policy"
+  ],
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "jqEmptyReports": "passed",
+    "gitDiffCheck": "passed",
+    "cargoBuildRelease": "passed"
+  },
+  "gtkEvidenceRoot": "not-run-no-visible-ui-change",
+  "nextRecommendedWork": "Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked."
+}

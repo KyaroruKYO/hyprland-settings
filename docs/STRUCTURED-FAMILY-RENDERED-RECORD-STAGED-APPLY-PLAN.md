@@ -68,6 +68,10 @@ No visible GTK UI changed in this sprint.
 
 GTK evidence root: `not-run-no-visible-ui-change`.
 
+## Follow-Up Status
+
+The fixture-only staged apply dry-run report layer is now complete. It summarizes staged apply plans, blocked plan cases, operation counts, and no-write/no-runtime guarantees without executing staged apply or dry-run behavior.
+
 ## Next Work
 
-Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked.
+Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked.

@@ -51,4 +51,4 @@ The work is review-only. Structured-family writes remain blocked by default.
 
 ## Next Work
 
-Add fixture-only structured-family rendered-record staged apply dry-run report while keeping real writes blocked.
+Add fixture-only structured-family rendered-record staged apply rollback/recovery review while keeping real writes blocked.
