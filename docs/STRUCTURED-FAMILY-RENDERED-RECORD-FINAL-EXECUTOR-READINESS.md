@@ -118,4 +118,4 @@ GTK evidence root: `not-run-no-visible-ui-change`.
 
 ## Next Work
 
-Stop for explicit user decision: structured-family production activation remains blocked until the user approves real-write activation scope.
+Wait for explicit user approval of production activation planning scope before designing any real-write executor.

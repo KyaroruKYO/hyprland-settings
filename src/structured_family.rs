@@ -1223,6 +1223,75 @@ impl StructuredFamilyDraftRenderedRecordFinalExecutorReadinessDecision {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StructuredFamilyRealWriteActivationAuditStatus {
+    RequirementsAuditReady,
+    RequirementsListed,
+    BackupRestoreProofMissing,
+    UserApprovalGatesRequired,
+    ActivationNotApproved,
+    ExecutorNotImplemented,
+    ExecutorNotWired,
+    BlockedByDefault,
+    RealConfigTargetForbidden,
+    RuntimeMutationForbidden,
+    HyprlandReloadForbidden,
+    ProductionActivationDecisionRequired,
+    FamilyRankingExcludedByUser,
+}
+
+impl StructuredFamilyRealWriteActivationAuditStatus {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::RequirementsAuditReady => {
+                "StructuredFamilyRealWriteActivationRequirementsAuditReady"
+            }
+            Self::RequirementsListed => "StructuredFamilyRealWriteActivationRequirementsListed",
+            Self::BackupRestoreProofMissing => "StructuredFamilyBackupRestoreProofMissing",
+            Self::UserApprovalGatesRequired => "StructuredFamilyUserApprovalGatesRequired",
+            Self::ActivationNotApproved => "StructuredFamilyRealWriteActivationNotApproved",
+            Self::ExecutorNotImplemented => "StructuredFamilyRealWriteExecutorNotImplemented",
+            Self::ExecutorNotWired => "StructuredFamilyRealWriteExecutorNotWired",
+            Self::BlockedByDefault => "StructuredFamilyRealWriteBlockedByDefault",
+            Self::RealConfigTargetForbidden => "StructuredFamilyRealConfigTargetForbidden",
+            Self::RuntimeMutationForbidden => "StructuredFamilyRuntimeMutationForbidden",
+            Self::HyprlandReloadForbidden => "StructuredFamilyHyprlandReloadForbidden",
+            Self::ProductionActivationDecisionRequired => {
+                "StructuredFamilyProductionActivationDecisionRequired"
+            }
+            Self::FamilyRankingExcludedByUser => "StructuredFamilyFamilyRankingExcludedByUser",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyRealWriteActivationRequirementsAudit {
+    pub user_instruction: &'static str,
+    pub excluded_by_user: Vec<&'static str>,
+    pub real_write_activation_requirements: Vec<&'static str>,
+    pub missing_backup_restore_proof: Vec<&'static str>,
+    pub required_user_approval_gates: Vec<&'static str>,
+    pub activation_status: StructuredFamilyRealWriteActivationAuditStatus,
+    pub executor_status: StructuredFamilyRealWriteActivationAuditStatus,
+    pub real_write_boundary_status: StructuredFamilyRealWriteActivationAuditStatus,
+    pub backup_restore_boundary_status: StructuredFamilyRealWriteActivationAuditStatus,
+    pub reload_boundary_status: StructuredFamilyRealWriteActivationAuditStatus,
+    pub runtime_mutation_boundary_status: StructuredFamilyRealWriteActivationAuditStatus,
+    pub family_ranking_excluded: StructuredFamilyRealWriteActivationAuditStatus,
+    pub production_activation_approved: bool,
+    pub executor_implemented: bool,
+    pub executor_wired: bool,
+    pub real_write_path_enabled: bool,
+    pub real_config_target_enabled: bool,
+    pub backup_creation_enabled: bool,
+    pub restore_execution_enabled: bool,
+    pub rollback_execution_enabled: bool,
+    pub hyprctl_reload_enabled: bool,
+    pub runtime_mutation_enabled: bool,
+    pub first_real_config_write_approved: bool,
+    pub next_recommended_work: &'static str,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum StructuredFamilyDraftRenderedRecordApplyStageKind {
     Preflight,
     Review,
@@ -5044,6 +5113,107 @@ fn line_belongs_to_family(family: StructuredFamilyKind, line: &str) -> bool {
         StructuredFamilyKind::Gesture => trimmed.starts_with("gesture"),
         StructuredFamilyKind::Device => true,
         StructuredFamilyKind::Permission => trimmed.starts_with("permission"),
+    }
+}
+
+pub fn structured_family_real_write_activation_requirements_audit(
+) -> StructuredFamilyRealWriteActivationRequirementsAudit {
+    StructuredFamilyRealWriteActivationRequirementsAudit {
+        user_instruction:
+            "Force Codex to list exactly what real-write activation would require, what backup/restore proof is missing, and what user approval gates must exist before a single real config write is allowed.",
+        excluded_by_user: vec![
+            "which families are safest",
+            "which families should stay blocked",
+            "family-by-family activation ranking",
+            "activation subset recommendation",
+        ],
+        real_write_activation_requirements: vec![
+            "explicit user production activation decision",
+            "explicit activation scope document",
+            "real config target policy",
+            "source/include target policy",
+            "atomic write strategy",
+            "pre-write validation",
+            "post-write reread validation",
+            "Hyprland verify-config or equivalent validation strategy",
+            "reload policy",
+            "runtime mutation policy",
+            "backup creation policy",
+            "restore policy",
+            "rollback policy",
+            "failure recovery policy",
+            "audit logging policy",
+            "manual confirmation policy",
+            "production executor implementation",
+            "production executor wiring",
+            "production executor tests",
+            "UI confirmation gate",
+            "dry-run to real-write transition gate",
+            "blocked-plan rejection gate",
+            "unsupported/not-proven preservation gate",
+            "raw fallback preservation gate",
+            "version compatibility gate for Hyprland 0.55.2 vs live 0.55.4",
+        ],
+        missing_backup_restore_proof: vec![
+            "no real backup file creation proof",
+            "no real backup location policy proof",
+            "no backup integrity hash proof",
+            "no backup reread proof",
+            "no real restore execution proof",
+            "no restore target validation proof",
+            "no restore reread proof",
+            "no rollback file creation proof",
+            "no rollback execution proof",
+            "no failed-write recovery proof",
+            "no interrupted-write recovery proof",
+            "no partial-write recovery proof",
+            "no post-restore Hyprland validation proof",
+            "no post-restore reload/restart policy proof",
+            "no user-visible recovery instructions proof",
+        ],
+        required_user_approval_gates: vec![
+            "approve entering production activation planning",
+            "approve exact real-write activation scope",
+            "approve config target path",
+            "approve backup location and retention policy",
+            "approve restore policy",
+            "approve reload policy",
+            "approve runtime mutation policy",
+            "approve executor implementation",
+            "approve executor wiring",
+            "approve first real config write",
+            "approve fallback behavior for unsupported/not-proven records",
+            "approve raw fallback preservation behavior",
+            "approve rollback procedure",
+            "approve recovery procedure",
+            "approve emergency stop procedure",
+            "approve whether Hyprland 0.55.4 migration must happen before production activation",
+        ],
+        activation_status:
+            StructuredFamilyRealWriteActivationAuditStatus::ProductionActivationDecisionRequired,
+        executor_status: StructuredFamilyRealWriteActivationAuditStatus::ExecutorNotImplemented,
+        real_write_boundary_status: StructuredFamilyRealWriteActivationAuditStatus::BlockedByDefault,
+        backup_restore_boundary_status:
+            StructuredFamilyRealWriteActivationAuditStatus::BackupRestoreProofMissing,
+        reload_boundary_status:
+            StructuredFamilyRealWriteActivationAuditStatus::HyprlandReloadForbidden,
+        runtime_mutation_boundary_status:
+            StructuredFamilyRealWriteActivationAuditStatus::RuntimeMutationForbidden,
+        family_ranking_excluded:
+            StructuredFamilyRealWriteActivationAuditStatus::FamilyRankingExcludedByUser,
+        production_activation_approved: false,
+        executor_implemented: false,
+        executor_wired: false,
+        real_write_path_enabled: false,
+        real_config_target_enabled: false,
+        backup_creation_enabled: false,
+        restore_execution_enabled: false,
+        rollback_execution_enabled: false,
+        hyprctl_reload_enabled: false,
+        runtime_mutation_enabled: false,
+        first_real_config_write_approved: false,
+        next_recommended_work:
+            "Wait for explicit user approval of production activation planning scope before designing any real-write executor.",
     }
 }
 

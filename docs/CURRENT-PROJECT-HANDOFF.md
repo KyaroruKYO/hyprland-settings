@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family fixture-only rendered-record final executor-readiness audit on `structured-family-editors-unified`.
+Structured-family real-write activation requirements audit on `structured-family-editors-unified`.
 
 ## Completed This Sprint
 
@@ -40,6 +40,8 @@ Structured-family fixture-only rendered-record final executor-readiness audit on
 - Added in-memory recovery-readiness summaries for ready and blocked dry-run reports.
 - Added fixture-only final executor-readiness audits for all seven families.
 - Added proof-chain completion, production activation required, executor-not-implemented, executor-not-wired, and not-production-ready findings.
+- Added a requirements-only real-write activation audit listing universal activation requirements, missing backup/restore proof, and required user approval gates.
+- Explicitly excluded family ranking, safest-family recommendations, family-block recommendations, and activation subset recommendations by user instruction.
 - Added a project-area continuation scan.
 
 ## Safety Boundaries
@@ -53,4 +55,4 @@ Structured-family fixture-only rendered-record final executor-readiness audit on
 
 ## Next Exact Work
 
-Stop for explicit user decision: structured-family production activation remains blocked until the user approves real-write activation scope.
+Wait for explicit user approval of production activation planning scope before designing any real-write executor.

@@ -274,5 +274,5 @@
     "cargoBuildRelease": "passed"
   },
   "gtkEvidenceRoot": "not-run-no-visible-ui-change",
-  "nextRecommendedWork": "Stop for explicit user decision: structured-family production activation remains blocked until the user approves real-write activation scope."
+  "nextRecommendedWork": "Wait for explicit user approval of production activation planning scope before designing any real-write executor."
 }

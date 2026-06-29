@@ -24,11 +24,11 @@ use hyprland_settings::structured_family::{
     structured_family_draft_rendered_record_staged_apply_dry_run_report,
     structured_family_draft_rendered_record_staged_apply_plan,
     structured_family_draft_rendered_record_staged_apply_rollback_recovery_review,
-    structured_family_kind_from_id, structured_family_record_draft_gtk_bindings,
-    structured_family_record_drafts, structured_family_record_editor_forms,
-    structured_family_render_target_allowed, update_structured_family_record_draft_field,
-    update_structured_family_record_draft_gtk_binding, validate_structured_family_projection,
-    StructuredFamilyDraftRenderedRecordApprovalStatus,
+    structured_family_kind_from_id, structured_family_real_write_activation_requirements_audit,
+    structured_family_record_draft_gtk_bindings, structured_family_record_drafts,
+    structured_family_record_editor_forms, structured_family_render_target_allowed,
+    update_structured_family_record_draft_field, update_structured_family_record_draft_gtk_binding,
+    validate_structured_family_projection, StructuredFamilyDraftRenderedRecordApprovalStatus,
     StructuredFamilyDraftRenderedRecordConfirmationInvalidationReason,
     StructuredFamilyDraftRenderedRecordDiffReviewStatus,
     StructuredFamilyDraftRenderedRecordFinalExecutorReadinessBlocker,
@@ -43,8 +43,8 @@ use hyprland_settings::structured_family::{
     StructuredFamilyDraftRenderedRecordStagedApplyRollbackRecoveryStatus,
     StructuredFamilyDraftRenderedRecordStagedApplyStatus,
     StructuredFamilyDraftRenderedRecordStatus, StructuredFamilyKind,
-    StructuredFamilyRecordDraftGtkBindingStatus, StructuredFamilyRecordDraftStatus,
-    StructuredFamilyRecordEditorStatus, StructuredFamilyStatus,
+    StructuredFamilyRealWriteActivationAuditStatus, StructuredFamilyRecordDraftGtkBindingStatus,
+    StructuredFamilyRecordDraftStatus, StructuredFamilyRecordEditorStatus, StructuredFamilyStatus,
     StructuredFamilyTempWritePlanStatus, StructuredFamilyValidationStatus,
 };
 
@@ -2307,6 +2307,197 @@ fn structured_family_final_executor_readiness_audits_preserve_blockers_and_forbi
 }
 
 #[test]
+fn structured_family_real_write_activation_requirements_audit_lists_required_gates_only() {
+    let audit = structured_family_real_write_activation_requirements_audit();
+
+    assert_eq!(
+        audit.activation_status,
+        StructuredFamilyRealWriteActivationAuditStatus::ProductionActivationDecisionRequired
+    );
+    assert_eq!(
+        audit.executor_status,
+        StructuredFamilyRealWriteActivationAuditStatus::ExecutorNotImplemented
+    );
+    assert_eq!(
+        audit.real_write_boundary_status,
+        StructuredFamilyRealWriteActivationAuditStatus::BlockedByDefault
+    );
+    assert_eq!(
+        audit.backup_restore_boundary_status,
+        StructuredFamilyRealWriteActivationAuditStatus::BackupRestoreProofMissing
+    );
+    assert_eq!(
+        audit.reload_boundary_status,
+        StructuredFamilyRealWriteActivationAuditStatus::HyprlandReloadForbidden
+    );
+    assert_eq!(
+        audit.runtime_mutation_boundary_status,
+        StructuredFamilyRealWriteActivationAuditStatus::RuntimeMutationForbidden
+    );
+    assert_eq!(
+        audit.family_ranking_excluded,
+        StructuredFamilyRealWriteActivationAuditStatus::FamilyRankingExcludedByUser
+    );
+
+    for required in [
+        "explicit user production activation decision",
+        "explicit activation scope document",
+        "real config target policy",
+        "source/include target policy",
+        "atomic write strategy",
+        "pre-write validation",
+        "post-write reread validation",
+        "Hyprland verify-config or equivalent validation strategy",
+        "reload policy",
+        "runtime mutation policy",
+        "backup creation policy",
+        "restore policy",
+        "rollback policy",
+        "failure recovery policy",
+        "audit logging policy",
+        "manual confirmation policy",
+        "production executor implementation",
+        "production executor wiring",
+        "production executor tests",
+        "UI confirmation gate",
+        "dry-run to real-write transition gate",
+        "blocked-plan rejection gate",
+        "unsupported/not-proven preservation gate",
+        "raw fallback preservation gate",
+        "version compatibility gate for Hyprland 0.55.2 vs live 0.55.4",
+    ] {
+        assert!(
+            audit.real_write_activation_requirements.contains(&required),
+            "missing real-write activation requirement {required}"
+        );
+    }
+    for missing in [
+        "no real backup file creation proof",
+        "no real backup location policy proof",
+        "no backup integrity hash proof",
+        "no backup reread proof",
+        "no real restore execution proof",
+        "no restore target validation proof",
+        "no restore reread proof",
+        "no rollback file creation proof",
+        "no rollback execution proof",
+        "no failed-write recovery proof",
+        "no interrupted-write recovery proof",
+        "no partial-write recovery proof",
+        "no post-restore Hyprland validation proof",
+        "no post-restore reload/restart policy proof",
+        "no user-visible recovery instructions proof",
+    ] {
+        assert!(
+            audit.missing_backup_restore_proof.contains(&missing),
+            "missing backup/restore proof item {missing}"
+        );
+    }
+    for gate in [
+        "approve entering production activation planning",
+        "approve exact real-write activation scope",
+        "approve config target path",
+        "approve backup location and retention policy",
+        "approve restore policy",
+        "approve reload policy",
+        "approve runtime mutation policy",
+        "approve executor implementation",
+        "approve executor wiring",
+        "approve first real config write",
+        "approve fallback behavior for unsupported/not-proven records",
+        "approve raw fallback preservation behavior",
+        "approve rollback procedure",
+        "approve recovery procedure",
+        "approve emergency stop procedure",
+        "approve whether Hyprland 0.55.4 migration must happen before production activation",
+    ] {
+        assert!(
+            audit.required_user_approval_gates.contains(&gate),
+            "missing user approval gate {gate}"
+        );
+    }
+
+    assert_eq!(
+        audit.excluded_by_user,
+        vec![
+            "which families are safest",
+            "which families should stay blocked",
+            "family-by-family activation ranking",
+            "activation subset recommendation",
+        ]
+    );
+    assert_eq!(audit.real_write_activation_requirements.len(), 25);
+    assert_eq!(audit.missing_backup_restore_proof.len(), 15);
+    assert_eq!(audit.required_user_approval_gates.len(), 16);
+    assert!(!audit.production_activation_approved);
+    assert!(!audit.executor_implemented);
+    assert!(!audit.executor_wired);
+    assert!(!audit.real_write_path_enabled);
+    assert!(!audit.real_config_target_enabled);
+    assert!(!audit.backup_creation_enabled);
+    assert!(!audit.restore_execution_enabled);
+    assert!(!audit.rollback_execution_enabled);
+    assert!(!audit.hyprctl_reload_enabled);
+    assert!(!audit.runtime_mutation_enabled);
+    assert!(!audit.first_real_config_write_approved);
+    assert_eq!(
+        audit.next_recommended_work,
+        "Wait for explicit user approval of production activation planning scope before designing any real-write executor."
+    );
+
+    let audited_lists = [
+        audit.real_write_activation_requirements.as_slice(),
+        audit.missing_backup_restore_proof.as_slice(),
+        audit.required_user_approval_gates.as_slice(),
+    ];
+    for item in audited_lists.into_iter().flatten() {
+        assert!(
+            !item.contains("safest")
+                && !item.contains("should stay blocked")
+                && !item.contains("activation subset")
+                && !item.contains("ranking"),
+            "requirements audit must not recommend ranked family activation: {item}"
+        );
+    }
+}
+
+#[test]
+fn structured_family_real_write_activation_requirements_has_no_write_reload_or_executor_calls() {
+    let structured_family = fs::read_to_string("src/structured_family.rs")
+        .expect("structured family source should read");
+    let section_start = structured_family
+        .find("pub fn structured_family_real_write_activation_requirements_audit")
+        .expect("activation requirements audit function should exist");
+    let section_end = structured_family[section_start..]
+        .find("pub fn structured_family_kind_from_id")
+        .map(|offset| section_start + offset)
+        .expect("activation requirements audit section should end before kind helper");
+    let section = &structured_family[section_start..section_end];
+
+    assert!(section.contains("StructuredFamilyRealWriteActivationRequirementsAudit"));
+    for forbidden in [
+        "apply_setting_change",
+        "write_flow",
+        "Command::",
+        "fs::write",
+        "File::create",
+        "write_all",
+        "serde_json::to_writer",
+        "/home/kyo/.config/hypr/hyprland.conf",
+        "~/.config/hypr",
+        "production_activation_approved: true",
+        "executor_implemented: true",
+        "executor_wired: true",
+        "real_write_path_enabled: true",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "activation requirements audit model must not contain {forbidden}"
+        );
+    }
+}
+
+#[test]
 fn structured_family_kinds_cover_required_ids_and_widget_names() {
     let required = [
         (
@@ -2904,6 +3095,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-rendered-record-staged-apply-dry-run.v0.55.2.json",
         "data/reports/structured-family-rendered-record-staged-apply-rollback-recovery.v0.55.2.json",
         "data/reports/structured-family-rendered-record-final-executor-readiness.v0.55.2.json",
+        "data/reports/structured-family-real-write-activation-requirements.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -2953,9 +3145,13 @@ fn project_area_continuation_scan_classifies_every_required_area() {
         .expect("structured-family area should exist");
     assert_eq!(
         structured["classification"],
-        "blocked_by_production_activation_decision"
+        "blocked_by_user_production_activation_scope_decision"
     );
     assert_eq!(structured["canContinueNow"], false);
+    assert!(structured["currentStatus"]
+        .as_str()
+        .expect("currentStatus should be text")
+        .contains("real-write activation requirements listed"));
     assert!(structured["mustNotDo"]
         .as_str()
         .expect("mustNotDo should be text")
@@ -2982,7 +3178,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Stop for explicit user decision: structured-family production activation remains blocked until the user approves real-write activation scope."
+        "Wait for explicit user approval of production activation planning scope before designing any real-write executor."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -4049,7 +4245,127 @@ fn structured_family_rendered_record_final_executor_readiness_report_preserves_f
     }
     assert_eq!(
         report["nextRecommendedWork"],
-        "Stop for explicit user decision: structured-family production activation remains blocked until the user approves real-write activation scope."
+        "Wait for explicit user approval of production activation planning scope before designing any real-write executor."
+    );
+}
+
+#[test]
+fn structured_family_real_write_activation_requirements_report_preserves_non_approval_state() {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string(
+            "data/reports/structured-family-real-write-activation-requirements.v0.55.2.json",
+        )
+        .expect("real-write activation requirements report should read"),
+    )
+    .expect("real-write activation requirements report should be valid JSON");
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-real-write-activation-requirements"
+    );
+    assert_eq!(
+        report["excludedByUser"],
+        serde_json::json!([
+            "which families are safest",
+            "which families should stay blocked",
+            "family-by-family activation ranking",
+            "activation subset recommendation"
+        ])
+    );
+    assert_eq!(
+        report["activationStatus"],
+        "StructuredFamilyProductionActivationDecisionRequired"
+    );
+    assert_eq!(
+        report["executorStatus"],
+        "StructuredFamilyRealWriteExecutorNotImplemented"
+    );
+    assert_eq!(
+        report["realWriteBoundaryStatus"],
+        "StructuredFamilyRealWriteBlockedByDefault"
+    );
+    assert_eq!(
+        report["backupRestoreBoundaryStatus"],
+        "StructuredFamilyBackupRestoreProofMissing"
+    );
+    assert_eq!(
+        report["reloadBoundaryStatus"],
+        "StructuredFamilyHyprlandReloadForbidden"
+    );
+    assert_eq!(
+        report["runtimeMutationBoundaryStatus"],
+        "StructuredFamilyRuntimeMutationForbidden"
+    );
+    assert_eq!(
+        report["familyRankingExcluded"],
+        "StructuredFamilyFamilyRankingExcludedByUser"
+    );
+    assert_eq!(report["productionActivationApproved"], false);
+    assert_eq!(report["executorImplemented"], false);
+    assert_eq!(report["executorWired"], false);
+    assert_eq!(report["realWritePathEnabled"], false);
+    assert_eq!(report["realConfigTargetEnabled"], false);
+    assert_eq!(report["backupCreationEnabled"], false);
+    assert_eq!(report["restoreExecutionEnabled"], false);
+    assert_eq!(report["rollbackExecutionEnabled"], false);
+    assert_eq!(report["hyprctlReloadEnabled"], false);
+    assert_eq!(report["runtimeMutationEnabled"], false);
+    assert_eq!(report["firstRealConfigWriteApproved"], false);
+    assert_eq!(
+        report["realWriteActivationRequirements"]
+            .as_array()
+            .expect("requirements should be array")
+            .len(),
+        25
+    );
+    assert_eq!(
+        report["missingBackupRestoreProof"]
+            .as_array()
+            .expect("missing proof should be array")
+            .len(),
+        15
+    );
+    assert_eq!(
+        report["requiredUserApprovalGates"]
+            .as_array()
+            .expect("approval gates should be array")
+            .len(),
+        16
+    );
+    assert!(report["realWriteActivationRequirements"]
+        .as_array()
+        .expect("requirements should be array")
+        .iter()
+        .any(|item| item.as_str() == Some("explicit user production activation decision")));
+    assert!(report["missingBackupRestoreProof"]
+        .as_array()
+        .expect("missing proof should be array")
+        .iter()
+        .any(|item| item.as_str() == Some("no real backup file creation proof")));
+    assert!(report["requiredUserApprovalGates"]
+        .as_array()
+        .expect("approval gates should be array")
+        .iter()
+        .any(|item| item.as_str() == Some("approve first real config write")));
+
+    for key in [
+        "realWriteActivationRequirements",
+        "missingBackupRestoreProof",
+        "requiredUserApprovalGates",
+    ] {
+        for item in report[key].as_array().expect("audit list should be array") {
+            let text = item.as_str().expect("audit list item should be string");
+            assert!(
+                !text.contains("safest")
+                    && !text.contains("should stay blocked")
+                    && !text.contains("activation subset")
+                    && !text.contains("ranking"),
+                "requirements report must not recommend ranked family activation: {text}"
+            );
+        }
+    }
+    assert_eq!(
+        report["nextRecommendedWork"],
+        "Wait for explicit user approval of production activation planning scope before designing any real-write executor."
     );
 }
 
