@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family executor architecture implementation plan on `structured-family-editors-unified`.
+Structured-family executor implementation scaffold on `structured-family-editors-unified`.
 
 ## Completed This Sprint
 
@@ -55,6 +55,11 @@ Structured-family executor architecture implementation plan on `structured-famil
 - Defined future module, type, function, interface, input, output, validation, backup/restore, rollback/recovery, audit, test, source guard, and UI reachability plans without creating an executable executor module.
 - Kept actual executor implementation approved false, executor implementation approved false, executor wiring approved false, real write scope approved false, GUI real-write controls approved false, and production readiness not production ready.
 - Classified structured-family editors/writes as blocked by executor architecture implementation plan pending explicit actual executor scaffold decision.
+- Added the inert structured-family executor implementation scaffold.
+- Added scaffold module, types, functions, default rejection reasons, non-mutating execution receipt, audit record, and emergency stop model.
+- Proved the scaffold rejects by default, remains unreachable from current UI, and remains disconnected from `write_flow` and `apply_setting_change`.
+- Kept executor wiring approved false, executor wired false, real write scope approved false, real write path enabled false, GUI real-write controls enabled false, backup creation false, restore execution false, rollback execution false, reload false, runtime mutation false, first real config write false, and production readiness not production ready.
+- Classified structured-family editors/writes as blocked by executor scaffold pending explicit executor wiring planning decision.
 - Added a project-area continuation scan.
 
 ## Safety Boundaries
@@ -64,7 +69,7 @@ Structured-family executor architecture implementation plan on `structured-famil
 - `hyprctl reload` run: false.
 - Production behavior enabled: false.
 - Structured-family writes enabled: false.
-- Executor implemented: false.
+- Executor implemented: true for inert scaffold only.
 - Executor wired: false.
 - GUI real-write controls enabled: false.
 - Backup creation enabled: false.
@@ -75,4 +80,4 @@ Structured-family executor architecture implementation plan on `structured-famil
 
 ## Next Exact Work
 
-Stop for explicit user decision: approve or reject actual executor implementation scaffold.
+Stop for explicit user decision: approve or reject executor wiring planning.

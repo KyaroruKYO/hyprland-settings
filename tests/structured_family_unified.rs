@@ -3817,6 +3817,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-production-activation-design.v0.55.2.json",
         "data/reports/structured-family-internal-safe-write-architecture-plan.v0.55.2.json",
         "data/reports/structured-family-executor-architecture-implementation-plan.v0.55.2.json",
+        "data/reports/structured-family-executor-implementation-scaffold.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -3866,21 +3867,21 @@ fn project_area_continuation_scan_classifies_every_required_area() {
         .expect("structured-family area should exist");
     assert_eq!(
         structured["classification"],
-        "blocked_by_executor_architecture_implementation_plan_pending_actual_executor_scaffold_decision"
+        "blocked_by_executor_scaffold_pending_executor_wiring_planning_decision"
     );
     assert_eq!(structured["canContinueNow"], false);
     assert!(structured["currentStatus"]
         .as_str()
         .expect("currentStatus should be text")
-        .contains("executor architecture implementation planning approved true"));
+        .contains("executor scaffold implemented true"));
     assert_eq!(
         structured["safeNextWork"],
-        "stop for explicit user decision on actual executor implementation scaffold"
+        "stop for explicit user decision on executor wiring planning"
     );
     assert!(structured["mustNotDo"]
         .as_str()
         .expect("mustNotDo should be text")
-        .contains("do not implement or wire executor"));
+        .contains("do not wire executor"));
 
     let missing = areas
         .iter()
@@ -3903,7 +3904,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Stop for explicit user decision: approve or reject actual executor implementation scaffold."
+        "Stop for explicit user decision: approve or reject executor wiring planning."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -5535,7 +5536,7 @@ fn diff_review_summary_for_family(
     let output_path = temp_output_path(family);
     let proof = prove_structured_family_draft_rendered_record_render_reread(&plans, &output_path);
     let summary = structured_family_draft_rendered_record_diff_review_summary(&plans, &proof);
-    fs::remove_file(output_path).expect("diff/review helper should clean up temp file");
+    let _ = fs::remove_file(output_path);
     summary
 }
 

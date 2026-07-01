@@ -3,7 +3,7 @@
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
   "startingCommit": "71c5161eaa407da984d3c5971de3751d23033a0c",
-  "currentFocus": "structured-family executor architecture implementation plan",
+  "currentFocus": "structured-family executor implementation scaffold",
   "completedThisSprint": [
     "shared structured-family model for hl.monitor, hl.bind, hl.animation, hl.curve, hl.gesture, hl.device, and hl.permission",
     "review-only Config page structured-family section with seven stable cards",
@@ -53,7 +53,10 @@
     "structured-family area classified as blocked by safe-write architecture plan pending explicit executor implementation planning decision",
     "planning-only executor architecture implementation plan complete",
     "future module, type, function, interface, input, output, validation, backup/restore, rollback/recovery, audit, test, source guard, and UI reachability plans defined without implementation",
-    "structured-family area classified as blocked by executor architecture implementation plan pending explicit actual executor scaffold decision"
+    "structured-family area classified as blocked by executor architecture implementation plan pending explicit actual executor scaffold decision",
+    "inert structured-family executor implementation scaffold complete",
+    "scaffold module, types, functions, default rejection reasons, non-mutating receipt, audit record, and emergency stop model compile and reject by default",
+    "structured-family area classified as blocked by executor scaffold pending explicit executor wiring planning decision"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,
@@ -65,7 +68,7 @@
     "structuredFamilyWritesEnabled": false,
     "hyprland0554MigrationActivated": false
   },
-  "activeNextWork": "Stop for explicit user decision: approve or reject actual executor implementation scaffold.",
+  "activeNextWork": "Stop for explicit user decision: approve or reject executor wiring planning.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",
@@ -76,6 +79,6 @@
     "do not run hyprctl reload",
     "do not mutate real config or runtime",
     "do not design or wire GUI real-write controls",
-    "do not continue structured-family production activation work without explicit user approval of actual executor implementation scaffold"
+    "do not continue structured-family production activation work without explicit user approval of executor wiring planning"
   ]
 }
