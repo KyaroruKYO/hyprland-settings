@@ -24,6 +24,7 @@ use hyprland_settings::structured_family::{
     structured_family_draft_rendered_record_staged_apply_dry_run_report,
     structured_family_draft_rendered_record_staged_apply_plan,
     structured_family_draft_rendered_record_staged_apply_rollback_recovery_review,
+    structured_family_executor_architecture_implementation_plan,
     structured_family_internal_safe_write_architecture_plan, structured_family_kind_from_id,
     structured_family_production_activation_design,
     structured_family_production_activation_planning_scope,
@@ -3028,6 +3029,192 @@ fn structured_family_internal_safe_write_architecture_plan_has_no_write_reload_o
 }
 
 #[test]
+fn structured_family_executor_architecture_implementation_plan_is_planning_only() {
+    let plan = structured_family_executor_architecture_implementation_plan();
+
+    assert_eq!(
+        plan.user_decision,
+        "Approve future executor architecture implementation planning."
+    );
+    assert!(plan.executor_architecture_implementation_planning_approved);
+    assert!(plan.planning_only);
+    assert!(!plan.actual_executor_implementation_approved);
+    assert!(!plan.executor_implementation_approved);
+    assert!(!plan.executor_wiring_approved);
+    assert!(!plan.real_write_scope_approved);
+    assert!(!plan.gui_real_write_controls_approved);
+    assert_eq!(
+        plan.excluded_by_user,
+        vec![
+            "actual executor implementation",
+            "executor wiring",
+            "real config writes",
+            "GUI real-write controls",
+            "real apply button wiring",
+            "family safety ranking",
+            "safest-family recommendation",
+            "families that should stay blocked",
+            "limited activation subset selection",
+            "broad activation selection",
+            "first family selection",
+            "first record selection",
+        ]
+    );
+
+    for item in [
+        "future module name only, not created as executable module",
+        "future structured_family_safe_write_executor module boundary",
+        "future structured_family_safe_write_plan model boundary",
+        "future structured_family_safe_write_preflight model boundary",
+        "future structured_family_safe_write_backup model boundary",
+        "future structured_family_safe_write_rollback model boundary",
+        "future structured_family_safe_write_audit model boundary",
+        "all future modules require separate implementation approval before creation",
+    ] {
+        assert!(
+            plan.future_module_plan.contains(&item),
+            "missing future module item {item}"
+        );
+    }
+    for item in [
+        "StructuredFamilySafeWritePlan future type",
+        "StructuredFamilySafeWritePreflight future type",
+        "StructuredFamilySafeWriteTargetPolicy future type",
+        "StructuredFamilySafeWriteBackupPlan future type",
+        "StructuredFamilySafeWriteRollbackPlan future type",
+        "StructuredFamilySafeWriteApprovalState future type",
+        "StructuredFamilySafeWriteExecutionReceipt future type",
+        "StructuredFamilySafeWriteAuditRecord future type",
+        "StructuredFamilySafeWriteEmergencyStop future type",
+    ] {
+        assert!(
+            plan.future_type_plan.contains(&item),
+            "missing future type item {item}"
+        );
+    }
+    for item in [
+        "future build_safe_write_plan function",
+        "future validate_safe_write_preflight function",
+        "future validate_safe_write_target_policy function",
+        "future prepare_safe_write_backup_plan function",
+        "future prepare_safe_write_rollback_plan function",
+        "future verify_manual_approval_state function",
+        "future execute_safe_write function",
+        "future verify_safe_write_result function",
+        "future emit_safe_write_audit_record function",
+        "future emergency_stop_reason function",
+    ] {
+        assert!(
+            plan.future_function_plan.contains(&item),
+            "missing future function item {item}"
+        );
+    }
+    assert!(plan
+        .future_interface_boundary_plan
+        .contains(&"executor boundary remains unreachable from current UI"));
+    assert!(plan
+        .future_interface_boundary_plan
+        .contains(&"executor boundary remains disconnected from scalar apply helper"));
+    assert!(plan
+        .future_interface_boundary_plan
+        .contains(&"executor boundary remains disconnected from scalar write flow"));
+    assert!(plan
+        .future_executor_input_plan
+        .contains(&"validated unsupported/not-proven preservation report"));
+    assert!(plan
+        .future_executor_output_plan
+        .contains(&"future emergency stop report on failure"));
+    assert!(plan
+        .future_validation_object_plan
+        .contains(&"Hyprland verify-config or equivalent object"));
+    assert!(plan
+        .future_backup_restore_object_plan
+        .contains(&"restore approval object"));
+    assert!(plan
+        .future_rollback_recovery_object_plan
+        .contains(&"rollback approval object"));
+    assert!(plan
+        .future_audit_object_plan
+        .contains(&"sensitive data redaction rule"));
+    assert!(plan
+        .future_test_plan
+        .contains(&"tests for no GUI real-write controls before GUI approval"));
+    assert!(plan
+        .future_source_guard_plan
+        .contains(&"guard against command runner in planning-only section"));
+    assert!(plan
+        .ui_reachability_boundary
+        .contains(&"no GTK control that can trigger real writes"));
+    assert!(plan.future_approval_gates.contains(
+        &"approve actual executor implementation scaffold before any executor module is created"
+    ));
+
+    assert!(!plan.production_activation_approved);
+    assert!(!plan.executor_implemented);
+    assert!(!plan.executor_wired);
+    assert!(!plan.real_write_path_enabled);
+    assert!(!plan.real_config_target_enabled);
+    assert!(!plan.backup_creation_enabled);
+    assert!(!plan.restore_execution_enabled);
+    assert!(!plan.rollback_execution_enabled);
+    assert!(!plan.hyprctl_reload_enabled);
+    assert!(!plan.runtime_mutation_enabled);
+    assert!(!plan.first_real_config_write_approved);
+    assert!(!plan.gui_real_write_controls_enabled);
+    assert!(plan.family_ranking_excluded);
+    assert!(!plan.activation_subset_selected);
+    assert_eq!(plan.production_readiness_decision, "not production ready");
+    assert_eq!(
+        plan.next_recommended_work,
+        "Stop for explicit user decision: approve or reject actual executor implementation scaffold."
+    );
+}
+
+#[test]
+fn structured_family_executor_architecture_implementation_plan_has_no_write_reload_or_ui_wiring() {
+    let structured_family = fs::read_to_string("src/structured_family.rs")
+        .expect("structured family source should read");
+    let section_start = structured_family
+        .find("pub fn structured_family_executor_architecture_implementation_plan")
+        .expect("executor architecture implementation plan function should exist");
+    let section_end = structured_family[section_start..]
+        .find("pub fn structured_family_kind_from_id")
+        .map(|offset| section_start + offset)
+        .expect("executor architecture implementation section should end before kind helper");
+    let section = &structured_family[section_start..section_end];
+
+    assert!(section.contains("StructuredFamilyExecutorArchitectureImplementationPlan"));
+    for forbidden in [
+        "apply_setting_change(",
+        "write_flow::",
+        "Command::",
+        "hyprctl reload",
+        "fs::write(",
+        "File::create",
+        "write_all",
+        "serde_json::to_writer",
+        "/home/kyo/.config/hypr/hyprland.conf",
+        "~/.config/hypr",
+        "gtk::",
+        "Button::",
+        "connect_clicked",
+        "production_activation_approved: true",
+        "actual_executor_implementation_approved: true",
+        "executor_implementation_approved: true",
+        "executor_implemented: true",
+        "executor_wiring_approved: true",
+        "executor_wired: true",
+        "real_write_path_enabled: true",
+        "gui_real_write_controls_enabled: true",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "executor architecture implementation plan must not contain {forbidden}"
+        );
+    }
+}
+
+#[test]
 fn structured_family_kinds_cover_required_ids_and_widget_names() {
     let required = [
         (
@@ -3629,6 +3816,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-production-activation-planning-scope.v0.55.2.json",
         "data/reports/structured-family-production-activation-design.v0.55.2.json",
         "data/reports/structured-family-internal-safe-write-architecture-plan.v0.55.2.json",
+        "data/reports/structured-family-executor-architecture-implementation-plan.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -3678,16 +3866,16 @@ fn project_area_continuation_scan_classifies_every_required_area() {
         .expect("structured-family area should exist");
     assert_eq!(
         structured["classification"],
-        "blocked_by_safe_write_architecture_plan_pending_executor_implementation_planning_decision"
+        "blocked_by_executor_architecture_implementation_plan_pending_actual_executor_scaffold_decision"
     );
     assert_eq!(structured["canContinueNow"], false);
     assert!(structured["currentStatus"]
         .as_str()
         .expect("currentStatus should be text")
-        .contains("internal safe-write architecture plan complete"));
+        .contains("executor architecture implementation planning approved true"));
     assert_eq!(
         structured["safeNextWork"],
-        "stop for explicit user decision on future executor architecture implementation planning"
+        "stop for explicit user decision on actual executor implementation scaffold"
     );
     assert!(structured["mustNotDo"]
         .as_str()
@@ -3715,7 +3903,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Stop for explicit user decision: approve or reject future executor architecture implementation planning."
+        "Stop for explicit user decision: approve or reject actual executor implementation scaffold."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -5201,6 +5389,134 @@ fn structured_family_internal_safe_write_architecture_plan_report_is_planning_on
         "Stop for explicit user decision: approve or reject future executor architecture implementation planning."
     );
     assert!(!next.contains("implementing an executor"));
+    assert!(!next.contains("GUI controls"));
+}
+
+#[test]
+fn structured_family_executor_architecture_implementation_plan_report_is_planning_only() {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string(
+            "data/reports/structured-family-executor-architecture-implementation-plan.v0.55.2.json",
+        )
+        .expect("executor architecture implementation plan report should read"),
+    )
+    .expect("executor architecture implementation plan report should be valid JSON");
+
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-executor-architecture-implementation-plan"
+    );
+    assert_eq!(
+        report["executorArchitectureImplementationPlanningApproved"],
+        true
+    );
+    assert_eq!(report["planningOnly"], true);
+    assert_eq!(report["actualExecutorImplementationApproved"], false);
+    assert_eq!(report["executorImplementationApproved"], false);
+    assert_eq!(report["executorWiringApproved"], false);
+    assert_eq!(report["realWriteScopeApproved"], false);
+    assert_eq!(report["guiRealWriteControlsApproved"], false);
+    assert_eq!(
+        report["excludedByUser"],
+        serde_json::json!([
+            "actual executor implementation",
+            "executor wiring",
+            "real config writes",
+            "GUI real-write controls",
+            "real apply button wiring",
+            "family safety ranking",
+            "safest-family recommendation",
+            "families that should stay blocked",
+            "limited activation subset selection",
+            "broad activation selection",
+            "first family selection",
+            "first record selection"
+        ])
+    );
+    for key in [
+        "productionActivationApproved",
+        "executorImplemented",
+        "executorWired",
+        "realWritePathEnabled",
+        "realConfigTargetEnabled",
+        "backupCreationEnabled",
+        "restoreExecutionEnabled",
+        "rollbackExecutionEnabled",
+        "hyprctlReloadEnabled",
+        "runtimeMutationEnabled",
+        "firstRealConfigWriteApproved",
+        "guiRealWriteControlsEnabled",
+        "activationSubsetSelected",
+    ] {
+        assert_eq!(report[key], false, "{key} should remain false");
+    }
+    assert_eq!(report["familyRankingExcluded"], true);
+    assert_eq!(
+        report["productionReadinessDecision"],
+        "not production ready"
+    );
+
+    for key in [
+        "futureModulePlan",
+        "futureTypePlan",
+        "futureFunctionPlan",
+        "futureInterfaceBoundaryPlan",
+        "futureExecutorInputPlan",
+        "futureExecutorOutputPlan",
+        "futureValidationObjectPlan",
+        "futureBackupRestoreObjectPlan",
+        "futureRollbackRecoveryObjectPlan",
+        "futureAuditObjectPlan",
+        "futureTestPlan",
+        "futureSourceGuardPlan",
+        "uiReachabilityBoundary",
+        "futureApprovalGates",
+    ] {
+        assert!(
+            !report[key]
+                .as_array()
+                .expect("planning field should be array")
+                .is_empty(),
+            "{key} should be populated"
+        );
+    }
+    assert!(report["futureModulePlan"]
+        .as_array()
+        .expect("futureModulePlan should be array")
+        .iter()
+        .any(|value| value.as_str()
+            == Some("future structured_family_safe_write_executor module boundary")));
+    assert!(report["futureFunctionPlan"]
+        .as_array()
+        .expect("futureFunctionPlan should be array")
+        .iter()
+        .any(|value| value.as_str() == Some("future execute_safe_write function")));
+    assert!(report["futureInterfaceBoundaryPlan"]
+        .as_array()
+        .expect("futureInterfaceBoundaryPlan should be array")
+        .iter()
+        .any(|value| value.as_str()
+            == Some("executor boundary remains disconnected from apply_setting_change")));
+    assert!(report["futureSourceGuardPlan"]
+        .as_array()
+        .expect("futureSourceGuardPlan should be array")
+        .iter()
+        .any(|value| value.as_str()
+            == Some("guard against connect_clicked real-write wiring in planning-only section")));
+    assert!(report["uiReachabilityBoundary"]
+        .as_array()
+        .expect("uiReachabilityBoundary should be array")
+        .iter()
+        .any(|value| value.as_str() == Some("no GTK control that can trigger real writes")));
+
+    let next = report["nextRecommendedWork"]
+        .as_str()
+        .expect("nextRecommendedWork should be text");
+    assert_eq!(
+        next,
+        "Stop for explicit user decision: approve or reject actual executor implementation scaffold."
+    );
+    assert!(!next.contains("automatically"));
     assert!(!next.contains("GUI controls"));
 }
 

@@ -118,12 +118,12 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "fixture-only proof chain complete; real-write activation requirements listed; missing backup/restore proof listed; required user approval gates listed; Option B planning-only production activation scope approved; production activation design complete; internal safe-write architecture plan complete; architecture planning approved true; planningOnly true; implementation scope approved false; executor implementation approved false; executor wiring approved false; real write scope approved false; GUI real-write controls approved false; family ranking excluded by user instruction; activation subset selected false; production activation approved false; executor implemented false; executor wired false; real write path enabled false; GUI real-write controls enabled false; first real config write approved false",
-      "classification": "blocked_by_safe_write_architecture_plan_pending_executor_implementation_planning_decision",
+      "currentStatus": "fixture-only proof chain complete; real-write activation requirements listed; missing backup/restore proof listed; required user approval gates listed; Option B planning-only production activation scope approved; production activation design complete; internal safe-write architecture plan complete; executor architecture implementation planning approved true; planningOnly true; actual executor implementation approved false; executor implementation approved false; executor wiring approved false; real write scope approved false; GUI real-write controls approved false; family ranking excluded by user instruction; activation subset selected false; production activation approved false; executor implemented false; executor wired false; real write path enabled false; GUI real-write controls enabled false; first real config write approved false",
+      "classification": "blocked_by_executor_architecture_implementation_plan_pending_actual_executor_scaffold_decision",
       "canContinueNow": false,
-      "reason": "The planning-only internal safe-write architecture plan is complete. Further structured-family production activation work must stop until the user explicitly approves or rejects future executor architecture implementation planning. Implementation, executor wiring, real writes, GUI real-write controls, backup/restore execution, reload, runtime mutation, family ranking, activation subset selection, production readiness, and first real config write approval remain false.",
-      "blockingDependency": "explicit user decision on future executor architecture implementation planning",
-      "safeNextWork": "stop for explicit user decision on future executor architecture implementation planning",
+      "reason": "The planning-only executor architecture implementation plan is complete. Further structured-family production activation work must stop until the user explicitly approves or rejects an actual executor implementation scaffold. Actual implementation, executor wiring, real writes, GUI real-write controls, backup/restore execution, reload, runtime mutation, family ranking, activation subset selection, production readiness, and first real config write approval remain false.",
+      "blockingDependency": "explicit user decision on actual executor implementation scaffold",
+      "safeNextWork": "stop for explicit user decision on actual executor implementation scaffold",
       "mustNotDo": "do not implement or wire executor, enable real writes, design or wire GUI real-write controls, rank families, choose activation subset, create backups, restore backups, reload Hyprland, mutate runtime, or approve first real config write",
       "evidenceUsed": [
         "src/structured_family.rs",
@@ -144,7 +144,8 @@
         "data/reports/structured-family-real-write-activation-requirements.v0.55.2.json",
         "data/reports/structured-family-production-activation-planning-scope.v0.55.2.json",
         "data/reports/structured-family-production-activation-design.v0.55.2.json",
-        "data/reports/structured-family-internal-safe-write-architecture-plan.v0.55.2.json"
+        "data/reports/structured-family-internal-safe-write-architecture-plan.v0.55.2.json",
+        "data/reports/structured-family-executor-architecture-implementation-plan.v0.55.2.json"
       ]
     },
     {
@@ -191,5 +192,5 @@
     }
   ],
   "activeSafeArea": null,
-  "recommendedNextWork": "Stop for explicit user decision: approve or reject future executor architecture implementation planning."
+  "recommendedNextWork": "Stop for explicit user decision: approve or reject actual executor implementation scaffold."
 }
