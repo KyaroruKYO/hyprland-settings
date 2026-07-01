@@ -24,7 +24,8 @@ use hyprland_settings::structured_family::{
     structured_family_draft_rendered_record_staged_apply_dry_run_report,
     structured_family_draft_rendered_record_staged_apply_plan,
     structured_family_draft_rendered_record_staged_apply_rollback_recovery_review,
-    structured_family_kind_from_id, structured_family_production_activation_design,
+    structured_family_internal_safe_write_architecture_plan, structured_family_kind_from_id,
+    structured_family_production_activation_design,
     structured_family_production_activation_planning_scope,
     structured_family_real_write_activation_requirements_audit,
     structured_family_record_draft_gtk_bindings, structured_family_record_drafts,
@@ -2601,6 +2602,12 @@ fn structured_family_production_activation_planning_scope_has_no_write_reload_or
         "File::create",
         "write_all",
         "serde_json::to_writer",
+        "apply_setting_change(",
+        "write_flow::",
+        "hyprctl reload",
+        "gtk::",
+        "Button::",
+        "connect_clicked",
         "/home/kyo/.config/hypr/hyprland.conf",
         "~/.config/hypr",
         "production_activation_approved: true",
@@ -2827,6 +2834,195 @@ fn structured_family_production_activation_design_has_no_write_reload_or_executo
         assert!(
             !section.contains(forbidden),
             "activation design model must not contain {forbidden}"
+        );
+    }
+}
+
+#[test]
+fn structured_family_internal_safe_write_architecture_plan_is_planning_only() {
+    let plan = structured_family_internal_safe_write_architecture_plan();
+
+    assert_eq!(
+        plan.user_decision,
+        "Plan the internal safe-write architecture before designing or wiring user-facing controls for real writes."
+    );
+    assert!(plan.architecture_planning_approved);
+    assert!(plan.planning_only);
+    assert!(!plan.implementation_scope_approved);
+    assert!(!plan.executor_implementation_approved);
+    assert!(!plan.executor_wiring_approved);
+    assert!(!plan.real_write_scope_approved);
+    assert!(!plan.gui_real_write_controls_approved);
+    assert_eq!(
+        plan.excluded_by_user,
+        vec![
+            "family safety ranking",
+            "safest-family recommendation",
+            "families that should stay blocked",
+            "limited activation subset selection",
+            "broad activation selection",
+            "first family selection",
+            "first record selection",
+            "GUI real-write controls",
+            "real apply button wiring",
+        ]
+    );
+
+    for item in [
+        "planning-only internal architecture artifact",
+        "separate review-only model from future execution model",
+        "separate draft editing from future write approval",
+        "separate rendered-record generation from future real config write",
+        "separate future executor implementation from future executor wiring",
+        "separate future executor wiring from first real config write",
+        "keep source/include and duplicate production activation as separate scopes",
+    ] {
+        assert!(
+            plan.safe_write_architecture_plan.contains(&item),
+            "missing safe-write architecture item {item}"
+        );
+    }
+    for item in [
+        "read current config snapshot",
+        "project structured-family records",
+        "edit in-memory draft",
+        "render candidate record",
+        "reread candidate from fixture or temporary config",
+        "review diff",
+        "collect manual approvals",
+        "validate target policy",
+        "validate backup policy",
+        "validate rollback policy",
+        "validate version compatibility",
+        "future executor boundary",
+        "future first-write stop gate",
+        "post-write reread and verification gate",
+    ] {
+        assert!(
+            plan.pipeline_stage_plan.contains(&item),
+            "missing pipeline stage item {item}"
+        );
+    }
+    for item in [
+        "StructuredFamilyDraft remains in-memory until separate persistence approval",
+        "RenderedRecordCandidate represents candidate text only",
+        "SafeWritePlan is future-only and not executable in this sprint",
+        "SafeWritePreflightReport is future-only evidence summary",
+        "SafeWriteBackupPlan is future-only and does not create backups in this sprint",
+        "SafeWriteRollbackPlan is future-only and does not create rollback files in this sprint",
+        "SafeWriteApprovalState is future-only and requires explicit user approval",
+        "SafeWriteExecutionReceipt is future-only and cannot exist until real writes are approved",
+    ] {
+        assert!(
+            plan.boundary_object_plan.contains(&item),
+            "missing boundary object item {item}"
+        );
+    }
+    for item in [
+        "executor module is future-only",
+        "executor is not reachable from current UI",
+        "executor is not wired to structured-family records",
+        "executor is not called by scalar apply helper",
+        "executor is not called by scalar write flow",
+        "executor cannot run without explicit implementation approval",
+        "executor cannot be wired without explicit wiring approval",
+        "executor cannot write without first-real-write approval",
+        "executor rejects blocked plans",
+        "executor rejects unsupported/not-proven records",
+        "executor preserves raw fallback behavior",
+    ] {
+        assert!(
+            plan.executor_boundary_plan.contains(&item),
+            "missing executor boundary item {item}"
+        );
+    }
+    for item in [
+        "parser validation before future execution",
+        "semantic validation before future execution",
+        "target reread before future execution",
+        "candidate render/reread before future execution",
+        "manual diff review before future execution",
+        "Hyprland verify-config or equivalent before future execution",
+        "post-write reread after future execution",
+        "post-write verification after future execution",
+        "rollback availability check before future execution",
+    ] {
+        assert!(
+            plan.validation_gate_plan.contains(&item),
+            "missing validation gate item {item}"
+        );
+    }
+    assert!(plan
+        .backup_restore_gate_plan
+        .contains(&"restore execution requires separate approval"));
+    assert!(plan
+        .rollback_recovery_gate_plan
+        .contains(&"rollback execution requires separate approval"));
+    assert!(plan
+        .audit_log_plan
+        .contains(&"sensitive data redaction rule"));
+    assert!(plan
+        .emergency_stop_plan
+        .contains(&"stop before GUI controls"));
+    assert!(plan
+        .ui_reachability_boundary
+        .contains(&"no GTK control that can trigger real writes"));
+    assert!(plan
+        .future_approval_gates
+        .contains(&"approve GUI real-write control design before GUI design starts"));
+
+    assert!(!plan.production_activation_approved);
+    assert!(!plan.executor_implemented);
+    assert!(!plan.executor_wired);
+    assert!(!plan.real_write_path_enabled);
+    assert!(!plan.real_config_target_enabled);
+    assert!(!plan.backup_creation_enabled);
+    assert!(!plan.restore_execution_enabled);
+    assert!(!plan.rollback_execution_enabled);
+    assert!(!plan.hyprctl_reload_enabled);
+    assert!(!plan.runtime_mutation_enabled);
+    assert!(!plan.first_real_config_write_approved);
+    assert!(!plan.gui_real_write_controls_enabled);
+    assert!(plan.family_ranking_excluded);
+    assert!(!plan.activation_subset_selected);
+    assert_eq!(plan.production_readiness_decision, "not production ready");
+    assert_eq!(
+        plan.next_recommended_work,
+        "Stop for explicit user decision: approve or reject future executor architecture implementation planning."
+    );
+}
+
+#[test]
+fn structured_family_internal_safe_write_architecture_plan_has_no_write_reload_or_ui_wiring() {
+    let structured_family = fs::read_to_string("src/structured_family.rs")
+        .expect("structured family source should read");
+    let section_start = structured_family
+        .find("pub fn structured_family_internal_safe_write_architecture_plan")
+        .expect("internal safe-write architecture plan function should exist");
+    let section_end = structured_family[section_start..]
+        .find("pub fn structured_family_kind_from_id")
+        .map(|offset| section_start + offset)
+        .expect("internal safe-write architecture section should end before kind helper");
+    let section = &structured_family[section_start..section_end];
+
+    assert!(section.contains("StructuredFamilyInternalSafeWriteArchitecturePlan"));
+    for forbidden in [
+        "Command::",
+        "fs::write(",
+        "File::create",
+        "write_all",
+        "serde_json::to_writer",
+        "/home/kyo/.config/hypr/hyprland.conf",
+        "~/.config/hypr",
+        "production_activation_approved: true",
+        "executor_implemented: true",
+        "executor_wired: true",
+        "real_write_path_enabled: true",
+        "gui_real_write_controls_enabled: true",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "internal safe-write architecture plan must not contain {forbidden}"
         );
     }
 }
@@ -3432,6 +3628,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-real-write-activation-requirements.v0.55.2.json",
         "data/reports/structured-family-production-activation-planning-scope.v0.55.2.json",
         "data/reports/structured-family-production-activation-design.v0.55.2.json",
+        "data/reports/structured-family-internal-safe-write-architecture-plan.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -3481,16 +3678,16 @@ fn project_area_continuation_scan_classifies_every_required_area() {
         .expect("structured-family area should exist");
     assert_eq!(
         structured["classification"],
-        "blocked_by_design_complete_pending_executor_architecture_decision"
+        "blocked_by_safe_write_architecture_plan_pending_executor_implementation_planning_decision"
     );
     assert_eq!(structured["canContinueNow"], false);
     assert!(structured["currentStatus"]
         .as_str()
         .expect("currentStatus should be text")
-        .contains("production activation design complete"));
+        .contains("internal safe-write architecture plan complete"));
     assert_eq!(
         structured["safeNextWork"],
-        "stop for explicit user decision on future executor architecture implementation-planning scope"
+        "stop for explicit user decision on future executor architecture implementation planning"
     );
     assert!(structured["mustNotDo"]
         .as_str()
@@ -3518,7 +3715,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Stop for explicit user decision: approve or reject a future executor architecture implementation-planning sprint."
+        "Stop for explicit user decision: approve or reject future executor architecture implementation planning."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -4905,6 +5102,106 @@ fn structured_family_production_activation_design_report_is_design_only() {
         report["nextRecommendedWork"],
         "Stop for explicit user decision: approve or reject a future executor architecture implementation-planning sprint."
     );
+}
+
+#[test]
+fn structured_family_internal_safe_write_architecture_plan_report_is_planning_only() {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string(
+            "data/reports/structured-family-internal-safe-write-architecture-plan.v0.55.2.json",
+        )
+        .expect("internal safe-write architecture plan report should read"),
+    )
+    .expect("internal safe-write architecture plan report should be valid JSON");
+
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-internal-safe-write-architecture-plan"
+    );
+    assert_eq!(report["architecturePlanningApproved"], true);
+    assert_eq!(report["planningOnly"], true);
+    assert_eq!(report["implementationScopeApproved"], false);
+    assert_eq!(report["executorImplementationApproved"], false);
+    assert_eq!(report["executorWiringApproved"], false);
+    assert_eq!(report["realWriteScopeApproved"], false);
+    assert_eq!(report["guiRealWriteControlsApproved"], false);
+    assert_eq!(
+        report["excludedByUser"],
+        serde_json::json!([
+            "family safety ranking",
+            "safest-family recommendation",
+            "families that should stay blocked",
+            "limited activation subset selection",
+            "broad activation selection",
+            "first family selection",
+            "first record selection",
+            "GUI real-write controls",
+            "real apply button wiring"
+        ])
+    );
+    for key in [
+        "productionActivationApproved",
+        "executorImplemented",
+        "executorWired",
+        "realWritePathEnabled",
+        "realConfigTargetEnabled",
+        "backupCreationEnabled",
+        "restoreExecutionEnabled",
+        "rollbackExecutionEnabled",
+        "hyprctlReloadEnabled",
+        "runtimeMutationEnabled",
+        "firstRealConfigWriteApproved",
+        "guiRealWriteControlsEnabled",
+        "activationSubsetSelected",
+    ] {
+        assert_eq!(report[key], false, "{key} should remain false");
+    }
+    assert_eq!(report["familyRankingExcluded"], true);
+    assert_eq!(
+        report["productionReadinessDecision"],
+        "not production ready"
+    );
+
+    for key in [
+        "safeWriteArchitecturePlan",
+        "pipelineStagePlan",
+        "boundaryObjectPlan",
+        "executorBoundaryPlan",
+        "validationGatePlan",
+        "backupRestoreGatePlan",
+        "rollbackRecoveryGatePlan",
+        "auditLogPlan",
+        "emergencyStopPlan",
+        "uiReachabilityBoundary",
+        "futureApprovalGates",
+    ] {
+        assert!(
+            !report[key]
+                .as_array()
+                .expect("planning field should be array")
+                .is_empty(),
+            "{key} should be populated"
+        );
+    }
+    assert!(report["safeWriteArchitecturePlan"]
+        .as_array()
+        .expect("safeWriteArchitecturePlan should be array")
+        .iter()
+        .any(|value| value.as_str() == Some("planning-only internal architecture artifact")));
+    assert!(report["uiReachabilityBoundary"]
+        .as_array()
+        .expect("uiReachabilityBoundary should be array")
+        .iter()
+        .any(|value| value.as_str() == Some("no GTK control that can trigger real writes")));
+    let next = report["nextRecommendedWork"]
+        .as_str()
+        .expect("nextRecommendedWork should be text");
+    assert_eq!(
+        next,
+        "Stop for explicit user decision: approve or reject future executor architecture implementation planning."
+    );
+    assert!(!next.contains("implementing an executor"));
+    assert!(!next.contains("GUI controls"));
 }
 
 fn diff_review_summary_for_family(

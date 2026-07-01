@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family production activation design on `structured-family-editors-unified`.
+Structured-family internal safe-write architecture plan on `structured-family-editors-unified`.
 
 ## Completed This Sprint
 
@@ -47,6 +47,10 @@ Structured-family production activation design on `structured-family-editors-uni
 - Added the planning-only structured-family production activation design document.
 - Defined future architecture, executor boundary, config target policy, backup/restore, rollback/recovery, validation sequence, manual confirmation, audit logging, and emergency stop requirements without implementing or wiring an executor.
 - Classified structured-family editors/writes as blocked by design complete pending explicit executor architecture decision.
+- Added the planning-only internal safe-write architecture plan before GUI real-write controls.
+- Defined internal safe-write architecture boundaries, future pipeline stages, boundary objects, executor boundary, validation gates, backup/restore gates, rollback/recovery gates, audit log requirements, emergency stop conditions, and UI reachability boundaries without implementing an executor or designing GUI real-write controls.
+- Kept GUI real-write controls approved false and GUI real-write controls enabled false.
+- Classified structured-family editors/writes as blocked by safe-write architecture plan pending explicit executor implementation planning decision.
 - Added a project-area continuation scan.
 
 ## Safety Boundaries
@@ -58,6 +62,7 @@ Structured-family production activation design on `structured-family-editors-uni
 - Structured-family writes enabled: false.
 - Executor implemented: false.
 - Executor wired: false.
+- GUI real-write controls enabled: false.
 - Backup creation enabled: false.
 - Restore execution enabled: false.
 - Rollback execution enabled: false.
@@ -66,4 +71,4 @@ Structured-family production activation design on `structured-family-editors-uni
 
 ## Next Exact Work
 
-Stop for explicit user decision: approve or reject a future executor architecture implementation-planning sprint.
+Stop for explicit user decision: approve or reject future executor architecture implementation planning.
