@@ -1291,6 +1291,38 @@ pub struct StructuredFamilyRealWriteActivationRequirementsAudit {
     pub next_recommended_work: &'static str,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructuredFamilyProductionActivationPlanningScope {
+    pub user_decision: &'static str,
+    pub planning_scope_approved: bool,
+    pub implementation_scope_approved: bool,
+    pub real_write_scope_approved: bool,
+    pub excluded_by_user: Vec<&'static str>,
+    pub approved_planning_scope: Vec<&'static str>,
+    pub not_approved_scope: Vec<&'static str>,
+    pub executor_architecture_planning_requirements: Vec<&'static str>,
+    pub backup_restore_planning_requirements: Vec<&'static str>,
+    pub rollback_recovery_planning_requirements: Vec<&'static str>,
+    pub validation_planning_requirements: Vec<&'static str>,
+    pub manual_approval_checkpoints: Vec<&'static str>,
+    pub future_implementation_stop_gates: Vec<&'static str>,
+    pub production_activation_approved: bool,
+    pub executor_implemented: bool,
+    pub executor_wired: bool,
+    pub real_write_path_enabled: bool,
+    pub real_config_target_enabled: bool,
+    pub backup_creation_enabled: bool,
+    pub restore_execution_enabled: bool,
+    pub rollback_execution_enabled: bool,
+    pub hyprctl_reload_enabled: bool,
+    pub runtime_mutation_enabled: bool,
+    pub first_real_config_write_approved: bool,
+    pub family_ranking_excluded: bool,
+    pub activation_subset_selected: bool,
+    pub production_readiness_decision: &'static str,
+    pub next_recommended_work: &'static str,
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum StructuredFamilyDraftRenderedRecordApplyStageKind {
     Preflight,
@@ -5214,6 +5246,112 @@ pub fn structured_family_real_write_activation_requirements_audit(
         first_real_config_write_approved: false,
         next_recommended_work:
             "Wait for explicit user approval of production activation planning scope before designing any real-write executor.",
+    }
+}
+
+pub fn structured_family_production_activation_planning_scope(
+) -> StructuredFamilyProductionActivationPlanningScope {
+    StructuredFamilyProductionActivationPlanningScope {
+        user_decision: "Option B: production activation planning scope only",
+        planning_scope_approved: true,
+        implementation_scope_approved: false,
+        real_write_scope_approved: false,
+        excluded_by_user: vec![
+            "family safety ranking",
+            "safest-family recommendation",
+            "families that should stay blocked",
+            "limited activation subset selection",
+            "broad activation selection",
+            "first family selection",
+            "first record selection",
+        ],
+        approved_planning_scope: vec![
+            "production activation planning document",
+            "executor architecture design requirements",
+            "backup and restore design requirements",
+            "rollback and recovery design requirements",
+            "validation evidence design requirements",
+            "manual approval checkpoint design",
+            "future implementation stop-gate design",
+        ],
+        not_approved_scope: vec![
+            "executor implementation",
+            "executor wiring",
+            "real config writes",
+            "real backup creation",
+            "real restore execution",
+            "rollback execution",
+            "Hyprland reload",
+            "runtime mutation",
+            "first real config write",
+            "family ranking",
+            "activation subset selection",
+        ],
+        executor_architecture_planning_requirements: vec![
+            "define executor boundaries without implementing an executor",
+            "define explicit executor implementation approval gate",
+            "define explicit executor wiring approval gate",
+            "define no-auto-apply and no-implicit-activation invariants",
+            "define source/include and duplicate production boundaries as separate scopes",
+        ],
+        backup_restore_planning_requirements: vec![
+            "design backup location and retention policy",
+            "design backup integrity hash proof",
+            "design backup reread proof",
+            "design restore target validation proof",
+            "design restore reread proof",
+            "design post-restore Hyprland validation policy",
+        ],
+        rollback_recovery_planning_requirements: vec![
+            "design rollback file policy without creating rollback files",
+            "design failed-write recovery procedure",
+            "design interrupted-write recovery procedure",
+            "design partial-write recovery procedure",
+            "design emergency stop procedure",
+            "design user-visible recovery instructions",
+        ],
+        validation_planning_requirements: vec![
+            "define pre-write parser and validator evidence",
+            "define fixture write/reread evidence",
+            "define temporary config render and reread evidence",
+            "define Hyprland verify-config or equivalent evidence",
+            "define post-write reread evidence",
+            "define Hyprland 0.55.2 model versus live 0.55.4 compatibility evidence",
+        ],
+        manual_approval_checkpoints: vec![
+            "approve production activation planning document",
+            "approve exact real-write activation scope",
+            "approve executor implementation before implementation starts",
+            "approve executor wiring before wiring starts",
+            "approve backup and restore execution before execution starts",
+            "approve reload policy before reload can be considered",
+            "approve runtime mutation policy before runtime mutation can be considered",
+            "approve first real config write before any real config write starts",
+        ],
+        future_implementation_stop_gates: vec![
+            "A later sprint must stop before implementing an executor unless the user explicitly approves executor implementation.",
+            "A later sprint must stop before wiring an executor unless the user explicitly approves executor wiring.",
+            "A later sprint must stop before real config writes unless the user explicitly approves the first real config write.",
+            "A later sprint must stop before backup/restore execution unless the user explicitly approves backup/restore execution.",
+            "A later sprint must stop before Hyprland reload unless the user explicitly approves reload policy.",
+            "A later sprint must stop before runtime mutation unless the user explicitly approves runtime mutation policy.",
+        ],
+        production_activation_approved: false,
+        executor_implemented: false,
+        executor_wired: false,
+        real_write_path_enabled: false,
+        real_config_target_enabled: false,
+        backup_creation_enabled: false,
+        restore_execution_enabled: false,
+        rollback_execution_enabled: false,
+        hyprctl_reload_enabled: false,
+        runtime_mutation_enabled: false,
+        first_real_config_write_approved: false,
+        family_ranking_excluded: true,
+        activation_subset_selected: false,
+        production_readiness_decision: "not production ready",
+        next_recommended_work:
+            "Create a planning-only structured-family production activation design document that does not implement or wire an executor.",
     }
 }
 

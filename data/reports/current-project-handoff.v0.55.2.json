@@ -3,7 +3,7 @@
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
   "startingCommit": "71c5161eaa407da984d3c5971de3751d23033a0c",
-  "currentFocus": "structured-family real-write activation requirements audit",
+  "currentFocus": "structured-family production activation planning scope",
   "completedThisSprint": [
     "shared structured-family model for hl.monitor, hl.bind, hl.animation, hl.curve, hl.gesture, hl.device, and hl.permission",
     "review-only Config page structured-family section with seven stable cards",
@@ -42,7 +42,9 @@
     "fixture-only final executor-readiness audits for all seven families",
     "proof-chain completion, production activation required, executor-not-implemented, executor-not-wired, and not-production-ready findings for all seven families",
     "requirements-only real-write activation audit listing universal activation requirements, missing backup/restore proof, and required user approval gates",
-    "family ranking, safest-family recommendation, family-block recommendation, and activation subset recommendation explicitly excluded by user instruction"
+    "family ranking, safest-family recommendation, family-block recommendation, and activation subset recommendation explicitly excluded by user instruction",
+    "Option B production activation planning scope recorded as planning-only approval",
+    "implementation scope approved false, real write scope approved false, activation subset selected false, and production readiness decision not production ready"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,
@@ -54,11 +56,14 @@
     "structuredFamilyWritesEnabled": false,
     "hyprland0554MigrationActivated": false
   },
-  "activeNextWork": "Wait for explicit user approval of production activation planning scope before designing any real-write executor.",
+  "activeNextWork": "Create a planning-only structured-family production activation design document that does not implement or wire an executor.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",
     "do not enable real structured-family writes",
+    "do not implement or wire structured-family executors",
+    "do not rank families or choose an activation subset",
+    "do not create backups or restore backups",
     "do not run hyprctl reload",
     "do not mutate real config or runtime"
   ]

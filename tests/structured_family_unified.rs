@@ -24,7 +24,8 @@ use hyprland_settings::structured_family::{
     structured_family_draft_rendered_record_staged_apply_dry_run_report,
     structured_family_draft_rendered_record_staged_apply_plan,
     structured_family_draft_rendered_record_staged_apply_rollback_recovery_review,
-    structured_family_kind_from_id, structured_family_real_write_activation_requirements_audit,
+    structured_family_kind_from_id, structured_family_production_activation_planning_scope,
+    structured_family_real_write_activation_requirements_audit,
     structured_family_record_draft_gtk_bindings, structured_family_record_drafts,
     structured_family_record_editor_forms, structured_family_render_target_allowed,
     update_structured_family_record_draft_field, update_structured_family_record_draft_gtk_binding,
@@ -2498,6 +2499,122 @@ fn structured_family_real_write_activation_requirements_has_no_write_reload_or_e
 }
 
 #[test]
+fn structured_family_production_activation_planning_scope_is_planning_only() {
+    let scope = structured_family_production_activation_planning_scope();
+
+    assert_eq!(
+        scope.user_decision,
+        "Option B: production activation planning scope only"
+    );
+    assert!(scope.planning_scope_approved);
+    assert!(!scope.implementation_scope_approved);
+    assert!(!scope.real_write_scope_approved);
+    assert_eq!(
+        scope.excluded_by_user,
+        vec![
+            "family safety ranking",
+            "safest-family recommendation",
+            "families that should stay blocked",
+            "limited activation subset selection",
+            "broad activation selection",
+            "first family selection",
+            "first record selection",
+        ]
+    );
+    for item in [
+        "production activation planning document",
+        "executor architecture design requirements",
+        "backup and restore design requirements",
+        "rollback and recovery design requirements",
+        "validation evidence design requirements",
+        "manual approval checkpoint design",
+        "future implementation stop-gate design",
+    ] {
+        assert!(
+            scope.approved_planning_scope.contains(&item),
+            "missing approved planning scope item {item}"
+        );
+    }
+    for item in [
+        "executor implementation",
+        "executor wiring",
+        "real config writes",
+        "real backup creation",
+        "real restore execution",
+        "rollback execution",
+        "Hyprland reload",
+        "runtime mutation",
+        "first real config write",
+        "family ranking",
+        "activation subset selection",
+    ] {
+        assert!(
+            scope.not_approved_scope.contains(&item),
+            "missing not-approved scope item {item}"
+        );
+    }
+    assert!(!scope.production_activation_approved);
+    assert!(!scope.executor_implemented);
+    assert!(!scope.executor_wired);
+    assert!(!scope.real_write_path_enabled);
+    assert!(!scope.real_config_target_enabled);
+    assert!(!scope.backup_creation_enabled);
+    assert!(!scope.restore_execution_enabled);
+    assert!(!scope.rollback_execution_enabled);
+    assert!(!scope.hyprctl_reload_enabled);
+    assert!(!scope.runtime_mutation_enabled);
+    assert!(!scope.first_real_config_write_approved);
+    assert!(scope.family_ranking_excluded);
+    assert!(!scope.activation_subset_selected);
+    assert_eq!(scope.production_readiness_decision, "not production ready");
+    assert_eq!(
+        scope.next_recommended_work,
+        "Create a planning-only structured-family production activation design document that does not implement or wire an executor."
+    );
+    assert_eq!(scope.future_implementation_stop_gates.len(), 6);
+    assert!(scope
+        .future_implementation_stop_gates
+        .iter()
+        .all(|gate| gate.contains("must stop before")));
+}
+
+#[test]
+fn structured_family_production_activation_planning_scope_has_no_write_reload_or_executor_calls() {
+    let structured_family = fs::read_to_string("src/structured_family.rs")
+        .expect("structured family source should read");
+    let section_start = structured_family
+        .find("pub fn structured_family_production_activation_planning_scope")
+        .expect("activation planning scope function should exist");
+    let section_end = structured_family[section_start..]
+        .find("pub fn structured_family_kind_from_id")
+        .map(|offset| section_start + offset)
+        .expect("activation planning scope section should end before kind helper");
+    let section = &structured_family[section_start..section_end];
+
+    assert!(section.contains("StructuredFamilyProductionActivationPlanningScope"));
+    for forbidden in [
+        "apply_setting_change",
+        "write_flow",
+        "Command::",
+        "fs::write(",
+        "File::create",
+        "write_all",
+        "serde_json::to_writer",
+        "/home/kyo/.config/hypr/hyprland.conf",
+        "~/.config/hypr",
+        "production_activation_approved: true",
+        "executor_implemented: true",
+        "executor_wired: true",
+        "real_write_path_enabled: true",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "activation planning scope model must not contain {forbidden}"
+        );
+    }
+}
+
+#[test]
 fn structured_family_kinds_cover_required_ids_and_widget_names() {
     let required = [
         (
@@ -3096,6 +3213,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-rendered-record-staged-apply-rollback-recovery.v0.55.2.json",
         "data/reports/structured-family-rendered-record-final-executor-readiness.v0.55.2.json",
         "data/reports/structured-family-real-write-activation-requirements.v0.55.2.json",
+        "data/reports/structured-family-production-activation-planning-scope.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -3145,17 +3263,21 @@ fn project_area_continuation_scan_classifies_every_required_area() {
         .expect("structured-family area should exist");
     assert_eq!(
         structured["classification"],
-        "blocked_by_user_production_activation_scope_decision"
+        "blocked_by_planning_only_production_activation_scope"
     );
-    assert_eq!(structured["canContinueNow"], false);
+    assert_eq!(structured["canContinueNow"], true);
     assert!(structured["currentStatus"]
         .as_str()
         .expect("currentStatus should be text")
-        .contains("real-write activation requirements listed"));
+        .contains("planning-only production activation scope approved"));
+    assert_eq!(
+        structured["safeNextWork"],
+        "create planning-only production activation design document"
+    );
     assert!(structured["mustNotDo"]
         .as_str()
         .expect("mustNotDo should be text")
-        .contains("do not enable real structured-family writes"));
+        .contains("do not implement or wire executor"));
 
     let missing = areas
         .iter()
@@ -3178,7 +3300,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Wait for explicit user approval of production activation planning scope before designing any real-write executor."
+        "Create a planning-only structured-family production activation design document that does not implement or wire an executor."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -4366,6 +4488,104 @@ fn structured_family_real_write_activation_requirements_report_preserves_non_app
     assert_eq!(
         report["nextRecommendedWork"],
         "Wait for explicit user approval of production activation planning scope before designing any real-write executor."
+    );
+}
+
+#[test]
+fn structured_family_production_activation_planning_scope_report_is_planning_only() {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string(
+            "data/reports/structured-family-production-activation-planning-scope.v0.55.2.json",
+        )
+        .expect("production activation planning scope report should read"),
+    )
+    .expect("production activation planning scope report should be valid JSON");
+
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-production-activation-planning-scope"
+    );
+    assert_eq!(
+        report["userDecision"],
+        "Option B: production activation planning scope only"
+    );
+    assert_eq!(report["planningScopeApproved"], true);
+    assert_eq!(report["implementationScopeApproved"], false);
+    assert_eq!(report["realWriteScopeApproved"], false);
+    assert_eq!(
+        report["excludedByUser"],
+        serde_json::json!([
+            "family safety ranking",
+            "safest-family recommendation",
+            "families that should stay blocked",
+            "limited activation subset selection",
+            "broad activation selection",
+            "first family selection",
+            "first record selection"
+        ])
+    );
+    for key in [
+        "productionActivationApproved",
+        "executorImplemented",
+        "executorWired",
+        "realWritePathEnabled",
+        "realConfigTargetEnabled",
+        "backupCreationEnabled",
+        "restoreExecutionEnabled",
+        "rollbackExecutionEnabled",
+        "hyprctlReloadEnabled",
+        "runtimeMutationEnabled",
+        "firstRealConfigWriteApproved",
+        "activationSubsetSelected",
+    ] {
+        assert_eq!(report[key], false, "{key} should remain false");
+    }
+    assert_eq!(report["familyRankingExcluded"], true);
+    assert_eq!(
+        report["productionReadinessDecision"],
+        "not production ready"
+    );
+
+    for item in [
+        "executor implementation",
+        "executor wiring",
+        "real config writes",
+        "real backup creation",
+        "real restore execution",
+        "rollback execution",
+        "Hyprland reload",
+        "runtime mutation",
+        "first real config write",
+        "family ranking",
+        "activation subset selection",
+    ] {
+        assert!(
+            report["notApprovedScope"]
+                .as_array()
+                .expect("notApprovedScope should be array")
+                .iter()
+                .any(|value| value.as_str() == Some(item)),
+            "notApprovedScope missing {item}"
+        );
+    }
+    assert_eq!(
+        report["futureImplementationStopGates"]
+            .as_array()
+            .expect("stop gates should be array")
+            .len(),
+        6
+    );
+    assert!(report["futureImplementationStopGates"]
+        .as_array()
+        .expect("stop gates should be array")
+        .iter()
+        .all(|gate| gate
+            .as_str()
+            .expect("stop gate should be string")
+            .contains("must stop before")));
+    assert_eq!(
+        report["nextRecommendedWork"],
+        "Create a planning-only structured-family production activation design document that does not implement or wire an executor."
     );
 }
 

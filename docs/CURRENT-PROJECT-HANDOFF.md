@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family real-write activation requirements audit on `structured-family-editors-unified`.
+Structured-family production activation planning scope on `structured-family-editors-unified`.
 
 ## Completed This Sprint
 
@@ -42,6 +42,8 @@ Structured-family real-write activation requirements audit on `structured-family
 - Added proof-chain completion, production activation required, executor-not-implemented, executor-not-wired, and not-production-ready findings.
 - Added a requirements-only real-write activation audit listing universal activation requirements, missing backup/restore proof, and required user approval gates.
 - Explicitly excluded family ranking, safest-family recommendations, family-block recommendations, and activation subset recommendations by user instruction.
+- Recorded Option B as production activation planning scope only.
+- Kept implementation scope approved false, real write scope approved false, activation subset selected false, and production readiness decision not production ready.
 - Added a project-area continuation scan.
 
 ## Safety Boundaries
@@ -51,8 +53,14 @@ Structured-family real-write activation requirements audit on `structured-family
 - `hyprctl reload` run: false.
 - Production behavior enabled: false.
 - Structured-family writes enabled: false.
+- Executor implemented: false.
+- Executor wired: false.
+- Backup creation enabled: false.
+- Restore execution enabled: false.
+- Rollback execution enabled: false.
+- First real config write approved: false.
 - Source/include and duplicate production activation remain capped and separate-phase only.
 
 ## Next Exact Work
 
-Wait for explicit user approval of production activation planning scope before designing any real-write executor.
+Create a planning-only structured-family production activation design document that does not implement or wire an executor.

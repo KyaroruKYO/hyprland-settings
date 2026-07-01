@@ -118,13 +118,13 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "fixture-only proof chain complete; real-write activation requirements listed; missing backup/restore proof listed; required user approval gates listed; family ranking excluded by user instruction; production activation approved false; executor implemented false; executor wired false; real write path enabled false; first real config write approved false",
-      "classification": "blocked_by_user_production_activation_scope_decision",
-      "canContinueNow": false,
-      "reason": "The requirements-only audit lists universal activation requirements, missing backup/restore proof, and required user approval gates, while excluding family ranking and keeping production activation, executor implementation, executor wiring, real writes, and first real config write approval false.",
-      "blockingDependency": "explicit user approval of production activation planning scope",
-      "safeNextWork": "wait for explicit user approval of production activation planning scope before designing any real-write executor",
-      "mustNotDo": "do not enable real structured-family writes, production executors, reload, runtime mutation, backup/restore, persistence, family ranking, or activation subset recommendations without explicit production activation planning-scope approval",
+      "currentStatus": "fixture-only proof chain complete; real-write activation requirements listed; missing backup/restore proof listed; required user approval gates listed; Option B planning-only production activation scope approved; implementation scope approved false; real write scope approved false; family ranking excluded by user instruction; activation subset selected false; production activation approved false; executor implemented false; executor wired false; real write path enabled false; first real config write approved false",
+      "classification": "blocked_by_planning_only_production_activation_scope",
+      "canContinueNow": true,
+      "reason": "The user approved production activation planning scope only. Planning-only design work can continue, while implementation, executor wiring, real writes, backup/restore execution, reload, runtime mutation, family ranking, activation subset selection, production readiness, and first real config write approval remain false.",
+      "blockingDependency": "explicit user approval is still required before executor implementation, executor wiring, real writes, backup/restore execution, reload, runtime mutation, family ranking, activation subset selection, or first real config write",
+      "safeNextWork": "create planning-only production activation design document",
+      "mustNotDo": "do not implement or wire executor, enable real writes, rank families, choose activation subset, create backups, restore backups, reload Hyprland, mutate runtime, or approve first real config write",
       "evidenceUsed": [
         "src/structured_family.rs",
         "tests/structured_family_unified.rs",
@@ -141,7 +141,8 @@
         "data/reports/structured-family-rendered-record-staged-apply-dry-run.v0.55.2.json",
         "data/reports/structured-family-rendered-record-staged-apply-rollback-recovery.v0.55.2.json",
         "data/reports/structured-family-rendered-record-final-executor-readiness.v0.55.2.json",
-        "data/reports/structured-family-real-write-activation-requirements.v0.55.2.json"
+        "data/reports/structured-family-real-write-activation-requirements.v0.55.2.json",
+        "data/reports/structured-family-production-activation-planning-scope.v0.55.2.json"
       ]
     },
     {
@@ -188,5 +189,5 @@
     }
   ],
   "activeSafeArea": null,
-  "recommendedNextWork": "Stop for explicit user decision: structured-family production activation remains blocked until the user approves real-write activation scope."
+  "recommendedNextWork": "Create a planning-only structured-family production activation design document that does not implement or wire an executor."
 }
