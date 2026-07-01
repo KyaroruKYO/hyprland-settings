@@ -1,0 +1,180 @@
+{
+  "artifactKind": "structured-family-production-activation-design",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "ea288d0cc28c53d1e6be4f939c66d756b9426876",
+  "latestCommitBeforeSprint": "ea288d0cc28c53d1e6be4f939c66d756b9426876",
+  "goal": "Create the planning-only structured-family production activation design document without implementing or wiring an executor.",
+  "userDecision": "Option B: production activation planning scope only",
+  "planningScopeApproved": true,
+  "implementationScopeApproved": false,
+  "realWriteScopeApproved": false,
+  "designOnly": true,
+  "excludedByUser": [
+    "family safety ranking",
+    "safest-family recommendation",
+    "families that should stay blocked",
+    "limited activation subset selection",
+    "broad activation selection",
+    "first family selection",
+    "first record selection"
+  ],
+  "architectureDesign": [
+    "review-only design artifact",
+    "future production activation phases",
+    "separation between design, executor implementation, executor wiring, and first real write",
+    "no automatic transition from planning to implementation",
+    "source/include and duplicate activation remain separate scopes"
+  ],
+  "executorBoundaryDesign": [
+    "executor is future-only",
+    "executor must not be reachable from current UI",
+    "executor must require separate implementation approval",
+    "executor wiring must require separate wiring approval",
+    "executor must reject blocked plans",
+    "executor must reject unsupported/not-proven records",
+    "executor must preserve raw fallback behavior",
+    "executor must require manual confirmation before any future real write"
+  ],
+  "configTargetPolicyDesign": [
+    "real config target must be explicitly approved",
+    "source/include target policy must be explicitly approved",
+    "write target must be reread before write",
+    "write target must be validated after write",
+    "ambiguous target must block activation",
+    "generated/script-managed target must block or require explicit policy",
+    "Hyprland 0.55.2 model versus live 0.55.4 compatibility must be resolved before write activation"
+  ],
+  "backupRestoreDesign": [
+    "backup location policy",
+    "backup retention policy",
+    "backup integrity hash proof",
+    "backup reread proof",
+    "restore target validation proof",
+    "restore reread proof",
+    "post-restore Hyprland validation proof",
+    "post-restore reload or restart policy approval gate"
+  ],
+  "rollbackRecoveryDesign": [
+    "rollback file policy",
+    "failed-write recovery path",
+    "interrupted-write recovery path",
+    "partial-write recovery path",
+    "restore failure recovery path",
+    "emergency stop path",
+    "user-visible recovery instructions"
+  ],
+  "validationSequenceDesign": [
+    "pre-write parser validation",
+    "pre-write semantic validation",
+    "fixture render/reread validation",
+    "temporary config validation",
+    "Hyprland verify-config or equivalent validation",
+    "manual diff review",
+    "post-write reread validation",
+    "post-write config verification",
+    "post-write rollback availability check"
+  ],
+  "manualConfirmationDesign": [
+    "confirm exact activation scope",
+    "confirm exact config target",
+    "confirm backup location and retention policy",
+    "confirm reload policy",
+    "confirm runtime mutation policy",
+    "confirm rollback/recovery policy",
+    "confirm first real config write"
+  ],
+  "auditLoggingDesign": [
+    "planned operation summary",
+    "pre-write evidence summary",
+    "backup artifact summary",
+    "write target summary",
+    "validation result summary",
+    "manual approval summary",
+    "failure and recovery summary",
+    "no secret or sensitive data leakage"
+  ],
+  "emergencyStopDesign": [
+    "stop before executor implementation",
+    "stop before executor wiring",
+    "stop before backup execution",
+    "stop before restore execution",
+    "stop before real config write",
+    "stop before reload",
+    "stop before runtime mutation",
+    "stop on failed preflight",
+    "stop on failed validation",
+    "stop on ambiguous target",
+    "stop on unsupported/not-proven record"
+  ],
+  "versionCompatibilityDesign": [
+    "Hyprland 0.55.2 project model remains authoritative until migration approval",
+    "live Hyprland 0.55.4 must not update option inventory automatically",
+    "production activation must resolve model/live compatibility before write activation",
+    "Hyprland 0.55.4 migration remains separate explicit scope"
+  ],
+  "futureImplementationStopGates": [
+    "A later sprint must stop before executor architecture implementation planning unless the user explicitly approves implementation-planning scope.",
+    "A later sprint must stop before implementing an executor unless the user explicitly approves executor implementation.",
+    "A later sprint must stop before wiring an executor unless the user explicitly approves executor wiring.",
+    "A later sprint must stop before real config writes unless the user explicitly approves the first real config write.",
+    "A later sprint must stop before backup/restore execution unless the user explicitly approves backup/restore execution.",
+    "A later sprint must stop before Hyprland reload unless the user explicitly approves reload policy.",
+    "A later sprint must stop before runtime mutation unless the user explicitly approves runtime mutation policy."
+  ],
+  "nonApprovalState": {
+    "productionActivationApproved": false,
+    "executorImplemented": false,
+    "executorWired": false,
+    "realWritePathEnabled": false,
+    "realConfigTargetEnabled": false,
+    "backupCreationEnabled": false,
+    "restoreExecutionEnabled": false,
+    "rollbackExecutionEnabled": false,
+    "hyprctlReloadEnabled": false,
+    "runtimeMutationEnabled": false,
+    "firstRealConfigWriteApproved": false,
+    "activationSubsetSelected": false
+  },
+  "productionActivationApproved": false,
+  "executorImplemented": false,
+  "executorWired": false,
+  "realWritePathEnabled": false,
+  "realConfigTargetEnabled": false,
+  "backupCreationEnabled": false,
+  "restoreExecutionEnabled": false,
+  "rollbackExecutionEnabled": false,
+  "hyprctlReloadEnabled": false,
+  "runtimeMutationEnabled": false,
+  "firstRealConfigWriteApproved": false,
+  "familyRankingExcluded": true,
+  "activationSubsetSelected": false,
+  "productionReadinessDecision": "not production ready",
+  "filesChanged": [
+    "src/structured_family.rs",
+    "tests/structured_family_unified.rs",
+    "data/reports/structured-family-production-activation-design.v0.55.2.json",
+    "data/reports/project-area-continuation-scan.v0.55.2.json",
+    "data/reports/current-project-handoff.v0.55.2.json",
+    "docs/STRUCTURED-FAMILY-PRODUCTION-ACTIVATION-DESIGN.md",
+    "docs/PROJECT-AREA-CONTINUATION-SCAN.md",
+    "docs/CURRENT-PROJECT-HANDOFF.md",
+    "docs/PROJECT-STATUS.md"
+  ],
+  "testsAdded": [
+    "structured_family_production_activation_design_is_design_only",
+    "structured_family_production_activation_design_has_no_write_reload_or_executor_calls",
+    "structured_family_production_activation_design_report_is_design_only"
+  ],
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "jqReports": "passed",
+    "gitDiffCheck": "passed",
+    "cargoBuildRelease": "passed"
+  },
+  "gtkEvidenceRoot": "not-run-no-visible-ui-change",
+  "nextRecommendedWork": "Stop for explicit user decision: approve or reject a future executor architecture implementation-planning sprint."
+}

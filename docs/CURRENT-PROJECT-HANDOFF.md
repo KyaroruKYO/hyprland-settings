@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family production activation planning scope on `structured-family-editors-unified`.
+Structured-family production activation design on `structured-family-editors-unified`.
 
 ## Completed This Sprint
 
@@ -44,6 +44,9 @@ Structured-family production activation planning scope on `structured-family-edi
 - Explicitly excluded family ranking, safest-family recommendations, family-block recommendations, and activation subset recommendations by user instruction.
 - Recorded Option B as production activation planning scope only.
 - Kept implementation scope approved false, real write scope approved false, activation subset selected false, and production readiness decision not production ready.
+- Added the planning-only structured-family production activation design document.
+- Defined future architecture, executor boundary, config target policy, backup/restore, rollback/recovery, validation sequence, manual confirmation, audit logging, and emergency stop requirements without implementing or wiring an executor.
+- Classified structured-family editors/writes as blocked by design complete pending explicit executor architecture decision.
 - Added a project-area continuation scan.
 
 ## Safety Boundaries
@@ -63,4 +66,4 @@ Structured-family production activation planning scope on `structured-family-edi
 
 ## Next Exact Work
 
-Create a planning-only structured-family production activation design document that does not implement or wire an executor.
+Stop for explicit user decision: approve or reject a future executor architecture implementation-planning sprint.

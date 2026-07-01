@@ -24,7 +24,8 @@ use hyprland_settings::structured_family::{
     structured_family_draft_rendered_record_staged_apply_dry_run_report,
     structured_family_draft_rendered_record_staged_apply_plan,
     structured_family_draft_rendered_record_staged_apply_rollback_recovery_review,
-    structured_family_kind_from_id, structured_family_production_activation_planning_scope,
+    structured_family_kind_from_id, structured_family_production_activation_design,
+    structured_family_production_activation_planning_scope,
     structured_family_real_write_activation_requirements_audit,
     structured_family_record_draft_gtk_bindings, structured_family_record_drafts,
     structured_family_record_editor_forms, structured_family_render_target_allowed,
@@ -2615,6 +2616,222 @@ fn structured_family_production_activation_planning_scope_has_no_write_reload_or
 }
 
 #[test]
+fn structured_family_production_activation_design_is_design_only() {
+    let design = structured_family_production_activation_design();
+
+    assert_eq!(
+        design.user_decision,
+        "Option B: production activation planning scope only"
+    );
+    assert!(design.design_only);
+    assert!(design.planning_scope_approved);
+    assert!(!design.implementation_scope_approved);
+    assert!(!design.real_write_scope_approved);
+    assert_eq!(
+        design.excluded_by_user,
+        vec![
+            "family safety ranking",
+            "safest-family recommendation",
+            "families that should stay blocked",
+            "limited activation subset selection",
+            "broad activation selection",
+            "first family selection",
+            "first record selection",
+        ]
+    );
+    for item in [
+        "review-only design artifact",
+        "future production activation phases",
+        "separation between design, executor implementation, executor wiring, and first real write",
+        "no automatic transition from planning to implementation",
+        "source/include and duplicate activation remain separate scopes",
+    ] {
+        assert!(
+            design.architecture_design.contains(&item),
+            "missing architecture design item {item}"
+        );
+    }
+    for item in [
+        "executor is future-only",
+        "executor must not be reachable from current UI",
+        "executor must require separate implementation approval",
+        "executor wiring must require separate wiring approval",
+        "executor must reject blocked plans",
+        "executor must reject unsupported/not-proven records",
+        "executor must preserve raw fallback behavior",
+        "executor must require manual confirmation before any future real write",
+    ] {
+        assert!(
+            design.executor_boundary_design.contains(&item),
+            "missing executor boundary design item {item}"
+        );
+    }
+    for item in [
+        "real config target must be explicitly approved",
+        "source/include target policy must be explicitly approved",
+        "write target must be reread before write",
+        "write target must be validated after write",
+        "ambiguous target must block activation",
+        "generated/script-managed target must block or require explicit policy",
+        "Hyprland 0.55.2 model versus live 0.55.4 compatibility must be resolved before write activation",
+    ] {
+        assert!(
+            design.config_target_policy_design.contains(&item),
+            "missing config target policy design item {item}"
+        );
+    }
+    for item in [
+        "backup location policy",
+        "backup retention policy",
+        "backup integrity hash proof",
+        "backup reread proof",
+        "restore target validation proof",
+        "restore reread proof",
+        "post-restore Hyprland validation proof",
+        "post-restore reload or restart policy approval gate",
+    ] {
+        assert!(
+            design.backup_restore_design.contains(&item),
+            "missing backup/restore design item {item}"
+        );
+    }
+    for item in [
+        "rollback file policy",
+        "failed-write recovery path",
+        "interrupted-write recovery path",
+        "partial-write recovery path",
+        "restore failure recovery path",
+        "emergency stop path",
+        "user-visible recovery instructions",
+    ] {
+        assert!(
+            design.rollback_recovery_design.contains(&item),
+            "missing rollback/recovery design item {item}"
+        );
+    }
+    for item in [
+        "pre-write parser validation",
+        "pre-write semantic validation",
+        "fixture render/reread validation",
+        "temporary config validation",
+        "Hyprland verify-config or equivalent validation",
+        "manual diff review",
+        "post-write reread validation",
+        "post-write config verification",
+        "post-write rollback availability check",
+    ] {
+        assert!(
+            design.validation_sequence_design.contains(&item),
+            "missing validation sequence design item {item}"
+        );
+    }
+    for item in [
+        "confirm exact activation scope",
+        "confirm exact config target",
+        "confirm backup location and retention policy",
+        "confirm reload policy",
+        "confirm runtime mutation policy",
+        "confirm rollback/recovery policy",
+        "confirm first real config write",
+    ] {
+        assert!(
+            design.manual_confirmation_design.contains(&item),
+            "missing manual confirmation design item {item}"
+        );
+    }
+    for item in [
+        "planned operation summary",
+        "pre-write evidence summary",
+        "backup artifact summary",
+        "write target summary",
+        "validation result summary",
+        "manual approval summary",
+        "failure and recovery summary",
+        "no secret or sensitive data leakage",
+    ] {
+        assert!(
+            design.audit_logging_design.contains(&item),
+            "missing audit logging design item {item}"
+        );
+    }
+    for item in [
+        "stop before executor implementation",
+        "stop before executor wiring",
+        "stop before backup execution",
+        "stop before restore execution",
+        "stop before real config write",
+        "stop before reload",
+        "stop before runtime mutation",
+        "stop on failed preflight",
+        "stop on failed validation",
+        "stop on ambiguous target",
+        "stop on unsupported/not-proven record",
+    ] {
+        assert!(
+            design.emergency_stop_design.contains(&item),
+            "missing emergency stop design item {item}"
+        );
+    }
+    assert!(design
+        .version_compatibility_design
+        .contains(&"Hyprland 0.55.4 migration remains separate explicit scope"));
+    assert!(!design.production_activation_approved);
+    assert!(!design.executor_implemented);
+    assert!(!design.executor_wired);
+    assert!(!design.real_write_path_enabled);
+    assert!(!design.real_config_target_enabled);
+    assert!(!design.backup_creation_enabled);
+    assert!(!design.restore_execution_enabled);
+    assert!(!design.rollback_execution_enabled);
+    assert!(!design.hyprctl_reload_enabled);
+    assert!(!design.runtime_mutation_enabled);
+    assert!(!design.first_real_config_write_approved);
+    assert!(design.family_ranking_excluded);
+    assert!(!design.activation_subset_selected);
+    assert_eq!(design.production_readiness_decision, "not production ready");
+    assert_eq!(
+        design.next_recommended_work,
+        "Stop for explicit user decision: approve or reject a future executor architecture implementation-planning sprint."
+    );
+}
+
+#[test]
+fn structured_family_production_activation_design_has_no_write_reload_or_executor_calls() {
+    let structured_family = fs::read_to_string("src/structured_family.rs")
+        .expect("structured family source should read");
+    let section_start = structured_family
+        .find("pub fn structured_family_production_activation_design")
+        .expect("activation design function should exist");
+    let section_end = structured_family[section_start..]
+        .find("pub fn structured_family_kind_from_id")
+        .map(|offset| section_start + offset)
+        .expect("activation design section should end before kind helper");
+    let section = &structured_family[section_start..section_end];
+
+    assert!(section.contains("StructuredFamilyProductionActivationDesign"));
+    for forbidden in [
+        "apply_setting_change",
+        "write_flow",
+        "Command::",
+        "fs::write(",
+        "File::create",
+        "write_all",
+        "serde_json::to_writer",
+        "/home/kyo/.config/hypr/hyprland.conf",
+        "~/.config/hypr",
+        "production_activation_approved: true",
+        "executor_implemented: true",
+        "executor_wired: true",
+        "real_write_path_enabled: true",
+    ] {
+        assert!(
+            !section.contains(forbidden),
+            "activation design model must not contain {forbidden}"
+        );
+    }
+}
+
+#[test]
 fn structured_family_kinds_cover_required_ids_and_widget_names() {
     let required = [
         (
@@ -3214,6 +3431,7 @@ fn structured_family_reports_and_continuation_scan_exist() {
         "data/reports/structured-family-rendered-record-final-executor-readiness.v0.55.2.json",
         "data/reports/structured-family-real-write-activation-requirements.v0.55.2.json",
         "data/reports/structured-family-production-activation-planning-scope.v0.55.2.json",
+        "data/reports/structured-family-production-activation-design.v0.55.2.json",
         "data/reports/project-area-continuation-scan.v0.55.2.json",
         "data/reports/current-project-handoff.v0.55.2.json",
     ] {
@@ -3263,16 +3481,16 @@ fn project_area_continuation_scan_classifies_every_required_area() {
         .expect("structured-family area should exist");
     assert_eq!(
         structured["classification"],
-        "blocked_by_planning_only_production_activation_scope"
+        "blocked_by_design_complete_pending_executor_architecture_decision"
     );
-    assert_eq!(structured["canContinueNow"], true);
+    assert_eq!(structured["canContinueNow"], false);
     assert!(structured["currentStatus"]
         .as_str()
         .expect("currentStatus should be text")
-        .contains("planning-only production activation scope approved"));
+        .contains("production activation design complete"));
     assert_eq!(
         structured["safeNextWork"],
-        "create planning-only production activation design document"
+        "stop for explicit user decision on future executor architecture implementation-planning scope"
     );
     assert!(structured["mustNotDo"]
         .as_str()
@@ -3300,7 +3518,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Create a planning-only structured-family production activation design document that does not implement or wire an executor."
+        "Stop for explicit user decision: approve or reject a future executor architecture implementation-planning sprint."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
@@ -4586,6 +4804,106 @@ fn structured_family_production_activation_planning_scope_report_is_planning_onl
     assert_eq!(
         report["nextRecommendedWork"],
         "Create a planning-only structured-family production activation design document that does not implement or wire an executor."
+    );
+}
+
+#[test]
+fn structured_family_production_activation_design_report_is_design_only() {
+    let report: serde_json::Value = serde_json::from_str(
+        &fs::read_to_string(
+            "data/reports/structured-family-production-activation-design.v0.55.2.json",
+        )
+        .expect("production activation design report should read"),
+    )
+    .expect("production activation design report should be valid JSON");
+
+    assert_eq!(
+        report["artifactKind"],
+        "structured-family-production-activation-design"
+    );
+    assert_eq!(
+        report["userDecision"],
+        "Option B: production activation planning scope only"
+    );
+    assert_eq!(report["designOnly"], true);
+    assert_eq!(report["planningScopeApproved"], true);
+    assert_eq!(report["implementationScopeApproved"], false);
+    assert_eq!(report["realWriteScopeApproved"], false);
+    assert_eq!(
+        report["excludedByUser"],
+        serde_json::json!([
+            "family safety ranking",
+            "safest-family recommendation",
+            "families that should stay blocked",
+            "limited activation subset selection",
+            "broad activation selection",
+            "first family selection",
+            "first record selection"
+        ])
+    );
+    for key in [
+        "productionActivationApproved",
+        "executorImplemented",
+        "executorWired",
+        "realWritePathEnabled",
+        "realConfigTargetEnabled",
+        "backupCreationEnabled",
+        "restoreExecutionEnabled",
+        "rollbackExecutionEnabled",
+        "hyprctlReloadEnabled",
+        "runtimeMutationEnabled",
+        "firstRealConfigWriteApproved",
+        "activationSubsetSelected",
+    ] {
+        assert_eq!(report[key], false, "{key} should remain false");
+    }
+    assert_eq!(report["familyRankingExcluded"], true);
+    assert_eq!(
+        report["productionReadinessDecision"],
+        "not production ready"
+    );
+
+    for key in [
+        "architectureDesign",
+        "executorBoundaryDesign",
+        "configTargetPolicyDesign",
+        "backupRestoreDesign",
+        "rollbackRecoveryDesign",
+        "validationSequenceDesign",
+        "manualConfirmationDesign",
+        "auditLoggingDesign",
+        "emergencyStopDesign",
+        "futureImplementationStopGates",
+    ] {
+        assert!(
+            !report[key]
+                .as_array()
+                .expect("design field should be array")
+                .is_empty(),
+            "{key} should be populated"
+        );
+    }
+    assert!(report["architectureDesign"]
+        .as_array()
+        .expect("architectureDesign should be array")
+        .iter()
+        .any(|value| value.as_str() == Some("review-only design artifact")));
+    assert!(report["executorBoundaryDesign"]
+        .as_array()
+        .expect("executorBoundaryDesign should be array")
+        .iter()
+        .any(|value| value.as_str() == Some("executor is future-only")));
+    assert!(report["futureImplementationStopGates"]
+        .as_array()
+        .expect("futureImplementationStopGates should be array")
+        .iter()
+        .any(|gate| gate
+            .as_str()
+            .expect("stop gate should be text")
+            .contains("must stop before implementing an executor")));
+    assert_eq!(
+        report["nextRecommendedWork"],
+        "Stop for explicit user decision: approve or reject a future executor architecture implementation-planning sprint."
     );
 }
 

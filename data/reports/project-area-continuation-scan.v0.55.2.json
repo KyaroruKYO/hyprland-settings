@@ -118,12 +118,12 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "fixture-only proof chain complete; real-write activation requirements listed; missing backup/restore proof listed; required user approval gates listed; Option B planning-only production activation scope approved; implementation scope approved false; real write scope approved false; family ranking excluded by user instruction; activation subset selected false; production activation approved false; executor implemented false; executor wired false; real write path enabled false; first real config write approved false",
-      "classification": "blocked_by_planning_only_production_activation_scope",
-      "canContinueNow": true,
-      "reason": "The user approved production activation planning scope only. Planning-only design work can continue, while implementation, executor wiring, real writes, backup/restore execution, reload, runtime mutation, family ranking, activation subset selection, production readiness, and first real config write approval remain false.",
-      "blockingDependency": "explicit user approval is still required before executor implementation, executor wiring, real writes, backup/restore execution, reload, runtime mutation, family ranking, activation subset selection, or first real config write",
-      "safeNextWork": "create planning-only production activation design document",
+      "currentStatus": "fixture-only proof chain complete; real-write activation requirements listed; missing backup/restore proof listed; required user approval gates listed; Option B planning-only production activation scope approved; production activation design complete; designOnly true; implementation scope approved false; real write scope approved false; family ranking excluded by user instruction; activation subset selected false; production activation approved false; executor implemented false; executor wired false; real write path enabled false; first real config write approved false",
+      "classification": "blocked_by_design_complete_pending_executor_architecture_decision",
+      "canContinueNow": false,
+      "reason": "The planning-only production activation design is complete. Further structured-family production activation work must stop until the user explicitly approves or rejects a future executor architecture implementation-planning scope. Implementation, executor wiring, real writes, backup/restore execution, reload, runtime mutation, family ranking, activation subset selection, production readiness, and first real config write approval remain false.",
+      "blockingDependency": "explicit user decision on future executor architecture implementation-planning scope",
+      "safeNextWork": "stop for explicit user decision on future executor architecture implementation-planning scope",
       "mustNotDo": "do not implement or wire executor, enable real writes, rank families, choose activation subset, create backups, restore backups, reload Hyprland, mutate runtime, or approve first real config write",
       "evidenceUsed": [
         "src/structured_family.rs",
@@ -142,7 +142,8 @@
         "data/reports/structured-family-rendered-record-staged-apply-rollback-recovery.v0.55.2.json",
         "data/reports/structured-family-rendered-record-final-executor-readiness.v0.55.2.json",
         "data/reports/structured-family-real-write-activation-requirements.v0.55.2.json",
-        "data/reports/structured-family-production-activation-planning-scope.v0.55.2.json"
+        "data/reports/structured-family-production-activation-planning-scope.v0.55.2.json",
+        "data/reports/structured-family-production-activation-design.v0.55.2.json"
       ]
     },
     {
@@ -189,5 +190,5 @@
     }
   ],
   "activeSafeArea": null,
-  "recommendedNextWork": "Create a planning-only structured-family production activation design document that does not implement or wire an executor."
+  "recommendedNextWork": "Stop for explicit user decision: approve or reject a future executor architecture implementation-planning sprint."
 }
