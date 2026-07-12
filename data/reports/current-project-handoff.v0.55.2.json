@@ -85,7 +85,12 @@
     "implemented the reversible runtime preview executor with pluggable runner, session, trailing-edge throttle, and dead-man models",
     "proved a live gaps_in preview apply-and-revert round trip against the running compositor via the env-gated live test",
     "fixed two live-proof-caught defects: css_gap table grammar rendering and hyprctl eval error detection on zero exit status",
-    "added the Config page live runtime preview readiness card with real capability counts, proven in the GTK evidence matrix"
+    "added the Config page live runtime preview readiness card with real capability counts, proven in the GTK evidence matrix",
+    "wired per-setting live preview controls into the settings detail pane for the 135 default-previewable rows (53 switches, 45 sliders, 3 spin rows, 22 color entries, 3 value entries, 9 dropdowns)",
+    "implemented the runtime preview UI projection and controller layer routing all actions through the executor with no hyprctl strings or file writes in UI code",
+    "implemented Previewing Live status, gated Save through the existing safe apply flow, Revert, Cancel, throttled slider applies, and session-drop plus app-close revert",
+    "proved the live UI controller smoke (throttled drag, cancel, restoration) against the running compositor",
+    "proved supported and blocked detail-pane preview surfaces in the GTK evidence matrix with all safety flags false"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,

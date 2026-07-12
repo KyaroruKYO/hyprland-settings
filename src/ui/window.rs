@@ -53,6 +53,10 @@ use crate::one_target_pilot_pre_enable_audit::disabled_pre_enable_audit_ui_lines
 use crate::one_target_pilot_readiness::current_one_target_pilot_readiness_mapping;
 use crate::production_advanced_confirmation::disabled_advanced_confirmation_ui_lines;
 use crate::production_high_risk_approval::disabled_high_risk_approval_ui_lines;
+use crate::runtime_preview_ui_projection::{
+    runtime_preview_ui_row_state, RuntimePreviewUiControlKind, RuntimePreviewUiController,
+    RuntimePreviewUiSessionState,
+};
 use crate::safe_batch_write::safe_batch_write_user_facing_lines;
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::session_config_preview::build_session_config_preview;
@@ -76,6 +80,40 @@ use crate::write_verification_plan::planned_reread_verification;
 
 const DASHBOARD_ID: &str = "dashboard";
 const CONFIG_ID: &str = "config";
+
+thread_local! {
+    /// Live preview controllers whose sessions may still be active. Drained
+    /// on detail-pane re-render and on window close so an abandoned preview
+    /// always restores the original runtime value.
+    static ACTIVE_PREVIEW_CONTROLLERS: RefCell<Vec<std::rc::Weak<RefCell<RuntimePreviewUiController>>>> =
+        const { RefCell::new(Vec::new()) };
+}
+
+fn register_preview_controller(controller: &Rc<RefCell<RuntimePreviewUiController>>) {
+    ACTIVE_PREVIEW_CONTROLLERS.with(|controllers| {
+        controllers.borrow_mut().push(Rc::downgrade(controller));
+    });
+}
+
+/// Revert every still-active preview session (session-drop / app-close
+/// recovery). Safe to call repeatedly; dead weak references are pruned.
+fn revert_all_active_previews() {
+    ACTIVE_PREVIEW_CONTROLLERS.with(|controllers| {
+        let mut controllers = controllers.borrow_mut();
+        for weak in controllers.iter() {
+            if let Some(controller) = weak.upgrade() {
+                if let Ok(mut controller) = controller.try_borrow_mut() {
+                    let _ = controller.revert_if_active();
+                }
+            }
+        }
+        controllers.retain(|weak| weak.upgrade().is_some());
+    });
+}
+
+fn preview_now_ms() -> u64 {
+    (gtk::glib::monotonic_time() / 1000).max(0) as u64
+}
 
 #[derive(Debug, Clone)]
 struct SidebarItem {
@@ -108,6 +146,12 @@ pub fn show_main_window(
         .default_height(760)
         .build();
     window.set_widget_name("hyprland-settings-main-window");
+    // App-close recovery: any preview still active restores its original
+    // runtime value before the window closes.
+    window.connect_close_request(|_| {
+        revert_all_active_previews();
+        gtk::glib::Propagation::Proceed
+    });
 
     let root = gtk::Box::new(gtk::Orientation::Vertical, 0);
     root.set_widget_name("hyprland-settings-root");
@@ -4717,6 +4761,10 @@ fn render_detail(
     detail_content: &gtk::Box,
     config_selection_state: &Rc<RefCell<ConfigSelectionState>>,
 ) {
+    // Session-drop recovery: a preview left active on a previously rendered
+    // detail pane is reverted before its controller is dropped.
+    revert_all_active_previews();
+
     let Some(detail) = model.detail_for_row(row_id) else {
         render_empty_detail(detail_content);
         return;
@@ -4745,6 +4793,10 @@ fn render_detail(
         append_current_value_summary(&detail, section);
         append_layered_value_summary(model, &detail, section);
         append_session_value_projection_summary(model, &detail, section, config_selection_state);
+    });
+
+    append_detail_section(detail_content, "Live preview", |section| {
+        append_runtime_preview_controls(model, &detail, section);
     });
 
     append_detail_section(detail_content, "Edit", |section| {
@@ -5789,6 +5841,341 @@ fn append_detail_section(parent: &gtk::Box, title: &str, build: impl FnOnce(&gtk
     build(&content);
     frame.set_child(Some(&content));
     parent.append(&frame);
+}
+
+/// Per-setting live runtime preview controls. Enabled only for rows the
+/// capability matrix classifies as default-previewable; every action routes
+/// through the RuntimePreviewUiController — no hyprctl strings, no config
+/// writes, and no reload can originate here. Save persists once through the
+/// app's existing safe scalar write flow.
+fn append_runtime_preview_controls(
+    model: &UiProjection,
+    detail: &RowDetailProjection,
+    section: &gtk::Box,
+) {
+    let Some(row_state) = runtime_preview_ui_row_state(&detail.row_id) else {
+        section.append(&small_label(
+            "Live preview does not apply to this row (not a scalar setting row).",
+        ));
+        return;
+    };
+
+    let badge = body_label(&row_state.capability_badge);
+    badge.set_widget_name(&format!(
+        "hyprland-settings-live-preview-badge-{}",
+        safe_widget_name(&detail.row_id)
+    ));
+    badge.set_tooltip_text(Some(&format!(
+        "Live preview capability: {} (risk {})",
+        row_state.capability.as_str(),
+        row_state.risk.as_str()
+    )));
+    section.append(&badge);
+
+    if !row_state.preview_enabled {
+        if row_state.dead_man_required {
+            let dead_man = small_label(
+                "Dead-man preview required: this setting can only be previewed inside a confirmed countdown session. Disabled by default.",
+            );
+            dead_man.set_widget_name(&format!(
+                "hyprland-settings-live-preview-dead-man-{}",
+                safe_widget_name(&detail.row_id)
+            ));
+            section.append(&dead_man);
+        }
+        if let Some(reason) = &row_state.unavailable_reason {
+            section.append(&small_label(&format!("Why: {reason}")));
+        }
+        return;
+    }
+
+    let controller = match RuntimePreviewUiController::new_live(&detail.row_id) {
+        Ok(controller) => Rc::new(RefCell::new(controller)),
+        Err(error) => {
+            section.append(&small_label(&error.user_text()));
+            return;
+        }
+    };
+    register_preview_controller(&controller);
+
+    section.append(&small_label(
+        "Preview applies the value to the running Hyprland session only. Nothing is written to your config until you choose Save.",
+    ));
+
+    let status = small_label(&row_state.status_text);
+    status.set_widget_name(&format!(
+        "hyprland-settings-live-preview-status-{}",
+        safe_widget_name(&detail.row_id)
+    ));
+
+    let initial_value = detail
+        .current_value
+        .raw_value
+        .clone()
+        .or_else(|| detail.edit.proposed_value.clone())
+        .unwrap_or_default();
+
+    let apply_from_control = {
+        let controller = controller.clone();
+        let status = status.clone();
+        let drain_scheduled = Rc::new(std::cell::Cell::new(false));
+        move |value: String| {
+            let outcome = controller
+                .borrow_mut()
+                .offer_value(&value, preview_now_ms());
+            match outcome {
+                Ok(Some(receipt)) => status.set_label(&receipt.status_text),
+                Ok(None) => {
+                    // Value is pending in the throttle; schedule one trailing
+                    // drain if none is queued yet.
+                    if !drain_scheduled.get() {
+                        drain_scheduled.set(true);
+                        let controller = controller.clone();
+                        let status = status.clone();
+                        let drain_scheduled = drain_scheduled.clone();
+                        let delay = row_state.throttle_ms.unwrap_or(150) + 10;
+                        gtk::glib::timeout_add_local_once(
+                            std::time::Duration::from_millis(delay),
+                            move || {
+                                drain_scheduled.set(false);
+                                match controller.borrow_mut().drain_pending(preview_now_ms()) {
+                                    Ok(Some(receipt)) => status.set_label(&receipt.status_text),
+                                    Ok(None) => {}
+                                    Err(error) => status.set_label(&error.user_text()),
+                                }
+                            },
+                        );
+                    }
+                }
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        }
+    };
+
+    match row_state.control_kind {
+        RuntimePreviewUiControlKind::Switch => {
+            let control_row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+            control_row.append(&body_label("Preview value"));
+            let switch = gtk::Switch::new();
+            switch.set_widget_name(&format!(
+                "hyprland-settings-live-preview-switch-{}",
+                safe_widget_name(&detail.row_id)
+            ));
+            switch.set_active(matches!(initial_value.trim(), "true" | "1" | "yes" | "on"));
+            switch.set_valign(gtk::Align::Center);
+            let apply = apply_from_control.clone();
+            switch.connect_active_notify(move |switch| {
+                apply(if switch.is_active() { "true" } else { "false" }.to_string());
+            });
+            control_row.append(&switch);
+            section.append(&control_row);
+        }
+        RuntimePreviewUiControlKind::Slider => {
+            let (min, max) = row_state.slider_bounds.unwrap_or((0.0, 1.0));
+            let step = ((max - min) / 100.0).max(0.001);
+            let slider = gtk::Scale::with_range(gtk::Orientation::Horizontal, min, max, step);
+            slider.set_widget_name(&format!(
+                "hyprland-settings-live-preview-slider-{}",
+                safe_widget_name(&detail.row_id)
+            ));
+            slider.set_hexpand(true);
+            slider.set_draw_value(true);
+            if let Ok(value) = initial_value.trim().parse::<f64>() {
+                slider.set_value(value.clamp(min, max));
+            }
+            let integer_like = step >= 1.0;
+            let apply = apply_from_control.clone();
+            slider.connect_value_changed(move |slider| {
+                let value = if integer_like {
+                    format!("{}", slider.value().round() as i64)
+                } else {
+                    format!("{:.3}", slider.value())
+                };
+                apply(value);
+            });
+            section.append(&slider);
+        }
+        RuntimePreviewUiControlKind::SpinRow => {
+            let spin = gtk::SpinButton::with_range(-100_000.0, 100_000.0, 1.0);
+            spin.set_widget_name(&format!(
+                "hyprland-settings-live-preview-spin-{}",
+                safe_widget_name(&detail.row_id)
+            ));
+            if let Ok(value) = initial_value.trim().parse::<f64>() {
+                spin.set_value(value);
+            }
+            let apply = apply_from_control.clone();
+            spin.connect_value_changed(move |spin| {
+                let value = spin.value();
+                let rendered = if (value - value.round()).abs() < f64::EPSILON {
+                    format!("{}", value.round() as i64)
+                } else {
+                    format!("{value}")
+                };
+                apply(rendered);
+            });
+            section.append(&spin);
+        }
+        RuntimePreviewUiControlKind::Dropdown => {
+            let combo = gtk::ComboBoxText::new();
+            combo.set_widget_name(&format!(
+                "hyprland-settings-live-preview-dropdown-{}",
+                safe_widget_name(&detail.row_id)
+            ));
+            for (raw_value, label) in &row_state.dropdown_choices {
+                combo.append(Some(raw_value), label);
+            }
+            combo.set_active_id(Some(initial_value.trim()));
+            let apply = apply_from_control.clone();
+            combo.connect_changed(move |combo| {
+                if let Some(active) = combo.active_id() {
+                    apply(active.to_string());
+                }
+            });
+            section.append(&combo);
+        }
+        RuntimePreviewUiControlKind::ColorEntry | RuntimePreviewUiControlKind::ValueEntry => {
+            let control_row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+            control_row.append(&body_label(
+                if row_state.control_kind == RuntimePreviewUiControlKind::ColorEntry {
+                    "Preview color"
+                } else {
+                    "Preview value"
+                },
+            ));
+            let entry = gtk::Entry::new();
+            entry.set_widget_name(&format!(
+                "hyprland-settings-live-preview-entry-{}",
+                safe_widget_name(&detail.row_id)
+            ));
+            entry.set_text(&initial_value);
+            entry.set_hexpand(true);
+            entry.set_tooltip_text(Some("Press Enter to preview this value live."));
+            let apply = apply_from_control.clone();
+            entry.connect_activate(move |entry| {
+                apply(entry.text().to_string());
+            });
+            control_row.append(&entry);
+            section.append(&control_row);
+        }
+        RuntimePreviewUiControlKind::NoControl => {}
+    }
+
+    section.append(&status);
+
+    let buttons = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+
+    let save_button = gtk::Button::with_label("Save previewed value");
+    save_button.set_widget_name(&format!(
+        "hyprland-settings-live-preview-save-{}",
+        safe_widget_name(&detail.row_id)
+    ));
+    let can_persist = row_state.save_state.available()
+        && detail.edit.editable
+        && detail
+            .edit
+            .pending
+            .as_ref()
+            .map(|pending| pending.can_review)
+            .unwrap_or(false);
+    save_button.set_sensitive(can_persist);
+    save_button.set_tooltip_text(Some(if can_persist {
+        "Persist the last previewed value once through the app's backup/write/reread flow. GTK automation must not activate this control."
+    } else {
+        "Save is unavailable: persistence gates for this row are not open. Preview stays temporary; use Revert or Cancel."
+    }));
+    if !can_persist {
+        buttons.append(&save_button);
+        let reason = small_label(&format!("Save disabled: {}", row_state.save_state.reason()));
+        reason.set_widget_name(&format!(
+            "hyprland-settings-live-preview-save-reason-{}",
+            safe_widget_name(&detail.row_id)
+        ));
+        section.append(&reason);
+    } else {
+        buttons.append(&save_button);
+    }
+    {
+        let controller = controller.clone();
+        let status = status.clone();
+        let known_setting_ids = model.known_setting_ids.clone();
+        let config_discovery = model.config_discovery.clone();
+        let current_config = model.current_config.clone();
+        let setting_id = detail.row_id.clone();
+        save_button.connect_clicked(move |button| {
+            let last_value = controller.borrow().last_applied_value();
+            let Some(value) = last_value else {
+                status.set_label("Nothing to save: no preview value has been applied yet.");
+                return;
+            };
+            match controller.borrow_mut().mark_saved() {
+                Ok(_) => {}
+                Err(error) => {
+                    status.set_label(&error.user_text());
+                    return;
+                }
+            }
+            match apply_setting_change(
+                known_setting_ids.clone(),
+                &config_discovery,
+                &current_config,
+                &setting_id,
+                &value,
+            ) {
+                Ok(outcome) => {
+                    button.set_sensitive(false);
+                    status.set_label(&format!(
+                        "Saved: {} = {} persisted once with backup {}.",
+                        outcome.setting_id,
+                        outcome
+                            .verified_value
+                            .unwrap_or_else(|| "unknown".to_string()),
+                        outcome.backup_path.display(),
+                    ));
+                }
+                Err(failure) => status.set_label(&format!("Save failed: {}", failure.reason)),
+            }
+        });
+    }
+
+    let revert_button = gtk::Button::with_label("Revert preview");
+    revert_button.set_widget_name(&format!(
+        "hyprland-settings-live-preview-revert-{}",
+        safe_widget_name(&detail.row_id)
+    ));
+    revert_button.set_tooltip_text(Some(
+        "Restore the runtime value captured when the preview session started.",
+    ));
+    {
+        let controller = controller.clone();
+        let status = status.clone();
+        revert_button.connect_clicked(move |_| match controller.borrow_mut().revert() {
+            Ok(receipt) => status.set_label(&receipt.status_text),
+            Err(error) => status.set_label(&error.user_text()),
+        });
+    }
+    buttons.append(&revert_button);
+
+    let cancel_button = gtk::Button::with_label("Cancel preview");
+    cancel_button.set_widget_name(&format!(
+        "hyprland-settings-live-preview-cancel-{}",
+        safe_widget_name(&detail.row_id)
+    ));
+    cancel_button.set_tooltip_text(Some(
+        "Restore the original runtime value and clear the preview session.",
+    ));
+    {
+        let controller = controller.clone();
+        let status = status.clone();
+        cancel_button.connect_clicked(move |_| match controller.borrow_mut().cancel() {
+            Ok(receipt) => status.set_label(&receipt.status_text),
+            Err(error) => status.set_label(&error.user_text()),
+        });
+    }
+    buttons.append(&cancel_button);
+
+    section.append(&buttons);
+    let _ = RuntimePreviewUiSessionState::Idle;
 }
 
 fn append_write_controls(

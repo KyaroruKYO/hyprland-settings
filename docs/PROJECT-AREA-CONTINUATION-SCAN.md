@@ -18,7 +18,7 @@ Real structured-family write code now exists for controlled targets. The control
 - High-risk/display recovery: blocked by high-risk recovery proof.
 - Structured-family editors/writes: blocked by active real config write approval, with canContinueNow false for active-config work, controlled real-write implementation complete, executor wired for controlled targets true, executor wired for active config false, real write path enabled for controlled targets true, real write path enabled for active config false, backup/restore/rollback proven for controlled targets only, GUI live Apply controls enabled false, and first real config write approved false. Safe non-active-config defect correction remains allowed.
 - Profile/mode switching: blocked by production activation and live proof.
-- Runtime/reload integration: runtime preview implemented pending per-setting UI controls; 135 of 341 rows live-previewable by default through the proven reversible executor, dead-man rows disabled by default, reload still disabled.
+- Runtime/reload integration: runtime preview user-facing pending dead-man UI; the 135 default-previewable rows have real detail-pane controls with Previewing Live status and Save/Revert/Cancel through the proven reversible executor, dead-man rows disabled pending countdown UI, reload still disabled.
 - Hyprland 0.55.4 migration: blocked by missing trusted official export data.
 
 ## Finish-App Sprint Update

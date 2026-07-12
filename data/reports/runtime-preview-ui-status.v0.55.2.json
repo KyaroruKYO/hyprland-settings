@@ -8,17 +8,22 @@
     "no-config-write / no-reload / save-through-existing-path statement",
     "insensitive 'Live preview' control labeled that per-setting controls land next"
   ],
+  "uiSurfacesAddedInControlsSprint": [
+    "per-setting Live preview detail-pane section for every scalar row with capability badge",
+    "real controls for the 135 default-previewable rows: 53 switches, 45 sliders, 3 spin rows, 22 color entries, 3 value entries, 9 dropdowns",
+    "Previewing Live status line per row",
+    "Save previewed value (gated by the existing safe write flow), Revert preview, and Cancel preview buttons",
+    "blocked/unsupported/dead-man reason copy per row"
+  ],
   "uiSurfacesNotYetAdded": [
-    "per-setting slider/switch live preview controls in the settings detail pane",
-    "Previewing live status indicator per row",
-    "Save/Revert/Cancel preview buttons per row",
-    "dead-man confirmation countdown UI",
+    "dead-man confirmation countdown UI (78 dead-man rows stay disabled)",
     "Requires reload/relog/restart badges (no row currently classifies into these buckets)"
   ],
-  "guiLivePreviewControlsEnabled": false,
+  "guiLivePreviewControlsEnabled": true,
+  "guiLivePreviewControlsEnabledScope": "the 135 default-previewable rows only; runtime mutation stays temporary and reversible",
   "blockedRowsExposeEnabledControls": false,
   "highRiskRowsEnabledByDefault": false,
-  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260711_233413",
-  "gtkEvidence": "card title and capability counts proven via AT-SPI accessibility-tree text; aggregate safety flags realConfigEdited, runtimeMutated, and hyprlandReloaded all false",
-  "nextRecommendedWork": "Wire per-setting live preview controls for the 135 default-previewable rows through the proven session/throttle/revert executor, keeping Save persistence separate."
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_001609",
+  "gtkEvidence": "supported row shows 'Live Preview: Supported' with Save/Revert/Cancel controls; high-risk row shows 'Dead-man preview required' and BlockedHighRisk capability with no enabled control; aggregate safety flags all false",
+  "nextRecommendedWork": "Implement the dead-man preview UI (countdown, confirm, auto-revert) for the 78 dead-man-gated rows."
 }

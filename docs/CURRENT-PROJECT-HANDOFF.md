@@ -113,10 +113,17 @@ Structured-family controlled real-write implementation on `structured-family-edi
 - Added the Config page "Live runtime preview readiness" card with real matrix counts (GTK evidence root `/tmp/hyprland-settings-gtk-automation/20260711_233413`).
 - Preview never writes config files, never reloads Hyprland, and rejects unsupported/blocked/not-proven rows before building any command.
 
+## Runtime Preview UI Controls Additions
+
+- Wired per-setting live preview controls into the settings detail pane for all 135 default-previewable rows: 53 switches, 45 sliders, 3 spin rows, 22 color entries, 3 value entries, 9 dropdowns; every other row shows its capability badge and reason with no enabled control.
+- Added the UI projection/controller layer (`src/runtime_preview_ui_projection.rs`): the GTK layer renders projections and calls controller actions only — no `hyprctl` strings, executor calls, or file-write APIs in UI code (test-enforced).
+- Previewing Live status, gated Save (persists once through the existing safe apply flow when its review gates are open), Revert, and Cancel per row; throttled slider applies with a single trailing drain timer; session-drop and app-close recovery revert any active preview.
+- Live UI controller smoke proven against the running compositor (throttled drag on `general.gaps_in`, cancel, restoration verified); GTK evidence at `/tmp/hyprland-settings-gtk-automation/20260712_001609` proves supported and blocked surfaces with all safety flags false.
+
 ## Next Exact Work
 
 Stop for explicit user decision: approve or reject a first active real config write pilot for structured families.
 
-For runtime preview: wire per-setting live preview controls (Save/Revert/Cancel) for the 135 default-previewable rows through the proven executor.
+For runtime preview: implement the dead-man preview UI (countdown, confirm, auto-revert) for the 78 dead-man-gated rows.
 
 Unblocking the pilot requires either setting `misc:disable_autoreload = true` (a user decision) or explicitly approving the compositor reload the pilot write would trigger; then run the ignored pilot test with `HYPRLAND_SETTINGS_RUN_ACTIVE_PILOT=1` and confirmed autoreload evidence.

@@ -24,7 +24,8 @@
   "runtimePreviewThrottleImplemented": true,
   "deadManModelImplemented": true,
   "uiPreviewStatusImplemented": true,
-  "uiPerSettingPreviewControlsImplemented": false,
+  "uiPerSettingPreviewControlsImplemented": true,
+  "uiPerSettingPreviewControlsReport": "data/reports/runtime-preview-user-facing-controls.v0.55.2.json",
   "activeConfigWritesDuringPreview": false,
   "hyprctlReloadEnabled": false,
   "runtimeMutationEnabledForSupportedRows": true,
@@ -90,5 +91,5 @@
     "cargoBuildRelease": "passed"
   },
   "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260711_233413",
-  "nextRecommendedWork": "Wire per-setting live preview controls (sliders/switches with Save/Revert/Cancel) into the settings detail pane for the 135 default-previewable rows, using the proven session/throttle/revert executor."
+  "nextRecommendedWork": "Per-setting controls are wired (see runtime-preview-user-facing-controls report). Next: dead-man preview UI for the 78 gated rows."
 }
