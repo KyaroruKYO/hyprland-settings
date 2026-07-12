@@ -3867,16 +3867,20 @@ fn project_area_continuation_scan_classifies_every_required_area() {
         .expect("structured-family area should exist");
     assert_eq!(
         structured["classification"],
-        "blocked_by_executor_scaffold_pending_executor_wiring_planning_decision"
+        "blocked_by_executor_wiring_readiness_plan_pending_actual_wiring_scaffold_decision"
     );
     assert_eq!(structured["canContinueNow"], false);
     assert!(structured["currentStatus"]
         .as_str()
         .expect("currentStatus should be text")
         .contains("executor scaffold implemented true"));
+    assert!(structured["currentStatus"]
+        .as_str()
+        .expect("currentStatus should be text")
+        .contains("executor wiring readiness model added true"));
     assert_eq!(
         structured["safeNextWork"],
-        "stop for explicit user decision on executor wiring planning"
+        "stop for explicit user decision on actual executor wiring scaffold"
     );
     assert!(structured["mustNotDo"]
         .as_str()
@@ -3904,7 +3908,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Stop for explicit user decision: approve or reject executor wiring planning."
+        "Stop for explicit user decision: approve or reject actual executor wiring scaffold."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],

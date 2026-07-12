@@ -2,7 +2,7 @@
   "artifactKind": "project-area-continuation-scan",
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
-  "startingCommit": "71c5161eaa407da984d3c5971de3751d23033a0c",
+  "startingCommit": "16967fbd820460bad64b7275cee4bd6c9cd428b5",
   "areas": [
     {
       "areaName": "Core app shell / UI / navigation",
@@ -118,13 +118,13 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "fixture-only proof chain complete; real-write activation requirements listed; missing backup/restore proof listed; required user approval gates listed; Option B planning-only production activation scope approved; production activation design complete; internal safe-write architecture plan complete; executor architecture implementation planning approved true; actual executor implementation approved true; executor implementation approved true; executor scaffold implemented true; executor scaffold inert true; executor scaffold unwired true; executor wiring approved false; real write scope approved false; GUI real-write controls approved false; family ranking excluded by user instruction; activation subset selected false; production activation approved false; executor wired false; real write path enabled false; GUI real-write controls enabled false; first real config write approved false",
-      "classification": "blocked_by_executor_scaffold_pending_executor_wiring_planning_decision",
+      "currentStatus": "fixture-only proof chain complete; real-write activation requirements listed; missing backup/restore proof listed; required user approval gates listed; Option B planning-only production activation scope approved; production activation design complete; internal safe-write architecture plan complete; executor architecture implementation planning approved true; actual executor implementation approved true; executor implementation approved true; executor scaffold implemented true; executor scaffold inert true; executor scaffold unwired true; executor wiring planning approved true; executor wiring readiness model added true; executor wiring boundary defined true; executor wiring source guards added true; executor wiring approved false; real write scope approved false; GUI real-write controls approved false; family ranking excluded by user instruction; activation subset selected false; production activation approved false; executor wired false; real write path enabled false; GUI real-write controls enabled false; first real config write approved false",
+      "classification": "blocked_by_executor_wiring_readiness_plan_pending_actual_wiring_scaffold_decision",
       "canContinueNow": false,
-      "reason": "The inert executor implementation scaffold is complete, compiled, and tested. Further structured-family production activation work must stop until the user explicitly approves or rejects executor wiring planning. Executor wiring, real writes, GUI real-write controls, backup/restore execution, rollback, reload, runtime mutation, family ranking, activation subset selection, production readiness, and first real config write approval remain false.",
-      "blockingDependency": "explicit user decision on executor wiring planning",
-      "safeNextWork": "stop for explicit user decision on executor wiring planning",
-      "mustNotDo": "do not wire executor, enable real writes, design or wire GUI real-write controls, rank families, choose activation subset, create backups, restore backups, rollback, reload Hyprland, mutate runtime, or approve first real config write",
+      "reason": "The inert executor wiring-readiness plan is complete: wiring boundaries are defined, inert readiness models compile and reject by default, and source-level regression guards prove no actual wiring exists. Further structured-family production activation work must stop until the user explicitly approves or rejects an actual executor wiring scaffold. Executor wiring, real writes, GUI real-write controls, backup/restore execution, rollback, reload, runtime mutation, family ranking, activation subset selection, production readiness, and first real config write approval remain false.",
+      "blockingDependency": "explicit user decision on actual executor wiring scaffold",
+      "safeNextWork": "stop for explicit user decision on actual executor wiring scaffold",
+      "mustNotDo": "do not wire executor, call executor, enable real writes, design or wire GUI real-write controls, rank families, choose activation subset, create backups, restore backups, rollback, reload Hyprland, mutate runtime, or approve first real config write",
       "evidenceUsed": [
         "src/structured_family.rs",
         "tests/structured_family_unified.rs",
@@ -146,7 +146,8 @@
         "data/reports/structured-family-production-activation-design.v0.55.2.json",
         "data/reports/structured-family-internal-safe-write-architecture-plan.v0.55.2.json",
         "data/reports/structured-family-executor-architecture-implementation-plan.v0.55.2.json",
-        "data/reports/structured-family-executor-implementation-scaffold.v0.55.2.json"
+        "data/reports/structured-family-executor-implementation-scaffold.v0.55.2.json",
+        "data/reports/structured-family-executor-wiring-readiness-plan.v0.55.2.json"
       ]
     },
     {
@@ -193,5 +194,5 @@
     }
   ],
   "activeSafeArea": null,
-  "recommendedNextWork": "Stop for explicit user decision: approve or reject executor wiring planning."
+  "recommendedNextWork": "Stop for explicit user decision: approve or reject actual executor wiring scaffold."
 }

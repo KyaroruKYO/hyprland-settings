@@ -2,8 +2,8 @@
   "artifactKind": "current-project-handoff",
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
-  "startingCommit": "71c5161eaa407da984d3c5971de3751d23033a0c",
-  "currentFocus": "structured-family executor implementation scaffold",
+  "startingCommit": "16967fbd820460bad64b7275cee4bd6c9cd428b5",
+  "currentFocus": "structured-family executor wiring readiness plan",
   "completedThisSprint": [
     "shared structured-family model for hl.monitor, hl.bind, hl.animation, hl.curve, hl.gesture, hl.device, and hl.permission",
     "review-only Config page structured-family section with seven stable cards",
@@ -56,7 +56,14 @@
     "structured-family area classified as blocked by executor architecture implementation plan pending explicit actual executor scaffold decision",
     "inert structured-family executor implementation scaffold complete",
     "scaffold module, types, functions, default rejection reasons, non-mutating receipt, audit record, and emergency stop model compile and reject by default",
-    "structured-family area classified as blocked by executor scaffold pending explicit executor wiring planning decision"
+    "structured-family area classified as blocked by executor scaffold pending explicit executor wiring planning decision",
+    "executor wiring planning approved as planning-only readiness work",
+    "inert executor wiring-readiness module with boundary, candidate, preflight, approval-state, source-guard, and readiness-report models compiles and rejects by default",
+    "eight universal wiring boundaries defined covering executor scaffold, write_flow, apply_setting_change, UI reachability, filesystem, backup/restore, rollback/recovery, and reload/runtime; none family-specific",
+    "source-level regression guards prove the wiring-readiness layer has no executor call, no write_flow or apply_setting_change reachability, no UI reachability, no filesystem mutation, no command runner, no hyprctl path, and no approval flag flips",
+    "reachability tests re-prove the executor scaffold remains unreachable from main, write_flow, and UI sources",
+    "executor wiring approved remains false, executor wired remains false, and production readiness remains not production ready",
+    "structured-family area classified as blocked by executor wiring readiness plan pending explicit actual executor wiring scaffold decision"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,
@@ -68,7 +75,7 @@
     "structuredFamilyWritesEnabled": false,
     "hyprland0554MigrationActivated": false
   },
-  "activeNextWork": "Stop for explicit user decision: approve or reject executor wiring planning.",
+  "activeNextWork": "Stop for explicit user decision: approve or reject actual executor wiring scaffold.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",
@@ -79,6 +86,6 @@
     "do not run hyprctl reload",
     "do not mutate real config or runtime",
     "do not design or wire GUI real-write controls",
-    "do not continue structured-family production activation work without explicit user approval of executor wiring planning"
+    "do not continue structured-family production activation work without explicit user approval of an actual executor wiring scaffold"
   ]
 }

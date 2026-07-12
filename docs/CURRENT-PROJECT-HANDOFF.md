@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family executor implementation scaffold on `structured-family-editors-unified`.
+Structured-family executor wiring readiness plan on `structured-family-editors-unified`.
 
 ## Completed This Sprint
 
@@ -60,6 +60,14 @@ Structured-family executor implementation scaffold on `structured-family-editors
 - Proved the scaffold rejects by default, remains unreachable from current UI, and remains disconnected from `write_flow` and `apply_setting_change`.
 - Kept executor wiring approved false, executor wired false, real write scope approved false, real write path enabled false, GUI real-write controls enabled false, backup creation false, restore execution false, rollback execution false, reload false, runtime mutation false, first real config write false, and production readiness not production ready.
 - Classified structured-family editors/writes as blocked by executor scaffold pending explicit executor wiring planning decision.
+- Recorded executor wiring planning approval as planning-only readiness work.
+- Added the inert executor wiring-readiness module with boundary, candidate, preflight, approval-state, source-guard, and readiness-report models that compile and reject by default.
+- Defined eight universal wiring boundaries covering the executor scaffold, `write_flow`, `apply_setting_change`, UI reachability, filesystem, backup/restore, rollback/recovery, and reload/runtime; none is family-specific.
+- Recorded boundary-level wiring candidates as unwired, unapproved, and not family-specific.
+- Added source-level regression guards proving the wiring-readiness layer has no executor call, no `write_flow` or `apply_setting_change` reachability, no UI reachability, no filesystem mutation, no command runner, and no approval flag flips.
+- Re-proved the executor scaffold remains unreachable from `main`, `write_flow`, and UI sources.
+- Kept executor wiring approved false, executor wired false, and production readiness not production ready.
+- Classified structured-family editors/writes as blocked by executor wiring readiness plan pending explicit actual executor wiring scaffold decision.
 - Added a project-area continuation scan.
 
 ## Safety Boundaries
@@ -70,6 +78,8 @@ Structured-family executor implementation scaffold on `structured-family-editors
 - Production behavior enabled: false.
 - Structured-family writes enabled: false.
 - Executor implemented: true for inert scaffold only.
+- Executor wiring planning approved: true for inert readiness work only.
+- Executor wiring approved: false.
 - Executor wired: false.
 - GUI real-write controls enabled: false.
 - Backup creation enabled: false.
@@ -80,4 +90,4 @@ Structured-family executor implementation scaffold on `structured-family-editors
 
 ## Next Exact Work
 
-Stop for explicit user decision: approve or reject executor wiring planning.
+Stop for explicit user decision: approve or reject actual executor wiring scaffold.
