@@ -1,0 +1,54 @@
+{
+  "artifactKind": "structured-family-finish-app-sprint",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommitBeforeAttributionRewrite": "ef64b4fd2527d94559797d02581fed2790d95ff2",
+  "startingCommitAfterAttributionRewrite": "9a1ee7ca4c19ffe0c080f9b3b7355518728c6116",
+  "attributionCleanup": {
+    "trailersFound": 2,
+    "trailersRemoved": true,
+    "rewrittenCommits": {
+      "78c5bbcc988e370e6ee8bda98d3285f544830858": "bc0771930982f32fad3c8fa36d85c029e294ef5d",
+      "ef64b4fd2527d94559797d02581fed2790d95ff2": "9a1ee7ca4c19ffe0c080f9b3b7355518728c6116"
+    },
+    "method": "git filter-branch --msg-filter over the two affected commits, preserving author and committer identity and dates",
+    "projectTextReferencesFound": 0,
+    "localBranchesAndTagsVerifiedClean": true,
+    "backupRefsRemovedAfterVerification": true
+  },
+  "executorHardening": {
+    "defectsFound": [
+      "a target file that is itself a symlink resolving outside the controlled root passed classification and would have been written through (fixed: canonical full-path escape check added to the target policy)",
+      "target writes used plain fs::write, so a crash mid-write could truncate the target (fixed: all target writes and restores now go through atomic temp-file-plus-rename)"
+    ],
+    "testsAdded": [
+      "controlled_executor_refuses_symlinked_target_file_pointing_outside_root",
+      "controlled_executor_atomic_writes_leave_no_stray_temp_files"
+    ]
+  },
+  "activeConfigPilot": {
+    "module": "src/structured_family_active_config_pilot.rs",
+    "rehearsalStatus": "proven against the real active config content in a temp copy; source untouched",
+    "livePilotStatus": "blocked_by_gate",
+    "blockingGates": ["AutoreloadDisabledConfirmed", "NoRuntimeMutationPlanned"],
+    "report": "data/reports/structured-family-active-config-write-pilot.v0.55.2.json"
+  },
+  "gui": {
+    "added": "review-only, report-backed 'Structured-family write status' card on the Config page with a permanently insensitive Apply control labeled as blocked pending pilot approval",
+    "liveApplyControlsEnabled": false,
+    "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260711_224219",
+    "gtkEvidenceResult": "accessibility inspection succeeded; the new card title and blocked Apply control label are proven via AT-SPI text; all safety flags (applyClicked, hyprlandReloaded, realConfigEdited, runtimeMutated, mutatingHyprctlUsed) are false"
+  },
+  "runtimeReloadIntegration": "unchanged: no reload path exists, no reload was run, no runtime mutation occurred; the pilot models the reload/runtime boundary as an evidence-backed gate",
+  "hyprland0554Migration": "unchanged: advisory only, blocked by missing trusted official export data",
+  "packagingRelease": "unchanged: v0.1.0 tag and dist/v0.1.0 artifacts preserved; no new tag or release created",
+  "hyprctlReloadRun": false,
+  "mutatingHyprctlRun": false,
+  "runtimeMutated": false,
+  "activeRealConfigWritten": false,
+  "mainModified": false,
+  "v010Modified": false,
+  "distV010Modified": false,
+  "productionReadinessDecision": "not production ready for active real config writes",
+  "nextRecommendedWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families. Unblocking it requires either disabling compositor config autoreload (misc:disable_autoreload=true) or explicitly approving the runtime reload that the write would trigger."
+}

@@ -118,10 +118,10 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "controlled real-write implementation complete: the controlled write executor is implemented, internally wired, and tested for test-owned fixture, copied config tree, and temporary config targets; write, byte-exact backup, restore, rollback, post-write reread verification, and post-restore reread verification are proven for all seven families against copied temp targets; the active real Hyprland config is rejected by target policy, approval model, and tests; executor wired for controlled targets true; executor wired for active config false; real write path enabled for controlled targets true; real write path enabled for active config false; active real config writes approved false; GUI live Apply controls enabled false; hyprctl reload enabled false; runtime mutation enabled false; first real config write approved false",
+      "currentStatus": "controlled real-write implementation complete and hardened (symlink-through-file escape fixed, atomic temp-file-plus-rename writes): the controlled write executor is implemented, internally wired, and tested for test-owned fixture, copied config tree, and temporary config targets; write, byte-exact backup, restore, rollback, post-write reread verification, and post-restore reread verification are proven for all seven families against copied temp targets; the gated active-config pilot module exists with a fifteen-gate preflight, and the copied active-config rehearsal is proven against the real config content with the source untouched; the live pilot is blocked by the AutoreloadDisabledConfirmed and NoRuntimeMutationPlanned gates because misc:disable_autoreload is false on this system; a review-only GUI status card with a permanently insensitive Apply control is proven in the GTK evidence matrix; executor wired for controlled targets true; executor wired for active config false; real write path enabled for controlled targets true; real write path enabled for active config false; active real config writes approved false; GUI live Apply controls enabled false; hyprctl reload enabled false; runtime mutation enabled false; first real config write approved false",
       "classification": "blocked_by_active_real_config_write_approval",
       "canContinueNow": false,
-      "reason": "Real structured-family write code now exists and is proven for controlled targets only. The next step across the safety boundary is a first active real config write pilot, which requires a fresh explicit user approval. No target kind, approval flag, or executor path can currently reach the active Hyprland config. Safe non-active-config defect fixes remain allowed if defects are discovered.",
+      "reason": "The pilot path is implemented, rehearsed, and gate-blocked: with compositor autoreload enabled (misc:disable_autoreload=false), any active-config write would live-reload Hyprland, and runtime mutation is not approved. Unblocking requires a user decision: disable autoreload or explicitly approve the reload the pilot write would trigger, then run the env-gated ignored pilot test. Safe non-active-config defect fixes remain allowed.",
       "blockingDependency": "explicit user decision on first active real config write pilot",
       "safeNextWork": "approve or reject first active real config write pilot; safe non-active-config defect correction remains allowed",
       "mustNotDo": "do not write the active real Hyprland config, enable live Apply controls, run hyprctl reload, run mutating hyprctl, mutate runtime, or perform the first active-config write without explicit approval",
@@ -149,9 +149,13 @@
         "data/reports/structured-family-executor-implementation-scaffold.v0.55.2.json",
         "data/reports/structured-family-executor-wiring-readiness-plan.v0.55.2.json",
         "data/reports/structured-family-controlled-real-write-implementation.v0.55.2.json",
+        "data/reports/structured-family-active-config-write-pilot.v0.55.2.json",
+        "data/reports/structured-family-finish-app-sprint.v0.55.2.json",
         "src/structured_family_write_target.rs",
         "src/structured_family_controlled_write.rs",
-        "tests/structured_family_controlled_write.rs"
+        "src/structured_family_active_config_pilot.rs",
+        "tests/structured_family_controlled_write.rs",
+        "tests/structured_family_active_config_pilot.rs"
       ]
     },
     {
@@ -198,5 +202,5 @@
     }
   ],
   "activeSafeArea": null,
-  "recommendedNextWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families."
+  "recommendedNextWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families. Unblocking it requires disabling compositor config autoreload (misc:disable_autoreload=true) or explicitly approving the reload the pilot write would trigger."
 }

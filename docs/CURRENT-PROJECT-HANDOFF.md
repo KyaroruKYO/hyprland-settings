@@ -96,6 +96,17 @@ Structured-family controlled real-write implementation on `structured-family-edi
 - First real config write approved: false.
 - Source/include and duplicate production activation remain capped and separate-phase only.
 
+## Finish-App Sprint Additions
+
+- Removed tool `Co-Authored-By` trailers from the two affected commits via an in-place history rewrite preserving author/committer identity and dates.
+- Hardened the controlled executor: a target file symlinked outside the controlled root is now rejected (`SymlinkEscapeRejected`), and every target write/restore is atomic via temp-file-plus-rename.
+- Implemented the gated active-config pilot (`src/structured_family_active_config_pilot.rs`): fifteen-gate preflight, typed confirmation phrase, rehearsal-freshness drift detection, one atomic write, mandatory restoration, content-hash receipts and audit records; unreachable from UI/`main`/`write_flow` and executable only via an ignored env-gated test.
+- Proved the copied active-config rehearsal against the real config content; the real file was never modified.
+- Live pilot blocked by the `AutoreloadDisabledConfirmed`/`NoRuntimeMutationPlanned` gates: `misc:disable_autoreload` is `false`, so a config write would live-reload the compositor. See `docs/STRUCTURED-FAMILY-ACTIVE-CONFIG-WRITE-PILOT.md`.
+- Added a review-only GUI "Structured-family write status" card with a permanently insensitive Apply control; proven via the GTK evidence matrix (evidence root `/tmp/hyprland-settings-gtk-automation/20260711_224219`).
+
 ## Next Exact Work
 
 Stop for explicit user decision: approve or reject a first active real config write pilot for structured families.
+
+Unblocking the pilot requires either setting `misc:disable_autoreload = true` (a user decision) or explicitly approving the compositor reload the pilot write would trigger; then run the ignored pilot test with `HYPRLAND_SETTINGS_RUN_ACTIVE_PILOT=1` and confirmed autoreload evidence.

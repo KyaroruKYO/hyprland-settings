@@ -108,6 +108,13 @@ fn active_real_config_roots() -> Vec<PathBuf> {
     roots
 }
 
+/// True when the path is (or resolves to) the user's active real Hyprland
+/// config area. Public so the active-config pilot can prove target identity
+/// with the same rule the controlled policy uses to refuse it.
+pub fn structured_family_path_is_active_real_config(path: &Path) -> bool {
+    path_is_active_real_config(path)
+}
+
 fn path_is_active_real_config(path: &Path) -> bool {
     let candidates = active_real_config_roots();
     if candidates.iter().any(|root| path.starts_with(root)) {
@@ -133,6 +140,15 @@ fn canonical_parent_escapes_root(path: &Path, controlled_root: &Path) -> Option<
     // A symlinked parent that resolves outside the controlled root is an
     // escape even when the literal path text stays inside the root.
     Some(!canonical_parent.starts_with(&canonical_root))
+}
+
+fn canonical_target_file_escapes_root(path: &Path, controlled_root: &Path) -> Option<bool> {
+    // The target file itself may be a symlink pointing outside the root even
+    // when its parent directory is inside; writing through it would mutate a
+    // foreign file. Only checkable when the target already exists.
+    let canonical_root = controlled_root.canonicalize().ok()?;
+    let canonical_path = path.canonicalize().ok()?;
+    Some(!canonical_path.starts_with(&canonical_root))
 }
 
 fn canonical_target_is_active_real_config(path: &Path) -> bool {
@@ -194,7 +210,12 @@ pub fn classify_structured_family_write_target(
             rejection_reasons
                 .push(StructuredFamilyControlledWriteTargetRejection::TargetOutsideControlledRoot);
         }
-        if canonical_parent_escapes_root(&target.path, &target.controlled_root).unwrap_or(false) {
+        if (canonical_parent_escapes_root(&target.path, &target.controlled_root).unwrap_or(false)
+            || canonical_target_file_escapes_root(&target.path, &target.controlled_root)
+                .unwrap_or(false))
+            && !rejection_reasons
+                .contains(&StructuredFamilyControlledWriteTargetRejection::SymlinkEscapeRejected)
+        {
             resolved_kind = StructuredFamilyControlledWriteTargetKind::UnknownTarget;
             rejection_reasons
                 .push(StructuredFamilyControlledWriteTargetRejection::SymlinkEscapeRejected);

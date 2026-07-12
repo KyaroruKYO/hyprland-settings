@@ -3,7 +3,7 @@
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
   "startingCommit": "78c5bbcc988e370e6ee8bda98d3285f544830858",
-  "currentFocus": "structured-family controlled real-write implementation",
+  "currentFocus": "structured-family active-config write pilot (gate-blocked) and finish-app sprint",
   "completedThisSprint": [
     "shared structured-family model for hl.monitor, hl.bind, hl.animation, hl.curve, hl.gesture, hl.device, and hl.permission",
     "review-only Config page structured-family section with seven stable cards",
@@ -74,7 +74,13 @@
     "write receipts and audit records emitted with constant-false active-config/reload/runtime flags",
     "controlled executor proven unreachable from live UI, main, and the scalar write flow",
     "active real config writes, GUI live Apply controls, hyprctl reload, runtime mutation, and first real config write remain unapproved and disabled",
-    "structured-family area classified as blocked by active real config write approval"
+    "structured-family area classified as blocked by active real config write approval",
+    "removed tool co-authorship trailers from the two affected commits via in-place history rewrite preserving identity and dates",
+    "hardened the controlled executor: symlink-through-target-file escape fixed and all target writes/restores made atomic via temp-file-plus-rename",
+    "implemented the gated active-config pilot module with a fifteen-gate preflight, typed confirmation phrase, rehearsal-freshness drift detection, mandatory restoration, and content-hash receipts",
+    "proved the copied active-config rehearsal against the real config content with the source untouched",
+    "recorded the live pilot as blocked by the AutoreloadDisabledConfirmed and NoRuntimeMutationPlanned gates (misc:disable_autoreload is false)",
+    "added a review-only GUI status card with a permanently insensitive Apply control, proven in the GTK evidence matrix"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,

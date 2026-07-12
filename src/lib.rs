@@ -48,6 +48,7 @@ pub mod session_value_projection;
 pub mod source_aware_current_config;
 pub mod source_values;
 pub mod structured_family;
+pub mod structured_family_active_config_pilot;
 pub mod structured_family_controlled_write;
 pub mod structured_family_executor_wiring;
 pub mod structured_family_safe_write;

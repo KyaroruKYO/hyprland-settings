@@ -197,6 +197,25 @@ pub fn build_structured_family_controlled_write_plan(
     })
 }
 
+/// Write bytes to a sibling temp file, then rename over the target. A crash
+/// mid-write leaves the original file intact instead of a truncated target.
+pub fn atomic_controlled_write(path: &Path, bytes: &[u8]) -> std::io::Result<()> {
+    let mut temp_name = path
+        .file_name()
+        .map(|name| name.to_string_lossy().into_owned())
+        .unwrap_or_else(|| "controlled-target".to_string());
+    temp_name.push_str(".controlled-write-tmp");
+    let temp_path = path.with_file_name(temp_name);
+    fs::write(&temp_path, bytes)?;
+    match fs::rename(&temp_path, path) {
+        Ok(()) => Ok(()),
+        Err(error) => {
+            let _ = fs::remove_file(&temp_path);
+            Err(error)
+        }
+    }
+}
+
 fn controlled_backup_path(target_path: &Path) -> PathBuf {
     let mut file_name = target_path
         .file_name()
@@ -261,7 +280,7 @@ pub struct StructuredFamilyControlledWriteAuditRecord {
     pub summary: String,
 }
 
-fn family_records_in_text(
+pub fn family_records_in_text(
     label: &Path,
     text: &str,
     family: StructuredFamilyKind,
@@ -280,7 +299,7 @@ fn family_records_in_text(
 /// preserving every non-family line (comments, unknown syntax, other
 /// families, scalars). If the family has no records yet, the rendered records
 /// are appended at the end.
-fn apply_rendered_family_records(
+pub fn apply_rendered_family_records(
     label: &Path,
     original: &str,
     family: StructuredFamilyKind,
@@ -312,7 +331,7 @@ fn apply_rendered_family_records(
     text
 }
 
-fn verify_family_records_on_disk(
+pub fn verify_family_records_on_disk(
     path: &Path,
     family: StructuredFamilyKind,
     intended_records: &[String],
@@ -430,14 +449,14 @@ pub fn execute_structured_family_controlled_write(
         plan.family,
         &plan.rendered_records,
     );
-    fs::write(&plan.target.path, new_text.as_bytes())
+    atomic_controlled_write(&plan.target.path, new_text.as_bytes())
         .map_err(|error| StructuredFamilyControlledWriteError::WriteFailed(error.to_string()))?;
 
     let post_write_verification =
         verify_family_records_on_disk(&plan.target.path, plan.family, &plan.rendered_records)?;
     if !post_write_verification.intended_records_present {
         // Fail closed: put the original bytes back before reporting failure.
-        fs::write(&plan.target.path, &original).map_err(|error| {
+        atomic_controlled_write(&plan.target.path, &original).map_err(|error| {
             StructuredFamilyControlledWriteError::RestoreFailed(error.to_string())
         })?;
         return Err(StructuredFamilyControlledWriteError::PostWriteVerificationFailed);
@@ -472,7 +491,7 @@ pub fn restore_structured_family_controlled_write(
 
     let backup_bytes = fs::read(&receipt.backup.backup_path)
         .map_err(|error| StructuredFamilyControlledWriteError::RestoreFailed(error.to_string()))?;
-    fs::write(&receipt.target_path, &backup_bytes)
+    atomic_controlled_write(&receipt.target_path, &backup_bytes)
         .map_err(|error| StructuredFamilyControlledWriteError::RestoreFailed(error.to_string()))?;
     let restored_bytes = fs::read(&receipt.target_path)
         .map_err(|error| StructuredFamilyControlledWriteError::RestoreFailed(error.to_string()))?;

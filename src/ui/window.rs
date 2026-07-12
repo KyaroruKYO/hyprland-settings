@@ -605,6 +605,8 @@ fn build_config_view(
 
     content.append(&disabled_future_approval_cards_section());
 
+    content.append(&controlled_write_and_active_pilot_status_section());
+
     content.append(&config_section(
         "Future changes",
         vec![
@@ -4372,6 +4374,27 @@ fn append_connected_file_issue_warnings(parent: &gtk::Box, graph: &ConfigGraphSu
 
 fn friendly_path(path: &std::path::Path) -> String {
     path.display().to_string()
+}
+
+/// Review-only, report-backed status card for the structured-family
+/// controlled write executor and the active-config write pilot. Display only:
+/// this card reads no executor state and can trigger nothing. The Apply
+/// control is permanently insensitive until a future explicitly approved
+/// pilot flow exists.
+fn controlled_write_and_active_pilot_status_section() -> gtk::Frame {
+    config_section(
+        "Structured-family write status (review only)",
+        vec![
+            "Controlled-target writes: implemented and proven for test-owned, copied, and temporary configs with byte-exact backup, restore, rollback, and reread verification for all seven families.".to_string(),
+            "Copied active-config rehearsal: proven — the active config content round-trips (backup, write, verify, restore, verify) in a temp copy without touching the real file.".to_string(),
+            "First active config write pilot: blocked — compositor autoreload (misc:disable_autoreload=false) means a config write would reload Hyprland live, and runtime mutation is not approved.".to_string(),
+            "Active real config writes, Hyprland reload, and runtime mutation remain disabled and require explicit approval.".to_string(),
+        ],
+        Some((
+            "Apply to active config (blocked: requires pilot approval)",
+            false,
+        )),
+    )
 }
 
 fn config_section(title: &str, lines: Vec<String>, button: Option<(&str, bool)>) -> gtk::Frame {

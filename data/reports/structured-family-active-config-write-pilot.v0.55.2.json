@@ -1,0 +1,69 @@
+{
+  "artifactKind": "structured-family-active-config-write-pilot",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "9a1ee7ca4c19ffe0c080f9b3b7355518728c6116",
+  "goal": "Implement the heavily gated first active real config write pilot, run the copied active-config rehearsal, and execute the live pilot only if every safety gate passes.",
+  "pilotModule": "src/structured_family_active_config_pilot.rs",
+  "pilotTests": "tests/structured_family_active_config_pilot.rs",
+  "chosenPilot": {
+    "family": "hl.curve",
+    "record": "bezier = hyprlandSettingsPilotCurve, 0.25, 0.10, 0.25, 1.00",
+    "rationale": "An unused named bezier curve is the safest possible structured-family change: it preserves every existing record, appends exactly one single-line record, references nothing, and has zero behavioral effect even if the config were reloaded. The active config currently has zero hl.curve records."
+  },
+  "gates": [
+    "PilotApprovalPresent",
+    "TypedConfirmationMatches",
+    "TargetIdentityProven",
+    "TargetExists",
+    "MinimalReversibleChange",
+    "BackupPathOutsideActiveConfig",
+    "RehearsalProven",
+    "RehearsalMatchesCurrentContent",
+    "RollbackPlanPresent",
+    "PostWriteVerificationPlanned",
+    "PostRestoreVerificationPlanned",
+    "AutoreloadDisabledConfirmed",
+    "NoReloadPlanned",
+    "NoRuntimeMutationPlanned",
+    "NoAutomaticApplyPath"
+  ],
+  "copiedActiveConfigRehearsal": {
+    "status": "proven",
+    "method": "the real active config content was copied into a temp rehearsal root and the controlled executor ran the full round trip against the copy: byte-exact backup, single appended inert curve record, parser/projection reread verification, restore, restore verification",
+    "sourceUntouched": true,
+    "test": "copied_active_config_rehearsal_round_trips_without_touching_the_source"
+  },
+  "firstActiveConfigWritePilot": {
+    "status": "blocked_by_gate",
+    "blockingGates": ["AutoreloadDisabledConfirmed", "NoRuntimeMutationPlanned"],
+    "blockingEvidence": "read-only `hyprctl getoption misc:disable_autoreload` returned `bool: false` (autoreload enabled, the Hyprland default). With autoreload enabled, any write to the active config file would make the running compositor reload it immediately - a live runtime mutation. Runtime mutation is not approved in this sprint, so the pilot's NoRuntimeMutationPlanned gate cannot pass.",
+    "activeConfigWritten": false,
+    "activeConfigRestored": "not applicable - never written",
+    "activeConfigSha256Unchanged": "efbb732063fccf35c99ad142a656de9041262d87558ee7bb2044f484a04acb7c",
+    "preWriteHash": "not recorded - pilot never reached the write step",
+    "postWriteHash": "not applicable",
+    "postRestoreHash": "not applicable",
+    "backupPath": "not created - pilot never reached the backup step",
+    "howToUnblock": "either set misc:disable_autoreload=true in the Hyprland config (a user decision) or explicitly approve the one-shot runtime reload that autoreload would cause; then run the ignored test first_active_config_write_pilot_runs_only_when_every_gate_passes with HYPRLAND_SETTINGS_RUN_ACTIVE_PILOT=1 and HYPRLAND_SETTINGS_AUTORELOAD_DISABLED_CONFIRMED=true after re-verifying the option read-only"
+  },
+  "pilotExecutionPath": {
+    "trigger": "ignored-by-default test gated behind HYPRLAND_SETTINGS_RUN_ACTIVE_PILOT=1",
+    "accidentalTriggerImpossible": "the pilot is unreachable from UI, main, and write_flow; the normal test suite never runs it; it requires an explicit approval object with a typed confirmation phrase; and every gate must pass immediately before the write",
+    "writeSemantics": "backup byte-exact to a path outside the active config area, verify backup readable, pre-write parser/projection reread with drift detection, one atomic write via temp-file rename, post-write parser/projection verification, restoration of the original bytes, byte-exact and parser/projection restore verification, receipt and audit record with FNV-1a content hashes"
+  },
+  "hyprctlReloadRun": false,
+  "mutatingHyprctlRun": false,
+  "runtimeMutated": false,
+  "activeRealConfigWritten": false,
+  "guiLiveApplyControlsEnabled": false,
+  "productionReadinessDecision": "not production ready for active real config writes",
+  "testsAdded": [
+    "copied_active_config_rehearsal_round_trips_without_touching_the_source",
+    "pilot_preflight_blocks_on_autoreload_evidence_and_every_missing_proof",
+    "pilot_module_is_unreachable_from_live_ui_and_scalar_write_paths",
+    "pilot_module_source_has_no_command_reload_or_ui_paths",
+    "first_active_config_write_pilot_runs_only_when_every_gate_passes (ignored, env-gated)"
+  ],
+  "nextRecommendedWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families. Unblocking it requires either disabling compositor config autoreload (misc:disable_autoreload=true) or explicitly approving the runtime reload that the write would trigger."
+}

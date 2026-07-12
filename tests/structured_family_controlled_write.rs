@@ -782,3 +782,89 @@ fn controlled_real_write_implementation_report_preserves_active_config_boundarie
         .expect("nextRecommendedWork should be text");
     assert!(next.contains("Stop for explicit user decision"));
 }
+
+#[test]
+fn controlled_executor_refuses_symlinked_target_file_pointing_outside_root() {
+    let family = StructuredFamilyKind::Monitor;
+    let root = unique_temp_root("symlink-file");
+    let outside_root = unique_temp_root("symlink-file-victim");
+    let victim = outside_root.join("victim.conf");
+    fs::copy(fixture_path(family), &victim).expect("victim fixture should copy");
+    let victim_bytes = fs::read(&victim).expect("victim should read");
+
+    // The target file itself is a symlink inside the controlled root that
+    // resolves to a foreign file outside it.
+    let linked_target = root.join("linked-target.conf");
+    std::os::unix::fs::symlink(&victim, &linked_target).expect("symlink should be creatable");
+
+    let target = temp_target(&root, &linked_target);
+    let policy = classify_structured_family_write_target(&target);
+    assert!(!policy.writable);
+    assert!(policy
+        .rejection_reasons
+        .contains(&StructuredFamilyControlledWriteTargetRejection::SymlinkEscapeRejected));
+
+    let staged_apply = accepted_staged_apply_plan(family, &root);
+    let plan = build_structured_family_controlled_write_plan(
+        &staged_apply,
+        target,
+        vec!["monitor = eDP-1, 1920x1080@60, 0x0, 1".to_string()],
+    )
+    .expect("plan builds; policy is enforced at execution time");
+    let error = execute_structured_family_controlled_write(
+        &plan,
+        &approve_structured_family_controlled_write(),
+    )
+    .expect_err("symlinked target file must be rejected");
+    assert!(matches!(
+        error,
+        StructuredFamilyControlledWriteError::TargetRejected(
+            StructuredFamilyControlledWriteTargetRejection::SymlinkEscapeRejected
+        )
+    ));
+    assert_eq!(
+        fs::read(&victim).expect("victim should read"),
+        victim_bytes,
+        "the foreign file behind the symlink must remain untouched"
+    );
+
+    fs::remove_dir_all(&root).ok();
+    fs::remove_dir_all(&outside_root).ok();
+}
+
+#[test]
+fn controlled_executor_atomic_writes_leave_no_stray_temp_files() {
+    let family = StructuredFamilyKind::Monitor;
+    let root = unique_temp_root("atomic");
+    let target_path = copy_fixture_to_root(family, &root);
+    let original_records = family_records_on_disk(&target_path, family);
+    let mut rendered_records = original_records.clone();
+    rendered_records.push(original_records[0].clone());
+
+    let staged_apply = accepted_staged_apply_plan(family, &root);
+    let plan = build_structured_family_controlled_write_plan(
+        &staged_apply,
+        temp_target(&root, &target_path),
+        rendered_records,
+    )
+    .expect("plan should build");
+    let receipt = execute_structured_family_controlled_write_round_trip(
+        &plan,
+        &approve_structured_family_controlled_write(),
+    )
+    .expect("round trip should execute");
+    assert!(receipt.rollback.is_some());
+
+    let stray: Vec<_> = fs::read_dir(&root)
+        .expect("root should list")
+        .filter_map(|entry| entry.ok())
+        .map(|entry| entry.file_name().to_string_lossy().into_owned())
+        .filter(|name| name.ends_with(".controlled-write-tmp"))
+        .collect();
+    assert!(
+        stray.is_empty(),
+        "atomic writes must not leave temp files behind: {stray:?}"
+    );
+
+    fs::remove_dir_all(&root).expect("temp root should clean up");
+}
