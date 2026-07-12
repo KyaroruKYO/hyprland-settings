@@ -1,0 +1,28 @@
+{
+  "artifactKind": "structured-family-runtime-preview-proof-status",
+  "projectDataVersion": "v0.55.2",
+  "runtimeLiveProofsRun": 2,
+  "runtimeLiveProofsPassed": 2,
+  "runtimeLiveProofsFailed": 0,
+  "provenFamilyRecordProofs": [
+    {
+      "family_id": "hl.animation",
+      "record": "global",
+      "original": "enabled=1 speed=8.00 bezier=default",
+      "preview": "speed=8.5",
+      "verification": "read-only animations listing verified apply and exact restore; zero residue",
+      "proof_date": "2026-07-12",
+      "proof_env": "HYPRLAND_SETTINGS_RUN_STRUCTURED_RUNTIME_PREVIEW_LIVE=1 HYPRLAND_SETTINGS_STRUCTURED_FAMILY=hl.animation"
+    },
+    {
+      "family_id": "hl.curve",
+      "record": "default",
+      "original": "(0, 0.75, 0.15, 1)",
+      "preview": "y0=0.76",
+      "verification": "read-only animations bezier listing verified apply and exact restore; zero residue",
+      "proof_date": "2026-07-12",
+      "proof_env": "HYPRLAND_SETTINGS_RUN_STRUCTURED_RUNTIME_PREVIEW_LIVE=1 HYPRLAND_SETTINGS_STRUCTURED_FAMILY=hl.curve"
+    }
+  ],
+  "harness": "tests/structured_family_runtime_preview_live.rs (ignored, env-gated)"
+}

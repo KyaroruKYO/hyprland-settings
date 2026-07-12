@@ -1,0 +1,93 @@
+{
+  "artifactKind": "structured-family-completion-marathon",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "0eea5962ba56f5f0701fed8f88e29cfd26c09085",
+  "goal": "Advance structured-family live preview and active-config pilot readiness together, following live evidence.",
+  "structuredFamiliesTotal": 7,
+  "familiesClassified": 7,
+  "familiesLivePreviewSupported": 0,
+  "familiesLivePreviewSupportedWithDeadMan": 2,
+  "familiesLivePreviewModelOnly": 0,
+  "familiesBlockedHighRisk": 4,
+  "familiesBlockedNoRuntimeRecordSyntax": 0,
+  "familiesBlockedNoRevertMechanism": 0,
+  "familiesBlockedNoVerificationMechanism": 1,
+  "familiesNotProvenYet": 0,
+  "familyStatus": {
+    "hl.animation": "LivePreviewSupportedWithDeadMan (modify-existing scope) - live proof passed: global node speed 8.00 -> 8.5 -> 8.00, readback-verified, zero residue",
+    "hl.curve": "LivePreviewSupportedWithDeadMan (modify-existing scope) - live proof passed: default bezier (0, 0.75, 0.15, 1) -> y0 0.76 -> restored exactly, readback-verified, zero residue",
+    "hl.gesture": "BlockedNoVerificationMechanism - runtime API exists but no record readback and no touch hardware",
+    "hl.monitor": "BlockedHighRisk - needs a blind display recovery system",
+    "hl.bind": "BlockedHighRisk - needs a proven unbind round trip plus input fallback model",
+    "hl.device": "BlockedHighRisk - a wrong record can disable the confirming device",
+    "hl.permission": "BlockedHighRisk - security policy is never live previewed"
+  },
+  "keyEvidence": [
+    "all seven families have runtime record APIs in the Lua config manager, discovered via mutation-free invalid-argument probes: hl.animation, hl.curve, hl.gesture, hl.bind, hl.device, hl.permission, hl.monitor",
+    "hyprctl animations provides full read-only readback for animation leaves and bezier curves - the verification mechanism for the two promoted families",
+    "record creation can never be exactly reverted (no deletion; no revert-to-inherit; enabled is mandatory on hl.animation), so promotion is scoped to modify-existing records only",
+    "hl.config animation/bezier keys are silently ignored or rejected - readback verification is mandatory because ok responses can be no-ops",
+    "hl.curve takes a { type, points } table (schema revealed by safe probe error, then proven live)"
+  ],
+  "activeConfigPilotGateStatus": "blocked by AutoreloadDisabledConfirmed / NoRuntimeMutationPlanned",
+  "autoreloadEvidence": "read-only getoption misc:disable_autoreload returned bool: false during this marathon; the ignored pilot test now requires BOTH the operator env flag AND live-collected evidence",
+  "copiedActiveConfigRehearsalStatus": "proven (prior sprint) and re-verified at every pilot preflight via content-hash freshness",
+  "activeConfigWritten": false,
+  "activeConfigRestored": "not applicable - never written",
+  "activeConfigBackupPath": "not created - pilot never reached the backup step",
+  "runtimeLiveProofsRun": 2,
+  "runtimeLiveProofsPassed": 2,
+  "runtimeLiveProofsFailed": 0,
+  "hyprctlReloadEnabled": false,
+  "runtimeMutationForBlockedFamilies": false,
+  "configWritesDuringPreview": false,
+  "uiStatusImplemented": true,
+  "uiSurfaces": [
+    "Config page 'Structured-family live preview & persistence' card with per-family capability, status, and blocked reason",
+    "autoreload blocker explanation with the exact unblock instructions (set misc:disable_autoreload = true, or approve the one reload)",
+    "insensitive supervised-family-preview control (no live family controls exist yet)"
+  ],
+  "sourceGuards": [
+    "the family preview module contains no command construction, no config writes, no reload path",
+    "the live harness is ignored, env-gated, and touches only the two proven records; monitor/bind/device/permission/gesture never appear in it",
+    "families are promoted only via PROVEN_FAMILY_RECORD_PROOFS receipts scoped to modify-existing (test-enforced)",
+    "UI builds no family runtime commands (no hl.animation(/hl.curve(/hl.config in UI code)",
+    "the pilot fails closed on false or missing autoreload evidence, and the operator flag alone cannot open the gate"
+  ],
+  "testsAdded": [
+    "all_seven_families_are_classified_with_full_strategies",
+    "family_promotion_requires_a_recorded_proof_receipt",
+    "animations_listing_parsers_read_leaves_and_curves",
+    "family_preview_sources_and_harness_stay_guarded",
+    "family_capability_reports_are_generated_and_consistent",
+    "structured_family_modify_existing_round_trips (ignored, env-gated; run this marathon: both families passed)",
+    "autoreload_evidence_collector_fails_closed (extended pilot hardening)"
+  ],
+  "filesChanged": [
+    "src/lib.rs",
+    "src/structured_family_runtime_preview.rs",
+    "src/ui/window.rs",
+    "tests/structured_family_runtime_preview.rs",
+    "tests/structured_family_runtime_preview_live.rs",
+    "tests/structured_family_active_config_pilot.rs",
+    "data/reports/structured-family-runtime-preview-capability.v0.55.2.json",
+    "data/reports/structured-family-runtime-preview-proof-status.v0.55.2.json",
+    "data/reports/structured-family-active-config-pilot-readiness.v0.55.2.json",
+    "data/reports/structured-family-completion-marathon.v0.55.2.json",
+    "docs/STRUCTURED-FAMILY-RUNTIME-PREVIEW.md",
+    "docs/STRUCTURED-FAMILY-COMPLETION-MARATHON.md",
+    "plus continuation/handoff/status report and doc updates"
+  ],
+  "validation": {
+    "cargoFmt": "passed",
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed",
+    "jqReports": "passed",
+    "gitDiffCheck": "passed",
+    "cargoBuildRelease": "passed"
+  },
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_023930",
+  "nextRecommendedWork": "Wire supervised UI controls for the two proven families (modify-existing animation/curve records through a family dead-man panel); the active-config pilot decision remains the user's."
+}

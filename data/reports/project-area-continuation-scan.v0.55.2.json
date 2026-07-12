@@ -118,7 +118,7 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "controlled real-write implementation complete and hardened (symlink-through-file escape fixed, atomic temp-file-plus-rename writes): the controlled write executor is implemented, internally wired, and tested for test-owned fixture, copied config tree, and temporary config targets; write, byte-exact backup, restore, rollback, post-write reread verification, and post-restore reread verification are proven for all seven families against copied temp targets; the gated active-config pilot module exists with a fifteen-gate preflight, and the copied active-config rehearsal is proven against the real config content with the source untouched; the live pilot is blocked by the AutoreloadDisabledConfirmed and NoRuntimeMutationPlanned gates because misc:disable_autoreload is false on this system; a review-only GUI status card with a permanently insensitive Apply control is proven in the GTK evidence matrix; executor wired for controlled targets true; executor wired for active config false; real write path enabled for controlled targets true; real write path enabled for active config false; active real config writes approved false; GUI live Apply controls enabled false; hyprctl reload enabled false; runtime mutation enabled false; first real config write approved false",
+      "currentStatus": "controlled real-write implementation complete and hardened (symlink-through-file escape fixed, atomic temp-file-plus-rename writes): the controlled write executor is implemented, internally wired, and tested for test-owned fixture, copied config tree, and temporary config targets; write, byte-exact backup, restore, rollback, post-write reread verification, and post-restore reread verification are proven for all seven families against copied temp targets; the gated active-config pilot module exists with a fifteen-gate preflight, and the copied active-config rehearsal is proven against the real config content with the source untouched; the live pilot is blocked by the AutoreloadDisabledConfirmed and NoRuntimeMutationPlanned gates because misc:disable_autoreload is false on this system; a review-only GUI status card with a permanently insensitive Apply control is proven in the GTK evidence matrix; executor wired for controlled targets true; executor wired for active config false; real write path enabled for controlled targets true; real write path enabled for active config false; active real config writes approved false; GUI live Apply controls enabled false; hyprctl reload enabled false; runtime mutation enabled false; first real config write approved false; family runtime preview marathon: all seven families classified from live evidence, hl.animation and hl.curve promoted to supervised modify-existing preview by passed zero-residue proofs, four families blocked high-risk, gestures blocked without verification; pilot gate hardened with live autoreload evidence collection",
       "classification": "blocked_by_active_real_config_write_approval",
       "canContinueNow": false,
       "reason": "The pilot path is implemented, rehearsed, and gate-blocked: with compositor autoreload enabled (misc:disable_autoreload=false), any active-config write would live-reload Hyprland, and runtime mutation is not approved. Unblocking requires a user decision: disable autoreload or explicitly approve the reload the pilot write would trigger, then run the env-gated ignored pilot test. Safe non-active-config defect fixes remain allowed.",
@@ -155,7 +155,10 @@
         "src/structured_family_controlled_write.rs",
         "src/structured_family_active_config_pilot.rs",
         "tests/structured_family_controlled_write.rs",
-        "tests/structured_family_active_config_pilot.rs"
+        "tests/structured_family_active_config_pilot.rs",
+        "data/reports/structured-family-runtime-preview-capability.v0.55.2.json",
+        "data/reports/structured-family-active-config-pilot-readiness.v0.55.2.json",
+        "tests/structured_family_runtime_preview_live.rs live proofs"
       ]
     },
     {

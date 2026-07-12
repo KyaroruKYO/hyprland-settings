@@ -143,6 +143,13 @@ Structured-family controlled real-write implementation on `structured-family-edi
 - The harness gained batch mode (`HYPRLAND_SETTINGS_INPUT_PROOF_ROW=all`); the active-config pilot gained a read-only autoreload evidence collector that fails closed.
 - GTK evidence proves an armed proof-passed input row with its provenance line; all safety flags false.
 
+## Family Completion Marathon Additions
+
+- Probed all seven family runtime record APIs mutation-free and classified every family from evidence (`src/structured_family_runtime_preview.rs`).
+- Ran and passed two zero-residue live proofs: `hl.animation` (global node speed 8.00 → 8.5 → 8.00) and `hl.curve` (default bezier y0 0.75 → 0.76 → 0.75), both readback-verified exact restores; receipts recorded, promotion receipt-gated and scoped to modify-existing.
+- Hardened the active-config pilot gate with live autoreload evidence collection; added the readiness report with exact unblock instructions.
+- Added the Config page structured-family live preview & persistence card (AT-SPI-proven with all safety flags false).
+
 ## Next Exact Work
 
 Stop for explicit user decision: approve or reject a first active real config write pilot for structured families (blocked by autoreload policy).

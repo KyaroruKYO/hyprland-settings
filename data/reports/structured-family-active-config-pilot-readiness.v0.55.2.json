@@ -1,0 +1,39 @@
+{
+  "artifactKind": "structured-family-active-config-pilot-readiness",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "0eea5962ba56f5f0701fed8f88e29cfd26c09085",
+  "goal": "Make the active-config pilot decision path clear, evidence-driven, and easy to run when its gates truly pass.",
+  "activeConfigPilotGateStatus": "blocked",
+  "blockingGates": ["AutoreloadDisabledConfirmed", "NoRuntimeMutationPlanned"],
+  "autoreloadEvidence": {
+    "collectedThisRun": "read-only getoption misc:disable_autoreload returned bool: false",
+    "meaning": "autoreload is active: writing hyprland.conf would make the running compositor reload it immediately, which is a live runtime mutation",
+    "collector": "collect_autoreload_evidence in src/structured_family_active_config_pilot.rs issues one read-only option query and fails closed on read/parse failure or a false reading",
+    "hardenedGate": "the ignored env-gated pilot test now requires BOTH the operator flag AND live-collected evidence; setting the env variable alone can no longer open the gate"
+  },
+  "copiedActiveConfigRehearsalStatus": "proven in a prior sprint: the real active config content round-tripped (backup, write, verify, restore, verify) in a temp copy with the source untouched; the rehearsal re-runs and re-verifies freshness (content hash drift detection) every time the pilot preflight executes",
+  "activeConfigWritten": false,
+  "activeConfigRestored": "not applicable - never written",
+  "activeConfigBackupPath": "not created - the pilot never reached the backup step",
+  "hyprctlReloadEnabled": false,
+  "runtimeMutationForBlockedFamilies": false,
+  "howToUnblock": {
+    "optionA": "set misc:disable_autoreload = true in your Hyprland config (a config decision you make), verify with `hyprctl getoption misc:disable_autoreload`, then run the pilot command below",
+    "optionB": "explicitly approve the single compositor reload that the pilot's write-and-restore would trigger, and run the pilot command below with that understanding",
+    "pilotCommand": "HYPRLAND_SETTINGS_RUN_ACTIVE_PILOT=1 HYPRLAND_SETTINGS_AUTORELOAD_DISABLED_CONFIRMED=true cargo test --test structured_family_active_config_pilot -- --ignored",
+    "note": "even with both flags, all fifteen preflight gates re-evaluate immediately before the write, the live autoreload evidence is re-collected read-only, and the pilot restores the original bytes after verification"
+  },
+  "sourceGuards": [
+    "the pilot is unreachable from UI, main, and the scalar write flow",
+    "the pilot module contains no hyprctl literals; evidence collection goes through the executor's read-only option helper",
+    "the pilot fails closed when autoreload evidence is false or missing",
+    "the operator env flag alone cannot open the gate (live evidence is also required)"
+  ],
+  "testsAdded": [
+    "autoreload_evidence_collector_fails_closed (mock-runner: true/false/error/garbage paths)",
+    "hardened ignored pilot test combining operator flag with live evidence"
+  ],
+  "validation": "cargo test green; the pilot suite passes with the ignored live test still env-gated",
+  "nextRecommendedWork": "The decision is the user's: disable autoreload or approve the one reload; the pilot path is otherwise complete and rehearsed."
+}

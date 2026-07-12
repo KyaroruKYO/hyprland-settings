@@ -37,3 +37,7 @@ cargo test --test structured_family_active_config_pilot -- --ignored
 ```
 
 Even then, every gate re-evaluates immediately before the write and the pilot restores the original bytes after verification.
+
+## Gate hardening (completion marathon)
+
+The pilot's autoreload gate is now evidence-driven twice over: `collect_autoreload_evidence` performs a read-only option query and fails closed on read failure, parse failure, or an active-autoreload reading, and the ignored env-gated pilot test requires **both** the operator flag and that live evidence — setting the environment variable alone can no longer open the gate. The readiness report (`data/reports/structured-family-active-config-pilot-readiness.v0.55.2.json`) records the current blocker and the exact unblock options.

@@ -690,6 +690,8 @@ fn build_config_view(
 
     content.append(&runtime_preview_readiness_section());
 
+    content.append(&structured_family_runtime_preview_status_section());
+
     content.append(&config_section(
         "Future changes",
         vec![
@@ -4498,6 +4500,44 @@ fn runtime_preview_readiness_section() -> gtk::Frame {
             false,
         )),
     )
+}
+
+/// Review-only structured-family live preview and persistence status card,
+/// built from the evidence-backed family profiles. Display only.
+fn structured_family_runtime_preview_status_section() -> gtk::Frame {
+    let mut lines: Vec<String> = vec![
+        "Structured-family records (monitors, binds, animations, curves, gestures, devices, permissions) have evidence-based live preview classifications:".to_string(),
+    ];
+    for profile in
+        crate::structured_family_runtime_preview::structured_family_runtime_preview_profiles()
+    {
+        lines.push(format!(
+            "{}: {} — {}{}",
+            profile.family_id,
+            profile.capability.as_str(),
+            profile.ui_status,
+            profile
+                .blocked_reason
+                .map(|reason| format!(" ({reason})"))
+                .unwrap_or_default(),
+        ));
+    }
+    lines.push(
+        "Persistence: saving structured-family records to your config goes through the active-config pilot, which is currently blocked by autoreload (see the pilot card above). Copied-config rehearsal has passed; backups and restore proof exist for controlled targets.".to_string(),
+    );
+    lines.push(
+        "Your config currently has misc:disable_autoreload = false, so writing hyprland.conf would reload Hyprland immediately. To run the pilot without a live reload, set misc:disable_autoreload = true first — or explicitly approve the one reload the write-and-restore pilot would cause.".to_string(),
+    );
+    let frame = config_section(
+        "Structured-family live preview & persistence",
+        lines,
+        Some((
+            "Supervised family preview (proven for existing animation/curve records)",
+            false,
+        )),
+    );
+    frame.set_widget_name("hyprland-settings-structured-family-preview-status");
+    frame
 }
 
 /// Review-only, report-backed status card for the structured-family

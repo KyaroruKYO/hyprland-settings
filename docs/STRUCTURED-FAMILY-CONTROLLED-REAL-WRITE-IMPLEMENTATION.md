@@ -55,3 +55,7 @@ No code path calls `hyprctl`, reloads Hyprland, runs commands, or mutates runtim
 ## Remaining Boundary
 
 The next step across the boundary is a first active real config write pilot. It requires a fresh explicit user approval and does not exist in code today: no target kind, approval flag, or executor path can reach `~/.config/hypr` as written.
+
+## Runtime preview relationship
+
+Structured-family live preview is a separate, runtime-only path (see `docs/STRUCTURED-FAMILY-RUNTIME-PREVIEW.md`): `hl.animation` and `hl.curve` records that already exist can be previewed and exactly reverted under supervision, proven live with zero residue. Persistence of any structured-family change still goes exclusively through this controlled write path and the gated active-config pilot.

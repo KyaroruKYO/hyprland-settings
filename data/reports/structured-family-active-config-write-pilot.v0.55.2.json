@@ -36,7 +36,10 @@
   },
   "firstActiveConfigWritePilot": {
     "status": "blocked_by_gate",
-    "blockingGates": ["AutoreloadDisabledConfirmed", "NoRuntimeMutationPlanned"],
+    "blockingGates": [
+      "AutoreloadDisabledConfirmed",
+      "NoRuntimeMutationPlanned"
+    ],
     "blockingEvidence": "read-only `hyprctl getoption misc:disable_autoreload` returned `bool: false` (autoreload enabled, the Hyprland default). With autoreload enabled, any write to the active config file would make the running compositor reload it immediately - a live runtime mutation. Runtime mutation is not approved in this sprint, so the pilot's NoRuntimeMutationPlanned gate cannot pass.",
     "activeConfigWritten": false,
     "activeConfigRestored": "not applicable - never written",
@@ -65,5 +68,7 @@
     "pilot_module_source_has_no_command_reload_or_ui_paths",
     "first_active_config_write_pilot_runs_only_when_every_gate_passes (ignored, env-gated)"
   ],
-  "nextRecommendedWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families. Unblocking it requires either disabling compositor config autoreload (misc:disable_autoreload=true) or explicitly approving the runtime reload that the write would trigger."
+  "nextRecommendedWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families. Unblocking it requires either disabling compositor config autoreload (misc:disable_autoreload=true) or explicitly approving the runtime reload that the write would trigger.",
+  "readinessReport": "data/reports/structured-family-active-config-pilot-readiness.v0.55.2.json",
+  "gateHardening": "the ignored pilot test now requires BOTH the operator env flag AND live-collected read-only autoreload evidence (collect_autoreload_evidence fails closed)"
 }

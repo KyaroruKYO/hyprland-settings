@@ -26,9 +26,9 @@ The runtime path is `hyprctl eval 'hl.config({ <section> = { <option> = <value> 
 | --- | --- | --- | --- |
 | hl.monitor | BlockedHighRisk | HighRiskDisplay | monitor records can disable displays |
 | hl.bind | BlockedHighRisk | HighRiskInput | can lock the user out |
-| hl.animation | NotProvenYet | LowRiskVisual | visually safe, but no runtime record-application mechanism proven |
-| hl.curve | NotProvenYet | LowRiskVisual | inert records, same missing mechanism |
-| hl.gesture | BlockedStructuredFamilySemantics | MediumRiskBehavior | record semantics unsafe mid-session without proof |
+| hl.animation | **LivePreviewSupportedWithDeadMan** (modify-existing) | LowRiskVisual | live-proven: existing overridden records round-trip exactly via hl.animation + readback (see `docs/STRUCTURED-FAMILY-RUNTIME-PREVIEW.md`) |
+| hl.curve | **LivePreviewSupportedWithDeadMan** (modify-existing) | LowRiskVisual | live-proven: existing beziers round-trip exactly via hl.curve + readback |
+| hl.gesture | BlockedNoVerificationMechanism | MediumRiskBehavior | runtime API exists but no record readback and no touch hardware |
 | hl.device | BlockedHighRisk | HighRiskInput | reconfigures input hardware |
 | hl.permission | BlockedHighRisk | HighRiskSecurity | security policy is never live previewed |
 

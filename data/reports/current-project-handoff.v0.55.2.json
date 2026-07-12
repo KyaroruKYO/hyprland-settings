@@ -106,7 +106,13 @@
     "blocked input.scroll_method with live evidence: unset str options read back as [[EMPTY]] and cannot be round-tripped",
     "added a batch mode to the env-gated proof harness (INPUT_PROOF_ROW=all) that proves every proof-ready row and reverts each before continuing",
     "added the read-only autoreload evidence collector to the active-config pilot (fails closed on read/parse failure or active autoreload)",
-    "GTK evidence proves an armed proof-passed input row (provenance line plus Preview with recovery) with all safety flags false"
+    "GTK evidence proves an armed proof-passed input row (provenance line plus Preview with recovery) with all safety flags false",
+    "classified all seven structured families for runtime preview from mutation-free live probes (every family has an hl.<family> runtime record API; hyprctl animations is the readback mechanism)",
+    "ran and passed two family live proofs with zero residue: hl.animation (global node speed round trip) and hl.curve (default bezier points round trip), both readback-verified exact restores",
+    "promoted hl.animation and hl.curve to supervised modify-existing preview via receipt-gated PROVEN_FAMILY_RECORD_PROOFS",
+    "kept monitor/bind/device/permission blocked high-risk and gestures blocked without a verification mechanism, with precise evidence-based reasons",
+    "hardened the active-config pilot gate: the ignored test now requires both the operator flag and live-collected read-only autoreload evidence",
+    "added the Config page structured-family live preview & persistence card with per-family status and exact autoreload unblock instructions"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,

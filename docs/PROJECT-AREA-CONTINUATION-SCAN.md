@@ -25,6 +25,10 @@ Real structured-family write code now exists for controlled targets. The control
 
 The gated active-config pilot module now exists with a fifteen-gate preflight, and the copied active-config rehearsal is proven against the real config content with the source untouched. The live pilot is blocked by the `AutoreloadDisabledConfirmed` and `NoRuntimeMutationPlanned` gates: `misc:disable_autoreload` is `false` on this system, so an active-config write would live-reload the compositor, and runtime mutation is not approved. The controlled executor was hardened (symlink-through-target-file escape fixed; atomic temp-file-plus-rename writes), and a review-only GUI status card with a permanently insensitive Apply control is proven in the GTK evidence matrix.
 
+## Family Completion Marathon Update
+
+All seven structured families are classified for runtime preview from live evidence; hl.animation and hl.curve were promoted to supervised modify-existing preview by passed zero-residue proofs; four families stay blocked high-risk and gestures stay blocked without a verification mechanism. The active-config pilot gate now requires live-collected autoreload evidence in addition to the operator flag.
+
 ## Recommended Next Work
 
 Stop for explicit user decision: approve or reject a first active real config write pilot for structured families. Unblocking it requires disabling compositor config autoreload (`misc:disable_autoreload = true`) or explicitly approving the reload the pilot write would trigger.

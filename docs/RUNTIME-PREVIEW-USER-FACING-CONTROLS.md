@@ -31,4 +31,4 @@ The GTK layer renders `RuntimePreviewUiRowState` projections and calls `RuntimeP
 
 ## Still gated
 
-Dead-man rows now have the supervised countdown/confirm/auto-revert UI (`docs/RUNTIME-PREVIEW-DEAD-MAN-UI.md`): the two proven animation candidates arm, and the remaining 76 stay disarmed or blocked with their specific reason until per-row live proofs exist. Structured families show their honest classification and have no preview controls. Hyprland reload remains disabled everywhere.
+Dead-man rows now have the supervised countdown/confirm/auto-revert UI (`docs/RUNTIME-PREVIEW-DEAD-MAN-UI.md`): the two proven animation candidates arm, and the remaining 76 stay disarmed or blocked with their specific reason until per-row live proofs exist. Structured families show their evidence-based classification; hl.animation and hl.curve are proven for supervised modify-existing preview (mechanism live-proven; family UI controls are the remaining step), and the rest stay blocked with reasons. Hyprland reload remains disabled everywhere.

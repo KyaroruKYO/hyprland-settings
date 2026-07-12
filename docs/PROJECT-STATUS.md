@@ -64,7 +64,7 @@ Current future-capability tracker:
 - Missing/default insertion: 99-100%
 - Duplicate resolution: 95-95%
 - High-risk/display recovery: 62-70%
-- Structured-family editors/writes: 98-99% (controlled-target writes proven, executor hardened, active-config pilot implemented and rehearsed; only the autoreload-gated live pilot write remains)
+- Structured-family editors/writes: 99% (controlled-target writes proven; pilot implemented, rehearsed, and evidence-hardened; hl.animation/hl.curve live preview mechanisms proven; only the autoreload decision and family preview UI controls remain)
 - Profile/mode switching: 65-73%
 - Runtime/reload integration: 98-99% (proof marathon complete: 38 of 78 dead-man rows armed by passed live proofs — everything provable on this machine; remaining arming needs touch hardware or secondary-device proofs)
 - Hyprland 0.55.4 migration: 50-60%

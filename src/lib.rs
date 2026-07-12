@@ -56,6 +56,7 @@ pub mod structured_family;
 pub mod structured_family_active_config_pilot;
 pub mod structured_family_controlled_write;
 pub mod structured_family_executor_wiring;
+pub mod structured_family_runtime_preview;
 pub mod structured_family_safe_write;
 pub mod structured_family_write_target;
 pub mod ui;

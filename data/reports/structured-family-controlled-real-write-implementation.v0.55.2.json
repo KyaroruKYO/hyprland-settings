@@ -130,5 +130,6 @@
     "cargoBuildRelease": "passed"
   },
   "gtkEvidenceRoot": "not-run-no-visible-ui-change",
-  "nextRecommendedWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families."
+  "nextRecommendedWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families.",
+  "runtimePreviewCapabilityReport": "data/reports/structured-family-runtime-preview-capability.v0.55.2.json"
 }

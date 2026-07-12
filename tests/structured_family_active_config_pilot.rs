@@ -344,14 +344,24 @@ fn first_active_config_write_pilot_runs_only_when_every_gate_passes() {
         run_active_config_rehearsal(&active, &staged_apply, PILOT_RECORD, &rehearsal_root)
             .expect("rehearsal must succeed before the live pilot");
 
+    // Belt and suspenders: the operator env flag alone is not enough — the
+    // pilot also collects live read-only autoreload evidence and fails closed
+    // if the compositor still has autoreload active.
+    let operator_confirmed =
+        std::env::var("HYPRLAND_SETTINGS_AUTORELOAD_DISABLED_CONFIRMED").as_deref() == Ok("true");
+    let mut evidence_runner =
+        hyprland_settings::runtime_preview_executor::HyprctlRuntimePreviewRunner;
+    let live_evidence =
+        hyprland_settings::structured_family_active_config_pilot::collect_autoreload_evidence(
+            &mut evidence_runner,
+        );
     let autoreload = StructuredFamilyActiveConfigAutoreloadEvidence {
-        disable_autoreload_confirmed: std::env::var(
-            "HYPRLAND_SETTINGS_AUTORELOAD_DISABLED_CONFIRMED",
-        )
-        .as_deref()
-            == Ok("true"),
-        evidence_description: "operator-confirmed misc:disable_autoreload=true via read-only query"
-            .to_string(),
+        disable_autoreload_confirmed: operator_confirmed
+            && live_evidence.disable_autoreload_confirmed,
+        evidence_description: format!(
+            "operator flag: {operator_confirmed}; live: {}",
+            live_evidence.evidence_description
+        ),
     };
     let plan = build_first_active_config_pilot_plan(
         &active,
