@@ -128,10 +128,17 @@ Structured-family controlled real-write implementation on `structured-family-edi
 - Live proof (run once): `animations.enabled` toggled under supervision, countdown expired unconfirmed, automatic revert restored the original.
 - GTK evidence at `/tmp/hyprland-settings-gtk-automation/20260712_005942` proves the armed panel, blocked reasons, and unchanged supported-row controls with all safety flags false.
 
+## Input/Cursor Proof Architecture Additions
+
+- All 63 needs-live-proof rows now have specific proof plans (`src/runtime_preview_input_proof.rs`, exported to `runtime-preview-input-cursor-proof-plan.v0.55.2.json`): subsystem risk (15 cursor, 11 pointer, 18 touch-family, 7 focus, 6 keyboard), fallback requirements, minimal preview values, apply/revert/verification strategies, manual warnings, and recovery instructions. Four cursor-rendering rows are blocked (no runtime verification) and `cursor.invisible` is blocked as too dangerous.
+- The env-gated harness (`tests/runtime_preview_input_live_proof.rs`) runs one row at a time via `HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=<row>` and fails closed on every missing precondition.
+- One proof ran and passed: `cursor.inactive_timeout` (original 0.000000 → preview 1 verified live → reverted and verified). The receipt is recorded in `PROVEN_INPUT_ROWS`, which is the only promotion mechanism — the dead-man layer arms input/cursor rows solely on a recorded receipt (test-enforced). Armed candidates: 3 (two animation toggles + the proven cursor row); 62 rows remain disarmed.
+- Disarmed rows show proof-aware status (risk, fallback, proof classification, env command); GTK evidence at `/tmp/hyprland-settings-gtk-automation/20260712_013141` with all safety flags false.
+
 ## Next Exact Work
 
 Stop for explicit user decision: approve or reject a first active real config write pilot for structured families.
 
-For runtime preview: design per-row supervised live-proof runs for the 63 needs-live-proof input/cursor rows.
+For runtime preview: run further per-row env-gated live proofs one at a time, starting with the safest remaining cursor rows (hide_on_key_press, no_warps, hotspot_padding).
 
 Unblocking the pilot requires either setting `misc:disable_autoreload = true` (a user decision) or explicitly approving the compositor reload the pilot write would trigger; then run the ignored pilot test with `HYPRLAND_SETTINGS_RUN_ACTIVE_PILOT=1` and confirmed autoreload evidence.

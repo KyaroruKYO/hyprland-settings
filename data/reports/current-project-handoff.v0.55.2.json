@@ -95,7 +95,12 @@
     "implemented the supervised dead-man controller (arm, apply, countdown tick, Keep, Revert now, Cancel, timeout auto-revert, session-drop recovery) over new supervised executor paths",
     "wired the dead-man panel into the detail pane with countdown status and recovery instruction; armed only for the two proven animation candidates",
     "proved the live timeout auto-revert on animations.enabled against the running compositor",
-    "extended the GTK evidence harness with an Animations dashboard card and a DeadManPreviewDetail probe proving the armed panel via AT-SPI"
+    "extended the GTK evidence harness with an Animations dashboard card and a DeadManPreviewDetail probe proving the armed panel via AT-SPI",
+    "designed the per-row input/cursor proof architecture: all 63 needs-live-proof rows have specific proof plans with subsystem risk, fallback requirements, minimal preview values, and recovery instructions",
+    "implemented the env-gated per-row live proof harness that fails closed on missing env, unknown rows, missing fallback, non-proof-ready rows, and already-proven rows",
+    "ran and passed one live proof (cursor.inactive_timeout: 0.000000 -> 1 -> reverted, verified live) and promoted the row to an armed candidate via its recorded receipt",
+    "made promotion receipt-gated: input/cursor rows arm only with a PROVEN_INPUT_ROWS receipt (test-enforced)",
+    "added proof-aware UI copy to disarmed input/cursor rows and an InputProofDetail GTK probe proving it via AT-SPI"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,

@@ -101,7 +101,16 @@ pub fn classify_dead_man_row(row_id: &str) -> Option<RuntimePreviewDeadManRowCla
     }
 
     let is_animation = row.official_setting.starts_with("animations.");
-    let (classification, reason) = if is_animation && grammar_is_proven_scalar(row.value_kind) {
+    let (classification, reason) = if crate::runtime_preview_input_proof::proven_input_row(
+        row.official_setting,
+    )
+    .is_some()
+    {
+        (
+            RuntimePreviewDeadManClassification::DeadManPreviewCandidate,
+            "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)",
+        )
+    } else if is_animation && grammar_is_proven_scalar(row.value_kind) {
         (
             RuntimePreviewDeadManClassification::DeadManPreviewCandidate,
             "animation toggles are visual, use the proven scalar runtime mechanism, and auto-revert reliably; supervision covers the performance risk",

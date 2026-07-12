@@ -5993,6 +5993,50 @@ fn append_dead_man_preview_panel(detail: &RowDetailProjection, section: &gtk::Bo
             ));
             section.append(&disabled);
         }
+        // Per-row proof-aware status for input/cursor rows: what subsystem
+        // is at risk, what fallback must hold, and how the row could be
+        // proven. Display only; nothing here can trigger a mutation.
+        if let Some(plan) = crate::runtime_preview_input_proof::input_proof_plan(&detail.row_id) {
+            let proof_status = small_label(&format!(
+                "Needs per-row live proof ({} risk). Fallback requirement: {}. Proof status: {}.",
+                plan.category.as_str(),
+                plan.fallback.summary,
+                plan.proof_classification.as_str(),
+            ));
+            proof_status.set_widget_name(&format!(
+                "hyprland-settings-input-proof-status-{}",
+                safe_widget_name(&detail.row_id)
+            ));
+            section.append(&proof_status);
+            let proof_how = small_label(&if plan.live_proof_exists {
+                format!(
+                    "An env-gated live proof exists for this row: {}",
+                    plan.live_proof_env
+                )
+            } else {
+                format!(
+                    "To arm this row, a supervised live proof must verify apply and revert while a fallback input path stays usable. {}",
+                    plan.what_could_go_wrong
+                )
+            });
+            proof_how.set_widget_name(&format!(
+                "hyprland-settings-input-proof-how-{}",
+                safe_widget_name(&detail.row_id)
+            ));
+            section.append(&proof_how);
+        }
+    } else if let Some(plan) = crate::runtime_preview_input_proof::input_proof_plan(&detail.row_id)
+    {
+        if plan.proof_classification.armable() {
+            let proven = small_label(
+                "This row passed its per-row live proof: apply and revert were verified against the running compositor with all input paths usable.",
+            );
+            proven.set_widget_name(&format!(
+                "hyprland-settings-input-proof-passed-{}",
+                safe_widget_name(&detail.row_id)
+            ));
+            section.append(&proven);
+        }
     }
 
     let controller = match RuntimePreviewDeadManController::new_live(&detail.row_id) {

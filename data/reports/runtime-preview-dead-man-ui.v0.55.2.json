@@ -6,15 +6,20 @@
   "goal": "Implement supervised dead-man live preview (countdown, confirm, auto-revert) and enable it only for the subset of dead-man rows with a proven reversible runtime strategy.",
   "deadManRowsTotal": 78,
   "deadManRowsReclassified": 78,
-  "deadManPreviewCandidates": 2,
-  "deadManPreviewCandidatesNeedsLiveProof": 63,
+  "deadManPreviewCandidates": 3,
+  "deadManPreviewCandidatesNote": "the two animation toggles plus cursor.inactive_timeout, promoted by its passed per-row live proof (see runtime-preview-input-cursor-live-proof-status report)",
+  "deadManPreviewCandidatesNeedsLiveProof": 62,
   "deadManPreviewModelOnly": 5,
   "deadManPreviewBlockedNoSafeRuntimeMechanism": 8,
   "deadManPreviewBlockedRequiresRelog": 0,
   "deadManPreviewBlockedRequiresRestart": 0,
   "deadManPreviewBlockedNoVisibleEffect": 0,
   "deadManPreviewBlockedTooDangerous": 0,
-  "candidateRows": ["animations.enabled", "animations.workspace_wraparound"],
+  "candidateRows": [
+    "animations.enabled",
+    "animations.workspace_wraparound",
+    "cursor.inactive_timeout (promoted by passed live proof)"
+  ],
   "classificationRationale": {
     "candidates": "the two animation toggles are visual, medium-risk, use the live-proven scalar runtime mechanism, and auto-revert reliably; the countdown covers their performance risk",
     "needsLiveProof": "63 input/cursor rows with proven scalar grammar: the runtime mechanism should apply, but changing input behavior mid-session can impair the devices used to confirm or revert, so live use requires per-row live proof; the supervised panel renders disarmed with the reason",
@@ -103,5 +108,5 @@
     "the supported-row Save/Revert/Cancel controls and the Config readiness card remain present",
     "aggregate safety flags realConfigEdited, runtimeMutated, hyprlandReloaded, and mutatingHyprctlUsed are all false"
   ],
-  "nextRecommendedWork": "Design per-row live-proof runs for the 63 needs-live-proof input/cursor rows (one supervised, externally recoverable proof per row before enablement); separately, the structured-family active-config pilot still awaits its explicit user decision."
+  "nextRecommendedWork": "The per-row proof architecture is implemented (see runtime-preview-input-cursor-live-proof-status report). Continue promoting rows one passed proof at a time."
 }

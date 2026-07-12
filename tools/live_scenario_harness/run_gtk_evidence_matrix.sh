@@ -92,6 +92,7 @@ run_probe symlink_current_profile ProfileModeDetail
 run_probe minimal_single_config Search
 run_probe minimal_single_config DetailPane
 run_probe minimal_single_config DeadManPreviewDetail
+run_probe minimal_single_config InputProofDetail
 run_probe minimal_single_config FirstBlockedSettingRow
 run_probe high_risk_display_risk HighRiskDetail
 run_probe high_risk_display_risk DisplayRenderRiskDetail

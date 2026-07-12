@@ -68,10 +68,10 @@ fn all_78_dead_man_rows_are_reclassified_with_specific_statuses() {
         + summary.blocked_too_dangerous;
     assert_eq!(accounted, 78, "every row falls into exactly one bucket");
     assert_eq!(
-        summary.candidates, 2,
-        "only the two animation toggles are proven candidates"
+        summary.candidates, 3,
+        "the two animation toggles plus the proof-passed cursor.inactive_timeout are candidates"
     );
-    assert_eq!(summary.candidates_needing_live_proof, 63);
+    assert_eq!(summary.candidates_needing_live_proof, 62);
     assert_eq!(summary.model_only, 5);
     assert_eq!(summary.blocked_no_safe_runtime_mechanism, 8);
 
@@ -79,13 +79,17 @@ fn all_78_dead_man_rows_are_reclassified_with_specific_statuses() {
         assert!(!row.reason.is_empty(), "{} needs a reason", row.row_id);
         // Every dead-man classified row is dead-man gated in the matrix.
         assert!(classify_dead_man_row(row.row_id).is_some());
-        // Input/cursor rows are never plain candidates.
-        if row.official_setting.starts_with("input.") || row.official_setting.starts_with("cursor.")
+        // Input/cursor rows are candidates only with a recorded proof receipt.
+        if (row.official_setting.starts_with("input.")
+            || row.official_setting.starts_with("cursor."))
+            && row.classification == RuntimePreviewDeadManClassification::DeadManPreviewCandidate
         {
-            assert_ne!(
-                row.classification,
-                RuntimePreviewDeadManClassification::DeadManPreviewCandidate,
-                "{} must not be an enabled candidate without live proof",
+            assert!(
+                hyprland_settings::runtime_preview_input_proof::proven_input_row(
+                    row.official_setting
+                )
+                .is_some(),
+                "{} must not be an enabled candidate without a proof receipt",
                 row.row_id
             );
         }
@@ -163,7 +167,10 @@ fn dead_man_ui_states_enable_only_proven_candidates() {
             ));
         }
     }
-    assert_eq!(armed, 2, "only the two animation candidates arm");
+    assert_eq!(
+        armed, 3,
+        "the two animation candidates plus the proof-passed cursor row arm"
+    );
     assert_eq!(
         panels, 70,
         "candidates + needs-live-proof + model-only show the panel"

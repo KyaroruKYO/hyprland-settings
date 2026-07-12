@@ -3,8 +3,8 @@
   "projectDataVersion": "v0.55.2",
   "summary": {
     "dead_man_rows_total": 78,
-    "candidates": 2,
-    "candidates_needing_live_proof": 63,
+    "candidates": 3,
+    "candidates_needing_live_proof": 62,
     "model_only": 5,
     "blocked_no_safe_runtime_mechanism": 8,
     "blocked_requires_relog": 0,
@@ -479,8 +479,8 @@
       "row_id": "cursor.inactive_timeout",
       "official_setting": "cursor.inactive_timeout",
       "value_kind": "Number",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.no_warps",

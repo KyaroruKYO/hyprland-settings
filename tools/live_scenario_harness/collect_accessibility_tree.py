@@ -519,6 +519,7 @@ SAFE_NAVIGATION_TARGETS = {
     "Config",
     "Appearance",
     "Animations",
+    "Input",
     "Display",
     "Search",
     "FirstSafeSettingRow",
@@ -538,6 +539,7 @@ SAFE_NAVIGATION_TARGETS = {
     "DisplayRenderRiskDetail",
     "ProfileModeSwitchDetail",
     "DeadManPreviewDetail",
+    "InputProofDetail",
     "DetailPane",
 }
 
@@ -629,6 +631,17 @@ BLOCKED_CATEGORY_TARGETS = {
             "keep changes",
             "reverts automatically",
             "supervised preview",
+        ],
+        "row_terms": ["setting row:"],
+    },
+    "InputProofDetail": {
+        "category": "input_proof",
+        "page": "Input",
+        "terms": [
+            "needs per-row live proof",
+            "fallback requirement",
+            "supervised preview disabled",
+            "dead-man preview required",
         ],
         "row_terms": ["setting row:"],
     },

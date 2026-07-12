@@ -66,7 +66,7 @@ Current future-capability tracker:
 - High-risk/display recovery: 62-70%
 - Structured-family editors/writes: 98-99% (controlled-target writes proven, executor hardened, active-config pilot implemented and rehearsed; only the autoreload-gated live pilot write remains)
 - Profile/mode switching: 65-73%
-- Runtime/reload integration: 95-97% (per-setting preview controls plus the supervised dead-man UI live-proven; per-row live proofs for 63 input/cursor rows remain)
+- Runtime/reload integration: 96-98% (proof architecture complete with receipt-gated promotion; one input-family row proven and armed; 62 per-row proofs remain, promotable one at a time)
 - Hyprland 0.55.4 migration: 50-60%
 
 Future-capability source/include and duplicate production-activation runway work remains stopped; future production activation requires a separate explicitly approved phase.
