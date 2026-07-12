@@ -607,6 +607,8 @@ fn build_config_view(
 
     content.append(&controlled_write_and_active_pilot_status_section());
 
+    content.append(&runtime_preview_readiness_section());
+
     content.append(&config_section(
         "Future changes",
         vec![
@@ -4374,6 +4376,38 @@ fn append_connected_file_issue_warnings(parent: &gtk::Box, graph: &ConfigGraphSu
 
 fn friendly_path(path: &std::path::Path) -> String {
     path.display().to_string()
+}
+
+/// Review-only live runtime preview readiness card. Displays the real
+/// capability matrix counts; the preview badge control is insensitive — no
+/// runtime mutation can be triggered from this card.
+fn runtime_preview_readiness_section() -> gtk::Frame {
+    let summary = crate::runtime_preview::runtime_preview_matrix_summary();
+    config_section(
+        "Live runtime preview readiness",
+        vec![
+            format!(
+                "{} of {} scalar settings are live-previewable today ({} direct, {} throttled): visual and layout values apply to the running session instantly and revert on Cancel.",
+                summary.live_preview_supported + summary.live_preview_supported_with_throttle,
+                summary.scalar_rows_classified,
+                summary.live_preview_supported,
+                summary.live_preview_supported_with_throttle,
+            ),
+            format!(
+                "{} settings support preview only inside a confirmed dead-man session (input/cursor/animation risk) and stay disabled by default.",
+                summary.dead_man_required,
+            ),
+            format!(
+                "{} settings persist through config writes only, {} are blocked as high-risk, and {} are not proven yet.",
+                summary.requires_config_write,
+                summary.blocked_high_risk,
+                summary.not_proven_yet,
+            ),
+            "Structured families do not live-preview in this phase: monitor/bind/device/permission are blocked as high-risk, gestures are blocked by record semantics, and animation/curve records are not proven yet.".to_string(),
+            "Preview never writes the config file and never reloads Hyprland; saving persists once through the existing backup/write/reread path.".to_string(),
+        ],
+        Some(("Live preview (per-setting controls land next)", false)),
+    )
 }
 
 /// Review-only, report-backed status card for the structured-family

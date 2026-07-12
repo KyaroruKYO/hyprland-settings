@@ -80,7 +80,12 @@
     "implemented the gated active-config pilot module with a fifteen-gate preflight, typed confirmation phrase, rehearsal-freshness drift detection, mandatory restoration, and content-hash receipts",
     "proved the copied active-config rehearsal against the real config content with the source untouched",
     "recorded the live pilot as blocked by the AutoreloadDisabledConfirmed and NoRuntimeMutationPlanned gates (misc:disable_autoreload is false)",
-    "added a review-only GUI status card with a permanently insensitive Apply control, proven in the GTK evidence matrix"
+    "added a review-only GUI status card with a permanently insensitive Apply control, proven in the GTK evidence matrix",
+    "implemented the broad runtime preview capability model classifying all 341 scalar rows and 7 structured families",
+    "implemented the reversible runtime preview executor with pluggable runner, session, trailing-edge throttle, and dead-man models",
+    "proved a live gaps_in preview apply-and-revert round trip against the running compositor via the env-gated live test",
+    "fixed two live-proof-caught defects: css_gap table grammar rendering and hyprctl eval error detection on zero exit status",
+    "added the Config page live runtime preview readiness card with real capability counts, proven in the GTK evidence matrix"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,

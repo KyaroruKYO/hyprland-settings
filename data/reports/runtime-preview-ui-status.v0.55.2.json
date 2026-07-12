@@ -1,0 +1,24 @@
+{
+  "artifactKind": "runtime-preview-ui-status",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "uiSurfacesAdded": [
+    "Config page 'Live runtime preview readiness' card displaying the real capability matrix counts (135 previewable: 62 direct + 73 throttled; 78 dead-man; 43 config-write; 74 blocked high-risk; 11 not proven)",
+    "structured-family preview status line (monitor/bind/device/permission blocked high-risk, gesture blocked by semantics, animation/curve not proven)",
+    "no-config-write / no-reload / save-through-existing-path statement",
+    "insensitive 'Live preview' control labeled that per-setting controls land next"
+  ],
+  "uiSurfacesNotYetAdded": [
+    "per-setting slider/switch live preview controls in the settings detail pane",
+    "Previewing live status indicator per row",
+    "Save/Revert/Cancel preview buttons per row",
+    "dead-man confirmation countdown UI",
+    "Requires reload/relog/restart badges (no row currently classifies into these buckets)"
+  ],
+  "guiLivePreviewControlsEnabled": false,
+  "blockedRowsExposeEnabledControls": false,
+  "highRiskRowsEnabledByDefault": false,
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260711_233413",
+  "gtkEvidence": "card title and capability counts proven via AT-SPI accessibility-tree text; aggregate safety flags realConfigEdited, runtimeMutated, and hyprlandReloaded all false",
+  "nextRecommendedWork": "Wire per-setting live preview controls for the 135 default-previewable rows through the proven session/throttle/revert executor, keeping Save persistence separate."
+}
