@@ -15,15 +15,20 @@
     "Save previewed value (gated by the existing safe write flow), Revert preview, and Cancel preview buttons",
     "blocked/unsupported/dead-man reason copy per row"
   ],
+  "uiSurfacesAddedInDeadManSprint": [
+    "supervised dead-man panel on dead-man row detail panes: badge, why-supervised copy, auto-revert warning, recovery instruction, Preview with recovery, Keep changes, Revert now, Cancel, and live countdown status",
+    "armed for the 2 proven animation candidates; disarmed with reason for 63 needs-live-proof and 5 model-only rows; blocked reason only for 8 no-safe-mechanism rows",
+    "Animations dashboard card for direct navigation to the supervised preview page"
+  ],
   "uiSurfacesNotYetAdded": [
-    "dead-man confirmation countdown UI (78 dead-man rows stay disabled)",
+    "per-row live-proof runs to arm the 63 needs-live-proof input/cursor rows",
     "Requires reload/relog/restart badges (no row currently classifies into these buckets)"
   ],
   "guiLivePreviewControlsEnabled": true,
   "guiLivePreviewControlsEnabledScope": "the 135 default-previewable rows only; runtime mutation stays temporary and reversible",
   "blockedRowsExposeEnabledControls": false,
   "highRiskRowsEnabledByDefault": false,
-  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_001609",
-  "gtkEvidence": "supported row shows 'Live Preview: Supported' with Save/Revert/Cancel controls; high-risk row shows 'Dead-man preview required' and BlockedHighRisk capability with no enabled control; aggregate safety flags all false",
-  "nextRecommendedWork": "Implement the dead-man preview UI (countdown, confirm, auto-revert) for the 78 dead-man-gated rows."
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_005942",
+  "gtkEvidence": "supported row shows Save/Revert/Cancel controls; the Animations detail pane shows the armed supervised dead-man panel with countdown/Keep/Revert/Cancel copy; blocked display rows show their reason with no panel; aggregate safety flags all false",
+  "nextRecommendedWork": "Design per-row live-proof runs for the 63 needs-live-proof input/cursor rows."
 }

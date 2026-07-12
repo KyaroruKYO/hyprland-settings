@@ -91,5 +91,6 @@
     "cargoBuildRelease": "passed"
   },
   "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260711_233413",
-  "nextRecommendedWork": "Per-setting controls are wired (see runtime-preview-user-facing-controls report). Next: dead-man preview UI for the 78 gated rows."
+  "deadManUiReport": "data/reports/runtime-preview-dead-man-ui.v0.55.2.json",
+  "nextRecommendedWork": "Per-setting controls and the supervised dead-man UI are wired. Next: per-row live-proof runs for the 63 needs-live-proof input/cursor rows."
 }

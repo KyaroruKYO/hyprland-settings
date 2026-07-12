@@ -518,6 +518,7 @@ SAFE_NAVIGATION_TARGETS = {
     "Dashboard",
     "Config",
     "Appearance",
+    "Animations",
     "Display",
     "Search",
     "FirstSafeSettingRow",
@@ -536,6 +537,7 @@ SAFE_NAVIGATION_TARGETS = {
     "HighRiskDetail",
     "DisplayRenderRiskDetail",
     "ProfileModeSwitchDetail",
+    "DeadManPreviewDetail",
     "DetailPane",
 }
 
@@ -617,6 +619,18 @@ BLOCKED_CATEGORY_TARGETS = {
         "page": "Display",
         "terms": ["high-risk", "extra care needed", "family-specific recovery"],
         "row_terms": ["high-risk setting row", "extra care needed"],
+    },
+    "DeadManPreviewDetail": {
+        "category": "dead_man_preview",
+        "page": "Animations",
+        "terms": [
+            "dead-man preview required",
+            "preview with recovery",
+            "keep changes",
+            "reverts automatically",
+            "supervised preview",
+        ],
+        "row_terms": ["setting row:"],
     },
     "DisplayRenderRiskDetail": {
         "category": "display_render_risk",

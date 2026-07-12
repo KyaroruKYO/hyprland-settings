@@ -90,7 +90,12 @@
     "implemented the runtime preview UI projection and controller layer routing all actions through the executor with no hyprctl strings or file writes in UI code",
     "implemented Previewing Live status, gated Save through the existing safe apply flow, Revert, Cancel, throttled slider applies, and session-drop plus app-close revert",
     "proved the live UI controller smoke (throttled drag, cancel, restoration) against the running compositor",
-    "proved supported and blocked detail-pane preview surfaces in the GTK evidence matrix with all safety flags false"
+    "proved supported and blocked detail-pane preview surfaces in the GTK evidence matrix with all safety flags false",
+    "reclassified all 78 dead-man rows honestly: 2 animation candidates, 63 input/cursor needing per-row live proof, 5 model-only, 8 blocked by grammar; monitor/display rows confirmed outside the dead-man set",
+    "implemented the supervised dead-man controller (arm, apply, countdown tick, Keep, Revert now, Cancel, timeout auto-revert, session-drop recovery) over new supervised executor paths",
+    "wired the dead-man panel into the detail pane with countdown status and recovery instruction; armed only for the two proven animation candidates",
+    "proved the live timeout auto-revert on animations.enabled against the running compositor",
+    "extended the GTK evidence harness with an Animations dashboard card and a DeadManPreviewDetail probe proving the armed panel via AT-SPI"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,

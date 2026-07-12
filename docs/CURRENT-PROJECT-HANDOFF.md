@@ -120,10 +120,18 @@ Structured-family controlled real-write implementation on `structured-family-edi
 - Previewing Live status, gated Save (persists once through the existing safe apply flow when its review gates are open), Revert, and Cancel per row; throttled slider applies with a single trailing drain timer; session-drop and app-close recovery revert any active preview.
 - Live UI controller smoke proven against the running compositor (throttled drag on `general.gaps_in`, cancel, restoration verified); GTK evidence at `/tmp/hyprland-settings-gtk-automation/20260712_001609` proves supported and blocked surfaces with all safety flags false.
 
+## Dead-Man Preview UI Additions
+
+- Reclassified all 78 dead-man rows honestly: 2 animation candidates (armed), 63 input/cursor rows needing per-row live proof (panel disarmed with reason), 5 model-only, 8 blocked by grammar; zero rows forced into relog/restart/no-effect buckets without proof. Monitor/display rows remain outside the dead-man set entirely.
+- Implemented the supervised controller (`src/runtime_preview_dead_man.rs`): arm captures the original read-only, apply starts a 10-second countdown, Keep stops it, Revert now/Cancel restore immediately, timeout auto-reverts, session-drop and app-close revert unconfirmed previews (Kept previews stay).
+- Wired the dead-man panel into the detail pane with live countdown status, warnings, and the recovery instruction; added the Animations dashboard card.
+- Live proof (run once): `animations.enabled` toggled under supervision, countdown expired unconfirmed, automatic revert restored the original.
+- GTK evidence at `/tmp/hyprland-settings-gtk-automation/20260712_005942` proves the armed panel, blocked reasons, and unchanged supported-row controls with all safety flags false.
+
 ## Next Exact Work
 
 Stop for explicit user decision: approve or reject a first active real config write pilot for structured families.
 
-For runtime preview: implement the dead-man preview UI (countdown, confirm, auto-revert) for the 78 dead-man-gated rows.
+For runtime preview: design per-row supervised live-proof runs for the 63 needs-live-proof input/cursor rows.
 
 Unblocking the pilot requires either setting `misc:disable_autoreload = true` (a user decision) or explicitly approving the compositor reload the pilot write would trigger; then run the ignored pilot test with `HYPRLAND_SETTINGS_RUN_ACTIVE_PILOT=1` and confirmed autoreload evidence.

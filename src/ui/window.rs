@@ -53,6 +53,9 @@ use crate::one_target_pilot_pre_enable_audit::disabled_pre_enable_audit_ui_lines
 use crate::one_target_pilot_readiness::current_one_target_pilot_readiness_mapping;
 use crate::production_advanced_confirmation::disabled_advanced_confirmation_ui_lines;
 use crate::production_high_risk_approval::disabled_high_risk_approval_ui_lines;
+use crate::runtime_preview_dead_man::{
+    dead_man_ui_state, RuntimePreviewDeadManController, RuntimePreviewDeadManUiPhase,
+};
 use crate::runtime_preview_ui_projection::{
     runtime_preview_ui_row_state, RuntimePreviewUiControlKind, RuntimePreviewUiController,
     RuntimePreviewUiSessionState,
@@ -115,6 +118,34 @@ fn preview_now_ms() -> u64 {
     (gtk::glib::monotonic_time() / 1000).max(0) as u64
 }
 
+thread_local! {
+    /// Supervised (dead-man) controllers with possibly armed sessions.
+    /// Unconfirmed previews revert on detail-pane re-render and window close;
+    /// explicitly Kept previews are left in place.
+    static ACTIVE_DEAD_MAN_CONTROLLERS: RefCell<Vec<std::rc::Weak<RefCell<RuntimePreviewDeadManController>>>> =
+        const { RefCell::new(Vec::new()) };
+}
+
+fn register_dead_man_controller(controller: &Rc<RefCell<RuntimePreviewDeadManController>>) {
+    ACTIVE_DEAD_MAN_CONTROLLERS.with(|controllers| {
+        controllers.borrow_mut().push(Rc::downgrade(controller));
+    });
+}
+
+fn revert_all_unconfirmed_dead_man_previews() {
+    ACTIVE_DEAD_MAN_CONTROLLERS.with(|controllers| {
+        let mut controllers = controllers.borrow_mut();
+        for weak in controllers.iter() {
+            if let Some(controller) = weak.upgrade() {
+                if let Ok(mut controller) = controller.try_borrow_mut() {
+                    let _ = controller.revert_if_unconfirmed();
+                }
+            }
+        }
+        controllers.retain(|weak| weak.upgrade().is_some());
+    });
+}
+
 #[derive(Debug, Clone)]
 struct SidebarItem {
     id: String,
@@ -150,6 +181,7 @@ pub fn show_main_window(
     // runtime value before the window closes.
     window.connect_close_request(|_| {
         revert_all_active_previews();
+        revert_all_unconfirmed_dead_man_previews();
         gtk::glib::Propagation::Proceed
     });
 
@@ -521,7 +553,7 @@ struct DashboardCard {
     target_tab_id: &'static str,
 }
 
-fn dashboard_cards() -> [DashboardCard; 7] {
+fn dashboard_cards() -> [DashboardCard; 8] {
     [
         DashboardCard {
             title: "Config",
@@ -532,6 +564,11 @@ fn dashboard_cards() -> [DashboardCard; 7] {
             title: "Appearance",
             description: "Change blur, shadows, borders, gaps, and other visual settings.",
             target_tab_id: "appearance",
+        },
+        DashboardCard {
+            title: "Animations",
+            description: "Tune animation settings; supervised live preview with automatic revert is available here.",
+            target_tab_id: "animations",
         },
         DashboardCard {
             title: "Windows & Layout",
@@ -4762,8 +4799,10 @@ fn render_detail(
     config_selection_state: &Rc<RefCell<ConfigSelectionState>>,
 ) {
     // Session-drop recovery: a preview left active on a previously rendered
-    // detail pane is reverted before its controller is dropped.
+    // detail pane is reverted before its controller is dropped. Unconfirmed
+    // supervised previews revert too; explicitly Kept ones stay.
     revert_all_active_previews();
+    revert_all_unconfirmed_dead_man_previews();
 
     let Some(detail) = model.detail_for_row(row_id) else {
         render_empty_detail(detail_content);
@@ -5843,6 +5882,273 @@ fn append_detail_section(parent: &gtk::Box, title: &str, build: impl FnOnce(&gtk
     parent.append(&frame);
 }
 
+/// Supervised dead-man preview panel for dead-man-gated rows. Only rows
+/// classified DeadManPreviewCandidate get an armed "Preview with recovery"
+/// button; needs-live-proof and model-only rows render the panel with the arm
+/// control disabled and the reason shown; blocked rows show only the reason.
+/// Every action routes through RuntimePreviewDeadManController — UI code
+/// builds no commands and cannot bypass the countdown.
+fn append_dead_man_preview_panel(detail: &RowDetailProjection, section: &gtk::Box) {
+    let Some(ui_state) = dead_man_ui_state(&detail.row_id) else {
+        section.append(&small_label(
+            "Dead-man preview state unavailable for this row.",
+        ));
+        return;
+    };
+
+    let dead_man_badge = small_label(&format!("{}: {}", ui_state.badge, ui_state.why_supervised));
+    dead_man_badge.set_widget_name(&format!(
+        "hyprland-settings-live-preview-dead-man-{}",
+        safe_widget_name(&detail.row_id)
+    ));
+    section.append(&dead_man_badge);
+
+    if !ui_state.shows_panel {
+        let blocked = small_label(&format!(
+            "Supervised preview blocked ({}): {}",
+            ui_state.classification.as_str(),
+            ui_state.disabled_reason.unwrap_or("blocked"),
+        ));
+        blocked.set_widget_name(&format!(
+            "hyprland-settings-dead-man-blocked-{}",
+            safe_widget_name(&detail.row_id)
+        ));
+        section.append(&blocked);
+        return;
+    }
+
+    section.append(&small_label(&ui_state.warning_text));
+    let recovery = small_label(ui_state.recovery_instruction);
+    recovery.set_widget_name(&format!(
+        "hyprland-settings-dead-man-recovery-{}",
+        safe_widget_name(&detail.row_id)
+    ));
+    section.append(&recovery);
+
+    let status = small_label(&format!(
+        "Supervised preview status: disarmed ({})",
+        ui_state.classification.as_str()
+    ));
+    status.set_widget_name(&format!(
+        "hyprland-settings-dead-man-status-{}",
+        safe_widget_name(&detail.row_id)
+    ));
+
+    let value_row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    value_row.append(&body_label("Preview value"));
+    let value_entry = gtk::Entry::new();
+    value_entry.set_text(
+        detail
+            .current_value
+            .raw_value
+            .as_deref()
+            .or(detail.edit.proposed_value.as_deref())
+            .unwrap_or_default(),
+    );
+    value_entry.set_hexpand(true);
+    value_entry.set_sensitive(ui_state.arm_enabled);
+    value_row.append(&value_entry);
+    section.append(&value_row);
+
+    let arm_button = gtk::Button::with_label("Preview with recovery");
+    arm_button.set_widget_name(&format!(
+        "hyprland-settings-dead-man-arm-{}",
+        safe_widget_name(&detail.row_id)
+    ));
+    arm_button.set_sensitive(ui_state.arm_enabled);
+    arm_button.set_tooltip_text(Some(if ui_state.arm_enabled {
+        "Start a supervised preview with automatic revert. GTK automation must not activate this control."
+    } else {
+        "Supervised preview is not enabled for this setting yet."
+    }));
+
+    let keep_button = gtk::Button::with_label("Keep changes");
+    keep_button.set_widget_name(&format!(
+        "hyprland-settings-dead-man-keep-{}",
+        safe_widget_name(&detail.row_id)
+    ));
+    keep_button.set_sensitive(false);
+    let revert_button = gtk::Button::with_label("Revert now");
+    revert_button.set_widget_name(&format!(
+        "hyprland-settings-dead-man-revert-{}",
+        safe_widget_name(&detail.row_id)
+    ));
+    revert_button.set_sensitive(false);
+    let cancel_button = gtk::Button::with_label("Cancel");
+    cancel_button.set_widget_name(&format!(
+        "hyprland-settings-dead-man-cancel-{}",
+        safe_widget_name(&detail.row_id)
+    ));
+    cancel_button.set_sensitive(false);
+
+    if !ui_state.arm_enabled {
+        if let Some(reason) = ui_state.disabled_reason {
+            let disabled = small_label(&format!(
+                "Supervised preview disabled ({}): {reason}",
+                ui_state.classification.as_str()
+            ));
+            disabled.set_widget_name(&format!(
+                "hyprland-settings-dead-man-disabled-{}",
+                safe_widget_name(&detail.row_id)
+            ));
+            section.append(&disabled);
+        }
+    }
+
+    let controller = match RuntimePreviewDeadManController::new_live(&detail.row_id) {
+        Ok(controller) => Rc::new(RefCell::new(controller)),
+        Err(error) => {
+            section.append(&small_label(&error.user_text()));
+            return;
+        }
+    };
+    register_dead_man_controller(&controller);
+
+    {
+        let controller = controller.clone();
+        let status = status.clone();
+        let value_entry = value_entry.clone();
+        let keep_button = keep_button.clone();
+        let revert_button = revert_button.clone();
+        let cancel_button = cancel_button.clone();
+        arm_button.connect_clicked(move |arm_button| {
+            let armed = { controller.borrow_mut().arm() };
+            match armed {
+                Ok(receipt) => {
+                    status.set_label(&receipt.status_text);
+                    revert_button.set_sensitive(true);
+                    cancel_button.set_sensitive(true);
+                    arm_button.set_sensitive(false);
+                    let applied = {
+                        let value = value_entry.text().to_string();
+                        controller.borrow_mut().apply(&value)
+                    };
+                    match applied {
+                        Ok(receipt) => {
+                            status.set_label(&receipt.status_text);
+                            keep_button.set_sensitive(true);
+                            // Countdown driver: ticks once per second and
+                            // auto-reverts on timeout.
+                            let controller = controller.clone();
+                            let status = status.clone();
+                            let keep_button = keep_button.clone();
+                            let revert_button = revert_button.clone();
+                            let cancel_button = cancel_button.clone();
+                            let arm_button = arm_button.clone();
+                            gtk::glib::timeout_add_local(
+                                std::time::Duration::from_millis(1000),
+                                move || {
+                                    let outcome = {
+                                        match controller.try_borrow_mut() {
+                                            Ok(mut controller) => controller.tick(1000),
+                                            Err(_) => return gtk::glib::ControlFlow::Continue,
+                                        }
+                                    };
+                                    match outcome {
+                                        Ok(Some(receipt)) => {
+                                            status.set_label(&receipt.status_text);
+                                            keep_button.set_sensitive(false);
+                                            revert_button.set_sensitive(false);
+                                            cancel_button.set_sensitive(false);
+                                            arm_button.set_sensitive(true);
+                                            gtk::glib::ControlFlow::Break
+                                        }
+                                        Ok(None) => {
+                                            let phase = controller.borrow().phase();
+                                            if phase
+                                                == RuntimePreviewDeadManUiPhase::CountingDown
+                                            {
+                                                status.set_label(&format!(
+                                                    "Previewing with recovery: auto-revert in {} seconds unless you Keep changes.",
+                                                    controller.borrow().remaining_seconds()
+                                                ));
+                                                gtk::glib::ControlFlow::Continue
+                                            } else {
+                                                gtk::glib::ControlFlow::Break
+                                            }
+                                        }
+                                        Err(error) => {
+                                            status.set_label(&error.user_text());
+                                            gtk::glib::ControlFlow::Break
+                                        }
+                                    }
+                                },
+                            );
+                        }
+                        Err(error) => status.set_label(&error.user_text()),
+                    }
+                }
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        });
+    }
+    {
+        let controller = controller.clone();
+        let status = status.clone();
+        let revert_button = revert_button.clone();
+        let cancel_button = cancel_button.clone();
+        let arm_button = arm_button.clone();
+        keep_button.connect_clicked(move |keep_button| {
+            match controller.borrow_mut().confirm_keep() {
+                Ok(receipt) => {
+                    status.set_label(&receipt.status_text);
+                    keep_button.set_sensitive(false);
+                    revert_button.set_sensitive(true);
+                    cancel_button.set_sensitive(false);
+                    arm_button.set_sensitive(true);
+                }
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        });
+    }
+    {
+        let controller = controller.clone();
+        let status = status.clone();
+        let keep_button = keep_button.clone();
+        let cancel_button = cancel_button.clone();
+        let arm_button = arm_button.clone();
+        revert_button.connect_clicked(move |revert_button| {
+            match controller.borrow_mut().revert_now() {
+                Ok(receipt) => {
+                    status.set_label(&receipt.status_text);
+                    keep_button.set_sensitive(false);
+                    revert_button.set_sensitive(false);
+                    cancel_button.set_sensitive(false);
+                    arm_button.set_sensitive(true);
+                }
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        });
+    }
+    {
+        let controller = controller.clone();
+        let status = status.clone();
+        let keep_button = keep_button.clone();
+        let revert_button = revert_button.clone();
+        let arm_button = arm_button.clone();
+        cancel_button.connect_clicked(move |cancel_button| {
+            match controller.borrow_mut().cancel() {
+                Ok(receipt) => {
+                    status.set_label(&receipt.status_text);
+                    keep_button.set_sensitive(false);
+                    revert_button.set_sensitive(false);
+                    cancel_button.set_sensitive(false);
+                    arm_button.set_sensitive(true);
+                }
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        });
+    }
+
+    let buttons = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    buttons.append(&arm_button);
+    buttons.append(&keep_button);
+    buttons.append(&revert_button);
+    buttons.append(&cancel_button);
+    section.append(&buttons);
+    section.append(&status);
+}
+
 /// Per-setting live runtime preview controls. Enabled only for rows the
 /// capability matrix classifies as default-previewable; every action routes
 /// through the RuntimePreviewUiController — no hyprctl strings, no config
@@ -5873,15 +6179,13 @@ fn append_runtime_preview_controls(
     section.append(&badge);
 
     if !row_state.preview_enabled {
-        if row_state.dead_man_required {
-            let dead_man = small_label(
-                "Dead-man preview required: this setting can only be previewed inside a confirmed countdown session. Disabled by default.",
-            );
-            dead_man.set_widget_name(&format!(
-                "hyprland-settings-live-preview-dead-man-{}",
-                safe_widget_name(&detail.row_id)
-            ));
-            section.append(&dead_man);
+        // Only rows the matrix classifies as dead-man-supervisable get the
+        // supervised panel; blocked rows show their reason only.
+        if row_state.capability
+            == crate::runtime_preview::RuntimePreviewCapability::LivePreviewSupportedWithDeadMan
+        {
+            append_dead_man_preview_panel(detail, section);
+            return;
         }
         if let Some(reason) = &row_state.unavailable_reason {
             section.append(&small_label(&format!("Why: {reason}")));

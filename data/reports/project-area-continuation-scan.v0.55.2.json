@@ -175,11 +175,11 @@
     {
       "areaName": "Runtime/reload integration",
       "currentStatus": "broad runtime preview system implemented and user-facing: all 341 scalar rows and 7 structured families classified; 135 rows live-previewable by default with real detail-pane controls (53 switches, 45 sliders, 3 spin rows, 22 color entries, 3 value entries, 9 dropdowns), Previewing Live status, Save/Revert/Cancel routed through the executor, throttled applies, session-drop and app-close revert; 78 dead-man rows disabled pending countdown UI; live gaps_in round trips proven for both the executor and the UI controller; hyprctl reload remains disabled; config writes never happen per slider tick",
-      "classification": "runtime_preview_user_facing_pending_dead_man_ui",
+      "classification": "runtime_preview_complete_pending_per_row_input_live_proofs",
       "canContinueNow": true,
-      "reason": "Per-setting live preview controls are wired and proven for the 135 default-previewable rows. The remaining preview work is the dead-man countdown/confirm UI for the 78 gated rows; high-risk enablement still requires explicit approval.",
-      "blockingDependency": "dead-man UI implementation and explicit approval for high-risk enablement",
-      "safeNextWork": "implement dead-man preview UI (countdown, confirm, auto-revert) for the 78 gated rows",
+      "reason": "Per-setting preview controls and the supervised dead-man UI (countdown, Keep, auto-revert, session-drop recovery) are implemented and live-proven. The 78 dead-man rows are honestly reclassified: 2 animation candidates armed, 63 input/cursor rows await per-row live proofs, 5 model-only, 8 blocked by grammar. Monitor/display rows remain fully blocked.",
+      "blockingDependency": "per-row live proofs for input/cursor rows; explicit approval for anything beyond",
+      "safeNextWork": "design per-row supervised live-proof runs for the 63 needs-live-proof input/cursor rows",
       "mustNotDo": "do not run hyprctl reload, do not write config per slider tick, do not enable preview for blocked/not-proven rows, do not enable dead-man rows by default",
       "evidenceUsed": [
         "data/reports/runtime-preview-capability-matrix.v0.55.2.json",
@@ -188,7 +188,9 @@
         "tests/runtime_preview.rs",
         "tests/runtime_preview_ui.rs",
         "tests/runtime_preview_live.rs live round-trip run",
-        "tests/runtime_preview_ui_live.rs live UI controller smoke run"
+        "tests/runtime_preview_ui_live.rs live UI controller smoke run",
+        "data/reports/runtime-preview-dead-man-ui.v0.55.2.json",
+        "tests/runtime_preview_dead_man_live.rs live timeout auto-revert run"
       ]
     },
     {

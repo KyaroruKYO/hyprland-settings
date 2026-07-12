@@ -12,7 +12,7 @@ The runtime path is `hyprctl eval 'hl.config({ <section> = { <option> = <value> 
 | --- | --- | --- |
 | LivePreviewSupported | 62 | low-risk visual/layout toggles and choices; instant live preview |
 | LivePreviewSupportedWithThrottle | 73 | low-risk continuous values (gaps, borders, rounding, colors, opacity, blur, shadow); throttled to one runtime set per 150 ms |
-| LivePreviewSupportedWithDeadMan | 78 | input/cursor/animation rows; preview only inside a confirmed dead-man session, disabled by default |
+| LivePreviewSupportedWithDeadMan | 78 | input/cursor/animation rows; supervised dead-man preview (see `docs/RUNTIME-PREVIEW-DEAD-MAN-UI.md`) — 2 animation candidates armed, 63 await per-row live proof, 5 model-only, 8 blocked by grammar |
 | RequiresConfigWrite | 43 | behavioral or string/path/regex grammar rows; persist through the config write path |
 | BlockedHighRisk | 74 | display/monitor/render/shader, exec/script, env/session, window-rule rows |
 | NotProvenYet | 11 | debug/ecosystem/experimental sections with no runtime-safety evidence |

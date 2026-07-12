@@ -100,5 +100,6 @@
     "gitDiffCheck": "passed",
     "cargoBuildRelease": "passed"
   },
-  "nextRecommendedWork": "Implement the dead-man preview UI (countdown, confirm, auto-revert) so the 78 dead-man-gated rows can opt into supervised live preview; separately, decide the structured-family active-config pilot."
+  "deadManUiReport": "data/reports/runtime-preview-dead-man-ui.v0.55.2.json",
+  "nextRecommendedWork": "The supervised dead-man UI is implemented (2 candidates armed, the rest honestly gated). Next: per-row live-proof runs for the 63 needs-live-proof input/cursor rows; separately, decide the structured-family active-config pilot."
 }

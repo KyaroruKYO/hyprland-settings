@@ -358,6 +358,73 @@ pub fn apply_runtime_preview_value(
     })
 }
 
+/// Apply a preview value inside an armed supervised (dead-man) session. The
+/// caller must be the dead-man controller, which only exists after the user
+/// explicitly armed supervision; the session's own `confirmed` flag keeps
+/// tracking the later "Keep changes" decision.
+pub fn apply_runtime_preview_value_supervised(
+    runner: &mut dyn RuntimePreviewRunner,
+    session: &mut RuntimePreviewSession,
+    raw_value: &str,
+) -> Result<RuntimePreviewApplyReceipt, RuntimePreviewError> {
+    if session.state != RuntimePreviewSessionState::Active {
+        return Err(RuntimePreviewError::NoActiveSession);
+    }
+    if session.dead_man.is_none() {
+        return Err(RuntimePreviewError::RowNotLivePreviewable {
+            row_id: session.row_id.clone(),
+            capability: "supervised apply is only valid for dead-man sessions",
+        });
+    }
+    let command = build_runtime_preview_command(&session.row_id, raw_value, true)?;
+    runner
+        .run(command.program, &command.args)
+        .map_err(RuntimePreviewError::RunnerFailed)?;
+    session.last_applied_value = Some(raw_value.trim().to_string());
+    Ok(RuntimePreviewApplyReceipt {
+        row_id: session.row_id.clone(),
+        official_setting: session.official_setting.clone(),
+        applied_value: raw_value.trim().to_string(),
+        original_value: session.original_value.clone(),
+        config_written: false,
+        reload_run: false,
+    })
+}
+
+/// Revert an armed supervised session to its original value. Used by manual
+/// revert, cancel, timeout auto-revert, and app-close recovery — it must work
+/// precisely when the user has NOT confirmed, so it authorizes the revert
+/// command itself.
+pub fn revert_runtime_preview_session_supervised(
+    runner: &mut dyn RuntimePreviewRunner,
+    session: &mut RuntimePreviewSession,
+) -> Result<RuntimePreviewRevertReceipt, RuntimePreviewError> {
+    if session.state != RuntimePreviewSessionState::Active {
+        return Err(RuntimePreviewError::NoActiveSession);
+    }
+    if session.dead_man.is_none() {
+        return Err(RuntimePreviewError::RowNotLivePreviewable {
+            row_id: session.row_id.clone(),
+            capability: "supervised revert is only valid for dead-man sessions",
+        });
+    }
+    if session.last_applied_value.is_some() {
+        let command =
+            build_runtime_preview_command(&session.row_id, &session.original_value, true)?;
+        runner
+            .run(command.program, &command.args)
+            .map_err(RuntimePreviewError::RunnerFailed)?;
+    }
+    session.state = RuntimePreviewSessionState::Reverted;
+    Ok(RuntimePreviewRevertReceipt {
+        row_id: session.row_id.clone(),
+        official_setting: session.official_setting.clone(),
+        restored_value: session.original_value.clone(),
+        config_written: false,
+        reload_run: false,
+    })
+}
+
 /// Revert the session to its captured original value (Cancel / timeout /
 /// app-close recovery path).
 pub fn revert_runtime_preview_session(
