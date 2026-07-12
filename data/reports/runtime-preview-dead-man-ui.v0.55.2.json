@@ -101,7 +101,7 @@
     "gitDiffCheck": "passed",
     "cargoBuildRelease": "passed"
   },
-  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_020824",
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_021644",
   "gtkEvidence": [
     "the Animations detail pane shows the armed supervised panel: 'Dead-man preview required' badge, 'Preview with recovery' button, 'Keep changes', 'Revert now', Cancel, 'reverts automatically' warning, recovery instruction, and status line (DeadManPreviewDetail run, AT-SPI text)",
     "a blocked display/render row shows 'Preview blocked: high-risk setting' with no supervised panel and no recovery button",

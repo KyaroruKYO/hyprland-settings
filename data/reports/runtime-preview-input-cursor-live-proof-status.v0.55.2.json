@@ -96,7 +96,7 @@
     "gitDiffCheck": "passed",
     "cargoBuildRelease": "passed"
   },
-  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_020824",
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_021644",
   "nextRecommendedWork": "Remaining disarmed rows need hardware (18 touch-family) or a secondary-device supervised proof (left_handed, rotation, resolve_binds_by_sym); the structured-family active-config pilot still awaits its explicit user decision.",
   "liveProofsRunDetail": "batch one: 36 attempted, 27 passed, 9 failed (8 from the FiniteChoice int-quoting executor bug, 1 scroll_method [[EMPTY]] readback); executor fixed; batch two: 35 attempted, 35 passed; every failure restored or verified at its original/default value",
   "rowsStillDisarmedDetail": {

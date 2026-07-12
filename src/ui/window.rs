@@ -4474,10 +4474,16 @@ fn runtime_preview_readiness_section() -> gtk::Frame {
                 summary.live_preview_supported,
                 summary.live_preview_supported_with_throttle,
             ),
-            format!(
-                "{} settings support preview only inside a confirmed dead-man session (input/cursor/animation risk) and stay disabled by default.",
-                summary.dead_man_required,
-            ),
+            {
+                let dead_man =
+                    crate::runtime_preview_dead_man::dead_man_classification_summary();
+                format!(
+                    "{} settings support supervised preview with a recovery countdown; {} of them are armed today after passed per-row live proofs, and {} stay disarmed pending hardware or further proof.",
+                    summary.dead_man_required,
+                    dead_man.candidates,
+                    summary.dead_man_required - dead_man.candidates,
+                )
+            },
             format!(
                 "{} settings persist through config writes only, {} are blocked as high-risk, and {} are not proven yet.",
                 summary.requires_config_write,
@@ -4487,7 +4493,10 @@ fn runtime_preview_readiness_section() -> gtk::Frame {
             "Structured families do not live-preview in this phase: monitor/bind/device/permission are blocked as high-risk, gestures are blocked by record semantics, and animation/curve records are not proven yet.".to_string(),
             "Preview never writes the config file and never reloads Hyprland; saving persists once through the existing backup/write/reread path.".to_string(),
         ],
-        Some(("Live preview (per-setting controls land next)", false)),
+        Some((
+            "Live preview controls are on each setting's detail pane",
+            false,
+        )),
     )
 }
 
