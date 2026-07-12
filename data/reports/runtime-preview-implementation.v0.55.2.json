@@ -92,5 +92,6 @@
   },
   "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260711_233413",
   "deadManUiReport": "data/reports/runtime-preview-dead-man-ui.v0.55.2.json",
-  "nextRecommendedWork": "Per-setting controls and the supervised dead-man UI are wired. Next: per-row live-proof runs for the 63 needs-live-proof input/cursor rows."
+  "nextRecommendedWork": "Runtime preview is feature-complete for this machine's provable surface; remaining arming requires touch hardware or secondary-device proofs.",
+  "inputCursorProofStatus": "36 of 78 dead-man rows armed by passed live proofs; 27 need hardware/secondary-device proofs; 5 model-only; 8+2 blocked (grammar/verification/danger)"
 }

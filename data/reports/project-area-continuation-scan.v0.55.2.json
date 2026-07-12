@@ -174,12 +174,12 @@
     },
     {
       "areaName": "Runtime/reload integration",
-      "currentStatus": "broad runtime preview system implemented and user-facing: all 341 scalar rows and 7 structured families classified; 135 rows live-previewable by default with real detail-pane controls (53 switches, 45 sliders, 3 spin rows, 22 color entries, 3 value entries, 9 dropdowns), Previewing Live status, Save/Revert/Cancel routed through the executor, throttled applies, session-drop and app-close revert; 78 dead-man rows disabled pending countdown UI; live gaps_in round trips proven for both the executor and the UI controller; hyprctl reload remains disabled; config writes never happen per slider tick",
-      "classification": "runtime_preview_proof_architecture_complete_promoting_rows_by_passed_proof",
-      "canContinueNow": true,
-      "reason": "The per-row proof architecture for input/cursor rows is implemented: all 63 rows have specific proof plans with fallback requirements, the env-gated harness fails closed, and promotion is receipt-gated. One proof ran and passed (cursor.inactive_timeout, now armed); 62 rows remain honestly disarmed (15 cursor, 11 pointer, 18 touch-family, 7 focus, 6 keyboard needing proofs; 4 blocked no-runtime-verification; 1 blocked too-dangerous). Monitor/display rows remain fully blocked.",
-      "blockingDependency": "one passed env-gated live proof per row; explicit approval for anything beyond",
-      "safeNextWork": "run further per-row env-gated live proofs one at a time, starting with the safest cursor rows",
+      "currentStatus": "runtime preview marathon complete for this machine's provable surface: 341 rows classified, 135 default-previewable with real controls, 38 of 78 dead-man rows armed by passed live proofs (2 animation + 36 input/cursor with receipts), 27 disarmed pending hardware or secondary-device proofs, 5 model-only, 8 grammar-blocked; two executor defects found and fixed by live proofs (FiniteChoice int quoting, [[EMPTY]] str readback); reload still disabled; config writes never happen during preview",
+      "classification": "runtime_preview_marathon_complete_remaining_arming_hardware_gated",
+      "canContinueNow": false,
+      "reason": "Every row provable on this machine has been proven and armed. The remaining 27 disarmed rows need touch hardware (18) or a secondary-device supervised proof (left_handed, rotation, resolve_binds_by_sym) or are blocked by readback semantics (scroll_method); 5 are model-only.",
+      "blockingDependency": "touch hardware or secondary-device proof sessions",
+      "safeNextWork": "none on this machine; run touch-family proofs on a device with the hardware",
       "mustNotDo": "do not run hyprctl reload, do not write config per slider tick, do not enable preview for blocked/not-proven rows, do not enable dead-man rows by default",
       "evidenceUsed": [
         "data/reports/runtime-preview-capability-matrix.v0.55.2.json",
@@ -209,5 +209,5 @@
     }
   ],
   "activeSafeArea": null,
-  "recommendedNextWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families. Unblocking it requires disabling compositor config autoreload (misc:disable_autoreload=true) or explicitly approving the reload the pilot write would trigger."
+  "recommendedNextWork": "Runtime preview is complete for this machine's provable surface. Remaining decisions: the structured-family active-config pilot (blocked by autoreload policy) and hardware-gated touch-family proofs."
 }

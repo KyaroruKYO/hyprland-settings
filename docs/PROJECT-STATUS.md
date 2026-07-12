@@ -66,12 +66,12 @@ Current future-capability tracker:
 - High-risk/display recovery: 62-70%
 - Structured-family editors/writes: 98-99% (controlled-target writes proven, executor hardened, active-config pilot implemented and rehearsed; only the autoreload-gated live pilot write remains)
 - Profile/mode switching: 65-73%
-- Runtime/reload integration: 96-98% (proof architecture complete with receipt-gated promotion; one input-family row proven and armed; 62 per-row proofs remain, promotable one at a time)
+- Runtime/reload integration: 98-99% (proof marathon complete: 38 of 78 dead-man rows armed by passed live proofs — everything provable on this machine; remaining arming needs touch hardware or secondary-device proofs)
 - Hyprland 0.55.4 migration: 50-60%
 
 Future-capability source/include and duplicate production-activation runway work remains stopped; future production activation requires a separate explicitly approved phase.
 
-Current next exact work item: stop for explicit user decision: approve or reject a first active real config write pilot for structured families (unblocking requires `misc:disable_autoreload = true` or explicit approval of the reload the pilot write would trigger).
+Current next exact work item: stop for explicit user decision: approve or reject a first active real config write pilot for structured families (unblocking requires `misc:disable_autoreload = true` or explicit approval of the reload the pilot write would trigger). Runtime preview arming is complete for this machine's provable surface.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 

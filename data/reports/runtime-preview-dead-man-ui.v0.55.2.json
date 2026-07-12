@@ -6,9 +6,9 @@
   "goal": "Implement supervised dead-man live preview (countdown, confirm, auto-revert) and enable it only for the subset of dead-man rows with a proven reversible runtime strategy.",
   "deadManRowsTotal": 78,
   "deadManRowsReclassified": 78,
-  "deadManPreviewCandidates": 3,
-  "deadManPreviewCandidatesNote": "the two animation toggles plus cursor.inactive_timeout, promoted by its passed per-row live proof (see runtime-preview-input-cursor-live-proof-status report)",
-  "deadManPreviewCandidatesNeedsLiveProof": 62,
+  "deadManPreviewCandidates": 38,
+  "deadManPreviewCandidatesNote": "the two animation toggles plus 36 input/cursor rows promoted by passed per-row live proofs (receipts in PROVEN_INPUT_ROWS)",
+  "deadManPreviewCandidatesNeedsLiveProof": 27,
   "deadManPreviewModelOnly": 5,
   "deadManPreviewBlockedNoSafeRuntimeMechanism": 8,
   "deadManPreviewBlockedRequiresRelog": 0,
@@ -18,7 +18,7 @@
   "candidateRows": [
     "animations.enabled",
     "animations.workspace_wraparound",
-    "cursor.inactive_timeout (promoted by passed live proof)"
+    "plus 36 proof-passed input/cursor rows (see runtime-preview-input-cursor-proof-plan provenRows)"
   ],
   "classificationRationale": {
     "candidates": "the two animation toggles are visual, medium-risk, use the live-proven scalar runtime mechanism, and auto-revert reliably; the countdown covers their performance risk",
@@ -101,12 +101,12 @@
     "gitDiffCheck": "passed",
     "cargoBuildRelease": "passed"
   },
-  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_005942",
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_020824",
   "gtkEvidence": [
     "the Animations detail pane shows the armed supervised panel: 'Dead-man preview required' badge, 'Preview with recovery' button, 'Keep changes', 'Revert now', Cancel, 'reverts automatically' warning, recovery instruction, and status line (DeadManPreviewDetail run, AT-SPI text)",
     "a blocked display/render row shows 'Preview blocked: high-risk setting' with no supervised panel and no recovery button",
     "the supported-row Save/Revert/Cancel controls and the Config readiness card remain present",
     "aggregate safety flags realConfigEdited, runtimeMutated, hyprlandReloaded, and mutatingHyprctlUsed are all false"
   ],
-  "nextRecommendedWork": "The per-row proof architecture is implemented (see runtime-preview-input-cursor-live-proof-status report). Continue promoting rows one passed proof at a time."
+  "nextRecommendedWork": "Remaining disarmed rows need hardware or secondary-device proofs; see the input-cursor live-proof-status report."
 }

@@ -642,6 +642,7 @@ BLOCKED_CATEGORY_TARGETS = {
             "fallback requirement",
             "supervised preview disabled",
             "dead-man preview required",
+            "passed its per-row live proof",
         ],
         "row_terms": ["setting row:"],
     },

@@ -28,7 +28,11 @@
   "guiLivePreviewControlsEnabledScope": "the 135 default-previewable rows only; runtime mutation stays temporary and reversible",
   "blockedRowsExposeEnabledControls": false,
   "highRiskRowsEnabledByDefault": false,
-  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_005942",
-  "gtkEvidence": "supported row shows Save/Revert/Cancel controls; the Animations detail pane shows the armed supervised dead-man panel with countdown/Keep/Revert/Cancel copy; blocked display rows show their reason with no panel; aggregate safety flags all false",
-  "nextRecommendedWork": "Design per-row live-proof runs for the 63 needs-live-proof input/cursor rows."
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_020824",
+  "gtkEvidence": "supported row shows Save/Revert/Cancel; an armed proof-passed input row shows 'passed its per-row live proof' with Preview with recovery; the Animations armed panel, blocked display reasons, and readiness card remain; aggregate safety flags all false",
+  "nextRecommendedWork": "Remaining preview work is hardware-gated (touch-family proofs) or judgment-gated (secondary-device proofs).",
+  "uiSurfacesAddedInProofMarathon": [
+    "armed supervised panels for the 36 proof-passed input/cursor rows with proof provenance line",
+    "proof-aware disarmed copy for remaining rows unchanged"
+  ]
 }

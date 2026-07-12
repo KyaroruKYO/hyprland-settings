@@ -3907,7 +3907,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families."
+        "Stop for explicit user decision: the structured-family active-config pilot remains blocked by autoreload policy. Runtime preview arming is complete for this machine; touch-family rows need hardware."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],

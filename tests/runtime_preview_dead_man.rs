@@ -68,10 +68,10 @@ fn all_78_dead_man_rows_are_reclassified_with_specific_statuses() {
         + summary.blocked_too_dangerous;
     assert_eq!(accounted, 78, "every row falls into exactly one bucket");
     assert_eq!(
-        summary.candidates, 3,
-        "the two animation toggles plus the proof-passed cursor.inactive_timeout are candidates"
+        summary.candidates, 38,
+        "the two animation toggles plus the 36 proof-passed input/cursor rows are candidates"
     );
-    assert_eq!(summary.candidates_needing_live_proof, 62);
+    assert_eq!(summary.candidates_needing_live_proof, 27);
     assert_eq!(summary.model_only, 5);
     assert_eq!(summary.blocked_no_safe_runtime_mechanism, 8);
 
@@ -168,8 +168,8 @@ fn dead_man_ui_states_enable_only_proven_candidates() {
         }
     }
     assert_eq!(
-        armed, 3,
-        "the two animation candidates plus the proof-passed cursor row arm"
+        armed, 38,
+        "the two animation candidates plus the 36 proof-passed input/cursor rows arm"
     );
     assert_eq!(
         panels, 70,

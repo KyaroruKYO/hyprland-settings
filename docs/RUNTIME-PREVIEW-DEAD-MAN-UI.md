@@ -6,8 +6,8 @@ Supervised dead-man live preview is implemented: an explicitly armed, countdown-
 
 | Classification | Count | What it means in the UI |
 | --- | --- | --- |
-| DeadManPreviewCandidate | 3 | armed "Preview with recovery" button (`animations.enabled`, `animations.workspace_wraparound`, and `cursor.inactive_timeout` — promoted by its passed per-row live proof) |
-| DeadManPreviewCandidateNeedsLiveProof | 62 | supervised panel rendered disarmed with proof-aware status: input/cursor rows whose scalar mechanism should work, but changing input behavior mid-session can impair the devices used to confirm or revert — each needs a per-row live proof first (see `docs/RUNTIME-PREVIEW-INPUT-CURSOR-LIVE-PROOF.md`) |
+| DeadManPreviewCandidate | 38 | armed "Preview with recovery" button: the two animation toggles plus 36 input/cursor rows promoted by passed per-row live proofs (receipts in `PROVEN_INPUT_ROWS`) |
+| DeadManPreviewCandidateNeedsLiveProof | 27 | supervised panel rendered disarmed with proof-aware status: 18 touch-family rows need the hardware present, 3 rows need secondary-device proofs, and the rest carry specific evidence-based reasons (see `docs/RUNTIME-PREVIEW-INPUT-CURSOR-LIVE-PROOF.md`) |
 | DeadManPreviewModelOnly | 5 | panel disarmed: source-backed string values are unproven as runtime sets for input devices |
 | DeadManPreviewBlockedNoSafeRuntimeMechanism | 8 | blocked reason only: vector/list, monitor-name, and path grammars have no proven runtime representation |
 | RequiresRelog / RequiresRestart / NoVisibleEffect / TooDangerous | 0 | no row was proven into these buckets; nothing was faked |

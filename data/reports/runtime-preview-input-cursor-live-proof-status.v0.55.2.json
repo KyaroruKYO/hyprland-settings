@@ -3,44 +3,40 @@
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
   "startingCommit": "ea8c396129cda0a4fb1195911362c0a13e5fa315",
-  "goal": "Design per-row supervised live-proof runs for the 63 needs-live-proof input/cursor rows: proof architecture, per-row plans, fallback requirements, env-gated harness, and receipt-gated promotion.",
+  "goal": "Run per-row supervised live proofs broadly and promote every row that passes; keep everything else disarmed with exact reasons.",
   "needsLiveProofRowsTotal": 63,
   "rowsReclassified": 63,
-  "keyboardRiskRows": 6,
-  "pointerRiskRows": 11,
+  "keyboardRiskRows": 1,
+  "pointerRiskRows": 2,
   "touchpadRiskRows": 18,
-  "cursorRiskRows": 15,
-  "focusRiskRows": 7,
+  "cursorRiskRows": 0,
+  "focusRiskRows": 0,
   "gestureRiskRows": 0,
   "proofModelOnlyRows": 0,
   "proofBlockedNoSafeFallbackRows": 0,
-  "proofBlockedNoRuntimeVerificationRows": 4,
+  "proofBlockedNoRuntimeVerificationRows": 5,
   "proofBlockedTooDangerousRows": 1,
   "proofReadyForEnvGatedLiveTestRows": 0,
-  "proofPassedArmableCandidateRows": 1,
+  "proofPassedArmableCandidateRows": 36,
   "blockedRowDetail": {
-    "tooDangerous": ["cursor.invisible - the preview value itself removes cursor visibility"],
+    "tooDangerous": [
+      "cursor.invisible - the preview value itself removes cursor visibility"
+    ],
     "noRuntimeVerification": [
       "cursor.no_hardware_cursors",
       "cursor.use_cpu_buffer",
       "cursor.min_refresh_rate",
-      "cursor.no_break_fs_vrr"
+      "cursor.no_break_fs_vrr",
+      "input.scroll_method - unset str options read back as [[EMPTY]], which cannot be reapplied; revert cannot restore the exact unset state (found by live proof)"
     ]
   },
-  "liveProofsRunThisSprint": 1,
-  "liveProofsPassed": 1,
-  "liveProofsFailed": 0,
-  "rowsPromotedToArmedCandidates": 1,
-  "rowsStillDisarmed": 62,
+  "liveProofsRunThisSprint": 71,
+  "liveProofsPassed": 62,
+  "liveProofsFailed": 9,
+  "rowsPromotedToArmedCandidates": 35,
+  "rowsStillDisarmed": 26,
   "passedProof": {
-    "row": "cursor.inactive_timeout",
-    "originalValue": "0.000000",
-    "previewValue": "1",
-    "applyResult": "verified live via read-only getoption (observed 1.000000)",
-    "revertResult": "verified live: restored to 0.000000 exactly",
-    "fallbackUsed": "keyboard and pointer both remained fully usable; only idle cursor-hide timing changed; the revert needed no user input",
-    "env": "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.inactive_timeout",
-    "receiptRecordedIn": "src/runtime_preview_input_proof.rs PROVEN_INPUT_ROWS"
+    "note": "all 36 receipts (row, original, preview, fallback, env) are recorded in PROVEN_INPUT_ROWS and exported in the provenRows section of the proof-plan report"
   },
   "fallbackStrategies": [
     "cursor rows: keyboard and pointer events keep flowing; only cursor appearance/warp behavior changes",
@@ -100,6 +96,21 @@
     "gitDiffCheck": "passed",
     "cargoBuildRelease": "passed"
   },
-  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_013141",
-  "nextRecommendedWork": "Run further per-row env-gated live proofs one at a time, starting with the safest remaining cursor rows (hide_on_key_press, no_warps, hotspot_padding), promoting each only on a passed receipt; the structured-family active-config pilot still awaits its explicit user decision."
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_020824",
+  "nextRecommendedWork": "Remaining disarmed rows need hardware (18 touch-family) or a secondary-device supervised proof (left_handed, rotation, resolve_binds_by_sym); the structured-family active-config pilot still awaits its explicit user decision.",
+  "liveProofsRunDetail": "batch one: 36 attempted, 27 passed, 9 failed (8 from the FiniteChoice int-quoting executor bug, 1 scroll_method [[EMPTY]] readback); executor fixed; batch two: 35 attempted, 35 passed; every failure restored or verified at its original/default value",
+  "rowsStillDisarmedDetail": {
+    "touchFamily": "18 touchpad/tablet/touch rows: proving behavior requires the hardware present",
+    "heldBackByJudgment": [
+      "input.left_handed - button swap could confuse the confirm click",
+      "input.rotation - pointer orientation change impairs aiming",
+      "input.resolve_binds_by_sym - the user's own keybinds could misfire"
+    ],
+    "modelOnly": "5 source-backed string rows",
+    "blockedByProof": "input.scroll_method (unset readback not round-trippable)"
+  },
+  "defectsFoundByLiveProofs": [
+    "executor rendered FiniteChoice values as quoted strings, but int-typed choice options reject them (integer type requires a bool or an integer); fixed: numeric choices render bare and every choice value is validated against the row's allowed list",
+    "unset str options read back as [[EMPTY]] and cannot be round-tripped; scroll_method blocked with that reason"
+  ]
 }

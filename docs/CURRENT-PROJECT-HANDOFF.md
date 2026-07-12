@@ -135,10 +135,18 @@ Structured-family controlled real-write implementation on `structured-family-edi
 - One proof ran and passed: `cursor.inactive_timeout` (original 0.000000 → preview 1 verified live → reverted and verified). The receipt is recorded in `PROVEN_INPUT_ROWS`, which is the only promotion mechanism — the dead-man layer arms input/cursor rows solely on a recorded receipt (test-enforced). Armed candidates: 3 (two animation toggles + the proven cursor row); 62 rows remain disarmed.
 - Disarmed rows show proof-aware status (risk, fallback, proof classification, env command); GTK evidence at `/tmp/hyprland-settings-gtk-automation/20260712_013141` with all safety flags false.
 
+## Proof Marathon Additions
+
+- Ran 71 env-gated live proof executions across two batches; 36 input/cursor rows are now proven and armed (receipts in `PROVEN_INPUT_ROWS`), covering every row provable on this machine.
+- Live proofs exposed and fixed a real executor defect: int-typed FiniteChoice options rejected quoted strings; choice values are now validated against each row's allowed list and numeric choices render bare.
+- `input.scroll_method` blocked with live evidence: unset str options read back as `[[EMPTY]]` and cannot be round-tripped.
+- The harness gained batch mode (`HYPRLAND_SETTINGS_INPUT_PROOF_ROW=all`); the active-config pilot gained a read-only autoreload evidence collector that fails closed.
+- GTK evidence proves an armed proof-passed input row with its provenance line; all safety flags false.
+
 ## Next Exact Work
 
-Stop for explicit user decision: approve or reject a first active real config write pilot for structured families.
+Stop for explicit user decision: approve or reject a first active real config write pilot for structured families (blocked by autoreload policy).
 
-For runtime preview: run further per-row env-gated live proofs one at a time, starting with the safest remaining cursor rows (hide_on_key_press, no_warps, hotspot_padding).
+Runtime preview arming is complete for this machine's provable surface: 18 touch-family rows need hardware, 3 rows need secondary-device proofs.
 
 Unblocking the pilot requires either setting `misc:disable_autoreload = true` (a user decision) or explicitly approving the compositor reload the pilot write would trigger; then run the ignored pilot test with `HYPRLAND_SETTINGS_RUN_ACTIVE_PILOT=1` and confirmed autoreload evidence.

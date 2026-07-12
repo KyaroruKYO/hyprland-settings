@@ -102,12 +102,39 @@ pub struct StructuredFamilyActiveConfigPilotApproval {
     pub verification_acknowledged: bool,
 }
 
-/// Externally collected, read-only evidence about the compositor's config
-/// autoreload state. The pilot cannot and does not collect this itself.
+/// Read-only evidence about the compositor's config autoreload state. Either
+/// externally supplied or collected via `collect_autoreload_evidence`, which
+/// issues a single read-only option query and never mutates anything.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct StructuredFamilyActiveConfigAutoreloadEvidence {
     pub disable_autoreload_confirmed: bool,
     pub evidence_description: String,
+}
+
+/// Collect autoreload evidence through a read-only `getoption` query. The
+/// gate only opens when `misc:disable_autoreload` reads back as exactly
+/// `true`; any read failure, parse failure, or `false` fails closed.
+pub fn collect_autoreload_evidence(
+    runner: &mut dyn crate::runtime_preview_executor::RuntimePreviewRunner,
+) -> StructuredFamilyActiveConfigAutoreloadEvidence {
+    let observed =
+        crate::runtime_preview_executor::read_runtime_option(runner, "misc.disable_autoreload");
+    let confirmed = observed.as_deref() == Some("true");
+    StructuredFamilyActiveConfigAutoreloadEvidence {
+        disable_autoreload_confirmed: confirmed,
+        evidence_description: match observed {
+            Some(value) => format!(
+                "read-only getoption misc:disable_autoreload returned {value:?}; {}",
+                if confirmed {
+                    "autoreload is disabled, so a config write cannot live-reload the compositor"
+                } else {
+                    "autoreload is active: a config write would live-reload the compositor, so the pilot stays blocked"
+                }
+            ),
+            None => "read-only getoption misc:disable_autoreload could not be read; failing closed"
+                .to_string(),
+        },
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]

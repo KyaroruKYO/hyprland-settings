@@ -100,7 +100,13 @@
     "implemented the env-gated per-row live proof harness that fails closed on missing env, unknown rows, missing fallback, non-proof-ready rows, and already-proven rows",
     "ran and passed one live proof (cursor.inactive_timeout: 0.000000 -> 1 -> reverted, verified live) and promoted the row to an armed candidate via its recorded receipt",
     "made promotion receipt-gated: input/cursor rows arm only with a PROVEN_INPUT_ROWS receipt (test-enforced)",
-    "added proof-aware UI copy to disarmed input/cursor rows and an InputProofDetail GTK probe proving it via AT-SPI"
+    "added proof-aware UI copy to disarmed input/cursor rows and an InputProofDetail GTK probe proving it via AT-SPI",
+    "ran the input/cursor live-proof marathon: 71 proof executions across two batches; 35 new rows proven and promoted with receipts (36 total armed input/cursor rows, 38 armed dead-man candidates)",
+    "live proofs exposed and fixed a real executor defect: FiniteChoice int-typed options rejected quoted strings; choice values are now validated against the row's allowed list and numeric choices render bare",
+    "blocked input.scroll_method with live evidence: unset str options read back as [[EMPTY]] and cannot be round-tripped",
+    "added a batch mode to the env-gated proof harness (INPUT_PROOF_ROW=all) that proves every proof-ready row and reverts each before continuing",
+    "added the read-only autoreload evidence collector to the active-config pilot (fails closed on read/parse failure or active autoreload)",
+    "GTK evidence proves an armed proof-passed input row (provenance line plus Preview with recovery) with all safety flags false"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,
@@ -114,7 +120,7 @@
     "structuredFamilyActiveConfigWritesEnabled": false,
     "hyprland0554MigrationActivated": false
   },
-  "activeNextWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families.",
+  "activeNextWork": "Stop for explicit user decision: the structured-family active-config pilot remains blocked by autoreload policy. Runtime preview arming is complete for this machine; touch-family rows need hardware.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",

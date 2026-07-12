@@ -20,14 +20,296 @@ use crate::write_classification::{ScalarWriteValueKind, SAFE_WRITABLE_ROWS};
 /// receipt recorded. Only entries here may be promoted to armable.
 /// Evidence: the env-gated harness in tests/runtime_preview_input_live_proof.rs,
 /// executed against the running compositor.
-pub const PROVEN_INPUT_ROWS: &[ProvenInputRow] = &[ProvenInputRow {
+pub const PROVEN_INPUT_ROWS: &[ProvenInputRow] = &[
+    ProvenInputRow {
     official_setting: "cursor.inactive_timeout",
     original_value: "0.000000",
     preview_value: "1",
     fallback_used: "keyboard and pointer both remained fully usable; only idle cursor-hide timing changed; the revert needed no user input",
     proof_date: "2026-07-12",
     proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.inactive_timeout",
-}];
+    },
+    ProvenInputRow {
+        official_setting: "input.sensitivity",
+        original_value: "0.000000",
+        preview_value: "0.1",
+        fallback_used: "pointer behavior may change (speed, handedness, scrolling); the keyboard remains usable and timeout auto-revert needs no input",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.sensitivity",
+    },
+    ProvenInputRow {
+        official_setting: "input.numlock_by_default",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "keyboard behavior may change; the pointer remains usable to click Revert/Cancel, and timeout auto-revert needs no input at all",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.numlock_by_default",
+    },
+    ProvenInputRow {
+        official_setting: "input.repeat_rate",
+        original_value: "25",
+        preview_value: "26",
+        fallback_used: "keyboard behavior may change; the pointer remains usable to click Revert/Cancel, and timeout auto-revert needs no input at all",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.repeat_rate",
+    },
+    ProvenInputRow {
+        official_setting: "input.repeat_delay",
+        original_value: "600",
+        preview_value: "601",
+        fallback_used: "keyboard behavior may change; the pointer remains usable to click Revert/Cancel, and timeout auto-revert needs no input at all",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.repeat_delay",
+    },
+    ProvenInputRow {
+        official_setting: "input.force_no_accel",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "pointer behavior may change (speed, handedness, scrolling); the keyboard remains usable and timeout auto-revert needs no input",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.force_no_accel",
+    },
+    ProvenInputRow {
+        official_setting: "input.scroll_button",
+        original_value: "0",
+        preview_value: "1",
+        fallback_used: "pointer behavior may change (speed, handedness, scrolling); the keyboard remains usable and timeout auto-revert needs no input",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.scroll_button",
+    },
+    ProvenInputRow {
+        official_setting: "input.scroll_button_lock",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "pointer behavior may change (speed, handedness, scrolling); the keyboard remains usable and timeout auto-revert needs no input",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.scroll_button_lock",
+    },
+    ProvenInputRow {
+        official_setting: "input.scroll_factor",
+        original_value: "1.000000",
+        preview_value: "1.1",
+        fallback_used: "pointer behavior may change (speed, handedness, scrolling); the keyboard remains usable and timeout auto-revert needs no input",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.scroll_factor",
+    },
+    ProvenInputRow {
+        official_setting: "input.natural_scroll",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "pointer behavior may change (speed, handedness, scrolling); the keyboard remains usable and timeout auto-revert needs no input",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.natural_scroll",
+    },
+    ProvenInputRow {
+        official_setting: "input.follow_mouse_threshold",
+        original_value: "0.000000",
+        preview_value: "0.1",
+        fallback_used: "focus-follow behavior changes which window receives events, but both devices keep working; keyboard navigation and timeout auto-revert remain available",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.follow_mouse_threshold",
+    },
+    ProvenInputRow {
+        official_setting: "input.follow_mouse",
+        original_value: "1",
+        preview_value: "0",
+        fallback_used: "focus-follow behavior changes which window receives events, but both devices keep working; keyboard navigation and timeout auto-revert remain available",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.follow_mouse",
+    },
+    ProvenInputRow {
+        official_setting: "input.focus_on_close",
+        original_value: "0",
+        preview_value: "1",
+        fallback_used: "focus-follow behavior changes which window receives events, but both devices keep working; keyboard navigation and timeout auto-revert remain available",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.focus_on_close",
+    },
+    ProvenInputRow {
+        official_setting: "input.mouse_refocus",
+        original_value: "true",
+        preview_value: "false",
+        fallback_used: "focus-follow behavior changes which window receives events, but both devices keep working; keyboard navigation and timeout auto-revert remain available",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.mouse_refocus",
+    },
+    ProvenInputRow {
+        official_setting: "input.float_switch_override_focus",
+        original_value: "1",
+        preview_value: "0",
+        fallback_used: "focus-follow behavior changes which window receives events, but both devices keep working; keyboard navigation and timeout auto-revert remain available",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.float_switch_override_focus",
+    },
+    ProvenInputRow {
+        official_setting: "input.special_fallthrough",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "focus-follow behavior changes which window receives events, but both devices keep working; keyboard navigation and timeout auto-revert remain available",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.special_fallthrough",
+    },
+    ProvenInputRow {
+        official_setting: "input.off_window_axis_events",
+        original_value: "1",
+        preview_value: "0",
+        fallback_used: "pointer behavior may change (speed, handedness, scrolling); the keyboard remains usable and timeout auto-revert needs no input",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.off_window_axis_events",
+    },
+    ProvenInputRow {
+        official_setting: "input.emulate_discrete_scroll",
+        original_value: "1",
+        preview_value: "0",
+        fallback_used: "pointer behavior may change (speed, handedness, scrolling); the keyboard remains usable and timeout auto-revert needs no input",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.emulate_discrete_scroll",
+    },
+    ProvenInputRow {
+        official_setting: "input.follow_mouse_shrink",
+        original_value: "0",
+        preview_value: "1",
+        fallback_used: "focus-follow behavior changes which window receives events, but both devices keep working; keyboard navigation and timeout auto-revert remain available",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.follow_mouse_shrink",
+    },
+    ProvenInputRow {
+        official_setting: "input.virtualkeyboard.share_states",
+        original_value: "2",
+        preview_value: "0",
+        fallback_used: "keyboard behavior may change; the pointer remains usable to click Revert/Cancel, and timeout auto-revert needs no input at all",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.virtualkeyboard.share_states",
+    },
+    ProvenInputRow {
+        official_setting: "input.virtualkeyboard.release_pressed_on_close",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "keyboard behavior may change; the pointer remains usable to click Revert/Cancel, and timeout auto-revert needs no input at all",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=input.virtualkeyboard.release_pressed_on_close",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.sync_gsettings_theme",
+        original_value: "true",
+        preview_value: "false",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.sync_gsettings_theme",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.hide_on_touch",
+        original_value: "true",
+        preview_value: "false",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.hide_on_touch",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.hide_on_tablet",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.hide_on_tablet",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.hide_on_key_press",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.hide_on_key_press",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.hotspot_padding",
+        original_value: "0",
+        preview_value: "1",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.hotspot_padding",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.no_warps",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.no_warps",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.persistent_warps",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.persistent_warps",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.warp_on_change_workspace",
+        original_value: "0",
+        preview_value: "1",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.warp_on_change_workspace",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.warp_on_toggle_special",
+        original_value: "0",
+        preview_value: "1",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.warp_on_toggle_special",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.zoom_factor",
+        original_value: "1.000000",
+        preview_value: "1.1",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.zoom_factor",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.zoom_rigid",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.zoom_rigid",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.zoom_disable_aa",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.zoom_disable_aa",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.zoom_detached_camera",
+        original_value: "true",
+        preview_value: "false",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.zoom_detached_camera",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.enable_hyprcursor",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.enable_hyprcursor",
+    },
+    ProvenInputRow {
+        official_setting: "cursor.warp_back_after_non_mouse_input",
+        original_value: "false",
+        preview_value: "true",
+        fallback_used: "cursor rows change cursor appearance/warp behavior only; keyboard and pointer events keep flowing",
+        proof_date: "2026-07-12",
+        proof_env: "HYPRLAND_SETTINGS_RUN_INPUT_LIVE_PROOF=1 HYPRLAND_SETTINGS_INPUT_PROOF_ROW=cursor.warp_back_after_non_mouse_input",
+    },
+];
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub struct ProvenInputRow {
@@ -211,6 +493,105 @@ fn minimal_preview_value(official_setting: &str, value_kind: ScalarWriteValueKin
     }
 }
 
+/// Rows judged safe to run an env-gated live proof: the effect is limited,
+/// at least one full input path provably survives, the timeout auto-revert
+/// needs no input, and apply/revert read back via getoption. Touch-family
+/// rows are deliberately absent (no hardware present to verify behavior), as
+/// are left_handed (button swap could confuse the confirm click), rotation
+/// (pointer orientation change impairs pointing), and resolve_binds_by_sym
+/// (the user's own compositor keybinds could misfire mid-preview).
+pub const PROOF_READY_ROWS: &[&str] = &[
+    // Cursor behavior rows: keyboard and pointer events keep flowing.
+    "cursor.enable_hyprcursor",
+    "cursor.hide_on_key_press",
+    "cursor.hide_on_tablet",
+    "cursor.hide_on_touch",
+    "cursor.hotspot_padding",
+    "cursor.no_warps",
+    "cursor.persistent_warps",
+    "cursor.sync_gsettings_theme",
+    "cursor.warp_back_after_non_mouse_input",
+    "cursor.warp_on_change_workspace",
+    "cursor.warp_on_toggle_special",
+    "cursor.zoom_detached_camera",
+    "cursor.zoom_disable_aa",
+    "cursor.zoom_factor",
+    "cursor.zoom_rigid",
+    // Pointer rows where the pointer stays physically usable and the
+    // keyboard is untouched. scroll_method is deliberately absent: when
+    // unset it reads back as [[EMPTY]], which cannot be reapplied, so revert
+    // cannot restore the exact original state.
+    "input.emulate_discrete_scroll",
+    "input.force_no_accel",
+    "input.natural_scroll",
+    "input.off_window_axis_events",
+    "input.scroll_button",
+    "input.scroll_button_lock",
+    "input.scroll_factor",
+    "input.sensitivity",
+    // Focus rows: both devices keep working; only focus-follow semantics
+    // change under the countdown.
+    "input.float_switch_override_focus",
+    "input.focus_on_close",
+    "input.follow_mouse",
+    "input.follow_mouse_shrink",
+    "input.follow_mouse_threshold",
+    "input.mouse_refocus",
+    "input.special_fallthrough",
+    // Keyboard rows where typing keeps working (repeat/numlock/virtual
+    // keyboards); bind resolution is deliberately excluded.
+    "input.numlock_by_default",
+    "input.repeat_delay",
+    "input.repeat_rate",
+    "input.virtualkeyboard.release_pressed_on_close",
+    "input.virtualkeyboard.share_states",
+];
+
+/// Compute a proof preview value guaranteed to differ from the captured
+/// original, using only proven grammar for the row's value kind. Returns
+/// None when no safe differing value can be derived.
+pub fn proof_preview_value_for(official_setting: &str, original: &str) -> Option<String> {
+    let row = SAFE_WRITABLE_ROWS
+        .iter()
+        .find(|row| row.official_setting == official_setting)?;
+    let original = original.trim();
+    match row.value_kind {
+        ScalarWriteValueKind::Boolean => Some(if original.starts_with("true") || original == "1" {
+            "false".to_string()
+        } else {
+            "true".to_string()
+        }),
+        ScalarWriteValueKind::FiniteChoice => {
+            crate::write_classification::finite_choice_options(row.row_id)?
+                .iter()
+                .map(|choice| choice.raw_value.to_string())
+                .find(|value| value != original)
+        }
+        ScalarWriteValueKind::Number | ScalarWriteValueKind::Percent => {
+            let value = original.parse::<f64>().ok()?;
+            let delta = if row.value_kind == ScalarWriteValueKind::Percent || original.contains('.')
+            {
+                0.1
+            } else {
+                1.0
+            };
+            // sensitivity is bounded to [-1, 1]; step toward zero when near
+            // the upper bound so the preview stays valid.
+            let candidate = if official_setting == "input.sensitivity" && value > 0.8 {
+                value - delta
+            } else {
+                value + delta
+            };
+            Some(if delta < 1.0 {
+                format!("{candidate:.1}")
+            } else {
+                format!("{}", candidate as i64)
+            })
+        }
+        _ => None,
+    }
+}
+
 fn proof_classification_for(
     official_setting: &str,
     subsystem: RuntimePreviewInputSubsystem,
@@ -226,11 +607,41 @@ fn proof_classification_for(
             None,
         );
     }
-    match official_setting {
-        "cursor.inactive_timeout" => (
+    if PROOF_READY_ROWS.contains(&official_setting) {
+        return (
             RuntimePreviewInputProofClassification::ProofReadyForEnvGatedLiveTest,
             "run the env-gated live proof; promote only if it passes",
             None,
+        );
+    }
+    match official_setting {
+        "input.scroll_method" => (
+            RuntimePreviewInputProofClassification::ProofBlockedNoRuntimeVerification,
+            "stay blocked",
+            Some(
+                "live proof showed the unset string option reads back as [[EMPTY]], which cannot be reapplied; revert cannot restore the exact original unset state",
+            ),
+        ),
+        "input.left_handed" => (
+            RuntimePreviewInputProofClassification::NeedsLiveProofInputPointer,
+            "held back by judgment",
+            Some(
+                "swapping mouse buttons mid-preview could make the confirm click do the wrong thing; needs a supervised proof with an unswapped secondary pointer",
+            ),
+        ),
+        "input.rotation" => (
+            RuntimePreviewInputProofClassification::NeedsLiveProofInputPointer,
+            "held back by judgment",
+            Some(
+                "rotating pointer input makes the mouse hard to aim during the preview window; keyboard fallback exists but a proof should use a secondary unrotated pointer",
+            ),
+        ),
+        "input.resolve_binds_by_sym" => (
+            RuntimePreviewInputProofClassification::NeedsLiveProofInputKeyboard,
+            "held back by judgment",
+            Some(
+                "changing bind resolution can make the user's own compositor keybinds misfire during the preview window",
+            ),
         ),
         "cursor.invisible" => (
             RuntimePreviewInputProofClassification::ProofBlockedTooDangerous,
@@ -268,11 +679,15 @@ fn proof_classification_for(
                     RuntimePreviewInputProofClassification::NeedsLiveProofFocus
                 }
             };
-            (
-                classification,
-                "disarmed until a per-row env-gated live proof passes",
-                None,
-            )
+            let promotion = if matches!(
+                subsystem,
+                RuntimePreviewInputSubsystem::Touchpad | RuntimePreviewInputSubsystem::TabletTouch
+            ) {
+                "disarmed: proving touch-family behavior requires the hardware to be present; the runtime round trip alone is not honest evidence"
+            } else {
+                "disarmed until a per-row env-gated live proof passes"
+            };
+            (classification, promotion, None)
         }
     }
 }

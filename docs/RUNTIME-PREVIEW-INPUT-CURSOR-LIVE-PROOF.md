@@ -1,6 +1,6 @@
 # Runtime Preview Input/Cursor Live Proof
 
-The 63 input/cursor rows that needed per-row live proof now have a complete proof architecture: row-specific proof plans, fallback requirements, an env-gated live-proof harness, and receipt-gated promotion. One proof ran and passed this sprint; 62 rows remain honestly disarmed.
+The 63 input/cursor rows that needed per-row live proof now have a complete proof architecture: row-specific proof plans, fallback requirements, an env-gated live-proof harness, and receipt-gated promotion. After the proof marathon, 36 rows are proven and armed (every row provable on this machine); 27 remain honestly disarmed pending touch hardware or secondary-device proofs.
 
 ## Why input rows are different
 
@@ -12,14 +12,12 @@ Each plan answers: what the setting controls, what could go wrong live, which su
 
 | Proof classification | Count | Notes |
 | --- | --- | --- |
-| NeedsLiveProofCursor | 15 | cursor warp/visibility/zoom behavior |
-| NeedsLiveProofInputPointer | 11 | speed, handedness, scrolling |
-| NeedsLiveProofInputTouchpad | 18 | touchpad + tablet + touch-device rows (needs hardware to verify) |
-| NeedsLiveProofFocus | 7 | follow-mouse and focus-jump behavior |
-| NeedsLiveProofInputKeyboard | 6 | repeat, numlock, bind resolution, virtual keyboards |
-| ProofBlockedNoRuntimeVerification | 4 | cursor rendering pipeline rows (`no_hardware_cursors`, `use_cpu_buffer`, `min_refresh_rate`, `no_break_fs_vrr`) — a glitched cursor cannot be detected by the app |
+| ProofPassedArmableCandidate | 36 | every cursor, pointer, focus, and keyboard row provable on this machine — proofs ran and passed with receipts |
+| NeedsLiveProofInputTouchpad | 18 | touchpad + tablet + touch-device rows (needs the hardware present to verify) |
+| NeedsLiveProofInputPointer | 2 | `left_handed`, `rotation` — held back: need a secondary unaffected pointer for the confirm click |
+| NeedsLiveProofInputKeyboard | 1 | `resolve_binds_by_sym` — held back: the user's own keybinds could misfire mid-preview |
+| ProofBlockedNoRuntimeVerification | 5 | 4 cursor rendering pipeline rows plus `input.scroll_method` (unset str reads back as `[[EMPTY]]`, not round-trippable — found by live proof) |
 | ProofBlockedTooDangerous | 1 | `cursor.invisible` — the preview value itself removes cursor visibility |
-| ProofPassedArmableCandidate | 1 | `cursor.inactive_timeout` — proof ran and passed |
 
 ## The proof that ran
 
@@ -36,3 +34,7 @@ Disarmed input/cursor rows now show proof-aware status in the supervised panel: 
 ## Promoting the next rows
 
 One row at a time: pick the safest remaining cursor rows first (`hide_on_key_press`, `no_warps`, `hotspot_padding`), classify each `ProofReadyForEnvGatedLiveTest` with a concrete minimal preview value, run its env-gated proof, and record the receipt only if apply and revert both verify. Touch-family rows additionally need the hardware present to verify behavior.
+
+## The proof marathon
+
+The env-gated harness gained a batch mode (`HYPRLAND_SETTINGS_INPUT_PROOF_ROW=all`) that proves every proof-ready row, reverting each before the next. 71 proof executions ran across two batches: batch one passed 27 and failed 9 — 8 failures were a real executor defect (int-typed FiniteChoice options reject quoted strings), which was fixed (numeric choices render bare, and every choice value is validated against the row's allowed list); the ninth, `scroll_method`, revealed that unset str options read back as `[[EMPTY]]` and cannot be round-tripped, so it is blocked with that evidence. Batch two passed all 35. Every receipt (row, original, preview, fallback, env command) is recorded in `PROVEN_INPUT_ROWS` and exported in the proof-plan report.

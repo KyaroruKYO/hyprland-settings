@@ -91,6 +91,26 @@ fn rendered_lua_value(
                 })
             }
         }
+        ScalarWriteValueKind::FiniteChoice => {
+            // Live-proven: int-typed finite-choice options reject quoted
+            // strings ("integer type requires a bool or an integer"), so
+            // numeric choice values must render bare. Values are validated
+            // against the row's own allowed choices.
+            let allowed = crate::write_classification::finite_choice_options(row.row_id)
+                .map(|choices| choices.iter().any(|choice| choice.raw_value == value))
+                .unwrap_or(false);
+            if !allowed {
+                return Err(RuntimePreviewError::InvalidValue {
+                    row_id: row.row_id.to_string(),
+                    reason: "value is not one of this row's allowed choices",
+                });
+            }
+            if value.parse::<i64>().is_ok() || value.parse::<f64>().is_ok() {
+                Ok(value.to_string())
+            } else {
+                Ok(format!("\"{value}\""))
+            }
+        }
         ScalarWriteValueKind::CssGap => {
             // Proven grammar: css_gap accepts an integer or a table with
             // top/right/bottom/left fields. CSS shorthand order applies.
@@ -237,6 +257,19 @@ impl RuntimePreviewRunner for HyprctlRuntimePreviewRunner {
         }
         Ok(stdout)
     }
+}
+
+/// Run one read-only option query through a runner and parse the value.
+/// The only command this issues is `getoption`; it can never mutate.
+pub fn read_runtime_option(
+    runner: &mut dyn RuntimePreviewRunner,
+    official_setting: &str,
+) -> Option<String> {
+    let query = runtime_option_query(official_setting);
+    runner
+        .run("hyprctl", &query)
+        .ok()
+        .and_then(|output| parse_getoption_value(&output))
 }
 
 /// Parse the value out of a `getoption` response (`int: 5`, `float: 0.5`,

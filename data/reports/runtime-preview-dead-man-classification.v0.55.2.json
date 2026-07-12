@@ -3,8 +3,8 @@
   "projectDataVersion": "v0.55.2",
   "summary": {
     "dead_man_rows_total": 78,
-    "candidates": 3,
-    "candidates_needing_live_proof": 62,
+    "candidates": 38,
+    "candidates_needing_live_proof": 27,
     "model_only": 5,
     "blocked_no_safe_runtime_mechanism": 8,
     "blocked_requires_relog": 0,
@@ -66,8 +66,8 @@
       "row_id": "input.pointer_sensitivity",
       "official_setting": "input.sensitivity",
       "value_kind": "Percent",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.scroll_points",
@@ -115,8 +115,8 @@
       "row_id": "input.numlock_by_default",
       "official_setting": "input.numlock_by_default",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.resolve_binds_by_sym",
@@ -129,22 +129,22 @@
       "row_id": "input.repeat_rate",
       "official_setting": "input.repeat_rate",
       "value_kind": "Number",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.repeat_delay",
       "official_setting": "input.repeat_delay",
       "value_kind": "Number",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.force_no_accel",
       "official_setting": "input.force_no_accel",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.rotation",
@@ -164,22 +164,22 @@
       "row_id": "input.scroll_button",
       "official_setting": "input.scroll_button",
       "value_kind": "Number",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.scroll_button_lock",
       "official_setting": "input.scroll_button_lock",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.scroll_factor",
       "official_setting": "input.scroll_factor",
       "value_kind": "Percent",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.scroll_method",
@@ -192,71 +192,71 @@
       "row_id": "input.natural_scroll",
       "official_setting": "input.natural_scroll",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.follow_mouse_threshold",
       "official_setting": "input.follow_mouse_threshold",
       "value_kind": "Number",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.follow_mouse",
       "official_setting": "input.follow_mouse",
       "value_kind": "FiniteChoice",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.focus_on_close",
       "official_setting": "input.focus_on_close",
       "value_kind": "FiniteChoice",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.mouse_refocus",
       "official_setting": "input.mouse_refocus",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.float_switch_override_focus",
       "official_setting": "input.float_switch_override_focus",
       "value_kind": "FiniteChoice",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.special_fallthrough",
       "official_setting": "input.special_fallthrough",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.off_window_axis_events",
       "official_setting": "input.off_window_axis_events",
       "value_kind": "FiniteChoice",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.emulate_discrete_scroll",
       "official_setting": "input.emulate_discrete_scroll",
       "value_kind": "FiniteChoice",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.follow_mouse_shrink",
       "official_setting": "input.follow_mouse_shrink",
       "value_kind": "Number",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.touchpad.disable_while_typing",
@@ -367,15 +367,15 @@
       "row_id": "input.virtualkeyboard.share_states",
       "official_setting": "input.virtualkeyboard.share_states",
       "value_kind": "FiniteChoice",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.virtualkeyboard.release_pressed_on_close",
       "official_setting": "input.virtualkeyboard.release_pressed_on_close",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "input.tablet.transform",
@@ -416,29 +416,29 @@
       "row_id": "cursor.sync_gsettings_theme",
       "official_setting": "cursor.sync_gsettings_theme",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.hide_on_touch",
       "official_setting": "cursor.hide_on_touch",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.hide_on_tablet",
       "official_setting": "cursor.hide_on_tablet",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.hide_on_key_press",
       "official_setting": "cursor.hide_on_key_press",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.invisible",
@@ -472,8 +472,8 @@
       "row_id": "cursor.hotspot_padding",
       "official_setting": "cursor.hotspot_padding",
       "value_kind": "Number",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.inactive_timeout",
@@ -486,64 +486,64 @@
       "row_id": "cursor.no_warps",
       "official_setting": "cursor.no_warps",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.persistent_warps",
       "official_setting": "cursor.persistent_warps",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.warp_on_change_workspace",
       "official_setting": "cursor.warp_on_change_workspace",
       "value_kind": "FiniteChoice",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.warp_on_toggle_special",
       "official_setting": "cursor.warp_on_toggle_special",
       "value_kind": "FiniteChoice",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.zoom_factor",
       "official_setting": "cursor.zoom_factor",
       "value_kind": "Number",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.zoom_rigid",
       "official_setting": "cursor.zoom_rigid",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.zoom_disable_aa",
       "official_setting": "cursor.zoom_disable_aa",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.zoom_detached_camera",
       "official_setting": "cursor.zoom_detached_camera",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.enable_hyprcursor",
       "official_setting": "cursor.enable_hyprcursor",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     },
     {
       "row_id": "cursor.use_cpu_buffer",
@@ -556,8 +556,8 @@
       "row_id": "cursor.warp_back_after_non_mouse_input",
       "official_setting": "cursor.warp_back_after_non_mouse_input",
       "value_kind": "Boolean",
-      "classification": "DeadManPreviewCandidateNeedsLiveProof",
-      "reason": "the scalar runtime mechanism should apply, but changing input/cursor behavior mid-session can impair the devices used to confirm or revert; live use requires a per-row live proof first"
+      "classification": "DeadManPreviewCandidate",
+      "reason": "promoted by a passed per-row env-gated live proof: apply and revert verified against the running compositor with all input paths usable (receipt recorded in PROVEN_INPUT_ROWS)"
     }
   ]
 }

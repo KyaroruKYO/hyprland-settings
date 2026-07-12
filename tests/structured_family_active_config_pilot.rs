@@ -391,3 +391,40 @@ fn first_active_config_write_pilot_runs_only_when_every_gate_passes() {
     fs::remove_dir_all(&rehearsal_root).ok();
     fs::remove_dir_all(&backup_root).ok();
 }
+
+#[test]
+fn autoreload_evidence_collector_fails_closed() {
+    use hyprland_settings::runtime_preview_executor::RuntimePreviewRunner;
+    use hyprland_settings::structured_family_active_config_pilot::collect_autoreload_evidence;
+
+    struct FixedRunner(Result<String, String>);
+    impl RuntimePreviewRunner for FixedRunner {
+        fn run(&mut self, _program: &str, args: &[String]) -> Result<String, String> {
+            assert_eq!(args[0], "getoption", "collector must be read-only");
+            self.0.clone()
+        }
+    }
+
+    // Disabled autoreload confirms the gate.
+    let mut runner = FixedRunner(Ok("bool: true\nset: true".to_string()));
+    let evidence = collect_autoreload_evidence(&mut runner);
+    assert!(evidence.disable_autoreload_confirmed);
+    assert!(evidence.evidence_description.contains("cannot live-reload"));
+
+    // Active autoreload fails closed with the blocker explained.
+    let mut runner = FixedRunner(Ok("bool: false\nset: false".to_string()));
+    let evidence = collect_autoreload_evidence(&mut runner);
+    assert!(!evidence.disable_autoreload_confirmed);
+    assert!(evidence.evidence_description.contains("stays blocked"));
+
+    // Read failures fail closed.
+    let mut runner = FixedRunner(Err("socket unavailable".to_string()));
+    let evidence = collect_autoreload_evidence(&mut runner);
+    assert!(!evidence.disable_autoreload_confirmed);
+    assert!(evidence.evidence_description.contains("failing closed"));
+
+    // Unparseable output fails closed.
+    let mut runner = FixedRunner(Ok("garbage".to_string()));
+    let evidence = collect_autoreload_evidence(&mut runner);
+    assert!(!evidence.disable_autoreload_confirmed);
+}

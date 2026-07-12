@@ -36,17 +36,17 @@ fn all_needs_live_proof_rows_have_specific_proof_plans() {
         + summary.proof_ready_for_env_gated_live_test_rows
         + summary.proof_passed_armable_candidate_rows;
     assert_eq!(accounted, 63, "every row falls into exactly one bucket");
-    assert_eq!(summary.keyboard_risk_rows, 6);
-    assert_eq!(summary.pointer_risk_rows, 11);
+    assert_eq!(summary.keyboard_risk_rows, 1);
+    assert_eq!(summary.pointer_risk_rows, 2);
     assert_eq!(summary.touchpad_risk_rows, 18);
-    assert_eq!(summary.cursor_risk_rows, 15);
-    assert_eq!(summary.focus_risk_rows, 7);
+    assert_eq!(summary.cursor_risk_rows, 0);
+    assert_eq!(summary.focus_risk_rows, 0);
     assert_eq!(summary.proof_blocked_too_dangerous_rows, 1);
-    assert_eq!(summary.proof_blocked_no_runtime_verification_rows, 4);
-    assert_eq!(summary.proof_passed_armable_candidate_rows, 1);
+    assert_eq!(summary.proof_blocked_no_runtime_verification_rows, 5);
+    assert_eq!(summary.proof_passed_armable_candidate_rows, 36);
     assert_eq!(
         summary.proof_ready_for_env_gated_live_test_rows, 0,
-        "the only proof-ready row was proven and promoted this sprint"
+        "every proof-ready row was proven and promoted"
     );
 
     for plan in &plans {
@@ -111,8 +111,8 @@ fn promotion_requires_a_recorded_proof_receipt() {
             assert!(!ui.arm_enabled, "{} must render disarmed", plan.row_id);
         }
     }
-    // The single recorded receipt is the row proven this sprint.
-    assert_eq!(PROVEN_INPUT_ROWS.len(), 1);
+    // 36 recorded receipts: cursor.inactive_timeout plus the 35-row batch.
+    assert_eq!(PROVEN_INPUT_ROWS.len(), 36);
     assert_eq!(
         PROVEN_INPUT_ROWS[0].official_setting,
         "cursor.inactive_timeout"
@@ -241,6 +241,6 @@ fn input_proof_plan_report_is_generated_and_consistent() {
     assert_eq!(parsed["plans"].as_array().expect("plans array").len(), 63);
     assert_eq!(
         parsed["provenRows"].as_array().expect("proven array").len(),
-        1
+        36
     );
 }
