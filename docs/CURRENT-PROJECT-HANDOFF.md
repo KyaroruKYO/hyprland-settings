@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family executor wiring readiness plan on `structured-family-editors-unified`.
+Structured-family controlled real-write implementation on `structured-family-editors-unified`.
 
 ## Completed This Sprint
 
@@ -68,19 +68,27 @@ Structured-family executor wiring readiness plan on `structured-family-editors-u
 - Re-proved the executor scaffold remains unreachable from `main`, `write_flow`, and UI sources.
 - Kept executor wiring approved false, executor wired false, and production readiness not production ready.
 - Classified structured-family editors/writes as blocked by executor wiring readiness plan pending explicit actual executor wiring scaffold decision.
+- Implemented the controlled write-target policy (`src/structured_family_write_target.rs`) distinguishing test-owned fixture, copied config tree, temporary config, active real config, and unknown targets; only the first three are writable, and active-config paths are reclassified and rejected regardless of declared kind.
+- Implemented and internally wired the controlled write executor (`src/structured_family_controlled_write.rs`): approval verification, target policy enforcement, staged-apply safety gating, byte-exact backup, family-record write that preserves non-family lines, parser/projection reread verification, automatic restoration on verification failure, rollback with byte-exact and reread verification, write receipts, and audit records.
+- Proved full write/backup/reread/verify/restore/verify round trips for all seven families against copied temp targets, with real file writes confined to temporary test directories.
+- Proved fail-closed behavior for missing approval, forbidden active-config approval, missing backup/restore/verification plans, out-of-root backup paths, unsafe staged apply plans, tampered linkage, empty rendered records, unknown targets, path escapes, symlink escapes, and disallowed roots.
+- Proved the controlled executor is unreachable from live UI, `main`, and the scalar write flow, and contains no reload, command-runner, runtime-mutation, or GTK control paths.
+- Kept active real config writes, GUI live Apply controls, hyprctl reload, runtime mutation, and first real config write unapproved and disabled.
+- Classified structured-family editors/writes as blocked by active real config write approval.
 - Added a project-area continuation scan.
 
 ## Safety Boundaries
 
-- Real config touched: false.
+- Active real config touched: false.
 - Runtime mutated: false.
 - `hyprctl reload` run: false.
 - Production behavior enabled: false.
-- Structured-family writes enabled: false.
-- Executor implemented: true for inert scaffold only.
-- Executor wiring planning approved: true for inert readiness work only.
-- Executor wiring approved: false.
-- Executor wired: false.
+- Structured-family controlled-target writes enabled: true (test-owned fixture, copied config tree, and temp targets only).
+- Structured-family active-config writes enabled: false.
+- Executor implemented: true (controlled write executor plus the earlier inert scaffold).
+- Executor wired for controlled targets: true.
+- Executor wired for active config: false.
+- GUI live Apply controls enabled: false.
 - GUI real-write controls enabled: false.
 - Backup creation enabled: false.
 - Restore execution enabled: false.
@@ -90,4 +98,4 @@ Structured-family executor wiring readiness plan on `structured-family-editors-u
 
 ## Next Exact Work
 
-Stop for explicit user decision: approve or reject actual executor wiring scaffold.
+Stop for explicit user decision: approve or reject a first active real config write pilot for structured families.

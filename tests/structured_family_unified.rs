@@ -3867,25 +3867,24 @@ fn project_area_continuation_scan_classifies_every_required_area() {
         .expect("structured-family area should exist");
     assert_eq!(
         structured["classification"],
-        "blocked_by_executor_wiring_readiness_plan_pending_actual_wiring_scaffold_decision"
+        "blocked_by_active_real_config_write_approval"
     );
     assert_eq!(structured["canContinueNow"], false);
-    assert!(structured["currentStatus"]
+    let structured_status = structured["currentStatus"]
         .as_str()
-        .expect("currentStatus should be text")
-        .contains("executor scaffold implemented true"));
-    assert!(structured["currentStatus"]
-        .as_str()
-        .expect("currentStatus should be text")
-        .contains("executor wiring readiness model added true"));
+        .expect("currentStatus should be text");
+    assert!(structured_status.contains("executor wired for controlled targets true"));
+    assert!(structured_status.contains("executor wired for active config false"));
+    assert!(structured_status.contains("active real config writes approved false"));
+    assert!(structured_status.contains("first real config write approved false"));
     assert_eq!(
         structured["safeNextWork"],
-        "stop for explicit user decision on actual executor wiring scaffold"
+        "approve or reject first active real config write pilot; safe non-active-config defect correction remains allowed"
     );
     assert!(structured["mustNotDo"]
         .as_str()
         .expect("mustNotDo should be text")
-        .contains("do not wire executor"));
+        .contains("do not write the active real Hyprland config"));
 
     let missing = areas
         .iter()
@@ -3908,7 +3907,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Stop for explicit user decision: approve or reject actual executor wiring scaffold."
+        "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],

@@ -2,8 +2,8 @@
   "artifactKind": "current-project-handoff",
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
-  "startingCommit": "16967fbd820460bad64b7275cee4bd6c9cd428b5",
-  "currentFocus": "structured-family executor wiring readiness plan",
+  "startingCommit": "78c5bbcc988e370e6ee8bda98d3285f544830858",
+  "currentFocus": "structured-family controlled real-write implementation",
   "completedThisSprint": [
     "shared structured-family model for hl.monitor, hl.bind, hl.animation, hl.curve, hl.gesture, hl.device, and hl.permission",
     "review-only Config page structured-family section with seven stable cards",
@@ -63,7 +63,18 @@
     "source-level regression guards prove the wiring-readiness layer has no executor call, no write_flow or apply_setting_change reachability, no UI reachability, no filesystem mutation, no command runner, no hyprctl path, and no approval flag flips",
     "reachability tests re-prove the executor scaffold remains unreachable from main, write_flow, and UI sources",
     "executor wiring approved remains false, executor wired remains false, and production readiness remains not production ready",
-    "structured-family area classified as blocked by executor wiring readiness plan pending explicit actual executor wiring scaffold decision"
+    "structured-family area classified as blocked by executor wiring readiness plan pending explicit actual executor wiring scaffold decision",
+    "controlled real-write implementation approved: actual executor wiring scaffold, internal executor wiring, and controlled-target writes",
+    "controlled write-target policy implemented distinguishing test-owned fixture, copied config tree, temporary config, active real config, and unknown targets",
+    "active real config targets, unknown targets, path escapes, symlink escapes, out-of-root targets, and disallowed roots rejected by target policy",
+    "controlled write executor implemented and internally wired to the parse/render/projection pipeline for controlled targets only",
+    "real write, byte-exact backup, restore, rollback, post-write reread verification, and post-restore reread verification proven for all seven families against copied temp targets",
+    "fail-closed proof for missing approval, forbidden active-config approval, missing backup/restore/verification plans, out-of-root backup paths, unsafe staged apply plans, tampered linkage, and empty rendered records",
+    "post-write verification failure automatically restores the original bytes",
+    "write receipts and audit records emitted with constant-false active-config/reload/runtime flags",
+    "controlled executor proven unreachable from live UI, main, and the scalar write flow",
+    "active real config writes, GUI live Apply controls, hyprctl reload, runtime mutation, and first real config write remain unapproved and disabled",
+    "structured-family area classified as blocked by active real config write approval"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,
@@ -73,19 +84,20 @@
     "sourceIncludeProductionActivationEnabled": false,
     "duplicateProductionActivationEnabled": false,
     "structuredFamilyWritesEnabled": false,
+    "structuredFamilyControlledTargetWritesEnabled": true,
+    "structuredFamilyActiveConfigWritesEnabled": false,
     "hyprland0554MigrationActivated": false
   },
-  "activeNextWork": "Stop for explicit user decision: approve or reject actual executor wiring scaffold.",
+  "activeNextWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",
-    "do not enable real structured-family writes",
-    "do not implement or wire structured-family executors",
-    "do not rank families or choose an activation subset",
-    "do not create backups or restore backups",
+    "do not enable structured-family writes against the active real Hyprland config",
+    "do not wire the controlled executor to the active config, live UI Apply controls, or the scalar write flow",
+    "do not create backups of, restore, or roll back the active real config",
     "do not run hyprctl reload",
-    "do not mutate real config or runtime",
-    "do not design or wire GUI real-write controls",
-    "do not continue structured-family production activation work without explicit user approval of an actual executor wiring scaffold"
+    "do not run mutating hyprctl or mutate runtime",
+    "do not enable user-facing live Apply controls for structured families",
+    "do not perform the first active real config write without explicit user approval of a pilot"
   ]
 }

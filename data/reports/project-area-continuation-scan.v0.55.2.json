@@ -2,7 +2,7 @@
   "artifactKind": "project-area-continuation-scan",
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
-  "startingCommit": "16967fbd820460bad64b7275cee4bd6c9cd428b5",
+  "startingCommit": "78c5bbcc988e370e6ee8bda98d3285f544830858",
   "areas": [
     {
       "areaName": "Core app shell / UI / navigation",
@@ -118,13 +118,13 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "fixture-only proof chain complete; real-write activation requirements listed; missing backup/restore proof listed; required user approval gates listed; Option B planning-only production activation scope approved; production activation design complete; internal safe-write architecture plan complete; executor architecture implementation planning approved true; actual executor implementation approved true; executor implementation approved true; executor scaffold implemented true; executor scaffold inert true; executor scaffold unwired true; executor wiring planning approved true; executor wiring readiness model added true; executor wiring boundary defined true; executor wiring source guards added true; executor wiring approved false; real write scope approved false; GUI real-write controls approved false; family ranking excluded by user instruction; activation subset selected false; production activation approved false; executor wired false; real write path enabled false; GUI real-write controls enabled false; first real config write approved false",
-      "classification": "blocked_by_executor_wiring_readiness_plan_pending_actual_wiring_scaffold_decision",
+      "currentStatus": "controlled real-write implementation complete: the controlled write executor is implemented, internally wired, and tested for test-owned fixture, copied config tree, and temporary config targets; write, byte-exact backup, restore, rollback, post-write reread verification, and post-restore reread verification are proven for all seven families against copied temp targets; the active real Hyprland config is rejected by target policy, approval model, and tests; executor wired for controlled targets true; executor wired for active config false; real write path enabled for controlled targets true; real write path enabled for active config false; active real config writes approved false; GUI live Apply controls enabled false; hyprctl reload enabled false; runtime mutation enabled false; first real config write approved false",
+      "classification": "blocked_by_active_real_config_write_approval",
       "canContinueNow": false,
-      "reason": "The inert executor wiring-readiness plan is complete: wiring boundaries are defined, inert readiness models compile and reject by default, and source-level regression guards prove no actual wiring exists. Further structured-family production activation work must stop until the user explicitly approves or rejects an actual executor wiring scaffold. Executor wiring, real writes, GUI real-write controls, backup/restore execution, rollback, reload, runtime mutation, family ranking, activation subset selection, production readiness, and first real config write approval remain false.",
-      "blockingDependency": "explicit user decision on actual executor wiring scaffold",
-      "safeNextWork": "stop for explicit user decision on actual executor wiring scaffold",
-      "mustNotDo": "do not wire executor, call executor, enable real writes, design or wire GUI real-write controls, rank families, choose activation subset, create backups, restore backups, rollback, reload Hyprland, mutate runtime, or approve first real config write",
+      "reason": "Real structured-family write code now exists and is proven for controlled targets only. The next step across the safety boundary is a first active real config write pilot, which requires a fresh explicit user approval. No target kind, approval flag, or executor path can currently reach the active Hyprland config. Safe non-active-config defect fixes remain allowed if defects are discovered.",
+      "blockingDependency": "explicit user decision on first active real config write pilot",
+      "safeNextWork": "approve or reject first active real config write pilot; safe non-active-config defect correction remains allowed",
+      "mustNotDo": "do not write the active real Hyprland config, enable live Apply controls, run hyprctl reload, run mutating hyprctl, mutate runtime, or perform the first active-config write without explicit approval",
       "evidenceUsed": [
         "src/structured_family.rs",
         "tests/structured_family_unified.rs",
@@ -147,7 +147,11 @@
         "data/reports/structured-family-internal-safe-write-architecture-plan.v0.55.2.json",
         "data/reports/structured-family-executor-architecture-implementation-plan.v0.55.2.json",
         "data/reports/structured-family-executor-implementation-scaffold.v0.55.2.json",
-        "data/reports/structured-family-executor-wiring-readiness-plan.v0.55.2.json"
+        "data/reports/structured-family-executor-wiring-readiness-plan.v0.55.2.json",
+        "data/reports/structured-family-controlled-real-write-implementation.v0.55.2.json",
+        "src/structured_family_write_target.rs",
+        "src/structured_family_controlled_write.rs",
+        "tests/structured_family_controlled_write.rs"
       ]
     },
     {
@@ -194,5 +198,5 @@
     }
   ],
   "activeSafeArea": null,
-  "recommendedNextWork": "Stop for explicit user decision: approve or reject actual executor wiring scaffold."
+  "recommendedNextWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families."
 }
