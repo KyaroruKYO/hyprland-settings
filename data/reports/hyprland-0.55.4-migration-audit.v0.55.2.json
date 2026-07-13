@@ -1,0 +1,25 @@
+{
+  "artifactKind": "hyprland-0.55.4-migration-audit",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "ba7aeb2b92f96e9b2e6e3b81069d023319e1bf64",
+  "goal": "Solve the trusted-export problem and measure real drift between the v0.55.2 model and the live 0.55.4 compositor.",
+  "hyprland0554MigrationStatus": "AUDIT COMPLETE - zero option drift; the v0.55.2 model is name- and bounds-compatible with live 0.55.4",
+  "hyprland0554TrustedSource": "hyprctl -j descriptions from the official installed 0.55.4 binary (Hyprland 0.55.4 commit a0136d8c, clean build) - captured to data/exports/hyprland-0.55.4/hyprctl-descriptions.v0.55.4.json",
+  "reproduciblePipeline": {
+    "capture": "hyprctl -j descriptions > data/exports/hyprland-0.55.4/hyprctl-descriptions.v0.55.4.json",
+    "verify": "cargo test --test hyprland_0554_migration_audit",
+    "expectedOutput": "341 options; 0 added; 0 removed; all modeled numeric bounds match"
+  },
+  "hyprland0554RowsAdded": 0,
+  "hyprland0554RowsRemoved": 0,
+  "hyprland0554RowsChanged": 0,
+  "numericBoundsCompared": 78,
+  "numericBoundsMismatches": 0,
+  "descriptionTextDiffs": 47,
+  "descriptionTextDiffsNote": "47 description strings differ cosmetically between the app's curated copy and the binary's; no behavioral meaning",
+  "conclusion": "the previously flagged 'largest structural risk' (version skew) is dissolved by trusted live evidence: 0.55.4 exposes exactly the 341 options the model covers, with identical numeric bounds; no model migration is required at this time",
+  "regressionGuard": "tests/hyprland_0554_migration_audit.rs pins the compatibility against the captured export in every cargo test run",
+  "validation": "regression test passes",
+  "nextRecommendedWork": "refresh the capture and rerun the pinned test whenever Hyprland updates"
+}
