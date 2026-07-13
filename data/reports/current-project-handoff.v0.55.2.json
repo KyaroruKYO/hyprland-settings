@@ -135,9 +135,9 @@
     "structuredFamilyControlledTargetWritesEnabled": true,
     "structuredFamilyActiveConfigWritesEnabled": true,
     "hyprland0554MigrationActivated": false,
-    "structuredFamilyWriteScope": "active-config writes exist ONLY via gated_family_save for the two proven records (hl.animation global speed, hl.curve default Y0), gated on receipt + Safe Live Save Mode + identity, with backup and reread verification; the controlled-write executor still rejects the active config by construction; no creation/deletion; other five families blocked"
+    "structuredFamilyWriteScope": "active-config writes exist ONLY via gated_family_save and gated_family_record_save for proven surfaces: the two family-proof records plus the live-proven record shapes (speed of any explicitly overridden animation record with style preserved; all four control points of any existing bezier curve), gated on shape receipt + Safe Live Save Mode + identity, with backup and reread verification; misc:disable_autoreload persistence goes through the gated scalar save only; the controlled-write executor still rejects the active config by construction; no creation/deletion; other five families blocked"
   },
-  "activeNextWork": "Optional breadth: family record picker; persist misc:disable_autoreload via gated scalar save; refresh the 0.55.4 capture on Hyprland updates.",
+  "activeNextWork": "Remaining: hardware-gated proofs (18 touch rows, 3 secondary-device rows) when devices are available; the release decision is ready pending user approval; further record shapes need new live proofs.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",

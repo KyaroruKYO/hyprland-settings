@@ -163,11 +163,17 @@ Save persistence and migration marathon complete on `structured-family-editors-u
 - Ran the env-gated live save flow proof: the gate blocked correctly while autoreload was active; both targets then wrote real config records, reread-verified, with no restore by production code; the flow-proof cleanup restored the pre-test bytes exactly and the original autoreload state.
 - Completed the Hyprland 0.55.4 migration audit with a trusted source (`hyprctl -j descriptions` from the official 0.55.4 binary, captured to `data/exports/hyprland-0.55.4/`): zero option drift (341 = 341, 0 added, 0 removed), zero numeric-bounds drift (78 compared), 47 cosmetic description diffs; a regression test pins compatibility every `cargo test` run. See `docs/HYPRLAND-0.55.4-MIGRATION-AUDIT.md`.
 
+## Completion Marathon Additions (record picker, safe mode persistence, refresh, release decision)
+
+- Family record picker (`src/family_record_picker.rs`): lists the records that exist in the runtime readback with honest per-record classification, previews picked records live under the recovery countdown, and persists them through `gated_family_record_save` (the same gate chain, now shape-receipt-gated). Record-shape proofs passed live on non-family-proof records (hl.animation `fade` speed; hl.curve `quick` control points; zero residue), and the live save flow proof persisted both shapes to the real config with byte-exact flow-proof restores. A live proof found disabled-at-runtime records cannot be preview-verified — they are save-only; styled records are save-only with the style preserved; inherited and internal records stay blocked (creation is blocked). See `docs/FAMILY-RECORD-PICKER-GATED-PERSISTENCE.md`.
+- Safe Live Save Mode persistence (`src/persist_safe_live_save_mode.rs`): `misc:disable_autoreload = true` can be saved as the default through the gated scalar Save — user-chosen via the Save as default control (enabled only while the runtime mode is active), never automatic; the module can express no other setting or value. Live flow proof passed with byte-exact restore. See `docs/PERSIST-SAFE-LIVE-SAVE-MODE.md`.
+- 0.55.4 export refresh workflow (`tools/refresh_hyprland_descriptions_export.sh`): read-only re-capture + diff + pinned-test rerun; executed live with zero drift in every category; a different live version gets its own capture without touching the pinned one. See `docs/HYPRLAND-0.55.4-EXPORT-REFRESH.md`.
+- Release decision: ready pending user approval — RC materials drafted (release notes, changelog, checklists, manual test plan); no tag, no merge, no artifacts. See `docs/RELEASE-DECISION.md`.
+
 ## Next Exact Work
 
-The core save/persistence/migration goals are complete. Remaining work is optional breadth and externally gated proofs:
+The completion marathon areas are done. Remaining:
 
-- Family record picker: extend gated persistence one proven record shape at a time.
-- Persist `misc:disable_autoreload = true` via the gated scalar save so Safe Live Save Mode survives restarts (currently runtime-only).
-- Hardware-gated proofs: 18 touch-family rows need touch hardware; 3 rows need secondary-device proofs.
-- Refresh the 0.55.4 descriptions capture and rerun the pinned migration test whenever Hyprland updates.
+- Hardware-gated proofs: 18 touch-family rows need touch/tablet hardware; 3 rows need secondary-device proofs (deferred; devices unavailable — no simulated/virtual-device path is proven, and any future one is proposal-only requiring explicit approval).
+- Release: the decision is ready pending user approval (merge, version bump, tag v0.2.0, dist artifacts — all user-gated).
+- Further record shapes (style/enabled fields, other families) require new live proofs before any support.

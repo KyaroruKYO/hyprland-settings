@@ -3879,7 +3879,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     assert!(structured_status.contains("first real config write approved false"));
     assert_eq!(
         structured["safeNextWork"],
-        "optional breadth: record picker for additional proven record shapes; persist the safe mode setting itself"
+        "additional record shapes require new live proofs (style and enabled fields, other families); hardware-gated proofs and the release decision remain"
     );
     assert!(structured["mustNotDo"]
         .as_str()
@@ -3907,7 +3907,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Optional breadth: family record picker; persist misc:disable_autoreload via gated scalar save; refresh the 0.55.4 capture on Hyprland updates."
+        "Remaining: hardware-gated proofs (18 touch rows, 3 secondary-device rows) when devices are available; the release decision is ready pending user approval; further record shapes need new live proofs."
     );
     // Structured-family writes are now enabled, but only through the gated
     // save path for the two proven records; the scope note must say so.

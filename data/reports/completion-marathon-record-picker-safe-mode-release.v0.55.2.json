@@ -1,0 +1,111 @@
+{
+  "artifactKind": "completion-marathon-record-picker-safe-mode-release-report",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "b3f373c86ac263da4a368ae20894b72ba091f3a2",
+  "headCommit": "the marathon commits containing this report (see git log after 'Complete save persistence migration marathon')",
+  "marathonDate": "2026-07-13",
+  "goal": "complete the four approved areas: family record picker, Safe Live Save Mode persistence, Hyprland 0.55.4 capture refresh workflow, and the release decision; defer hardware-gated proofs honestly",
+  "familyRecordPickerStatus": "complete for the proven record shapes",
+  "familiesWithRecordPicker": ["hl.animation", "hl.curve"],
+  "recordShapesSupported": [
+    "hl.animation: speed of any explicitly overridden animation record (enabled/bezier/style preserved from readback; live shape proof on fade, zero residue)",
+    "hl.curve: all four control points of any existing bezier curve (live shape proof on quick, zero residue)"
+  ],
+  "recordShapesBlocked": [
+    "inherited records (creation is blocked)",
+    "internal __-prefixed records",
+    "style-bearing records: save-only (style preservation via runtime command unproven)",
+    "disabled-at-runtime records: save-only (compositor ignores speed changes on disabled records - found by live proof)",
+    "unsafe record names (fail closed)",
+    "all other structured families"
+  ],
+  "creationDeletionSupport": false,
+  "safeModePersistenceStatus": "complete: misc:disable_autoreload = true persists through the gated scalar Save, user-chosen Save as default control, live-flow-proven with byte-exact flow-proof restore",
+  "safeModePersistedByDefault": false,
+  "hyprland0554CaptureRefreshStatus": "complete and reproducible: tools/refresh_hyprland_descriptions_export.sh reran live against Hyprland 0.55.4 (commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704) with zero drift; pinned migration test passed; a different live version gets its own capture without touching the pinned one",
+  "hyprland0554RowsAdded": 0,
+  "hyprland0554RowsRemoved": 0,
+  "hyprland0554RowsChanged": 0,
+  "releaseDecisionStatus": "ready pending user approval",
+  "releaseTagCreated": false,
+  "releaseArtifactsPublished": false,
+  "hardwareProofStatus": "deferred",
+  "hardwareProofDetail": {
+    "reason": "required devices unavailable (18 touch-family rows need touch/tablet hardware; 3 rows need secondary-device proofs)",
+    "rowsPromotedWithoutProof": 0,
+    "fakeProofsUsed": false,
+    "possibleFutureNonHardwareApproach": "not proven yet: virtual/simulated input devices (e.g. uinput-based) could in principle exercise touch rows, but no safe, explicit, env-gated, non-destructive harness exists in the repo, and honest evidence would still need behavior observation; recorded as a proposal only - it requires explicit user approval, a rollback/recovery plan, and confirmation on a real session before any proof attempt"
+  },
+  "activeConfigWrittenDuringNormalTests": false,
+  "activeConfigWrittenDuringLiveTests": true,
+  "liveTestWriteDiscipline": "all live tests are env-gated and ignored; every active-config write was backed up byte-exactly first and flow-proof cleanup restored the pre-test bytes byte-exactly; runtime autoreload state restored after each proof",
+  "hyprctlReloadRan": false,
+  "runtimeMutationRan": true,
+  "runtimeMutationScope": "reversible zero-residue round trips only (animation fade speed, curve quick X1, misc:disable_autoreload transitions), all readback-verified restored; monitor/display never mutated",
+  "monitorDisplayMutated": false,
+  "mainChanged": false,
+  "v010Changed": false,
+  "distV010Changed": false,
+  "modulesAdded": [
+    "src/family_record_picker.rs",
+    "src/persist_safe_live_save_mode.rs"
+  ],
+  "modulesChanged": [
+    "src/structured_family_runtime_preview.rs (full-listing parsers, PROVEN_RECORD_SHAPE_PROOFS)",
+    "src/structured_family_gated_persistence.rs (FamilyRecordSaveRequest, gated_family_record_save, shared persist tail)",
+    "src/ui/window.rs (record picker groups replace the two hardcoded family controls; Safe Live Save Mode card gains persisted status + Save as default)",
+    "src/lib.rs (module registrations)"
+  ],
+  "testsAdded": [
+    "tests/family_record_picker.rs",
+    "tests/family_record_picker_live.rs (env-gated)",
+    "tests/persist_safe_live_save_mode.rs",
+    "tests/persist_safe_live_save_mode_live.rs (env-gated)",
+    "tests/hyprland_0554_export_refresh.rs",
+    "tests/release_decision.rs"
+  ],
+  "liveProofsRunThisMarathon": [
+    "record_shape_proof_animation_record_speed_round_trip: PASSED (fade 3 -> 3.25 -> 3, full-record zero residue)",
+    "record_shape_proof_curve_control_points_round_trip: PASSED (quick X1 0.1 -> 0.11 -> 0.1, zero residue all four points)",
+    "record_picker_controller_round_trips_live: PASSED (fade + quick, zero residue)",
+    "gated_family_record_save_flow_proof: PASSED (both families wrote real config, reread-verified, byte-exact backups, byte-exact flow-proof restores)",
+    "persist_safe_live_save_mode_flow_proof: PASSED (gate proof + persist + PersistedTrue projection + byte-exact restore + runtime state restored)"
+  ],
+  "defectsFoundByLiveProofs": [
+    "disabled animation records (enabled 0) silently ignore runtime speed changes; the picker classifies them save-only instead of faking preview support"
+  ],
+  "reportsCreated": [
+    "data/reports/family-record-picker-gated-persistence.v0.55.2.json",
+    "data/reports/persist-safe-live-save-mode.v0.55.2.json",
+    "data/reports/hyprland-0.55.4-export-refresh.v0.55.2.json",
+    "data/reports/release-decision.v0.55.2.json",
+    "data/reports/completion-marathon-record-picker-safe-mode-release.v0.55.2.json"
+  ],
+  "reportsUpdated": [
+    "data/reports/current-project-handoff.v0.55.2.json",
+    "data/reports/progress-tracker-audit.v0.55.2.json",
+    "data/reports/project-area-continuation-scan.v0.55.2.json",
+    "data/reports/production-save-integration.v0.55.2.json",
+    "data/reports/structured-family-gated-persistence.v0.55.2.json",
+    "data/reports/hyprland-0.55.4-migration-audit.v0.55.2.json",
+    "data/reports/gtk-safe-env-* (regenerated from the fresh evidence run)"
+  ],
+  "docsCreated": [
+    "docs/FAMILY-RECORD-PICKER-GATED-PERSISTENCE.md",
+    "docs/PERSIST-SAFE-LIVE-SAVE-MODE.md",
+    "docs/HYPRLAND-0.55.4-EXPORT-REFRESH.md",
+    "docs/RELEASE-DECISION.md"
+  ],
+  "docsUpdated": [
+    "docs/CURRENT-PROJECT-HANDOFF.md",
+    "docs/PROGRESS-TRACKER.md",
+    "docs/PROJECT-AREA-CONTINUATION-SCAN.md",
+    "docs/PROJECT-STATUS.md"
+  ],
+  "toolingAdded": ["tools/refresh_hyprland_descriptions_export.sh"],
+  "validation": "cargo fmt, cargo fmt --check, cargo check, cargo test (260 test binaries, all ok), jq empty data/reports/*.json, git diff --check, cargo build --release - all green",
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260713_marathon",
+  "gtkEvidenceResult": "all aggregate assertions true; the only false values are the safety flags that must be false (applyClicked, hyprlandReloaded, mutatingHyprctlUsed, realConfigEdited, runtimeMutated, realBackupsCreated, scriptsExecuted, luaExecuted, liveSwapModeUsed, fallbackProofUsed); Config page tree proves the record picker groups (Animation records, Bezier curves, Save previewed value x2, blocked expander) and the Safe Live Save Mode card with persisted status and Save as default",
+  "nextRecommendedWork": "hardware-gated proofs when devices are available; the user release decision (merge, version bump, tag v0.2.0, dist artifacts); further record shapes behind new live proofs"
+}

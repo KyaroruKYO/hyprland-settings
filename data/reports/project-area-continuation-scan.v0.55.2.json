@@ -62,16 +62,18 @@
     },
     {
       "areaName": "Release packaging/tag/artifacts",
-      "currentStatus": "v0.1.0 preserved; no release requested",
-      "classification": "blocked_by_release_decision",
+      "currentStatus": "v0.1.0 preserved; release decision recorded: ready pending user approval (75 commits / 258 files since v0.1.0; RC materials drafted in docs/RELEASE-DECISION.md); no tag created, nothing merged or published",
+      "classification": "release_decision_ready_pending_user_approval",
       "canContinueNow": false,
-      "reason": "Release work requires an explicit release decision.",
-      "blockingDependency": "user release decision",
-      "safeNextWork": "release-readiness audit only if requested",
+      "reason": "The evidence supports a v0.2.0 release candidate; the release itself needs the user (approval, merge decision, version bump, notes review, manual test pass).",
+      "blockingDependency": "user approval of the release decision",
+      "safeNextWork": "on approval: merge to main, bump Cargo.toml, tag v0.2.0, build dist/v0.2.0 artifacts",
       "mustNotDo": "do not tag, create a release, or modify dist/v0.1.0",
       "evidenceUsed": [
         "v0.1.0 tag check",
-        "dist/v0.1.0 preservation check"
+        "dist/v0.1.0 preservation check",
+        "data/reports/release-decision.v0.55.2.json",
+        "docs/RELEASE-DECISION.md"
       ]
     },
     {
@@ -118,12 +120,12 @@
     },
     {
       "areaName": "Structured-family editors/writes",
-      "currentStatus": "controlled real-write implementation complete and hardened (symlink-through-file escape fixed, atomic temp-file-plus-rename writes): the controlled write executor is implemented, internally wired, and tested for test-owned fixture, copied config tree, and temporary config targets; write, byte-exact backup, restore, rollback, post-write reread verification, and post-restore reread verification are proven for all seven families against copied temp targets; the gated active-config pilot module exists with a fifteen-gate preflight, and the copied active-config rehearsal is proven against the real config content with the source untouched; the live pilot is blocked by the AutoreloadDisabledConfirmed and NoRuntimeMutationPlanned gates because misc:disable_autoreload is false on this system; a review-only GUI status card with a permanently insensitive Apply control is proven in the GTK evidence matrix; executor wired for controlled targets true; executor wired for active config false; real write path enabled for controlled targets true; real write path enabled for active config false; active real config writes approved false; GUI live Apply controls enabled false; hyprctl reload enabled false; runtime mutation enabled false; first real config write approved false; family runtime preview marathon: all seven families classified from live evidence, hl.animation and hl.curve promoted to supervised modify-existing preview by passed zero-residue proofs, four families blocked high-risk, gestures blocked without verification; pilot gate hardened with live autoreload evidence collection; SAFE LIVE SAVE SPRINT: the first active-config write pilot PASSED through its designed gated path using runtime-first autoreload control (write + byte-exact restore, no reload, SHA-verified); supervised family preview UI controls shipped for the two proven records; SAVE MARATHON: production Save integration complete (all scalar UI saves gated on Safe Live Save Mode), structured-family gated persistence implemented and live-flow-proven for both proven records (backup/write-once/reread-verify/no-restore-on-success), 0.55.4 migration audit complete with zero drift",
+      "currentStatus": "controlled real-write implementation complete and hardened (symlink-through-file escape fixed, atomic temp-file-plus-rename writes): the controlled write executor is implemented, internally wired, and tested for test-owned fixture, copied config tree, and temporary config targets; write, byte-exact backup, restore, rollback, post-write reread verification, and post-restore reread verification are proven for all seven families against copied temp targets; the gated active-config pilot module exists with a fifteen-gate preflight, and the copied active-config rehearsal is proven against the real config content with the source untouched; the live pilot is blocked by the AutoreloadDisabledConfirmed and NoRuntimeMutationPlanned gates because misc:disable_autoreload is false on this system; a review-only GUI status card with a permanently insensitive Apply control is proven in the GTK evidence matrix; executor wired for controlled targets true; executor wired for active config false; real write path enabled for controlled targets true; real write path enabled for active config false; active real config writes approved false; GUI live Apply controls enabled false; hyprctl reload enabled false; runtime mutation enabled false; first real config write approved false; family runtime preview marathon: all seven families classified from live evidence, hl.animation and hl.curve promoted to supervised modify-existing preview by passed zero-residue proofs, four families blocked high-risk, gestures blocked without verification; pilot gate hardened with live autoreload evidence collection; SAFE LIVE SAVE SPRINT: the first active-config write pilot PASSED through its designed gated path using runtime-first autoreload control (write + byte-exact restore, no reload, SHA-verified); supervised family preview UI controls shipped for the two proven records; SAVE MARATHON: production Save integration complete (all scalar UI saves gated on Safe Live Save Mode), structured-family gated persistence implemented and live-flow-proven for both proven records (backup/write-once/reread-verify/no-restore-on-success), 0.55.4 migration audit complete with zero drift; COMPLETION MARATHON (record picker + safe mode persistence): a family record picker generalized gated persistence one proven record shape at a time - record-shape proofs passed live on non-family-proof records (hl.animation fade speed round trip; hl.curve quick control-point round trip, both zero residue), gated_family_record_save persists any explicitly overridden animation record speed (style preserved) and all four control points of any existing curve through the same gate chain (shape receipt + Safe Live Save Mode + identity + backup + one atomic write + reread verify), live save flow proofs passed with byte-exact flow-proof restores; disabled-at-runtime records were found unverifiable for preview by live proof and are save-only; inherited and internal records stay blocked (creation is blocked); Safe Live Save Mode can now be persisted (misc:disable_autoreload = true) through the gated scalar save, user-chosen, live-flow-proven",
       "classification": "production_save_complete_for_proven_surface",
       "canContinueNow": false,
-      "reason": "Every Save path is gated; the two proven family records can genuinely persist; the 0.55.4 audit found zero option/bounds drift. Remaining growth is breadth (record picker) not architecture.",
+      "reason": "Every Save path is gated; proven record shapes generalize the save surface honestly (picker lists records from readback with per-record support); the 0.55.4 audit found zero drift with a repeatable refresh workflow.",
       "blockingDependency": "none for the proven flow; each new save shape needs its own gates and receipts",
-      "safeNextWork": "optional breadth: record picker for additional proven record shapes; persist the safe mode setting itself",
+      "safeNextWork": "additional record shapes require new live proofs (style and enabled fields, other families); hardware-gated proofs and the release decision remain",
       "mustNotDo": "do not write the active real Hyprland config, enable live Apply controls, run hyprctl reload, run mutating hyprctl, mutate runtime, or perform the first active-config write without explicit approval",
       "evidenceUsed": [
         "src/structured_family.rs",
@@ -158,7 +160,15 @@
         "tests/structured_family_active_config_pilot.rs",
         "data/reports/structured-family-runtime-preview-capability.v0.55.2.json",
         "data/reports/structured-family-active-config-pilot-readiness.v0.55.2.json",
-        "tests/structured_family_runtime_preview_live.rs live proofs"
+        "tests/structured_family_runtime_preview_live.rs live proofs",
+        "src/family_record_picker.rs",
+        "src/persist_safe_live_save_mode.rs",
+        "tests/family_record_picker.rs",
+        "tests/family_record_picker_live.rs live proofs",
+        "tests/persist_safe_live_save_mode.rs",
+        "tests/persist_safe_live_save_mode_live.rs live proof",
+        "data/reports/family-record-picker-gated-persistence.v0.55.2.json",
+        "data/reports/persist-safe-live-save-mode.v0.55.2.json"
       ]
     },
     {
@@ -198,12 +208,12 @@
     },
     {
       "areaName": "Hyprland 0.55.4 migration",
-      "currentStatus": "AUDIT COMPLETE: trusted source is hyprctl -j descriptions from the official binary (captured); zero option drift (341=341, 0 added, 0 removed), zero numeric-bounds drift (78 compared); 47 cosmetic description diffs; compatibility pinned by a regression test in every cargo test run",
+      "currentStatus": "AUDIT COMPLETE: trusted source is hyprctl -j descriptions from the official binary (captured); zero option drift (341=341, 0 added, 0 removed), zero numeric-bounds drift (78 compared); 47 cosmetic description diffs; compatibility pinned by a regression test in every cargo test run; REFRESH WORKFLOW: tools/refresh_hyprland_descriptions_export.sh re-captures hyprctl -j descriptions read-only, diffs against the previous capture (rows added/removed, bounds drift, cosmetic description diffs), refuses to overwrite the pinned capture when the live version differs, and reruns the pinned migration test; refresh executed live on 2026-07-13: 341=341, zero drift in every category, migration test passed",
       "classification": "audit_complete_zero_drift",
       "canContinueNow": false,
       "reason": "The v0.55.2 model is fully compatible with live 0.55.4; no migration is required. Refresh the capture when Hyprland updates.",
       "blockingDependency": "none until Hyprland updates",
-      "safeNextWork": "refresh capture + rerun pinned test on Hyprland updates",
+      "safeNextWork": "run tools/refresh_hyprland_descriptions_export.sh on Hyprland updates; a non-0.55.4 live version gets its own versioned capture without touching the pinned one",
       "mustNotDo": "do not activate 0.55.4 migration",
       "evidenceUsed": [
         "Hyprland 0.55.4 migration reports",
@@ -212,5 +222,5 @@
     }
   ],
   "activeSafeArea": null,
-  "recommendedNextWork": "The three marathon areas are complete. Remaining: optional breadth (family record picker, persist safe mode), hardware-gated proofs, and release decisions."
+  "recommendedNextWork": "Completion marathon done: family record picker, safe-mode persistence, 0.55.4 refresh workflow, and the release decision are complete. Remaining: hardware-gated proofs (18 touch rows, 3 secondary-device rows) when devices exist, further record shapes behind new live proofs, and the user release decision."
 }

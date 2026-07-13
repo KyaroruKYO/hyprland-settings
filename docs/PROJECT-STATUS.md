@@ -71,7 +71,7 @@ Current future-capability tracker:
 
 Future-capability source/include and duplicate production-activation runway work remains stopped; future production activation requires a separate explicitly approved phase.
 
-Current next exact work item: the save/persistence/migration marathon is complete. Remaining work is optional breadth (family record picker; persisting `misc:disable_autoreload` via the gated scalar save), hardware-gated proofs (touch/tablet and secondary-device rows), and release decisions.
+Current next exact work item: the 2026-07-13 completion marathon closed the optional-breadth items — the family record picker generalized gated persistence to proven record shapes (live shape proofs on `fade` and `quick`, zero residue; live save flow proofs with byte-exact flow-proof restores; disabled records save-only by live-proof finding; inherited/internal records blocked; no creation/deletion), `misc:disable_autoreload = true` can be saved as the default through the gated scalar Save (user-chosen, live-flow-proven), the 0.55.4 export refresh is a repeatable read-only workflow that reran with zero drift, and a release decision was recorded as ready pending user approval (no tag, no merge, no artifacts). Remaining: hardware-gated proofs (18 touch rows, 3 secondary-device rows — deferred, devices unavailable), the user release decision, and further record shapes behind new live proofs.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 

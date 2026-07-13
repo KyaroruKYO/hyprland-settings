@@ -12,14 +12,14 @@ Real structured-family write code now exists for controlled targets. The control
 - Config discovery / source-aware model: needs audit; non-mutating source graph tests can continue, production source/include activation cannot.
 - 341-row read/write model: capped.
 - Safe normal-scalar writes: capped.
-- Release packaging/tag/artifacts: blocked by release decision.
+- Release packaging/tag/artifacts: release_decision_ready_pending_user_approval — a full release decision was recorded (no tag, no merge, no artifacts); RC materials are drafted in docs/RELEASE-DECISION.md.
 - Missing/default insertion: capped by source/include production activation closeout.
 - Duplicate resolution: capped by duplicate production activation closeout.
 - High-risk/display recovery: blocked by high-risk recovery proof.
 - Structured-family editors/writes: production_save_complete_for_proven_surface — the pilot passed its fifteen-gate path, and gated persistence now saves the two proven records behind receipt + Safe Live Save Mode + identity gates; the other five families stay blocked; the controlled write executor still rejects the active config by construction; remaining growth is breadth (record picker), not architecture.
 - Profile/mode switching: blocked by production activation and live proof.
 - Runtime/reload integration: proof marathon complete; 135 default-previewable rows with real controls, 38 armed dead-man candidates (2 animation + 36 proof-passed input/cursor rows), 27 disarmed pending hardware or secondary-device proofs, two executor defects found and fixed by live proofs, monitor/display rows fully blocked, reload still disabled.
-- Hyprland 0.55.4 migration: audit_complete_zero_drift — trusted `hyprctl -j descriptions` capture from the official 0.55.4 binary; 341 = 341 options, 0 added, 0 removed, 78 numeric bounds compared with 0 mismatches; pinned by a regression test; refresh the capture on Hyprland updates.
+- Hyprland 0.55.4 migration: audit_complete_zero_drift — trusted `hyprctl -j descriptions` capture from the official 0.55.4 binary; 341 = 341 options, 0 added, 0 removed, 78 numeric bounds compared with 0 mismatches; pinned by a regression test; the refresh is now a repeatable workflow (`tools/refresh_hyprland_descriptions_export.sh`) that preserves the pinned capture for other live versions — executed live 2026-07-13 with zero drift in every category.
 
 ## Finish-App Sprint Update
 
@@ -33,6 +33,10 @@ All seven structured families are classified for runtime preview from live evide
 
 The active-config write pilot passed (runtime-first strategy, no reload, byte-exact restore), and this marathon turned the proven mechanism into product behavior: all scalar UI saves route through `gated_scalar_save_live`, structured-family saves route through `gated_family_save` (live-flow-proven for both proven records, with no restore after success), and the 0.55.4 version skew was measured at zero drift against a trusted export.
 
+## Completion Marathon Update (record picker, safe mode persistence, refresh, release decision)
+
+The family record picker generalized gated persistence one proven record shape at a time: record-shape proofs passed live on non-family-proof records (hl.animation `fade` speed; hl.curve `quick` control points; both zero residue), and `gated_family_record_save` now persists the speed of any explicitly overridden animation record (style preserved) and all four control points of any existing curve through the same gate chain, with live save flow proofs and byte-exact flow-proof restores. A live proof also found that disabled-at-runtime records cannot be preview-verified (the compositor ignores speed changes on them) — they are save-only; inherited and internal records stay blocked because creation is blocked. Safe Live Save Mode can now be persisted (`misc:disable_autoreload = true`) through the gated scalar Save — user-chosen via a Save as default control, never automatic, live-flow-proven. The 0.55.4 capture refresh is a repeatable read-only workflow that reran with zero drift. A release decision was recorded: ready pending user approval, with RC materials drafted and no release action taken.
+
 ## Recommended Next Work
 
-The three marathon areas are complete. Remaining: optional breadth (family record picker, persisting the safe mode setting itself), hardware-gated proofs (touch/tablet and secondary-device rows), and release decisions.
+The completion marathon areas are done. Remaining: hardware-gated proofs (18 touch rows, 3 secondary-device rows) when devices exist, further record shapes behind new live proofs, and the user release decision.

@@ -554,7 +554,7 @@
   "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
   "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
   "fallbackProofUsed": false,
-  "generatedAt": "2026-07-13T05:41:38.511198+00:00",
+  "generatedAt": "2026-07-13T09:07:20.248157+00:00",
   "goal": "Prove disabled approval review cards through screenshot-level safe-env automation using screenshots plus AT-SPI accessibility-tree text, not OCR.",
   "hyprlandReloaded": false,
   "installedHyprlandPackageVersion": "0.55.4-1",

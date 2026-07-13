@@ -50,10 +50,20 @@ Verified anchor numbers: 341 scalar rows in source · 135 preview-enabled UI con
 
 All three recommended items were completed the same day: (1) every Save path is gated on Safe Live Save Mode; (2) structured-family gated persistence is live-flow-proven for the two proven records with no restore after success; (3) the 0.55.4 skew was measured at zero drift against a trusted export and is pinned by a regression test. Details: `docs/PRODUCTION-SAVE-INTEGRATION.md`, `docs/STRUCTURED-FAMILY-GATED-PERSISTENCE.md`, `docs/HYPRLAND-0.55.4-MIGRATION-AUDIT.md`.
 
+## 2026-07-13 completion marathon result (record picker, safe mode persistence, refresh, release decision)
+
+| Category | Progress | Status |
+| --- | --- | --- |
+| Family record picker | complete for proven shapes | `gated_family_record_save` persists any explicitly overridden animation record's speed (style preserved) and all four control points of any existing curve; shape proofs passed live on `fade` and `quick` (zero residue); live save flow proofs passed; disabled records save-only (found by live proof); inherited/internal blocked; no creation/deletion |
+| Safe Live Save Mode persistence | complete | `misc:disable_autoreload = true` saved as default through the gated scalar Save, user-chosen only; live flow proof passed with byte-exact restore |
+| Hyprland 0.55.4 export refresh | complete, reproducible | read-only refresh workflow reran live with zero drift in every category; pinned capture preserved for other live versions |
+| Release decision | ready pending user approval | RC materials drafted (`docs/RELEASE-DECISION.md`); no tag, no merge, no artifacts |
+| Hardware-gated proofs | deferred | 18 touch rows + 3 secondary-device rows; devices unavailable; no simulated/virtual proof path exists — any future one is proposal-only |
+
 ## Recommended next work
 
-1. Optional breadth: family record picker (extend gated persistence one proven record shape at a time); persist `misc:disable_autoreload` via the gated scalar save.
-2. Hardware-gated proofs when hardware is available.
-3. Release decision for the large unreleased delta on the work branch.
+1. Hardware-gated proofs when hardware is available (18 touch rows, 3 secondary-device rows).
+2. The user release decision (merge, version bump, tag v0.2.0, dist artifacts).
+3. Further record shapes (style/enabled fields, other families) behind new live proofs.
 
 Hard blockers outside code: touch hardware, secondary input devices, a display recovery design, and user decisions on activation phases and release.

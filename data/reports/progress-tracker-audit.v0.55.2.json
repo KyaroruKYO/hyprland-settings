@@ -251,5 +251,17 @@
     "user decisions: production activation phases (insertion/duplicates/profiles), release"
   ],
   "nextRecommendedWork": "Optional breadth (record picker, persist safe mode), hardware-gated proofs, release decision.",
-  "confidenceNotes": "Everything marked high-confidence was verified this run by compiling code, running the 1015-test suite, or reading test-regenerated reports. The pilot PASS and live-proof receipts are recorded historical events whose mechanisms remain re-runnable via env-gated tests. Percentages are intentionally absent where they would mislead (capped/deferred/milestone categories)."
+  "confidenceNotes": "Everything marked high-confidence was verified this run by compiling code, running the 1015-test suite, or reading test-regenerated reports. The pilot PASS and live-proof receipts are recorded historical events whose mechanisms remain re-runnable via env-gated tests. Percentages are intentionally absent where they would mislead (capped/deferred/milestone categories).",
+  "completionMarathon20260713": {
+    "familyRecordPicker": "complete for proven shapes (live shape proofs on fade/quick, zero residue; live save flow proofs; disabled records save-only; inherited/internal blocked; no creation/deletion)",
+    "safeModePersistence": "complete (gated scalar save only, user-chosen, live-flow-proven)",
+    "hyprland0554ExportRefresh": "complete and reproducible (zero drift on live rerun)",
+    "releaseDecision": "ready pending user approval (no tag, no merge, no artifacts)",
+    "hardwareProofStatus": "deferred - required devices unavailable; possibleFutureNonHardwareApproach: not proven yet, proposal-only if ever"
+  },
+  "recommendedNextWork": [
+    "hardware-gated proofs when devices are available (18 touch rows, 3 secondary-device rows)",
+    "user release decision (merge, version bump, tag v0.2.0, dist artifacts)",
+    "further record shapes behind new live proofs"
+  ]
 }

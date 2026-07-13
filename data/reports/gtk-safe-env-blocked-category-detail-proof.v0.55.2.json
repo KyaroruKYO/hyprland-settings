@@ -550,7 +550,7 @@
   "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
   "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
   "fallbackProofUsed": false,
-  "generatedAt": "2026-07-13T05:41:38.511176+00:00",
+  "generatedAt": "2026-07-13T09:07:20.248130+00:00",
   "goal": "Expand live GTK/AT-SPI row-detail proof across representative blocked categories.",
   "hyprlandReloaded": false,
   "installedHyprlandPackageVersion": "0.55.4-1",
