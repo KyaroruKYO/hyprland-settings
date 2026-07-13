@@ -1,0 +1,118 @@
+{
+  "artifactKind": "completion-marathon-rc-record-shape-expansion-report",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "32ba7ef28b7941f68588d4f7992ed06d2eced235",
+  "headCommit": "the marathon commits following 32ba7ef on structured-family-editors-unified (see git log)",
+  "marathonDate": "2026-07-13",
+  "goal": "the two user-approved areas: prepare a v0.2.0-rc.1 release candidate, and expand structured-family record shapes from new honest live proofs; hardware-gated proofs stay deferred",
+
+  "releaseCandidate": "v0.2.0-rc.1",
+  "releaseCandidateStatus": "prepared locally: Cargo/lock version 0.2.0-rc.1, changelog + release notes + metainfo release entry (appstreamcli and desktop-file-validate passed), guarded build-only artifact script, dist/v0.2.0-rc.1 artifacts with SHA256SUMS, RC checklist/manual test plan/known limitations/upgrade notes/rollback notes, pinning tests; no RC tag (the repo has no prerelease tag convention - tagging is a documented one-command remaining step)",
+  "releaseTagCreated": false,
+  "releaseTagPushed": false,
+  "finalReleaseTagCreated": false,
+  "releaseArtifactsCreated": true,
+  "releaseArtifactsPublished": false,
+  "artifactPath": "dist/v0.2.0-rc.1/",
+  "artifactManifest": "data/reports/v0.2.0-rc.1-release-artifact-manifest.json",
+  "knownLimitations": "docs/RELEASE-CANDIDATE-v0.2.0-rc.1.md#known-limitations",
+  "manualTestPlan": "docs/RELEASE-CANDIDATE-v0.2.0-rc.1.md#manual-test-plan (9 steps, not yet run - user-side blocker for the final release)",
+  "upgradeNotes": "docs/RELEASE-CANDIDATE-v0.2.0-rc.1.md#upgrade-notes",
+  "rollbackNotes": "docs/RELEASE-CANDIDATE-v0.2.0-rc.1.md#rollback-notes",
+  "mainChanged": false,
+  "v010Changed": false,
+  "distV010Changed": false,
+
+  "recordShapeExpansionStatus": "complete for the honestly provable non-hardware surface (see data/reports/record-shape-expansion.v0.55.2.json)",
+  "newShapesInvestigated": [
+    "hl.animation enabled (proven)",
+    "hl.animation bezier (proven)",
+    "hl.animation style (blocked: no trusted value evidence)",
+    "hl.curve beyond the four points (none exist)",
+    "hl.gesture (blocked: no readback listing; hardware also deferred)"
+  ],
+  "newShapesProven": [
+    "modify-existing-animation-record-enabled (border 1->0->1, borderangle 0->1->0, zero residue)",
+    "modify-existing-animation-record-bezier (windows easeOutQuint->quick->easeOutQuint, zero residue)"
+  ],
+  "newShapesAddedToUi": [
+    "Enabled switch",
+    "Curve dropdown (existing curves only)",
+    "style disabled row with reason"
+  ],
+  "newShapesAddedToProductionSave": [
+    "AnimationRecordFields { record, enabled, speed, bezier } gated on all three animation shape receipts"
+  ],
+  "shapesBlocked": [
+    "hl.animation style (no trusted evidence for valid values, no live proof)",
+    "hl.gesture shapes (no runtime readback; hardware deferred)"
+  ],
+  "familiesStillBlocked": [
+    "hl.monitor",
+    "hl.bind",
+    "hl.device",
+    "hl.permission",
+    "hl.gesture"
+  ],
+  "creationDeletionSupport": false,
+
+  "hardwareProofStatus": "deferred",
+  "touchTabletProofStatus": "deferred",
+  "secondaryDeviceProofStatus": "deferred",
+  "proofsPromoted": 0,
+  "virtualProofStatus": "proposal only / not proven yet",
+
+  "safeLiveSaveModePersistence": "unchanged and re-verified by the suite: misc:disable_autoreload = true persists only through the gated scalar Save via the user-chosen Save as default control",
+  "familyRecordPickerStatus": "extended: animation records expose enabled/speed/bezier (all receipt-gated); disabled records promoted to preview-supported by the 0->1->0 proof; styled records stay save-only; inherited/internal stay blocked; curves unchanged (all four points)",
+  "structuredFamilyGatedPersistenceStatus": "extended: combined AnimationRecordFields request with multi-receipt gate, bezier existence enforcement, style preservation; same backup/one-atomic-write/reread-verify tail; live save flow proof re-passed",
+
+  "liveProofsRunThisMarathon": [
+    "record_shape_proof_animation_record_enabled_round_trip: PASSED",
+    "record_shape_proof_animation_record_enabled_from_disabled_round_trip: PASSED",
+    "record_shape_proof_animation_record_bezier_round_trip: PASSED",
+    "record_picker_controller_round_trips_live: RE-PASSED (borderangle + quick)",
+    "gated_family_record_save_flow_proof: RE-PASSED (AnimationRecordFields + CurveRecordPoints, byte-exact restores)"
+  ],
+  "defectsFoundByLiveProofs": [
+    "disabled animation records reset their speed/bezier readback while disabled; the preview verifies the enabled flag only in that state",
+    "concurrent shape proofs interfered on shared runtime state; the documented proof command now runs serially and the proofs pick disjoint records"
+  ],
+
+  "activeConfigWrittenDuringNormalTests": false,
+  "activeConfigWrittenDuringLiveTests": true,
+  "liveTestWriteDiscipline": "all live tests are env-gated and ignored; the save flow proof backed up byte-exactly, wrote once, reread-verified, and restored the pre-test bytes byte-exactly; runtime autoreload state restored",
+  "runtimeMutationRan": true,
+  "runtimeMutationScope": "reversible zero-residue animation/curve record round trips only; monitor/display never mutated",
+  "hyprctlReloadRan": false,
+  "monitorDisplayMutated": false,
+
+  "modulesChanged": [
+    "src/structured_family_runtime_preview.rs (two new shape receipts)",
+    "src/family_record_picker.rs (combined AnimationRecord values, enabled-aware verification, full-record revert verification, bezier validation, style/gesture blocked-reason constants)",
+    "src/structured_family_gated_persistence.rs (AnimationRecordFields request, multi-receipt gate, bezier existence check)",
+    "src/ui/window.rs (Enabled switch, Curve dropdown, style disabled row)",
+    "Cargo.toml + Cargo.lock (0.2.0-rc.1)",
+    "CHANGELOG.md",
+    "data/metainfo (releases entry)"
+  ],
+  "testsAdded": [
+    "tests/record_shape_expansion_live.rs (env-gated live proofs)",
+    "tests/release_candidate.rs"
+  ],
+  "toolingAdded": ["tools/build_release_candidate_artifacts.sh"],
+  "reportsCreated": [
+    "data/reports/release-candidate-v0.2.0-rc.1.v0.55.2.json",
+    "data/reports/v0.2.0-rc.1-release-artifact-manifest.json",
+    "data/reports/record-shape-expansion.v0.55.2.json",
+    "data/reports/completion-marathon-rc-record-shape-expansion.v0.55.2.json"
+  ],
+  "docsCreated": [
+    "docs/RELEASE-CANDIDATE-v0.2.0-rc.1.md",
+    "docs/releases/v0.2.0-rc.1.md",
+    "docs/RECORD-SHAPE-EXPANSION.md"
+  ],
+  "validation": "cargo fmt, cargo fmt --check, cargo check, cargo test (full suite, all ok), jq empty data/reports/*.json, git diff --check, cargo build --release, appstreamcli validate, desktop-file-validate - all green",
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260713_031130",
+  "nextRecommendedWork": "user decisions: optional v0.2.0-rc.1 tag, manual RC test pass, final v0.2.0 approval (merge, bump, tag, publish); hardware-gated proofs when devices are available; style editing only if trusted value evidence appears"
+}

@@ -3879,7 +3879,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     assert!(structured_status.contains("first real config write approved false"));
     assert_eq!(
         structured["safeNextWork"],
-        "additional record shapes require new live proofs (style and enabled fields, other families); hardware-gated proofs and the release decision remain"
+        "animation enabled and bezier shapes are now proven and wired; style needs trusted value evidence plus a live proof; gesture needs a readback mechanism and hardware; hardware-gated proofs and the final v0.2.0 release decision remain with the user"
     );
     assert!(structured["mustNotDo"]
         .as_str()
@@ -3907,7 +3907,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Remaining: hardware-gated proofs (18 touch rows, 3 secondary-device rows) when devices are available; the release decision is ready pending user approval; further record shapes need new live proofs."
+        "Remaining: user decisions on v0.2.0-rc.1 (optional RC tag, manual test pass, final release approval); hardware-gated proofs (18 touch rows, 3 secondary-device rows) when devices are available; style/gesture shapes stay blocked pending trusted evidence."
     );
     // Structured-family writes are now enabled, but only through the gated
     // save path for the two proven records; the scope note must say so.

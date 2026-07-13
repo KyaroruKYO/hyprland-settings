@@ -170,10 +170,15 @@ Save persistence and migration marathon complete on `structured-family-editors-u
 - 0.55.4 export refresh workflow (`tools/refresh_hyprland_descriptions_export.sh`): read-only re-capture + diff + pinned-test rerun; executed live with zero drift in every category; a different live version gets its own capture without touching the pinned one. See `docs/HYPRLAND-0.55.4-EXPORT-REFRESH.md`.
 - Release decision: ready pending user approval — RC materials drafted (release notes, changelog, checklists, manual test plan); no tag, no merge, no artifacts. See `docs/RELEASE-DECISION.md`.
 
+## RC + Record-Shape Expansion Marathon Additions (2026-07-13)
+
+- Record shapes expanded by new live proofs (`tests/record_shape_expansion_live.rs`, run serially): the animation **enabled** flag (proven both directions — `border` 1→0→1 and `borderangle` 0→1→0, zero residue) and the animation **bezier** reference (proven on `windows`, existing curves only, zero residue). The picker save is now the combined `AnimationRecordFields { record, enabled, speed, bezier }`, gated on all three animation shape receipts; the UI gained an Enabled switch and a Curve dropdown. Live finding: disabled records reset their speed/bezier readback, so previews that leave a record disabled verify the enabled flag only; disabled records are now preview-supported (previously save-only). Style stays not-editable (no trusted value evidence — disabled UI row with the reason); gestures stay blocked (no readback listing on 0.55.4). See `docs/RECORD-SHAPE-EXPANSION.md`.
+- v0.2.0-rc.1 prepared locally after user approval: `Cargo.toml`/`Cargo.lock` at `0.2.0-rc.1`, changelog section, validated AppStream releases entry, release notes (`docs/releases/v0.2.0-rc.1.md`), guarded build-only artifact script (`tools/build_release_candidate_artifacts.sh`), local `dist/v0.2.0-rc.1/` artifacts with SHA256SUMS, RC checklist/manual-test-plan/limitations/upgrade/rollback docs, pinning tests. **No RC tag** (no repo prerelease-tag convention — a documented one-command remaining step), no merge, no publishing; `v0.1.0`/`dist/v0.1.0` checksum-verified untouched. See `docs/RELEASE-CANDIDATE-v0.2.0-rc.1.md`.
+
 ## Next Exact Work
 
-The completion marathon areas are done. Remaining:
+The RC and record-shape expansion areas are done. Remaining:
 
+- User decisions on v0.2.0-rc.1: optional annotated RC tag on the reviewed commit, one manual pass of the RC test plan, then approval of the final v0.2.0 (merge to main, bump to 0.2.0, tag, dist/v0.2.0 artifacts, GitHub release).
 - Hardware-gated proofs: 18 touch-family rows need touch/tablet hardware; 3 rows need secondary-device proofs (deferred; devices unavailable — no simulated/virtual-device path is proven, and any future one is proposal-only requiring explicit approval).
-- Release: the decision is ready pending user approval (merge, version bump, tag v0.2.0, dist artifacts — all user-gated).
-- Further record shapes (style/enabled fields, other families) require new live proofs before any support.
+- Style editing only if trusted evidence for valid values appears (plus a live proof); gesture shapes need a runtime readback mechanism that does not exist on 0.55.4.

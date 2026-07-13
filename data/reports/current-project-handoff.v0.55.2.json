@@ -135,9 +135,9 @@
     "structuredFamilyControlledTargetWritesEnabled": true,
     "structuredFamilyActiveConfigWritesEnabled": true,
     "hyprland0554MigrationActivated": false,
-    "structuredFamilyWriteScope": "active-config writes exist ONLY via gated_family_save and gated_family_record_save for proven surfaces: the two family-proof records plus the live-proven record shapes (speed of any explicitly overridden animation record with style preserved; all four control points of any existing bezier curve), gated on shape receipt + Safe Live Save Mode + identity, with backup and reread verification; misc:disable_autoreload persistence goes through the gated scalar save only; the controlled-write executor still rejects the active config by construction; no creation/deletion; other five families blocked"
+    "structuredFamilyWriteScope": "active-config writes exist ONLY via gated_family_save and gated_family_record_save for proven surfaces: the two family-proof records plus the live-proven record shapes (speed of any explicitly overridden animation record with style preserved; all four control points of any existing bezier curve), gated on shape receipt + Safe Live Save Mode + identity, with backup and reread verification; misc:disable_autoreload persistence goes through the gated scalar save only; the controlled-write executor still rejects the active config by construction; no creation/deletion; other five families blocked EXPANSION 2026-07-13: the picked-record save now carries enabled/speed/bezier for overridden animation records (all three shapes receipt-gated; bezier limited to existing curves; style preserved, never edited) and all four points for existing curves; creation/deletion still impossible."
   },
-  "activeNextWork": "Remaining: hardware-gated proofs (18 touch rows, 3 secondary-device rows) when devices are available; the release decision is ready pending user approval; further record shapes need new live proofs.",
+  "activeNextWork": "Remaining: user decisions on v0.2.0-rc.1 (optional RC tag, manual test pass, final release approval); hardware-gated proofs (18 touch rows, 3 secondary-device rows) when devices are available; style/gesture shapes stay blocked pending trusted evidence.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",
@@ -148,5 +148,12 @@
     "do not run mutating hyprctl or mutate runtime",
     "do not enable user-facing live Apply controls for structured families",
     "do not perform the first active real config write without explicit user approval of a pilot"
-  ]
+  ],
+  "releaseCandidate": {
+    "name": "v0.2.0-rc.1",
+    "status": "prepared locally 2026-07-13",
+    "report": "data/reports/release-candidate-v0.2.0-rc.1.v0.55.2.json",
+    "tagCreated": false,
+    "published": false
+  }
 }

@@ -600,7 +600,7 @@
   "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
   "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
   "fallbackProofUsed": false,
-  "generatedAt": "2026-07-13T09:07:20.248143+00:00",
+  "generatedAt": "2026-07-13T10:14:24.078259+00:00",
   "goal": "Prove connected-file and profile blocker detail surfaces through live GTK/AT-SPI safe-env automation.",
   "hyprlandReloaded": false,
   "installedHyprlandPackageVersion": "0.55.4-1",

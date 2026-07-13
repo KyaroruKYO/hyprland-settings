@@ -263,5 +263,9 @@
     "hardware-gated proofs when devices are available (18 touch rows, 3 secondary-device rows)",
     "user release decision (merge, version bump, tag v0.2.0, dist artifacts)",
     "further record shapes behind new live proofs"
-  ]
+  ],
+  "rcRecordShapeMarathon20260713": {
+    "summary": "user-approved RC marathon: v0.2.0-rc.1 prepared locally (no tag, no publish) and record shapes expanded by live proofs (animation enabled + bezier; disabled records promoted; style/gesture blocked honestly)",
+    "report": "data/reports/completion-marathon-rc-record-shape-expansion.v0.55.2.json"
+  }
 }

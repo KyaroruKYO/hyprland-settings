@@ -1626,7 +1626,7 @@
     },
     "artifactKind": "gtk_safe_env_redacted_evidence_summary",
     "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
-    "generatedAt": "2026-07-13T09:07:20.243667+00:00",
+    "generatedAt": "2026-07-13T10:14:24.073222+00:00",
     "proofLevelsAllowed": [
       "live_gtk_atspi_proof",
       "not_proven",
@@ -23844,7 +23844,7 @@
   },
   "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
   "fallbackProofUsed": false,
-  "generatedAt": "2026-07-13T09:07:20.248118+00:00",
+  "generatedAt": "2026-07-13T10:14:24.078235+00:00",
   "hyprlandReloaded": false,
   "installedHyprlandPackageVersion": "0.55.4-1",
   "issuesFound": [],

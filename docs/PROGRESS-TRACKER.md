@@ -60,10 +60,18 @@ All three recommended items were completed the same day: (1) every Save path is 
 | Release decision | ready pending user approval | RC materials drafted (`docs/RELEASE-DECISION.md`); no tag, no merge, no artifacts |
 | Hardware-gated proofs | deferred | 18 touch rows + 3 secondary-device rows; devices unavailable; no simulated/virtual proof path exists — any future one is proposal-only |
 
+## 2026-07-13 RC + record-shape expansion marathon result (user-approved)
+
+| Category | Progress | Status |
+| --- | --- | --- |
+| Record-shape expansion | complete for the provable non-hardware surface | animation **enabled** (proven `border` 1→0→1 and `borderangle` 0→1→0) and **bezier** (proven `windows`, existing curves only) join speed; combined `AnimationRecordFields` save gated on all three receipts; disabled records promoted to preview-supported; live finding: disabled records reset speed/bezier readback; style blocked (no trusted value evidence, disabled UI row); gestures blocked (no readback listing) |
+| v0.2.0-rc.1 release candidate | prepared locally | version bump + validated metadata + changelog + release notes + guarded build-only artifact script + `dist/v0.2.0-rc.1/` artifacts + RC docs + pinning tests; **no tag** (no prerelease-tag convention; one-command remaining step), no merge, no publishing; `v0.1.0`/`dist/v0.1.0` checksum-verified untouched |
+| Hardware-gated proofs | deferred | unchanged: 18 touch rows + 3 secondary-device rows; no fake or virtual proofs |
+
 ## Recommended next work
 
-1. Hardware-gated proofs when hardware is available (18 touch rows, 3 secondary-device rows).
-2. The user release decision (merge, version bump, tag v0.2.0, dist artifacts).
-3. Further record shapes (style/enabled fields, other families) behind new live proofs.
+1. User decisions on v0.2.0-rc.1: optional annotated RC tag, one manual RC test pass, then final v0.2.0 approval (merge, bump, tag, publish).
+2. Hardware-gated proofs when hardware is available (18 touch rows, 3 secondary-device rows).
+3. Style editing only if trusted value evidence appears; gesture shapes need a readback mechanism that 0.55.4 does not provide.
 
-Hard blockers outside code: touch hardware, secondary input devices, a display recovery design, and user decisions on activation phases and release.
+Hard blockers outside code: touch hardware, secondary input devices, a display recovery design, and user decisions on the release.
