@@ -132,6 +132,39 @@ Full reasons stay available in the detail pane and Safety Details.
    raw-value preservation, unchanged classifications, Ctrl+F wiring, quiet
    picker card, honest report pins).
 
+## Implemented in the third pass (whole-GUI overhaul)
+
+1. **The split metadata-browser layout is gone.** Settings pages are one
+   centered clamped column (max 800, tighten 600) holding a rounded
+   boxed-list card with section headings per subsection; the permanent
+   "Setting details" pane was removed and the full detail surface (same
+   controls, save flow, and reasons) now opens on demand as a popover
+   anchored to the opened row.
+2. **Inline controls on rows**: the 135 default-previewable rows carry
+   right-aligned controls (switch / spin / dropdown / color swatch /
+   compact entry) driving the existing reversible preview executor through
+   a lazily created, session-drop-registered controller. Save remains the
+   separate gated step. All other rows keep the quiet chip.
+3. **Color rows (all 22)**: inline swatch, picker popover with live
+   preview, manual entry, validated Apply and Cancel; exact raw text
+   preserved; unparseable values fail closed to text-only.
+4. **Gradient strips** for values that parse as two or more colors with an
+   optional angle; everything else fails closed.
+5. **Search index** now spans friendly labels, chip text, dotted and
+   colon-form raw keys, categories/sections, and descriptions with
+   normalization.
+6. **Profiles**: centered inert empty state. **Layouts**: merged
+   Dwindle/Master/Scrolling tab page over the same model rows.
+7. **Fallback labels**: unmatched rows drop the redundant page-name prefix
+   (formatting only; matched labels stay first).
+8. Guards: `tests/gui_overhaul.rs`; harness DetailPane probe now opens a
+   row first (the pane is on-demand).
+
+Deferred with reasons (recorded in the overhaul report): Monitors
+cards/badges, source-grouped rules/autostart/env lists, and the Workspaces
+page all need safe read-only model projections before an honest shell can
+exist; inline dead-man supervision stays in the detail surface.
+
 ## Follow-ups (next passes)
 
 - Detail-pane simplification: short chip + expander for the full

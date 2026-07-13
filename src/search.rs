@@ -31,6 +31,7 @@ struct SearchIndexEntry {
     row_id: String,
     official_setting: String,
     label: String,
+    friendly_label: String,
     context: String,
     description: String,
     searchable_text: String,
@@ -136,6 +137,17 @@ impl SearchIndexEntry {
         let row_id = canonical(&setting.row_id);
         let official_setting = canonical(&setting.official_setting);
         let label = searchable(&setting.label);
+        // The friendly resolved label and the quiet status chip are what
+        // the user actually sees, so both are searchable.
+        let friendly_label = searchable(crate::ux_presentation::resolved_row_label(
+            &setting.row_id,
+            &setting.label,
+        ));
+        let status_chip =
+            searchable(crate::ux_presentation::status_chip_for_row(&setting.row_id).label());
+        // Colon-form keys (the config-file spelling) match too:
+        // `general:gaps_in` and `general.gaps_in` find the same row.
+        let colon_key = official_setting.replace('.', ":");
         let context = searchable(&format!(
             "{} {} {}",
             setting.tab_id, setting.tab_label, setting.subsection
@@ -165,7 +177,10 @@ impl SearchIndexEntry {
         let searchable_text = [
             searchable(&setting.row_id),
             searchable(&setting.official_setting),
+            colon_key,
             label.clone(),
+            friendly_label.clone(),
+            status_chip,
             context.clone(),
             description.clone(),
             metadata.clone(),
@@ -177,6 +192,7 @@ impl SearchIndexEntry {
             row_id,
             official_setting,
             label,
+            friendly_label,
             context,
             description,
             searchable_text,
@@ -190,11 +206,15 @@ impl SearchIndexEntry {
     }
 
     fn rank(&self, query: &str, terms: &[String]) -> SearchRank {
-        if self.row_id == query || self.official_setting == query {
+        // Colon-form key queries rank like their dotted equivalents.
+        let normalized_query = query.replace(':', ".");
+        if self.row_id == normalized_query || self.official_setting == normalized_query {
             SearchRank::ExactKey
-        } else if self.row_id.starts_with(query) || self.official_setting.starts_with(query) {
+        } else if self.row_id.starts_with(&normalized_query)
+            || self.official_setting.starts_with(&normalized_query)
+        {
             SearchRank::PrefixKey
-        } else if field_matches(&self.label, terms) {
+        } else if field_matches(&self.label, terms) || field_matches(&self.friendly_label, terms) {
             SearchRank::Label
         } else if field_matches(&self.context, terms) {
             SearchRank::Context

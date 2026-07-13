@@ -201,9 +201,19 @@ Save persistence and migration marathon complete on `structured-family-editors-u
 - **Quiet picker card** ("Animations & curves") and friendlier empty state; proof prose off the everyday path.
 - Guards: `tests/hyprmod_presentation_adoption.rs` (7 tests).
 
+## Whole-GUI Overhaul Additions (2026-07-13)
+
+- **Shell**: the permanent split detail pane is removed. Settings pages render as one centered `adw::Clamp` column (max 800) holding a `boxed-list` card with per-subsection headings; the full detail surface (controls, save flow, reasons — unchanged) opens on demand as a popover anchored to the opened row. Page headings show the page name only.
+- **Inline controls**: the 135 default-previewable rows carry right-aligned controls (switch/spin/dropdown/color swatch/entry) that drive the existing reversible preview executor via lazily created, session-drop-registered controllers (`inline_preview_apply`); Save remains the separate gated step. Other rows keep the quiet chip.
+- **Color/gradient**: all 22 ColorEntry rows have swatches + a validated picker popover (live preview, manual entry, Apply gated on parseability, Cancel); gradient-form values render preview strips; parsing is fail-closed (`ux_presentation::parse_hyprland_color/gradient`).
+- **Search**: index spans friendly labels, chip text, dotted + colon-form keys, categories, descriptions; normalization for separators/case.
+- **New pages**: Profiles (centered inert empty state) and Layouts (Dwindle/Master/Scrolling tabs over the same 33 model rows) — both presentation-only.
+- **Fallback labels**: unmatched rows strip the redundant page-name prefix (formatting only).
+- Guards: `tests/gui_overhaul.rs` (8 tests); harness DetailPane probe opens a row first. Deferred with reasons: Monitors cards, rules/autostart/env locked lists, Workspaces page (all need safe read-only model projections first).
+
 ## Next Exact Work
 
-The release is complete and the first two UX simplification passes are in. Remaining:
+The release is complete and three UX passes are in (adoption, simplification, whole-GUI overhaul). Remaining:
 
 - Hardware-gated proofs: 18 touch-family rows need touch/tablet hardware; 3 rows need secondary-device proofs (deferred; devices unavailable — no simulated/virtual-device path is proven, and any future one is proposal-only requiring explicit approval).
 - A UX simplification/readability pass separating end-user controls from developer/proof surfaces (the one unproven quality area per the Fable audit).

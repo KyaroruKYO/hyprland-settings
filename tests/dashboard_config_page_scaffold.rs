@@ -130,7 +130,7 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
     assert!(source.contains("hyprland-settings-profile-mode-detail"));
     assert!(source.contains("action.set_sensitive(active)"));
     // The Config page routes through the shared standalone-page path.
-    assert!(render_source.contains("[DASHBOARD_ID, CONFIG_ID, SAFETY_ID]"));
+    assert!(render_source.contains("[DASHBOARD_ID, CONFIG_ID, SAFETY_ID, LAYOUTS_ID, PROFILES_ID]"));
     assert!(render_source.contains("config_view.set_visible(page_id == CONFIG_ID)"));
     assert!(render_source.contains("settings_view.set_visible(false)"));
     assert!(render_source.contains("render_empty_detail(detail_content)"));

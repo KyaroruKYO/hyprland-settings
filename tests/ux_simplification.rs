@@ -168,7 +168,7 @@ fn status_chips_stay_quiet_and_honest() {
     // The row list uses the chip and the shortened description.
     let window = fs::read_to_string("src/ui/window.rs").expect("window reads");
     assert!(window.contains("status_chip_for_row(&setting.row_id).label()"));
-    assert!(window.contains("short_description(&setting.description)"));
+    assert!(window.contains("ux_presentation::short_description("));
 }
 
 #[test]

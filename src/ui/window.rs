@@ -93,6 +93,8 @@ use crate::write_verification_plan::planned_reread_verification;
 const DASHBOARD_ID: &str = "dashboard";
 const CONFIG_ID: &str = "config";
 const SAFETY_ID: &str = "safety-details";
+const LAYOUTS_ID: &str = "layouts";
+const PROFILES_ID: &str = "profiles";
 
 thread_local! {
     /// Live preview controllers whose sessions may still be active. Drained
@@ -271,6 +273,16 @@ pub fn show_main_window(
     safety_view.set_tooltip_text(Some("Safety Details page"));
     content.append(&safety_view);
 
+    let layouts_view = build_layouts_view(&model);
+    layouts_view.set_widget_name("hyprland-settings-layouts-page");
+    layouts_view.set_tooltip_text(Some("Layouts page"));
+    content.append(&layouts_view);
+
+    let profiles_view = build_profiles_view();
+    profiles_view.set_widget_name("hyprland-settings-profiles-page");
+    profiles_view.set_tooltip_text(Some("Profiles page"));
+    content.append(&profiles_view);
+
     let settings_view = gtk::Box::new(gtk::Orientation::Vertical, 12);
     settings_view.set_widget_name("hyprland-settings-category-page");
     settings_view.set_tooltip_text(Some("Settings category page"));
@@ -340,31 +352,40 @@ pub fn show_main_window(
     tab_title.set_widget_name("hyprland-settings-category-title");
     settings_view.append(&tab_title);
 
+    // Settings pages are a single centered column: rounded card list with
+    // section headings, clamped to a readable width. No permanent detail
+    // pane — details open on demand anchored to the selected row.
     let settings_list = gtk::ListBox::new();
     settings_list.set_widget_name("hyprland-settings-setting-list");
     settings_list.set_tooltip_text(Some("Setting row list"));
     settings_list.set_selection_mode(gtk::SelectionMode::Single);
+    settings_list.add_css_class("boxed-list");
+    settings_list.set_valign(gtk::Align::Start);
+
+    let settings_clamp = adw::Clamp::new();
+    settings_clamp.set_maximum_size(800);
+    settings_clamp.set_tightening_threshold(600);
+    settings_clamp.set_margin_top(12);
+    settings_clamp.set_margin_bottom(24);
+    settings_clamp.set_margin_start(12);
+    settings_clamp.set_margin_end(12);
+    settings_clamp.set_child(Some(&settings_list));
+
     let settings_scroll = gtk::ScrolledWindow::builder()
-        .min_content_width(420)
         .vexpand(true)
         .hexpand(true)
-        .child(&settings_list)
+        .child(&settings_clamp)
         .build();
 
     let (detail_panel, detail_content) = build_detail_panel();
-
-    let work_area = gtk::Paned::new(gtk::Orientation::Horizontal);
-    work_area.set_vexpand(true);
-    work_area.set_hexpand(true);
-    work_area.set_wide_handle(true);
-    work_area.set_position(520);
-    work_area.set_start_child(Some(&settings_scroll));
-    work_area.set_end_child(Some(&detail_panel));
-    work_area.set_resize_start_child(true);
-    work_area.set_resize_end_child(true);
-    work_area.set_shrink_start_child(false);
-    work_area.set_shrink_end_child(false);
-    settings_view.append(&work_area);
+    // The detail surface is a popover anchored to the selected row: it
+    // appears only when a row is opened and never occupies the page.
+    let detail_popover = gtk::Popover::new();
+    detail_popover.set_widget_name("hyprland-settings-detail-popover");
+    detail_popover.set_child(Some(&detail_panel));
+    detail_popover.set_parent(&settings_list);
+    detail_popover.set_autohide(true);
+    settings_view.append(&settings_scroll);
 
     render_main_view(
         &model,
@@ -372,6 +393,8 @@ pub fn show_main_window(
         &dashboard_view,
         &config_view,
         &safety_view,
+        &layouts_view,
+        &profiles_view,
         &settings_view,
         &current_query.borrow(),
         &tab_title,
@@ -389,6 +412,8 @@ pub fn show_main_window(
         let dashboard_view = dashboard_view.clone();
         let config_view = config_view.clone();
         let safety_view = safety_view.clone();
+        let layouts_view = layouts_view.clone();
+        let profiles_view = profiles_view.clone();
         let settings_view = settings_view.clone();
         let tab_title = tab_title.clone();
         let settings_list = settings_list.clone();
@@ -405,6 +430,8 @@ pub fn show_main_window(
                         &dashboard_view,
                         &config_view,
                         &safety_view,
+                        &layouts_view,
+                        &profiles_view,
                         &settings_view,
                         &current_query.borrow(),
                         &tab_title,
@@ -425,6 +452,8 @@ pub fn show_main_window(
         let dashboard_view = dashboard_view.clone();
         let config_view = config_view.clone();
         let safety_view = safety_view.clone();
+        let layouts_view = layouts_view.clone();
+        let profiles_view = profiles_view.clone();
         let settings_view = settings_view.clone();
         let tab_title = tab_title.clone();
         let settings_list = settings_list.clone();
@@ -439,6 +468,8 @@ pub fn show_main_window(
                 &dashboard_view,
                 &config_view,
                 &safety_view,
+                &layouts_view,
+                &profiles_view,
                 &settings_view,
                 &current_query.borrow(),
                 &tab_title,
@@ -455,9 +486,11 @@ pub fn show_main_window(
         let displayed_row_ids = Rc::clone(&displayed_row_ids);
         let detail_content = detail_content.clone();
         let config_selection_state = Rc::clone(&config_selection_state);
+        let detail_popover = detail_popover.clone();
         settings_list.connect_row_selected(move |_, row| {
             let Some(row) = row else {
                 render_empty_detail(&detail_content);
+                detail_popover.popdown();
                 return;
             };
             let row_id = displayed_row_ids
@@ -466,8 +499,18 @@ pub fn show_main_window(
                 .cloned();
             if let Some(row_id) = row_id {
                 render_detail(&model, &row_id, &detail_content, &config_selection_state);
+                // Anchor the on-demand detail surface to the opened row.
+                let allocation = row.allocation();
+                detail_popover.set_pointing_to(Some(&gtk::gdk::Rectangle::new(
+                    allocation.x(),
+                    allocation.y(),
+                    allocation.width(),
+                    allocation.height(),
+                )));
+                detail_popover.popup();
             } else {
                 render_empty_detail(&detail_content);
+                detail_popover.popdown();
             }
         });
     }
@@ -534,6 +577,16 @@ fn sidebar_items(model: &UiProjection) -> Vec<SidebarItem> {
                 SAFETY_ID => items.push(SidebarItem {
                     id: SAFETY_ID.to_string(),
                     label: "Safety Details".to_string(),
+                    target_tab_id: None,
+                }),
+                LAYOUTS_ID => items.push(SidebarItem {
+                    id: LAYOUTS_ID.to_string(),
+                    label: "Layouts".to_string(),
+                    target_tab_id: None,
+                }),
+                PROFILES_ID => items.push(SidebarItem {
+                    id: PROFILES_ID.to_string(),
+                    label: "Profiles".to_string(),
                     target_tab_id: None,
                 }),
                 tab_id => {
@@ -862,6 +915,140 @@ fn build_safety_details_view(model: &UiProjection) -> gtk::ScrolledWindow {
     content.append(&runtime_preview_readiness_section());
 
     content.append(&structured_family_runtime_preview_status_section());
+
+    gtk::ScrolledWindow::builder()
+        .vexpand(true)
+        .hexpand(true)
+        .child(&content)
+        .build()
+}
+
+/// Profiles page: a friendly centered empty state. Profile switching has
+/// no enabled production behavior, so the action stays inert — the page is
+/// presentation only and introduces no symlink/config path.
+fn build_profiles_view() -> gtk::ScrolledWindow {
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 10);
+    content.set_widget_name("hyprland-settings-profiles-content");
+    content.set_valign(gtk::Align::Center);
+    content.set_halign(gtk::Align::Center);
+    content.set_vexpand(true);
+
+    let icon = gtk::Image::from_icon_name("folder-symbolic");
+    icon.set_pixel_size(96);
+    content.append(&icon);
+
+    let title = title_label("No Profiles");
+    title.set_halign(gtk::Align::Center);
+    content.append(&title);
+
+    let body = body_label(
+        "Profiles will let you save and switch between complete setups. Switching is not enabled yet.",
+    );
+    body.set_halign(gtk::Align::Center);
+    content.append(&body);
+
+    let action = gtk::Button::with_label("Save Current as Profile");
+    action.add_css_class("pill");
+    action.set_halign(gtk::Align::Center);
+    action.set_sensitive(false);
+    action.set_widget_name("hyprland-settings-profiles-save-disabled");
+    action.set_tooltip_text(Some(
+        "Not available yet: profile switching has no enabled production behavior.",
+    ));
+    content.append(&action);
+
+    gtk::ScrolledWindow::builder()
+        .vexpand(true)
+        .hexpand(true)
+        .child(&content)
+        .build()
+}
+
+/// Layouts page: one page for the dwindle/master/scrolling layout rows
+/// with top tabs, presentation-only — the rows are the same model rows
+/// with the same classifications, raw keys, and save/preview behavior.
+fn build_layouts_view(model: &Rc<UiProjection>) -> gtk::ScrolledWindow {
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 12);
+    content.set_widget_name("hyprland-settings-layouts-content");
+    content.append(&title_label("Layouts"));
+
+    let tabs = gtk::Box::new(gtk::Orientation::Horizontal, 0);
+    tabs.set_halign(gtk::Align::Center);
+    tabs.add_css_class("linked");
+    let list = gtk::ListBox::new();
+    list.set_widget_name("hyprland-settings-layouts-list");
+    list.set_selection_mode(gtk::SelectionMode::None);
+    list.add_css_class("boxed-list");
+    list.set_valign(gtk::Align::Start);
+
+    let render_layout = {
+        let model = Rc::clone(model);
+        let list = list.clone();
+        Rc::new(move |prefix: &str| {
+            while let Some(row) = list.row_at_index(0) {
+                list.remove(&row);
+            }
+            let mut results: Vec<SearchResult> = model
+                .settings_for_tab("windows-layout")
+                .into_iter()
+                .filter(|setting| setting.row_id.starts_with(prefix))
+                .map(|setting| SearchResult {
+                    setting,
+                    rank: None,
+                })
+                .collect();
+            results.sort_by_key(|result| result.setting.row_order);
+            if results.is_empty() {
+                let empty = gtk::ListBoxRow::new();
+                empty.set_selectable(false);
+                empty.set_child(Some(&small_label(
+                    "No settings for this layout in the current model.",
+                )));
+                list.append(&empty);
+                return;
+            }
+            for result in &results {
+                list.append(&build_setting_row(result, false));
+            }
+        })
+    };
+
+    let mut first_button: Option<gtk::ToggleButton> = None;
+    for (label, prefix) in [
+        ("Dwindle", "dwindle."),
+        ("Master", "master."),
+        ("Scrolling", "scrolling."),
+    ] {
+        let button = gtk::ToggleButton::with_label(label);
+        button.set_widget_name(&format!(
+            "hyprland-settings-layouts-tab-{}",
+            label.to_ascii_lowercase()
+        ));
+        if let Some(first) = &first_button {
+            button.set_group(Some(first));
+        } else {
+            first_button = Some(button.clone());
+        }
+        let render_layout = render_layout.clone();
+        button.connect_toggled(move |button| {
+            if button.is_active() {
+                render_layout(prefix);
+            }
+        });
+        tabs.append(&button);
+    }
+    content.append(&tabs);
+    if let Some(first) = &first_button {
+        first.set_active(true);
+    }
+
+    let clamp = adw::Clamp::new();
+    clamp.set_maximum_size(800);
+    clamp.set_tightening_threshold(600);
+    clamp.set_margin_top(6);
+    clamp.set_margin_bottom(24);
+    clamp.set_child(Some(&list));
+    content.append(&clamp);
 
     gtk::ScrolledWindow::builder()
         .vexpand(true)
@@ -5477,6 +5664,8 @@ fn render_main_view(
     dashboard_view: &gtk::ScrolledWindow,
     config_view: &gtk::ScrolledWindow,
     safety_view: &gtk::ScrolledWindow,
+    layouts_view: &gtk::ScrolledWindow,
+    profiles_view: &gtk::ScrolledWindow,
     settings_view: &gtk::Box,
     query: &str,
     tab_title: &gtk::Label,
@@ -5485,16 +5674,18 @@ fn render_main_view(
     detail_content: &gtk::Box,
     config_selection_state: &Rc<RefCell<ConfigSelectionState>>,
 ) {
-    // The three standalone pages share one show-this-hide-the-rest path.
-    for page_id in [DASHBOARD_ID, CONFIG_ID, SAFETY_ID] {
+    // The standalone pages share one show-this-hide-the-rest path.
+    for page_id in [DASHBOARD_ID, CONFIG_ID, SAFETY_ID, LAYOUTS_ID, PROFILES_ID] {
         if selected_tab_id == page_id {
             dashboard_view.set_visible(page_id == DASHBOARD_ID);
             config_view.set_visible(page_id == CONFIG_ID);
             safety_view.set_visible(page_id == SAFETY_ID);
+            layouts_view.set_visible(page_id == LAYOUTS_ID);
+            profiles_view.set_visible(page_id == PROFILES_ID);
             settings_view.set_visible(false);
             settings_list.unselect_all();
-            while let Some(child) = settings_list.first_child() {
-                settings_list.remove(&child);
+            while let Some(row) = settings_list.row_at_index(0) {
+                settings_list.remove(&row);
             }
             displayed_row_ids.borrow_mut().clear();
             render_empty_detail(detail_content);
@@ -5505,6 +5696,8 @@ fn render_main_view(
     dashboard_view.set_visible(false);
     config_view.set_visible(false);
     safety_view.set_visible(false);
+    layouts_view.set_visible(false);
+    profiles_view.set_visible(false);
     settings_view.set_visible(true);
     render_settings_view(
         model,
@@ -5529,14 +5722,44 @@ fn render_settings_view(
     _config_selection_state: &Rc<RefCell<ConfigSelectionState>>,
 ) {
     settings_list.unselect_all();
-    while let Some(child) = settings_list.first_child() {
-        settings_list.remove(&child);
+    while let Some(row) = settings_list.row_at_index(0) {
+        settings_list.remove(&row);
     }
     displayed_row_ids.borrow_mut().clear();
     render_empty_detail(detail_content);
 
     let view = search_projection(model, selected_tab_id, query);
-    tab_title.set_label(&view.title);
+    // Page title only — row counts and metadata belong to reports, not
+    // page headings.
+    tab_title.set_label(view.title.split(" · ").next().unwrap_or(&view.title));
+
+    // Section headings render through the list-header mechanism: a heading
+    // appears above the first row of each subsection group.
+    let sections: Vec<String> = view
+        .results
+        .iter()
+        .map(|result| result.setting.subsection.clone())
+        .collect();
+    settings_list.set_header_func(move |row, before| {
+        let section = sections.get(row.index() as usize);
+        let previous = before.and_then(|previous_row| sections.get(previous_row.index() as usize));
+        if let Some(section) = section {
+            if previous != Some(section) && !section.is_empty() {
+                let heading = body_label(section);
+                heading.set_margin_top(14);
+                heading.set_margin_start(6);
+                heading.set_margin_bottom(4);
+                heading.add_css_class("heading");
+                heading.set_widget_name(&format!(
+                    "hyprland-settings-section-heading-{}",
+                    safe_widget_name(section)
+                ));
+                row.set_header(Some(&heading));
+                return;
+            }
+        }
+        row.set_header(None::<&gtk::Widget>);
+    });
 
     if view.results.is_empty() {
         let empty = gtk::ListBoxRow::new();
@@ -5576,43 +5799,409 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
     row.set_activatable(true);
     row.set_selectable(true);
 
-    let row_box = gtk::Box::new(gtk::Orientation::Vertical, 4);
+    // Compact card row: label + one-line subtitle on the left, the value
+    // and control on the right. Everything else lives behind the row's
+    // on-demand detail surface.
+    let row_box = gtk::Box::new(gtk::Orientation::Horizontal, 12);
     row_box.set_widget_name("hyprland-settings-setting-row-content");
-    row_box.set_margin_top(10);
-    row_box.set_margin_bottom(10);
+    row_box.set_margin_top(8);
+    row_box.set_margin_bottom(8);
     row_box.set_margin_start(12);
     row_box.set_margin_end(12);
 
-    row_box.append(&body_label(crate::ux_presentation::resolved_row_label(
-        &setting.row_id,
-        &setting.label,
-    )));
+    let text_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
+    text_box.set_hexpand(true);
+    text_box.set_halign(gtk::Align::Start);
+    text_box.set_valign(gtk::Align::Center);
+    let title_text = match crate::presentation_labels::display_label_for_row(&setting.row_id) {
+        Some(matched) => matched.to_string(),
+        None => crate::ux_presentation::fallback_display_label(&setting.label, &setting.tab_label),
+    };
+    let title = body_label(&title_text);
+    title.set_halign(gtk::Align::Start);
+    text_box.append(&title);
     if include_context {
-        row_box.append(&small_label(&format!(
+        let context = small_label(&format!(
             "In {} / {} · {}",
             setting.tab_label,
             setting.subsection,
             search_rank_label(result.rank)
-        )));
+        ));
+        context.set_halign(gtk::Align::Start);
+        text_box.append(&context);
     }
     if !setting.description.is_empty() {
-        // One-line subtitle; the full description stays in the detail pane.
-        row_box.append(&wrapped_small_label(
-            &crate::ux_presentation::short_description(&setting.description),
+        // One-line subtitle; the full description stays in the detail view.
+        let subtitle = wrapped_small_label(&crate::ux_presentation::short_description(
+            &setting.description,
         ));
+        subtitle.set_halign(gtk::Align::Start);
+        text_box.append(&subtitle);
     }
+    if let Some(status) = friendly_row_attention_status(setting) {
+        let attention = small_label(&status);
+        attention.set_halign(gtk::Align::Start);
+        text_box.append(&attention);
+    }
+    row_box.append(&text_box);
 
-    row_box.append(&small_label(&format!(
+    let end_box = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    end_box.set_halign(gtk::Align::End);
+    end_box.set_valign(gtk::Align::Center);
+    let status = small_label(&format!(
         "{} · {}",
         friendly_row_current_status(setting),
         crate::ux_presentation::status_chip_for_row(&setting.row_id).label()
-    )));
-    if let Some(status) = friendly_row_attention_status(setting) {
-        row_box.append(&small_label(&status));
-    }
+    ));
+    status.set_halign(gtk::Align::End);
+    end_box.append(&status);
+    attach_inline_row_control(&end_box, setting);
+    row_box.append(&end_box);
 
     row.set_child(Some(&row_box));
     row
+}
+
+/// Build a lazily-connected apply closure for inline row controls. The
+/// preview controller is created on first interaction only (creating one
+/// per visible row would hammer the readback), registered for session-drop
+/// revert, and drives the same offer/throttle/drain path as the detail
+/// controls. Feedback lands in the control's tooltip; nothing here can
+/// write config or reload — it is the existing preview executor.
+fn inline_preview_apply(
+    row_id: String,
+    throttle_ms: Option<u64>,
+    feedback: gtk::Widget,
+) -> Rc<dyn Fn(String)> {
+    let controller_slot: Rc<RefCell<Option<Rc<RefCell<RuntimePreviewUiController>>>>> =
+        Rc::new(RefCell::new(None));
+    let drain_scheduled = Rc::new(std::cell::Cell::new(false));
+    Rc::new(move |value: String| {
+        if controller_slot.borrow().is_none() {
+            match RuntimePreviewUiController::new_live(&row_id) {
+                Ok(controller) => {
+                    let controller = Rc::new(RefCell::new(controller));
+                    register_preview_controller(&controller);
+                    *controller_slot.borrow_mut() = Some(controller);
+                }
+                Err(error) => {
+                    feedback.set_tooltip_text(Some(&error.user_text()));
+                    return;
+                }
+            }
+        }
+        let Some(controller) = controller_slot.borrow().as_ref().cloned() else {
+            return;
+        };
+        let outcome = controller
+            .borrow_mut()
+            .offer_value(&value, preview_now_ms());
+        match outcome {
+            Ok(Some(receipt)) => feedback.set_tooltip_text(Some(&receipt.status_text)),
+            Ok(None) => {
+                if !drain_scheduled.get() {
+                    drain_scheduled.set(true);
+                    let controller = controller.clone();
+                    let feedback = feedback.clone();
+                    let drain_scheduled = drain_scheduled.clone();
+                    let delay = throttle_ms.unwrap_or(150) + 10;
+                    gtk::glib::timeout_add_local_once(
+                        std::time::Duration::from_millis(delay),
+                        move || {
+                            drain_scheduled.set(false);
+                            match controller.borrow_mut().drain_pending(preview_now_ms()) {
+                                Ok(Some(receipt)) => {
+                                    feedback.set_tooltip_text(Some(&receipt.status_text))
+                                }
+                                Ok(None) => {}
+                                Err(error) => feedback.set_tooltip_text(Some(&error.user_text())),
+                            }
+                        },
+                    );
+                }
+            }
+            Err(error) => feedback.set_tooltip_text(Some(&error.user_text())),
+        }
+    })
+}
+
+/// Right-aligned inline control for a setting row, matching the row's
+/// proven preview capability. Only rows the matrix classifies as
+/// default-previewable get a live control (the same reversible preview
+/// path as the detail surface — Save stays a separate gated step);
+/// everything else keeps its quiet chip and opens details on demand.
+fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiSetting) {
+    let Some(row_state) = runtime_preview_ui_row_state(&setting.row_id) else {
+        return;
+    };
+    if !row_state.preview_enabled {
+        return;
+    }
+    let initial_value = setting.current_value.raw_value.clone().unwrap_or_default();
+    let control_name = format!(
+        "hyprland-settings-inline-control-{}",
+        safe_widget_name(&setting.row_id)
+    );
+    match row_state.control_kind {
+        RuntimePreviewUiControlKind::Switch => {
+            let switch = gtk::Switch::new();
+            switch.set_widget_name(&control_name);
+            switch.set_valign(gtk::Align::Center);
+            switch.set_active(matches!(
+                initial_value.trim().to_ascii_lowercase().as_str(),
+                "1" | "true" | "yes" | "on"
+            ));
+            let apply = inline_preview_apply(
+                setting.row_id.clone(),
+                row_state.throttle_ms,
+                switch.clone().upcast(),
+            );
+            switch.connect_state_set(move |_, active| {
+                apply(if active { "true" } else { "false" }.to_string());
+                gtk::glib::Propagation::Proceed
+            });
+            end_box.append(&switch);
+        }
+        RuntimePreviewUiControlKind::Slider | RuntimePreviewUiControlKind::SpinRow => {
+            let (minimum, maximum, step, digits) = match row_state.control_kind {
+                RuntimePreviewUiControlKind::Slider => {
+                    let (minimum, maximum) = row_state.slider_bounds.unwrap_or((0.0, 100.0));
+                    (minimum, maximum, 0.05, 2)
+                }
+                _ => {
+                    let (minimum, maximum) = row_state.slider_bounds.unwrap_or((0.0, 1000.0));
+                    (minimum, maximum, 1.0, 0)
+                }
+            };
+            let spin = gtk::SpinButton::with_range(minimum, maximum, step);
+            spin.set_widget_name(&control_name);
+            spin.set_digits(digits);
+            spin.set_valign(gtk::Align::Center);
+            if let Ok(value) = initial_value.trim().parse::<f64>() {
+                spin.set_value(value);
+            }
+            let apply = inline_preview_apply(
+                setting.row_id.clone(),
+                row_state.throttle_ms,
+                spin.clone().upcast(),
+            );
+            spin.connect_value_changed(move |spin| {
+                let value = spin.value();
+                let rendered = if digits == 0 {
+                    format!("{}", value as i64)
+                } else {
+                    format!("{value}")
+                };
+                apply(rendered);
+            });
+            end_box.append(&spin);
+        }
+        RuntimePreviewUiControlKind::Dropdown => {
+            let combo = gtk::ComboBoxText::new();
+            combo.set_widget_name(&control_name);
+            combo.set_valign(gtk::Align::Center);
+            for (raw_value, label) in &row_state.dropdown_choices {
+                combo.append(Some(raw_value), label);
+            }
+            combo.set_active_id(Some(initial_value.trim()));
+            let apply = inline_preview_apply(
+                setting.row_id.clone(),
+                row_state.throttle_ms,
+                combo.clone().upcast(),
+            );
+            combo.connect_changed(move |combo| {
+                if let Some(active) = combo.active_id() {
+                    apply(active.to_string());
+                }
+            });
+            end_box.append(&combo);
+        }
+        RuntimePreviewUiControlKind::ColorEntry => {
+            attach_inline_color_control(
+                end_box,
+                setting,
+                &initial_value,
+                &control_name,
+                row_state.throttle_ms,
+            );
+        }
+        RuntimePreviewUiControlKind::NoControl => {}
+        RuntimePreviewUiControlKind::ValueEntry => {
+            let entry = gtk::Entry::new();
+            entry.set_widget_name(&control_name);
+            entry.set_valign(gtk::Align::Center);
+            entry.set_width_chars(10);
+            entry.set_text(initial_value.trim());
+            let apply = inline_preview_apply(
+                setting.row_id.clone(),
+                row_state.throttle_ms,
+                entry.clone().upcast(),
+            );
+            entry.connect_activate(move |entry| {
+                apply(entry.text().to_string());
+            });
+            end_box.append(&entry);
+        }
+    }
+}
+
+/// Paint a swatch (single color) or preview strip (gradient) for a raw
+/// color value. Unparseable values paint nothing — fail closed.
+fn color_swatch_area(raw_value: &str, width: i32, height: i32) -> gtk::DrawingArea {
+    live_swatch_area(
+        Rc::new(RefCell::new(raw_value.trim().to_string())),
+        width,
+        height,
+    )
+}
+
+/// A swatch that repaints from shared text state — the picker entry
+/// updates the state and queues a redraw for its live preview.
+fn live_swatch_area(shared: Rc<RefCell<String>>, width: i32, height: i32) -> gtk::DrawingArea {
+    let area = gtk::DrawingArea::new();
+    area.set_content_width(width);
+    area.set_content_height(height);
+    area.set_draw_func(move |_, context, width, height| {
+        let raw = shared.borrow().clone();
+        let width = width as f64;
+        let height = height as f64;
+        if let Some(color) = crate::ux_presentation::parse_hyprland_color(&raw) {
+            context.set_source_rgba(
+                color.red as f64 / 255.0,
+                color.green as f64 / 255.0,
+                color.blue as f64 / 255.0,
+                color.alpha as f64 / 255.0,
+            );
+            context.rectangle(0.0, 0.0, width, height);
+            let _ = context.fill();
+            return;
+        }
+        if let Some((colors, _angle)) = crate::ux_presentation::parse_hyprland_gradient(&raw) {
+            let gradient = gtk::cairo::LinearGradient::new(0.0, 0.0, width, 0.0);
+            let last = (colors.len() - 1).max(1) as f64;
+            for (index, color) in colors.iter().enumerate() {
+                gradient.add_color_stop_rgba(
+                    index as f64 / last,
+                    color.red as f64 / 255.0,
+                    color.green as f64 / 255.0,
+                    color.blue as f64 / 255.0,
+                    color.alpha as f64 / 255.0,
+                );
+            }
+            let _ = context.set_source(&gradient);
+            context.rectangle(0.0, 0.0, width, height);
+            let _ = context.fill();
+        }
+    });
+    area
+}
+
+/// Inline color row control: a swatch/preview-strip button that opens a
+/// small picker popover with a live preview, manual value entry, Apply,
+/// and Cancel. Apply is validated (parse must succeed) and routes through
+/// the same reversible preview path as every other control; the exact
+/// entered raw text is what gets applied, preserving the value format.
+/// Unparseable current values show no swatch and the picker refuses Apply
+/// until the text parses — fail closed, no save/write path here.
+fn attach_inline_color_control(
+    end_box: &gtk::Box,
+    setting: &crate::ui::model::UiSetting,
+    initial_value: &str,
+    control_name: &str,
+    throttle_ms: Option<u64>,
+) {
+    let parseable = crate::ux_presentation::parse_hyprland_color(initial_value).is_some()
+        || crate::ux_presentation::parse_hyprland_gradient(initial_value).is_some();
+
+    let swatch_button = gtk::Button::new();
+    swatch_button.set_widget_name(control_name);
+    swatch_button.set_valign(gtk::Align::Center);
+    if parseable {
+        swatch_button.set_child(Some(&color_swatch_area(initial_value, 44, 18)));
+        swatch_button.set_tooltip_text(Some(&format!("{} — edit color", initial_value.trim())));
+    } else {
+        swatch_button.set_label("Color…");
+        swatch_button.set_tooltip_text(Some(
+            "Current value is not in a recognized color form; edit it as text",
+        ));
+    }
+
+    let picker = gtk::Popover::new();
+    picker.set_widget_name(&format!("{control_name}-picker"));
+    picker.set_parent(&swatch_button);
+    let picker_box = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    picker_box.set_margin_top(10);
+    picker_box.set_margin_bottom(10);
+    picker_box.set_margin_start(10);
+    picker_box.set_margin_end(10);
+    picker_box.append(&small_label(
+        "rgba(RRGGBBAA), rgb(RRGGBB), 0xAARRGGBB, or a gradient of those",
+    ));
+    let preview_state = Rc::new(RefCell::new(initial_value.trim().to_string()));
+    let preview = live_swatch_area(preview_state.clone(), 180, 22);
+    picker_box.append(&preview);
+    let entry = gtk::Entry::new();
+    entry.set_text(initial_value.trim());
+    entry.set_width_chars(24);
+    picker_box.append(&entry);
+    let buttons = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    buttons.set_halign(gtk::Align::End);
+    let cancel = gtk::Button::with_label("Cancel");
+    let apply_button = gtk::Button::with_label("Apply preview");
+    apply_button.add_css_class("suggested-action");
+    apply_button.set_sensitive(parseable);
+    buttons.append(&cancel);
+    buttons.append(&apply_button);
+    picker_box.append(&buttons);
+    picker.set_child(Some(&picker_box));
+
+    {
+        // Live preview swatch + Apply validation as the text changes.
+        let preview_state = preview_state.clone();
+        let preview = preview.clone();
+        let apply_button = apply_button.clone();
+        entry.connect_changed(move |entry| {
+            let text = entry.text().to_string();
+            let valid = crate::ux_presentation::parse_hyprland_color(&text).is_some()
+                || crate::ux_presentation::parse_hyprland_gradient(&text).is_some();
+            apply_button.set_sensitive(valid);
+            *preview_state.borrow_mut() = text;
+            preview.queue_draw();
+        });
+    }
+
+    let apply = inline_preview_apply(
+        setting.row_id.clone(),
+        throttle_ms,
+        swatch_button.clone().upcast(),
+    );
+    {
+        let entry = entry.clone();
+        let picker = picker.clone();
+        let swatch_button = swatch_button.clone();
+        apply_button.connect_clicked(move |_| {
+            let text = entry.text().to_string();
+            // Validated: Apply is only sensitive when the text parses, and
+            // the exact entered text is what gets previewed (format kept).
+            if crate::ux_presentation::parse_hyprland_color(&text).is_some()
+                || crate::ux_presentation::parse_hyprland_gradient(&text).is_some()
+            {
+                apply(text.clone());
+                swatch_button.set_child(Some(&color_swatch_area(&text, 44, 18)));
+                swatch_button.set_tooltip_text(Some(&format!("{} — edit color", text.trim())));
+            }
+            picker.popdown();
+        });
+    }
+    {
+        let picker = picker.clone();
+        cancel.connect_clicked(move |_| picker.popdown());
+    }
+    {
+        let picker = picker.clone();
+        swatch_button.connect_clicked(move |_| picker.popup());
+    }
+    end_box.append(&swatch_button);
 }
 
 fn friendly_row_current_status(setting: &crate::ui::model::UiSetting) -> String {
@@ -5712,9 +6301,10 @@ fn build_detail_panel() -> (gtk::ScrolledWindow, gtk::Box) {
     frame.set_child(Some(&content));
 
     let scroll = gtk::ScrolledWindow::builder()
-        .min_content_width(420)
-        .vexpand(true)
-        .hexpand(true)
+        .min_content_width(460)
+        .min_content_height(320)
+        .max_content_height(560)
+        .propagate_natural_height(true)
         .child(&frame)
         .build();
     scroll.set_widget_name("hyprland-settings-detail-pane-scroll");
@@ -5756,10 +6346,13 @@ fn render_detail(
     detail_content.set_tooltip_text(Some(&detail_pane_accessibility_text(&detail)));
     clear_box(detail_content);
     append_detail_section(detail_content, "Setting", |section| {
-        section.append(&title_label(crate::ux_presentation::resolved_row_label(
-            &detail.row_id,
-            &detail.label,
-        )));
+        let heading = match crate::presentation_labels::display_label_for_row(&detail.row_id) {
+            Some(matched) => matched.to_string(),
+            None => {
+                crate::ux_presentation::fallback_display_label(&detail.label, &detail.tab_label)
+            }
+        };
+        section.append(&title_label(&heading));
         append_detail_line(section, "Official setting", &detail.official_setting);
         append_detail_line(
             section,

@@ -550,7 +550,7 @@
   "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
   "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
   "fallbackProofUsed": false,
-  "generatedAt": "2026-07-13T22:40:31.410616+00:00",
+  "generatedAt": "2026-07-13T23:43:09.995194+00:00",
   "hyprlandReloaded": false,
   "installedHyprlandPackageVersion": "0.55.4-1",
   "issuesFound": [],
@@ -1417,7 +1417,7 @@
         "connectedFileGeneratedDetailCollected": false,
         "connectedFileScriptManagedDetailCollected": false,
         "connectedFileSymlinkDetailCollected": false,
-        "detailPaneTextCollected": true,
+        "detailPaneTextCollected": false,
         "duplicateBlockedReasonTextCollected": false,
         "duplicateConflictDetailNavigationAttempted": false,
         "duplicateConflictDetailNavigationSucceeded": false,
@@ -1429,6 +1429,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -1441,6 +1442,7 @@
           "display",
           "duplicate",
           "hyprland",
+          "profile",
           "render",
           "search",
           "settings"
@@ -1962,15 +1964,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -2354,6 +2356,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -2895,15 +2898,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -3286,6 +3289,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -3300,6 +3304,7 @@
           "generated",
           "hyprland",
           "mode",
+          "profile",
           "settings"
         ],
         "navigationAttempted": true,
@@ -3819,15 +3824,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -4210,6 +4215,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -4749,15 +4755,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -5140,6 +5146,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -5679,15 +5686,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -6059,7 +6066,7 @@
         "connectedFileGeneratedDetailCollected": false,
         "connectedFileScriptManagedDetailCollected": false,
         "connectedFileSymlinkDetailCollected": false,
-        "detailPaneTextCollected": true,
+        "detailPaneTextCollected": false,
         "duplicateBlockedReasonTextCollected": false,
         "duplicateConflictDetailNavigationAttempted": false,
         "duplicateConflictDetailNavigationSucceeded": false,
@@ -6070,6 +6077,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -6605,15 +6613,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -6996,6 +7004,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -7533,15 +7542,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -7924,6 +7933,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -8461,15 +8471,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -8841,7 +8851,7 @@
         "connectedFileGeneratedDetailCollected": false,
         "connectedFileScriptManagedDetailCollected": false,
         "connectedFileSymlinkDetailCollected": false,
-        "detailPaneTextCollected": true,
+        "detailPaneTextCollected": false,
         "duplicateBlockedReasonTextCollected": false,
         "duplicateConflictDetailNavigationAttempted": false,
         "duplicateConflictDetailNavigationSucceeded": false,
@@ -8852,6 +8862,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -8863,6 +8874,7 @@
           "default",
           "display",
           "hyprland",
+          "profile",
           "render",
           "search",
           "settings"
@@ -9384,15 +9396,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -9775,6 +9787,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -9788,6 +9801,7 @@
           "display",
           "hyprland",
           "mode",
+          "profile",
           "settings"
         ],
         "navigationAttempted": true,
@@ -10307,15 +10321,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -10698,6 +10712,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -11219,15 +11234,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -11610,6 +11625,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -11622,6 +11638,7 @@
           "default",
           "display",
           "hyprland",
+          "profile",
           "script",
           "search",
           "settings"
@@ -12143,15 +12160,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -12517,7 +12534,7 @@
         "blockedCategoryExpectedTextCollected": false,
         "blockedCategoryReasonTextCollected": false,
         "blockedCategorySelectionFallbackUsed": false,
-        "blockedReasonTextCollected": false,
+        "blockedReasonTextCollected": true,
         "connectedFileDetailNavigationAttempted": false,
         "connectedFileDetailNavigationSucceeded": false,
         "connectedFileGeneratedDetailCollected": false,
@@ -12534,13 +12551,28 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
-        "foundTermsAfterNavigation": [],
+        "foundTermsAfterNavigation": [
+          "appearance",
+          "apply",
+          "blocked",
+          "config",
+          "dashboard",
+          "default",
+          "display",
+          "hyprland",
+          "profile",
+          "render",
+          "script",
+          "search",
+          "settings"
+        ],
         "navigationAttempted": true,
-        "navigationMessage": "Detail pane not found",
-        "navigationSucceeded": false,
+        "navigationMessage": "Detail pane found after opening a row",
+        "navigationSucceeded": true,
         "productionActivationApprovalUxAndDryRunAllApprovalRequirementsFound": false,
         "productionActivationApprovalUxAndDryRunAllApprovalStatusFound": false,
         "productionActivationApprovalUxAndDryRunAllDisabledActionsFound": false,
@@ -13055,15 +13087,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -13446,6 +13478,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -13967,15 +14000,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -14358,6 +14391,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -14893,15 +14927,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -15284,6 +15318,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -15823,15 +15858,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -16203,7 +16238,7 @@
         "connectedFileGeneratedDetailCollected": false,
         "connectedFileScriptManagedDetailCollected": false,
         "connectedFileSymlinkDetailCollected": false,
-        "detailPaneTextCollected": true,
+        "detailPaneTextCollected": false,
         "duplicateBlockedReasonTextCollected": false,
         "duplicateConflictDetailNavigationAttempted": false,
         "duplicateConflictDetailNavigationSucceeded": false,
@@ -16214,6 +16249,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -16225,6 +16261,7 @@
           "default",
           "display",
           "hyprland",
+          "profile",
           "render",
           "search",
           "settings"
@@ -16746,15 +16783,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -17126,7 +17163,7 @@
         "connectedFileGeneratedDetailCollected": false,
         "connectedFileScriptManagedDetailCollected": false,
         "connectedFileSymlinkDetailCollected": false,
-        "detailPaneTextCollected": true,
+        "detailPaneTextCollected": false,
         "duplicateBlockedReasonTextCollected": false,
         "duplicateConflictDetailNavigationAttempted": false,
         "duplicateConflictDetailNavigationSucceeded": false,
@@ -17137,6 +17174,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -17148,6 +17186,7 @@
           "default",
           "display",
           "hyprland",
+          "profile",
           "render",
           "search",
           "settings"
@@ -17669,15 +17708,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -18060,6 +18099,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -18072,6 +18112,7 @@
           "default",
           "display",
           "hyprland",
+          "profile",
           "render",
           "script",
           "search",
@@ -18594,15 +18635,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -18985,6 +19026,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -18998,6 +19040,7 @@
           "display",
           "hyprland",
           "mode",
+          "profile",
           "settings"
         ],
         "navigationAttempted": true,
@@ -19517,15 +19560,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -19908,6 +19951,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -19921,6 +19965,7 @@
           "display",
           "hyprland",
           "mode",
+          "profile",
           "script",
           "settings"
         ],
@@ -20441,15 +20486,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -20832,6 +20877,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -21371,15 +21417,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -21762,6 +21808,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -22301,15 +22348,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -22692,6 +22739,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -22705,6 +22753,7 @@
           "display",
           "hyprland",
           "mode",
+          "profile",
           "settings"
         ],
         "navigationAttempted": true,
@@ -23224,15 +23273,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -23615,6 +23664,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -24149,15 +24199,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -24540,6 +24590,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -25079,15 +25130,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -25470,6 +25521,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -26009,15 +26061,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     },
     {
@@ -26400,6 +26452,7 @@
           "dashboard",
           "display",
           "hyprland",
+          "profile",
           "render",
           "settings"
         ],
@@ -26939,15 +26992,15 @@
         "Display",
         "Navigation: Windows & Layout",
         "Windows & Layout",
+        "Navigation: Layouts",
+        "Layouts",
         "Navigation: System",
         "System",
         "Navigation: Permissions",
         "Permissions",
-        "Navigation: Config",
-        "Config",
-        "Navigation: Safety Details",
-        "Safety Details",
-        "Look & Feel"
+        "Navigation: Profiles",
+        "Profiles",
+        "Navigation: Config"
       ]
     }
   ],

@@ -39,11 +39,17 @@ pub const SIDEBAR_CATEGORIES: &[SidebarCategory] = &[
     },
     SidebarCategory {
         label: "Window Management",
-        tab_ids: &["windows-layout"],
+        tab_ids: &["windows-layout", "layouts"],
     },
     SidebarCategory {
         label: "Advanced",
-        tab_ids: &["system", "permissions", "config", "safety-details"],
+        tab_ids: &[
+            "system",
+            "permissions",
+            "profiles",
+            "config",
+            "safety-details",
+        ],
     },
 ];
 
@@ -148,6 +154,19 @@ where
     crate::presentation_labels::display_label_for_row(row_id).unwrap_or(official_label)
 }
 
+/// A formatting-only fallback for unmatched rows: strip the page name the
+/// official label repeats (the page title already says it). Mechanical —
+/// no meaning is guessed and the remaining official words are unchanged;
+/// rows whose label is only the page name keep it as-is.
+pub fn fallback_display_label(official_label: &str, tab_label: &str) -> String {
+    let trimmed = official_label.trim();
+    let prefix = format!("{} ", tab_label.trim());
+    match trimmed.strip_prefix(&prefix) {
+        Some(rest) if !rest.trim().is_empty() => rest.trim().to_string(),
+        _ => trimmed.to_string(),
+    }
+}
+
 /// A friendly display form for a finite-choice raw value: presentation
 /// only — the raw value is what gets validated and saved, unchanged.
 /// Generic humanization (separators to spaces, first letter capitalized);
@@ -163,6 +182,99 @@ pub fn choice_display_label(raw_value: &str) -> String {
         Some(first) => first.to_uppercase().collect::<String>() + characters.as_str(),
         None => spaced,
     }
+}
+
+/// A parsed color for swatch/preview rendering. Presentation only: the
+/// raw config text stays the value that gets validated and saved.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct ParsedColor {
+    pub red: u8,
+    pub green: u8,
+    pub blue: u8,
+    pub alpha: u8,
+}
+
+fn hex_byte(text: &str) -> Option<u8> {
+    u8::from_str_radix(text, 16).ok()
+}
+
+/// Parse the Hyprland color forms: `rgba(RRGGBBAA)`, `rgb(RRGGBB)`, and
+/// legacy `0xAARRGGBB`. Anything else fails closed (no swatch, raw text
+/// stays read-only in the picker).
+pub fn parse_hyprland_color(raw: &str) -> Option<ParsedColor> {
+    let trimmed = raw.trim();
+    if let Some(inner) = trimmed
+        .strip_prefix("rgba(")
+        .and_then(|rest| rest.strip_suffix(')'))
+    {
+        let inner = inner.trim();
+        if inner.len() == 8 && inner.chars().all(|character| character.is_ascii_hexdigit()) {
+            return Some(ParsedColor {
+                red: hex_byte(&inner[0..2])?,
+                green: hex_byte(&inner[2..4])?,
+                blue: hex_byte(&inner[4..6])?,
+                alpha: hex_byte(&inner[6..8])?,
+            });
+        }
+        return None;
+    }
+    if let Some(inner) = trimmed
+        .strip_prefix("rgb(")
+        .and_then(|rest| rest.strip_suffix(')'))
+    {
+        let inner = inner.trim();
+        if inner.len() == 6 && inner.chars().all(|character| character.is_ascii_hexdigit()) {
+            return Some(ParsedColor {
+                red: hex_byte(&inner[0..2])?,
+                green: hex_byte(&inner[2..4])?,
+                blue: hex_byte(&inner[4..6])?,
+                alpha: 0xff,
+            });
+        }
+        return None;
+    }
+    if let Some(inner) = trimmed.strip_prefix("0x") {
+        if inner.len() == 8 && inner.chars().all(|character| character.is_ascii_hexdigit()) {
+            return Some(ParsedColor {
+                alpha: hex_byte(&inner[0..2])?,
+                red: hex_byte(&inner[2..4])?,
+                green: hex_byte(&inner[4..6])?,
+                blue: hex_byte(&inner[6..8])?,
+            });
+        }
+        return None;
+    }
+    None
+}
+
+/// Parse a gradient-form value: two or more colors, optionally followed by
+/// `<angle>deg`. Single colors are not gradients; any unrecognized token
+/// fails the whole parse (fail closed — the strip simply does not render).
+pub fn parse_hyprland_gradient(raw: &str) -> Option<(Vec<ParsedColor>, Option<u16>)> {
+    let mut colors = Vec::new();
+    let mut angle = None;
+    let tokens: Vec<&str> = raw.split_whitespace().collect();
+    for (index, token) in tokens.iter().enumerate() {
+        if let Some(color) = parse_hyprland_color(token) {
+            if angle.is_some() {
+                return None; // colors after the angle are not valid syntax
+            }
+            colors.push(color);
+            continue;
+        }
+        if let Some(value) = token.strip_suffix("deg") {
+            if index != tokens.len() - 1 {
+                return None;
+            }
+            angle = Some(value.parse::<u16>().ok()?);
+            continue;
+        }
+        return None;
+    }
+    if colors.len() < 2 {
+        return None;
+    }
+    Some((colors, angle))
 }
 
 /// Shorten an official description to its first sentence, capped for a

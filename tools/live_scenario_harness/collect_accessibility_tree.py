@@ -1487,13 +1487,29 @@ def click_named_target(app, target):
             "Search field found" if node is not None else "Search field not found"
         )
     if target == "DetailPane":
+        # The detail surface opens on demand (a popover anchored to the
+        # opened row) — select a setting row first, then find the pane.
+        ok, message = click_named_target(app, "Appearance")
+        if not ok:
+            return False, f"could not open a settings page before DetailPane: {message}"
+        time.sleep(1)
+        row, parent = find_first_node_with_parent(
+            app, lambda current: safe_row_candidate(current, False)
+        )
+        if row is not None:
+            safe_select_node(row, parent)
+            time.sleep(1)
         node = find_first_node(
             app,
             lambda current: "setting details" in node_text_lower(current)
+            or "official setting" in node_text_lower(current)
+            or "setting detail pane" in node_text_lower(current)
             or "hyprland-settings-detail-pane" in node_text_lower(current),
         )
         return (node is not None), (
-            "Detail pane found" if node is not None else "Detail pane not found"
+            "Detail pane found after opening a row"
+            if node is not None
+            else "Detail pane not found"
         )
     if target == "DuplicateConflictDetail":
         return open_duplicate_conflict_detail(app)

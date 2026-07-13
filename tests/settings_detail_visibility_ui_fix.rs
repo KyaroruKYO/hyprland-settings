@@ -31,7 +31,7 @@ fn read_json(path: &str) -> serde_json::Value {
 }
 
 #[test]
-fn window_layout_hides_diagnostics_and_keeps_split_work_area() {
+fn window_layout_hides_diagnostics_and_uses_centered_column_with_on_demand_detail() {
     let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
 
     assert!(!source.contains("fn build_status_diagnostics_expander"));
@@ -39,17 +39,21 @@ fn window_layout_hides_diagnostics_and_keeps_split_work_area() {
     assert!(!source.contains("settings_view.append(&diagnostics)"));
     assert!(!source.contains("Search export metadata"));
     assert!(source.contains("Search settings"));
-    assert!(source.contains("gtk::Paned::new(gtk::Orientation::Horizontal)"));
-    assert!(source.contains("work_area.set_start_child(Some(&settings_scroll))"));
-    assert!(source.contains("work_area.set_end_child(Some(&detail_panel))"));
 
-    assert!(
-        !source.contains("content.append(&settings_scroll);\n\n    let (detail_panel"),
-        "detail panel must not be appended below the full settings list"
-    );
+    // The permanent split work area is gone: settings pages are one
+    // centered clamped column, and the detail surface is an on-demand
+    // popover anchored to the opened row.
+    assert!(!source.contains("gtk::Paned::new(gtk::Orientation::Horizontal)"));
+    assert!(source.contains("adw::Clamp::new()"));
+    assert!(source.contains("settings_clamp.set_maximum_size(800)"));
+    assert!(source.contains("settings_list.add_css_class(\"boxed-list\")"));
+    assert!(source.contains("hyprland-settings-detail-popover"));
+    assert!(source.contains("detail_popover.set_child(Some(&detail_panel))"));
+    assert!(source.contains("detail_popover.popup()"));
+    assert!(source.contains("settings_view.append(&settings_scroll)"));
     assert!(
         !source.contains("content.append(&detail_panel);"),
-        "detail panel should live inside the split work area"
+        "detail panel must not sit permanently in the page"
     );
 }
 

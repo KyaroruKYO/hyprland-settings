@@ -1,0 +1,70 @@
+{
+  "artifactKind": "hyprmod-gui-overhaul-full-pass-report",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "commitBefore": "4726d358a98e387f6017d462efe423dcf8a88350",
+  "commitAfter": "the overhaul commit following 4726d35 (see git log)",
+  "sprintDate": "2026-07-13",
+  "referenceFilesInspectedAgain": [
+    "hyprmod/ui/__init__.py (make_page_layout: toolbar + scrolled + clamped 800/600 content column)",
+    "hyprmod/ui/sidebar.py (grouped categories, pinned rows, toggleable search)",
+    "hyprmod/pages/settings.py (preferences-group page assembly)",
+    "hyprmod/pages/section.py (section-page lifecycle model)",
+    "hyprmod/ui/options/* (per-type option rows; color/gradient/combo/numeric)",
+    "hyprmod/ui/empty_state.py (centered icon/title/text/pill-button empty state)"
+  ],
+  "implementationNote": "the reference was used for layout, spacing, structure, and interaction patterns only; all code and user-facing text in this repo are original (standard GTK/libadwaita idioms), so nothing third-party-derived needed local-only marking",
+  "shellChanges": {
+    "permanentDetailPaneRemoved": true,
+    "before": "split gtk::Paned browser: settings list left, permanent 'Setting details' pane right",
+    "after": "one centered clamped column (adw::Clamp max 800 / tighten 600) with a rounded boxed-list card, section headings above row groups (list-header mechanism per subsection), and an on-demand detail popover anchored to the opened row",
+    "pageTitleCleaned": "page headings show the page name only (no row counts)",
+    "detailAccess": "single click on a row opens the existing detail surface (controls, save flow, reasons) as a popover; nothing was removed from it"
+  },
+  "areas": {
+    "area1DetailPane": "complete: no permanent detail pane on any normal page; details are on-demand (popover anchored to the row); friendly resolved titles in list and detail; quiet chips on rows; proof/classification prose unchanged inside the on-demand surface and Safety Details",
+    "area2ColorRows": "complete: all 22 color-capable rows accounted for (control-kind ColorEntry, pinned by test); inline swatch button per row; picker popover with live preview swatch, manual entry, validated Apply (insensitive while text does not parse) and Cancel; exact entered raw text is what gets previewed (format preserved); unparseable current values show a text-edit affordance and no swatch (fail closed)",
+    "area3Gradients": "complete for supported syntax: gradient-form values (two or more rgba/rgb/0x colors with optional trailing angle) render a preview strip; single colors, unknown tokens, and malformed angles fail closed (pinned by tests); parser/write behavior untouched",
+    "area4Search": "complete: the index now covers the friendly resolved label, the quiet status chip text, the raw key in both dotted and colon spellings, category/group/subsection, and descriptions, with separator/case normalization; colon-form queries rank like dotted ones; Ctrl+F/Escape/toggle behavior unchanged",
+    "area5Profiles": "complete: centered empty state (icon, 'No Profiles', one-line explanation, pill 'Save Current as Profile' disabled with reason tooltip); no production behavior, no symlink/config path (guard-tested)",
+    "area6Layouts": "complete: Layouts page under Window Management with Dwindle / Master / Scrolling top tabs (linked toggle group) over the same model rows (11 dwindle + 13 master + 9 scrolling), presentation only - raw keys and classifications unchanged",
+    "area7LabelOverrides": "complete as a formatting-only fallback: unmatched rows strip the redundant page-name prefix from the official label (e.g. 'Appearance Blur Enabled' -> 'Blur Enabled'); provenance is the official label itself; nothing semantic is guessed; the 127 matched labels stay first",
+    "area8PageMimicry": "partial: all scalar pages now render the centered card/section model with inline controls; Animations keeps the record-picker card; deferred with reasons below"
+  },
+  "deferred": [
+    "Monitors page monitor-cards with badges: hl.monitor is blocked high-risk and the UI never calls hyprctl directly, so live monitor cards need a safe read-only projection first",
+    "Keybinds/Window Rules/Layer Rules/Autostart/Env source-grouped locked lists: the scalar model has no dedicated tabs for rules/autostart/env entries; needs a read-only structured projection before the visual shell is honest",
+    "Workspaces page: no workspace-rule model support; not faked",
+    "true inline dead-man supervision on rows: dead-man rows keep chip + on-demand panel (the supervised countdown flow stays in the detail surface)"
+  ],
+  "inlineControls": {
+    "rowsWithInlineControls": 135,
+    "detail": "the 135 default-previewable rows get right-aligned inline controls (switches, spin rows, dropdowns, color swatch buttons, compact entries) driving the existing reversible preview executor through a lazily created controller (created on first interaction, registered for session-drop revert, throttle-aware); Save stays the separate gated step in the detail surface; all other rows show the quiet chip only"
+  },
+  "scalarRowsTotal": 341,
+  "colorEntryRows": 22,
+  "gradientCapableAccounting": "any color row whose current value parses as two or more colors renders a strip; rows with non-gradient or unparseable values stay swatch-less/raw (fail closed) - no fixed row list is claimed because gradient-ness is a property of the current value",
+  "searchIndexRowCount": 341,
+  "profilesEmptyState": "guard-tested (tests/gui_overhaul.rs::profiles_page_is_a_friendly_inert_empty_state)",
+  "layoutsPresentationRows": "11 dwindle + 13 master + 9 scrolling model rows reachable from the merged page (pinned >= 20 by test to stay version-tolerant)",
+  "humanizedOverrides": {
+    "matchedLabels": 127,
+    "formattingFallbackRows": 214,
+    "provenance": "matched labels carry reference_key provenance in src/presentation_labels.rs; the fallback is a mechanical page-prefix strip of the official label (ux_presentation::fallback_display_label), guessing nothing"
+  },
+  "proofDebugRelocation": "unchanged from the previous slices: the seven developer surfaces live on Safety Details; the picker card stays quiet; normal pages carry chips and one-line subtitles only",
+  "behaviorChanges": 0,
+  "writeOrSafetyClassificationChanges": 0,
+  "safeWritableRowCount": 341,
+  "newRuntimeMutationPathAdded": false,
+  "newActiveConfigWritePathAdded": false,
+  "hyprctlReloadPathAdded": false,
+  "hyprctlReloadRan": false,
+  "monitorDisplayMutated": false,
+  "activeConfigWrittenDuringNormalTests": false,
+  "harnessUpdates": "the DetailPane probe now opens a settings page and selects a row before looking for the detail surface (it is on-demand); the Search probe already clicks the reveal toggle",
+  "validation": "cargo fmt, cargo fmt --check, cargo check, cargo test (full suite, all ok), jq empty data/reports/*.json, git diff --check, cargo build --release, GTK evidence matrix - results recorded in the final summary",
+  "testsAdded": [
+    "tests/gui_overhaul.rs (8 guards: inline-control coverage, 22-color accounting + parse fail-closed, gradient fail-closed, search matching incl. colon-form and friendly labels, Profiles inert empty state, Layouts merge, formatting-only fallback labels, zero classification change)"
+  ]
+}

@@ -29,6 +29,16 @@ classification changes (guard-tested). Reference-app description prose was
 not copied — recorded licensing decision in
 `data/reports/hyprmod-full-presentation-adoption.v0.55.2.json`.
 
+**Update 2026-07-13 (whole-GUI overhaul):** the split metadata-browser
+layout is gone — settings pages are a centered clamped column of rounded
+section cards with **inline controls on all 135 default-previewable rows**
+(reversible preview path, lazily created controllers), an on-demand detail
+popover instead of a permanent pane, color swatches + validated picker on
+all 22 color rows, gradient preview strips (fail-closed parsing), a
+normalized search index over friendly labels/raw keys/categories, a
+Profiles empty state, and a merged Layouts page. Zero classification or
+behavior change (guard-tested, `tests/gui_overhaul.rs`).
+
 Everything below this line is **dated history** (earlier audits and
 marathon logs), kept as a record and not to be read as current state.
 

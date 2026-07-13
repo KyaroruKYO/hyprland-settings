@@ -98,6 +98,19 @@ Verbatim adoption would require an owner-level licensing/attribution
 decision (e.g. carrying the copyright notice and GPL terms for the adopted
 metadata); until then the compliant original-text route stands.
 
+## Third-pass update (whole-GUI overhaul, 2026-07-13)
+
+The reference was re-inspected before implementation (page layout helper,
+sidebar, settings/section pages, option-row modules, empty-state
+component). The shell now follows the same page model — narrow sidebar,
+centered clamped content column, section headings over rounded card
+lists, compact rows with right-aligned inline controls, on-demand detail,
+centered empty states, merged Layouts tabs — implemented entirely with
+this project's own code on the standard GTK/libadwaita idioms the
+reference also builds on. No third-party code, assets, or authored text
+were copied, so nothing required local-only marking or attribution
+handling in this pass.
+
 ## What we deliberately do NOT copy
 
 - HyprMod's write model (it applies changes; our saves stay behind Safe

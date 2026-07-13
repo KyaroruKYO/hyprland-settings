@@ -114,14 +114,14 @@ fn presentation_layer_changes_no_behavior_or_classification() {
     }
 
     // The UI resolves labels through the presentation layer in both the
-    // list rows and the detail heading, with the official label as the
-    // only fallback.
+    // list rows and the detail heading: matched labels first, otherwise
+    // the official label with only the page-name prefix stripped (a
+    // formatting-only fallback — nothing is guessed).
     let window = fs::read_to_string("src/ui/window.rs").expect("window reads");
-    assert!(window
-        .contains("resolved_row_label(\n        &setting.row_id,\n        &setting.label,\n    )"));
-    assert!(window.contains(
-        "resolved_row_label(\n            &detail.row_id,\n            &detail.label,\n        )"
-    ));
+    assert!(window.contains("display_label_for_row(&setting.row_id)"));
+    assert!(window.contains("display_label_for_row(&detail.row_id)"));
+    assert!(window.contains("fallback_display_label(&setting.label, &setting.tab_label)"));
+    assert!(window.contains("fallback_display_label(&detail.label, &detail.tab_label)"));
 }
 
 #[test]
