@@ -1,0 +1,76 @@
+{
+  "artifactKind": "completion-marathon-final-release-progress-report",
+  "projectDataVersion": "v0.55.2",
+  "branchAtStart": "structured-family-editors-unified",
+  "startingCommit": "82cf18c1e160045c572c316d390c883bb1b5424f",
+  "finalBranch": "structured-family-editors-unified (main fast-forwarded to the same commits)",
+  "headCommit": "the closeout commit following the v0.2.0 release commit 0ffaeb37a4c405a9aef49608a32ebbcc4039bc31 (see git log)",
+  "mainCommit": "fast-forwarded to the release line (0ffaeb37 at release time, then to the closeout commit)",
+  "marathonDate": "2026-07-13",
+  "approvedAreas": "RC tag, manual RC test, final v0.2.0 release (merge/bump/tag/artifacts/publish), style editing only with trusted evidence, Fable progress tracker; hardware-gated proofs explicitly excluded",
+
+  "rcTagCreated": true,
+  "rcTagPushed": true,
+  "rcTagCommit": "82cf18c1e160045c572c316d390c883bb1b5424f",
+
+  "manualRcTestStatus": "passed",
+  "manualRcTestFailures": [],
+  "manualRcTestReport": "data/reports/manual-rc-test-v0.2.0-rc.1.v0.55.2.json",
+  "manualRcTestEvidenceRoot": "/tmp/hyprland-settings-rc-manual-test/20260713_102653",
+
+  "finalReleaseApproved": true,
+  "finalVersion": "0.2.0",
+  "mainMerged": true,
+  "mergeMethod": "fast-forward only (41 ahead, 0 behind; verified before merging)",
+  "cargoVersionBumped": true,
+  "metainfoUpdated": true,
+  "finalTagCreated": true,
+  "finalTagPushed": true,
+  "finalTagCommit": "0ffaeb37a4c405a9aef49608a32ebbcc4039bc31",
+  "githubReleasePublished": true,
+  "githubReleaseUrl": "https://github.com/KyaroruKYO/hyprland-settings/releases/tag/v0.2.0",
+  "githubReleaseVerified": "gh release view v0.2.0: not draft, not prerelease, 3 assets (binary tarball, source tarball, SHA256SUMS)",
+  "releaseArtifactsCreated": true,
+  "releaseArtifactsPublished": true,
+  "artifactPath": "dist/v0.2.0/",
+  "artifactManifest": "data/reports/v0.2.0-release-artifact-manifest.json",
+
+  "styleEditingStatus": "blocked",
+  "styleEvidenceTrusted": false,
+  "styleProofRan": false,
+  "styleProofPassed": false,
+  "styleUiEnabled": false,
+  "styleEvidenceReport": "data/reports/style-editing-evidence.v0.55.2.json (installed official source headers, the official typed Lua API stub, the official example config, the trusted 0.55.4 descriptions export, and runtime readback were all searched; none enumerates valid style values, and the example config shows styles are leaf-specific and parameterized)",
+
+  "hardwareProofStatus": "deferred",
+  "touchTabletProofStatus": "deferred",
+  "secondaryDeviceProofStatus": "deferred",
+  "hardwareProofsPromoted": 0,
+  "proofsPromoted": 0,
+  "virtualProofStatus": "proposal only / not proven yet",
+
+  "progressTrackerAuditStatus": "complete: independent Fable audit generated from git state, an executed test run (262 binaries / 1050 tests), test-regenerated reports, source receipt constants, dist checksums, gh release view, and the manual test report; no prior tracker values consulted",
+  "progressTrackerFiles": [
+    "docs/PROGRESS-TRACKER-FABLE-AUDIT.md",
+    "data/reports/progress-tracker-fable-audit.v0.55.2.json",
+    "docs/PROGRESS-TRACKER.md (current-state pointer added; historical sections kept as dated logs)"
+  ],
+
+  "activeConfigWrittenDuringNormalTests": false,
+  "activeConfigWrittenDuringLiveTests": false,
+  "liveTestNote": "no env-gated live tests ran this marathon; the manual RC test performed reversible runtime interactions only, each verified restored, with the active config sha256 identical before and after",
+  "runtimeMutationRan": true,
+  "runtimeMutationScope": "manual RC test only: supervised record previews (animation enable+speed, curve X1), dead-man timeout auto-revert, and the Safe Live Save Mode runtime toggle - all readback-verified restored, zero residue",
+  "hyprctlReloadRan": false,
+  "monitorDisplayMutated": false,
+  "v010Changed": false,
+  "distV010Changed": false,
+  "distRcChanged": false,
+
+  "toolingAdded": [
+    "tools/live_scenario_harness/run_manual_rc_test.sh",
+    "tools/live_scenario_harness/manual_rc_test_driver.py"
+  ],
+  "validation": "cargo fmt, cargo fmt --check, cargo check, cargo test (262 binaries / 1050 tests, all ok), jq empty data/reports/*.json, git diff --check, cargo build --release, appstreamcli validate, desktop-file-validate - all green",
+  "nextRecommendedWork": "hardware-gated proofs when devices are available; a UX simplification/readability pass (the one unproven quality area); style editing only if trusted valid-value evidence appears; track future Hyprland versions with the refresh script"
+}

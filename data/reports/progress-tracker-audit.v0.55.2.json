@@ -267,5 +267,9 @@
   "rcRecordShapeMarathon20260713": {
     "summary": "user-approved RC marathon: v0.2.0-rc.1 prepared locally (no tag, no publish) and record shapes expanded by live proofs (animation enabled + bezier; disabled records promoted; style/gesture blocked honestly)",
     "report": "data/reports/completion-marathon-rc-record-shape-expansion.v0.55.2.json"
+  },
+  "finalReleaseMarathon20260713": {
+    "summary": "user-approved final release marathon: v0.2.0-rc.1 tagged + manual RC test passed on the packaged binary + v0.2.0 released and published on GitHub; style editing investigated and blocked (no trusted evidence); independent Fable progress audit generated",
+    "report": "data/reports/completion-marathon-final-release-progress.v0.55.2.json"
   }
 }

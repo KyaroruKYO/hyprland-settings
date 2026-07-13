@@ -62,8 +62,8 @@
     },
     {
       "areaName": "Release packaging/tag/artifacts",
-      "currentStatus": "v0.1.0 preserved; release decision recorded: ready pending user approval (75 commits / 258 files since v0.1.0; RC materials drafted in docs/RELEASE-DECISION.md); no tag created, nothing merged or published UPDATE 2026-07-13: the user approved RC preparation; v0.2.0-rc.1 is prepared locally (version bump, validated metadata, changelog, release notes, dist/v0.2.0-rc.1 artifacts, checklist/test-plan/limitations/upgrade/rollback docs, pinning tests). No tag, no merge, no publishing; the final stable release still needs user approval.",
-      "classification": "release_candidate_v020rc1_prepared_locally",
+      "currentStatus": "v0.1.0 preserved; release decision recorded: ready pending user approval (75 commits / 258 files since v0.1.0; RC materials drafted in docs/RELEASE-DECISION.md); no tag created, nothing merged or published UPDATE 2026-07-13: the user approved RC preparation; v0.2.0-rc.1 is prepared locally (version bump, validated metadata, changelog, release notes, dist/v0.2.0-rc.1 artifacts, checklist/test-plan/limitations/upgrade/rollback docs, pinning tests). No tag, no merge, no publishing; the final stable release still needs user approval. UPDATE 2026-07-13 (final release): the user approved the full release path; v0.2.0-rc.1 was tagged on 82cf18c and its packaged binary passed a manual test pass against the real session; main was fast-forwarded, the version was bumped to 0.2.0, dist/v0.2.0 artifacts were built, the annotated v0.2.0 tag was created and pushed, and the GitHub release was published with all three artifacts. v0.1.0, dist/v0.1.0, and dist/v0.2.0-rc.1 untouched.",
+      "classification": "released_v0_2_0_published",
       "canContinueNow": false,
       "reason": "The evidence supports a v0.2.0 release candidate; the release itself needs the user (approval, merge decision, version bump, notes review, manual test pass).",
       "blockingDependency": "user approval of the release decision",
@@ -125,7 +125,7 @@
       "canContinueNow": false,
       "reason": "Every Save path is gated; proven record shapes generalize the save surface honestly (picker lists records from readback with per-record support); the 0.55.4 audit found zero drift with a repeatable refresh workflow.",
       "blockingDependency": "none for the proven flow; each new save shape needs its own gates and receipts",
-      "safeNextWork": "animation enabled and bezier shapes are now proven and wired; style needs trusted value evidence plus a live proof; gesture needs a readback mechanism and hardware; hardware-gated proofs and the final v0.2.0 release decision remain with the user",
+      "safeNextWork": "animation enabled and bezier shapes are proven and wired; style needs trusted value evidence plus a live proof; gesture needs a readback mechanism and hardware; hardware-gated proofs remain deferred; v0.2.0 is released and published",
       "mustNotDo": "do not write the active real Hyprland config, enable live Apply controls, run hyprctl reload, run mutating hyprctl, mutate runtime, or perform the first active-config write without explicit approval",
       "evidenceUsed": [
         "src/structured_family.rs",
@@ -222,5 +222,5 @@
     }
   ],
   "activeSafeArea": null,
-  "recommendedNextWork": "user decisions on v0.2.0-rc.1 (optional RC tag, manual test pass, final v0.2.0 approval: merge, bump, tag, publish); hardware-gated proofs when devices are available; style editing only if trusted value evidence appears"
+  "recommendedNextWork": "hardware-gated proofs when devices are available; a UX simplification/readability pass (the one unproven quality area per the Fable audit); style editing only if trusted valid-value evidence appears; track future Hyprland versions with the refresh script"
 }

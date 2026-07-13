@@ -137,7 +137,7 @@
     "hyprland0554MigrationActivated": false,
     "structuredFamilyWriteScope": "active-config writes exist ONLY via gated_family_save and gated_family_record_save for proven surfaces: the two family-proof records plus the live-proven record shapes (speed of any explicitly overridden animation record with style preserved; all four control points of any existing bezier curve), gated on shape receipt + Safe Live Save Mode + identity, with backup and reread verification; misc:disable_autoreload persistence goes through the gated scalar save only; the controlled-write executor still rejects the active config by construction; no creation/deletion; other five families blocked EXPANSION 2026-07-13: the picked-record save now carries enabled/speed/bezier for overridden animation records (all three shapes receipt-gated; bezier limited to existing curves; style preserved, never edited) and all four points for existing curves; creation/deletion still impossible."
   },
-  "activeNextWork": "Remaining: user decisions on v0.2.0-rc.1 (optional RC tag, manual test pass, final release approval); hardware-gated proofs (18 touch rows, 3 secondary-device rows) when devices are available; style/gesture shapes stay blocked pending trusted evidence.",
+  "activeNextWork": "Remaining: hardware-gated proofs (18 touch rows, 3 secondary-device rows) when devices are available; a UX simplification/readability pass; style editing only if trusted valid-value evidence appears. v0.2.0 is released and published.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",
@@ -155,5 +155,13 @@
     "report": "data/reports/release-candidate-v0.2.0-rc.1.v0.55.2.json",
     "tagCreated": false,
     "published": false
+  },
+  "release": {
+    "version": "0.2.0",
+    "tag": "v0.2.0 on 0ffaeb37a4c405a9aef49608a32ebbcc4039bc31",
+    "published": true,
+    "url": "https://github.com/KyaroruKYO/hyprland-settings/releases/tag/v0.2.0",
+    "manualRcTest": "passed",
+    "report": "data/reports/final-release-v0.2.0.v0.55.2.json"
   }
 }
