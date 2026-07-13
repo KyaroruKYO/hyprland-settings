@@ -138,6 +138,33 @@ fn row_needs_hardware(reason: &str) -> bool {
         .any(|term| lowered.contains(term))
 }
 
+/// The friendly display label for a row: the adopted matched label where
+/// one exists, otherwise the official metadata label unchanged (unmatched
+/// rows are reported, never guessed).
+pub fn resolved_row_label<'a>(row_id: &str, official_label: &'a str) -> &'a str
+where
+    'static: 'a,
+{
+    crate::presentation_labels::display_label_for_row(row_id).unwrap_or(official_label)
+}
+
+/// A friendly display form for a finite-choice raw value: presentation
+/// only — the raw value is what gets validated and saved, unchanged.
+/// Generic humanization (separators to spaces, first letter capitalized);
+/// numeric and empty values pass through untouched.
+pub fn choice_display_label(raw_value: &str) -> String {
+    let trimmed = raw_value.trim();
+    if trimmed.is_empty() || trimmed.parse::<f64>().is_ok() {
+        return trimmed.to_string();
+    }
+    let spaced = trimmed.replace(['_', '-'], " ");
+    let mut characters = spaced.chars();
+    match characters.next() {
+        Some(first) => first.to_uppercase().collect::<String>() + characters.as_str(),
+        None => spaced,
+    }
+}
+
 /// Shorten an official description to its first sentence, capped for a
 /// one-line row subtitle. The full description stays in the detail pane.
 pub fn short_description(description: &str) -> String {

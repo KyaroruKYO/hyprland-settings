@@ -278,11 +278,63 @@ pub fn show_main_window(
     settings_view.set_vexpand(true);
     content.append(&settings_view);
 
+    // Search is the sometimes path: the entry hides by default behind a
+    // small toggle and slides in on Ctrl+F or the toggle; Escape clears
+    // and hides it again. Browsing the grouped categories stays the
+    // everyday path.
+    let search_toggle = gtk::ToggleButton::with_label("Search");
+    search_toggle.set_widget_name("hyprland-settings-search-toggle");
+    search_toggle.set_tooltip_text(Some("Search settings (Ctrl+F)"));
+    search_toggle.set_halign(gtk::Align::End);
+    settings_view.append(&search_toggle);
+
     let search_entry = gtk::SearchEntry::new();
     search_entry.set_widget_name("hyprland-settings-search");
-    search_entry.set_placeholder_text(Some("Search settings"));
-    search_entry.set_tooltip_text(Some("Search settings"));
+    search_entry.set_placeholder_text(Some("Search settings…"));
+    search_entry.set_tooltip_text(Some("Search settings (Ctrl+F)"));
+    search_entry.set_visible(false);
     settings_view.append(&search_entry);
+
+    {
+        // The toggle is the one owner of visibility: Ctrl+F and Escape
+        // route through it so every path behaves identically.
+        let entry = search_entry.clone();
+        search_toggle.connect_toggled(move |toggle| {
+            if toggle.is_active() {
+                entry.set_visible(true);
+                entry.grab_focus();
+            } else {
+                entry.set_text("");
+                entry.set_visible(false);
+            }
+        });
+    }
+
+    {
+        let search_toggle = search_toggle.clone();
+        let key_controller = gtk::EventControllerKey::new();
+        key_controller.connect_key_pressed(move |_, keyval, _, state| {
+            let control_held = state.contains(gtk::gdk::ModifierType::CONTROL_MASK);
+            if control_held && (keyval == gtk::gdk::Key::f || keyval == gtk::gdk::Key::F) {
+                search_toggle.set_active(true);
+                return gtk::glib::Propagation::Stop;
+            }
+            if keyval == gtk::gdk::Key::Escape && search_toggle.is_active() {
+                search_toggle.set_active(false);
+                return gtk::glib::Propagation::Stop;
+            }
+            gtk::glib::Propagation::Proceed
+        });
+        window.add_controller(key_controller);
+    }
+
+    {
+        // Esc inside the entry routes through the same clear-and-hide path.
+        let search_toggle = search_toggle.clone();
+        search_entry.connect_stop_search(move |_| {
+            search_toggle.set_active(false);
+        });
+    }
 
     let tab_title = title_label("");
     tab_title.set_widget_name("hyprland-settings-category-title");
@@ -5043,7 +5095,7 @@ fn animation_record_picker_group(discovery: &ConfigDiscovery, parent: &gtk::Box)
         .collect();
     if selectable.is_empty() {
         parent.append(&small_label(
-            "No animation record in the runtime readback is currently supported for gated Save.",
+            "No editable animation records yet. Records appear here once your session exposes them.",
         ));
         record_picker_blocked_expander(
             "Animation records not yet supported",
@@ -5324,17 +5376,16 @@ fn structured_family_preview_controls_section(model: &UiProjection) -> gtk::Fram
     content.set_margin_bottom(10);
     content.set_margin_start(10);
     content.set_margin_end(10);
-    content.append(&title_label(
-        "Structured-family records (proven record shapes)",
-    ));
+    content.append(&title_label("Animations & curves"));
     content.append(&body_label(
-        "hl.animation and hl.curve passed zero-residue live proofs for modifying existing records, generalized by record-shape proofs. Pick an existing record from the runtime readback, preview it live under a recovery countdown, and persist the previewed values once through the gated Save. Creating or deleting records is blocked (no runtime mechanism exists to revert those), and records without proof stay blocked with the reason shown.",
+        "Pick a record, preview it live with automatic recovery, and save it when you are happy.",
     ));
     animation_record_picker_group(&model.config_discovery, &content);
     curve_record_picker_group(&model.config_discovery, &content);
-    content.append(&small_label(
-        "Save previewed value persists once to your config (backup first, reread-verified, no reload) and requires Safe Live Save Mode to be active; while autoreload is active the Save is blocked with the reason shown. Only proven record shapes can be saved - blocked families and record creation/deletion stay blocked.",
-    ));
+    content.append(&small_label(&format!(
+        "Save writes once with a backup · {} · Full safety detail: Safety Details page",
+        crate::ux_presentation::SAVE_GATE_CHIP
+    )));
     frame.set_child(Some(&content));
     frame
 }
@@ -5532,7 +5583,10 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
     row_box.set_margin_start(12);
     row_box.set_margin_end(12);
 
-    row_box.append(&body_label(&setting.label));
+    row_box.append(&body_label(crate::ux_presentation::resolved_row_label(
+        &setting.row_id,
+        &setting.label,
+    )));
     if include_context {
         row_box.append(&small_label(&format!(
             "In {} / {} · {}",
@@ -5702,7 +5756,10 @@ fn render_detail(
     detail_content.set_tooltip_text(Some(&detail_pane_accessibility_text(&detail)));
     clear_box(detail_content);
     append_detail_section(detail_content, "Setting", |section| {
-        section.append(&title_label(&detail.label));
+        section.append(&title_label(crate::ux_presentation::resolved_row_label(
+            &detail.row_id,
+            &detail.label,
+        )));
         append_detail_line(section, "Official setting", &detail.official_setting);
         append_detail_line(
             section,

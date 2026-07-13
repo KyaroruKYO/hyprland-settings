@@ -105,6 +105,33 @@ Full reasons stay available in the detail pane and Safety Details.
 6. GTK harness updated (activation-card assertions now probe Safety
    Details); regression guards keep proof-wall text off user pages.
 
+## Implemented in the second pass (presentation adoption slice)
+
+1. **Full 341-row presentation resolution** (`src/presentation_labels.rs` +
+   `ux_presentation::resolved_row_label`): 127 rows matched through the
+   existing normalized key mapping adopt friendly short labels (provenance
+   recorded per row as `reference_key`, test-verified against the raw
+   official setting keys, which are unchanged); 214 unmatched rows keep
+   their official metadata labels — reported, never guessed. Full
+   accounting: `data/reports/hyprmod-full-presentation-adoption.v0.55.2.json`.
+   Descriptions stay original one-line text derived from the official
+   metadata (the reference app's authored prose is GPL-licensed third-party
+   work; verbatim adoption would need an owner-level attribution/licensing
+   decision, recorded in the report).
+2. **Hidden search**: the entry hides by default; Ctrl+F reveals and
+   focuses it; Escape clears and hides it (from the window or inside the
+   entry); categories stay the primary navigation.
+3. **Friendly dropdown display labels** for finite-choice rows (generic
+   humanization); the raw value remains the id that gets applied,
+   validated, and saved.
+4. **Quiet picker card**: retitled "Animations & curves" with a two-line
+   intro and a gate-chip footer pointing to Safety Details; proof prose
+   removed from the everyday path; friendlier empty state.
+5. Detail-pane heading uses the resolved friendly label.
+6. Guards: `tests/hyprmod_presentation_adoption.rs` (counts, provenance,
+   raw-value preservation, unchanged classifications, Ctrl+F wiring, quiet
+   picker card, honest report pins).
+
 ## Follow-ups (next passes)
 
 - Detail-pane simplification: short chip + expander for the full

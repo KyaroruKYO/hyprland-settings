@@ -244,7 +244,16 @@ pub fn runtime_preview_ui_row_state(row_id: &str) -> Option<RuntimePreviewUiRowS
         .map(|choices| {
             choices
                 .iter()
-                .map(|choice| (choice.raw_value.to_string(), choice.label.to_string()))
+                .map(|choice| {
+                    // Friendly display form; the raw value stays what gets
+                    // applied, validated, and saved.
+                    let display = if choice.label == choice.raw_value {
+                        crate::ux_presentation::choice_display_label(choice.raw_value)
+                    } else {
+                        choice.label.to_string()
+                    };
+                    (choice.raw_value.to_string(), display)
+                })
                 .collect()
         })
         .unwrap_or_default();

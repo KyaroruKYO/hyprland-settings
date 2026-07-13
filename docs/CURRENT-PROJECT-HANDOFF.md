@@ -193,9 +193,17 @@ Save persistence and migration marathon complete on `structured-family-editors-u
   - GTK harness updated: `Safety Details` navigation target; the eight moved detail specs point at the new page; four new matrix runs cover it.
 - Follow-ups tracked in the plan doc: detail-pane simplification, color-picker window + gradient rows, Profiles empty state, merged Layouts presentation, toggleable sidebar search, label overrides.
 
+## Presentation Adoption Slice Additions (2026-07-13)
+
+- **341-row presentation resolution**: `src/presentation_labels.rs` (generated from the existing normalized key mapping, provenance per row) + `ux_presentation::resolved_row_label`. 127 matched rows show friendly short labels in the list and detail heading; 214 unmatched rows keep official labels (reported, never guessed). Raw setting keys, row ids, validation, write classification, chips, and every save gate unchanged (guard-tested). Report: `data/reports/hyprmod-full-presentation-adoption.v0.55.2.json` — including the recorded decision that reference-app description prose was NOT copied (GPL third-party work, public repo; owner licensing decision required for verbatim adoption).
+- **Hidden Ctrl+F search**: entry hidden by default, Ctrl+F reveals/focuses, Escape clears and hides (window-level and in-entry); categories remain primary navigation.
+- **Friendly dropdown display labels** for finite-choice rows; raw values stay the applied/validated/saved ids.
+- **Quiet picker card** ("Animations & curves") and friendlier empty state; proof prose off the everyday path.
+- Guards: `tests/hyprmod_presentation_adoption.rs` (7 tests).
+
 ## Next Exact Work
 
-The release is complete and the first UX simplification pass is in. Remaining:
+The release is complete and the first two UX simplification passes are in. Remaining:
 
 - Hardware-gated proofs: 18 touch-family rows need touch/tablet hardware; 3 rows need secondary-device proofs (deferred; devices unavailable — no simulated/virtual-device path is proven, and any future one is proposal-only requiring explicit approval).
 - A UX simplification/readability pass separating end-user controls from developer/proof surfaces (the one unproven quality area per the Fable audit).

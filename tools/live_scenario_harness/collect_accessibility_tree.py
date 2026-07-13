@@ -1452,11 +1452,37 @@ def click_named_target(app, target):
     if target not in SAFE_NAVIGATION_TARGETS:
         return False, f"unsupported navigation target: {target}"
     if target == "Search":
+        # The entry hides by default behind the Search toggle (Ctrl+F
+        # equivalent), and the toggle lives on the settings work area — so
+        # open a settings page first, click the toggle to prove the reveal
+        # behavior, then find the revealed entry.
+        ok, message = click_named_target(app, "Appearance")
+        if not ok:
+            return False, f"could not open a settings page before Search: {message}"
+        time.sleep(1)
+        def search_toggle_button(current):
+            try:
+                role = current.getRoleName()
+            except Exception:
+                role = ""
+            if role not in {"toggle button", "push button", "button"}:
+                return False
+            return node_text_lower(current).strip().startswith("search")
+
+        toggle = find_first_node(app, search_toggle_button)
+        toggle_clicked = False
+        if toggle is not None:
+            ok, _message = safe_click_action(toggle)
+            if ok:
+                toggle_clicked = True
+                time.sleep(1)
         node = find_first_node(
             app,
             lambda current: "search settings" in node_text_lower(current)
             or "hyprland-settings-search" in node_text_lower(current),
         )
+        if node is not None and toggle_clicked:
+            return True, "Search toggle clicked and search field revealed"
         return (node is not None), (
             "Search field found" if node is not None else "Search field not found"
         )

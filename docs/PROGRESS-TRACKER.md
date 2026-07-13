@@ -20,6 +20,15 @@ UX/readability area moves from "not proven yet" to "first pass implemented;
 detail-pane simplification, color tools, and Profiles empty state remain"
 (see `docs/UX-SIMPLIFICATION-PLAN.md`).
 
+**Update 2026-07-13 (presentation adoption slice):** all 341 scalar rows now
+resolve through the presentation layer — 127 matched rows adopt friendly
+short labels (provenance test-verified; raw keys unchanged), 214 unmatched
+rows keep official labels; hidden Ctrl+F search; friendly dropdown display
+labels with raw values preserved; quiet picker card. Zero behavior or
+classification changes (guard-tested). Reference-app description prose was
+not copied — recorded licensing decision in
+`data/reports/hyprmod-full-presentation-adoption.v0.55.2.json`.
+
 Everything below this line is **dated history** (earlier audits and
 marathon logs), kept as a record and not to be read as current state.
 

@@ -35,6 +35,7 @@ pub mod one_target_pilot_verification_gate_approval;
 pub mod one_target_write_pilot;
 pub mod pending_change;
 pub mod persist_safe_live_save_mode;
+pub mod presentation_labels;
 pub mod production_advanced_confirmation;
 pub mod production_backup_contract;
 pub mod production_high_risk_approval;

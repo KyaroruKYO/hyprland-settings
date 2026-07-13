@@ -79,6 +79,25 @@ MIT; GPL-derived material would need a compatibility review).
 | Consolidated empty state | Follow-up: Profiles empty state ("No profiles yet") replacing the profile/mode status frame |
 | Merged Layouts page | Follow-up: dwindle/master rows presented as one "Layouts" section |
 
+## Second-pass update (presentation adoption slice, 2026-07-13)
+
+The presentation layer now resolves all 341 scalar rows: 127 rows matched
+through the pre-existing normalized key mapping adopt short factual
+setting names (per-row provenance recorded and test-verified); 214 rows
+keep their official metadata labels unchanged. The hidden Ctrl+F search
+behavior, friendly dropdown display labels (raw values preserved), and the
+quiet picker card also landed. Full accounting:
+`data/reports/hyprmod-full-presentation-adoption.v0.55.2.json`.
+
+**Description text decision (recorded, not silent).** The reference app's
+option descriptions are authored prose in a GPL-3.0 project by another
+author, and this repository is public. They were therefore **not** copied;
+every row keeps a one-line description derived from this project's own
+bundled official Hyprland metadata, written in the same simple style.
+Verbatim adoption would require an owner-level licensing/attribution
+decision (e.g. carrying the copyright notice and GPL terms for the adopted
+metadata); until then the compliant original-text route stands.
+
 ## What we deliberately do NOT copy
 
 - HyprMod's write model (it applies changes; our saves stay behind Safe
