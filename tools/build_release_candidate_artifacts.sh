@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Build LOCAL v0.2.0-rc.1 release-candidate artifacts, mirroring the
-# v0.1.0 artifact layout exactly (dist/<version>/ with a binary tarball, a
-# source tarball, and SHA256SUMS).
+# Build LOCAL release artifacts for one version (release candidates and
+# final releases), mirroring the v0.1.0 artifact layout exactly
+# (dist/<version>/ with a binary tarball, a source tarball, and
+# SHA256SUMS).
 #
 # Safety boundaries:
 # - never creates or moves any tag, and never publishes anything anywhere
@@ -10,12 +11,12 @@
 # - never touches dist/v0.1.0 or any existing dist directory;
 # - never runs any compositor command and never touches the Hyprland
 #   session or config;
-# - writes only dist/v0.2.0-rc.1/ (and cargo's target/ via the build).
+# - writes only dist/v<version>/ (and cargo's target/ via the build).
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-RC_VERSION="0.2.0-rc.1"
+RC_VERSION="${1:?usage: build_release_candidate_artifacts.sh <version, e.g. 0.2.0-rc.1 or 0.2.0>}"
 RC_NAME="v${RC_VERSION}"
 DIST_DIR="dist/${RC_NAME}"
 BINARY_STAGE="hyprland-settings-${RC_NAME}-linux-x86_64"

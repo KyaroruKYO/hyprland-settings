@@ -1,0 +1,41 @@
+{
+  "artifactKind": "style-editing-evidence-report",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "investigatedDate": "2026-07-13",
+  "styleEditingStatus": "blocked",
+  "reason": "no trusted valid-value evidence",
+  "styleEvidenceTrusted": false,
+  "styleProofRan": false,
+  "styleProofPassed": false,
+  "styleUiEnabled": false,
+  "sourcesInvestigated": [
+    {
+      "source": "installed official Hyprland 0.55.4 source headers (/usr/include/hyprland/src, shipped by the hyprland package)",
+      "finding": "no animation style value enumeration exists in the shipped headers (style validation lives in compiled .cpp sources that the package does not install)"
+    },
+    {
+      "source": "official typed Lua API stub (/usr/share/hypr/stubs/hl.meta.lua, 1251 lines)",
+      "finding": "documents the hl.animation API but contains no style field value documentation at all"
+    },
+    {
+      "source": "official example config (/usr/share/hypr/hyprland.lua)",
+      "finding": "shows style USAGE only ('popin 87%' on windows leaves, 'fade' on layers/workspaces leaves) - usage examples are not an enumeration, and they reveal that styles are leaf-specific AND parameterized (a percentage argument), so a finite global dropdown would be wrong even in shape"
+    },
+    {
+      "source": "trusted 0.55.4 descriptions export (data/exports/hyprland-0.55.4/hyprctl-descriptions.v0.55.4.json, 341 rows)",
+      "finding": "carries no animation style metadata (animation tree records are not config options)"
+    },
+    {
+      "source": "runtime readback (hyprctl animations)",
+      "finding": "reports each record's CURRENT style but enumerates no valid values"
+    }
+  ],
+  "whatWouldUnblock": "official local evidence enumerating valid styles per animation leaf (for example, a future descriptions export or Lua stub that carries them), followed by an env-gated live proof of apply + exact revert + zero residue before any receipt, save path, or UI control is added",
+  "notTrustedAndNotUsed": [
+    "guessing or inference from record names",
+    "unverified user config lines",
+    "web snippets"
+  ],
+  "currentBehaviorUnchanged": "the style field is preserved byte-for-byte from the runtime readback on every save; the UI shows a disabled style row with this blocked reason; styled records remain save-only for preview purposes"
+}

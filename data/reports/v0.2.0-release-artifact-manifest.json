@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "v0.2.0-release-artifact-manifest",
+  "generatedAt": "2026-07-13",
+  "startingCommit": "82cf18c1e160045c572c316d390c883bb1b5424f",
+  "releaseCommit": "the commit carrying this manifest (tagged v0.2.0; see git)",
+  "tagName": "v0.2.0",
+  "tagCreated": true,
+  "tagPushed": true,
+  "releaseScope": "runtime-first live preview and gated single-write persistence for the v0.55.2 data/model, zero-drift audited against Hyprland 0.55.4",
+  "projectDataVersion": "v0.55.2",
+  "appIdentity": {
+    "appName": "Hyprland Settings",
+    "repoName": "hyprland-settings",
+    "binaryName": "hyprland-settings",
+    "appId": "io.github.kyarorukyo.hyprlandsettings",
+    "githubOwner": "KyaroruKYO"
+  },
+  "version": "0.2.0",
+  "validation": {
+    "preReleaseValidation": {
+      "cargoFmt": "passed",
+      "cargoFmtCheck": "passed",
+      "cargoCheck": "passed",
+      "cargoTest": "passed",
+      "cargoBuildRelease": "passed",
+      "jqReports": "passed",
+      "desktopFileValidate": "passed",
+      "appstreamValidate": "passed",
+      "gitDiffCheck": "passed",
+      "manualRcTest": "passed (data/reports/manual-rc-test-v0.2.0-rc.1.v0.55.2.json)"
+    }
+  },
+  "releaseNotesPath": "docs/releases/v0.2.0.md",
+  "sourceArchivePath": "dist/v0.2.0/hyprland-settings-v0.2.0-source.tar.gz",
+  "binaryArtifactPath": "dist/v0.2.0/hyprland-settings-v0.2.0-linux-x86_64.tar.gz",
+  "checksumPath": "dist/v0.2.0/SHA256SUMS",
+  "checksumNote": "authoritative checksums live in dist/v0.2.0/SHA256SUMS and on the GitHub release, not in this committed manifest: the source archive is built from the commit containing the manifest, so embedded checksums could never match themselves",
+  "binaryArtifactIncludedFiles": [
+    "hyprland-settings",
+    "README.md",
+    "LICENSE",
+    "data/applications/io.github.kyarorukyo.hyprlandsettings.desktop",
+    "data/metainfo/io.github.kyarorukyo.hyprlandsettings.metainfo.xml"
+  ],
+  "githubReleasePlanned": true,
+  "githubReleaseUrl": "https://github.com/KyaroruKYO/hyprland-settings/releases/tag/v0.2.0",
+  "distV010Untouched": true,
+  "distV020Rc1Untouched": true,
+  "v010Untouched": true,
+  "knownLimitations": [
+    "18 touch-family rows and 3 secondary-device rows unproven pending hardware (disarmed, not broken)",
+    "monitor/bind/gesture/device/permission families blocked for editing with honest reasons",
+    "animation style field not editable (no trusted valid-value evidence); preserved on save",
+    "disabled animation records reset their speed/bezier readback (live-proof finding)",
+    "scalar model projects flat section:key = value syntax only",
+    "data model tracks v0.55.2; 0.55.4 audited at zero drift"
+  ]
+}

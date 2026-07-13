@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2026-07-13)
+
+Final release of the 0.2.0 line. Identical scope to 0.2.0-rc.1 below, plus
+the release-candidate verification itself: a passed manual RC test of the
+packaged binary against a real session (rendering, supervised preview with
+recovery, dead-man timeout auto-revert, Safe Live Save Mode runtime gate;
+zero residue, config untouched).
+
 ## 0.2.0-rc.1 (2026-07-13) — release candidate
 
 - Runtime preview capability system: all 341 scalar rows classified honestly,

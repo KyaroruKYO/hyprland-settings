@@ -21,6 +21,11 @@
   </categories>
   <content_rating type="oars-1.1" />
   <releases>
+    <release version="0.2.0" date="2026-07-13">
+      <description>
+        <p>Runtime-first live preview with supervised dead-man recovery, Safe Live Save Mode gating every save, gated single-write persistence with byte-exact backups and reread verification, a structured-family record picker for proven animation and bezier record shapes (enabled, speed, and existing-curve references), and a Hyprland 0.55.4 zero-drift compatibility audit.</p>
+      </description>
+    </release>
     <release type="development" version="0.2.0~rc.1" date="2026-07-13">
       <description>
         <p>Release candidate: runtime-first live preview with supervised dead-man recovery, Safe Live Save Mode gating every save, gated single-write persistence with byte-exact backups and reread verification, a structured-family record picker for proven animation and bezier record shapes, and a Hyprland 0.55.4 zero-drift compatibility audit.</p>

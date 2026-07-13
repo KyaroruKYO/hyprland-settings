@@ -2,6 +2,18 @@
 
 Machine-readable result: `data/reports/release-decision.v0.55.2.json`.
 
+## Resolution (2026-07-13)
+
+**Approved and released as v0.2.0.** The user approved the release path;
+v0.2.0-rc.1 was tagged on the reviewed commit and its packaged binary
+passed a manual test pass against a real session
+(`docs/MANUAL-RC-TEST-v0.2.0-rc.1.md`); the version was bumped to 0.2.0,
+main was fast-forwarded, `dist/v0.2.0/` artifacts were built, the annotated
+`v0.2.0` tag was created and pushed, and the GitHub release was published
+(`docs/FINAL-RELEASE-v0.2.0.md`). `v0.1.0`, `dist/v0.1.0`, and
+`dist/v0.2.0-rc.1` remain untouched. The sections below record the original
+decision as it was made, before approval.
+
 ## Decision
 
 **Ready pending user approval.** No tag was created, nothing was merged to

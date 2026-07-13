@@ -16,14 +16,21 @@ fn release_decision_report_exists_with_safe_values() {
         report["artifactKind"].as_str(),
         Some("release-decision-report")
     );
+    // The decision was resolved by user approval: v0.2.0 released.
     assert_eq!(
         report["releaseDecisionStatus"].as_str(),
-        Some("ready pending user approval")
+        Some("approved and released as v0.2.0")
     );
-    // The decision itself takes no release action.
-    assert_eq!(report["releaseTagCreated"].as_bool(), Some(false));
-    assert_eq!(report["releaseArtifactsPublished"].as_bool(), Some(false));
-    assert_eq!(report["mergedToMain"].as_bool(), Some(false));
+    assert_eq!(report["resolution"]["userApproved"].as_bool(), Some(true));
+    assert!(report["resolution"]["manualRcTest"]
+        .as_str()
+        .unwrap_or("")
+        .starts_with("passed"));
+    assert_eq!(report["releaseTagCreated"].as_bool(), Some(true));
+    assert_eq!(report["releaseArtifactsPublished"].as_bool(), Some(true));
+    assert_eq!(report["mergedToMain"].as_bool(), Some(true));
+    // The original decision event took no release action (historical
+    // block), and the v0.1.0 release stayed untouched throughout.
     let boundaries = &report["hardBoundariesRespected"];
     for key in [
         "noTagCreated",
@@ -35,6 +42,10 @@ fn release_decision_report_exists_with_safe_values() {
     ] {
         assert_eq!(boundaries[key].as_bool(), Some(true), "{key} must be true");
     }
+    assert!(report["hardBoundariesNote"]
+        .as_str()
+        .unwrap_or("")
+        .contains("original decision event"));
     // The existing release is referenced, not modified.
     assert_eq!(report["existingRelease"]["tag"].as_str(), Some("v0.1.0"));
     assert_eq!(
@@ -64,9 +75,11 @@ fn release_candidate_materials_exist_without_release_automation() {
     ] {
         assert!(doc.contains(section), "doc must contain {section}");
     }
-    // The doc prepares material; it never claims a release happened.
+    // The doc records the original decision and its resolution.
     assert!(doc.contains("Ready pending user approval"));
     assert!(doc.contains("No tag was created"));
+    assert!(doc.contains("## Resolution (2026-07-13)"));
+    assert!(doc.contains("Approved and released as v0.2.0"));
 
     // No release automation exists in the repo that tags or publishes:
     // the only release-related script material is the documented manual

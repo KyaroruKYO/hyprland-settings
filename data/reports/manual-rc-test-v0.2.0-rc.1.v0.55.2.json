@@ -1,0 +1,100 @@
+{
+  "artifactKind": "manual-rc-test-report",
+  "projectDataVersion": "v0.55.2",
+  "releaseCandidate": "v0.2.0-rc.1",
+  "rcTagCommit": "82cf18c1e160045c572c316d390c883bb1b5424f",
+  "testDate": "2026-07-13",
+  "manualRcTestStatus": "passed",
+  "manualRcTestFailures": [],
+  "evidenceRoot": "/tmp/hyprland-settings-rc-manual-test/20260713_102653",
+  "howTheTestRan": "the PACKAGED v0.2.0-rc.1 binary artifact was checksum-verified, unpacked, and launched in the real Hyprland 0.55.4 session with the real HOME; an AT-SPI driver (tools/live_scenario_harness/manual_rc_test_driver.py, run by tools/live_scenario_harness/run_manual_rc_test.sh) performed the interactions and every mutating step was verified through read-only hyprctl readback with zero-residue checks; the wrapper verified the active config bytes (sha256), gaps_in, monitor geometry, and the autoreload flag were identical before and after",
+  "interactionHonesty": "the driver performs REAL interactions on the real running app (page navigation, spin/switch manipulation, button activation) - it is automation-driven rather than human-driven, recorded below as real-interaction-automated; the two config-writing controls were deliberately NOT activated because the app's own embedded policy prohibits GTK automation from activating them",
+  "stepsPassed": [
+    {
+      "step": "launch RC binary from dist/v0.2.0-rc.1 in the real session",
+      "method": "real-interaction-automated",
+      "evidence": "artifact checksums verified; binary launched with real HOME; app appeared on the AT-SPI bus"
+    },
+    {
+      "step": "dashboard renders",
+      "method": "real-interaction-automated",
+      "evidence": "Dashboard and Hyprland text present in the live accessibility tree"
+    },
+    {
+      "step": "Config page renders",
+      "method": "real-interaction-automated",
+      "evidence": "sidebar navigation performed; Animation records group and Safe Live Save Mode card present"
+    },
+    {
+      "step": "record picker shows real-session readback values",
+      "method": "real-interaction-automated",
+      "evidence": "current-value label 'Current: speed 1.00 (enabled 0, bezier default)' matches the live hyprctl animations readback for the selected record"
+    },
+    {
+      "step": "record picker animation preview (enabled shape + speed +0.25) and Revert now",
+      "method": "real-interaction-automated",
+      "evidence": "Enabled switch set on, speed spin +0.25, Preview with recovery clicked; runtime readback changed; countdown status shown; Revert now restored the full record byte-identically (zero residue)"
+    },
+    {
+      "step": "dead-man countdown timeout auto-revert",
+      "method": "real-interaction-automated",
+      "evidence": "second preview armed ('Previewing live: auto-revert in 8 seconds unless you Keep changes.'); runtime changed during countdown; after the timeout the runtime reverted to the pre-test listing without any further interaction"
+    },
+    {
+      "step": "curve record preview (X1 +0.01) and Revert now",
+      "method": "real-interaction-automated",
+      "evidence": "runtime readback changed during preview; Revert now restored zero residue"
+    },
+    {
+      "step": "Safe Live Save Mode enable -> status -> disable",
+      "method": "real-interaction-automated",
+      "evidence": "Enable clicked: misc:disable_autoreload readback flipped to true; Disable clicked: readback returned to false (the pre-test state); runtime-only, no file write"
+    },
+    {
+      "step": "gated Save controls present",
+      "method": "real-interaction-automated",
+      "evidence": "Save previewed value and Save as default located in the tree with their gate descriptions"
+    },
+    {
+      "step": "zero runtime residue after all driven steps",
+      "method": "real-interaction-automated",
+      "evidence": "animations listing byte-identical to pre-test; autoreload restored; active config sha256 identical (efbb7320...); gaps_in unchanged; monitor geometry unchanged"
+    }
+  ],
+  "stepsNotTestedThroughTheRcUi": [
+    {
+      "step": "clicking Save previewed value (gated record save)",
+      "status": "not tested by automation",
+      "reason": "the control's own description says GTK automation must not activate it (it writes the active config); remains a human step",
+      "coverage": "the exact code path the button calls (gated_family_record_save_live) is live-flow-proven by env-gated tests that wrote the REAL config with byte-exact backup and restore (tests/family_record_picker_live.rs, re-passed 2026-07-13)"
+    },
+    {
+      "step": "clicking Save as default (persist Safe Live Save Mode)",
+      "status": "not tested by automation",
+      "reason": "same embedded prohibition (config write)",
+      "coverage": "persist_safe_live_save_mode_live is live-flow-proven (tests/persist_safe_live_save_mode_live.rs): real write, reread verification, byte-exact restore"
+    },
+    {
+      "step": "scalar preview of general:gaps_in through the settings list UI",
+      "status": "not tested by automation",
+      "reason": "row selection through the large settings list was not driven in this pass",
+      "coverage": "the scalar preview executor and UI controller are live-proven by env-gated round-trip tests, and the identical supervised-preview flow was exercised through the RC UI on record-picker controls in this test"
+    },
+    {
+      "step": "closing the app during a counting-down preview (session-drop recovery)",
+      "status": "not tested by automation",
+      "reason": "the harness closes the app with SIGTERM, which does not exercise the in-app close-path revert; a kill-based test could leave residue, so it was not driven",
+      "coverage": "the countdown TIMEOUT auto-revert was proven through the RC UI in this test (the stronger unattended-recovery property), and revert_if_unconfirmed session-drop behavior is unit- and live-proven at the controller level"
+    }
+  ],
+  "safetyOutcome": {
+    "activeConfigWritten": false,
+    "activeConfigHashBefore": "efbb732063fccf35c99ad142a656de9041262d87558ee7bb2044f484a04acb7c",
+    "activeConfigHashAfter": "efbb732063fccf35c99ad142a656de9041262d87558ee7bb2044f484a04acb7c",
+    "hyprctlReloadRan": false,
+    "monitorDisplayMutated": false,
+    "runtimeMutationRan": true,
+    "runtimeMutationScope": "reversible supervised previews and the Safe Live Save Mode runtime toggle, every one verified restored via readback"
+  },
+  "verdictForFinalRelease": "pass - the packaged RC binary works against the real session: rendering, real readback, supervised preview with recovery (including the new enabled-shape control), dead-man timeout recovery, and the Safe Live Save Mode runtime gate all verified; the config-writing buttons remain human-only by policy and their underlying paths are live-flow-proven"
+}

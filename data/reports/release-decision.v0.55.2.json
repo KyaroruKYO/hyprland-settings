@@ -3,10 +3,10 @@
   "projectDataVersion": "v0.55.2",
   "branch": "structured-family-editors-unified",
   "decisionDate": "2026-07-13",
-  "releaseDecisionStatus": "ready pending user approval",
-  "releaseTagCreated": false,
-  "releaseArtifactsPublished": false,
-  "mergedToMain": false,
+  "releaseDecisionStatus": "approved and released as v0.2.0",
+  "releaseTagCreated": true,
+  "releaseArtifactsPublished": true,
+  "mergedToMain": true,
   "existingRelease": {
     "tag": "v0.1.0",
     "commit": "74efa283a3d7259b8e15b1c93cad43942d9f9a1a",
@@ -76,5 +76,14 @@
     "tagCreated": false,
     "artifactsPublished": false,
     "finalReleaseStillPendingUserApproval": true
-  }
+  },
+  "resolution": {
+    "date": "2026-07-13",
+    "userApproved": true,
+    "rcTag": "v0.2.0-rc.1 on 82cf18c1e160045c572c316d390c883bb1b5424f (pushed)",
+    "manualRcTest": "passed (data/reports/manual-rc-test-v0.2.0-rc.1.v0.55.2.json)",
+    "finalRelease": "v0.2.0 (data/reports/final-release-v0.2.0.v0.55.2.json)",
+    "blockersResolved": "all five blockers resolved: user approval given, main fast-forwarded, version bumped to 0.2.0, notes finalized (docs/releases/v0.2.0.md), manual test pass completed"
+  },
+  "hardBoundariesNote": "the hardBoundariesRespected block describes the original decision event (2026-07-13, pre-approval), which took no release action; the resolution block above records the user-approved release that followed"
 }
