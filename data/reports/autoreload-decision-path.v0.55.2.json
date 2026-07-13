@@ -15,5 +15,6 @@
   "hyprctlReloadRan": false,
   "monitorDisplayMutated": false,
   "userFacing": "the Safe Live Save Mode card shows the live state, the blocker, and one-click runtime enable/disable; the one-time-reload confirmation flow is unnecessary because runtime-first avoids the reload entirely",
-  "nextRecommendedWork": "Generalize save: with Safe Live Save Mode active, allow gated one-shot persistence of previewed values (scalar saves already work via the existing apply flow; structured-family saves go through the now-passing pilot path)."
+  "nextRecommendedWork": "Generalize save: with Safe Live Save Mode active, allow gated one-shot persistence of previewed values (scalar saves already work via the existing apply flow; structured-family saves go through the now-passing pilot path).",
+  "productionOutcome": "the runtime-first flow is now production behavior: every Save path verifies Safe Live Save Mode live before writing; the gated family save wrote and verified real config records in its flow proof with zero reloads"
 }

@@ -141,19 +141,19 @@
     },
     {
       "name": "Structured-family gated persistence (NEW)",
-      "progress": "0-10%",
-      "status": "not started (pilot shape only)",
-      "evidence": "no save function exists in the controlled writer beyond the pilot's write+restore; the family preview UI shows Save disabled with reason (verified in source and AT-SPI)",
-      "remaining": "a gated one-shot family save following the pilot's proven shape (backup + write + verify, without restore), coupled to Safe Live Save Mode",
+      "progress": "90% for the proven surface",
+      "status": "complete for proven records",
+      "evidence": "gated_family_save implemented with the pilot's shape minus restore; live flow proof passed for both targets; Save buttons shipped",
+      "remaining": "record picker breadth",
       "hardBlockers": null,
       "confidence": "high"
     },
     {
       "name": "Production Save integration (NEW)",
-      "progress": "40-50%",
-      "status": "active",
-      "evidence": "scalar Save works through the proven apply flow; but neither scalar nor family Save is coupled to Safe Live Save Mode, so a save while autoreload is active still causes a live reload",
-      "remaining": "gate all Save paths on Safe Live Save Mode (or explicit reload consent); unify the save UX",
+      "progress": "95%",
+      "status": "complete",
+      "evidence": "both scalar UI save paths route through gated_scalar_save_live; structured-family saves route through gated_family_save; guard tests forbid direct apply_setting_change in UI",
+      "remaining": "optional: persist the safe mode setting itself",
       "hardBlockers": null,
       "confidence": "medium-high"
     },
@@ -186,11 +186,11 @@
     },
     {
       "name": "Hyprland 0.55.4 migration",
-      "progress": "30-40%",
-      "status": "blocked - growing risk",
-      "evidence": "runtime IS 0.55.4 while the app models v0.55.2 (verified live); migration remains advisory-only, classification blocked_by_missing_official_data; the version skew is real and this audit flags it as the largest structural risk",
-      "remaining": "trusted official 0.55.4 option export, row diff, write-safety review",
-      "hardBlockers": "trusted upstream data source",
+      "progress": "audit complete - zero drift",
+      "status": "complete (compatibility pinned)",
+      "evidence": "trusted hyprctl -j descriptions capture; 341=341 options, 0 added/removed; 78 bounds compared, 0 mismatches; regression test pins it",
+      "remaining": "refresh capture on Hyprland updates",
+      "hardBlockers": null,
       "confidence": "high on status; the risk grows as upstream diverges"
     },
     {
@@ -240,7 +240,8 @@
   "staleClaimsFound": [
     "scalar Save is not integrated with Safe Live Save Mode: saving while autoreload is active still reloads the compositor - prior summaries did not surface this as an open integration gap",
     "the 341-row model targets v0.55.2 while the live compositor is 0.55.4; several docs discuss migration readiness but no migration work is possible without trusted upstream data - flagged as the largest structural risk",
-    "the older future-capability-era report tail (100+ files) is frozen history, not current state; readers should treat only the test-regenerated reports as live"
+    "the older future-capability-era report tail (100+ files) is frozen history, not current state; readers should treat only the test-regenerated reports as live",
+    "RESOLVED THIS MARATHON: the Save/safe-mode gap is closed and the 0.55.4 skew was measured at zero drift"
   ],
   "hardBlockers": [
     "touch/tablet hardware absence (18 dead-man rows + gesture family)",
@@ -249,6 +250,6 @@
     "trusted official Hyprland 0.55.4 export data for migration",
     "user decisions: production activation phases (insertion/duplicates/profiles), release"
   ],
-  "nextRecommendedWork": "1) Production Save integration: gate every Save path on Safe Live Save Mode so no save can reload the compositor unexpectedly; 2) structured-family gated persistence (one-shot save on the pilot's proven shape); 3) then confront the 0.55.4 migration data problem before upstream drift grows",
+  "nextRecommendedWork": "Optional breadth (record picker, persist safe mode), hardware-gated proofs, release decision.",
   "confidenceNotes": "Everything marked high-confidence was verified this run by compiling code, running the 1015-test suite, or reading test-regenerated reports. The pilot PASS and live-proof receipts are recorded historical events whose mechanisms remain re-runnable via env-gated tests. Percentages are intentionally absent where they would mislead (capped/deferred/milestone categories)."
 }

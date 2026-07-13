@@ -38,5 +38,6 @@
     "hardened ignored pilot test combining operator flag with live evidence"
   ],
   "validation": "cargo test green; the pilot suite passes with the ignored live test still env-gated",
-  "nextRecommendedWork": "Pilot passed; the decision path is resolved by runtime-first autoreload control."
+  "nextRecommendedWork": "Pilot passed; the decision path is resolved by runtime-first autoreload control.",
+  "productionSuccessor": "gated_family_save is the production successor to the pilot: same write shape, no restore on success; see structured-family-gated-persistence report"
 }

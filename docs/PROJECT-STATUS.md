@@ -64,14 +64,14 @@ Current future-capability tracker:
 - Missing/default insertion: 99-100%
 - Duplicate resolution: 95-95%
 - High-risk/display recovery: 62-70%
-- Structured-family editors/writes: 99% (controlled-target writes proven; pilot implemented, rehearsed, and evidence-hardened; hl.animation/hl.curve live preview mechanisms proven; only the autoreload decision and family preview UI controls remain)
+- Structured-family editors/writes: production Save complete for the proven surface (pilot passed; gated persistence live-proven for hl.animation global speed and hl.curve default Y0; remaining growth is record-picker breadth)
 - Profile/mode switching: 65-73%
 - Runtime/reload integration: 98-99% (proof marathon complete: 38 of 78 dead-man rows armed by passed live proofs — everything provable on this machine; remaining arming needs touch hardware or secondary-device proofs)
-- Hyprland 0.55.4 migration: 50-60%
+- Hyprland 0.55.4 migration: audit complete — zero drift against the trusted 0.55.4 export; compatibility pinned by a regression test
 
 Future-capability source/include and duplicate production-activation runway work remains stopped; future production activation requires a separate explicitly approved phase.
 
-Current next exact work item: stop for explicit user decision: approve or reject a first active real config write pilot for structured families (unblocking requires `misc:disable_autoreload = true` or explicit approval of the reload the pilot write would trigger). Runtime preview arming is complete for this machine's provable surface.
+Current next exact work item: the save/persistence/migration marathon is complete. Remaining work is optional breadth (family record picker; persisting `misc:disable_autoreload` via the gated scalar save), hardware-gated proofs (touch/tablet and secondary-device rows), and release decisions.
 
 ## Default-Disabled Production Activation Decision Review - 2026-06-20
 
@@ -132,3 +132,10 @@ Source/include and duplicate now have designed-but-disabled production flag and 
 Source/include and duplicate are now capped for non-production runway work. The cap status is `BranchCappedForNonProductionRunway`, and the explicit stop answer is yes: `future-capability-marathon` should stop here for source/include and duplicate production-activation runway work. Future production activation must begin in a separate explicitly approved phase, require a fresh user decision, production flag opt-in, executor-wiring opt-in, rollback/no-auto-apply proof preservation, real-config risk re-check, and activation-time revalidation. The cap cannot set flags, wire executors, run writes, authorize live dry-run, persist drafts, mutate runtime, reload Hyprland, or touch real config.
 
 The closeout audit confirms the cap is the final source/include and duplicate state on `future-capability-marathon`. Active follow-up work must not ask Codex to keep extending this runway; it should choose a different project area or explicitly start a separate production activation phase.
+
+## 2026-07-12 - Save Persistence Migration Marathon
+
+- Every Save path is now gated on Safe Live Save Mode: scalar UI saves route through `gated_scalar_save_live` (live gate verification, then the existing backup/write/reread apply flow); direct `apply_setting_change` calls are eliminated from UI code and guard-tested. Saves fail closed with an enable-first message while autoreload is active.
+- Structured-family gated persistence shipped (`gated_family_save`): the two live-proven records (hl.animation global speed, hl.curve default Y0) persist through value validation, receipt gate, live safe-mode gate, active-config identity gate, byte-exact backup, one atomic write, and reread verification — restore only on verification failure, never after success. Save buttons live in both family preview controls. The env-gated live flow proof passed for both targets (gate-blocked proof, real writes, reread verification, byte-exact flow cleanup); no reload fired.
+- Hyprland 0.55.4 migration audit complete: `hyprctl -j descriptions` from the official 0.55.4 binary is the trusted source (captured to `data/exports/hyprland-0.55.4/`); zero option drift (341 = 341, 0 added, 0 removed), zero numeric-bounds drift (78 compared), 47 cosmetic description diffs; a regression test pins the compatibility on every `cargo test` run. The version-skew risk is closed by evidence.
+- Normal `cargo test` still never touches the active config or runtime; `hyprctl reload` was never run; the pilot still restores.

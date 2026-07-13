@@ -2,7 +2,7 @@
 
 ## Current Focus
 
-Structured-family controlled real-write implementation on `structured-family-editors-unified`.
+Save persistence and migration marathon complete on `structured-family-editors-unified`: every Save path is gated on Safe Live Save Mode, structured-family gated persistence is live-proven for the two proven records, and the Hyprland 0.55.4 migration audit found zero drift.
 
 ## Completed This Sprint
 
@@ -79,12 +79,12 @@ Structured-family controlled real-write implementation on `structured-family-edi
 
 ## Safety Boundaries
 
-- Active real config touched: false.
-- Runtime mutated: false.
-- `hyprctl reload` run: false.
-- Production behavior enabled: false.
+- Active real config touched: false during normal builds/tests; env-gated live proofs (pilot, save flow proof) wrote it under their gates and the flow-proof cleanup restored the pre-test bytes exactly.
+- Runtime mutated: false during normal builds/tests; live proofs are env-gated and reverting.
+- `hyprctl reload` run: false — never, anywhere.
+- Production behavior enabled: false for source/include and duplicate phases.
 - Structured-family controlled-target writes enabled: true (test-owned fixture, copied config tree, and temp targets only).
-- Structured-family active-config writes enabled: false.
+- Structured-family active-config writes enabled: true, ONLY via `gated_family_save` for the two proven records (hl.animation global speed, hl.curve default Y0) behind receipt + Safe Live Save Mode + identity gates with backup and reread verification; the controlled write executor still rejects the active config by construction; no record creation or deletion exists.
 - Executor implemented: true (controlled write executor plus the earlier inert scaffold).
 - Executor wired for controlled targets: true.
 - Executor wired for active config: false.
@@ -150,10 +150,24 @@ Structured-family controlled real-write implementation on `structured-family-edi
 - Hardened the active-config pilot gate with live autoreload evidence collection; added the readiness report with exact unblock instructions.
 - Added the Config page structured-family live preview & persistence card (AT-SPI-proven with all safety flags false).
 
+## Safe Live Save Mode Sprint Additions
+
+- Proved `misc:disable_autoreload` is runtime-controllable (no file write, no reload, getoption-verified, exactly reversible) and built Safe Live Save Mode on it: status/enable/disable with fixed constant commands, readback verification, and a Config page card with working Enable/Disable buttons.
+- The first active-config write pilot PASSED through its fifteen-gate path using the runtime-first strategy: wrote one inert record to the real `hyprland.conf`, verified, restored byte-exactly (SHA recorded); the runtime-flag marker proved no reload fired.
+- Shipped supervised structured-family preview UI controls for the two proven records (global animation speed, default curve Y0), modify-existing only.
+
+## Save Persistence Migration Marathon Additions
+
+- Gated every Save path on Safe Live Save Mode: both scalar UI save paths route through `gated_scalar_save_live` (live gate check, then the existing backup/write/reread apply flow); direct `apply_setting_change` is eliminated from UI code and guard-tested. See `docs/PRODUCTION-SAVE-INTEGRATION.md`.
+- Implemented structured-family gated persistence (`src/structured_family_gated_persistence.rs`): value validation → proven-record receipt gate → live Safe Live Save Mode gate → active-config identity gate → byte-exact backup → one atomic write → reread verification; restore only on verification failure, never after success. Save buttons shipped in both family preview controls. See `docs/STRUCTURED-FAMILY-GATED-PERSISTENCE.md`.
+- Ran the env-gated live save flow proof: the gate blocked correctly while autoreload was active; both targets then wrote real config records, reread-verified, with no restore by production code; the flow-proof cleanup restored the pre-test bytes exactly and the original autoreload state.
+- Completed the Hyprland 0.55.4 migration audit with a trusted source (`hyprctl -j descriptions` from the official 0.55.4 binary, captured to `data/exports/hyprland-0.55.4/`): zero option drift (341 = 341, 0 added, 0 removed), zero numeric-bounds drift (78 compared), 47 cosmetic description diffs; a regression test pins compatibility every `cargo test` run. See `docs/HYPRLAND-0.55.4-MIGRATION-AUDIT.md`.
+
 ## Next Exact Work
 
-Stop for explicit user decision: approve or reject a first active real config write pilot for structured families (blocked by autoreload policy).
+The core save/persistence/migration goals are complete. Remaining work is optional breadth and externally gated proofs:
 
-Runtime preview arming is complete for this machine's provable surface: 18 touch-family rows need hardware, 3 rows need secondary-device proofs.
-
-Unblocking the pilot requires either setting `misc:disable_autoreload = true` (a user decision) or explicitly approving the compositor reload the pilot write would trigger; then run the ignored pilot test with `HYPRLAND_SETTINGS_RUN_ACTIVE_PILOT=1` and confirmed autoreload evidence.
+- Family record picker: extend gated persistence one proven record shape at a time.
+- Persist `misc:disable_autoreload = true` via the gated scalar save so Safe Live Save Mode survives restarts (currently runtime-only).
+- Hardware-gated proofs: 18 touch-family rows need touch hardware; 3 rows need secondary-device proofs.
+- Refresh the 0.55.4 descriptions capture and rerun the pinned migration test whenever Hyprland updates.

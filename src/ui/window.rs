@@ -82,7 +82,7 @@ use crate::write_advanced_confirmation::advanced_confirmation_for_candidate;
 use crate::write_backup_plan::build_exact_backup_plan;
 use crate::write_classification::{high_risk_write_policy, ScalarWriteValueKind};
 use crate::write_enablement_readiness::current_production_write_enablement_readiness;
-use crate::write_flow::{apply_setting_change, write_flow_config_setting, write_flow_value_kind};
+use crate::write_flow::{write_flow_config_setting, write_flow_value_kind};
 use crate::write_review_walkthrough::build_write_review_walkthrough;
 use crate::write_target_candidate::write_target_candidates_for_layered_setting;
 use crate::write_target_recommendation::recommend_write_targets;
@@ -727,7 +727,7 @@ fn build_config_view(
 
     content.append(&safe_live_save_mode_section());
 
-    content.append(&structured_family_preview_controls_section());
+    content.append(&structured_family_preview_controls_section(model));
 
     content.append(&structured_family_runtime_preview_status_section());
 
@@ -4641,7 +4641,12 @@ fn safe_live_save_mode_section() -> gtk::Frame {
 /// Preview with recovery semantics (countdown, Keep, Revert now, Cancel),
 /// and readback-verified status. All actions route through the
 /// FamilyPreviewController; no commands are built here.
-fn family_preview_control(target: FamilyPreviewTarget, range: (f64, f64, f64), parent: &gtk::Box) {
+fn family_preview_control(
+    target: FamilyPreviewTarget,
+    range: (f64, f64, f64),
+    discovery: &ConfigDiscovery,
+    parent: &gtk::Box,
+) {
     let controller = match FamilyPreviewController::new_live(target) {
         Ok(controller) => Rc::new(RefCell::new(controller)),
         Err(error) => {
@@ -4801,18 +4806,46 @@ fn family_preview_control(target: FamilyPreviewTarget, range: (f64, f64, f64), p
         });
     }
 
+    // Production Save: persist the current spin value once through the
+    // gated persistence flow (Safe Live Save Mode verified live inside).
+    let save_button = gtk::Button::with_label("Save previewed value");
+    save_button.set_widget_name(&format!(
+        "hyprland-settings-family-save-{}",
+        safe_widget_name(target.family_id())
+    ));
+    save_button.set_tooltip_text(Some(
+        "Persist once to your config with backup and reread verification; requires Safe Live Save Mode. GTK automation must not activate this control.",
+    ));
+    {
+        let status = status.clone();
+        let spin = spin.clone();
+        let discovery = discovery.clone();
+        save_button.connect_clicked(move |_| {
+            let outcome = crate::structured_family_gated_persistence::gated_family_save_live(
+                &discovery,
+                target,
+                spin.value(),
+            );
+            match outcome {
+                Ok(receipt) => status.set_label(&receipt.status_text),
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        });
+    }
+
     let buttons = gtk::Box::new(gtk::Orientation::Horizontal, 8);
     buttons.append(&preview_button);
     buttons.append(&keep_button);
     buttons.append(&revert_button);
     buttons.append(&cancel_button);
+    buttons.append(&save_button);
     parent.append(&row);
     parent.append(&buttons);
     parent.append(&status);
 }
 
 /// Live supervised preview controls for the two proven structured families.
-fn structured_family_preview_controls_section() -> gtk::Frame {
+fn structured_family_preview_controls_section(model: &UiProjection) -> gtk::Frame {
     let frame = gtk::Frame::new(None);
     frame.set_widget_name("hyprland-settings-family-preview-controls");
     let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
@@ -4829,15 +4862,17 @@ fn structured_family_preview_controls_section() -> gtk::Frame {
     family_preview_control(
         FamilyPreviewTarget::AnimationGlobalSpeed,
         (0.1, 20.0, 0.1),
+        &model.config_discovery,
         &content,
     );
     family_preview_control(
         FamilyPreviewTarget::CurveDefaultY0,
         (-1.0, 2.0, 0.01),
+        &model.config_discovery,
         &content,
     );
     content.append(&small_label(
-        "Save to config: disabled - persisting structured-family records goes through the active-config pilot path, which requires Safe Live Save Mode and the remaining pilot gates.",
+        "Save previewed value persists once to your config (backup first, reread-verified, no reload) and requires Safe Live Save Mode to be active; while autoreload is active the Save is blocked with the reason shown. Only these two proven records can be saved - blocked families and record creation/deletion stay blocked.",
     ));
     frame.set_child(Some(&content));
     frame
@@ -6853,7 +6888,7 @@ fn append_runtime_preview_controls(
                     return;
                 }
             }
-            match apply_setting_change(
+            match crate::production_save::gated_scalar_save_live(
                 known_setting_ids.clone(),
                 &config_discovery,
                 &current_config,
@@ -6863,7 +6898,7 @@ fn append_runtime_preview_controls(
                 Ok(outcome) => {
                     button.set_sensitive(false);
                     status.set_label(&format!(
-                        "Saved: {} = {} persisted once with backup {}.",
+                        "Saved: {} = {} persisted once with backup {} (Safe Live Save Mode verified; no reload).",
                         outcome.setting_id,
                         outcome
                             .verified_value
@@ -6871,7 +6906,7 @@ fn append_runtime_preview_controls(
                         outcome.backup_path.display(),
                     ));
                 }
-                Err(failure) => status.set_label(&format!("Save failed: {}", failure.reason)),
+                Err(reason) => status.set_label(&reason),
             }
         });
     }
@@ -7005,7 +7040,7 @@ fn append_write_controls(
             .map(|value| value.to_string())
             .or_else(|| value_entry.as_ref().map(|entry| entry.text().to_string()))
             .unwrap_or_default();
-        match apply_setting_change(
+        match crate::production_save::gated_scalar_save_live(
             known_setting_ids.clone(),
             &config_discovery,
             &current_config,
@@ -7025,12 +7060,8 @@ fn append_write_controls(
                     outcome.reload_note
                 ));
             }
-            Err(error) => {
-                result_label.set_label(&format!(
-                    "Apply blocked: {} ({})",
-                    error.reason,
-                    error.failures.join(", ")
-                ));
+            Err(reason) => {
+                result_label.set_label(&format!("Apply blocked: {reason}"));
             }
         }
     });

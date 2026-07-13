@@ -68,7 +68,10 @@ fn config_selection_ui_preserves_existing_config_routes_and_details() {
     assert!(source.contains("append_connected_file_details"));
     assert!(source.contains("connected_file_card(file, graph)"));
     assert!(source.contains("search_projection(model, selected_tab_id, query)"));
-    assert!(source.contains("apply_setting_change("));
+    // Scalar saves route through the Safe Live Save Mode gate; UI code no
+    // longer calls apply_setting_change directly.
+    assert!(source.contains("gated_scalar_save_live("));
+    assert!(!source.contains("apply_setting_change("));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 

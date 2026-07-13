@@ -17,8 +17,8 @@
     "hl.permission"
   ],
   "scope": "modify-existing records only: the controller refuses missing records before any command, no creation or deletion operations exist in the module (guard-tested), readback verification is mandatory on apply and revert",
-  "saveEnabledForStructuredFamilies": false,
-  "saveDisabledReason": "persisting structured-family records goes through the active-config pilot path, which requires Safe Live Save Mode plus the remaining pilot gates; preview stays runtime-only",
+  "saveEnabledForStructuredFamilies": "yes - gated: Save previewed value buttons exist for both proven records and succeed only when Safe Live Save Mode is active (live flow proof passed)",
+  "saveDisabledReason": "shown live when Safe Live Save Mode is inactive",
   "executionPath": "UI spin/buttons -> FamilyPreviewController -> fixed-shape validated commands via the eval runner -> readback verification",
   "sessionRecovery": "unconfirmed family previews revert on detail re-render and window close (controller registry); Kept previews are session-only and revertible",
   "liveProofs": {

@@ -3867,7 +3867,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
         .expect("structured-family area should exist");
     assert_eq!(
         structured["classification"],
-        "pilot_passed_runtime_first_save_flow_proven"
+        "production_save_complete_for_proven_surface"
     );
     assert_eq!(structured["canContinueNow"], false);
     let structured_status = structured["currentStatus"]
@@ -3879,7 +3879,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     assert!(structured_status.contains("first real config write approved false"));
     assert_eq!(
         structured["safeNextWork"],
-        "generalize gated structured-family persistence using the proven runtime-first save flow"
+        "optional breadth: record picker for additional proven record shapes; persist the safe mode setting itself"
     );
     assert!(structured["mustNotDo"]
         .as_str()
@@ -3907,12 +3907,18 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Generalize gated persistence using the proven runtime-first save flow (scalar saves already work via the existing apply flow; structured-family saves can follow the pilot's proven shape)."
+        "Optional breadth: family record picker; persist misc:disable_autoreload via gated scalar save; refresh the 0.55.4 capture on Hyprland updates."
     );
+    // Structured-family writes are now enabled, but only through the gated
+    // save path for the two proven records; the scope note must say so.
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],
-        false
+        true
     );
+    assert!(handoff["safetyBoundaries"]["structuredFamilyWriteScope"]
+        .as_str()
+        .expect("write scope should be text")
+        .contains("ONLY via gated_family_save"));
 }
 
 #[test]

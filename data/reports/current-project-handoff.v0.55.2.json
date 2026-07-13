@@ -117,7 +117,12 @@
     "PASSED the first active-config write pilot through its designed fifteen-gate path using the runtime-first strategy: wrote one inert record to hyprland.conf, verified, restored original bytes (SHA-256 identical), verified; the runtime flag marker proves no reload fired",
     "implemented Safe Live Save Mode (module + card with live Enable/Disable controls, fixed constant commands, readback verification, fail-closed status)",
     "implemented supervised family preview UI controls for the two proven records (global animation speed, default curve Y0) with countdown/Keep/Revert/Cancel and session-drop recovery",
-    "ran env-gated live proofs for the safe-mode round trip and both family UI controllers - all passed with exact restores"
+    "ran env-gated live proofs for the safe-mode round trip and both family UI controllers - all passed with exact restores",
+    "gated every scalar UI Save path on Safe Live Save Mode via gated_scalar_save_live; direct apply_setting_change eliminated from UI code (guard-tested)",
+    "implemented structured-family gated persistence (gated_family_save): validate, receipt gate, live safe-mode gate, identity gate, byte-exact backup, one atomic write, reread verification, no restore on success, automatic restore on verification failure",
+    "added Save previewed value buttons to both family preview controls, routed through the live wrapper",
+    "ran the live save flow proof: gate blocked correctly while autoreload active; both targets wrote real config records, reread-verified, production code did not restore; flow cleanup restored bytes exactly and the autoreload state",
+    "completed the Hyprland 0.55.4 migration audit with a trusted source (hyprctl -j descriptions from the official binary): zero option drift, zero bounds drift, pinned by a regression test"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,
@@ -126,12 +131,13 @@
     "productionBehaviorEnabled": false,
     "sourceIncludeProductionActivationEnabled": false,
     "duplicateProductionActivationEnabled": false,
-    "structuredFamilyWritesEnabled": false,
+    "structuredFamilyWritesEnabled": true,
     "structuredFamilyControlledTargetWritesEnabled": true,
-    "structuredFamilyActiveConfigWritesEnabled": false,
-    "hyprland0554MigrationActivated": false
+    "structuredFamilyActiveConfigWritesEnabled": true,
+    "hyprland0554MigrationActivated": false,
+    "structuredFamilyWriteScope": "active-config writes exist ONLY via gated_family_save for the two proven records (hl.animation global speed, hl.curve default Y0), gated on receipt + Safe Live Save Mode + identity, with backup and reread verification; the controlled-write executor still rejects the active config by construction; no creation/deletion; other five families blocked"
   },
-  "activeNextWork": "Generalize gated persistence using the proven runtime-first save flow (scalar saves already work via the existing apply flow; structured-family saves can follow the pilot's proven shape).",
+  "activeNextWork": "Optional breadth: family record picker; persist misc:disable_autoreload via gated scalar save; refresh the 0.55.4 capture on Hyprland updates.",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",

@@ -1,0 +1,29 @@
+{
+  "artifactKind": "completion-marathon-save-persistence-migration",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "ba7aeb2b92f96e9b2e6e3b81069d023319e1bf64",
+  "goal": "Complete production Save integration, structured-family gated persistence, and the Hyprland 0.55.4 migration audit in one marathon.",
+  "area1ProductionSaveIntegration": "COMPLETE - both scalar UI save paths gated through gated_scalar_save_live; direct apply_setting_change eliminated from UI (guard-tested)",
+  "area2StructuredFamilyGatedPersistence": "COMPLETE for the proven surface - gated_family_save with backup/write-once/reread-verify/no-restore-on-success; Save buttons live in the family controls; live flow proof passed for both targets with gate-blocked proof, real writes, and byte-exact flow cleanup",
+  "area3Hyprland0554Migration": "AUDIT COMPLETE - zero option drift, zero bounds drift (78 compared); trusted source captured and pinned by a regression test",
+  "activeConfigWrittenDuringNormalTests": false,
+  "activeConfigWrittenDuringLiveTests": true,
+  "hyprctlReloadRan": false,
+  "productionSaveRestoresAfterSuccess": false,
+  "pilotStillRestores": true,
+  "validation": "cargo fmt/check/test/jq/diff-check/release-build all green",
+  "nextRecommendedWork": "optional polish: persist misc:disable_autoreload via gated scalar save; record picker for more family records; refresh the 0.55.4 capture on Hyprland updates",
+  "gtkEvidence": {
+    "evidenceDir": "/tmp/hyprland-settings-gtk-automation/20260712_211712",
+    "runs": 24,
+    "accessibilityInspectionSucceeded": true,
+    "proven": [
+      "Safe Live Save Mode card with Inactive state and the 'autoreload is active' blocked reason plus Enable/Disable controls (Config runs)",
+      "structured-family 'Save previewed value' buttons with the requires-Safe-Live-Save-Mode copy",
+      "dead-man countdown and blocked-reason surfaces unchanged",
+      "aggregate safety flags all false: realConfigEdited, realBackupsCreated, runtimeMutated, hyprlandReloaded, mutatingHyprctlUsed"
+    ],
+    "note": "a retry matrix run (20260712_222019) completed but its AT-SPI bus was unavailable; 20260712_211712 is the canonical evidence run"
+  }
+}

@@ -154,6 +154,26 @@ pub fn disable_safe_live_save_mode(
     )
 }
 
+/// The single gate every active-config Save path must pass: Safe Live Save
+/// Mode must be active (autoreload disabled at runtime, live-verified) so
+/// the write cannot trigger a compositor reload. Fails closed on unreadable
+/// state. There is deliberately no bypass parameter.
+pub fn require_safe_live_save_mode(
+    runner: &mut dyn RuntimePreviewRunner,
+) -> Result<SafeLiveSaveModeStatus, String> {
+    let status = read_safe_live_save_mode_status(runner);
+    if status.save_gate_open {
+        Ok(status)
+    } else {
+        Err(format!(
+            "Save is blocked: {} Enable Safe Live Save Mode first (runtime-only, no reload), then save.",
+            status
+                .blocked_reason
+                .unwrap_or("Safe Live Save Mode is not active.")
+        ))
+    }
+}
+
 /// Live wrappers owning the runner, so UI code never constructs one.
 pub fn read_safe_live_save_mode_status_live() -> SafeLiveSaveModeStatus {
     let mut runner = crate::runtime_preview_executor::HyprctlRuntimePreviewRunner;
