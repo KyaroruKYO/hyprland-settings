@@ -1,0 +1,37 @@
+{
+  "artifactKind": "structured-family-preview-ui-controls",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "2ef1c8fab421ef6bde293abc8c42ecffec8b92e1",
+  "goal": "Implement supervised live preview UI for the two proven structured families.",
+  "structuredFamilyPreviewControlsImplemented": true,
+  "familiesWithControls": {
+    "hl.animation": "Global animation speed spin (0.1..=20) with Preview with recovery, countdown, Keep, Revert now, Cancel; modify-existing enforced against the global record",
+    "hl.curve": "Default curve Y0 spin (-1..=2) with the same supervised flow against the default bezier"
+  },
+  "familiesBlocked": [
+    "hl.monitor",
+    "hl.bind",
+    "hl.gesture",
+    "hl.device",
+    "hl.permission"
+  ],
+  "scope": "modify-existing records only: the controller refuses missing records before any command, no creation or deletion operations exist in the module (guard-tested), readback verification is mandatory on apply and revert",
+  "saveEnabledForStructuredFamilies": false,
+  "saveDisabledReason": "persisting structured-family records goes through the active-config pilot path, which requires Safe Live Save Mode plus the remaining pilot gates; preview stays runtime-only",
+  "executionPath": "UI spin/buttons -> FamilyPreviewController -> fixed-shape validated commands via the eval runner -> readback verification",
+  "sessionRecovery": "unconfirmed family previews revert on detail re-render and window close (controller registry); Kept previews are session-only and revertible",
+  "liveProofs": {
+    "hl.animation": "controller round trip live: 8.00 -> 8.5 -> 8.00 exact (env-gated, run once)",
+    "hl.curve": "controller round trip live: 0.75 -> 0.76 -> 0.75 exact (env-gated, run once)"
+  },
+  "testsAdded": [
+    "family_controller_previews_keeps_and_reverts_with_verification",
+    "family_controller_timeout_auto_reverts",
+    "family_controller_enforces_modify_existing_and_validation",
+    "family_controller_sources_stay_guarded",
+    "family_ui_controllers_preview_and_revert_live (ignored, env-gated; run once: both passed)"
+  ],
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_211712",
+  "nextRecommendedWork": "Extend to a record picker for other explicitly-overridden animation leaves and user-defined curves, one proven record shape at a time."
+}

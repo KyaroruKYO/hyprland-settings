@@ -352,7 +352,7 @@
     "readableFilesMapped": 2,
     "rootFileMapped": true,
     "scalarCount": 12,
-    "structuredCount": 60,
+    "structuredCount": 73,
     "unreadableFiles": 0,
     "unsupportedCount": 197
   },
@@ -378,13 +378,13 @@
     "sourceIncludeBlockers": true
   },
   "validation": {
-    "cargoBuildRelease": "passed",
-    "cargoCheck": "passed",
-    "cargoFmt": "passed",
-    "cargoFmtCheck": "passed",
-    "cargoTest": "passed",
-    "gitDiffCheck": "passed",
-    "gitStatusShort": "recorded",
-    "jqReports": "passed"
+    "cargoBuildRelease": "pending",
+    "cargoCheck": "pending",
+    "cargoFmt": "pending",
+    "cargoFmtCheck": "pending",
+    "cargoTest": "pending",
+    "gitDiffCheck": "pending",
+    "gitStatusShort": "pending",
+    "jqReports": "pending"
   }
 }

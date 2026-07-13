@@ -112,7 +112,12 @@
     "promoted hl.animation and hl.curve to supervised modify-existing preview via receipt-gated PROVEN_FAMILY_RECORD_PROOFS",
     "kept monitor/bind/device/permission blocked high-risk and gestures blocked without a verification mechanism, with precise evidence-based reasons",
     "hardened the active-config pilot gate: the ignored test now requires both the operator flag and live-collected read-only autoreload evidence",
-    "added the Config page structured-family live preview & persistence card with per-family status and exact autoreload unblock instructions"
+    "added the Config page structured-family live preview & persistence card with per-family status and exact autoreload unblock instructions",
+    "PROVED runtime control of misc:disable_autoreload with exact revert (getoption-verified, no file writes)",
+    "PASSED the first active-config write pilot through its designed fifteen-gate path using the runtime-first strategy: wrote one inert record to hyprland.conf, verified, restored original bytes (SHA-256 identical), verified; the runtime flag marker proves no reload fired",
+    "implemented Safe Live Save Mode (module + card with live Enable/Disable controls, fixed constant commands, readback verification, fail-closed status)",
+    "implemented supervised family preview UI controls for the two proven records (global animation speed, default curve Y0) with countdown/Keep/Revert/Cancel and session-drop recovery",
+    "ran env-gated live proofs for the safe-mode round trip and both family UI controllers - all passed with exact restores"
   ],
   "safetyBoundaries": {
     "realConfigTouched": false,
@@ -126,7 +131,7 @@
     "structuredFamilyActiveConfigWritesEnabled": false,
     "hyprland0554MigrationActivated": false
   },
-  "activeNextWork": "Stop for explicit user decision: the structured-family active-config pilot remains blocked by autoreload policy. Runtime preview arming is complete for this machine; touch-family rows need hardware.",
+  "activeNextWork": "Generalize gated persistence using the proven runtime-first save flow (scalar saves already work via the existing apply flow; structured-family saves can follow the pilot's proven shape).",
   "doNotContinue": [
     "do not continue source/include production activation on this branch",
     "do not continue duplicate production activation on this branch",

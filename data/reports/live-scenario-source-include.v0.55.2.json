@@ -32,7 +32,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": true,
       "safeBatchWritesSucceeded": true,
       "scenarioName": "source_include_config",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/source-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-679837-1783916724565272117/source-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     },
@@ -58,7 +58,7 @@
       "safeBatchWritesAttemptedAgainstTempFiles": false,
       "safeBatchWritesSucceeded": false,
       "scenarioName": "nested_source_config",
-      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/nested-home",
+      "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-679837-1783916724565272117/nested-home",
       "screenshotsCaptured": false,
       "waybarDisabledRestored": "not used"
     }

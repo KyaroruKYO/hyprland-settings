@@ -1,0 +1,42 @@
+{
+  "artifactKind": "safe-live-save-mode",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "2ef1c8fab421ef6bde293abc8c42ecffec8b92e1",
+  "goal": "Implement Safe Live Save Mode: live runtime preview for real-time changes, one config write for persistence, and explicit runtime control of misc:disable_autoreload so saves never trigger accidental reload loops.",
+  "currentDisableAutoreloadValue": "false (Hyprland default; the app restores this after every proof)",
+  "safeLiveSaveModeStatus": "implemented; Inactive at rest on this system (autoreload active), Enable button live and proven",
+  "runtimeAutoreloadSetProofStatus": "PROVEN: misc:disable_autoreload set true and reverted false at runtime with getoption verification; no file written",
+  "configWriteReloadAvoidanceProofStatus": "PROVEN: with the runtime flag true, the active-config pilot wrote and byte-exactly restored hyprland.conf while the flag stayed true throughout (a reload would have reset it to the config's false); config SHA-256 identical before and after",
+  "activeConfigPilotGateStatus": "PASSED THIS SPRINT: all fifteen gates passed with live-collected autoreload evidence; the pilot wrote one inert record, verified via parser/projection, restored the original bytes, and verified restoration",
+  "activeConfigWritten": true,
+  "activeConfigWrittenDetail": "once, by the designed gated pilot, with pre-write backup and hash; immediately restored",
+  "activeConfigRestored": true,
+  "hyprctlReloadRan": false,
+  "runtimeMutationRan": "only env-gated proofs that applied and reverted with zero residue (autoreload flag round trip; pilot write+restore; family record round trips)",
+  "monitorDisplayMutated": false,
+  "uiSurfaces": [
+    "Safe Live Save Mode card: status badge with live misc:disable_autoreload value, blocked reason, explanation, live Enable/Disable buttons routing through the module's fixed constant commands with readback verification",
+    "enabling at runtime touches no file and needs no reload; persisting the setting to config is documented as a separate step"
+  ],
+  "mode": {
+    "enable": "runtime-only via hl.config misc.disable_autoreload=true (module constant, verified)",
+    "disable": "runtime-only revert (verified)",
+    "saveGate": "open only while the runtime value reads true; fails closed on unreadable state"
+  },
+  "testsAdded": [
+    "status_reads_runtime_autoreload_and_fails_closed",
+    "transitions_are_runtime_only_and_verified",
+    "safe_mode_sources_never_write_config_or_reload",
+    "safe_live_save_mode_round_trips_at_runtime (ignored, env-gated; run once: passed)"
+  ],
+  "filesChanged": [
+    "src/safe_live_save_mode.rs",
+    "src/ui/window.rs",
+    "tests/safe_live_save_mode.rs",
+    "tests/safe_live_save_mode_live.rs"
+  ],
+  "validation": "cargo fmt/check/test green; jq green",
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_211712",
+  "nextRecommendedWork": "Offer an optional gated step to persist misc:disable_autoreload=true into the config through the safe scalar write path while the runtime flag is already true (no reload possible)."
+}

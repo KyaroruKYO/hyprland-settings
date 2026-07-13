@@ -1,0 +1,19 @@
+{
+  "artifactKind": "autoreload-decision-path",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "2ef1c8fab421ef6bde293abc8c42ecffec8b92e1",
+  "goal": "Resolve the autoreload decision path with evidence instead of a write+reload approval loop.",
+  "decision": "runtime-first: the app disables autoreload at runtime (no file, no reload, verified, reversible), saves once, and can restore the flag afterward; repeated write+reload loops are rejected by design",
+  "evidenceChain": [
+    "1. runtime set of misc:disable_autoreload proven with exact revert (getoption-verified)",
+    "2. with the runtime flag true, collect_autoreload_evidence returns genuine true and the pilot's gates pass",
+    "3. the fifteen-gate active-config pilot ran through its designed path: wrote one inert record, verified, restored original bytes (SHA-256 identical), verified",
+    "4. reload avoidance proven by marker: the runtime flag stayed true through the config write; a reload would have reset it to the config's false",
+    "5. runtime flag restored to the user's original false afterward"
+  ],
+  "hyprctlReloadRan": false,
+  "monitorDisplayMutated": false,
+  "userFacing": "the Safe Live Save Mode card shows the live state, the blocker, and one-click runtime enable/disable; the one-time-reload confirmation flow is unnecessary because runtime-first avoids the reload entirely",
+  "nextRecommendedWork": "Generalize save: with Safe Live Save Mode active, allow gated one-shot persistence of previewed values (scalar saves already work via the existing apply flow; structured-family saves go through the now-passing pilot path)."
+}

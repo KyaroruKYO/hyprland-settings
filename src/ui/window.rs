@@ -61,10 +61,17 @@ use crate::runtime_preview_ui_projection::{
     RuntimePreviewUiSessionState,
 };
 use crate::safe_batch_write::safe_batch_write_user_facing_lines;
+use crate::safe_live_save_mode::{
+    disable_safe_live_save_mode_live, enable_safe_live_save_mode_live,
+    read_safe_live_save_mode_status_live, SafeLiveSaveModeState,
+};
 use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::session_config_preview::build_session_config_preview;
 use crate::session_value_projection::{
     compare_active_and_session_values, SessionValueComparisonStatus, SessionValueProjection,
+};
+use crate::structured_family_preview_controller::{
+    FamilyPreviewController, FamilyPreviewPhase, FamilyPreviewTarget,
 };
 use crate::ui::model::{
     initial_screen_shader_advisory_ui_action, run_screen_shader_advisory_ui_action,
@@ -132,6 +139,33 @@ fn register_dead_man_controller(controller: &Rc<RefCell<RuntimePreviewDeadManCon
     });
 }
 
+thread_local! {
+    /// Supervised family preview controllers; unconfirmed previews revert on
+    /// re-render and window close, like scalar dead-man sessions.
+    static ACTIVE_FAMILY_PREVIEW_CONTROLLERS: RefCell<Vec<std::rc::Weak<RefCell<FamilyPreviewController>>>> =
+        const { RefCell::new(Vec::new()) };
+}
+
+fn register_family_preview_controller(controller: &Rc<RefCell<FamilyPreviewController>>) {
+    ACTIVE_FAMILY_PREVIEW_CONTROLLERS.with(|controllers| {
+        controllers.borrow_mut().push(Rc::downgrade(controller));
+    });
+}
+
+fn revert_all_unconfirmed_family_previews() {
+    ACTIVE_FAMILY_PREVIEW_CONTROLLERS.with(|controllers| {
+        let mut controllers = controllers.borrow_mut();
+        for weak in controllers.iter() {
+            if let Some(controller) = weak.upgrade() {
+                if let Ok(mut controller) = controller.try_borrow_mut() {
+                    let _ = controller.revert_if_unconfirmed();
+                }
+            }
+        }
+        controllers.retain(|weak| weak.upgrade().is_some());
+    });
+}
+
 fn revert_all_unconfirmed_dead_man_previews() {
     ACTIVE_DEAD_MAN_CONTROLLERS.with(|controllers| {
         let mut controllers = controllers.borrow_mut();
@@ -182,6 +216,7 @@ pub fn show_main_window(
     window.connect_close_request(|_| {
         revert_all_active_previews();
         revert_all_unconfirmed_dead_man_previews();
+        revert_all_unconfirmed_family_previews();
         gtk::glib::Propagation::Proceed
     });
 
@@ -689,6 +724,10 @@ fn build_config_view(
     content.append(&controlled_write_and_active_pilot_status_section());
 
     content.append(&runtime_preview_readiness_section());
+
+    content.append(&safe_live_save_mode_section());
+
+    content.append(&structured_family_preview_controls_section());
 
     content.append(&structured_family_runtime_preview_status_section());
 
@@ -4500,6 +4539,308 @@ fn runtime_preview_readiness_section() -> gtk::Frame {
             false,
         )),
     )
+}
+
+/// Safe Live Save Mode card: shows the live autoreload state and offers the
+/// proven runtime-only enable/disable transitions. Enabling touches no file,
+/// runs no reload, and is verified through read-only readback; the buttons
+/// route through the safe_live_save_mode module (fixed constant commands).
+fn safe_live_save_mode_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-safe-live-save-mode");
+    frame.set_tooltip_text(Some(
+        "Safe Live Save Mode. GTK automation must not activate these controls.",
+    ));
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    content.set_margin_top(10);
+    content.set_margin_bottom(10);
+    content.set_margin_start(10);
+    content.set_margin_end(10);
+    content.append(&title_label("Safe Live Save Mode (recommended)"));
+
+    let status = read_safe_live_save_mode_status_live();
+
+    content.append(&body_label(status.explanation));
+    let badge = body_label(&format!(
+        "Status: {} (misc:disable_autoreload = {})",
+        match status.state {
+            SafeLiveSaveModeState::ActiveViaRuntime => "Active - saves cannot trigger a reload",
+            SafeLiveSaveModeState::Inactive =>
+                "Inactive - a config write now would reload Hyprland",
+            SafeLiveSaveModeState::Unknown => "Unknown - failing closed",
+        },
+        status
+            .runtime_disable_autoreload
+            .as_deref()
+            .unwrap_or("unreadable"),
+    ));
+    badge.set_widget_name("hyprland-settings-safe-live-save-mode-status");
+    content.append(&badge);
+    if let Some(reason) = status.blocked_reason {
+        let blocked = small_label(&format!("Active-config save blocked: {reason}"));
+        blocked.set_widget_name("hyprland-settings-safe-live-save-mode-blocked");
+        content.append(&blocked);
+    }
+    content.append(&small_label(
+        "Enabling this mode changes only the runtime value: no file is written and no reload runs (live-proven, instantly reversible). Persisting the setting into your config is a separate step.",
+    ));
+
+    let status_line = small_label("");
+    status_line.set_widget_name("hyprland-settings-safe-live-save-mode-result");
+
+    let buttons = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    let enable_button = gtk::Button::with_label("Enable Safe Live Save Mode");
+    enable_button.set_widget_name("hyprland-settings-safe-live-save-enable");
+    enable_button.set_tooltip_text(Some(
+        "Disable autoreload at runtime (no file write, no reload). GTK automation must not activate this control.",
+    ));
+    enable_button.set_sensitive(status.state == SafeLiveSaveModeState::Inactive);
+    let disable_button = gtk::Button::with_label("Disable Safe Live Save Mode");
+    disable_button.set_widget_name("hyprland-settings-safe-live-save-disable");
+    disable_button.set_tooltip_text(Some(
+        "Restore Hyprland's default autoreload behavior at runtime. GTK automation must not activate this control.",
+    ));
+    disable_button.set_sensitive(status.state == SafeLiveSaveModeState::ActiveViaRuntime);
+    {
+        let status_line = status_line.clone();
+        let disable_button = disable_button.clone();
+        enable_button.connect_clicked(move |enable_button| {
+            match enable_safe_live_save_mode_live() {
+                Ok(receipt) => {
+                    status_line.set_label(&receipt.status_text);
+                    enable_button.set_sensitive(false);
+                    disable_button.set_sensitive(true);
+                }
+                Err(error) => status_line.set_label(&error),
+            }
+        });
+    }
+    {
+        let status_line = status_line.clone();
+        let enable_button = enable_button.clone();
+        disable_button.connect_clicked(
+            move |disable_button| match disable_safe_live_save_mode_live() {
+                Ok(receipt) => {
+                    status_line.set_label(&receipt.status_text);
+                    disable_button.set_sensitive(false);
+                    enable_button.set_sensitive(true);
+                }
+                Err(error) => status_line.set_label(&error),
+            },
+        );
+    }
+    buttons.append(&enable_button);
+    buttons.append(&disable_button);
+    content.append(&buttons);
+    content.append(&status_line);
+    frame.set_child(Some(&content));
+    frame
+}
+
+/// Supervised preview controls for one proven family record: a value spin,
+/// Preview with recovery semantics (countdown, Keep, Revert now, Cancel),
+/// and readback-verified status. All actions route through the
+/// FamilyPreviewController; no commands are built here.
+fn family_preview_control(target: FamilyPreviewTarget, range: (f64, f64, f64), parent: &gtk::Box) {
+    let controller = match FamilyPreviewController::new_live(target) {
+        Ok(controller) => Rc::new(RefCell::new(controller)),
+        Err(error) => {
+            parent.append(&small_label(&error.user_text()));
+            return;
+        }
+    };
+    register_family_preview_controller(&controller);
+
+    let row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    row.append(&body_label(target.control_label()));
+    let (min, max, step) = range;
+    let spin = gtk::SpinButton::with_range(min, max, step);
+    spin.set_digits(2);
+    spin.set_widget_name(&format!(
+        "hyprland-settings-family-preview-spin-{}",
+        safe_widget_name(target.family_id())
+    ));
+    if let Ok(current) = controller.borrow_mut().current_value() {
+        if let Ok(value) = current.parse::<f64>() {
+            spin.set_value(value);
+        }
+    }
+    row.append(&spin);
+
+    let preview_button = gtk::Button::with_label("Preview with recovery");
+    preview_button.set_widget_name(&format!(
+        "hyprland-settings-family-preview-arm-{}",
+        safe_widget_name(target.family_id())
+    ));
+    preview_button.set_tooltip_text(Some(
+        "Apply the value live under a recovery countdown. GTK automation must not activate this control.",
+    ));
+    let keep_button = gtk::Button::with_label("Keep changes");
+    keep_button.set_sensitive(false);
+    let revert_button = gtk::Button::with_label("Revert now");
+    revert_button.set_sensitive(false);
+    let cancel_button = gtk::Button::with_label("Cancel");
+    cancel_button.set_sensitive(false);
+
+    let status = small_label(&format!(
+        "Supervised preview for the existing {} record ({}): modify-existing only, readback-verified, auto-revert on timeout.",
+        target.record(),
+        target.family_id()
+    ));
+    status.set_widget_name(&format!(
+        "hyprland-settings-family-preview-status-{}",
+        safe_widget_name(target.family_id())
+    ));
+
+    {
+        let controller = controller.clone();
+        let status = status.clone();
+        let spin = spin.clone();
+        let keep_button = keep_button.clone();
+        let revert_button = revert_button.clone();
+        let cancel_button = cancel_button.clone();
+        preview_button.connect_clicked(move |_| {
+            let outcome = controller.borrow_mut().preview(spin.value());
+            match outcome {
+                Ok(receipt) => {
+                    status.set_label(&receipt.status_text);
+                    keep_button.set_sensitive(true);
+                    revert_button.set_sensitive(true);
+                    cancel_button.set_sensitive(true);
+                    let controller = controller.clone();
+                    let status = status.clone();
+                    let keep_button = keep_button.clone();
+                    let revert_button = revert_button.clone();
+                    let cancel_button = cancel_button.clone();
+                    gtk::glib::timeout_add_local(
+                        std::time::Duration::from_millis(1000),
+                        move || {
+                            let outcome = match controller.try_borrow_mut() {
+                                Ok(mut controller) => controller.tick(1000),
+                                Err(_) => return gtk::glib::ControlFlow::Continue,
+                            };
+                            match outcome {
+                                Ok(Some(receipt)) => {
+                                    status.set_label(&receipt.status_text);
+                                    keep_button.set_sensitive(false);
+                                    revert_button.set_sensitive(false);
+                                    cancel_button.set_sensitive(false);
+                                    gtk::glib::ControlFlow::Break
+                                }
+                                Ok(None) => {
+                                    let phase = controller.borrow().phase();
+                                    if phase == FamilyPreviewPhase::CountingDown {
+                                        status.set_label(&format!(
+                                            "Previewing live: auto-revert in {} seconds unless you Keep changes.",
+                                            controller.borrow().remaining_seconds()
+                                        ));
+                                        gtk::glib::ControlFlow::Continue
+                                    } else {
+                                        gtk::glib::ControlFlow::Break
+                                    }
+                                }
+                                Err(error) => {
+                                    status.set_label(&error.user_text());
+                                    gtk::glib::ControlFlow::Break
+                                }
+                            }
+                        },
+                    );
+                }
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        });
+    }
+    {
+        let controller = controller.clone();
+        let status = status.clone();
+        let revert_button = revert_button.clone();
+        let cancel_button = cancel_button.clone();
+        keep_button.connect_clicked(move |keep_button| match controller.borrow_mut().keep() {
+            Ok(receipt) => {
+                status.set_label(&receipt.status_text);
+                keep_button.set_sensitive(false);
+                revert_button.set_sensitive(true);
+                cancel_button.set_sensitive(false);
+            }
+            Err(error) => status.set_label(&error.user_text()),
+        });
+    }
+    {
+        let controller = controller.clone();
+        let status = status.clone();
+        let keep_button = keep_button.clone();
+        let cancel_button = cancel_button.clone();
+        revert_button.connect_clicked(move |revert_button| {
+            match controller.borrow_mut().revert_now() {
+                Ok(receipt) => {
+                    status.set_label(&receipt.status_text);
+                    keep_button.set_sensitive(false);
+                    revert_button.set_sensitive(false);
+                    cancel_button.set_sensitive(false);
+                }
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        });
+    }
+    {
+        let controller = controller.clone();
+        let status = status.clone();
+        let keep_button = keep_button.clone();
+        let revert_button = revert_button.clone();
+        cancel_button.connect_clicked(move |cancel_button| {
+            match controller.borrow_mut().cancel() {
+                Ok(receipt) => {
+                    status.set_label(&receipt.status_text);
+                    keep_button.set_sensitive(false);
+                    revert_button.set_sensitive(false);
+                    cancel_button.set_sensitive(false);
+                }
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        });
+    }
+
+    let buttons = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    buttons.append(&preview_button);
+    buttons.append(&keep_button);
+    buttons.append(&revert_button);
+    buttons.append(&cancel_button);
+    parent.append(&row);
+    parent.append(&buttons);
+    parent.append(&status);
+}
+
+/// Live supervised preview controls for the two proven structured families.
+fn structured_family_preview_controls_section() -> gtk::Frame {
+    let frame = gtk::Frame::new(None);
+    frame.set_widget_name("hyprland-settings-family-preview-controls");
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(10);
+    content.set_margin_bottom(10);
+    content.set_margin_start(10);
+    content.set_margin_end(10);
+    content.append(&title_label(
+        "Structured-family live preview (proven records)",
+    ));
+    content.append(&body_label(
+        "hl.animation and hl.curve passed zero-residue live proofs for modifying existing records. These supervised controls preview live with a recovery countdown; nothing is written to your config. Creating or deleting records is blocked (no runtime mechanism exists to revert those).",
+    ));
+    family_preview_control(
+        FamilyPreviewTarget::AnimationGlobalSpeed,
+        (0.1, 20.0, 0.1),
+        &content,
+    );
+    family_preview_control(
+        FamilyPreviewTarget::CurveDefaultY0,
+        (-1.0, 2.0, 0.01),
+        &content,
+    );
+    content.append(&small_label(
+        "Save to config: disabled - persisting structured-family records goes through the active-config pilot path, which requires Safe Live Save Mode and the remaining pilot gates.",
+    ));
+    frame.set_child(Some(&content));
+    frame
 }
 
 /// Review-only structured-family live preview and persistence status card,

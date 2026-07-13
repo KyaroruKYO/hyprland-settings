@@ -89,5 +89,6 @@
     "cargoBuildRelease": "passed"
   },
   "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260712_023930",
-  "nextRecommendedWork": "Wire supervised UI controls for the two proven families (modify-existing animation/curve records through a family dead-man panel); the active-config pilot decision remains the user's."
+  "nextRecommendedWork": "Wire supervised UI controls for the two proven families (modify-existing animation/curve records through a family dead-man panel); the active-config pilot decision remains the user's.",
+  "followUp": "Safe Live Save Mode sprint: pilot PASSED via runtime-first autoreload control; supervised family preview UI controls implemented for the two proven records"
 }

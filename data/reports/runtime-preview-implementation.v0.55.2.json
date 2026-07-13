@@ -94,5 +94,6 @@
   "deadManUiReport": "data/reports/runtime-preview-dead-man-ui.v0.55.2.json",
   "nextRecommendedWork": "Runtime preview is feature-complete for this machine's provable surface; remaining arming requires touch hardware or secondary-device proofs.",
   "inputCursorProofStatus": "36 of 78 dead-man rows armed by passed live proofs; 27 need hardware/secondary-device proofs; 5 model-only; 8+2 blocked (grammar/verification/danger)",
-  "structuredFamilyRuntimePreview": "2 of 7 families promoted to supervised modify-existing preview by passed live proofs (hl.animation, hl.curve); see structured-family-runtime-preview-capability report"
+  "structuredFamilyRuntimePreview": "2 of 7 families promoted to supervised modify-existing preview by passed live proofs (hl.animation, hl.curve); see structured-family-runtime-preview-capability report",
+  "safeLiveSaveMode": "implemented and live-proven; see safe-live-save-mode report"
 }

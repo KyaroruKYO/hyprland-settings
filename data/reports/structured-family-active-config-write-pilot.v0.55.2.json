@@ -35,20 +35,16 @@
     "test": "copied_active_config_rehearsal_round_trips_without_touching_the_source"
   },
   "firstActiveConfigWritePilot": {
-    "status": "blocked_by_gate",
-    "blockingGates": [
-      "AutoreloadDisabledConfirmed",
-      "NoRuntimeMutationPlanned"
-    ],
-    "blockingEvidence": "read-only `hyprctl getoption misc:disable_autoreload` returned `bool: false` (autoreload enabled, the Hyprland default). With autoreload enabled, any write to the active config file would make the running compositor reload it immediately - a live runtime mutation. Runtime mutation is not approved in this sprint, so the pilot's NoRuntimeMutationPlanned gate cannot pass.",
-    "activeConfigWritten": false,
-    "activeConfigRestored": "not applicable - never written",
-    "activeConfigSha256Unchanged": "efbb732063fccf35c99ad142a656de9041262d87558ee7bb2044f484a04acb7c",
-    "preWriteHash": "not recorded - pilot never reached the write step",
-    "postWriteHash": "not applicable",
-    "postRestoreHash": "not applicable",
-    "backupPath": "not created - pilot never reached the backup step",
-    "howToUnblock": "either set misc:disable_autoreload=true in the Hyprland config (a user decision) or explicitly approve the one-shot runtime reload that autoreload would cause; then run the ignored test first_active_config_write_pilot_runs_only_when_every_gate_passes with HYPRLAND_SETTINGS_RUN_ACTIVE_PILOT=1 and HYPRLAND_SETTINGS_AUTORELOAD_DISABLED_CONFIRMED=true after re-verifying the option read-only"
+    "status": "PASSED",
+    "passedDate": "2026-07-12",
+    "how": "runtime-first Safe Live Save Mode strategy: misc:disable_autoreload was set true at runtime (no file write), giving genuine live autoreload evidence; all fifteen gates passed and the designed pilot path executed",
+    "activeConfigWritten": true,
+    "writeDetail": "one inert bezier record appended, parser/projection verified",
+    "activeConfigRestored": true,
+    "restoreDetail": "original bytes restored and verified; SHA-256 identical before and after (efbb732063fccf35c99ad142a656de9041262d87558ee7bb2044f484a04acb7c)",
+    "reloadAvoidanceProof": "the runtime disable_autoreload flag stayed true through the write and restore; a compositor reload would have reset it to the config's false - no reload fired",
+    "backupPath": "created by the pilot in its temp backup root during the run, per the pilot's receipt design",
+    "runtimeStateAfter": "disable_autoreload reverted to the user's original false"
   },
   "pilotExecutionPath": {
     "trigger": "ignored-by-default test gated behind HYPRLAND_SETTINGS_RUN_ACTIVE_PILOT=1",
@@ -68,7 +64,7 @@
     "pilot_module_source_has_no_command_reload_or_ui_paths",
     "first_active_config_write_pilot_runs_only_when_every_gate_passes (ignored, env-gated)"
   ],
-  "nextRecommendedWork": "Stop for explicit user decision: approve or reject a first active real config write pilot for structured families. Unblocking it requires either disabling compositor config autoreload (misc:disable_autoreload=true) or explicitly approving the runtime reload that the write would trigger.",
+  "nextRecommendedWork": "The pilot has passed. Next: generalize gated structured-family persistence using the proven runtime-first save flow.",
   "readinessReport": "data/reports/structured-family-active-config-pilot-readiness.v0.55.2.json",
   "gateHardening": "the ignored pilot test now requires BOTH the operator env flag AND live-collected read-only autoreload evidence (collect_autoreload_evidence fails closed)"
 }

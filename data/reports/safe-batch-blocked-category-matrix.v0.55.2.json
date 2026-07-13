@@ -23,7 +23,7 @@
       "canExecute": false,
       "category": "blocked_high_risk",
       "filesWritten": false,
-      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_high_risk-13319-1781838095544637477",
+      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_high_risk-680198-1783916725528015393",
       "partialApplyOccurred": false,
       "userFacingCopy": "Blocked: this setting needs a family-specific recovery path before the app can write it."
     },
@@ -33,7 +33,7 @@
       "canExecute": false,
       "category": "blocked_display_render_risk",
       "filesWritten": false,
-      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_display_render_risk-13319-1781838095544850682",
+      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_display_render_risk-680198-1783916725528222093",
       "partialApplyOccurred": false,
       "userFacingCopy": "Blocked: display/render settings need separate safety approval."
     },
@@ -43,7 +43,7 @@
       "canExecute": false,
       "category": "blocked_generated_file",
       "filesWritten": false,
-      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_generated_file-13319-1781838095544992288",
+      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_generated_file-680198-1783916725528367462",
       "partialApplyOccurred": false,
       "userFacingCopy": "Blocked: this file appears to be generated, so the app will not write it yet."
     },
@@ -53,7 +53,7 @@
       "canExecute": false,
       "category": "blocked_script_managed",
       "filesWritten": false,
-      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_script_managed-13319-1781838095545148045",
+      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_script_managed-680198-1783916725528513042",
       "partialApplyOccurred": false,
       "userFacingCopy": "Blocked: this file may be changed by a script, so safe-batch writing is disabled."
     },
@@ -63,7 +63,7 @@
       "canExecute": false,
       "category": "blocked_symlink_managed",
       "filesWritten": false,
-      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_symlink_managed-13319-1781838095545288131",
+      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_symlink_managed-680198-1783916725528645952",
       "partialApplyOccurred": false,
       "userFacingCopy": "Blocked: this file may be a symlink or current-profile file, so the app will not write it yet."
     },
@@ -73,7 +73,7 @@
       "canExecute": false,
       "category": "blocked_ambiguous_file",
       "filesWritten": false,
-      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_ambiguous_file-13319-1781838095545432528",
+      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_ambiguous_file-680198-1783916725528778842",
       "partialApplyOccurred": false,
       "userFacingCopy": "Blocked: this file target is ambiguous."
     },
@@ -83,7 +83,7 @@
       "canExecute": false,
       "category": "blocked_duplicate_conflict",
       "filesWritten": false,
-      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_duplicate_conflict-13319-1781838095545571714",
+      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_duplicate_conflict-680198-1783916725528908231",
       "partialApplyOccurred": false,
       "userFacingCopy": "Blocked: this setting appears in more than one place. Resolve the duplicate entries manually before applying."
     },
@@ -93,7 +93,7 @@
       "canExecute": false,
       "category": "blocked_missing_line",
       "filesWritten": false,
-      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_missing_line-13319-1781838095545707231",
+      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_missing_line-680198-1783916725529038071",
       "partialApplyOccurred": false,
       "userFacingCopy": "Blocked: this setting uses Hyprland's default value, and this config layout is not safe for automatic insertion."
     },
@@ -103,7 +103,7 @@
       "canExecute": false,
       "category": "blocked_structured_family",
       "filesWritten": false,
-      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_structured_family-13319-1781838095545841788",
+      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_structured_family-680198-1783916725529174821",
       "partialApplyOccurred": false,
       "userFacingCopy": "Blocked: structured settings are not part of safe-batch writing yet."
     },
@@ -113,7 +113,7 @@
       "canExecute": false,
       "category": "blocked_unknown_target",
       "filesWritten": false,
-      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_unknown_target-13319-1781838095545973675",
+      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_unknown_target-680198-1783916725529305221",
       "partialApplyOccurred": false,
       "userFacingCopy": "Blocked: this setting does not have a safe target yet."
     },
@@ -123,7 +123,7 @@
       "canExecute": false,
       "category": "blocked_runtime_only",
       "filesWritten": false,
-      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_runtime_only-13319-1781838095546110072",
+      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_runtime_only-680198-1783916725529433960",
       "partialApplyOccurred": false,
       "userFacingCopy": "Blocked: runtime-only settings are not part of this batch."
     },
@@ -133,7 +133,7 @@
       "canExecute": false,
       "category": "blocked_profile_mode_switch",
       "filesWritten": false,
-      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_profile_mode_switch-13319-1781838095546241648",
+      "fixtureRoot": "/tmp/hyprland-settings-safe-batch-deep-blocked_profile_mode_switch-680198-1783916725529564070",
       "partialApplyOccurred": false,
       "userFacingCopy": "Blocked: profile and mode switching are not part of this batch."
     }

@@ -4,8 +4,11 @@
   "branch": "structured-family-editors-unified",
   "startingCommit": "0eea5962ba56f5f0701fed8f88e29cfd26c09085",
   "goal": "Make the active-config pilot decision path clear, evidence-driven, and easy to run when its gates truly pass.",
-  "activeConfigPilotGateStatus": "blocked",
-  "blockingGates": ["AutoreloadDisabledConfirmed", "NoRuntimeMutationPlanned"],
+  "activeConfigPilotGateStatus": "PASSED (2026-07-12) via the runtime-first Safe Live Save Mode strategy; see structured-family-active-config-write-pilot report for the receipt",
+  "blockingGates": [
+    "AutoreloadDisabledConfirmed",
+    "NoRuntimeMutationPlanned"
+  ],
   "autoreloadEvidence": {
     "collectedThisRun": "read-only getoption misc:disable_autoreload returned bool: false",
     "meaning": "autoreload is active: writing hyprland.conf would make the running compositor reload it immediately, which is a live runtime mutation",
@@ -35,5 +38,5 @@
     "hardened ignored pilot test combining operator flag with live evidence"
   ],
   "validation": "cargo test green; the pilot suite passes with the ignored live test still env-gated",
-  "nextRecommendedWork": "The decision is the user's: disable autoreload or approve the one reload; the pilot path is otherwise complete and rehearsed."
+  "nextRecommendedWork": "Pilot passed; the decision path is resolved by runtime-first autoreload control."
 }

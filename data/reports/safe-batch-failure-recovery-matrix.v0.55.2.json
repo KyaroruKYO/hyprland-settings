@@ -6,7 +6,7 @@
       "report": {
         "backupCount": 0,
         "failures": [
-          "backup failed for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-13319-1781838095549387252/safe-batch-0.conf: backup byte equality verification failed"
+          "backup failed for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-680198-1783916725532842774/safe-batch-0.conf: backup byte equality verification failed"
         ],
         "hyprlandReloadAttempted": false,
         "mutatingHyprctlUsed": false,
@@ -23,7 +23,7 @@
       "report": {
         "backupCount": 0,
         "failures": [
-          "backup failed for /tmp/hyprland-settings-safe-batch-deep-backup-creation-failure-13319-1781838095560087014/hyprland.conf: failed to write backup /tmp/hyprland-settings-safe-batch-deep-backup-creation-failure-13319-1781838095560087014/hyprland.conf.deep-backup-creation-failure.bak"
+          "backup failed for /tmp/hyprland-settings-safe-batch-deep-backup-creation-failure-680198-1783916725543694002/hyprland.conf: failed to write backup /tmp/hyprland-settings-safe-batch-deep-backup-creation-failure-680198-1783916725543694002/hyprland.conf.deep-backup-creation-failure.bak"
         ],
         "hyprlandReloadAttempted": false,
         "mutatingHyprctlUsed": false,
@@ -92,10 +92,10 @@
         "backupCount": 4,
         "failures": [
           "write failed after target replacement",
-          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-13319-1781838095549387252/safe-batch-0.conf",
-          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-13319-1781838095549387252/safe-batch-1.conf",
-          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-13319-1781838095549387252/safe-batch-2.conf",
-          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-13319-1781838095549387252/safe-batch-3.conf"
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-680198-1783916725532842774/safe-batch-0.conf",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-680198-1783916725532842774/safe-batch-1.conf",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-680198-1783916725532842774/safe-batch-2.conf",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-680198-1783916725532842774/safe-batch-3.conf"
         ],
         "hyprlandReloadAttempted": false,
         "mutatingHyprctlUsed": false,
@@ -112,11 +112,11 @@
       "report": {
         "backupCount": 4,
         "failures": [
-          "write failed for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-13319-1781838095549387252/safe-batch-0.conf: source line old value changed for appearance.dim.modal",
-          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-13319-1781838095549387252/safe-batch-0.conf",
-          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-13319-1781838095549387252/safe-batch-1.conf",
-          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-13319-1781838095549387252/safe-batch-2.conf",
-          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-13319-1781838095549387252/safe-batch-3.conf"
+          "write failed for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-680198-1783916725532842774/safe-batch-0.conf: source line old value changed for appearance.dim.modal",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-680198-1783916725532842774/safe-batch-0.conf",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-680198-1783916725532842774/safe-batch-1.conf",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-680198-1783916725532842774/safe-batch-2.conf",
+          "forced restore failure for /tmp/hyprland-settings-safe-batch-deep-failure-recovery-680198-1783916725532842774/safe-batch-3.conf"
         ],
         "hyprlandReloadAttempted": false,
         "mutatingHyprctlUsed": false,

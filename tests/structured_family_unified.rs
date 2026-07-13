@@ -3867,7 +3867,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
         .expect("structured-family area should exist");
     assert_eq!(
         structured["classification"],
-        "blocked_by_active_real_config_write_approval"
+        "pilot_passed_runtime_first_save_flow_proven"
     );
     assert_eq!(structured["canContinueNow"], false);
     let structured_status = structured["currentStatus"]
@@ -3879,7 +3879,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     assert!(structured_status.contains("first real config write approved false"));
     assert_eq!(
         structured["safeNextWork"],
-        "approve or reject first active real config write pilot; safe non-active-config defect correction remains allowed"
+        "generalize gated structured-family persistence using the proven runtime-first save flow"
     );
     assert!(structured["mustNotDo"]
         .as_str()
@@ -3907,7 +3907,7 @@ fn project_area_continuation_scan_classifies_every_required_area() {
     .expect("current handoff should be valid JSON");
     assert_eq!(
         handoff["activeNextWork"],
-        "Stop for explicit user decision: the structured-family active-config pilot remains blocked by autoreload policy. Runtime preview arming is complete for this machine; touch-family rows need hardware."
+        "Generalize gated persistence using the proven runtime-first save flow (scalar saves already work via the existing apply flow; structured-family saves can follow the pilot's proven shape)."
     );
     assert_eq!(
         handoff["safetyBoundaries"]["structuredFamilyWritesEnabled"],

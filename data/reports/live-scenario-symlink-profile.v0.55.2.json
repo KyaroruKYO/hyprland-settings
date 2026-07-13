@@ -23,7 +23,7 @@
     "safeBatchWritesAttemptedAgainstTempFiles": false,
     "safeBatchWritesSucceeded": false,
     "scenarioName": "symlink_current_profile",
-    "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-482-1781839317760607940/symlink-home",
+    "scenarioPath": "/tmp/hyprland-settings-safe-batch-deep-live-scenario-harness-679837-1783916724565272117/symlink-home",
     "screenshotsCaptured": false,
     "waybarDisabledRestored": "not used"
   },
