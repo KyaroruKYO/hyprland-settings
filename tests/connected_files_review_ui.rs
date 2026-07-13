@@ -122,7 +122,9 @@ fn dashboard_sidebar_normal_pages_and_counts_remain_preserved() {
     assert!(source.contains("label: \"Config\".to_string()"));
     assert!(dashboard_source.contains("title: \"Config\""));
     assert!(dashboard_source.contains("target_tab_id: CONFIG_ID"));
-    assert!(render_source.contains("selected_tab_id == CONFIG_ID"));
+    // The Config page routes through the shared standalone-page path.
+    assert!(render_source.contains("[DASHBOARD_ID, CONFIG_ID, SAFETY_ID]"));
+    assert!(render_source.contains("config_view.set_visible(page_id == CONFIG_ID)"));
     assert!(render_source.contains("settings_view.set_visible(false)"));
     assert!(render_source.contains("render_settings_view("));
     assert!(source.contains("search_projection(model, selected_tab_id, query)"));

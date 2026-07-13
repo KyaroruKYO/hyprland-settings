@@ -182,9 +182,20 @@ Save persistence and migration marathon complete on `structured-family-editors-u
 - **Independent Fable progress audit**: generated from direct repo interrogation (executed test run, test-regenerated reports, source receipt constants, dist checksums, gh release view) — `docs/PROGRESS-TRACKER-FABLE-AUDIT.md`. Headline gap: UX/readability is the one unproven quality area.
 - New tooling: `tools/live_scenario_harness/run_manual_rc_test.sh` + `manual_rc_test_driver.py` (packaged-binary manual test with AT-SPI driving and zero-residue verification; never activates config-writing controls).
 
+## UX Simplification Sprint Additions (2026-07-13, local-only prototype)
+
+- **HyprMod-referenced settings-first pass** (see `docs/UX-HYPRMOD-REFERENCE-AUDIT.md` and `docs/UX-SIMPLIFICATION-PLAN.md`; HyprMod 0.4.0 is GPL-3.0 — this adaptation is structural, for a private local prototype, with labels/descriptions derived from the app's own official metadata):
+  - Grouped sidebar with task-oriented category headers (Look & Feel / Input / Display / Window Management / Advanced; Dashboard pinned; headers render via the ListBox header mechanism so selection indices are untouched). Model: `src/ux_presentation.rs::SIDEBAR_CATEGORIES`.
+  - **New Safety Details page** (Advanced): the seven developer/proof surfaces moved off the Config page verbatim (connected-files review, profile/mode frame, structured-family raw review, all activation review cards, controlled-write/pilot status, preview readiness, family proof status). Nothing weakened; one hop away; dashboard card added.
+  - Config page slimmed to the user-facing cards: config file selection, Safe Live Save Mode, record pickers, save note.
+  - Quiet per-row **status chips** replace paragraph status in list rows: Live Preview · Save Only · Requires Safe Live Save Mode · Hardware Required · Not Proven Yet · Blocked (`status_chip_for_row`, fail-closed, honest by guard test: 173 Live Preview = 135 previewable + 38 armed; ≥18 Hardware Required; ≥74 Blocked; 341 total). Row subtitles use first-sentence `short_description`.
+  - Regression guards: `tests/ux_simplification.rs` (Config stays settings-first, Safety Details hosts every moved surface, chips honest, presentation layer file/process/command-free, gates unchanged).
+  - GTK harness updated: `Safety Details` navigation target; the eight moved detail specs point at the new page; four new matrix runs cover it.
+- Follow-ups tracked in the plan doc: detail-pane simplification, color-picker window + gradient rows, Profiles empty state, merged Layouts presentation, toggleable sidebar search, label overrides.
+
 ## Next Exact Work
 
-The release is complete. Remaining:
+The release is complete and the first UX simplification pass is in. Remaining:
 
 - Hardware-gated proofs: 18 touch-family rows need touch/tablet hardware; 3 rows need secondary-device proofs (deferred; devices unavailable — no simulated/virtual-device path is proven, and any future one is proposal-only requiring explicit approval).
 - A UX simplification/readability pass separating end-user controls from developer/proof surfaces (the one unproven quality area per the Fable audit).

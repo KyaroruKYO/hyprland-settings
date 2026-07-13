@@ -64,7 +64,9 @@ fn config_selection_ui_preserves_existing_config_routes_and_details() {
     assert!(source.contains("label: \"Config\".to_string()"));
     assert!(dashboard_source.contains("title: \"Config\""));
     assert!(dashboard_source.contains("target_tab_id: CONFIG_ID"));
-    assert!(render_source.contains("selected_tab_id == CONFIG_ID"));
+    // The Config page routes through the shared standalone-page path.
+    assert!(render_source.contains("[DASHBOARD_ID, CONFIG_ID, SAFETY_ID]"));
+    assert!(render_source.contains("config_view.set_visible(page_id == CONFIG_ID)"));
     assert!(source.contains("append_connected_file_details"));
     assert!(source.contains("connected_file_card(file, graph)"));
     assert!(source.contains("search_projection(model, selected_tab_id, query)"));

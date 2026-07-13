@@ -65,7 +65,7 @@ run_probe() {
   local scenario="$1"
   local target="$2"
   local home="$scenario_root/$scenario"
-  local evidence_dir="$run_root/${scenario}_${target}"
+  local evidence_dir="$run_root/${scenario}_${target// /}"
   mkdir -p "$evidence_dir"
   HYPR_SETTINGS_ATSPI_NAV_TARGET="$target" \
     "$repo_root/tools/live_scenario_harness/gtk_automation_probe.sh" "$home" "$evidence_dir"
@@ -74,6 +74,10 @@ run_probe() {
 cd "$repo_root"
 run_probe minimal_single_config Dashboard
 run_probe minimal_single_config Config
+run_probe minimal_single_config "Safety Details"
+run_probe generated_config "Safety Details"
+run_probe script_managed_config "Safety Details"
+run_probe symlink_current_profile "Safety Details"
 run_probe minimal_single_config Appearance
 run_probe high_risk_display_risk Display
 run_probe source_include_config Config

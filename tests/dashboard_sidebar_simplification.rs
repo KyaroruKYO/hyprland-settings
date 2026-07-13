@@ -45,15 +45,19 @@ fn dashboard_sidebar_source_records_expected_navigation() {
 
     assert!(source.contains("const DASHBOARD_ID: &str = \"dashboard\""));
     assert!(source.contains("label: \"Dashboard\".to_string()"));
-    assert!(source.contains("\"appearance\""));
-    assert!(source.contains("\"windows-layout\""));
-    assert!(source.contains("\"display\""));
-    assert!(source.contains("\"input\""));
-    assert!(source.contains("\"keybinds\""));
-    assert!(source.contains("\"cursor\""));
-    assert!(source.contains("\"permissions\""));
-    assert!(source.contains("\"system\""));
-    assert!(source.contains("\"animations\""));
+    // The tab ordering now lives in the grouped category model.
+    let categories =
+        fs::read_to_string("src/ux_presentation.rs").expect("presentation source should read");
+    assert!(source.contains("SIDEBAR_CATEGORIES"));
+    assert!(categories.contains("\"appearance\""));
+    assert!(categories.contains("\"windows-layout\""));
+    assert!(categories.contains("\"display\""));
+    assert!(categories.contains("\"input\""));
+    assert!(categories.contains("\"keybinds\""));
+    assert!(categories.contains("\"cursor\""));
+    assert!(categories.contains("\"permissions\""));
+    assert!(categories.contains("\"system\""));
+    assert!(categories.contains("\"animations\""));
     assert!(source.contains("\"keybinds\" => \"Keyboard\".to_string()"));
 
     assert!(
@@ -73,7 +77,8 @@ fn dashboard_source_hides_settings_work_area_and_omits_backend_counts() {
 
     assert!(source.contains("fn build_dashboard_view"));
     assert!(source.contains("fn render_main_view"));
-    assert!(source.contains("dashboard_view.set_visible(true)"));
+    // Standalone pages share one routed show/hide path.
+    assert!(source.contains("dashboard_view.set_visible(page_id == DASHBOARD_ID)"));
     assert!(source.contains("settings_view.set_visible(false)"));
     assert!(source.contains("dashboard_view.set_visible(false)"));
     assert!(source.contains("settings_view.set_visible(true)"));

@@ -10,6 +10,16 @@ live-previewable; 38/78 dead-man rows armed; record picker complete for 4
 proven shapes; hardware-gated proofs deferred (18 touch + 3
 secondary-device rows); UX/readability is the one honestly unproven area.
 
+**Update 2026-07-13 (UX simplification sprint, local-only prototype):** the
+first HyprMod-referenced settings-first pass landed — grouped sidebar with
+task categories, a new Safety Details page hosting all seven developer/proof
+surfaces moved off Config, quiet honest status chips on setting rows
+(guard-tested distribution over all 341 rows), and regression guards keeping
+proof-wall text off the user pages. No safety gate changed. The
+UX/readability area moves from "not proven yet" to "first pass implemented;
+detail-pane simplification, color tools, and Profiles empty state remain"
+(see `docs/UX-SIMPLIFICATION-PLAN.md`).
+
 Everything below this line is **dated history** (earlier audits and
 marathon logs), kept as a record and not to be read as current state.
 

@@ -517,6 +517,7 @@ LEGACY_ACTIVATION_DRAFT_EDIT_ASSERTION_TEXT = [
 SAFE_NAVIGATION_TARGETS = {
     "Dashboard",
     "Config",
+    "Safety Details",
     "Appearance",
     "Animations",
     "Input",
@@ -552,14 +553,14 @@ BLOCKED_CATEGORY_TARGETS = {
     },
     "GeneratedBlockedDetail": {
         "category": "generated_file",
-        "page": "Config",
+        "page": "Safety Details",
         "terms": ["generated", "do not edit"],
         "row_terms": ["generated", "do not edit"],
         "proof_surface": "config_page_text",
     },
     "GeneratedConnectedFileDetail": {
         "category": "generated_file",
-        "page": "Config",
+        "page": "Safety Details",
         "terms": [
             "generated file detail",
             "this file may be generated",
@@ -574,14 +575,14 @@ BLOCKED_CATEGORY_TARGETS = {
     },
     "ScriptManagedBlockedDetail": {
         "category": "script_managed_file",
-        "page": "Config",
+        "page": "Safety Details",
         "terms": ["script", "changed by a script", "script-managed"],
         "row_terms": ["script", "changed by scripts", "changed by a script"],
         "proof_surface": "config_page_text",
     },
     "ScriptManagedConnectedFileDetail": {
         "category": "script_managed_file",
-        "page": "Config",
+        "page": "Safety Details",
         "terms": [
             "script-managed file detail",
             "this file may be changed by a script",
@@ -596,14 +597,14 @@ BLOCKED_CATEGORY_TARGETS = {
     },
     "SymlinkManagedBlockedDetail": {
         "category": "symlink_current_profile",
-        "page": "Config",
+        "page": "Safety Details",
         "terms": ["symlink", "current-profile", "current profile"],
         "row_terms": ["symlink", "current-profile", "current profile"],
         "proof_surface": "config_page_text",
     },
     "SymlinkConnectedFileDetail": {
         "category": "symlink_current_profile",
-        "page": "Config",
+        "page": "Safety Details",
         "terms": [
             "symlink/current-profile detail",
             "this file may be a symlink or current-profile file",
@@ -654,14 +655,14 @@ BLOCKED_CATEGORY_TARGETS = {
     },
     "ProfileModeSwitchDetail": {
         "category": "profile_mode_switch",
-        "page": "Config",
+        "page": "Safety Details",
         "terms": ["profile", "mode", "current-profile", "symlink"],
         "row_terms": ["profile", "mode", "current-profile", "symlink"],
         "proof_surface": "config_page_text",
     },
     "ProfileModeDetail": {
         "category": "profile_mode_switch",
-        "page": "Config",
+        "page": "Safety Details",
         "terms": [
             "profile mode detail",
             "profile switching is not active yet",

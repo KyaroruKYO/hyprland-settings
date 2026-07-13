@@ -92,6 +92,7 @@ use crate::write_verification_plan::planned_reread_verification;
 
 const DASHBOARD_ID: &str = "dashboard";
 const CONFIG_ID: &str = "config";
+const SAFETY_ID: &str = "safety-details";
 
 thread_local! {
     /// Live preview controllers whose sessions may still be active. Drained
@@ -265,6 +266,11 @@ pub fn show_main_window(
     config_view.set_tooltip_text(Some("Config page"));
     content.append(&config_view);
 
+    let safety_view = build_safety_details_view(&model);
+    safety_view.set_widget_name("hyprland-settings-safety-details-page");
+    safety_view.set_tooltip_text(Some("Safety Details page"));
+    content.append(&safety_view);
+
     let settings_view = gtk::Box::new(gtk::Orientation::Vertical, 12);
     settings_view.set_widget_name("hyprland-settings-category-page");
     settings_view.set_tooltip_text(Some("Settings category page"));
@@ -313,6 +319,7 @@ pub fn show_main_window(
         &selected_tab_id.borrow(),
         &dashboard_view,
         &config_view,
+        &safety_view,
         &settings_view,
         &current_query.borrow(),
         &tab_title,
@@ -329,6 +336,7 @@ pub fn show_main_window(
         let sidebar_items = Rc::clone(&sidebar_items);
         let dashboard_view = dashboard_view.clone();
         let config_view = config_view.clone();
+        let safety_view = safety_view.clone();
         let settings_view = settings_view.clone();
         let tab_title = tab_title.clone();
         let settings_list = settings_list.clone();
@@ -344,6 +352,7 @@ pub fn show_main_window(
                         &selected_tab_id.borrow(),
                         &dashboard_view,
                         &config_view,
+                        &safety_view,
                         &settings_view,
                         &current_query.borrow(),
                         &tab_title,
@@ -363,6 +372,7 @@ pub fn show_main_window(
         let current_query = Rc::clone(&current_query);
         let dashboard_view = dashboard_view.clone();
         let config_view = config_view.clone();
+        let safety_view = safety_view.clone();
         let settings_view = settings_view.clone();
         let tab_title = tab_title.clone();
         let settings_list = settings_list.clone();
@@ -376,6 +386,7 @@ pub fn show_main_window(
                 &selected_tab_id.borrow(),
                 &dashboard_view,
                 &config_view,
+                &safety_view,
                 &settings_view,
                 &current_query.borrow(),
                 &tab_title,
@@ -451,43 +462,43 @@ pub fn show_error_window(app: &adw::Application, export_context: &str, error: &s
 }
 
 fn sidebar_items(model: &UiProjection) -> Vec<SidebarItem> {
-    let mut items = vec![
-        SidebarItem {
-            id: DASHBOARD_ID.to_string(),
-            label: "Dashboard".to_string(),
-            target_tab_id: None,
-        },
-        SidebarItem {
-            id: CONFIG_ID.to_string(),
-            label: "Config".to_string(),
-            target_tab_id: None,
-        },
-    ];
-    let order = [
-        "appearance",
-        "windows-layout",
-        "display",
-        "input",
-        "keybinds",
-        "cursor",
-        "permissions",
-        "system",
-        "animations",
-    ];
+    // Task-oriented grouping (see src/ux_presentation.rs): Dashboard is
+    // pinned on top, then the categories in order. Tabs with zero rows are
+    // hidden, matching the version-aware-hiding pattern.
+    let mut items = vec![SidebarItem {
+        id: DASHBOARD_ID.to_string(),
+        label: "Dashboard".to_string(),
+        target_tab_id: None,
+    }];
 
-    for tab_id in order {
-        let Some(tab) = model
-            .tabs
-            .iter()
-            .find(|tab| tab.id == tab_id && tab.row_count > 0)
-        else {
-            continue;
-        };
-        items.push(SidebarItem {
-            id: tab.id.clone(),
-            label: sidebar_tab_label(&tab.id, &tab.label),
-            target_tab_id: Some(tab.id.clone()),
-        });
+    for category in crate::ux_presentation::SIDEBAR_CATEGORIES {
+        for tab_id in category.tab_ids {
+            match *tab_id {
+                CONFIG_ID => items.push(SidebarItem {
+                    id: CONFIG_ID.to_string(),
+                    label: "Config".to_string(),
+                    target_tab_id: None,
+                }),
+                SAFETY_ID => items.push(SidebarItem {
+                    id: SAFETY_ID.to_string(),
+                    label: "Safety Details".to_string(),
+                    target_tab_id: None,
+                }),
+                tab_id => {
+                    if let Some(tab) = model
+                        .tabs
+                        .iter()
+                        .find(|tab| tab.id == tab_id && tab.row_count > 0)
+                    {
+                        items.push(SidebarItem {
+                            id: tab.id.clone(),
+                            label: sidebar_tab_label(&tab.id, &tab.label),
+                            target_tab_id: Some(tab.id.clone()),
+                        });
+                    }
+                }
+            }
+        }
     }
     items
 }
@@ -503,6 +514,35 @@ fn build_sidebar(items: &[SidebarItem]) -> gtk::ListBox {
     let sidebar = gtk::ListBox::new();
     sidebar.set_widget_name("hyprland-settings-navigation-sidebar");
     sidebar.set_selection_mode(gtk::SelectionMode::Single);
+
+    // Category headers render via the ListBox header mechanism so they are
+    // not rows: selection indices keep mapping 1:1 onto `items`.
+    let categories: Vec<Option<&'static str>> = items
+        .iter()
+        .map(|item| crate::ux_presentation::category_for_tab(&item.id))
+        .collect();
+    sidebar.set_header_func(move |row, before| {
+        let category = categories.get(row.index() as usize).copied().flatten();
+        let previous = before
+            .and_then(|previous_row| categories.get(previous_row.index() as usize))
+            .copied()
+            .flatten();
+        if let Some(label) = category {
+            if Some(label) != previous {
+                let header = small_label(label);
+                header.set_margin_top(10);
+                header.set_margin_start(12);
+                header.set_margin_bottom(2);
+                header.set_widget_name(&format!(
+                    "hyprland-settings-nav-category-{}",
+                    safe_widget_name(label)
+                ));
+                row.set_header(Some(&header));
+                return;
+            }
+        }
+        row.set_header(None::<&gtk::Widget>);
+    });
 
     for item in items {
         let row = gtk::ListBoxRow::new();
@@ -590,7 +630,7 @@ struct DashboardCard {
     target_tab_id: &'static str,
 }
 
-fn dashboard_cards() -> [DashboardCard; 8] {
+fn dashboard_cards() -> [DashboardCard; 9] {
     [
         DashboardCard {
             title: "Config",
@@ -631,6 +671,11 @@ fn dashboard_cards() -> [DashboardCard; 8] {
             title: "Advanced",
             description: "Review settings that need extra care before changing.",
             target_tab_id: "system",
+        },
+        DashboardCard {
+            title: "Safety Details",
+            description: "Proof receipts, safety evidence, and review-only activation cards.",
+            target_tab_id: SAFETY_ID,
         },
     ]
 }
@@ -713,6 +758,43 @@ fn build_config_view(
         selection_state,
     ));
 
+    content.append(&safe_live_save_mode_section(model));
+
+    content.append(&structured_family_preview_controls_section(model));
+
+    content.append(&config_section(
+        "Future changes",
+        vec![
+            "When a setting is controlled in more than one place, the app will ask where to save the change before applying it.".to_string(),
+            "The app will back up the file before saving changes.".to_string(),
+        ],
+        None,
+    ));
+
+    gtk::ScrolledWindow::builder()
+        .vexpand(true)
+        .hexpand(true)
+        .child(&content)
+        .build()
+}
+
+/// The Safety Details page: every proof receipt, safety evidence, review,
+/// and activation surface, moved out of the everyday path. Nothing here is
+/// weakened or removed — the same widgets and assertions live one
+/// navigation hop away so the normal pages stay settings-first.
+fn build_safety_details_view(model: &UiProjection) -> gtk::ScrolledWindow {
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 14);
+    content.set_widget_name("hyprland-settings-safety-details-content");
+    content.set_margin_top(4);
+    content.set_margin_bottom(16);
+    content.set_margin_start(4);
+    content.set_margin_end(4);
+
+    content.append(&title_label("Safety Details"));
+    content.append(&body_label(
+        "Proof receipts, safety evidence, and review-only activation cards. Nothing on this page changes behavior.",
+    ));
+
     content.append(&connected_files_review_section(&model.config_discovery));
 
     content.append(&profile_mode_detail_section());
@@ -727,20 +809,7 @@ fn build_config_view(
 
     content.append(&runtime_preview_readiness_section());
 
-    content.append(&safe_live_save_mode_section(model));
-
-    content.append(&structured_family_preview_controls_section(model));
-
     content.append(&structured_family_runtime_preview_status_section());
-
-    content.append(&config_section(
-        "Future changes",
-        vec![
-            "When a setting is controlled in more than one place, the app will ask where to save the change before applying it.".to_string(),
-            "The app will back up the file before saving changes.".to_string(),
-        ],
-        None,
-    ));
 
     gtk::ScrolledWindow::builder()
         .vexpand(true)
@@ -5356,6 +5425,7 @@ fn render_main_view(
     selected_tab_id: &str,
     dashboard_view: &gtk::ScrolledWindow,
     config_view: &gtk::ScrolledWindow,
+    safety_view: &gtk::ScrolledWindow,
     settings_view: &gtk::Box,
     query: &str,
     tab_title: &gtk::Label,
@@ -5364,34 +5434,26 @@ fn render_main_view(
     detail_content: &gtk::Box,
     config_selection_state: &Rc<RefCell<ConfigSelectionState>>,
 ) {
-    if selected_tab_id == DASHBOARD_ID {
-        dashboard_view.set_visible(true);
-        config_view.set_visible(false);
-        settings_view.set_visible(false);
-        settings_list.unselect_all();
-        while let Some(child) = settings_list.first_child() {
-            settings_list.remove(&child);
+    // The three standalone pages share one show-this-hide-the-rest path.
+    for page_id in [DASHBOARD_ID, CONFIG_ID, SAFETY_ID] {
+        if selected_tab_id == page_id {
+            dashboard_view.set_visible(page_id == DASHBOARD_ID);
+            config_view.set_visible(page_id == CONFIG_ID);
+            safety_view.set_visible(page_id == SAFETY_ID);
+            settings_view.set_visible(false);
+            settings_list.unselect_all();
+            while let Some(child) = settings_list.first_child() {
+                settings_list.remove(&child);
+            }
+            displayed_row_ids.borrow_mut().clear();
+            render_empty_detail(detail_content);
+            return;
         }
-        displayed_row_ids.borrow_mut().clear();
-        render_empty_detail(detail_content);
-        return;
-    }
-
-    if selected_tab_id == CONFIG_ID {
-        dashboard_view.set_visible(false);
-        config_view.set_visible(true);
-        settings_view.set_visible(false);
-        settings_list.unselect_all();
-        while let Some(child) = settings_list.first_child() {
-            settings_list.remove(&child);
-        }
-        displayed_row_ids.borrow_mut().clear();
-        render_empty_detail(detail_content);
-        return;
     }
 
     dashboard_view.set_visible(false);
     config_view.set_visible(false);
+    safety_view.set_visible(false);
     settings_view.set_visible(true);
     render_settings_view(
         model,
@@ -5480,10 +5542,17 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
         )));
     }
     if !setting.description.is_empty() {
-        row_box.append(&wrapped_small_label(&setting.description));
+        // One-line subtitle; the full description stays in the detail pane.
+        row_box.append(&wrapped_small_label(
+            &crate::ux_presentation::short_description(&setting.description),
+        ));
     }
 
-    row_box.append(&small_label(&friendly_row_current_status(setting)));
+    row_box.append(&small_label(&format!(
+        "{} · {}",
+        friendly_row_current_status(setting),
+        crate::ux_presentation::status_chip_for_row(&setting.row_id).label()
+    )));
     if let Some(status) = friendly_row_attention_status(setting) {
         row_box.append(&small_label(&status));
     }
