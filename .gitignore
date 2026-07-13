@@ -17,3 +17,4 @@ backups/
 
 *.local
 *.pid
+__pycache__/
