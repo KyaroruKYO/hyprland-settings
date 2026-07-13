@@ -1,0 +1,70 @@
+{
+  "artifactKind": "release-decision-report",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "decisionDate": "2026-07-13",
+  "releaseDecisionStatus": "ready pending user approval",
+  "releaseTagCreated": false,
+  "releaseArtifactsPublished": false,
+  "mergedToMain": false,
+  "existingRelease": {
+    "tag": "v0.1.0",
+    "commit": "74efa283a3d7259b8e15b1c93cad43942d9f9a1a",
+    "distDir": "dist/v0.1.0",
+    "unchangedByThisDecision": true
+  },
+  "unreleasedDelta": {
+    "commitsSinceV010": 75,
+    "commitsAheadOfMain": 34,
+    "filesChangedSinceV010": 258,
+    "headline": [
+      "runtime preview system for all 341 scalar rows (135 default-previewable with real controls, dead-man countdown for gated rows)",
+      "36 input/cursor rows proven and armed by live proofs",
+      "Safe Live Save Mode: runtime-proven autoreload control gating every save",
+      "first active real config write pilot passed its fifteen-gate path",
+      "production Save integration: every UI save routes through gated paths",
+      "structured-family gated persistence with live-proven record shapes",
+      "family record picker: existing animation records (speed) and bezier curves (all four control points) with supervised preview and gated Save",
+      "Safe Live Save Mode persistence: misc:disable_autoreload = true saved as default through the gated scalar Save (user-chosen, never automatic)",
+      "Hyprland 0.55.4 migration audit: zero drift against the trusted export, with a repeatable refresh workflow"
+    ]
+  },
+  "breakingChanges": [
+    "the app now writes the active config through gated Save paths (v0.1.0 was read-only in production paths); every write is gated on Safe Live Save Mode, backed up, written once, and reread-verified"
+  ],
+  "remainingBlockersForRelease": [
+    "user approval of the release decision",
+    "merge decision for structured-family-editors-unified into main (34 commits ahead)",
+    "version bump in Cargo.toml (still 0.1.0) and tag choice (suggested: v0.2.0)",
+    "review of the release notes draft in docs/RELEASE-DECISION.md",
+    "one manual test pass of the manual test plan in docs/RELEASE-DECISION.md"
+  ],
+  "knownLimitations": [
+    "21 rows remain unproven pending hardware: 18 touch-family rows and 3 secondary-device rows (left_handed, rotation, resolve_binds_by_sym); they stay disarmed and are not release blockers",
+    "five structured families (monitor, bind, gesture, device, permission) stay blocked for editing with honest reasons",
+    "the scalar config model projects flat colon syntax (the same syntax the gated Save writes); block-syntax values in user configs are not projected as scalar current values",
+    "the data model tracks v0.55.2; the live 0.55.4 compositor was audited at zero drift, so no model migration is required yet"
+  ],
+  "evidence": {
+    "testsPassing": true,
+    "liveProofReceipts": [
+      "PROVEN_FAMILY_RECORD_PROOFS (hl.animation global, hl.curve default)",
+      "PROVEN_RECORD_SHAPE_PROOFS (hl.animation fade, hl.curve quick, 2026-07-13)",
+      "PROVEN_INPUT_ROWS (36 input/cursor rows)",
+      "active-config write pilot receipt (fifteen-gate path)",
+      "persist-safe-live-save-mode flow proof (2026-07-13)"
+    ],
+    "gtkEvidence": "tools/live_scenario_harness/run_gtk_evidence_matrix.sh",
+    "migrationAudit": "data/reports/hyprland-0.55.4-migration-audit.v0.55.2.json"
+  },
+  "recommendation": "Prepare a v0.2.0 release candidate from this branch after user approval: merge to main, bump Cargo.toml to 0.2.0, tag, and build dist artifacts with the existing release process. Do none of this automatically.",
+  "hardBoundariesRespected": {
+    "noTagCreated": true,
+    "noGithubReleaseCreated": true,
+    "noMergeToMain": true,
+    "noArtifactsPublished": true,
+    "v010Unchanged": true,
+    "distV010Unchanged": true
+  },
+  "releaseCandidateMaterials": "docs/RELEASE-DECISION.md (release notes draft, changelog draft, artifact checklist, test checklist, known limitations, manual test plan)"
+}
