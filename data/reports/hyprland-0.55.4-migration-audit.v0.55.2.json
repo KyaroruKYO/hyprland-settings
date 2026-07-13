@@ -21,5 +21,12 @@
   "conclusion": "the previously flagged 'largest structural risk' (version skew) is dissolved by trusted live evidence: 0.55.4 exposes exactly the 341 options the model covers, with identical numeric bounds; no model migration is required at this time",
   "regressionGuard": "tests/hyprland_0554_migration_audit.rs pins the compatibility against the captured export in every cargo test run",
   "validation": "regression test passes",
-  "nextRecommendedWork": "refresh the capture and rerun the pinned test whenever Hyprland updates"
+  "nextRecommendedWork": "refresh the capture and rerun the pinned test whenever Hyprland updates",
+  "refreshWorkflow": {
+    "script": "tools/refresh_hyprland_descriptions_export.sh",
+    "lastRefresh": "2026-07-13",
+    "refreshReport": "data/reports/hyprland-0.55.4-export-refresh.v0.55.2.json",
+    "reproducible": true,
+    "zeroDriftOnRefresh": true
+  }
 }

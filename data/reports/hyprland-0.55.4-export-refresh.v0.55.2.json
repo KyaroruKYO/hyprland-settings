@@ -1,0 +1,32 @@
+{
+  "artifactKind": "hyprland-0554-export-refresh-report",
+  "projectDataVersion": "v0.55.2",
+  "generatedAt": "2026-07-13T08:58:16Z",
+  "liveVersionLine": "Hyprland 0.55.4 built from branch v0.55.4 at commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704 clean ([gha] Nix: update inputs).",
+  "liveVersion": "0.55.4",
+  "liveCommit": "a0136d8c04687bb36eb8a28eb9d1ff92aea99704",
+  "captureMatchedPinnedVersion": true,
+  "pinnedCapturePreserved": true,
+  "capturePath": "data/exports/hyprland-0.55.4/hyprctl-descriptions.v0.55.4.json",
+  "capturedRowCount": 341,
+  "diff": {
+    "previousCaptureAvailable": true,
+    "previousRowCount": 341,
+    "newRowCount": 341,
+    "rowsAdded": [],
+    "rowsRemoved": [],
+    "rowsChangedBounds": [],
+    "rowsChangedDescriptionOnly": 0,
+    "rowsChangedTypeOrData": []
+  },
+  "migrationTestCommand": "cargo test --test hyprland_0554_migration_audit",
+  "migrationTestPassed": true,
+  "readOnlyCommandsUsed": [
+    "hyprctl version",
+    "hyprctl -j descriptions"
+  ],
+  "hyprctlReloadRan": false,
+  "runtimeMutationRan": false,
+  "handEditedRows": false,
+  "nextRecommendedWork": "none: capture refreshed in place and the pinned migration audit reran"
+}

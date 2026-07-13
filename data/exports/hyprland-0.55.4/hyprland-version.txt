@@ -1,1 +1,3 @@
 Hyprland 0.55.4 built from branch v0.55.4 at commit a0136d8c04687bb36eb8a28eb9d1ff92aea99704 clean ([gha] Nix: update inputs).
+Date: Thu Jun 11 17:10:04 2026
+Tag: v0.55.4, commits: 7378
