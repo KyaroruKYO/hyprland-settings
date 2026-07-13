@@ -18,7 +18,7 @@ use crate::export::ExportBundle;
 use crate::family_record_picker::{
     list_animation_records_live, list_curve_records_live, save_picked_record_live,
     AnimationRecordEntry, CurveRecordEntry, FamilyRecordPreviewController, PickedFamily,
-    PickedRecordValues, RecordPickerPhase,
+    PickedRecordValues, RecordPickerPhase, ANIMATION_STYLE_BLOCKED_REASON,
 };
 use crate::future_capability::{
     apply_production_activation_draft_gtk_update, disabled_future_approval_card_projections,
@@ -4937,7 +4937,9 @@ fn record_picker_blocked_expander(
 }
 
 /// Animation record picker: existing overridden records from the readback,
-/// speed editing, supervised preview, gated Save.
+/// editing of the proven fields (enabled, speed, bezier — existing curves
+/// only), supervised preview, gated Save. The style field is shown as a
+/// disabled row with the reason it is not editable.
 fn animation_record_picker_group(discovery: &ConfigDiscovery, parent: &gtk::Box) {
     parent.append(&body_label("Animation records"));
     let entries = match list_animation_records_live() {
@@ -4949,6 +4951,9 @@ fn animation_record_picker_group(discovery: &ConfigDiscovery, parent: &gtk::Box)
             return;
         }
     };
+    let existing_curves: Vec<String> = list_curve_records_live()
+        .map(|curves| curves.into_iter().map(|entry| entry.record.name).collect())
+        .unwrap_or_default();
     let selectable: Vec<AnimationRecordEntry> = entries
         .iter()
         .filter(|entry| entry.save_supported)
@@ -4996,7 +5001,27 @@ fn animation_record_picker_group(discovery: &ConfigDiscovery, parent: &gtk::Box)
     spin.set_digits(2);
     spin.set_widget_name("hyprland-settings-record-picker-animation-speed");
     row.append(&spin);
+    row.append(&body_label("Enabled"));
+    let enabled_switch = gtk::Switch::new();
+    enabled_switch.set_valign(gtk::Align::Center);
+    enabled_switch.set_widget_name("hyprland-settings-record-picker-animation-enabled");
+    row.append(&enabled_switch);
+    row.append(&body_label("Curve"));
+    let bezier_combo = gtk::ComboBoxText::new();
+    bezier_combo.set_widget_name("hyprland-settings-record-picker-animation-bezier");
+    for curve in &existing_curves {
+        bezier_combo.append(Some(curve), curve);
+    }
+    row.append(&bezier_combo);
     parent.append(&row);
+
+    // The style field is deliberately not editable: no trusted evidence
+    // enumerates the valid values and no live proof exists. Shown disabled
+    // with the reason, per the not-proven UI rule.
+    let style_blocked = small_label(ANIMATION_STYLE_BLOCKED_REASON);
+    style_blocked.set_sensitive(false);
+    style_blocked.set_widget_name("hyprland-settings-record-picker-animation-style-blocked");
+    parent.append(&style_blocked);
 
     let value_label = small_label("");
     value_label.set_widget_name("hyprland-settings-record-picker-animation-value");
@@ -5015,6 +5040,8 @@ fn animation_record_picker_group(discovery: &ConfigDiscovery, parent: &gtk::Box)
         let value_label = value_label.clone();
         let reason_label = reason_label.clone();
         let spin = spin.clone();
+        let enabled_switch = enabled_switch.clone();
+        let bezier_combo = bezier_combo.clone();
         let preview_button = preview_button.clone();
         let controller_slot = controller_slot.clone();
         let update = move |combo: &gtk::ComboBoxText| {
@@ -5030,6 +5057,12 @@ fn animation_record_picker_group(discovery: &ConfigDiscovery, parent: &gtk::Box)
             value_label.set_label(&format!("Current: {}", entry.current_value_text));
             if let Ok(speed) = entry.record.speed.parse::<f64>() {
                 spin.set_value(speed);
+            }
+            enabled_switch.set_active(entry.record.enabled == "1");
+            if entry.record.bezier.is_empty() {
+                bezier_combo.set_active_id(Some("default"));
+            } else {
+                bezier_combo.set_active_id(Some(&entry.record.bezier));
             }
             preview_button.set_sensitive(entry.preview_supported);
             reason_label.set_label(
@@ -5049,8 +5082,15 @@ fn animation_record_picker_group(discovery: &ConfigDiscovery, parent: &gtk::Box)
 
     let values_for_save: Rc<dyn Fn() -> PickedRecordValues> = {
         let spin = spin.clone();
-        Rc::new(move || PickedRecordValues::AnimationSpeed {
+        let enabled_switch = enabled_switch.clone();
+        let bezier_combo = bezier_combo.clone();
+        Rc::new(move || PickedRecordValues::AnimationRecord {
+            enabled: enabled_switch.is_active(),
             speed: spin.value(),
+            bezier: bezier_combo
+                .active_id()
+                .map(|id| id.to_string())
+                .unwrap_or_else(|| "default".to_string()),
         })
     };
     record_picker_action_row(

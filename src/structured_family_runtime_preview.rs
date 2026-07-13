@@ -130,6 +130,8 @@ pub struct ProvenRecordShapeProof {
 }
 
 pub const ANIMATION_RECORD_SPEED_SHAPE: &str = "modify-existing-animation-record-speed";
+pub const ANIMATION_RECORD_ENABLED_SHAPE: &str = "modify-existing-animation-record-enabled";
+pub const ANIMATION_RECORD_BEZIER_SHAPE: &str = "modify-existing-animation-record-bezier";
 pub const CURVE_RECORD_POINTS_SHAPE: &str = "modify-existing-curve-control-points";
 
 /// Entries are added only after a real env-gated proof run against the
@@ -144,6 +146,26 @@ pub const PROVEN_RECORD_SHAPE_PROOFS: &[ProvenRecordShapeProof] = &[
         verification: "read-only animations listing verified apply and exact restore on a non-family-proof record; full-record zero residue",
         proof_date: "2026-07-13",
         proof_env: "HYPRLAND_SETTINGS_RUN_FAMILY_RECORD_PICKER_LIVE=1",
+    },
+    ProvenRecordShapeProof {
+        family_id: "hl.animation",
+        shape: ANIMATION_RECORD_ENABLED_SHAPE,
+        proven_on_record: "border (1->0->1) and borderangle (0->1->0)",
+        original: "border: enabled=1 speed=4.00 bezier=easeOutQuint; borderangle: enabled=0 speed=1.00 bezier=default",
+        preview: "enabled toggled in both directions",
+        verification: "read-only animations listing verified both toggle directions and exact full-record restores; zero residue. LIVE FINDING: while a record is disabled the compositor resets its speed/bezier readback (speed 1.00, bezier default), so a disable apply verifies the enabled flag only; the revert restores every field exactly",
+        proof_date: "2026-07-13",
+        proof_env: "HYPRLAND_SETTINGS_RUN_RECORD_SHAPE_EXPANSION_LIVE=1",
+    },
+    ProvenRecordShapeProof {
+        family_id: "hl.animation",
+        shape: ANIMATION_RECORD_BEZIER_SHAPE,
+        proven_on_record: "windows",
+        original: "enabled=1 speed=4.00 bezier=easeOutQuint style=(empty)",
+        preview: "bezier=quick (a different existing curve from the readback)",
+        verification: "read-only animations listing verified apply and exact restore on a non-family-proof record; full-record zero residue; only existing curve names were referenced",
+        proof_date: "2026-07-13",
+        proof_env: "HYPRLAND_SETTINGS_RUN_RECORD_SHAPE_EXPANSION_LIVE=1",
     },
     ProvenRecordShapeProof {
         family_id: "hl.curve",

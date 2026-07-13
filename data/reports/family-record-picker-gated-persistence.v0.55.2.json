@@ -57,5 +57,11 @@
   ],
   "validation": "cargo fmt/fmt --check/check/test, jq empty data/reports/*.json, git diff --check, cargo build --release - all green",
   "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260713_marathon",
-  "nextRecommendedWork": "further record shapes (style and enabled fields, other families) require new live proofs; hardware-gated proofs and the release decision remain"
+  "nextRecommendedWork": "further record shapes (style and enabled fields, other families) require new live proofs; hardware-gated proofs and the release decision remain",
+  "recordShapeExpansion20260713": {
+    "summary": "animation enabled and bezier shapes proven live and wired: combined AnimationRecordFields save gated on all three animation shape receipts; bezier limited to existing curves; disabled records promoted to preview-supported (0->1->0 proof on borderangle); style shown as a disabled row (no trusted value evidence); gesture family blocked (no readback listing)",
+    "report": "data/reports/record-shape-expansion.v0.55.2.json",
+    "doc": "docs/RECORD-SHAPE-EXPANSION.md",
+    "liveProofTest": "tests/record_shape_expansion_live.rs"
+  }
 }

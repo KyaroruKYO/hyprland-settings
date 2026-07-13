@@ -30,7 +30,8 @@ use crate::structured_family_controlled_write::{
 use crate::structured_family_preview_controller::FamilyPreviewTarget;
 use crate::structured_family_runtime_preview::{
     parse_animation_records, parse_bezier_records, proven_family_record_proof,
-    proven_record_shape_proof, ANIMATION_RECORD_SPEED_SHAPE, CURVE_RECORD_POINTS_SHAPE,
+    proven_record_shape_proof, ANIMATION_RECORD_BEZIER_SHAPE, ANIMATION_RECORD_ENABLED_SHAPE,
+    ANIMATION_RECORD_SPEED_SHAPE, CURVE_RECORD_POINTS_SHAPE,
 };
 use crate::structured_family_write_target::structured_family_path_is_active_real_config;
 
@@ -376,15 +377,22 @@ pub fn verify_saved_record_named(
     Ok(())
 }
 
-/// A picked-record save request: exactly the two proven record shapes. The
+/// A picked-record save request: exactly the proven record shapes. The
 /// enum cannot express any other family, field, or operation — there is no
 /// record creation request and no removal request.
 #[derive(Debug, Clone, PartialEq)]
 pub enum FamilyRecordSaveRequest {
-    /// Persist the speed of an animation record that already carries an
-    /// explicit override (other fields are re-rendered from the readback,
-    /// preserving enabled/bezier/style).
-    AnimationRecordSpeed { record: String, speed: f64 },
+    /// Persist the proven fields (enabled, speed, bezier) of an animation
+    /// record that already carries an explicit override. The style is
+    /// re-rendered from the readback (preserved, never edited), and the
+    /// bezier must name a curve that already exists in the readback. Each
+    /// field is covered by its own passed shape-proof receipt.
+    AnimationRecordFields {
+        record: String,
+        enabled: bool,
+        speed: f64,
+        bezier: String,
+    },
     /// Persist the four control points of a bezier curve that already
     /// exists in the runtime readback.
     CurveRecordPoints {
@@ -399,29 +407,36 @@ pub enum FamilyRecordSaveRequest {
 impl FamilyRecordSaveRequest {
     pub fn family_id(&self) -> &'static str {
         match self {
-            Self::AnimationRecordSpeed { .. } => "hl.animation",
+            Self::AnimationRecordFields { .. } => "hl.animation",
             Self::CurveRecordPoints { .. } => "hl.curve",
         }
     }
 
     pub fn record(&self) -> &str {
         match self {
-            Self::AnimationRecordSpeed { record, .. } => record,
+            Self::AnimationRecordFields { record, .. } => record,
             Self::CurveRecordPoints { record, .. } => record,
         }
     }
 
     fn kind(&self) -> StructuredFamilyKind {
         match self {
-            Self::AnimationRecordSpeed { .. } => StructuredFamilyKind::Animation,
+            Self::AnimationRecordFields { .. } => StructuredFamilyKind::Animation,
             Self::CurveRecordPoints { .. } => StructuredFamilyKind::Curve,
         }
     }
 
-    fn shape(&self) -> &'static str {
+    /// Every shape receipt the request depends on. A field may only be
+    /// carried by a request whose shape passed a live proof, so the
+    /// combined animation request requires all three animation shapes.
+    fn required_shapes(&self) -> &'static [&'static str] {
         match self {
-            Self::AnimationRecordSpeed { .. } => ANIMATION_RECORD_SPEED_SHAPE,
-            Self::CurveRecordPoints { .. } => CURVE_RECORD_POINTS_SHAPE,
+            Self::AnimationRecordFields { .. } => &[
+                ANIMATION_RECORD_SPEED_SHAPE,
+                ANIMATION_RECORD_ENABLED_SHAPE,
+                ANIMATION_RECORD_BEZIER_SHAPE,
+            ],
+            Self::CurveRecordPoints { .. } => &[CURVE_RECORD_POINTS_SHAPE],
         }
     }
 
@@ -438,10 +453,15 @@ impl FamilyRecordSaveRequest {
             ));
         }
         match self {
-            Self::AnimationRecordSpeed { speed, .. } => {
+            Self::AnimationRecordFields { speed, bezier, .. } => {
                 if !speed.is_finite() || !(0.1..=20.0).contains(speed) {
                     return Err(FamilySaveError::InvalidValue(
                         "animation speed saves are limited to 0.1..=20".to_string(),
+                    ));
+                }
+                if !record_name_safe(bezier) || bezier.starts_with("__") {
+                    return Err(FamilySaveError::InvalidValue(
+                        "bezier name is not in the safe user-record set".to_string(),
                     ));
                 }
             }
@@ -467,7 +487,17 @@ impl FamilyRecordSaveRequest {
 
     fn saved_value_text(&self) -> String {
         match self {
-            Self::AnimationRecordSpeed { speed, .. } => format!("{speed}"),
+            Self::AnimationRecordFields {
+                enabled,
+                speed,
+                bezier,
+                ..
+            } => {
+                format!(
+                    "enabled {}, speed {speed}, bezier {bezier}",
+                    if *enabled { "1" } else { "0" }
+                )
+            }
             Self::CurveRecordPoints { x0, y0, x1, y1, .. } => {
                 format!("({x0}, {y0}, {x1}, {y1})")
             }
@@ -479,8 +509,9 @@ impl FamilyRecordSaveRequest {
 /// modify-existing: the record must already exist in the readback, and an
 /// animation record must already carry an explicit override (persisting an
 /// inherited record would create a new override — creation is blocked).
-/// Animation fields other than speed (enabled, bezier, style) are preserved
-/// exactly as the readback reports them.
+/// The animation bezier must name a curve that already exists in the
+/// readback (only existing curves can be referenced), and the style is
+/// preserved exactly as the readback reports it (never edited here).
 pub fn render_record_request_line(
     request: &FamilyRecordSaveRequest,
     runner: &mut dyn RuntimePreviewRunner,
@@ -489,7 +520,12 @@ pub fn render_record_request_line(
         .run("hyprctl", &["animations".to_string()])
         .map_err(FamilySaveError::ConfigUnavailable)?;
     match request {
-        FamilyRecordSaveRequest::AnimationRecordSpeed { record, speed } => {
+        FamilyRecordSaveRequest::AnimationRecordFields {
+            record,
+            enabled,
+            speed,
+            bezier,
+        } => {
             let runtime_record = parse_animation_records(&listing)
                 .into_iter()
                 .find(|candidate| candidate.name == *record)
@@ -503,23 +539,20 @@ pub fn render_record_request_line(
                     "animation record {record} inherits its values; saving it would create a new override, and record creation is blocked"
                 )));
             }
-            let onoff = if runtime_record.enabled == "1" {
-                "1"
-            } else {
-                "0"
-            };
-            let bezier_name = if runtime_record.bezier.is_empty() {
-                "default"
-            } else {
-                &runtime_record.bezier
-            };
+            if !parse_bezier_records(&listing)
+                .into_iter()
+                .any(|curve| curve.name == *bezier)
+            {
+                return Err(FamilySaveError::InvalidValue(format!(
+                    "bezier {bezier} does not exist in the runtime readback; only existing curves can be referenced"
+                )));
+            }
+            let onoff = if *enabled { "1" } else { "0" };
             if runtime_record.style.is_empty() {
-                Ok(format!(
-                    "animation = {record}, {onoff}, {speed}, {bezier_name}"
-                ))
+                Ok(format!("animation = {record}, {onoff}, {speed}, {bezier}"))
             } else {
                 Ok(format!(
-                    "animation = {record}, {onoff}, {speed}, {bezier_name}, {}",
+                    "animation = {record}, {onoff}, {speed}, {bezier}, {}",
                     runtime_record.style
                 ))
             }
@@ -555,11 +588,14 @@ pub fn gated_family_record_save(
     discovery: &ConfigDiscovery,
     request: FamilyRecordSaveRequest,
 ) -> Result<FamilySaveReceipt, FamilySaveError> {
-    // Gate 1: the record shape must carry a passed live-proof receipt.
-    if proven_record_shape_proof(request.family_id(), request.shape()).is_none() {
-        return Err(FamilySaveError::FamilyNotProven(
-            "no passed live proof receipt exists for this record shape",
-        ));
+    // Gate 1: every record shape the request carries must have a passed
+    // live-proof receipt.
+    for shape in request.required_shapes() {
+        if proven_record_shape_proof(request.family_id(), shape).is_none() {
+            return Err(FamilySaveError::FamilyNotProven(
+                "no passed live proof receipt exists for this record shape",
+            ));
+        }
     }
     request.validate()?;
 

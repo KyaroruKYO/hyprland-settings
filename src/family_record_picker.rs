@@ -6,15 +6,24 @@
 //! the recorded live-proof receipts, and exposes supervised preview plus
 //! gated Save only for records whose shape carries a passed proof:
 //!
-//! - `hl.animation`: the speed of an animation leaf that already carries an
-//!   explicit override. Inherited leaves are blocked (persisting one would
-//!   create a new override — creation is blocked). Internal compositor
-//!   records (`__`-prefixed) are blocked. Leaves with a non-empty style are
-//!   save-only: the rendered config line preserves the style, but the
-//!   runtime preview command's style handling is not live-proven.
+//! - `hl.animation`: the enabled flag, speed, and bezier reference of an
+//!   animation leaf that already carries an explicit override — each field
+//!   behind its own passed shape proof. The bezier may only name a curve
+//!   that already exists in the readback. Inherited leaves are blocked
+//!   (persisting one would create a new override — creation is blocked).
+//!   Internal compositor records (`__`-prefixed) are blocked. Leaves with a
+//!   non-empty style are save-only: the rendered config line preserves the
+//!   style, but the runtime preview command's style handling is not
+//!   live-proven. The style field itself is not editable anywhere: the set
+//!   of valid style values is not known from trusted evidence.
 //! - `hl.curve`: the four control points of a bezier curve that already
 //!   exists in the readback. The proven runtime command always writes all
 //!   four points, so editing any point is the same proven command shape.
+//!
+//! Live-proven compositor semantics the preview honors: while a record is
+//! disabled, the compositor resets its speed/bezier readback (speed 1.00,
+//! bezier default), so a preview that leaves a record disabled verifies the
+//! enabled flag only; reverts always restore and verify the full record.
 //!
 //! Only these two families can be expressed here; there is no record
 //! creation and no record removal — those operations do not exist in this
@@ -34,9 +43,21 @@ use crate::structured_family_gated_persistence::{
 };
 use crate::structured_family_runtime_preview::{
     parse_animation_records, parse_bezier_records, proven_record_shape_proof,
-    AnimationRuntimeRecord, BezierRuntimeRecord, ANIMATION_RECORD_SPEED_SHAPE,
-    CURVE_RECORD_POINTS_SHAPE,
+    AnimationRuntimeRecord, BezierRuntimeRecord, ANIMATION_RECORD_BEZIER_SHAPE,
+    ANIMATION_RECORD_ENABLED_SHAPE, ANIMATION_RECORD_SPEED_SHAPE, CURVE_RECORD_POINTS_SHAPE,
 };
+
+/// Why the animation style field is not editable anywhere in the picker.
+/// Shown as a disabled row in the UI — support requires trusted evidence of
+/// the valid per-record style values plus a passed live proof, and neither
+/// exists.
+pub const ANIMATION_STYLE_BLOCKED_REASON: &str = "Style is not editable: the set of valid style values is not known from trusted evidence, and style handling through the runtime command has no passed live proof. Saves preserve the current style unchanged.";
+
+/// Why gesture-family records have no picker. The compositor exposes no
+/// gesture readback listing (the gestures request is unknown to hyprctl on
+/// 0.55.4), so modify-existing verification is impossible — and honest
+/// proofs would additionally need touch hardware.
+pub const GESTURE_FAMILY_BLOCKED_REASON: &str = "Gesture records have no runtime readback listing on Hyprland 0.55.4, so a modify-existing edit cannot be verified; gesture proofs also require touch hardware, which is deferred.";
 
 pub const RECORD_PICKER_COUNTDOWN_MS: u64 = 10_000;
 
@@ -116,10 +137,17 @@ pub fn record_name_is_safe(name: &str) -> bool {
             .all(|character| character.is_ascii_alphanumeric() || character == '_')
 }
 
-/// Classify every animation leaf in the listing for the picker.
+/// Classify every animation leaf in the listing for the picker. Full
+/// support needs a passed proof receipt for every editable field's shape
+/// (speed, enabled, bezier) — a missing receipt fails closed to Blocked.
 pub fn animation_record_entries(listing: &str) -> Vec<AnimationRecordEntry> {
-    let shape_proven =
-        proven_record_shape_proof("hl.animation", ANIMATION_RECORD_SPEED_SHAPE).is_some();
+    let shape_proven = [
+        ANIMATION_RECORD_SPEED_SHAPE,
+        ANIMATION_RECORD_ENABLED_SHAPE,
+        ANIMATION_RECORD_BEZIER_SHAPE,
+    ]
+    .iter()
+    .all(|shape| proven_record_shape_proof("hl.animation", shape).is_some());
     parse_animation_records(listing)
         .into_iter()
         .map(|record| {
@@ -159,7 +187,7 @@ pub fn animation_record_entries(listing: &str) -> Vec<AnimationRecordEntry> {
             } else if !shape_proven {
                 (
                     RecordPickerSupport::Blocked,
-                    Some("record shape not live-proven yet: no passed proof receipt exists for modifying an arbitrary overridden animation record".to_string()),
+                    Some("record shape not live-proven yet: a passed proof receipt is required for every editable animation field (speed, enabled, bezier)".to_string()),
                 )
             } else if !record.style.is_empty() {
                 (
@@ -169,15 +197,11 @@ pub fn animation_record_entries(listing: &str) -> Vec<AnimationRecordEntry> {
                             .to_string(),
                     ),
                 )
-            } else if record.enabled != "1" {
-                (
-                    RecordPickerSupport::SaveOnly,
-                    Some(
-                        "live preview blocked: the record is disabled at runtime and the compositor does not apply speed changes to disabled records, so a preview cannot be readback-verified (found by live proof); Save persists the config line"
-                            .to_string(),
-                    ),
-                )
             } else {
+                // Disabled records are preview-supported through the proven
+                // enabled shape (0->1->0 round trip passed live); while a
+                // record stays disabled, only its enabled flag is verifiable
+                // (the compositor resets disabled speed/bezier readback).
                 (RecordPickerSupport::SupportedProven, None)
             };
             AnimationRecordEntry {
@@ -268,6 +292,21 @@ pub fn validate_animation_speed(value: f64) -> Result<(), String> {
     Ok(())
 }
 
+/// Validate a bezier reference for an animation record: a safe,
+/// non-internal name that already exists in the readback curve list. Only
+/// existing curves can ever be referenced (modify-existing, no creation).
+pub fn validate_animation_bezier(bezier: &str, existing_curves: &[String]) -> Result<(), String> {
+    if !record_name_is_safe(bezier) || bezier.starts_with("__") {
+        return Err("bezier name is not in the safe user-record set".to_string());
+    }
+    if !existing_curves.iter().any(|curve| curve == bezier) {
+        return Err(format!(
+            "bezier {bezier} does not exist in the runtime readback; only existing curves can be referenced"
+        ));
+    }
+    Ok(())
+}
+
 /// Validate the four control points for a curve record.
 pub fn validate_curve_points(x0: f64, y0: f64, x1: f64, y1: f64) -> Result<(), String> {
     for x in [x0, x1] {
@@ -287,33 +326,40 @@ pub fn validate_curve_points(x0: f64, y0: f64, x1: f64, y1: f64) -> Result<(), S
     Ok(())
 }
 
+/// The fixed-shape runtime expression writing an animation record's proven
+/// fields (enabled, speed, bezier). Every proven shape runs through this
+/// one expression form.
+pub fn render_animation_record_expression(
+    record_name: &str,
+    enabled: bool,
+    speed: f64,
+    bezier: &str,
+) -> Result<String, String> {
+    if !record_name_is_safe(record_name) {
+        return Err("unsafe record name".to_string());
+    }
+    validate_animation_speed(speed)?;
+    if !record_name_is_safe(bezier) {
+        return Err("unsafe bezier name".to_string());
+    }
+    let enabled_lua = if enabled { "true" } else { "false" };
+    Ok(format!(
+        "hl.animation({{ leaf = \"{record_name}\", enabled = {enabled_lua}, speed = {speed}, bezier = \"{bezier}\" }})"
+    ))
+}
+
 /// The fixed-shape runtime expression for an animation record preview.
 /// Fields other than speed come from the captured readback record.
 pub fn render_animation_preview_expression(
     record: &AnimationRuntimeRecord,
     speed: f64,
 ) -> Result<String, String> {
-    if !record_name_is_safe(&record.name) {
-        return Err("unsafe record name".to_string());
-    }
-    validate_animation_speed(speed)?;
-    let enabled_lua = if record.enabled == "1" {
-        "true"
-    } else {
-        "false"
-    };
     let bezier_name = if record.bezier.is_empty() {
         "default".to_string()
     } else {
         record.bezier.clone()
     };
-    if !record_name_is_safe(&bezier_name) {
-        return Err("unsafe bezier name".to_string());
-    }
-    Ok(format!(
-        "hl.animation({{ leaf = \"{}\", enabled = {enabled_lua}, speed = {speed}, bezier = \"{bezier_name}\" }})",
-        record.name
-    ))
+    render_animation_record_expression(&record.name, record.enabled == "1", speed, &bezier_name)
 }
 
 /// The fixed-shape runtime expression for a curve record preview. The proven
@@ -395,17 +441,46 @@ impl RecordPickerError {
     }
 }
 
-/// The values a preview or save can carry — exactly the two proven shapes.
-#[derive(Debug, Clone, Copy, PartialEq, Serialize)]
+/// The values a preview or save can carry — exactly the proven shapes. The
+/// animation values bundle the three proven fields (each behind its own
+/// receipt); the same fixed expression writes all of them every time.
+#[derive(Debug, Clone, PartialEq, Serialize)]
 pub enum PickedRecordValues {
-    AnimationSpeed { speed: f64 },
-    CurvePoints { x0: f64, y0: f64, x1: f64, y1: f64 },
+    AnimationRecord {
+        enabled: bool,
+        speed: f64,
+        bezier: String,
+    },
+    CurvePoints {
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+    },
 }
 
 #[derive(Debug, Clone)]
 enum CapturedOriginal {
     Animation(AnimationRuntimeRecord),
     Curve(BezierRuntimeRecord),
+}
+
+/// Full-record equality with numeric tolerance on the speed (the readback
+/// formats speeds with trailing zeros).
+fn animation_records_equivalent(
+    left: &AnimationRuntimeRecord,
+    right: &AnimationRuntimeRecord,
+) -> bool {
+    let speeds_match = match (left.speed.parse::<f64>(), right.speed.parse::<f64>()) {
+        (Ok(left_speed), Ok(right_speed)) => (left_speed - right_speed).abs() < 1e-3,
+        _ => left.speed == right.speed,
+    };
+    left.name == right.name
+        && left.overridden == right.overridden
+        && left.bezier == right.bezier
+        && left.enabled == right.enabled
+        && left.style == right.style
+        && speeds_match
 }
 
 /// Supervised preview controller for one picked record. Same recovery
@@ -504,7 +579,19 @@ impl FamilyRecordPreviewController {
     /// Read the record's current value text (read-only).
     pub fn current_value(&mut self) -> Result<String, RecordPickerError> {
         match self.family {
-            PickedFamily::Animation => Ok(self.read_animation_record()?.speed),
+            PickedFamily::Animation => {
+                let record = self.read_animation_record()?;
+                Ok(format!(
+                    "enabled {}, speed {}, bezier {}",
+                    record.enabled,
+                    record.speed,
+                    if record.bezier.is_empty() {
+                        "default"
+                    } else {
+                        &record.bezier
+                    }
+                ))
+            }
             PickedFamily::Curve => {
                 let record = self.read_curve_record()?;
                 Ok(format!(
@@ -522,19 +609,44 @@ impl FamilyRecordPreviewController {
         &mut self,
         values: PickedRecordValues,
     ) -> Result<RecordPickerReceipt, RecordPickerError> {
-        let (expression, applied_text) = match (self.family, values) {
-            (PickedFamily::Animation, PickedRecordValues::AnimationSpeed { speed }) => {
-                let record = self.read_animation_record()?;
+        let (expression, applied_text) = match (self.family, &values) {
+            (
+                PickedFamily::Animation,
+                PickedRecordValues::AnimationRecord {
+                    enabled,
+                    speed,
+                    bezier,
+                },
+            ) => {
+                let listing =
+                    read_animations(self.runner.as_mut()).map_err(RecordPickerError::Runner)?;
+                let record = parse_animation_records(&listing)
+                    .into_iter()
+                    .find(|record| record.name == self.record_name)
+                    .ok_or_else(|| RecordPickerError::RecordMissing(self.record_name.clone()))?;
+                let existing_curves: Vec<String> = parse_bezier_records(&listing)
+                    .into_iter()
+                    .map(|curve| curve.name)
+                    .collect();
+                validate_animation_bezier(bezier, &existing_curves)
+                    .map_err(RecordPickerError::InvalidValue)?;
                 if self.original.is_none() {
                     self.original = Some(CapturedOriginal::Animation(record.clone()));
                 }
                 (
-                    render_animation_preview_expression(&record, speed)
+                    render_animation_record_expression(&record.name, *enabled, *speed, bezier)
                         .map_err(RecordPickerError::InvalidValue)?,
-                    format!("speed = {speed}"),
+                    format!(
+                        "enabled = {enabled}, speed = {speed}, bezier = {bezier}{}",
+                        if *enabled {
+                            ""
+                        } else {
+                            " (record disabled: only the enabled flag is verifiable while disabled)"
+                        }
+                    ),
                 )
             }
-            (PickedFamily::Curve, PickedRecordValues::CurvePoints { x0, y0, x1, y1 }) => {
+            (PickedFamily::Curve, &PickedRecordValues::CurvePoints { x0, y0, x1, y1 }) => {
                 let record = self.read_curve_record()?;
                 if self.original.is_none() {
                     self.original = Some(CapturedOriginal::Curve(record.clone()));
@@ -556,7 +668,7 @@ impl FamilyRecordPreviewController {
             .map_err(RecordPickerError::Runner)?;
 
         // Verify the apply through readback.
-        self.verify_values(values)?;
+        self.verify_values(&values)?;
 
         self.phase = RecordPickerPhase::CountingDown;
         let mut dead_man = RuntimePreviewDeadMan::new(RECORD_PICKER_COUNTDOWN_MS);
@@ -575,18 +687,41 @@ impl FamilyRecordPreviewController {
         ))
     }
 
-    fn verify_values(&mut self, values: PickedRecordValues) -> Result<(), RecordPickerError> {
-        match values {
-            PickedRecordValues::AnimationSpeed { speed } => {
+    fn verify_values(&mut self, values: &PickedRecordValues) -> Result<(), RecordPickerError> {
+        match *values {
+            PickedRecordValues::AnimationRecord {
+                enabled,
+                speed,
+                ref bezier,
+            } => {
                 let observed = self.read_animation_record()?;
-                let observed_speed: f64 = observed.speed.parse().map_err(|_| {
-                    RecordPickerError::VerificationFailed("readback speed did not parse".into())
-                })?;
-                if (observed_speed - speed).abs() > 1e-3 {
+                let expected_enabled = if enabled { "1" } else { "0" };
+                if observed.enabled != expected_enabled {
                     return Err(RecordPickerError::VerificationFailed(format!(
-                        "expected speed {speed}, observed {}",
-                        observed.speed
+                        "expected enabled {expected_enabled}, observed {}",
+                        observed.enabled
                     )));
+                }
+                // Live-proven compositor semantics: a disabled record's
+                // speed/bezier readback is reset (speed 1.00, bezier
+                // default), so those fields are only verifiable while the
+                // record is enabled.
+                if enabled {
+                    let observed_speed: f64 = observed.speed.parse().map_err(|_| {
+                        RecordPickerError::VerificationFailed("readback speed did not parse".into())
+                    })?;
+                    if (observed_speed - speed).abs() > 1e-3 {
+                        return Err(RecordPickerError::VerificationFailed(format!(
+                            "expected speed {speed}, observed {}",
+                            observed.speed
+                        )));
+                    }
+                    if observed.bezier != *bezier {
+                        return Err(RecordPickerError::VerificationFailed(format!(
+                            "expected bezier {bezier}, observed {}",
+                            observed.bezier
+                        )));
+                    }
                 }
             }
             PickedRecordValues::CurvePoints { x0, y0, x1, y1 } => {
@@ -667,8 +802,17 @@ impl FamilyRecordPreviewController {
                 (
                     render_animation_preview_expression(&record, speed)
                         .map_err(RecordPickerError::InvalidValue)?,
-                    record.speed.clone(),
-                    PickedRecordValues::AnimationSpeed { speed },
+                    format!(
+                        "enabled {}, speed {}, bezier {}",
+                        record.enabled,
+                        record.speed,
+                        if record.bezier.is_empty() {
+                            "default"
+                        } else {
+                            &record.bezier
+                        }
+                    ),
+                    None,
                 )
             }
             CapturedOriginal::Curve(record) => (
@@ -684,19 +828,34 @@ impl FamilyRecordPreviewController {
                     "({}, {}, {}, {})",
                     record.x0, record.y0, record.x1, record.y1
                 ),
-                PickedRecordValues::CurvePoints {
+                Some(PickedRecordValues::CurvePoints {
                     x0: record.x0,
                     y0: record.y0,
                     x1: record.x1,
                     y1: record.y1,
-                },
+                }),
             ),
         };
         self.runner
             .run("hyprctl", &["eval".to_string(), expression])
             .map_err(RecordPickerError::Runner)?;
-        // Verify the exact restore through readback.
-        self.verify_values(values)?;
+        // Verify the exact restore through readback. Animation reverts
+        // compare the FULL record against the captured original (zero
+        // residue — proven to hold even for disabled originals, whose reset
+        // readback values are canonical).
+        match values {
+            Some(curve_values) => self.verify_values(&curve_values)?,
+            None => {
+                let observed = self.read_animation_record()?;
+                if let Some(CapturedOriginal::Animation(original_record)) = &self.original {
+                    if !animation_records_equivalent(&observed, original_record) {
+                        return Err(RecordPickerError::VerificationFailed(format!(
+                            "full-record restore mismatch: original {original_record:?}, observed {observed:?}"
+                        )));
+                    }
+                }
+            }
+        }
         let record = self.record_name.clone();
         Ok(self.receipt(
             action,
@@ -778,12 +937,19 @@ pub fn save_picked_record(
     values: PickedRecordValues,
 ) -> Result<FamilySaveReceipt, FamilySaveError> {
     let request = match (family, values) {
-        (PickedFamily::Animation, PickedRecordValues::AnimationSpeed { speed }) => {
-            FamilyRecordSaveRequest::AnimationRecordSpeed {
-                record: record_name.to_string(),
+        (
+            PickedFamily::Animation,
+            PickedRecordValues::AnimationRecord {
+                enabled,
                 speed,
-            }
-        }
+                bezier,
+            },
+        ) => FamilyRecordSaveRequest::AnimationRecordFields {
+            record: record_name.to_string(),
+            enabled,
+            speed,
+            bezier,
+        },
         (PickedFamily::Curve, PickedRecordValues::CurvePoints { x0, y0, x1, y1 }) => {
             FamilyRecordSaveRequest::CurveRecordPoints {
                 record: record_name.to_string(),

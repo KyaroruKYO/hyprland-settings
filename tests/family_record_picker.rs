@@ -10,7 +10,8 @@ use hyprland_settings::config_discovery::{
 };
 use hyprland_settings::family_record_picker::{
     animation_record_entries, curve_record_entries, record_name_is_safe,
-    render_animation_preview_expression, render_curve_preview_expression, save_picked_record,
+    render_animation_preview_expression, render_animation_record_expression,
+    render_curve_preview_expression, save_picked_record, validate_animation_bezier,
     FamilyRecordPreviewController, PickedFamily, PickedRecordValues, RecordPickerError,
     RecordPickerPhase, RecordPickerSupport,
 };
@@ -21,7 +22,8 @@ use hyprland_settings::structured_family_gated_persistence::{
 };
 use hyprland_settings::structured_family_runtime_preview::{
     parse_animation_records, parse_bezier_records, proven_record_shape_proof,
-    ANIMATION_RECORD_SPEED_SHAPE, CURVE_RECORD_POINTS_SHAPE, PROVEN_RECORD_SHAPE_PROOFS,
+    ANIMATION_RECORD_BEZIER_SHAPE, ANIMATION_RECORD_ENABLED_SHAPE, ANIMATION_RECORD_SPEED_SHAPE,
+    CURVE_RECORD_POINTS_SHAPE, PROVEN_RECORD_SHAPE_PROOFS,
 };
 
 /// A listing in the real `hyprctl animations` format with one record of
@@ -37,6 +39,7 @@ fn mock_listing(fade_speed: &str, quick_x1: f64) -> String {
          \tname: fade\n\t\toverriden: 1\n\t\tbezier: quick\n\t\tenabled: 1\n\t\tspeed: {fade_speed}\n\t\tstyle: \n\n\
          beziers:\n\n\
          \tname: quick\n\t\tX0: 0.15\n\t\tY0: 0.00\n\t\tX1: {quick_x1}\n\t\tY1: 1.00\n\
+         \tname: easeOutQuint\n\t\tX0: 0.23\n\t\tY0: 1.00\n\t\tX1: 0.32\n\t\tY1: 1.00\n\
          \tname: default\n\t\tX0: 0.00\n\t\tY0: 0.75\n\t\tX1: 0.15\n\t\tY1: 1.00\n"
     )
 }
@@ -103,17 +106,31 @@ fn found_discovery(path: std::path::PathBuf) -> ConfigDiscovery {
 }
 
 #[test]
-fn shape_proof_receipts_exist_for_both_picker_shapes() {
-    assert_eq!(PROVEN_RECORD_SHAPE_PROOFS.len(), 2);
-    let animation = proven_record_shape_proof("hl.animation", ANIMATION_RECORD_SPEED_SHAPE)
-        .expect("animation shape receipt recorded");
-    assert_eq!(animation.proven_on_record, "fade");
-    assert!(animation.verification.contains("zero residue"));
+fn shape_proof_receipts_exist_for_every_picker_shape() {
+    assert_eq!(PROVEN_RECORD_SHAPE_PROOFS.len(), 4);
+    let speed = proven_record_shape_proof("hl.animation", ANIMATION_RECORD_SPEED_SHAPE)
+        .expect("animation speed shape receipt recorded");
+    assert_eq!(speed.proven_on_record, "fade");
+    let enabled = proven_record_shape_proof("hl.animation", ANIMATION_RECORD_ENABLED_SHAPE)
+        .expect("animation enabled shape receipt recorded");
+    assert!(enabled.proven_on_record.contains("border"));
+    assert!(enabled.proven_on_record.contains("borderangle"));
+    assert!(
+        enabled.verification.contains("resets"),
+        "the receipt records the disabled-readback-reset finding"
+    );
+    let bezier = proven_record_shape_proof("hl.animation", ANIMATION_RECORD_BEZIER_SHAPE)
+        .expect("animation bezier shape receipt recorded");
+    assert_eq!(bezier.proven_on_record, "windows");
+    assert!(bezier.verification.contains("existing curve"));
     let curve = proven_record_shape_proof("hl.curve", CURVE_RECORD_POINTS_SHAPE)
         .expect("curve shape receipt recorded");
     assert_eq!(curve.proven_on_record, "quick");
     // Receipts prove generalization on non-family-proof records.
-    assert_ne!(animation.proven_on_record, "global");
+    for receipt in [speed, enabled, bezier] {
+        assert!(receipt.verification.contains("zero residue"));
+        assert_ne!(receipt.proven_on_record, "global");
+    }
     assert_ne!(curve.proven_on_record, "default");
 }
 
@@ -136,7 +153,7 @@ fn listing_parsers_read_the_real_readback_format() {
     assert!(!inherited.overridden);
 
     let beziers = parse_bezier_records(&listing);
-    assert_eq!(beziers.len(), 2);
+    assert_eq!(beziers.len(), 3);
     let quick = beziers
         .iter()
         .find(|record| record.name == "quick")
@@ -173,14 +190,11 @@ fn animation_classification_is_honest_per_record() {
         .expect("reason")
         .contains("style"));
 
-    // Disabled at runtime: save-only (found by live proof).
+    // Disabled at runtime: preview-supported through the proven enabled
+    // shape (a 0->1->0 round trip passed live on borderangle itself).
     let borderangle = support("borderangle");
-    assert_eq!(borderangle.support, RecordPickerSupport::SaveOnly);
-    assert!(borderangle
-        .blocked_reason
-        .as_deref()
-        .expect("reason")
-        .contains("disabled"));
+    assert_eq!(borderangle.support, RecordPickerSupport::SupportedProven);
+    assert!(borderangle.preview_supported && borderangle.save_supported);
 
     // Inherited: blocked — saving would create an override.
     let inherited = support("specialWorkspaceOut");
@@ -201,7 +215,7 @@ fn animation_classification_is_honest_per_record() {
 #[test]
 fn curve_classification_supports_existing_curves_only() {
     let entries = curve_record_entries(&mock_listing("3.00", 0.10));
-    assert_eq!(entries.len(), 2);
+    assert_eq!(entries.len(), 3);
     for entry in &entries {
         assert_eq!(entry.support, RecordPickerSupport::SupportedProven);
         assert!(entry.preview_supported && entry.save_supported);
@@ -229,6 +243,11 @@ fn preview_expressions_are_fixed_shape() {
         render_animation_preview_expression(&fade, 3.25).expect("renders"),
         "hl.animation({ leaf = \"fade\", enabled = true, speed = 3.25, bezier = \"quick\" })"
     );
+    // The generalized record expression writes exactly the proven fields.
+    assert_eq!(
+        render_animation_record_expression("fade", false, 3.25, "default").expect("renders"),
+        "hl.animation({ leaf = \"fade\", enabled = false, speed = 3.25, bezier = \"default\" })"
+    );
     assert_eq!(
         render_curve_preview_expression("quick", 0.15, 0.0, 0.11, 1.0).expect("renders"),
         "hl.curve(\"quick\", { type = \"bezier\", points = { {0.15, 0}, {0.11, 1} } })"
@@ -236,17 +255,20 @@ fn preview_expressions_are_fixed_shape() {
     // Out-of-range values refuse before any command exists.
     assert!(render_animation_preview_expression(&fade, 0.0).is_err());
     assert!(render_curve_preview_expression("quick", 1.5, 0.0, 0.1, 1.0).is_err());
+    assert!(render_animation_record_expression("fade", true, 3.0, "bad name").is_err());
+
+    // Bezier references validate against the existing-curves list only.
+    let curves = vec!["quick".to_string(), "default".to_string()];
+    assert!(validate_animation_bezier("quick", &curves).is_ok());
+    assert!(validate_animation_bezier("missing", &curves).is_err());
+    assert!(validate_animation_bezier("__internal", &curves).is_err());
+    assert!(validate_animation_bezier("bad name", &curves).is_err());
 }
 
 #[test]
 fn controller_refuses_blocked_and_missing_records() {
     let listing = mock_listing("3.00", 0.10);
-    for blocked in [
-        "workspaces",
-        "borderangle",
-        "specialWorkspaceOut",
-        "__internal_fadeCTM",
-    ] {
+    for blocked in ["workspaces", "specialWorkspaceOut", "__internal_fadeCTM"] {
         let error = FamilyRecordPreviewController::new(
             PickedFamily::Animation,
             blocked,
@@ -279,19 +301,50 @@ fn controller_round_trips_with_verified_apply_and_revert() {
     )
     .expect("fade is supported");
     assert_eq!(controller.phase(), RecordPickerPhase::Disarmed);
-    assert_eq!(controller.current_value().expect("reads"), "3.00");
+    assert_eq!(
+        controller.current_value().expect("reads"),
+        "enabled 1, speed 3.00, bezier quick"
+    );
 
     let receipt = controller
-        .preview(PickedRecordValues::AnimationSpeed { speed: 3.25 })
+        .preview(PickedRecordValues::AnimationRecord {
+            enabled: true,
+            speed: 3.25,
+            bezier: "quick".to_string(),
+        })
         .expect("preview applies and verifies");
     assert_eq!(receipt.phase, RecordPickerPhase::CountingDown);
     assert!(!receipt.config_written);
     assert!(!receipt.reload_run);
-    assert_eq!(controller.current_value().expect("reads"), "3.25");
+    assert_eq!(
+        controller.current_value().expect("reads"),
+        "enabled 1, speed 3.25, bezier quick"
+    );
 
     controller.revert_now().expect("revert verifies");
     assert_eq!(controller.phase(), RecordPickerPhase::Reverted);
-    assert_eq!(controller.current_value().expect("reads"), "3");
+    assert_eq!(
+        controller.current_value().expect("reads"),
+        "enabled 1, speed 3, bezier quick"
+    );
+
+    // A bezier outside the existing-curves readback refuses before any
+    // command is issued.
+    let mut controller = FamilyRecordPreviewController::new(
+        PickedFamily::Animation,
+        "fade",
+        Box::new(MockRunner::new("true")),
+        &listing,
+    )
+    .expect("fade is supported");
+    let error = controller
+        .preview(PickedRecordValues::AnimationRecord {
+            enabled: true,
+            speed: 3.25,
+            bezier: "not_a_curve".to_string(),
+        })
+        .expect_err("nonexistent bezier refuses");
+    assert!(matches!(error, RecordPickerError::InvalidValue(_)));
 }
 
 #[test]
@@ -327,7 +380,11 @@ fn controller_timeout_auto_reverts_and_session_drop_reverts_unconfirmed() {
     )
     .expect("supported");
     controller
-        .preview(PickedRecordValues::AnimationSpeed { speed: 3.25 })
+        .preview(PickedRecordValues::AnimationRecord {
+            enabled: true,
+            speed: 3.25,
+            bezier: "quick".to_string(),
+        })
         .expect("preview applies");
     assert!(controller.revert_if_unconfirmed().is_some());
     let mut controller = FamilyRecordPreviewController::new(
@@ -338,7 +395,11 @@ fn controller_timeout_auto_reverts_and_session_drop_reverts_unconfirmed() {
     )
     .expect("supported");
     controller
-        .preview(PickedRecordValues::AnimationSpeed { speed: 3.25 })
+        .preview(PickedRecordValues::AnimationRecord {
+            enabled: true,
+            speed: 3.25,
+            bezier: "quick".to_string(),
+        })
         .expect("preview applies");
     controller.keep().expect("keep confirms");
     assert!(controller.revert_if_unconfirmed().is_none());
@@ -350,9 +411,11 @@ fn record_request_render_enforces_modify_existing_and_preserves_style() {
 
     // Styled record: the rendered line preserves the style field.
     let line = render_record_request_line(
-        &FamilyRecordSaveRequest::AnimationRecordSpeed {
+        &FamilyRecordSaveRequest::AnimationRecordFields {
             record: "workspaces".to_string(),
+            enabled: true,
             speed: 3.5,
+            bezier: "easeOutQuint".to_string(),
         },
         &mut runner,
     )
@@ -361,20 +424,52 @@ fn record_request_render_enforces_modify_existing_and_preserves_style() {
 
     // Disabled record: onoff renders 0.
     let line = render_record_request_line(
-        &FamilyRecordSaveRequest::AnimationRecordSpeed {
+        &FamilyRecordSaveRequest::AnimationRecordFields {
             record: "borderangle".to_string(),
+            enabled: false,
             speed: 1.5,
+            bezier: "default".to_string(),
         },
         &mut runner,
     )
     .expect("renders");
     assert_eq!(line, "animation = borderangle, 0, 1.5, default");
 
+    // The proven fields come from the request: enabling a disabled record
+    // and swapping its curve renders exactly what was asked.
+    let line = render_record_request_line(
+        &FamilyRecordSaveRequest::AnimationRecordFields {
+            record: "borderangle".to_string(),
+            enabled: true,
+            speed: 1.0,
+            bezier: "quick".to_string(),
+        },
+        &mut runner,
+    )
+    .expect("renders");
+    assert_eq!(line, "animation = borderangle, 1, 1, quick");
+
+    // A bezier that does not exist in the readback refuses: only existing
+    // curves can be referenced.
+    let error = render_record_request_line(
+        &FamilyRecordSaveRequest::AnimationRecordFields {
+            record: "fade".to_string(),
+            enabled: true,
+            speed: 3.0,
+            bezier: "not_a_curve".to_string(),
+        },
+        &mut runner,
+    )
+    .expect_err("nonexistent bezier refuses");
+    assert!(matches!(error, FamilySaveError::InvalidValue(_)));
+
     // Inherited record: refused — saving would create an override.
     let error = render_record_request_line(
-        &FamilyRecordSaveRequest::AnimationRecordSpeed {
+        &FamilyRecordSaveRequest::AnimationRecordFields {
             record: "specialWorkspaceOut".to_string(),
+            enabled: true,
             speed: 3.0,
+            bezier: "default".to_string(),
         },
         &mut runner,
     )
@@ -416,9 +511,11 @@ fn record_save_is_blocked_without_safe_live_save_mode() {
     let error = gated_family_record_save(
         &mut runner,
         &discovery,
-        FamilyRecordSaveRequest::AnimationRecordSpeed {
+        FamilyRecordSaveRequest::AnimationRecordFields {
             record: "fade".to_string(),
+            enabled: true,
             speed: 3.25,
+            bezier: "quick".to_string(),
         },
     )
     .expect_err("save must be blocked while autoreload is active");
@@ -434,23 +531,21 @@ fn record_save_refuses_bad_values_unsafe_names_and_non_active_targets() {
     // Invalid values and unsafe names refuse before any gate or file access.
     let mut runner = MockRunner::new("true");
     let discovery = found_discovery(std::env::temp_dir().join("never-touched.conf"));
+    let animation_request =
+        |record: &str, speed: f64, bezier: &str| FamilyRecordSaveRequest::AnimationRecordFields {
+            record: record.to_string(),
+            enabled: true,
+            speed,
+            bezier: bezier.to_string(),
+        };
     for request in [
-        FamilyRecordSaveRequest::AnimationRecordSpeed {
-            record: "fade".to_string(),
-            speed: f64::NAN,
-        },
-        FamilyRecordSaveRequest::AnimationRecordSpeed {
-            record: "fade".to_string(),
-            speed: 100.0,
-        },
-        FamilyRecordSaveRequest::AnimationRecordSpeed {
-            record: "__internal_fadeCTM".to_string(),
-            speed: 5.0,
-        },
-        FamilyRecordSaveRequest::AnimationRecordSpeed {
-            record: "bad name".to_string(),
-            speed: 5.0,
-        },
+        animation_request("fade", f64::NAN, "quick"),
+        animation_request("fade", 100.0, "quick"),
+        animation_request("__internal_fadeCTM", 5.0, "quick"),
+        animation_request("bad name", 5.0, "quick"),
+        // Unsafe or internal bezier references refuse in validation.
+        animation_request("fade", 3.0, "bad name"),
+        animation_request("fade", 3.0, "__internal_curve"),
         FamilyRecordSaveRequest::CurveRecordPoints {
             record: "quick".to_string(),
             x0: 1.5,
@@ -471,9 +566,11 @@ fn record_save_refuses_bad_values_unsafe_names_and_non_active_targets() {
     let error = gated_family_record_save(
         &mut MockRunner::new("true"),
         &found_discovery(temp.clone()),
-        FamilyRecordSaveRequest::AnimationRecordSpeed {
+        FamilyRecordSaveRequest::AnimationRecordFields {
             record: "fade".to_string(),
+            enabled: true,
             speed: 3.25,
+            bezier: "quick".to_string(),
         },
     )
     .expect_err("non-active config must be refused");
@@ -491,7 +588,11 @@ fn save_picked_record_routes_through_gated_persistence_only() {
         &discovery,
         PickedFamily::Animation,
         "fade",
-        PickedRecordValues::AnimationSpeed { speed: 3.25 },
+        PickedRecordValues::AnimationRecord {
+            enabled: true,
+            speed: 3.25,
+            bezier: "quick".to_string(),
+        },
     )
     .expect_err("gate error surfaces through the picker save");
     assert!(matches!(
@@ -506,7 +607,11 @@ fn save_picked_record_routes_through_gated_persistence_only() {
             &discovery,
             PickedFamily::Curve,
             "quick",
-            PickedRecordValues::AnimationSpeed { speed: 3.25 },
+            PickedRecordValues::AnimationRecord {
+                enabled: true,
+                speed: 3.25,
+                bezier: "quick".to_string(),
+            },
         ),
         Err(FamilySaveError::InvalidValue(_))
     ));
@@ -578,6 +683,16 @@ fn picker_sources_stay_guarded() {
     }
     // Saving goes through the gated persistence module only.
     assert!(module.contains("gated_family_record_save(runner, discovery, request)"));
+
+    // Unproven shapes appear only as disabled status with a reason: the
+    // style field has no editable control anywhere in the UI, while the
+    // proven enabled/bezier controls exist.
+    let window = fs::read_to_string("src/ui/window.rs").expect("window reads");
+    assert!(window.contains("hyprland-settings-record-picker-animation-enabled"));
+    assert!(window.contains("hyprland-settings-record-picker-animation-bezier"));
+    assert!(window.contains("hyprland-settings-record-picker-animation-style-blocked"));
+    assert!(window.contains("ANIMATION_STYLE_BLOCKED_REASON"));
+    assert!(window.contains("style_blocked.set_sensitive(false)"));
 
     // The persistence module gained exactly one generalized save entry and
     // one live wrapper alongside the pinned originals.

@@ -220,8 +220,14 @@ fn record_picker_controller_round_trips_live() {
         FamilyRecordPreviewController::new_live(PickedFamily::Animation, &animation_name)
             .expect("controller arms for a supported record");
     let receipt = controller
-        .preview(PickedRecordValues::AnimationSpeed {
+        .preview(PickedRecordValues::AnimationRecord {
+            enabled: original.enabled == "1",
             speed: original_speed + 0.25,
+            bezier: if original.bezier.is_empty() {
+                "default".to_string()
+            } else {
+                original.bezier.clone()
+            },
         })
         .expect("preview applies and verifies");
     assert_eq!(receipt.phase, RecordPickerPhase::CountingDown);
@@ -305,9 +311,15 @@ fn gated_family_record_save_flow_proof() {
     let curve = bezier_record(&listing, &curve_name);
 
     let requests = vec![
-        FamilyRecordSaveRequest::AnimationRecordSpeed {
+        FamilyRecordSaveRequest::AnimationRecordFields {
             record: animation_name.clone(),
+            enabled: animation.enabled == "1",
             speed: animation_speed,
+            bezier: if animation.bezier.is_empty() {
+                "default".to_string()
+            } else {
+                animation.bezier.clone()
+            },
         },
         FamilyRecordSaveRequest::CurveRecordPoints {
             record: curve_name.clone(),

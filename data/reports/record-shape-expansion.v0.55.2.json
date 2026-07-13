@@ -1,0 +1,68 @@
+{
+  "artifactKind": "record-shape-expansion-report",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "32ba7ef28b7941f68588d4f7992ed06d2eced235",
+  "headCommit": "the expansion commits following 32ba7ef on structured-family-editors-unified (see git log)",
+  "expansionDate": "2026-07-13",
+  "recordShapeExpansionStatus": "complete for the honestly provable non-hardware surface: animation enabled and bezier shapes proven live and wired end to end; style and gestures blocked with recorded reasons; curve already complete",
+  "newShapesInvestigated": [
+    "hl.animation enabled flag (proven)",
+    "hl.animation bezier reference (proven)",
+    "hl.animation style (blocked: no trusted evidence for valid values, no live proof possible without it)",
+    "hl.curve additional fields (none exist: the runtime schema is exactly four control points)",
+    "hl.gesture (blocked: no runtime readback listing on 0.55.4; touch hardware also required and deferred)"
+  ],
+  "newShapesProven": [
+    "modify-existing-animation-record-enabled: border 1->0->1 and borderangle 0->1->0, both zero residue",
+    "modify-existing-animation-record-bezier: windows easeOutQuint->quick->easeOutQuint, zero residue, existing curve names only"
+  ],
+  "newShapesAddedToUi": [
+    "animation record Enabled switch (hyprland-settings-record-picker-animation-enabled)",
+    "animation record Curve dropdown limited to existing curves (hyprland-settings-record-picker-animation-bezier)",
+    "style shown as a disabled row with the blocked reason (hyprland-settings-record-picker-animation-style-blocked)"
+  ],
+  "newShapesAddedToProductionSave": [
+    "FamilyRecordSaveRequest::AnimationRecordFields { record, enabled, speed, bezier } gated on ALL THREE animation shape receipts (fail-closed), bezier re-validated against the readback curve list, style preserved from readback"
+  ],
+  "shapesBlocked": [
+    "hl.animation style: valid values not known from trusted evidence (0.55.4 descriptions export carries none) and no live proof; UI shows a disabled row with the reason; saves preserve the style unchanged",
+    "hl.gesture record shapes: no runtime readback listing exists on 0.55.4, so modify-existing verification is impossible; touch hardware proofs also deferred"
+  ],
+  "familiesStillBlocked": [
+    "hl.monitor",
+    "hl.bind",
+    "hl.device",
+    "hl.permission",
+    "hl.gesture"
+  ],
+  "creationDeletionSupport": false,
+  "liveProofsRunThisExpansion": [
+    "record_shape_proof_animation_record_enabled_round_trip: PASSED (border 1->0->1, full-record zero residue)",
+    "record_shape_proof_animation_record_enabled_from_disabled_round_trip: PASSED (borderangle 0->1->0, full-record zero residue)",
+    "record_shape_proof_animation_record_bezier_round_trip: PASSED (windows easeOutQuint->quick->easeOutQuint, full-record zero residue)",
+    "record_picker_controller_round_trips_live: RE-PASSED with the combined values model (ran on borderangle, a disabled record, proving the promoted preview support; plus curve quick)",
+    "gated_family_record_save_flow_proof: RE-PASSED with AnimationRecordFields (real config write, reread-verified, byte-exact backup and flow-proof restore)"
+  ],
+  "defectsAndFindingsFromLiveProofs": [
+    "disabled animation records reset their speed/bezier readback (speed 1.00, bezier default) while disabled; previews that leave a record disabled verify the enabled flag only; reverts restore and verify the full record",
+    "disabled records are now preview-supported via the proven enabled shape (previously save-only)",
+    "shape proofs against shared runtime state must run serially; the first concurrent run interfered with itself and its residue was manually restored and verified before the passing serial re-run"
+  ],
+  "proofEnv": "HYPRLAND_SETTINGS_RUN_RECORD_SHAPE_EXPANSION_LIVE=1 HYPRLAND_SETTINGS_RECORD_SHAPE_TARGET=all cargo test --test record_shape_expansion_live -- --ignored --nocapture --test-threads=1",
+  "activeConfigWrittenDuringNormalTests": false,
+  "activeConfigWrittenDuringLiveTests": true,
+  "liveTestWriteDiscipline": "runtime shape proofs are runtime-only (no config writes); the save flow proof wrote the real config once per family with byte-exact backups and byte-exact flow-proof restores; runtime autoreload state restored",
+  "runtimeMutationRan": true,
+  "runtimeMutationScope": "reversible zero-residue animation record round trips (border, borderangle, windows, fade) and curve quick; monitor/display never mutated",
+  "hyprctlReloadRan": false,
+  "monitorDisplayMutated": false,
+  "hardwareProofStatus": "deferred",
+  "touchTabletProofStatus": "deferred",
+  "secondaryDeviceProofStatus": "deferred",
+  "proofsPromoted": 0,
+  "virtualProofStatus": "proposal only / not proven yet",
+  "mainChanged": false,
+  "v010Changed": false,
+  "distV010Changed": false
+}
