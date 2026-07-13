@@ -1,0 +1,254 @@
+{
+  "artifactKind": "progress-tracker-audit",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "headCommit": "6f4bdd28c30f694c39c5c699e7b2a6ebb7b6a5af",
+  "auditDate": "2026-07-12",
+  "sourceOfTruthPolicy": "source code first, then tests, then test-generated reports under data/reports, then docs only where they match, then git history, then read-only runtime evidence; previous assistant progress summaries treated as untrusted",
+  "chatgptProgressAssumptionsUsed": false,
+  "validationResults": {
+    "cargoFmtCheck": "passed",
+    "cargoCheck": "passed",
+    "cargoTest": "passed: 1015 tests across 251 binaries, 0 failures, 8 ignored (all env-gated live tests)",
+    "jqReports": "passed (344 report files parse)",
+    "gitDiffCheck": "passed",
+    "cargoBuildRelease": "passed",
+    "worktree": "clean except allowed ?? dist/; main, v0.1.0 tag, and dist/v0.1.0 artifacts verified unchanged"
+  },
+  "keyNumbersIndependentlyVerified": {
+    "sourceFiles": 82,
+    "sourceLines": 53702,
+    "testFiles": 248,
+    "scalarRowsInSource": 341,
+    "scalarRowsClassifiedForPreview": 341,
+    "previewEnabledUiControls": 135,
+    "deadManRowsClassified": 78,
+    "deadManArmedByReceipt": 38,
+    "inputCursorProofReceiptsInSource": 36,
+    "structuredFamiliesClassified": 7,
+    "structuredFamiliesPromotedByReceipt": 2,
+    "gtkHarnessScripts": 10,
+    "runtimeNow": "Hyprland 0.55.4 live; misc:disable_autoreload=false (user default); gaps_in 5 5 5 5"
+  },
+  "categories": [
+    {
+      "name": "Core app shell / UI / navigation",
+      "progress": "95-98%",
+      "status": "near-complete",
+      "evidence": "82 source files / ~53.7k lines compile clean; GTK4/libadwaita app with dashboard cards (8), sidebar tabs, settings lists, per-row detail panes with Setting/Current value/Live preview/Edit/Safety sections; AT-SPI evidence matrix passes across 20+ probe scenarios",
+      "remaining": "polish only; no proven defects open",
+      "hardBlockers": null,
+      "confidence": "high"
+    },
+    {
+      "name": "Config discovery / source-aware model",
+      "progress": "90-95%",
+      "status": "near-complete",
+      "evidence": "config_discovery/config_graph/config_parser/current_config modules with source/include graph, symlink/generated/script-managed detection, layered values; extensive passing tests; production source/include insertion deliberately capped",
+      "remaining": "production source/include activation is a separately-gated deferred phase, not missing function",
+      "hardBlockers": null,
+      "confidence": "high"
+    },
+    {
+      "name": "341-row read/write model",
+      "progress": "100%",
+      "status": "complete",
+      "evidence": "341 SafeWritableRow entries in src/write_classification.rs verified by pinned tests this run; value kinds, finite choices, and bounds modeled",
+      "remaining": "none for the v0.55.2 model",
+      "hardBlockers": null,
+      "confidence": "high"
+    },
+    {
+      "name": "Safe normal-scalar config writes",
+      "progress": "95%",
+      "status": "complete for allowlisted scalars",
+      "evidence": "apply_setting_change with backup/write/reread verification; 27 write_flow tests pass; wired to the detail-pane Apply button and the preview Save button",
+      "remaining": "Save is not yet coupled to Safe Live Save Mode (a scalar save while autoreload is active will still trigger a compositor reload - the historical v0.1.0-era behavior); see Production Save integration",
+      "hardBlockers": null,
+      "confidence": "high"
+    },
+    {
+      "name": "Scalar runtime live preview (NEW)",
+      "progress": "95% of what this machine can prove",
+      "status": "near-complete",
+      "evidence": "capability matrix classifies all 341 rows (62 direct + 73 throttled = 135 enabled UI controls, verified in test-generated reports this run); reversible executor with session/throttle/revert; live round trips proven and receipted; two executor defects found and fixed by live proofs (FiniteChoice int quoting, css_gap table grammar)",
+      "remaining": "43 rows honestly classified config-write-only and 11 not-proven stay that way by design; nothing further provable here",
+      "hardBlockers": null,
+      "confidence": "high"
+    },
+    {
+      "name": "Dead-man preview / recovery UI (NEW)",
+      "progress": "complete for the provable surface (38/78 armed)",
+      "status": "active - hardware-gated remainder",
+      "evidence": "78 rows classified (test-generated report); 38 armed strictly via receipts (2 animation + 36 input/cursor, receipts in source); countdown/Keep/Revert/Cancel panel; session-drop and app-close revert registries; timeout auto-revert live-proven",
+      "remaining": "18 touch-family rows need touch hardware; left_handed/rotation/resolve_binds_by_sym need secondary-device proofs; 5 model-only; 8 grammar-blocked",
+      "hardBlockers": "touch/tablet hardware not present on this machine",
+      "confidence": "high"
+    },
+    {
+      "name": "Input/cursor proof receipt system (NEW)",
+      "progress": "100% of architecture; 36/57 provable rows proven",
+      "status": "complete architecture, receipts ongoing",
+      "evidence": "per-row proof plans for all 63 original rows; env-gated batch harness (fail-closed gates tested); 36 receipts recorded in source with original/preview/fallback; promotion is receipt-gated and test-enforced",
+      "remaining": "same hardware/secondary-device gaps as dead-man",
+      "hardBlockers": "hardware",
+      "confidence": "high"
+    },
+    {
+      "name": "Safe Live Save Mode / autoreload control (NEW)",
+      "progress": "80-85%",
+      "status": "active",
+      "evidence": "module with fixed constant commands and readback-verified transitions; mock tests pass; live round-trip proof receipted; Config-page card with working Enable/Disable buttons (AT-SPI-verified); fails closed on unreadable state",
+      "remaining": "persisting misc:disable_autoreload=true into the config (so the mode survives restarts) is not implemented; scalar/structured Save flows are not yet gated on the mode",
+      "hardBlockers": null,
+      "confidence": "high"
+    },
+    {
+      "name": "Active-config pilot / real-write proof (NEW)",
+      "progress": "pilot PASSED; generalization 0%",
+      "status": "milestone reached",
+      "evidence": "fifteen-gate pilot module with rehearsal freshness, typed confirmation, live autoreload evidence collection (operator flag alone cannot open the gate - tested); the pilot ran 2026-07-12 via the runtime-first strategy: wrote one inert record to the real hyprland.conf, verified, restored byte-exactly (SHA recorded), no reload fired (runtime-flag marker); recorded in reports and consistent with code",
+      "remaining": "the pilot proves the mechanism with write+restore; a real user-facing save (write WITHOUT restore) does not exist yet for structured families",
+      "hardBlockers": null,
+      "confidence": "high for the mechanism; the PASS itself is a recorded historical event, re-runnable via the env-gated test"
+    },
+    {
+      "name": "Structured-family editors (read/review layer)",
+      "progress": "95%",
+      "status": "near-complete",
+      "evidence": "all 7 families parse/render/reread with validators, editor forms, drafts, diff review, staged apply plans, dry-run, rollback reviews - a long fixture-proven chain with passing tests",
+      "remaining": "the review layer feeds the controlled writer; only persistence UX remains (below)",
+      "hardBlockers": null,
+      "confidence": "high"
+    },
+    {
+      "name": "Structured-family controlled writes (temp/copied targets)",
+      "progress": "100%",
+      "status": "complete",
+      "evidence": "13 executor tests pass this run: full write/backup/reread/verify/restore/verify round trips for all 7 families against copied temp targets; symlink/path-escape hardening; atomic writes; active config rejected by policy",
+      "remaining": "none for controlled targets",
+      "hardBlockers": null,
+      "confidence": "high"
+    },
+    {
+      "name": "Structured-family runtime preview (NEW)",
+      "progress": "2 of 7 families live-previewable (evidence-capped)",
+      "status": "active",
+      "evidence": "all 7 families classified from live probes; hl.animation and hl.curve promoted by zero-residue receipted proofs (modify-existing scope only); supervised UI controls shipped for two fixed records (global speed, default Y0) with live controller proofs; 4 families blocked high-risk, gestures blocked without verification - honest, evidence-based ceilings",
+      "remaining": "record picker for other explicitly-overridden animation leaves / user-defined curves; the 5 blocked families need recovery systems or hardware that do not exist",
+      "hardBlockers": "monitor needs a blind display recovery system; bind/device need input fallback models; permission is policy-blocked; gesture needs readback + hardware",
+      "confidence": "high"
+    },
+    {
+      "name": "Structured-family gated persistence (NEW)",
+      "progress": "0-10%",
+      "status": "not started (pilot shape only)",
+      "evidence": "no save function exists in the controlled writer beyond the pilot's write+restore; the family preview UI shows Save disabled with reason (verified in source and AT-SPI)",
+      "remaining": "a gated one-shot family save following the pilot's proven shape (backup + write + verify, without restore), coupled to Safe Live Save Mode",
+      "hardBlockers": null,
+      "confidence": "high"
+    },
+    {
+      "name": "Production Save integration (NEW)",
+      "progress": "40-50%",
+      "status": "active",
+      "evidence": "scalar Save works through the proven apply flow; but neither scalar nor family Save is coupled to Safe Live Save Mode, so a save while autoreload is active still causes a live reload",
+      "remaining": "gate all Save paths on Safe Live Save Mode (or explicit reload consent); unify the save UX",
+      "hardBlockers": null,
+      "confidence": "medium-high"
+    },
+    {
+      "name": "High-risk/display recovery",
+      "progress": "15-25%",
+      "status": "blocked",
+      "evidence": "gate models, recovery plans, and readiness reviews exist and are tested, but no actual display recovery executor (blind auto-revert) exists; classification blocked_by_high_risk_recovery in the continuation scan",
+      "remaining": "an independent display dead-man recovery system before any monitor/display mutation",
+      "hardBlockers": "requires a recovery design that can revert without user sight",
+      "confidence": "medium"
+    },
+    {
+      "name": "Missing/default insertion + duplicate resolution",
+      "progress": "capped by design",
+      "status": "deferred (deliberate)",
+      "evidence": "extensive fixture-proven runway exists (insertion plans, dry-runs, disabled activation UI, safety-gate proofs) but production activation was explicitly capped on a prior branch with closeout reports; percentage would be misleading",
+      "remaining": "a separate explicitly-approved production activation phase",
+      "hardBlockers": "user decision to open a new activation phase",
+      "confidence": "high that it is capped; medium on how much reuse the runway allows"
+    },
+    {
+      "name": "Profile/mode switching",
+      "progress": "30-40%",
+      "status": "blocked",
+      "evidence": "copied-tree executor proof with symlink restoration exists; production behavior disabled; classification blocked_by_production_activation",
+      "remaining": "production activation and live proof",
+      "hardBlockers": "user decision",
+      "confidence": "medium"
+    },
+    {
+      "name": "Hyprland 0.55.4 migration",
+      "progress": "30-40%",
+      "status": "blocked - growing risk",
+      "evidence": "runtime IS 0.55.4 while the app models v0.55.2 (verified live); migration remains advisory-only, classification blocked_by_missing_official_data; the version skew is real and this audit flags it as the largest structural risk",
+      "remaining": "trusted official 0.55.4 option export, row diff, write-safety review",
+      "hardBlockers": "trusted upstream data source",
+      "confidence": "high on status; the risk grows as upstream diverges"
+    },
+    {
+      "name": "Release packaging/tag/artifacts",
+      "progress": "v0.1.0 shipped; next release not started",
+      "status": "stale-but-stable",
+      "evidence": "v0.1.0 tag and dist artifacts (tar.gz x2 + SHA256SUMS) verified present and unchanged; no release process has run since; enormous unreleased delta on the work branch",
+      "remaining": "a release decision, changelog, version bump, artifact rebuild for the preview-era app",
+      "hardBlockers": "user release decision",
+      "confidence": "high"
+    },
+    {
+      "name": "GTK evidence / automation harness (NEW)",
+      "progress": "85-90%",
+      "status": "near-complete",
+      "evidence": "10 scripts; scenario matrix with 20+ probes incl. DeadManPreviewDetail/InputProofDetail; AT-SPI text assertions; aggregate safety flags; extended repeatedly this cycle",
+      "remaining": "occasional blind spots require new probes per feature (touch-row probe was attempted and dropped)",
+      "hardBlockers": null,
+      "confidence": "high"
+    },
+    {
+      "name": "Project reports / handoff accuracy (NEW)",
+      "progress": "core reports regenerate from tests; long tail unaudited",
+      "status": "active",
+      "evidence": "the load-bearing reports (capability matrix, ui-controls, dead-man classification, proof plans, family capability) are regenerated by the test suite every run and verified consistent; continuation scan and handoff were updated through this cycle; however 344 report files exist and the older long tail (future-capability era) was not individually re-audited",
+      "remaining": "optional: prune or archive stale future-capability-era reports",
+      "hardBlockers": null,
+      "confidence": "high for regenerated reports; low-medium for the long tail"
+    }
+  ],
+  "addedCategories": [
+    "Scalar runtime live preview",
+    "Dead-man preview / recovery UI",
+    "Input/cursor proof receipt system",
+    "Safe Live Save Mode / autoreload control",
+    "Active-config pilot / real-write proof",
+    "Structured-family runtime preview",
+    "Structured-family gated persistence",
+    "Production Save integration",
+    "GTK evidence / automation harness",
+    "Project reports / handoff accuracy"
+  ],
+  "removedOrDeprecatedCategories": [
+    "'Runtime/reload integration' split into: Scalar runtime live preview, Dead-man preview, Input/cursor proofs, Safe Live Save Mode (the old single category hid four distinct tracks)",
+    "'Structured-family editors/writes' split into: editors (read/review), controlled writes, runtime preview, gated persistence (one percentage for all four was misleading)"
+  ],
+  "staleClaimsFound": [
+    "scalar Save is not integrated with Safe Live Save Mode: saving while autoreload is active still reloads the compositor - prior summaries did not surface this as an open integration gap",
+    "the 341-row model targets v0.55.2 while the live compositor is 0.55.4; several docs discuss migration readiness but no migration work is possible without trusted upstream data - flagged as the largest structural risk",
+    "the older future-capability-era report tail (100+ files) is frozen history, not current state; readers should treat only the test-regenerated reports as live"
+  ],
+  "hardBlockers": [
+    "touch/tablet hardware absence (18 dead-man rows + gesture family)",
+    "secondary-device proofs for 3 input rows",
+    "blind display recovery system for monitor/display work",
+    "trusted official Hyprland 0.55.4 export data for migration",
+    "user decisions: production activation phases (insertion/duplicates/profiles), release"
+  ],
+  "nextRecommendedWork": "1) Production Save integration: gate every Save path on Safe Live Save Mode so no save can reload the compositor unexpectedly; 2) structured-family gated persistence (one-shot save on the pilot's proven shape); 3) then confront the 0.55.4 migration data problem before upstream drift grows",
+  "confidenceNotes": "Everything marked high-confidence was verified this run by compiling code, running the 1015-test suite, or reading test-regenerated reports. The pilot PASS and live-proof receipts are recorded historical events whose mechanisms remain re-runnable via env-gated tests. Percentages are intentionally absent where they would mislead (capped/deferred/milestone categories)."
+}
