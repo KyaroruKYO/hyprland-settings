@@ -51,7 +51,7 @@
     "gated_family_save_flow_proof (ignored, env-gated; run once: passed for both targets)"
   ],
   "validation": "cargo test green",
-  "nextRecommendedWork": "extend the target set one proven record shape at a time (record picker)",
+  "nextRecommendedWork": "additional record shapes require new live proofs; hardware-gated proofs and the release decision remain",
   "gtkEvidence": {
     "evidenceDir": "/tmp/hyprland-settings-gtk-automation/20260712_211712",
     "runs": 24,
@@ -63,5 +63,22 @@
       "aggregate safety flags all false: realConfigEdited, realBackupsCreated, runtimeMutated, hyprlandReloaded, mutatingHyprctlUsed"
     ],
     "note": "a retry matrix run (20260712_222019) completed but its AT-SPI bus was unavailable; 20260712_211712 is the canonical evidence run"
+  },
+  "recordPickerGeneralization": {
+    "status": "complete",
+    "module": "src/family_record_picker.rs",
+    "saveEntry": "gated_family_record_save (same gate chain: shape receipt + Safe Live Save Mode + identity + backup + one atomic write + reread verify)",
+    "shapesProven": [
+      "hl.animation: speed of any explicitly overridden animation record (style preserved on save; proven live on fade, zero residue, 2026-07-13)",
+      "hl.curve: all four control points of any existing bezier curve (proven live on quick, zero residue, 2026-07-13)"
+    ],
+    "shapesBlocked": [
+      "inherited animation records (saving would create an override - creation is blocked)",
+      "internal __-prefixed records",
+      "style-bearing records for preview (save-only: style preservation through the runtime command is not proven)",
+      "disabled-at-runtime records for preview (save-only: the compositor does not apply speed changes to disabled records - found by live proof)"
+    ],
+    "creationDeletionSupport": false,
+    "liveSaveFlowProof": "tests/family_record_picker_live.rs gated_family_record_save_flow_proof passed 2026-07-13 for both families with byte-exact flow-proof restores"
   }
 }

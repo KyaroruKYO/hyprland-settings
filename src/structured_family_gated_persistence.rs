@@ -28,7 +28,10 @@ use crate::structured_family_controlled_write::{
     apply_rendered_family_records, atomic_controlled_write, family_records_in_text,
 };
 use crate::structured_family_preview_controller::FamilyPreviewTarget;
-use crate::structured_family_runtime_preview::proven_family_record_proof;
+use crate::structured_family_runtime_preview::{
+    parse_animation_records, parse_bezier_records, proven_family_record_proof,
+    proven_record_shape_proof, ANIMATION_RECORD_SPEED_SHAPE, CURVE_RECORD_POINTS_SHAPE,
+};
 use crate::structured_family_write_target::structured_family_path_is_active_real_config;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -67,7 +70,7 @@ impl FamilySaveError {
 #[derive(Debug, Clone, Serialize)]
 pub struct FamilySaveReceipt {
     pub family_id: &'static str,
-    pub record: &'static str,
+    pub record: String,
     pub saved_value: String,
     pub rendered_line: String,
     pub config_path: PathBuf,
@@ -161,10 +164,15 @@ pub fn render_target_line(
     }
 }
 
-pub fn record_matches_target(target: FamilyPreviewTarget, raw_line: &str) -> bool {
+/// True when the raw family line's record name equals `record_name`.
+pub fn record_line_matches_name(raw_line: &str, record_name: &str) -> bool {
     let value_part = raw_line.splitn(2, '=').nth(1).unwrap_or("").trim();
     let name = value_part.split(',').next().unwrap_or("").trim();
-    name == target.record()
+    name == record_name
+}
+
+pub fn record_matches_target(target: FamilyPreviewTarget, raw_line: &str) -> bool {
+    record_line_matches_name(raw_line, target.record())
 }
 
 fn backup_root() -> PathBuf {
@@ -213,15 +221,39 @@ pub fn gated_family_save(
     let rendered_line = render_target_line(target, value, runner)?;
     let kind = family_kind(target);
 
+    persist_rendered_record_line(
+        &config_path,
+        kind,
+        target.family_id(),
+        target.record(),
+        rendered_line,
+        format!("{value}"),
+    )
+}
+
+/// The shared persist tail every gated family save uses after its gates
+/// passed: read original bytes, byte-exact backup outside the config
+/// directory, replace-or-append the target record's own line only, one
+/// atomic write, reread verification through the parser, and automatic
+/// restore on verification failure. Never called before the Safe Live Save
+/// Mode and target identity gates.
+fn persist_rendered_record_line(
+    config_path: &Path,
+    kind: StructuredFamilyKind,
+    family_id: &'static str,
+    record_name: &str,
+    rendered_line: String,
+    saved_value: String,
+) -> Result<FamilySaveReceipt, FamilySaveError> {
     // Read original bytes and hash.
-    let original = fs::read(&config_path)
+    let original = fs::read(config_path)
         .map_err(|error| FamilySaveError::ConfigUnavailable(error.to_string()))?;
     let pre_save_hash = active_config_pilot_content_hash(&original);
     let original_text = String::from_utf8_lossy(&original).into_owned();
 
     // Build the family record list: replace the target record if present,
     // otherwise append it. Other records of the family are preserved as-is.
-    let existing: Vec<String> = family_records_in_text(&config_path, &original_text, kind)
+    let existing: Vec<String> = family_records_in_text(config_path, &original_text, kind)
         .into_iter()
         .map(|(_, raw_line)| raw_line)
         .collect();
@@ -229,7 +261,7 @@ pub fn gated_family_save(
     let mut rendered_records: Vec<String> = existing
         .iter()
         .map(|line| {
-            if record_matches_target(target, line) {
+            if record_line_matches_name(line, record_name) {
                 replaced = true;
                 rendered_line.clone()
             } else {
@@ -246,7 +278,7 @@ pub fn gated_family_save(
     fs::create_dir_all(&root).map_err(|error| FamilySaveError::BackupFailed(error.to_string()))?;
     let backup_path = root.join(format!(
         "hyprland.conf.family-save-{}-{}.bak",
-        target.record(),
+        record_name,
         std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .map(|duration| duration.as_secs())
@@ -264,17 +296,17 @@ pub fn gated_family_save(
 
     // One atomic write of the updated family records.
     let new_text =
-        apply_rendered_family_records(&config_path, &original_text, kind, &rendered_records);
-    atomic_controlled_write(&config_path, new_text.as_bytes())
+        apply_rendered_family_records(config_path, &original_text, kind, &rendered_records);
+    atomic_controlled_write(config_path, new_text.as_bytes())
         .map_err(|error| FamilySaveError::WriteFailed(error.to_string()))?;
 
     // Reread and verify the intended record persisted through the parser.
-    let verify = verify_saved_record(&config_path, kind, target, &rendered_line);
+    let verify = verify_saved_record_named(config_path, kind, record_name, &rendered_line);
     match verify {
         Ok(()) => {}
         Err(detail) => {
             // Fail closed: restore the backup before reporting.
-            return match atomic_controlled_write(&config_path, &original) {
+            return match atomic_controlled_write(config_path, &original) {
                 Ok(()) => Err(FamilySaveError::VerificationFailedAndRestored(detail)),
                 Err(error) => Err(FamilySaveError::RestoreFailed(format!(
                     "{detail}; restore error: {error}; backup at {}",
@@ -283,16 +315,16 @@ pub fn gated_family_save(
             };
         }
     }
-    let post_save_hash = fs::read(&config_path)
+    let post_save_hash = fs::read(config_path)
         .map(|bytes| active_config_pilot_content_hash(&bytes))
         .map_err(|error| FamilySaveError::WriteFailed(error.to_string()))?;
 
     Ok(FamilySaveReceipt {
-        family_id: target.family_id(),
-        record: target.record(),
-        saved_value: format!("{value}"),
+        family_id,
+        record: record_name.to_string(),
+        saved_value,
         rendered_line: rendered_line.clone(),
-        config_path: config_path.clone(),
+        config_path: config_path.to_path_buf(),
         backup_path: backup_path.clone(),
         pre_save_hash,
         post_save_hash,
@@ -313,17 +345,25 @@ pub fn verify_saved_record(
     target: FamilyPreviewTarget,
     rendered_line: &str,
 ) -> Result<(), String> {
+    verify_saved_record_named(config_path, kind, target.record(), rendered_line)
+}
+
+pub fn verify_saved_record_named(
+    config_path: &Path,
+    kind: StructuredFamilyKind,
+    record_name: &str,
+    rendered_line: &str,
+) -> Result<(), String> {
     let contents =
         fs::read_to_string(config_path).map_err(|error| format!("reread failed: {error}"))?;
     let records = family_records_in_text(config_path, &contents, kind);
     let found = records
         .iter()
-        .filter(|(_, line)| record_matches_target(target, line))
+        .filter(|(_, line)| record_line_matches_name(line, record_name))
         .collect::<Vec<_>>();
     if found.len() != 1 {
         return Err(format!(
-            "expected exactly one {} record after save, found {}",
-            target.record(),
+            "expected exactly one {record_name} record after save, found {}",
             found.len()
         ));
     }
@@ -334,6 +374,235 @@ pub fn verify_saved_record(
         ));
     }
     Ok(())
+}
+
+/// A picked-record save request: exactly the two proven record shapes. The
+/// enum cannot express any other family, field, or operation — there is no
+/// record creation request and no removal request.
+#[derive(Debug, Clone, PartialEq)]
+pub enum FamilyRecordSaveRequest {
+    /// Persist the speed of an animation record that already carries an
+    /// explicit override (other fields are re-rendered from the readback,
+    /// preserving enabled/bezier/style).
+    AnimationRecordSpeed { record: String, speed: f64 },
+    /// Persist the four control points of a bezier curve that already
+    /// exists in the runtime readback.
+    CurveRecordPoints {
+        record: String,
+        x0: f64,
+        y0: f64,
+        x1: f64,
+        y1: f64,
+    },
+}
+
+impl FamilyRecordSaveRequest {
+    pub fn family_id(&self) -> &'static str {
+        match self {
+            Self::AnimationRecordSpeed { .. } => "hl.animation",
+            Self::CurveRecordPoints { .. } => "hl.curve",
+        }
+    }
+
+    pub fn record(&self) -> &str {
+        match self {
+            Self::AnimationRecordSpeed { record, .. } => record,
+            Self::CurveRecordPoints { record, .. } => record,
+        }
+    }
+
+    fn kind(&self) -> StructuredFamilyKind {
+        match self {
+            Self::AnimationRecordSpeed { .. } => StructuredFamilyKind::Animation,
+            Self::CurveRecordPoints { .. } => StructuredFamilyKind::Curve,
+        }
+    }
+
+    fn shape(&self) -> &'static str {
+        match self {
+            Self::AnimationRecordSpeed { .. } => ANIMATION_RECORD_SPEED_SHAPE,
+            Self::CurveRecordPoints { .. } => CURVE_RECORD_POINTS_SHAPE,
+        }
+    }
+
+    fn validate(&self) -> Result<(), FamilySaveError> {
+        let record_name_safe = |name: &str| {
+            !name.is_empty()
+                && name
+                    .chars()
+                    .all(|character| character.is_ascii_alphanumeric() || character == '_')
+        };
+        if !record_name_safe(self.record()) || self.record().starts_with("__") {
+            return Err(FamilySaveError::InvalidValue(
+                "record name is not in the safe user-record set".to_string(),
+            ));
+        }
+        match self {
+            Self::AnimationRecordSpeed { speed, .. } => {
+                if !speed.is_finite() || !(0.1..=20.0).contains(speed) {
+                    return Err(FamilySaveError::InvalidValue(
+                        "animation speed saves are limited to 0.1..=20".to_string(),
+                    ));
+                }
+            }
+            Self::CurveRecordPoints { x0, y0, x1, y1, .. } => {
+                for x in [x0, x1] {
+                    if !x.is_finite() || !(0.0..=1.0).contains(x) {
+                        return Err(FamilySaveError::InvalidValue(
+                            "curve X control point saves are limited to 0..=1".to_string(),
+                        ));
+                    }
+                }
+                for y in [y0, y1] {
+                    if !y.is_finite() || !(-1.0..=2.0).contains(y) {
+                        return Err(FamilySaveError::InvalidValue(
+                            "curve Y control point saves are limited to -1..=2".to_string(),
+                        ));
+                    }
+                }
+            }
+        }
+        Ok(())
+    }
+
+    fn saved_value_text(&self) -> String {
+        match self {
+            Self::AnimationRecordSpeed { speed, .. } => format!("{speed}"),
+            Self::CurveRecordPoints { x0, y0, x1, y1, .. } => {
+                format!("({x0}, {y0}, {x1}, {y1})")
+            }
+        }
+    }
+}
+
+/// Render the request's config line from the runtime readback, enforcing
+/// modify-existing: the record must already exist in the readback, and an
+/// animation record must already carry an explicit override (persisting an
+/// inherited record would create a new override — creation is blocked).
+/// Animation fields other than speed (enabled, bezier, style) are preserved
+/// exactly as the readback reports them.
+pub fn render_record_request_line(
+    request: &FamilyRecordSaveRequest,
+    runner: &mut dyn RuntimePreviewRunner,
+) -> Result<String, FamilySaveError> {
+    let listing = runner
+        .run("hyprctl", &["animations".to_string()])
+        .map_err(FamilySaveError::ConfigUnavailable)?;
+    match request {
+        FamilyRecordSaveRequest::AnimationRecordSpeed { record, speed } => {
+            let runtime_record = parse_animation_records(&listing)
+                .into_iter()
+                .find(|candidate| candidate.name == *record)
+                .ok_or_else(|| {
+                    FamilySaveError::ConfigUnavailable(format!(
+                        "animation record {record} not present in the runtime readback"
+                    ))
+                })?;
+            if !runtime_record.overridden {
+                return Err(FamilySaveError::InvalidValue(format!(
+                    "animation record {record} inherits its values; saving it would create a new override, and record creation is blocked"
+                )));
+            }
+            let onoff = if runtime_record.enabled == "1" {
+                "1"
+            } else {
+                "0"
+            };
+            let bezier_name = if runtime_record.bezier.is_empty() {
+                "default"
+            } else {
+                &runtime_record.bezier
+            };
+            if runtime_record.style.is_empty() {
+                Ok(format!(
+                    "animation = {record}, {onoff}, {speed}, {bezier_name}"
+                ))
+            } else {
+                Ok(format!(
+                    "animation = {record}, {onoff}, {speed}, {bezier_name}, {}",
+                    runtime_record.style
+                ))
+            }
+        }
+        FamilyRecordSaveRequest::CurveRecordPoints {
+            record,
+            x0,
+            y0,
+            x1,
+            y1,
+        } => {
+            parse_bezier_records(&listing)
+                .into_iter()
+                .find(|candidate| candidate.name == *record)
+                .ok_or_else(|| {
+                    FamilySaveError::ConfigUnavailable(format!(
+                        "curve record {record} not present in the runtime readback"
+                    ))
+                })?;
+            Ok(format!("bezier = {record}, {x0}, {y0}, {x1}, {y1}"))
+        }
+    }
+}
+
+/// The generalized picked-record Save: the same gate chain as
+/// `gated_family_save`, with the record shape proof receipt required in
+/// place of the single-record family proof. Verifies Safe Live Save Mode
+/// live, enforces target identity, renders the record line from the
+/// readback (modify-existing enforced), then persists through the shared
+/// backup/one-atomic-write/reread-verification tail.
+pub fn gated_family_record_save(
+    runner: &mut dyn RuntimePreviewRunner,
+    discovery: &ConfigDiscovery,
+    request: FamilyRecordSaveRequest,
+) -> Result<FamilySaveReceipt, FamilySaveError> {
+    // Gate 1: the record shape must carry a passed live-proof receipt.
+    if proven_record_shape_proof(request.family_id(), request.shape()).is_none() {
+        return Err(FamilySaveError::FamilyNotProven(
+            "no passed live proof receipt exists for this record shape",
+        ));
+    }
+    request.validate()?;
+
+    // Gate 2: Safe Live Save Mode must be active (live-verified) so this
+    // write cannot reload the compositor.
+    require_safe_live_save_mode(runner).map_err(FamilySaveError::SafeLiveSaveModeRequired)?;
+
+    // Gate 3: the target must be the discovered active config file.
+    let config_path = match &discovery.status {
+        ConfigDiscoveryStatus::Found { path, .. } => path.clone(),
+        other => {
+            return Err(FamilySaveError::ConfigUnavailable(format!(
+                "no config file discovered: {other:?}"
+            )))
+        }
+    };
+    if !structured_family_path_is_active_real_config(&config_path) {
+        return Err(FamilySaveError::TargetIdentityFailed(format!(
+            "{} is not the active Hyprland config",
+            config_path.display()
+        )));
+    }
+
+    // Render from the readback (modify-existing enforced inside).
+    let rendered_line = render_record_request_line(&request, runner)?;
+
+    persist_rendered_record_line(
+        &config_path,
+        request.kind(),
+        request.family_id(),
+        request.record(),
+        rendered_line,
+        request.saved_value_text(),
+    )
+}
+
+/// Live wrapper owning the runner, so UI code never constructs one.
+pub fn gated_family_record_save_live(
+    discovery: &ConfigDiscovery,
+    request: FamilyRecordSaveRequest,
+) -> Result<FamilySaveReceipt, FamilySaveError> {
+    let mut runner = crate::runtime_preview_executor::HyprctlRuntimePreviewRunner;
+    gated_family_record_save(&mut runner, discovery, request)
 }
 
 /// Live wrapper owning the runner, so UI code never constructs one.

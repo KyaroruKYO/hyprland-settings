@@ -15,6 +15,11 @@ use crate::current_config::{
     CurrentConfigLoadStatus, CurrentConfigSnapshot, CurrentValueSourceStatus,
 };
 use crate::export::ExportBundle;
+use crate::family_record_picker::{
+    list_animation_records_live, list_curve_records_live, save_picked_record_live,
+    AnimationRecordEntry, CurveRecordEntry, FamilyRecordPreviewController, PickedFamily,
+    PickedRecordValues, RecordPickerPhase,
+};
 use crate::future_capability::{
     apply_production_activation_draft_gtk_update, disabled_future_approval_card_projections,
     duplicate_activation_draft_gtk_review, duplicate_production_approval_gate,
@@ -69,9 +74,6 @@ use crate::search::{search_projection, SearchRank, SearchResult};
 use crate::session_config_preview::build_session_config_preview;
 use crate::session_value_projection::{
     compare_active_and_session_values, SessionValueComparisonStatus, SessionValueProjection,
-};
-use crate::structured_family_preview_controller::{
-    FamilyPreviewController, FamilyPreviewPhase, FamilyPreviewTarget,
 };
 use crate::ui::model::{
     initial_screen_shader_advisory_ui_action, run_screen_shader_advisory_ui_action,
@@ -140,20 +142,20 @@ fn register_dead_man_controller(controller: &Rc<RefCell<RuntimePreviewDeadManCon
 }
 
 thread_local! {
-    /// Supervised family preview controllers; unconfirmed previews revert on
-    /// re-render and window close, like scalar dead-man sessions.
-    static ACTIVE_FAMILY_PREVIEW_CONTROLLERS: RefCell<Vec<std::rc::Weak<RefCell<FamilyPreviewController>>>> =
+    /// Supervised family record picker controllers; unconfirmed previews
+    /// revert on re-render and window close, like scalar dead-man sessions.
+    static ACTIVE_RECORD_PICKER_CONTROLLERS: RefCell<Vec<std::rc::Weak<RefCell<FamilyRecordPreviewController>>>> =
         const { RefCell::new(Vec::new()) };
 }
 
-fn register_family_preview_controller(controller: &Rc<RefCell<FamilyPreviewController>>) {
-    ACTIVE_FAMILY_PREVIEW_CONTROLLERS.with(|controllers| {
+fn register_record_picker_controller(controller: &Rc<RefCell<FamilyRecordPreviewController>>) {
+    ACTIVE_RECORD_PICKER_CONTROLLERS.with(|controllers| {
         controllers.borrow_mut().push(Rc::downgrade(controller));
     });
 }
 
 fn revert_all_unconfirmed_family_previews() {
-    ACTIVE_FAMILY_PREVIEW_CONTROLLERS.with(|controllers| {
+    ACTIVE_RECORD_PICKER_CONTROLLERS.with(|controllers| {
         let mut controllers = controllers.borrow_mut();
         for weak in controllers.iter() {
             if let Some(controller) = weak.upgrade() {
@@ -725,7 +727,7 @@ fn build_config_view(
 
     content.append(&runtime_preview_readiness_section());
 
-    content.append(&safe_live_save_mode_section());
+    content.append(&safe_live_save_mode_section(model));
 
     content.append(&structured_family_preview_controls_section(model));
 
@@ -4541,11 +4543,14 @@ fn runtime_preview_readiness_section() -> gtk::Frame {
     )
 }
 
-/// Safe Live Save Mode card: shows the live autoreload state and offers the
-/// proven runtime-only enable/disable transitions. Enabling touches no file,
-/// runs no reload, and is verified through read-only readback; the buttons
-/// route through the safe_live_save_mode module (fixed constant commands).
-fn safe_live_save_mode_section() -> gtk::Frame {
+/// Safe Live Save Mode card: shows the live autoreload state and the
+/// persisted-in-config state, offers the proven runtime-only enable/disable
+/// transitions, and lets the user explicitly save the mode as the default
+/// through the gated scalar Save. Enabling touches no file, runs no reload,
+/// and is verified through read-only readback; the buttons route through
+/// the safe_live_save_mode / persist_safe_live_save_mode modules (fixed
+/// constant commands and a fixed setting/value).
+fn safe_live_save_mode_section(model: &UiProjection) -> gtk::Frame {
     let frame = gtk::Frame::new(None);
     frame.set_widget_name("hyprland-settings-safe-live-save-mode");
     frame.set_tooltip_text(Some(
@@ -4576,13 +4581,22 @@ fn safe_live_save_mode_section() -> gtk::Frame {
     ));
     badge.set_widget_name("hyprland-settings-safe-live-save-mode-status");
     content.append(&badge);
+    let persisted_state = crate::persist_safe_live_save_mode::read_persisted_safe_live_save_mode(
+        &model.current_config,
+    );
+    let persisted_badge = body_label(&format!(
+        "Persisted in config: {}",
+        persisted_state.user_text()
+    ));
+    persisted_badge.set_widget_name("hyprland-settings-safe-live-save-mode-persisted");
+    content.append(&persisted_badge);
     if let Some(reason) = status.blocked_reason {
         let blocked = small_label(&format!("Active-config save blocked: {reason}"));
         blocked.set_widget_name("hyprland-settings-safe-live-save-mode-blocked");
         content.append(&blocked);
     }
     content.append(&small_label(
-        "Enabling this mode changes only the runtime value: no file is written and no reload runs (live-proven, instantly reversible). Persisting the setting into your config is a separate step.",
+        "Enabling this mode changes only the runtime value: no file is written and no reload runs (live-proven, instantly reversible). Saving it as the default writes misc:disable_autoreload = true to your config once through the normal gated Save (backup first, reread-verified) - your choice, never automatic.",
     ));
 
     let status_line = small_label("");
@@ -4631,55 +4645,67 @@ fn safe_live_save_mode_section() -> gtk::Frame {
     }
     buttons.append(&enable_button);
     buttons.append(&disable_button);
+
+    // Save as default: persist misc:disable_autoreload = true once through
+    // the gated scalar Save. Enabled only while the runtime mode is active
+    // (the write itself must not be able to reload the compositor) and not
+    // already persisted.
+    let persist_button = gtk::Button::with_label("Save as default");
+    persist_button.set_widget_name("hyprland-settings-safe-live-save-persist");
+    persist_button.set_tooltip_text(Some(
+        "Persist misc:disable_autoreload = true to your config once through the gated Save (backup first, reread-verified, no reload). GTK automation must not activate this control.",
+    ));
+    persist_button.set_sensitive(
+        status.state == SafeLiveSaveModeState::ActiveViaRuntime
+            && persisted_state
+                != crate::persist_safe_live_save_mode::PersistedSafeLiveSaveModeState::PersistedTrue,
+    );
+    {
+        let status_line = status_line.clone();
+        let persisted_badge = persisted_badge.clone();
+        let known_setting_ids = model.known_setting_ids.clone();
+        let discovery = model.config_discovery.clone();
+        let current_config = model.current_config.clone();
+        persist_button.connect_clicked(move |persist_button| {
+            match crate::persist_safe_live_save_mode::persist_safe_live_save_mode_live(
+                known_setting_ids.clone(),
+                &discovery,
+                &current_config,
+            ) {
+                Ok(receipt) => {
+                    status_line.set_label(&receipt.status_text);
+                    persisted_badge.set_label(
+                        "Persisted in config: yes - Safe Live Save Mode is active from config after restarts",
+                    );
+                    persist_button.set_sensitive(false);
+                }
+                Err(error) => status_line.set_label(&error),
+            }
+        });
+    }
+    buttons.append(&persist_button);
     content.append(&buttons);
     content.append(&status_line);
     frame.set_child(Some(&content));
     frame
 }
 
-/// Supervised preview controls for one proven family record: a value spin,
-/// Preview with recovery semantics (countdown, Keep, Revert now, Cancel),
-/// and readback-verified status. All actions route through the
-/// FamilyPreviewController; no commands are built here.
-fn family_preview_control(
-    target: FamilyPreviewTarget,
-    range: (f64, f64, f64),
+/// Shared picker plumbing: preview/keep/revert/cancel/save buttons wired to
+/// a lazily created FamilyRecordPreviewController for the currently selected
+/// record, with the same countdown/recovery semantics as before. All preview
+/// actions route through the controller and every Save routes through the
+/// gated persistence path; no commands are built here.
+#[allow(clippy::too_many_arguments)]
+fn record_picker_action_row(
+    family: PickedFamily,
+    family_slug: &str,
+    combo: &gtk::ComboBoxText,
+    values_for_save: Rc<dyn Fn() -> PickedRecordValues>,
+    controller_slot: Rc<RefCell<Option<Rc<RefCell<FamilyRecordPreviewController>>>>>,
     discovery: &ConfigDiscovery,
+    preview_button: &gtk::Button,
     parent: &gtk::Box,
-) {
-    let controller = match FamilyPreviewController::new_live(target) {
-        Ok(controller) => Rc::new(RefCell::new(controller)),
-        Err(error) => {
-            parent.append(&small_label(&error.user_text()));
-            return;
-        }
-    };
-    register_family_preview_controller(&controller);
-
-    let row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
-    row.append(&body_label(target.control_label()));
-    let (min, max, step) = range;
-    let spin = gtk::SpinButton::with_range(min, max, step);
-    spin.set_digits(2);
-    spin.set_widget_name(&format!(
-        "hyprland-settings-family-preview-spin-{}",
-        safe_widget_name(target.family_id())
-    ));
-    if let Ok(current) = controller.borrow_mut().current_value() {
-        if let Ok(value) = current.parse::<f64>() {
-            spin.set_value(value);
-        }
-    }
-    row.append(&spin);
-
-    let preview_button = gtk::Button::with_label("Preview with recovery");
-    preview_button.set_widget_name(&format!(
-        "hyprland-settings-family-preview-arm-{}",
-        safe_widget_name(target.family_id())
-    ));
-    preview_button.set_tooltip_text(Some(
-        "Apply the value live under a recovery countdown. GTK automation must not activate this control.",
-    ));
+) -> gtk::Label {
     let keep_button = gtk::Button::with_label("Keep changes");
     keep_button.set_sensitive(false);
     let revert_button = gtk::Button::with_label("Revert now");
@@ -4687,25 +4713,54 @@ fn family_preview_control(
     let cancel_button = gtk::Button::with_label("Cancel");
     cancel_button.set_sensitive(false);
 
-    let status = small_label(&format!(
-        "Supervised preview for the existing {} record ({}): modify-existing only, readback-verified, auto-revert on timeout.",
-        target.record(),
-        target.family_id()
-    ));
+    let status = small_label(
+        "Supervised preview: modify-existing only, readback-verified, auto-revert on timeout.",
+    );
     status.set_widget_name(&format!(
-        "hyprland-settings-family-preview-status-{}",
-        safe_widget_name(target.family_id())
+        "hyprland-settings-record-picker-status-{family_slug}"
     ));
 
+    preview_button.set_tooltip_text(Some(
+        "Apply the values live under a recovery countdown. GTK automation must not activate this control.",
+    ));
     {
-        let controller = controller.clone();
+        let combo = combo.clone();
+        let values_for_save = values_for_save.clone();
+        let controller_slot = controller_slot.clone();
         let status = status.clone();
-        let spin = spin.clone();
         let keep_button = keep_button.clone();
         let revert_button = revert_button.clone();
         let cancel_button = cancel_button.clone();
         preview_button.connect_clicked(move |_| {
-            let outcome = controller.borrow_mut().preview(spin.value());
+            let Some(record) = combo.active_id() else {
+                status.set_label("Select a record first.");
+                return;
+            };
+            let need_new = controller_slot
+                .borrow()
+                .as_ref()
+                .map(|controller| controller.borrow().record_name() != record.as_str())
+                .unwrap_or(true);
+            if need_new {
+                if let Some(previous) = controller_slot.borrow_mut().take() {
+                    let _ = previous.borrow_mut().revert_if_unconfirmed();
+                }
+                match FamilyRecordPreviewController::new_live(family, record.as_str()) {
+                    Ok(controller) => {
+                        let controller = Rc::new(RefCell::new(controller));
+                        register_record_picker_controller(&controller);
+                        *controller_slot.borrow_mut() = Some(controller);
+                    }
+                    Err(error) => {
+                        status.set_label(&error.user_text());
+                        return;
+                    }
+                }
+            }
+            let Some(controller) = controller_slot.borrow().as_ref().cloned() else {
+                return;
+            };
+            let outcome = controller.borrow_mut().preview(values_for_save());
             match outcome {
                 Ok(receipt) => {
                     status.set_label(&receipt.status_text);
@@ -4734,7 +4789,7 @@ fn family_preview_control(
                                 }
                                 Ok(None) => {
                                     let phase = controller.borrow().phase();
-                                    if phase == FamilyPreviewPhase::CountingDown {
+                                    if phase == RecordPickerPhase::CountingDown {
                                         status.set_label(&format!(
                                             "Previewing live: auto-revert in {} seconds unless you Keep changes.",
                                             controller.borrow().remaining_seconds()
@@ -4757,27 +4812,37 @@ fn family_preview_control(
         });
     }
     {
-        let controller = controller.clone();
+        let controller_slot = controller_slot.clone();
         let status = status.clone();
         let revert_button = revert_button.clone();
         let cancel_button = cancel_button.clone();
-        keep_button.connect_clicked(move |keep_button| match controller.borrow_mut().keep() {
-            Ok(receipt) => {
-                status.set_label(&receipt.status_text);
-                keep_button.set_sensitive(false);
-                revert_button.set_sensitive(true);
-                cancel_button.set_sensitive(false);
+        keep_button.connect_clicked(move |keep_button| {
+            let Some(controller) = controller_slot.borrow().as_ref().cloned() else {
+                return;
+            };
+            let outcome = controller.borrow_mut().keep();
+            match outcome {
+                Ok(receipt) => {
+                    status.set_label(&receipt.status_text);
+                    keep_button.set_sensitive(false);
+                    revert_button.set_sensitive(true);
+                    cancel_button.set_sensitive(false);
+                }
+                Err(error) => status.set_label(&error.user_text()),
             }
-            Err(error) => status.set_label(&error.user_text()),
         });
     }
     {
-        let controller = controller.clone();
+        let controller_slot = controller_slot.clone();
         let status = status.clone();
         let keep_button = keep_button.clone();
         let cancel_button = cancel_button.clone();
         revert_button.connect_clicked(move |revert_button| {
-            match controller.borrow_mut().revert_now() {
+            let Some(controller) = controller_slot.borrow().as_ref().cloned() else {
+                return;
+            };
+            let outcome = controller.borrow_mut().revert_now();
+            match outcome {
                 Ok(receipt) => {
                     status.set_label(&receipt.status_text);
                     keep_button.set_sensitive(false);
@@ -4789,12 +4854,16 @@ fn family_preview_control(
         });
     }
     {
-        let controller = controller.clone();
+        let controller_slot = controller_slot.clone();
         let status = status.clone();
         let keep_button = keep_button.clone();
         let revert_button = revert_button.clone();
         cancel_button.connect_clicked(move |cancel_button| {
-            match controller.borrow_mut().cancel() {
+            let Some(controller) = controller_slot.borrow().as_ref().cloned() else {
+                return;
+            };
+            let outcome = controller.borrow_mut().cancel();
+            match outcome {
                 Ok(receipt) => {
                     status.set_label(&receipt.status_text);
                     keep_button.set_sensitive(false);
@@ -4806,26 +4875,26 @@ fn family_preview_control(
         });
     }
 
-    // Production Save: persist the current spin value once through the
+    // Production Save: persist the selected record's values once through the
     // gated persistence flow (Safe Live Save Mode verified live inside).
     let save_button = gtk::Button::with_label("Save previewed value");
     save_button.set_widget_name(&format!(
-        "hyprland-settings-family-save-{}",
-        safe_widget_name(target.family_id())
+        "hyprland-settings-record-picker-save-{family_slug}"
     ));
     save_button.set_tooltip_text(Some(
         "Persist once to your config with backup and reread verification; requires Safe Live Save Mode. GTK automation must not activate this control.",
     ));
     {
+        let combo = combo.clone();
         let status = status.clone();
-        let spin = spin.clone();
         let discovery = discovery.clone();
         save_button.connect_clicked(move |_| {
-            let outcome = crate::structured_family_gated_persistence::gated_family_save_live(
-                &discovery,
-                target,
-                spin.value(),
-            );
+            let Some(record) = combo.active_id() else {
+                status.set_label("Select a record first.");
+                return;
+            };
+            let outcome =
+                save_picked_record_live(&discovery, family, record.as_str(), values_for_save());
             match outcome {
                 Ok(receipt) => status.set_label(&receipt.status_text),
                 Err(error) => status.set_label(&error.user_text()),
@@ -4834,17 +4903,310 @@ fn family_preview_control(
     }
 
     let buttons = gtk::Box::new(gtk::Orientation::Horizontal, 8);
-    buttons.append(&preview_button);
+    buttons.append(preview_button);
     buttons.append(&keep_button);
     buttons.append(&revert_button);
     buttons.append(&cancel_button);
     buttons.append(&save_button);
-    parent.append(&row);
     parent.append(&buttons);
     parent.append(&status);
+    status
 }
 
-/// Live supervised preview controls for the two proven structured families.
+/// Records that exist in the readback but cannot be picked, with the honest
+/// reason, kept out of the main flow under an expander.
+fn record_picker_blocked_expander(
+    title: &str,
+    family_slug: &str,
+    blocked: Vec<(String, String)>,
+    parent: &gtk::Box,
+) {
+    if blocked.is_empty() {
+        return;
+    }
+    let expander = gtk::Expander::new(Some(title));
+    expander.set_widget_name(&format!(
+        "hyprland-settings-record-picker-blocked-{family_slug}"
+    ));
+    let blocked_box = gtk::Box::new(gtk::Orientation::Vertical, 4);
+    for (name, reason) in blocked {
+        blocked_box.append(&small_label(&format!("{name}: {reason}")));
+    }
+    expander.set_child(Some(&blocked_box));
+    parent.append(&expander);
+}
+
+/// Animation record picker: existing overridden records from the readback,
+/// speed editing, supervised preview, gated Save.
+fn animation_record_picker_group(discovery: &ConfigDiscovery, parent: &gtk::Box) {
+    parent.append(&body_label("Animation records"));
+    let entries = match list_animation_records_live() {
+        Ok(entries) => entries,
+        Err(error) => {
+            parent.append(&small_label(&format!(
+                "Animation records unavailable: {error}"
+            )));
+            return;
+        }
+    };
+    let selectable: Vec<AnimationRecordEntry> = entries
+        .iter()
+        .filter(|entry| entry.save_supported)
+        .cloned()
+        .collect();
+    let blocked: Vec<(String, String)> = entries
+        .iter()
+        .filter(|entry| !entry.save_supported)
+        .map(|entry| {
+            (
+                entry.record.name.clone(),
+                entry
+                    .blocked_reason
+                    .clone()
+                    .unwrap_or_else(|| "not supported".to_string()),
+            )
+        })
+        .collect();
+    if selectable.is_empty() {
+        parent.append(&small_label(
+            "No animation record in the runtime readback is currently supported for gated Save.",
+        ));
+        record_picker_blocked_expander(
+            "Animation records not yet supported",
+            "animation",
+            blocked,
+            parent,
+        );
+        return;
+    }
+
+    let row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    let combo = gtk::ComboBoxText::new();
+    combo.set_widget_name("hyprland-settings-record-picker-animation-records");
+    for entry in &selectable {
+        combo.append(
+            Some(&entry.record.name),
+            &format!("{} — {}", entry.record.name, entry.current_value_text),
+        );
+    }
+    combo.set_active(Some(0));
+    row.append(&combo);
+    row.append(&body_label("Speed"));
+    let spin = gtk::SpinButton::with_range(0.1, 20.0, 0.1);
+    spin.set_digits(2);
+    spin.set_widget_name("hyprland-settings-record-picker-animation-speed");
+    row.append(&spin);
+    parent.append(&row);
+
+    let value_label = small_label("");
+    value_label.set_widget_name("hyprland-settings-record-picker-animation-value");
+    parent.append(&value_label);
+    let reason_label = small_label("");
+    reason_label.set_widget_name("hyprland-settings-record-picker-animation-reason");
+    parent.append(&reason_label);
+
+    let preview_button = gtk::Button::with_label("Preview with recovery");
+    preview_button.set_widget_name("hyprland-settings-record-picker-preview-animation");
+    let controller_slot: Rc<RefCell<Option<Rc<RefCell<FamilyRecordPreviewController>>>>> =
+        Rc::new(RefCell::new(None));
+
+    {
+        let selectable = selectable.clone();
+        let value_label = value_label.clone();
+        let reason_label = reason_label.clone();
+        let spin = spin.clone();
+        let preview_button = preview_button.clone();
+        let controller_slot = controller_slot.clone();
+        let update = move |combo: &gtk::ComboBoxText| {
+            let Some(active) = combo.active_id() else {
+                return;
+            };
+            let Some(entry) = selectable
+                .iter()
+                .find(|entry| entry.record.name == active.as_str())
+            else {
+                return;
+            };
+            value_label.set_label(&format!("Current: {}", entry.current_value_text));
+            if let Ok(speed) = entry.record.speed.parse::<f64>() {
+                spin.set_value(speed);
+            }
+            preview_button.set_sensitive(entry.preview_supported);
+            reason_label.set_label(
+                &entry
+                    .blocked_reason
+                    .clone()
+                    .map(|reason| format!("Preview limited: {reason}"))
+                    .unwrap_or_default(),
+            );
+            if let Some(previous) = controller_slot.borrow_mut().take() {
+                let _ = previous.borrow_mut().revert_if_unconfirmed();
+            }
+        };
+        update(&combo);
+        combo.connect_changed(update);
+    }
+
+    let values_for_save: Rc<dyn Fn() -> PickedRecordValues> = {
+        let spin = spin.clone();
+        Rc::new(move || PickedRecordValues::AnimationSpeed {
+            speed: spin.value(),
+        })
+    };
+    record_picker_action_row(
+        PickedFamily::Animation,
+        "animation",
+        &combo,
+        values_for_save,
+        controller_slot,
+        discovery,
+        &preview_button,
+        parent,
+    );
+    record_picker_blocked_expander(
+        "Animation records not yet supported",
+        "animation",
+        blocked,
+        parent,
+    );
+}
+
+/// Bezier curve record picker: existing curves from the readback, control
+/// point editing, supervised preview, gated Save.
+fn curve_record_picker_group(discovery: &ConfigDiscovery, parent: &gtk::Box) {
+    parent.append(&body_label("Bezier curves"));
+    let entries = match list_curve_records_live() {
+        Ok(entries) => entries,
+        Err(error) => {
+            parent.append(&small_label(&format!("Bezier curves unavailable: {error}")));
+            return;
+        }
+    };
+    let selectable: Vec<CurveRecordEntry> = entries
+        .iter()
+        .filter(|entry| entry.save_supported)
+        .cloned()
+        .collect();
+    let blocked: Vec<(String, String)> = entries
+        .iter()
+        .filter(|entry| !entry.save_supported)
+        .map(|entry| {
+            (
+                entry.record.name.clone(),
+                entry
+                    .blocked_reason
+                    .clone()
+                    .unwrap_or_else(|| "not supported".to_string()),
+            )
+        })
+        .collect();
+    if selectable.is_empty() {
+        parent.append(&small_label(
+            "No bezier curve in the runtime readback is currently supported for gated Save.",
+        ));
+        record_picker_blocked_expander("Curves not yet supported", "curve", blocked, parent);
+        return;
+    }
+
+    let row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    let combo = gtk::ComboBoxText::new();
+    combo.set_widget_name("hyprland-settings-record-picker-curve-records");
+    for entry in &selectable {
+        combo.append(
+            Some(&entry.record.name),
+            &format!("{} — {}", entry.record.name, entry.current_value_text),
+        );
+    }
+    combo.set_active(Some(0));
+    row.append(&combo);
+    parent.append(&row);
+
+    let points_row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    let mut spins = Vec::new();
+    for (label, is_x) in [("X0", true), ("Y0", false), ("X1", true), ("Y1", false)] {
+        points_row.append(&body_label(label));
+        let spin = if is_x {
+            gtk::SpinButton::with_range(0.0, 1.0, 0.01)
+        } else {
+            gtk::SpinButton::with_range(-1.0, 2.0, 0.01)
+        };
+        spin.set_digits(2);
+        spin.set_widget_name(&format!(
+            "hyprland-settings-record-picker-curve-{}",
+            label.to_lowercase()
+        ));
+        points_row.append(&spin);
+        spins.push(spin);
+    }
+    parent.append(&points_row);
+
+    let value_label = small_label("");
+    value_label.set_widget_name("hyprland-settings-record-picker-curve-value");
+    parent.append(&value_label);
+
+    let preview_button = gtk::Button::with_label("Preview with recovery");
+    preview_button.set_widget_name("hyprland-settings-record-picker-preview-curve");
+    let controller_slot: Rc<RefCell<Option<Rc<RefCell<FamilyRecordPreviewController>>>>> =
+        Rc::new(RefCell::new(None));
+
+    {
+        let selectable = selectable.clone();
+        let value_label = value_label.clone();
+        let spins = spins.clone();
+        let controller_slot = controller_slot.clone();
+        let update = move |combo: &gtk::ComboBoxText| {
+            let Some(active) = combo.active_id() else {
+                return;
+            };
+            let Some(entry) = selectable
+                .iter()
+                .find(|entry| entry.record.name == active.as_str())
+            else {
+                return;
+            };
+            value_label.set_label(&format!(
+                "Current control points: {}",
+                entry.current_value_text
+            ));
+            for (spin, value) in spins.iter().zip([
+                entry.record.x0,
+                entry.record.y0,
+                entry.record.x1,
+                entry.record.y1,
+            ]) {
+                spin.set_value(value);
+            }
+            if let Some(previous) = controller_slot.borrow_mut().take() {
+                let _ = previous.borrow_mut().revert_if_unconfirmed();
+            }
+        };
+        update(&combo);
+        combo.connect_changed(update);
+    }
+
+    let values_for_save: Rc<dyn Fn() -> PickedRecordValues> = {
+        let spins = spins.clone();
+        Rc::new(move || PickedRecordValues::CurvePoints {
+            x0: spins[0].value(),
+            y0: spins[1].value(),
+            x1: spins[2].value(),
+            y1: spins[3].value(),
+        })
+    };
+    record_picker_action_row(
+        PickedFamily::Curve,
+        "curve",
+        &combo,
+        values_for_save,
+        controller_slot,
+        discovery,
+        &preview_button,
+        parent,
+    );
+    record_picker_blocked_expander("Curves not yet supported", "curve", blocked, parent);
+}
+
+/// Live supervised record picker for the two proven structured families.
 fn structured_family_preview_controls_section(model: &UiProjection) -> gtk::Frame {
     let frame = gtk::Frame::new(None);
     frame.set_widget_name("hyprland-settings-family-preview-controls");
@@ -4854,25 +5216,15 @@ fn structured_family_preview_controls_section(model: &UiProjection) -> gtk::Fram
     content.set_margin_start(10);
     content.set_margin_end(10);
     content.append(&title_label(
-        "Structured-family live preview (proven records)",
+        "Structured-family records (proven record shapes)",
     ));
     content.append(&body_label(
-        "hl.animation and hl.curve passed zero-residue live proofs for modifying existing records. These supervised controls preview live with a recovery countdown; nothing is written to your config. Creating or deleting records is blocked (no runtime mechanism exists to revert those).",
+        "hl.animation and hl.curve passed zero-residue live proofs for modifying existing records, generalized by record-shape proofs. Pick an existing record from the runtime readback, preview it live under a recovery countdown, and persist the previewed values once through the gated Save. Creating or deleting records is blocked (no runtime mechanism exists to revert those), and records without proof stay blocked with the reason shown.",
     ));
-    family_preview_control(
-        FamilyPreviewTarget::AnimationGlobalSpeed,
-        (0.1, 20.0, 0.1),
-        &model.config_discovery,
-        &content,
-    );
-    family_preview_control(
-        FamilyPreviewTarget::CurveDefaultY0,
-        (-1.0, 2.0, 0.01),
-        &model.config_discovery,
-        &content,
-    );
+    animation_record_picker_group(&model.config_discovery, &content);
+    curve_record_picker_group(&model.config_discovery, &content);
     content.append(&small_label(
-        "Save previewed value persists once to your config (backup first, reread-verified, no reload) and requires Safe Live Save Mode to be active; while autoreload is active the Save is blocked with the reason shown. Only these two proven records can be saved - blocked families and record creation/deletion stay blocked.",
+        "Save previewed value persists once to your config (backup first, reread-verified, no reload) and requires Safe Live Save Mode to be active; while autoreload is active the Save is blocked with the reason shown. Only proven record shapes can be saved - blocked families and record creation/deletion stay blocked.",
     ));
     frame.set_child(Some(&content));
     frame

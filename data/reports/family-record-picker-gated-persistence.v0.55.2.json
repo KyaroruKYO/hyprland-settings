@@ -1,0 +1,61 @@
+{
+  "artifactKind": "family-record-picker-gated-persistence-report",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "b3f373c86ac263da4a368ae20894b72ba091f3a2",
+  "headCommit": "the marathon commits containing this report",
+  "goal": "extend gated structured-family persistence one proven record shape at a time via a family record picker",
+  "familyRecordPickerStatus": "complete for the proven record shapes",
+  "familiesWithRecordPicker": [
+    "hl.animation",
+    "hl.curve"
+  ],
+  "recordShapesSupported": [
+    "hl.animation: speed of any explicitly overridden animation record; enabled/bezier/style re-rendered exactly from the readback (style preserved on save); proven live on fade (speed 3 -> 3.25 -> 3, full-record zero residue, 2026-07-13)",
+    "hl.curve: all four control points (X0/Y0/X1/Y1) of any existing bezier curve; the proven runtime command always writes all four points; proven live on quick (X1 0.1 -> 0.11 -> 0.1, zero residue on all four points, 2026-07-13)"
+  ],
+  "recordShapesBlocked": [
+    "inherited animation records: saving would create a new override - creation is blocked (not modify-existing)",
+    "internal __-prefixed records: compositor internals, not user configuration",
+    "style-bearing records for live preview (save-only): style preservation through the runtime command is not proven",
+    "disabled-at-runtime records for live preview (save-only): the compositor does not apply speed changes to disabled records, so a preview cannot be readback-verified - found by live proof on borderangle",
+    "unsafe record names: fail closed before any expression or config line is built",
+    "all other families (hl.monitor, hl.bind, hl.gesture, hl.device, hl.permission): not expressible by the picker types"
+  ],
+  "creationDeletionSupport": false,
+  "proofReceipts": "PROVEN_RECORD_SHAPE_PROOFS in src/structured_family_runtime_preview.rs; receipts recorded only after env-gated live round trips passed on non-family-proof records",
+  "saveEntry": "structured_family_gated_persistence::gated_family_record_save - gate chain: shape proof receipt, value validation + safe-name check, Safe Live Save Mode live-verified, active-config identity, render-from-readback (modify-existing enforced), byte-exact backup, one atomic write replacing only the target record's own line, reread verification with automatic restore on failure",
+  "liveSaveFlowProof": "tests/family_record_picker_live.rs gated_family_record_save_flow_proof passed 2026-07-13: hl.animation fade wrote 'animation = fade, 1, 3, quick', hl.curve quick wrote 'bezier = quick, 0.15, 0, 0.1, 1'; both reread-verified with byte-exact backups; flow-proof cleanup restored pre-test bytes byte-exactly",
+  "liveControllerProof": "FamilyRecordPreviewController round-tripped live on fade and quick with zero residue (2026-07-13)",
+  "defectFoundByLiveProof": "disabled animation records (enabled 0) silently ignore runtime speed changes; classification made them save-only rather than faking preview support",
+  "ui": "record dropdowns from the live readback per family, current value, speed spin / four control-point spins, Preview with recovery (countdown, Keep, Revert now, Cancel, session-drop revert), gated Save previewed value, blocked records under an expander with reasons, save-only preview limitations shown inline",
+  "safeModePersistenceStatus": "complete (separate report: persist-safe-live-save-mode.v0.55.2.json)",
+  "safeModePersistedByDefault": false,
+  "hyprland0554CaptureRefreshStatus": "complete (separate report: hyprland-0.55.4-export-refresh.v0.55.2.json)",
+  "hyprland0554RowsAdded": 0,
+  "hyprland0554RowsRemoved": 0,
+  "hyprland0554RowsChanged": 0,
+  "releaseDecisionStatus": "ready pending user approval (separate report: release-decision.v0.55.2.json)",
+  "releaseTagCreated": false,
+  "releaseArtifactsPublished": false,
+  "hardwareProofStatus": "deferred",
+  "hardwareProofReason": "required touch/tablet and secondary input devices unavailable",
+  "possibleFutureNonHardwareApproach": "not proven yet; proposal-only if ever, requiring explicit user approval, rollback/recovery plan, and confirmation on a real session",
+  "activeConfigWrittenDuringNormalTests": false,
+  "activeConfigWrittenDuringLiveTests": true,
+  "liveTestWriteDiscipline": "env-gated + ignored; byte-exact backup verified; flow-proof cleanup restored pre-test bytes byte-exactly",
+  "hyprctlReloadRan": false,
+  "runtimeMutationRan": true,
+  "runtimeMutationScope": "reversible zero-residue preview round trips on animation/curve records and the misc:disable_autoreload flag, all readback-verified restored; no monitor/display mutation",
+  "testsAdded": [
+    "tests/family_record_picker.rs (15 tests: classification honesty, parsers, fixed-shape expressions, controller round trips, gate ordering, modify-existing, style preservation, source guards)",
+    "tests/family_record_picker_live.rs (4 env-gated live proofs, all passed 2026-07-13)"
+  ],
+  "sourceGuards": [
+    "picker module: no file writes, no process spawning, no reload, no UI code, no other family, no creation/removal operations, save routed only through gated persistence",
+    "persistence module: exactly one generalized save entry and one live wrapper alongside the pinned originals; existing guards (no reload, no other families, gate before file access) still pass"
+  ],
+  "validation": "cargo fmt/fmt --check/check/test, jq empty data/reports/*.json, git diff --check, cargo build --release - all green",
+  "gtkEvidenceRoot": "/tmp/hyprland-settings-gtk-automation/20260713_marathon",
+  "nextRecommendedWork": "further record shapes (style and enabled fields, other families) require new live proofs; hardware-gated proofs and the release decision remain"
+}

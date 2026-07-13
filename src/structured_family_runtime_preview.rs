@@ -111,6 +111,161 @@ pub fn proven_family_record_proof(family_id: &str) -> Option<&'static ProvenFami
         .find(|proof| proof.family_id == family_id)
 }
 
+/// A record *shape* proven live: the same modify-existing mechanism as the
+/// family proofs, generalized from one hardcoded record to every record the
+/// shape describes. A shape receipt is recorded only after an env-gated live
+/// round trip actually passed on a record that is NOT the original
+/// family-proof record (proving the generalization, not repeating the
+/// original proof).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+pub struct ProvenRecordShapeProof {
+    pub family_id: &'static str,
+    pub shape: &'static str,
+    pub proven_on_record: &'static str,
+    pub original: &'static str,
+    pub preview: &'static str,
+    pub verification: &'static str,
+    pub proof_date: &'static str,
+    pub proof_env: &'static str,
+}
+
+pub const ANIMATION_RECORD_SPEED_SHAPE: &str = "modify-existing-animation-record-speed";
+pub const CURVE_RECORD_POINTS_SHAPE: &str = "modify-existing-curve-control-points";
+
+/// Entries are added only after a real env-gated proof run against the
+/// running compositor (tests/family_record_picker_live.rs).
+pub const PROVEN_RECORD_SHAPE_PROOFS: &[ProvenRecordShapeProof] = &[
+    ProvenRecordShapeProof {
+        family_id: "hl.animation",
+        shape: ANIMATION_RECORD_SPEED_SHAPE,
+        proven_on_record: "fade",
+        original: "enabled=1 speed=3.00 bezier=quick style=(empty)",
+        preview: "speed=3.25",
+        verification: "read-only animations listing verified apply and exact restore on a non-family-proof record; full-record zero residue",
+        proof_date: "2026-07-13",
+        proof_env: "HYPRLAND_SETTINGS_RUN_FAMILY_RECORD_PICKER_LIVE=1",
+    },
+    ProvenRecordShapeProof {
+        family_id: "hl.curve",
+        shape: CURVE_RECORD_POINTS_SHAPE,
+        proven_on_record: "quick",
+        original: "(0.15, 0, 0.1, 1)",
+        preview: "x1=0.11",
+        verification: "read-only animations bezier listing verified apply and exact restore on a non-family-proof record; zero residue on all four control points",
+        proof_date: "2026-07-13",
+        proof_env: "HYPRLAND_SETTINGS_RUN_FAMILY_RECORD_PICKER_LIVE=1",
+    },
+];
+
+pub fn proven_record_shape_proof(
+    family_id: &str,
+    shape: &str,
+) -> Option<&'static ProvenRecordShapeProof> {
+    PROVEN_RECORD_SHAPE_PROOFS
+        .iter()
+        .find(|proof| proof.family_id == family_id && proof.shape == shape)
+}
+
+/// One animation leaf as reported by the read-only animations listing.
+#[derive(Debug, Clone, PartialEq, Serialize)]
+pub struct AnimationRuntimeRecord {
+    pub name: String,
+    pub overridden: bool,
+    pub bezier: String,
+    pub enabled: String,
+    pub speed: String,
+    pub style: String,
+}
+
+/// One bezier curve as reported by the read-only animations listing.
+#[derive(Debug, Clone, PartialEq, Serialize)]
+pub struct BezierRuntimeRecord {
+    pub name: String,
+    pub x0: f64,
+    pub y0: f64,
+    pub x1: f64,
+    pub y1: f64,
+}
+
+/// Parse every animation leaf from the read-only animations listing
+/// (the section before `beziers:`).
+pub fn parse_animation_records(listing: &str) -> Vec<AnimationRuntimeRecord> {
+    let animation_section = listing.split("beziers:").next().unwrap_or(listing);
+    let mut records = Vec::new();
+    let mut lines = animation_section.lines().peekable();
+    while let Some(line) = lines.next() {
+        let Some(name) = line.trim().strip_prefix("name:") else {
+            continue;
+        };
+        let mut record = AnimationRuntimeRecord {
+            name: name.trim().to_string(),
+            overridden: false,
+            bezier: String::new(),
+            enabled: String::new(),
+            speed: String::new(),
+            style: String::new(),
+        };
+        while let Some(detail) = lines.peek() {
+            let detail = detail.trim();
+            if detail.is_empty() || detail.starts_with("name:") {
+                break;
+            }
+            if let Some(value) = detail.strip_prefix("overriden:") {
+                record.overridden = value.trim() == "1";
+            } else if let Some(value) = detail.strip_prefix("bezier:") {
+                record.bezier = value.trim().to_string();
+            } else if let Some(value) = detail.strip_prefix("enabled:") {
+                record.enabled = value.trim().to_string();
+            } else if let Some(value) = detail.strip_prefix("speed:") {
+                record.speed = value.trim().to_string();
+            } else if let Some(value) = detail.strip_prefix("style:") {
+                record.style = value.trim().to_string();
+            }
+            lines.next();
+        }
+        records.push(record);
+    }
+    records
+}
+
+/// Parse every bezier curve from the read-only animations listing
+/// (the section after `beziers:`).
+pub fn parse_bezier_records(listing: &str) -> Vec<BezierRuntimeRecord> {
+    let Some(bezier_section) = listing.split("beziers:").nth(1) else {
+        return Vec::new();
+    };
+    let mut records = Vec::new();
+    let mut lines = bezier_section.lines().peekable();
+    while let Some(line) = lines.next() {
+        let Some(name) = line.trim().strip_prefix("name:") else {
+            continue;
+        };
+        let mut points = [None::<f64>; 4];
+        while let Some(detail) = lines.peek() {
+            let detail = detail.trim();
+            if detail.is_empty() || detail.starts_with("name:") {
+                break;
+            }
+            for (index, key) in ["X0:", "Y0:", "X1:", "Y1:"].iter().enumerate() {
+                if let Some(value) = detail.strip_prefix(key) {
+                    points[index] = value.trim().parse::<f64>().ok();
+                }
+            }
+            lines.next();
+        }
+        if let [Some(x0), Some(y0), Some(x1), Some(y1)] = points {
+            records.push(BezierRuntimeRecord {
+                name: name.trim().to_string(),
+                x0,
+                y0,
+                x1,
+                y1,
+            });
+        }
+    }
+    records
+}
+
 #[derive(Debug, Clone, Serialize)]
 pub struct StructuredFamilyRuntimePreviewProfile {
     pub family_id: &'static str,
