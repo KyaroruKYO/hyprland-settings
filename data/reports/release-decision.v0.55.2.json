@@ -66,5 +66,15 @@
     "v010Unchanged": true,
     "distV010Unchanged": true
   },
-  "releaseCandidateMaterials": "docs/RELEASE-DECISION.md (release notes draft, changelog draft, artifact checklist, test checklist, known limitations, manual test plan)"
+  "releaseCandidateMaterials": "docs/RELEASE-DECISION.md (release notes draft, changelog draft, artifact checklist, test checklist, known limitations, manual test plan)",
+  "releaseCandidatePrepared": {
+    "date": "2026-07-13",
+    "name": "v0.2.0-rc.1",
+    "status": "prepared locally after user approval of RC preparation",
+    "report": "data/reports/release-candidate-v0.2.0-rc.1.v0.55.2.json",
+    "doc": "docs/RELEASE-CANDIDATE-v0.2.0-rc.1.md",
+    "tagCreated": false,
+    "artifactsPublished": false,
+    "finalReleaseStillPendingUserApproval": true
+  }
 }

@@ -1,0 +1,46 @@
+{
+  "artifactKind": "release-candidate-report",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "startingCommit": "32ba7ef28b7941f68588d4f7992ed06d2eced235",
+  "headCommit": "the RC commits following 32ba7ef on structured-family-editors-unified (see git log)",
+  "preparedDate": "2026-07-13",
+  "releaseCandidate": "v0.2.0-rc.1",
+  "releaseCandidateStatus": "prepared locally: version bumped, metadata validated, changelog and release notes written, artifacts built reproducibly into dist/v0.2.0-rc.1, full validation green; RC tagging remains a separate final step because the repo has no prerelease tag convention",
+  "releaseTagCreated": false,
+  "releaseTagPushed": false,
+  "finalReleaseTagCreated": false,
+  "releaseArtifactsCreated": true,
+  "releaseArtifactsPublished": false,
+  "artifactPath": "dist/v0.2.0-rc.1/",
+  "artifactManifest": "data/reports/v0.2.0-rc.1-release-artifact-manifest.json",
+  "versionDecision": "Cargo.toml bumped to 0.2.0-rc.1 (cargo supports semver prereleases; verified by cargo check and a clean release build); the final 0.2.0 bump happens only with the user-approved stable release",
+  "metadataUpdated": [
+    "Cargo.toml + Cargo.lock version 0.2.0-rc.1",
+    "CHANGELOG.md 0.2.0-rc.1 section",
+    "AppStream metainfo releases entry 0.2.0~rc.1 (type development) + 0.1.0 backfill; appstreamcli validate passed",
+    "desktop file unchanged; desktop-file-validate passed"
+  ],
+  "rcTagDecision": {
+    "created": false,
+    "reason": "the tag gates require a clear repo prerelease-tag convention; the repo has exactly one release tag (v0.1.0) and no prerelease precedent, so no RC tag was created",
+    "remainingStep": "if wanted: an annotated v0.2.0-rc.1 tag on the reviewed commit, mirroring the v0.1.0 tag style, then push the tag"
+  },
+  "mergeDecision": "main stays untouched; the merge belongs to the user-approved final release",
+  "validation": "cargo fmt, cargo fmt --check, cargo check, cargo test (full suite, all ok), jq empty data/reports/*.json, git diff --check, cargo build --release, appstreamcli validate, desktop-file-validate, bash -n on the builder - all green",
+  "knownLimitations": "docs/RELEASE-CANDIDATE-v0.2.0-rc.1.md#known-limitations (hardware-deferred rows, blocked families, style not editable, disabled-record readback reset, flat scalar projection, v0.55.2 model at zero 0.55.4 drift)",
+  "manualTestPlan": "docs/RELEASE-CANDIDATE-v0.2.0-rc.1.md#manual-test-plan (9 steps on a real session with the RC binary; not yet run — a user-side blocker for the final release)",
+  "upgradeNotes": "docs/RELEASE-CANDIDATE-v0.2.0-rc.1.md#upgrade-notes",
+  "rollbackNotes": "docs/RELEASE-CANDIDATE-v0.2.0-rc.1.md#rollback-notes",
+  "remainingBeforeFinalRelease": [
+    "optional annotated v0.2.0-rc.1 tag on the reviewed commit (one command; user's call)",
+    "one manual pass of the test plan with the RC binary",
+    "user approval of the final stable release",
+    "merge structured-family-editors-unified into main",
+    "version bump to 0.2.0 with final changelog/metainfo entries",
+    "annotated v0.2.0 tag, dist/v0.2.0 artifacts, GitHub release"
+  ],
+  "mainChanged": false,
+  "v010Changed": false,
+  "distV010Changed": false
+}

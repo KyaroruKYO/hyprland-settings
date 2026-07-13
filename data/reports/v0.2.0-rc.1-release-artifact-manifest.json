@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "v0.2.0-rc.1-release-artifact-manifest",
+  "generatedAt": "2026-07-13",
+  "startingCommit": "32ba7ef28b7941f68588d4f7992ed06d2eced235",
+  "releaseCandidateCommit": "the RC commits following 32ba7ef on structured-family-editors-unified (see git log)",
+  "tagName": null,
+  "tagCreated": false,
+  "tagPushed": false,
+  "finalReleaseTagCreated": false,
+  "releaseScope": "release candidate: runtime-first live preview and gated single-write persistence for the v0.55.2 data/model, zero-drift audited against Hyprland 0.55.4",
+  "projectDataVersion": "v0.55.2",
+  "appIdentity": {
+    "appName": "Hyprland Settings",
+    "repoName": "hyprland-settings",
+    "binaryName": "hyprland-settings",
+    "appId": "io.github.kyarorukyo.hyprlandsettings",
+    "githubOwner": "KyaroruKYO"
+  },
+  "version": "0.2.0-rc.1",
+  "cargoSemverPrereleaseSupported": true,
+  "appstreamReleaseEntry": "0.2.0~rc.1 (type development), appstreamcli validate passed",
+  "desktopFileValidate": "passed",
+  "releaseNotesPath": "docs/releases/v0.2.0-rc.1.md",
+  "builderScript": "tools/build_release_candidate_artifacts.sh",
+  "builderBoundaries": [
+    "refuses when Cargo.toml version is not 0.2.0-rc.1",
+    "refuses to overwrite an existing dist/v0.2.0-rc.1",
+    "verifies dist/v0.1.0 checksums after building",
+    "never creates or moves tags, never pushes, never publishes",
+    "never runs hyprctl and never touches the Hyprland session or config"
+  ],
+  "artifacts": {
+    "sourceArchive": {
+      "path": "dist/v0.2.0-rc.1/hyprland-settings-v0.2.0-rc.1-source.tar.gz",
+      "builtFrom": "git archive HEAD at the RC commit"
+    },
+    "binaryArtifact": {
+      "path": "dist/v0.2.0-rc.1/hyprland-settings-v0.2.0-rc.1-linux-x86_64.tar.gz",
+      "includedFiles": [
+        "hyprland-settings",
+        "README.md",
+        "LICENSE",
+        "data/applications/io.github.kyarorukyo.hyprlandsettings.desktop",
+        "data/metainfo/io.github.kyarorukyo.hyprlandsettings.metainfo.xml"
+      ]
+    },
+    "checksumFile": {
+      "path": "dist/v0.2.0-rc.1/SHA256SUMS",
+      "note": "authoritative checksums live in this file, not in the committed manifest: the source archive is built from the commit containing the manifest, so embedded checksums could never match themselves"
+    }
+  },
+  "publicReleasePublished": false,
+  "packageArtifactPublished": false,
+  "distV010Untouched": true,
+  "v010Untouched": true,
+  "mainUntouched": true
+}

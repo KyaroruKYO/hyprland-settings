@@ -20,4 +20,16 @@
     <category>GTK</category>
   </categories>
   <content_rating type="oars-1.1" />
+  <releases>
+    <release type="development" version="0.2.0~rc.1" date="2026-07-13">
+      <description>
+        <p>Release candidate: runtime-first live preview with supervised dead-man recovery, Safe Live Save Mode gating every save, gated single-write persistence with byte-exact backups and reread verification, a structured-family record picker for proven animation and bezier record shapes, and a Hyprland 0.55.4 zero-drift compatibility audit.</p>
+      </description>
+    </release>
+    <release version="0.1.0" date="2026-06-19">
+      <description>
+        <p>First release: read-only browsing of official Hyprland setting metadata with guarded safe-batch config writes for eligible normal scalar settings.</p>
+      </description>
+    </release>
+  </releases>
 </component>

@@ -1,6 +1,6 @@
 [package]
 name = "hyprland-settings"
-version = "0.1.0"
+version = "0.2.0-rc.1"
 edition = "2021"
 description = "GTK4/libadwaita Hyprland settings app with guarded safe-batch config writes"
 license = "MIT"

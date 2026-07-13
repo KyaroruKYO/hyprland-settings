@@ -5,9 +5,17 @@ Machine-readable result: `data/reports/release-decision.v0.55.2.json`.
 ## Decision
 
 **Ready pending user approval.** No tag was created, nothing was merged to
-main, no artifacts were built or published, and `v0.1.0` / `dist/v0.1.0`
-are untouched. This document prepares the material a v0.2.0 release
-candidate would need; the release itself is the user's call.
+main, nothing was published, and `v0.1.0` / `dist/v0.1.0` are untouched.
+This document prepares the material a v0.2.0 release candidate would need;
+the release itself is the user's call.
+
+**Update (2026-07-13): the user approved release-candidate preparation, and
+v0.2.0-rc.1 is now prepared locally** — version bump, validated metadata,
+changelog, release notes, and local `dist/v0.2.0-rc.1/` artifacts built by
+`tools/build_release_candidate_artifacts.sh`. See
+`docs/RELEASE-CANDIDATE-v0.2.0-rc.1.md`. The final stable v0.2.0 (tag,
+merge, publish) still awaits user approval; blockers 2–5 below now apply to
+the final release, and the RC covers blocker 3's version-bump groundwork.
 
 ## Why ready
 
