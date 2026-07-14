@@ -1,0 +1,117 @@
+{
+  "report": "manual-visual-review-implementation",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-13",
+  "startingCommit": "8c16572",
+  "endingCommit": "the commit titled 'Implement screenshot-grounded HyprMod fidelity fixes' that adds this report (a report cannot know its own commit hash)",
+  "findingsSource": [
+    "docs/MANUAL-VISUAL-REVIEW-FINDINGS.md",
+    "data/reports/manual-visual-review-findings.v0.55.2.json",
+    "/home/kyo/review (19 user-captured screenshots)"
+  ],
+  "filesChanged": [
+    "Cargo.toml (adw feature v1_5 for adw::Dialog)",
+    "src/ui/window.rs",
+    "src/ux_presentation.rs",
+    "tests/screenshot_fidelity_fixes.rs (new, 10 guards)",
+    "tests/gui_correction.rs (pins updated)",
+    "tests/ux_simplification.rs (pins updated)",
+    "tests/visual_fidelity.rs (pin updated)",
+    "docs/MANUAL-VISUAL-REVIEW-FINDINGS.md (status)",
+    "docs/UX-SIMPLIFICATION-PLAN.md",
+    "docs/UX-HYPRMOD-REFERENCE-AUDIT.md",
+    "docs/CURRENT-PROJECT-HANDOFF.md",
+    "docs/PROGRESS-TRACKER.md"
+  ],
+  "findingsFixed": {
+    "phase1_bezierWindowing": {
+      "status": "fixed and live-verified",
+      "change": "open_bezier_editor_window (separate gtk::Window) replaced by open_bezier_editor_dialog: adw::Dialog + adw::ToolbarView/HeaderBar presented on the main window; the row opens it through list selection so pointer, keyboard, and assistive tech share one path",
+      "hyprctlClientsBeforeOpen": 5,
+      "hyprctlClientsAfterOpen": 5,
+      "evidence": "/home/kyo/review-after/06-hs-bezier-editor-overlay-after.png shows the editor as a centered in-window modal overlay dimming the Animations page; zero new compositor clients"
+    },
+    "phase2_animationsPage": {
+      "status": "fixed and live-verified",
+      "change": "Six reference sections (General scalar rows via section_for_row, then ANIMATION_RECORD_GROUPS: Global / Windows & Layers / Fading / Workspaces / Other); records render as switch rows with animation_record_subtitle ('4.0ds · easeOutQuint', 'disabled · 1.0ds · default', 'inherited · …'); the row switch stages the enabled flag for the row menu's supervised preview/gated Save; the workbench card moved to Safety Details; Bezier row gained themed curve icon + chevron",
+      "evidence": "/home/kyo/review-after/05-side-by-side-animations-after.png — the two pages are structurally near-identical; no raw '(enabled 1, bezier …)' text and no proof/safety prose on the page"
+    },
+    "phase3_pickerDialog": {
+      "status": "fixed and live-verified",
+      "change": "Picker is an opaque adw::Dialog (never a popover): pill Cancel / centered title / suggested Select, background page dimmed",
+      "evidence": "/home/kyo/review-after/03-hs-color-picker-palette-after.png — no page content readable through the surface"
+    },
+    "phase4_paletteView": {
+      "status": "fixed and live-verified",
+      "change": "picker_palette_columns(): nine columns (six hues, brown, light neutrals, dark neutrals) of five contiguous shades with rounded column ends; Custom row with plus tile, session-remembered custom swatches (thread-local CUSTOM_PICKER_COLORS, deduped, capped 8), selected-swatch checkmark",
+      "evidence": "/home/kyo/review-after/03-hs-color-picker-palette-after.png"
+    },
+    "phase5_customView": {
+      "status": "fixed and live-verified",
+      "change": "Layout reordered to eyedropper | live preview | hex entry over vertical rainbow hue bar + continuous SV plane (two cairo gradients, no stepped cells) with full-length crosshair, then checkerboard alpha gradient slider with knob; hex edits sync the HSV state; dialog sizes to the visible view (no clipped alpha)",
+      "evidence": "/home/kyo/review-after/04-hs-color-picker-custom-after.png"
+    },
+    "phase6_colorRowGeometry": {
+      "status": "fixed and live-verified",
+      "change": "Stop tiles enlarged to rounded 44x26 (rounded_rect_path clip in live_swatch_area, padding stripped via css class); control order now swatch/remove/swatch/remove/angle spinner/plus (add-stop moved after the angle)",
+      "evidence": "/home/kyo/review-after/02-hs-active-border-color-row-after.png — order and proportions match 04-closeup-hm-active-border-color-row.png"
+    },
+    "phase7_numericControls": {
+      "status": "fixed and live-verified",
+      "change": "Scalar numeric ValueEntry rows render as compact spin buttons (integer step/digits for integral values); wide-range integer sliders drop the two-decimal formatting ('0', not '0.00'); short_description sentence-cases subtitles; curated titles for general.col.nogroup_border[_active] ('No-group border color' / 'Active no-group border color')",
+      "evidence": "/home/kyo/review-after/01-side-by-side-general-after.png — Gaps rows show 5 −/+ spinners, Border size shows 0"
+    },
+    "phase8_sidebarHiding": {
+      "status": "fixed and live-verified (root cause was a real routing bug)",
+      "rootCause": "xwayland.* rows live in the model's 'display' tab and ecosystem.* rows in 'permissions', but both PageSpecs claimed their prefixes from 'system' — the claims matched nothing, sidebar_items hid both pages, and the rows silently fell to the Monitors/Permissions rest pages (reachability stayed 341 so no guard fired)",
+      "change": "xwayland page source_tab -> display; ecosystem page source_tab -> permissions; guard added asserting the claims and that Monitors no longer swallows xwayland rows",
+      "note": "the permissions tab's three rows are all ecosystem.*, so the Permissions page now legitimately claims zero rows and hides — same version-aware hiding rule, now honest",
+      "evidence": "/home/kyo/review-after/01-side-by-side-general-after.png — XWayland and Ecosystem visible under ADVANCED"
+    }
+  },
+  "deferred": [
+    {
+      "item": "Eyedropper screen picking",
+      "reason": "needs XDG desktop portal (org.freedesktop.portal.Screenshot PickColor) DBus integration — too large for this pass; the button ships visible but disabled with an accessible 'not available yet' label, per the task's explicit allowance"
+    },
+    {
+      "item": "Custom-swatch persistence across sessions",
+      "reason": "the task required at minimum session memory; cross-session persistence needs a settings-storage decision"
+    },
+    {
+      "item": "Inherited-record subtitle values differ from the reference for inherited rows (e.g. Zoom Factor 'inherited · 0.0ds' vs reference 'inherited · 8.0ds')",
+      "reason": "the subtitle honestly reflects the hyprctl readback for non-overridden records; the reference computes an effective inherited value from its schema — synthesizing that here would show values the runtime readback does not report"
+    },
+    {
+      "item": "after-screenshot 02 shows opaque white/black tiles without visible checkerboard",
+      "reason": "the live config's border colors are fully opaque, so there is honestly no transparency to show; the checkerboard renders under translucent values (visible in the picker's custom swatches and alpha slider captures)"
+    }
+  ],
+  "screenshotsAfterFix": [
+    "/home/kyo/review-after/01-side-by-side-general-after.png",
+    "/home/kyo/review-after/02-hs-active-border-color-row-after.png",
+    "/home/kyo/review-after/03-hs-color-picker-palette-after.png",
+    "/home/kyo/review-after/04-hs-color-picker-custom-after.png",
+    "/home/kyo/review-after/05-side-by-side-animations-after.png",
+    "/home/kyo/review-after/06-hs-bezier-editor-overlay-after.png"
+  ],
+  "screenshotNotes": "Both apps ran live and were driven read-only over AT-SPI (navigation and button clicks only; a guard in the driver refuses any node whose text contains apply/save). The reference app was only navigated, never edited. Every capture above was re-read as pixels and compared against the /home/kyo/review originals before being accepted; two defects were caught and fixed this way (clipped alpha slider from a scroll container; missing draw-arc icon replaced by a themed-icon fallback chain).",
+  "validation": {
+    "cargoFmtCheck": "clean",
+    "cargoCheck": "clean, zero warnings",
+    "cargoTest": "268 test binaries / 1095 tests, 0 failures (full suite rerun after the final code changes)",
+    "jqReports": "all data/reports/*.json parse",
+    "gitDiffCheck": "clean",
+    "cargoBuildRelease": "success (the binary used for the re-captures)",
+    "gtkEvidenceMatrix": "not rerun this pass — the accessibility-name surface the harness reads was extended (animation rows) but existing probe targets are unchanged; run on demand"
+  },
+  "newGuards": "tests/screenshot_fidelity_fixes.rs: bezier dialog not a toplevel; six-section Animations grouping; friendly subtitles with no raw record text; no proof/safety prose on Animations; picker is an opaque dialog; stacked palette columns + custom swatches; vertical hue / smooth SV / checkerboard alpha; color row control order; numeric spinners + integer formatting; xwayland/ecosystem page claims",
+  "safety": {
+    "applyClicked": false,
+    "realConfigEdited": false,
+    "runtimeMutated": false,
+    "hyprlandReloaded": false,
+    "safetyClassificationChanged": false,
+    "notes": "Presentation-only pass: the gated preview/save flow is unchanged (same controllers, same gates, relocated controls); the reference app was browsed read-only; no reload path added; SAFE_WRITABLE_ROWS and the 341-row reachability guard unchanged"
+  }
+}

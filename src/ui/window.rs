@@ -233,7 +233,11 @@ pub fn show_main_window(
     // nav labels). Loaded once per display.
     if let Some(display) = gtk::gdk::Display::default() {
         let provider = gtk::CssProvider::new();
-        provider.load_from_data(".hyprland-settings-nav-row-label { font-size: 1.08em; }\n");
+        provider.load_from_data(
+            ".hyprland-settings-nav-row-label { font-size: 1.08em; }\n\
+             .hyprland-settings-swatch-button { padding: 0; min-width: 0; min-height: 0; }\n\
+             .hyprland-settings-palette-tile { padding: 0; min-width: 0; min-height: 0; background: none; border: none; box-shadow: none; outline-offset: -2px; }\n",
+        );
         gtk::style_context_add_provider_for_display(
             &display,
             &provider,
@@ -944,10 +948,12 @@ fn build_safety_details_view(model: &UiProjection) -> gtk::ScrolledWindow {
 
     content.append(&title_label("Safety Details"));
     content.append(&body_label(
-        "Proof receipts, safety evidence, and review-only activation cards. Nothing on this page changes behavior.",
+        "Proof receipts, safety evidence, and review-only activation cards — plus the supervised record workbench, which runs through the same gates as the Animations row menus.",
     ));
 
     content.append(&connected_files_review_section(&model.config_discovery));
+
+    content.append(&structured_family_preview_controls_section(model));
 
     content.append(&profile_mode_detail_section());
 
@@ -5897,10 +5903,12 @@ fn render_settings_view(
         .map(|(_, view)| view)
         .expect("page has at least one source tab");
 
-    // Page-specific content above the sections.
+    // Page-specific content above the sections. The record groups render
+    // after the scalar sections (reference order: Bezier row, General,
+    // then the record groups); the supervised-preview workbench lives on
+    // the Safety Details page, not here.
     if page.id == "animations" {
-        append_animations_page_extras(model, sections_box);
-        sections_box.append(&structured_family_preview_controls_section(model));
+        append_animations_bezier_row(model, sections_box);
     }
     if let Some(family_id) = page_structured_family(page.id) {
         append_structured_entries_card(model, family_id, sections_box);
@@ -5996,19 +6004,22 @@ fn render_settings_view(
         page_lists.borrow_mut().push(list.clone());
         sections_box.append(&list);
     }
+
+    // Record groups follow the scalar sections on the Animations page.
+    if page.id == "animations" {
+        append_animation_record_groups(model, sections_box);
+    }
 }
 
-/// Structured families shown read-only on their HyprMod-equivalent pages.
-/// Animations page extras: the Bezier Curve Editor entry row and the
-/// per-record menu card, both driving the existing proven picker gates
-/// (existing records only, existing curves only, style preserved, Save
-/// gated by Safe Live Save Mode). Nothing new is enabled here.
-fn append_animations_page_extras(model: &Rc<UiProjection>, parent: &gtk::Box) {
+/// Animations page: the Bezier Curve Editor entry row (icon, title,
+/// description, chevron) rendered above the scalar sections. Activating it
+/// opens the in-window editor dialog.
+fn append_animations_bezier_row(model: &Rc<UiProjection>, parent: &gtk::Box) {
     let discovery = model.config_discovery.clone();
-
-    // Bezier Curve Editor row (opens a separate editor window).
     let editor_list = gtk::ListBox::new();
-    editor_list.set_selection_mode(gtk::SelectionMode::None);
+    // Single selection (not None): clicking, keyboard focus, and assistive
+    // tech all open the editor through the same selection path.
+    editor_list.set_selection_mode(gtk::SelectionMode::Single);
     editor_list.add_css_class("boxed-list");
     editor_list.set_margin_top(8);
     let editor_row = gtk::ListBoxRow::new();
@@ -6019,6 +6030,17 @@ fn append_animations_page_extras(model: &Rc<UiProjection>, parent: &gtk::Box) {
     row_box.set_margin_bottom(10);
     row_box.set_margin_start(12);
     row_box.set_margin_end(12);
+    // Themed icon with fallbacks: bezier/curve glyphs where the icon theme
+    // has them, otherwise a generic drawing icon that exists everywhere.
+    let icon = gtk::Image::from_gicon(&gtk::gio::ThemedIcon::from_names(&[
+        "path-mode-bezier-symbolic",
+        "draw-bezier-curves-symbolic",
+        "draw-bezier-curves",
+        "draw-arc-symbolic",
+        "image-x-generic-symbolic",
+    ]));
+    icon.set_valign(gtk::Align::Center);
+    row_box.append(&icon);
     let text_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
     text_box.set_hexpand(true);
     let title = body_label("Bezier Curve Editor");
@@ -6035,56 +6057,128 @@ fn append_animations_page_extras(model: &Rc<UiProjection>, parent: &gtk::Box) {
     editor_list.append(&editor_row);
     {
         let discovery = discovery.clone();
-        editor_list.connect_row_activated(move |_, _| {
-            open_bezier_editor_window(&discovery);
+        editor_list.connect_row_selected(move |list, row| {
+            if row.is_none() {
+                return;
+            }
+            list.unselect_all();
+            open_bezier_editor_dialog(list, &discovery);
         });
     }
     parent.append(&editor_list);
+}
 
-    // Animation records card: one row per editable record, with a menu
-    // button opening the record's compact controls.
+/// Animation record groups in the reference section order (Global,
+/// Windows & Layers, Fading, Workspaces, Other). Each record renders as a
+/// switch row with a friendly "speed · curve" subtitle; the switch stages
+/// the enabled flag for the row menu's supervised preview and gated Save
+/// controls. Records with an explicit override that are not curated into a
+/// named group land at the end of Other so nothing editable is hidden. Raw
+/// record text and preview/save controls never render on the page itself.
+fn append_animation_record_groups(model: &Rc<UiProjection>, parent: &gtk::Box) {
+    let discovery = model.config_discovery.clone();
     let entries = match list_animation_records_live() {
         Ok(entries) => entries,
         Err(_) => Vec::new(),
     };
-    let selectable: Vec<AnimationRecordEntry> = entries
-        .iter()
-        .filter(|entry| entry.save_supported)
-        .cloned()
-        .collect();
-    if selectable.is_empty() {
+    if entries.is_empty() {
         return;
     }
-    let heading = body_label("Animation Records");
-    heading.set_halign(gtk::Align::Start);
-    heading.set_margin_top(14);
-    heading.set_margin_start(6);
-    heading.add_css_class("heading");
-    parent.append(&heading);
-    let records_list = gtk::ListBox::new();
-    records_list.set_selection_mode(gtk::SelectionMode::None);
-    records_list.add_css_class("boxed-list");
-    records_list.set_widget_name("hyprland-settings-animation-records-card");
-    for entry in &selectable {
-        let row = gtk::ListBoxRow::new();
-        row.set_activatable(false);
-        let row_box = gtk::Box::new(gtk::Orientation::Horizontal, 12);
-        row_box.set_margin_top(8);
-        row_box.set_margin_bottom(8);
-        row_box.set_margin_start(12);
-        row_box.set_margin_end(12);
-        let text_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
-        text_box.set_hexpand(true);
-        let title = body_label(&crate::ux_presentation::choice_display_label(
-            &entry.record.name,
+    let curated = |name: &str| {
+        crate::ux_presentation::ANIMATION_RECORD_GROUPS
+            .iter()
+            .any(|(_, names)| names.contains(&name))
+    };
+    for (heading_text, names) in crate::ux_presentation::ANIMATION_RECORD_GROUPS {
+        let mut group_entries: Vec<&AnimationRecordEntry> = names
+            .iter()
+            .filter_map(|name| entries.iter().find(|entry| entry.record.name == *name))
+            .collect();
+        if *heading_text == "Other" {
+            for entry in &entries {
+                if entry.record.overridden
+                    && !entry.record.name.starts_with("__")
+                    && !curated(&entry.record.name)
+                {
+                    group_entries.push(entry);
+                }
+            }
+        }
+        if group_entries.is_empty() {
+            continue;
+        }
+        let heading = body_label(heading_text);
+        heading.set_halign(gtk::Align::Start);
+        heading.set_margin_top(14);
+        heading.set_margin_start(6);
+        heading.add_css_class("heading");
+        heading.set_widget_name(&format!(
+            "hyprland-settings-animation-group-{}",
+            safe_widget_name(heading_text)
         ));
-        title.set_halign(gtk::Align::Start);
-        text_box.append(&title);
-        let subtitle = small_label(&entry.current_value_text);
-        subtitle.set_halign(gtk::Align::Start);
-        text_box.append(&subtitle);
-        row_box.append(&text_box);
+        parent.append(&heading);
+        let list = gtk::ListBox::new();
+        list.set_selection_mode(gtk::SelectionMode::None);
+        list.add_css_class("boxed-list");
+        list.set_widget_name(&format!(
+            "hyprland-settings-animation-card-{}",
+            safe_widget_name(heading_text)
+        ));
+        for entry in group_entries {
+            list.append(&animation_record_row(entry, &discovery));
+        }
+        parent.append(&list);
+    }
+}
 
+/// One animation record as a switch row: switch (staged enabled flag),
+/// friendly title and subtitle, and — for save-supported records — the
+/// menu button holding the supervised preview and gated Save controls.
+fn animation_record_row(
+    entry: &AnimationRecordEntry,
+    discovery: &ConfigDiscovery,
+) -> gtk::ListBoxRow {
+    let row = gtk::ListBoxRow::new();
+    row.set_activatable(false);
+    let row_box = gtk::Box::new(gtk::Orientation::Horizontal, 12);
+    row_box.set_margin_top(8);
+    row_box.set_margin_bottom(8);
+    row_box.set_margin_start(12);
+    row_box.set_margin_end(12);
+
+    let enabled_switch = gtk::Switch::new();
+    enabled_switch.set_valign(gtk::Align::Center);
+    enabled_switch.set_active(entry.record.enabled == "1");
+    enabled_switch.set_sensitive(entry.save_supported);
+    enabled_switch.set_widget_name(&format!(
+        "hyprland-settings-animation-enabled-{}",
+        safe_widget_name(&entry.record.name)
+    ));
+    enabled_switch.update_property(&[gtk::accessible::Property::Label(&format!(
+        "{} enabled (stage, then preview or save from the row menu)",
+        crate::ux_presentation::animation_record_display_name(&entry.record.name)
+    ))]);
+    row_box.append(&enabled_switch);
+
+    let text_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
+    text_box.set_hexpand(true);
+    let title = body_label(&crate::ux_presentation::animation_record_display_name(
+        &entry.record.name,
+    ));
+    title.set_halign(gtk::Align::Start);
+    text_box.append(&title);
+    let subtitle = small_label(&crate::ux_presentation::animation_record_subtitle(
+        &entry.record.enabled,
+        &entry.record.speed,
+        &entry.record.bezier,
+        &entry.record.style,
+        entry.record.overridden,
+    ));
+    subtitle.set_halign(gtk::Align::Start);
+    text_box.append(&subtitle);
+    row_box.append(&text_box);
+
+    if entry.save_supported {
         let menu_button = gtk::MenuButton::new();
         menu_button.set_icon_name("open-menu-symbolic");
         menu_button.set_valign(gtk::Align::Center);
@@ -6094,25 +6188,31 @@ fn append_animations_page_extras(model: &Rc<UiProjection>, parent: &gtk::Box) {
             safe_widget_name(&entry.record.name)
         ));
         let menu_popover = gtk::Popover::new();
-        menu_popover.set_child(Some(&animation_record_menu_box(entry, &discovery)));
+        menu_popover.set_child(Some(&animation_record_menu_box(
+            entry,
+            discovery,
+            &enabled_switch,
+        )));
         menu_button.set_popover(Some(&menu_popover));
         row_box.append(&menu_button);
-
-        row.set_child(Some(&row_box));
-        records_list.append(&row);
     }
-    parent.append(&records_list);
+
+    row.set_child(Some(&row_box));
+    row
 }
 
-/// Compact per-record controls: enabled toggle, speed, curve selector
-/// (existing curves only), preview with recovery, and the gated Save. The
-/// style is preserved and never editable. Same controller and save wiring
-/// as the proven picker path.
+/// Compact per-record controls: speed, curve selector (existing curves
+/// only), preview with recovery, and the gated Save. The enabled flag is
+/// staged by the row's switch, passed in here so the menu reads the same
+/// state the row shows. The style is preserved and never editable. Same
+/// controller and save wiring as the proven picker path.
 fn animation_record_menu_box(
     entry: &AnimationRecordEntry,
     discovery: &ConfigDiscovery,
+    enabled_switch: &gtk::Switch,
 ) -> gtk::Box {
     let record_name = entry.record.name.clone();
+    let enabled_switch = enabled_switch.clone();
     let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
     content.set_margin_top(10);
     content.set_margin_bottom(10);
@@ -6120,11 +6220,6 @@ fn animation_record_menu_box(
     content.set_margin_end(10);
 
     let controls = gtk::Box::new(gtk::Orientation::Horizontal, 8);
-    controls.append(&small_label("Enabled"));
-    let enabled_switch = gtk::Switch::new();
-    enabled_switch.set_valign(gtk::Align::Center);
-    enabled_switch.set_active(entry.record.enabled == "1");
-    controls.append(&enabled_switch);
     controls.append(&small_label("Speed"));
     let speed_spin = gtk::SpinButton::with_range(0.1, 20.0, 0.1);
     speed_spin.set_digits(2);
@@ -6258,19 +6353,23 @@ fn animation_record_menu_box(
     content
 }
 
-/// The Bezier Curve Editor window: a read-only graph of the existing
-/// curves plus the proven curve picker controls (existing curves only,
-/// gated Save). Opened from the Animations page.
-fn open_bezier_editor_window(discovery: &ConfigDiscovery) {
-    let window = gtk::Window::new();
-    window.set_title(Some("Bezier Curve Editor"));
-    window.set_default_size(560, 520);
+/// The Bezier Curve Editor: a read-only graph of the existing curves plus
+/// the proven curve picker controls (existing curves only, gated Save).
+/// Presented as an in-window `adw::Dialog` overlay on the Animations page —
+/// never a separate toplevel, so a tiling compositor cannot tile it as an
+/// independent client.
+fn open_bezier_editor_dialog(parent: &impl IsA<gtk::Widget>, discovery: &ConfigDiscovery) {
+    let dialog = adw::Dialog::new();
+    dialog.set_title("Bezier Curve Editor");
+    dialog.set_content_width(760);
+    dialog.set_content_height(640);
+    dialog.set_widget_name("hyprland-settings-bezier-editor-dialog");
+
     let content = gtk::Box::new(gtk::Orientation::Vertical, 10);
     content.set_margin_top(14);
     content.set_margin_bottom(14);
     content.set_margin_start(14);
     content.set_margin_end(14);
-    content.append(&title_label("Bezier Curve Editor"));
     content.append(&small_label(
         "Existing curves from your session. Edit control points below; Save is gated as always.",
     ));
@@ -6280,8 +6379,12 @@ fn open_bezier_editor_window(discovery: &ConfigDiscovery) {
         .vexpand(true)
         .child(&content)
         .build();
-    window.set_child(Some(&scroll));
-    window.present();
+
+    let toolbar = adw::ToolbarView::new();
+    toolbar.add_top_bar(&adw::HeaderBar::new());
+    toolbar.set_content(Some(&scroll));
+    dialog.set_child(Some(&toolbar));
+    dialog.present(Some(parent));
 }
 
 /// Read-only graph of the existing curves (cubic bezier from each curve's
@@ -6605,7 +6708,19 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
             let (minimum, maximum, step, digits) = match row_state.control_kind {
                 RuntimePreviewUiControlKind::Slider => {
                     let (minimum, maximum) = row_state.slider_bounds.unwrap_or((0.0, 100.0));
-                    (minimum, maximum, 0.05, 2)
+                    // Integer-valued options over a wide range read as
+                    // integers ("1", not "1.00"); narrow ranges stay
+                    // fractional (opacity-style 0..1 sliders).
+                    let integral_value = initial_value
+                        .trim()
+                        .parse::<f64>()
+                        .map(|value| value.fract() == 0.0)
+                        .unwrap_or(false);
+                    if maximum - minimum > 3.0 && integral_value {
+                        (minimum, maximum, 1.0, 0)
+                    } else {
+                        (minimum, maximum, 0.05, 2)
+                    }
                 }
                 _ => {
                     let (minimum, maximum) = row_state.slider_bounds.unwrap_or((0.0, 1000.0));
@@ -6666,6 +6781,37 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
         }
         RuntimePreviewUiControlKind::NoControl => {}
         RuntimePreviewUiControlKind::ValueEntry => {
+            // Scalar numeric values get a compact −/+ spinner like the
+            // reference rows; genuinely non-scalar text (multi-value
+            // syntax, keywords) keeps the plain entry.
+            if let Ok(value) = initial_value.trim().parse::<f64>() {
+                let (step, digits) = if value.fract() == 0.0 {
+                    (1.0, 0)
+                } else {
+                    (0.05, 2)
+                };
+                let spin = gtk::SpinButton::with_range(-100_000.0, 100_000.0, step);
+                spin.set_widget_name(&control_name);
+                spin.set_digits(digits);
+                spin.set_valign(gtk::Align::Center);
+                spin.set_value(value);
+                let apply = inline_preview_apply(
+                    setting.row_id.clone(),
+                    row_state.throttle_ms,
+                    spin.clone().upcast(),
+                );
+                spin.connect_value_changed(move |spin| {
+                    let value = spin.value();
+                    let rendered = if digits == 0 {
+                        format!("{}", value as i64)
+                    } else {
+                        format!("{value}")
+                    };
+                    apply(rendered);
+                });
+                end_box.append(&spin);
+                return;
+            }
             let entry = gtk::Entry::new();
             entry.set_widget_name(&control_name);
             entry.set_valign(gtk::Align::Center);
@@ -6704,24 +6850,14 @@ fn live_swatch_area(shared: Rc<RefCell<String>>, width: i32, height: i32) -> gtk
         let raw = shared.borrow().clone();
         let width = width as f64;
         let height = height as f64;
-        // Checkerboard behind the color so alpha is visible.
-        let square = 6.0;
-        context.set_source_rgba(0.45, 0.45, 0.45, 1.0);
-        context.rectangle(0.0, 0.0, width, height);
-        let _ = context.fill();
-        context.set_source_rgba(0.66, 0.66, 0.66, 1.0);
-        let mut y = 0.0;
-        let mut odd_row = false;
-        while y < height {
-            let mut x = if odd_row { square } else { 0.0 };
-            while x < width {
-                context.rectangle(x, y, square, square);
-                let _ = context.fill();
-                x += square * 2.0;
-            }
-            y += square;
-            odd_row = !odd_row;
-        }
+        // Rounded tile with a checkerboard behind the color so alpha is
+        // visible.
+        let radius = (height / 4.0).min(7.0);
+        rounded_rect_path(
+            context, 0.0, 0.0, width, height, radius, radius, radius, radius,
+        );
+        context.clip();
+        draw_checkerboard(context, width, height);
         if let Some(color) = crate::ux_presentation::parse_hyprland_color(&raw) {
             context.set_source_rgba(
                 color.red as f64 / 255.0,
@@ -6881,12 +7017,13 @@ fn attach_inline_color_control(
                 let stop_box = gtk::Box::new(gtk::Orientation::Horizontal, 0);
                 let swatch = gtk::Button::new();
                 swatch.add_css_class("flat");
+                swatch.add_css_class("hyprland-settings-swatch-button");
                 swatch.set_widget_name(&format!("{control_name}-stop-{index}"));
                 swatch.update_property(&[gtk::accessible::Property::Label(&format!(
                     "Color stop {}",
                     index + 1
                 ))]);
-                swatch.set_child(Some(&color_swatch_area(token, 30, 18)));
+                swatch.set_child(Some(&color_swatch_area(token, 44, 26)));
                 {
                     let state = Rc::clone(&state);
                     let apply_state = Rc::clone(&apply_state_outer);
@@ -6928,8 +7065,24 @@ fn attach_inline_color_control(
                 container.append(&stop_box);
             }
 
-            // Add a stop (duplicates the last color; max 10 like the
-            // upstream gradient grammar comfortably allows).
+            // Gradient angle stepper (before the trailing add button, so
+            // the row reads swatch/remove/…/angle/plus like the reference).
+            if token_count > 1 {
+                let angle_spin = gtk::SpinButton::with_range(0.0, 360.0, 1.0);
+                angle_spin.set_valign(gtk::Align::Center);
+                angle_spin.set_widget_name(&format!("{control_name}-angle"));
+                angle_spin.set_value(f64::from(state.borrow().angle.unwrap_or(0)));
+                let state = Rc::clone(&state);
+                let apply_state = Rc::clone(&apply_state_outer);
+                angle_spin.connect_value_changed(move |spin| {
+                    state.borrow_mut().angle = Some(spin.value() as u16);
+                    apply_state();
+                });
+                container.append(&angle_spin);
+            }
+
+            // Add a stop, at the row end (duplicates the last color; max 10
+            // like the upstream gradient grammar comfortably allows).
             if token_count < 10 {
                 let add = gtk::Button::from_icon_name("list-add-symbolic");
                 add.add_css_class("flat");
@@ -6949,36 +7102,117 @@ fn attach_inline_color_control(
                 });
                 container.append(&add);
             }
-
-            // Gradient angle stepper.
-            if token_count > 1 {
-                let angle_spin = gtk::SpinButton::with_range(0.0, 360.0, 1.0);
-                angle_spin.set_valign(gtk::Align::Center);
-                angle_spin.set_widget_name(&format!("{control_name}-angle"));
-                angle_spin.set_value(f64::from(state.borrow().angle.unwrap_or(0)));
-                let state = Rc::clone(&state);
-                let apply_state = Rc::clone(&apply_state_outer);
-                angle_spin.connect_value_changed(move |spin| {
-                    state.borrow_mut().angle = Some(spin.value() as u16);
-                    apply_state();
-                });
-                container.append(&angle_spin);
-            }
             let _ = &rebuild_slot;
         });
     }
     (rebuild.borrow())();
 }
 
-/// Per-stop color picker: Cancel / "Pick a Color" / Select header over a
-/// palette grid view and a Custom view (preview, hex entry, hue slider,
-/// saturation-value area, alpha slider). The palette is generated
-/// programmatically; Select renders the choice in the original token's
-/// format family and routes through the caller (preview path only). The
-/// raw entry lives in the Custom view as the secondary affordance.
+thread_local! {
+    /// Custom colors picked this session (raw rgba tokens, newest first).
+    /// In-memory only: remembered swatches for the picker's Custom row.
+    static CUSTOM_PICKER_COLORS: RefCell<Vec<String>> = const { RefCell::new(Vec::new()) };
+}
+
+/// Canonical rgba(hex8) token for a parsed color.
+fn rgba_token(color: crate::ux_presentation::ParsedColor) -> String {
+    format!(
+        "rgba({:02x}{:02x}{:02x}{:02x})",
+        color.red, color.green, color.blue, color.alpha
+    )
+}
+
+/// Bare hex8 text for the custom view's entry.
+fn hex8_token(color: crate::ux_presentation::ParsedColor) -> String {
+    format!(
+        "{:02x}{:02x}{:02x}{:02x}",
+        color.red, color.green, color.blue, color.alpha
+    )
+}
+
+/// Trace a rounded rectangle path with per-corner radii.
+fn rounded_rect_path(
+    context: &gtk::cairo::Context,
+    x: f64,
+    y: f64,
+    width: f64,
+    height: f64,
+    top_left: f64,
+    top_right: f64,
+    bottom_right: f64,
+    bottom_left: f64,
+) {
+    use std::f64::consts::FRAC_PI_2;
+    context.new_sub_path();
+    context.arc(
+        x + width - top_right,
+        y + top_right,
+        top_right,
+        -FRAC_PI_2,
+        0.0,
+    );
+    context.arc(
+        x + width - bottom_right,
+        y + height - bottom_right,
+        bottom_right,
+        0.0,
+        FRAC_PI_2,
+    );
+    context.arc(
+        x + bottom_left,
+        y + height - bottom_left,
+        bottom_left,
+        FRAC_PI_2,
+        2.0 * FRAC_PI_2,
+    );
+    context.arc(
+        x + top_left,
+        y + top_left,
+        top_left,
+        2.0 * FRAC_PI_2,
+        3.0 * FRAC_PI_2,
+    );
+    context.close_path();
+}
+
+/// Checkerboard backdrop so alpha stays readable under any color.
+fn draw_checkerboard(context: &gtk::cairo::Context, width: f64, height: f64) {
+    let square = 6.0;
+    context.set_source_rgba(0.45, 0.45, 0.45, 1.0);
+    context.rectangle(0.0, 0.0, width, height);
+    let _ = context.fill();
+    context.set_source_rgba(0.66, 0.66, 0.66, 1.0);
+    let mut y = 0.0;
+    let mut odd_row = false;
+    while y < height {
+        let mut x = if odd_row { square } else { 0.0 };
+        while x < width {
+            context.rectangle(x, y, square, square);
+            let _ = context.fill();
+            x += square * 2.0;
+        }
+        y += square;
+        odd_row = !odd_row;
+    }
+}
+
+/// Per-stop color picker: an opaque in-window dialog (`adw::Dialog`, never
+/// a translucent popover) with a Cancel / "Pick a Color" / Select header
+/// over two views. The palette view shows nine contiguous shade columns
+/// plus a Custom row remembering this session's custom colors (selected
+/// swatch carries a checkmark). The Custom view lays out an eyedropper
+/// placeholder, live preview swatch, and hex entry over a vertical rainbow
+/// hue bar, a continuous saturation/value area with crosshair, and a
+/// checkerboard alpha slider. Select renders the choice in the original
+/// token's format family and routes through the caller (preview path
+/// only). The eyedropper stays disabled: screen color picking needs XDG
+/// portal integration, deferred and documented in the implementation
+/// report.
 fn open_color_stop_picker(parent: &gtk::Button, token: &str, on_apply: Rc<dyn Fn(String)>) {
-    let picker = gtk::Popover::new();
-    picker.set_parent(parent);
+    let dialog = adw::Dialog::new();
+    dialog.set_title("Pick a Color");
+    dialog.set_content_width(470);
+    dialog.set_widget_name("hyprland-settings-color-picker-dialog");
 
     let initial = crate::ux_presentation::parse_hyprland_color(token).unwrap_or(
         crate::ux_presentation::ParsedColor {
@@ -6990,16 +7224,15 @@ fn open_color_stop_picker(parent: &gtk::Button, token: &str, on_apply: Rc<dyn Fn
     );
     let chosen = Rc::new(RefCell::new(initial));
 
-    let content = gtk::Box::new(gtk::Orientation::Vertical, 10);
-    content.set_margin_top(10);
-    content.set_margin_bottom(10);
-    content.set_margin_start(10);
-    content.set_margin_end(10);
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 12);
+    content.set_margin_top(12);
+    content.set_margin_bottom(14);
+    content.set_margin_start(14);
+    content.set_margin_end(14);
 
-    // Header: Cancel | Pick a Color | Select.
+    // Header: Cancel | Pick a Color | Select — both ends real buttons.
     let header = gtk::Box::new(gtk::Orientation::Horizontal, 8);
     let cancel = gtk::Button::with_label("Cancel");
-    cancel.add_css_class("flat");
     let heading = gtk::Label::new(Some("Pick a Color"));
     heading.set_hexpand(true);
     heading.add_css_class("heading");
@@ -7012,97 +7245,176 @@ fn open_color_stop_picker(parent: &gtk::Button, token: &str, on_apply: Rc<dyn Fn
 
     let stack = gtk::Stack::new();
     stack.set_transition_type(gtk::StackTransitionType::Crossfade);
+    stack.set_hhomogeneous(false);
+    stack.set_vhomogeneous(false);
 
-    // Live shared preview text used by both views.
-    let preview_state = Rc::new(RefCell::new(format!(
-        "rgba({:02x}{:02x}{:02x}{:02x})",
-        initial.red, initial.green, initial.blue, initial.alpha
-    )));
+    // Shared chosen-color state: preview token plus the drawing areas that
+    // repaint whenever the choice changes.
+    let preview_state = Rc::new(RefCell::new(rgba_token(initial)));
+    let redraw_targets: Rc<RefCell<Vec<gtk::DrawingArea>>> = Rc::new(RefCell::new(Vec::new()));
     let set_chosen: Rc<dyn Fn(crate::ux_presentation::ParsedColor)> = {
         let chosen = Rc::clone(&chosen);
         let preview_state = Rc::clone(&preview_state);
+        let redraw_targets = Rc::clone(&redraw_targets);
         Rc::new(move |color: crate::ux_presentation::ParsedColor| {
             *chosen.borrow_mut() = color;
-            *preview_state.borrow_mut() = format!(
-                "rgba({:02x}{:02x}{:02x}{:02x})",
-                color.red, color.green, color.blue, color.alpha
-            );
+            *preview_state.borrow_mut() = rgba_token(color);
+            for area in redraw_targets.borrow().iter() {
+                area.queue_draw();
+            }
         })
     };
 
-    // ── Palette view: generated grid (grays + hue/value combinations). ──
-    let palette_box = gtk::Box::new(gtk::Orientation::Vertical, 8);
-    let grid = gtk::FlowBox::new();
-    grid.set_selection_mode(gtk::SelectionMode::None);
-    grid.set_min_children_per_line(8);
-    grid.set_max_children_per_line(8);
-    grid.set_row_spacing(4);
-    grid.set_column_spacing(4);
-    grid.set_widget_name("hyprland-settings-color-palette-grid");
-    let mut palette: Vec<(u8, u8, u8)> = Vec::new();
-    for step in 0..8 {
-        let level = (step as f64 / 7.0 * 255.0).round() as u8;
-        palette.push((level, level, level));
-    }
-    for row in 0..4 {
-        for column in 0..8 {
-            let hue = column as f64 / 8.0 * 360.0;
-            let (saturation, value) = match row {
-                0 => (0.55, 1.0),
-                1 => (0.95, 1.0),
-                2 => (0.95, 0.72),
-                _ => (0.95, 0.45),
-            };
-            palette.push(crate::ux_presentation::hsv_to_rgb(hue, saturation, value));
-        }
-    }
-    for (red, green, blue) in palette {
-        let swatch = gtk::Button::new();
-        swatch.add_css_class("flat");
-        swatch.set_child(Some(&color_swatch_area(
-            &format!("rgb({red:02x}{green:02x}{blue:02x})"),
-            22,
-            22,
-        )));
-        let set_chosen = Rc::clone(&set_chosen);
-        swatch.connect_clicked(move |_| {
-            set_chosen(crate::ux_presentation::ParsedColor {
-                red,
-                green,
-                blue,
-                alpha: 0xff,
+    // ── Palette view: nine contiguous shade columns, then Custom row. ──
+    let palette = crate::ux_presentation::picker_palette_columns();
+    let palette_tokens: std::collections::HashSet<String> = palette
+        .iter()
+        .flatten()
+        .map(|color| rgba_token(*color))
+        .collect();
+    let palette_box = gtk::Box::new(gtk::Orientation::Vertical, 10);
+    let columns_box = gtk::Box::new(gtk::Orientation::Horizontal, 6);
+    columns_box.set_halign(gtk::Align::Center);
+    columns_box.set_widget_name("hyprland-settings-color-palette-grid");
+    let shade_count = palette.first().map(|column| column.len()).unwrap_or(0);
+    for column in &palette {
+        let column_box = gtk::Box::new(gtk::Orientation::Vertical, 0);
+        for (index, color) in column.iter().enumerate() {
+            let top = index == 0;
+            let bottom = index + 1 == shade_count;
+            let tile = gtk::Button::new();
+            tile.add_css_class("hyprland-settings-palette-tile");
+            tile.update_property(&[gtk::accessible::Property::Label(&format!(
+                "Palette color {}",
+                rgba_token(*color)
+            ))]);
+            let area = gtk::DrawingArea::new();
+            area.set_content_width(42);
+            area.set_content_height(32);
+            let color_for_draw = *color;
+            area.set_draw_func(move |_, context, width, height| {
+                let radius_top = if top { 8.0 } else { 0.0 };
+                let radius_bottom = if bottom { 8.0 } else { 0.0 };
+                rounded_rect_path(
+                    context,
+                    0.0,
+                    0.0,
+                    width as f64,
+                    height as f64,
+                    radius_top,
+                    radius_top,
+                    radius_bottom,
+                    radius_bottom,
+                );
+                context.set_source_rgb(
+                    color_for_draw.red as f64 / 255.0,
+                    color_for_draw.green as f64 / 255.0,
+                    color_for_draw.blue as f64 / 255.0,
+                );
+                let _ = context.fill();
             });
-        });
-        grid.insert(&swatch, -1);
+            tile.set_child(Some(&area));
+            let set_chosen = Rc::clone(&set_chosen);
+            let color_for_click = *color;
+            tile.connect_clicked(move |_| set_chosen(color_for_click));
+            column_box.append(&tile);
+        }
+        columns_box.append(&column_box);
     }
-    palette_box.append(&grid);
-    let custom_row = gtk::Box::new(gtk::Orientation::Horizontal, 6);
-    let custom_label = small_label("Custom");
-    custom_label.set_hexpand(true);
-    custom_label.set_halign(gtk::Align::Start);
-    custom_row.append(&custom_label);
+    palette_box.append(&columns_box);
+
+    let custom_caption = small_label("Custom");
+    custom_caption.set_halign(gtk::Align::Start);
+    palette_box.append(&custom_caption);
+    let custom_row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    custom_row.set_widget_name("hyprland-settings-color-custom-swatch-row");
     let open_custom = gtk::Button::from_icon_name("list-add-symbolic");
-    open_custom.add_css_class("flat");
     open_custom.set_widget_name("hyprland-settings-color-open-custom");
     open_custom.update_property(&[gtk::accessible::Property::Label("Custom color")]);
     custom_row.append(&open_custom);
+    let mut swatch_tokens: Vec<String> = CUSTOM_PICKER_COLORS.with(|store| store.borrow().clone());
+    let current_token = rgba_token(initial);
+    if !swatch_tokens.contains(&current_token) {
+        swatch_tokens.push(current_token.clone());
+    }
+    for swatch_token in swatch_tokens {
+        let Some(color) = crate::ux_presentation::parse_hyprland_color(&swatch_token) else {
+            continue;
+        };
+        let button = gtk::Button::new();
+        button.add_css_class("hyprland-settings-palette-tile");
+        button.update_property(&[gtk::accessible::Property::Label(&format!(
+            "Custom color {swatch_token}"
+        ))]);
+        let area = gtk::DrawingArea::new();
+        area.set_content_width(46);
+        area.set_content_height(32);
+        let preview_state_for_draw = Rc::clone(&preview_state);
+        let token_for_draw = swatch_token.clone();
+        area.set_draw_func(move |_, context, width, height| {
+            let width = width as f64;
+            let height = height as f64;
+            rounded_rect_path(context, 0.0, 0.0, width, height, 8.0, 8.0, 8.0, 8.0);
+            context.clip();
+            draw_checkerboard(context, width, height);
+            context.set_source_rgba(
+                color.red as f64 / 255.0,
+                color.green as f64 / 255.0,
+                color.blue as f64 / 255.0,
+                color.alpha as f64 / 255.0,
+            );
+            context.rectangle(0.0, 0.0, width, height);
+            let _ = context.fill();
+            if *preview_state_for_draw.borrow() == token_for_draw {
+                // Selected checkmark: white halo under a dark stroke.
+                let points = [
+                    (width * 0.32, height * 0.52),
+                    (width * 0.45, height * 0.68),
+                    (width * 0.70, height * 0.34),
+                ];
+                for (stroke_width, level) in [(4.5, 0.95), (2.0, 0.12)] {
+                    context.set_source_rgba(level, level, level, 0.95);
+                    context.set_line_width(stroke_width);
+                    context.move_to(points[0].0, points[0].1);
+                    context.line_to(points[1].0, points[1].1);
+                    context.line_to(points[2].0, points[2].1);
+                    let _ = context.stroke();
+                }
+            }
+        });
+        redraw_targets.borrow_mut().push(area.clone());
+        button.set_child(Some(&area));
+        let set_chosen = Rc::clone(&set_chosen);
+        button.connect_clicked(move |_| set_chosen(color));
+        custom_row.append(&button);
+    }
     palette_box.append(&custom_row);
     stack.add_named(&palette_box, Some("palette"));
 
-    // ── Custom view: preview, hex, hue, saturation/value area, alpha. ──
-    let custom_box = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    // ── Custom view: eyedropper | preview | hex, hue bar + SV, alpha. ──
+    let custom_box = gtk::Box::new(gtk::Orientation::Vertical, 10);
     custom_box.set_widget_name("hyprland-settings-color-custom-view");
-    let live_preview = live_swatch_area(Rc::clone(&preview_state), 220, 26);
-    custom_box.append(&live_preview);
 
+    let top_row = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    let eyedropper = gtk::Button::from_icon_name("color-select-symbolic");
+    eyedropper.add_css_class("circular");
+    eyedropper.set_sensitive(false);
+    eyedropper.set_widget_name("hyprland-settings-color-eyedropper");
+    eyedropper.update_property(&[gtk::accessible::Property::Label(
+        "Pick color from screen (not available yet)",
+    )]);
+    top_row.append(&eyedropper);
+    let live_preview = live_swatch_area(Rc::clone(&preview_state), 220, 34);
+    live_preview.set_hexpand(true);
+    redraw_targets.borrow_mut().push(live_preview.clone());
+    top_row.append(&live_preview);
     let hex_entry = gtk::Entry::new();
-    hex_entry.set_width_chars(12);
-    hex_entry.set_text(&format!(
-        "{:02x}{:02x}{:02x}{:02x}",
-        initial.red, initial.green, initial.blue, initial.alpha
-    ));
+    hex_entry.set_width_chars(9);
+    hex_entry.set_max_length(8);
+    hex_entry.set_text(&hex8_token(initial));
     hex_entry.update_property(&[gtk::accessible::Property::Label("Hex color")]);
-    custom_box.append(&hex_entry);
+    top_row.append(&hex_entry);
+    custom_box.append(&top_row);
 
     let initial_hsv = crate::ux_presentation::rgb_to_hsv(initial.red, initial.green, initial.blue);
     let hue_state = Rc::new(std::cell::Cell::new(initial_hsv.0));
@@ -7110,11 +7422,55 @@ fn open_color_stop_picker(parent: &gtk::Button, token: &str, on_apply: Rc<dyn Fn
     let val_state = Rc::new(std::cell::Cell::new(initial_hsv.2));
     let alpha_state = Rc::new(std::cell::Cell::new(initial.alpha));
 
-    // Saturation/value area with drag: white->hue horizontally, fading to
-    // black vertically, with a marker at the current point.
+    let main_area = gtk::Box::new(gtk::Orientation::Horizontal, 10);
+
+    // Vertical rainbow hue bar with a knob at the current hue.
+    let hue_bar = gtk::DrawingArea::new();
+    hue_bar.set_content_width(18);
+    hue_bar.set_content_height(250);
+    hue_bar.set_widget_name("hyprland-settings-color-hue");
+    hue_bar.update_property(&[gtk::accessible::Property::Label("Hue")]);
+    {
+        let hue_state = Rc::clone(&hue_state);
+        hue_bar.set_draw_func(move |_, context, width, height| {
+            let width = width as f64;
+            let height = height as f64;
+            rounded_rect_path(context, 0.0, 0.0, width, height, 8.0, 8.0, 8.0, 8.0);
+            context.clip();
+            let gradient = gtk::cairo::LinearGradient::new(0.0, 0.0, 0.0, height);
+            for step in 0..=6 {
+                let hue = step as f64 * 60.0;
+                let (red, green, blue) = crate::ux_presentation::hsv_to_rgb(hue, 1.0, 1.0);
+                gradient.add_color_stop_rgb(
+                    step as f64 / 6.0,
+                    red as f64 / 255.0,
+                    green as f64 / 255.0,
+                    blue as f64 / 255.0,
+                );
+            }
+            let _ = context.set_source(&gradient);
+            context.rectangle(0.0, 0.0, width, height);
+            let _ = context.fill();
+            // Knob.
+            let knob_y = (hue_state.get() / 360.0 * height).clamp(6.0, height - 6.0);
+            context.set_source_rgba(1.0, 1.0, 1.0, 0.95);
+            context.set_line_width(2.5);
+            context.arc(width / 2.0, knob_y, 5.5, 0.0, std::f64::consts::TAU);
+            let _ = context.stroke();
+            context.set_source_rgba(0.0, 0.0, 0.0, 0.5);
+            context.set_line_width(1.0);
+            context.arc(width / 2.0, knob_y, 7.0, 0.0, std::f64::consts::TAU);
+            let _ = context.stroke();
+        });
+    }
+    redraw_targets.borrow_mut().push(hue_bar.clone());
+    main_area.append(&hue_bar);
+
+    // Continuous saturation/value area with full-length crosshair lines.
     let sv_area = gtk::DrawingArea::new();
-    sv_area.set_content_width(220);
-    sv_area.set_content_height(130);
+    sv_area.set_content_width(340);
+    sv_area.set_content_height(250);
+    sv_area.set_hexpand(true);
     sv_area.set_widget_name("hyprland-settings-color-sv-area");
     {
         let hue_state = Rc::clone(&hue_state);
@@ -7123,57 +7479,97 @@ fn open_color_stop_picker(parent: &gtk::Button, token: &str, on_apply: Rc<dyn Fn
         sv_area.set_draw_func(move |_, context, width, height| {
             let width = width as f64;
             let height = height as f64;
-            let hue = hue_state.get();
-            let steps = 28;
-            for x_step in 0..steps {
-                for y_step in 0..steps {
-                    let saturation = x_step as f64 / (steps - 1) as f64;
-                    let value = 1.0 - y_step as f64 / (steps - 1) as f64;
-                    let (red, green, blue) =
-                        crate::ux_presentation::hsv_to_rgb(hue, saturation, value);
-                    context.set_source_rgb(
-                        red as f64 / 255.0,
-                        green as f64 / 255.0,
-                        blue as f64 / 255.0,
-                    );
-                    context.rectangle(
-                        x_step as f64 / steps as f64 * width,
-                        y_step as f64 / steps as f64 * height,
-                        width / steps as f64 + 1.0,
-                        height / steps as f64 + 1.0,
-                    );
-                    let _ = context.fill();
-                }
-            }
-            // Marker.
+            rounded_rect_path(context, 0.0, 0.0, width, height, 6.0, 6.0, 6.0, 6.0);
+            context.clip();
+            // Continuous SV plane: white -> pure hue horizontally, then a
+            // transparent -> black vertical overlay.
+            let (red, green, blue) = crate::ux_presentation::hsv_to_rgb(hue_state.get(), 1.0, 1.0);
+            let saturation_gradient = gtk::cairo::LinearGradient::new(0.0, 0.0, width, 0.0);
+            saturation_gradient.add_color_stop_rgb(0.0, 1.0, 1.0, 1.0);
+            saturation_gradient.add_color_stop_rgb(
+                1.0,
+                red as f64 / 255.0,
+                green as f64 / 255.0,
+                blue as f64 / 255.0,
+            );
+            let _ = context.set_source(&saturation_gradient);
+            context.rectangle(0.0, 0.0, width, height);
+            let _ = context.fill();
+            let value_gradient = gtk::cairo::LinearGradient::new(0.0, 0.0, 0.0, height);
+            value_gradient.add_color_stop_rgba(0.0, 0.0, 0.0, 0.0, 0.0);
+            value_gradient.add_color_stop_rgba(1.0, 0.0, 0.0, 0.0, 1.0);
+            let _ = context.set_source(&value_gradient);
+            context.rectangle(0.0, 0.0, width, height);
+            let _ = context.fill();
+            // Crosshair.
             let marker_x = sat_state.get() * width;
             let marker_y = (1.0 - val_state.get()) * height;
-            context.set_source_rgb(1.0, 1.0, 1.0);
+            context.set_source_rgba(1.0, 1.0, 1.0, 0.85);
+            context.set_line_width(1.0);
+            context.move_to(marker_x, 0.0);
+            context.line_to(marker_x, height);
+            let _ = context.stroke();
+            context.move_to(0.0, marker_y);
+            context.line_to(width, marker_y);
+            let _ = context.stroke();
             context.set_line_width(2.0);
             context.arc(marker_x, marker_y, 6.0, 0.0, std::f64::consts::TAU);
             let _ = context.stroke();
-            context.set_source_rgb(0.0, 0.0, 0.0);
-            context.arc(marker_x, marker_y, 7.5, 0.0, std::f64::consts::TAU);
+        });
+    }
+    redraw_targets.borrow_mut().push(sv_area.clone());
+    main_area.append(&sv_area);
+    custom_box.append(&main_area);
+
+    // Checkerboard alpha slider: transparent -> opaque current color.
+    let alpha_area = gtk::DrawingArea::new();
+    alpha_area.set_content_height(22);
+    alpha_area.set_hexpand(true);
+    alpha_area.set_widget_name("hyprland-settings-color-alpha");
+    alpha_area.update_property(&[gtk::accessible::Property::Label("Alpha")]);
+    {
+        let hue_state = Rc::clone(&hue_state);
+        let sat_state = Rc::clone(&sat_state);
+        let val_state = Rc::clone(&val_state);
+        let alpha_state = Rc::clone(&alpha_state);
+        alpha_area.set_draw_func(move |_, context, width, height| {
+            let width = width as f64;
+            let height = height as f64;
+            rounded_rect_path(context, 0.0, 0.0, width, height, 10.0, 10.0, 10.0, 10.0);
+            context.clip();
+            draw_checkerboard(context, width, height);
+            let (red, green, blue) = crate::ux_presentation::hsv_to_rgb(
+                hue_state.get(),
+                sat_state.get(),
+                val_state.get(),
+            );
+            let (red, green, blue) = (
+                red as f64 / 255.0,
+                green as f64 / 255.0,
+                blue as f64 / 255.0,
+            );
+            let gradient = gtk::cairo::LinearGradient::new(0.0, 0.0, width, 0.0);
+            gradient.add_color_stop_rgba(0.0, red, green, blue, 0.0);
+            gradient.add_color_stop_rgba(1.0, red, green, blue, 1.0);
+            let _ = context.set_source(&gradient);
+            context.rectangle(0.0, 0.0, width, height);
+            let _ = context.fill();
+            // Knob.
+            let knob_x = (f64::from(alpha_state.get()) / 255.0 * width).clamp(9.0, width - 9.0);
+            context.set_source_rgba(red, green, blue, 1.0);
+            context.arc(knob_x, height / 2.0, 8.0, 0.0, std::f64::consts::TAU);
+            let _ = context.fill();
+            context.set_source_rgba(1.0, 1.0, 1.0, 0.95);
+            context.set_line_width(2.0);
+            context.arc(knob_x, height / 2.0, 8.0, 0.0, std::f64::consts::TAU);
             let _ = context.stroke();
         });
     }
-    custom_box.append(&sv_area);
-
-    let hue_scale = gtk::Scale::with_range(gtk::Orientation::Horizontal, 0.0, 360.0, 1.0);
-    hue_scale.set_value(initial_hsv.0);
-    hue_scale.set_widget_name("hyprland-settings-color-hue");
-    hue_scale.update_property(&[gtk::accessible::Property::Label("Hue")]);
-    custom_box.append(&hue_scale);
-
-    let alpha_scale = gtk::Scale::with_range(gtk::Orientation::Horizontal, 0.0, 255.0, 1.0);
-    alpha_scale.set_value(f64::from(initial.alpha));
-    alpha_scale.set_widget_name("hyprland-settings-color-alpha");
-    alpha_scale.update_property(&[gtk::accessible::Property::Label("Alpha")]);
-    custom_box.append(&alpha_scale);
+    redraw_targets.borrow_mut().push(alpha_area.clone());
+    custom_box.append(&alpha_area);
 
     stack.add_named(&custom_box, Some("custom"));
     content.append(&stack);
-    picker.set_child(Some(&content));
 
     // ── Wiring. ──
     let sync_from_hsv: Rc<dyn Fn()> = {
@@ -7183,8 +7579,6 @@ fn open_color_stop_picker(parent: &gtk::Button, token: &str, on_apply: Rc<dyn Fn
         let alpha_state = Rc::clone(&alpha_state);
         let set_chosen = Rc::clone(&set_chosen);
         let hex_entry = hex_entry.clone();
-        let live_preview = live_preview.clone();
-        let sv_area = sv_area.clone();
         Rc::new(move || {
             let (red, green, blue) = crate::ux_presentation::hsv_to_rgb(
                 hue_state.get(),
@@ -7198,38 +7592,45 @@ fn open_color_stop_picker(parent: &gtk::Button, token: &str, on_apply: Rc<dyn Fn
                 alpha: alpha_state.get(),
             };
             set_chosen(color);
-            hex_entry.set_text(&format!(
-                "{:02x}{:02x}{:02x}{:02x}",
-                color.red, color.green, color.blue, color.alpha
-            ));
-            live_preview.queue_draw();
-            sv_area.queue_draw();
+            hex_entry.set_text(&hex8_token(color));
         })
     };
     {
+        // Hue bar: click and drag set the hue from the y position.
         let hue_state = Rc::clone(&hue_state);
         let sync = Rc::clone(&sync_from_hsv);
-        hue_scale.connect_value_changed(move |scale| {
-            hue_state.set(scale.value());
+        let bar = hue_bar.clone();
+        let update_hue = move |y: f64| {
+            let height = f64::from(bar.content_height()).max(1.0);
+            hue_state.set((y / height * 360.0).clamp(0.0, 360.0));
             sync();
-        });
+        };
+        let click = gtk::GestureClick::new();
+        {
+            let update_hue = update_hue.clone();
+            click.connect_pressed(move |_, _, _, y| update_hue(y));
+        }
+        hue_bar.add_controller(click);
+        let drag = gtk::GestureDrag::new();
+        {
+            let update_hue = update_hue.clone();
+            drag.connect_drag_update(move |gesture, _, dy| {
+                if let Some((_, start_y)) = gesture.start_point() {
+                    update_hue(start_y + dy);
+                }
+            });
+        }
+        hue_bar.add_controller(drag);
     }
     {
-        let alpha_state = Rc::clone(&alpha_state);
-        let sync = Rc::clone(&sync_from_hsv);
-        alpha_scale.connect_value_changed(move |scale| {
-            alpha_state.set(scale.value() as u8);
-            sync();
-        });
-    }
-    {
+        // SV area: click and drag set saturation/value.
         let sat_state = Rc::clone(&sat_state);
         let val_state = Rc::clone(&val_state);
         let sync = Rc::clone(&sync_from_hsv);
-        let sv_ref = sv_area.clone();
+        let area = sv_area.clone();
         let update_sv = move |x: f64, y: f64| {
-            let width = f64::from(sv_ref.content_width()).max(1.0);
-            let height = f64::from(sv_ref.content_height()).max(1.0);
+            let width = f64::from(area.width()).max(1.0);
+            let height = f64::from(area.height()).max(1.0);
             sat_state.set((x / width).clamp(0.0, 1.0));
             val_state.set((1.0 - y / height).clamp(0.0, 1.0));
             sync();
@@ -7252,9 +7653,40 @@ fn open_color_stop_picker(parent: &gtk::Button, token: &str, on_apply: Rc<dyn Fn
         sv_area.add_controller(drag);
     }
     {
-        // Manual hex entry (secondary): 6 or 8 hex digits.
+        // Alpha slider: click and drag set the alpha from the x position.
+        let alpha_state = Rc::clone(&alpha_state);
+        let sync = Rc::clone(&sync_from_hsv);
+        let area = alpha_area.clone();
+        let update_alpha = move |x: f64| {
+            let width = f64::from(area.width()).max(1.0);
+            alpha_state.set(((x / width) * 255.0).clamp(0.0, 255.0) as u8);
+            sync();
+        };
+        let click = gtk::GestureClick::new();
+        {
+            let update_alpha = update_alpha.clone();
+            click.connect_pressed(move |_, _, x, _| update_alpha(x));
+        }
+        alpha_area.add_controller(click);
+        let drag = gtk::GestureDrag::new();
+        {
+            let update_alpha = update_alpha.clone();
+            drag.connect_drag_update(move |gesture, dx, _| {
+                if let Some((start_x, _)) = gesture.start_point() {
+                    update_alpha(start_x + dx);
+                }
+            });
+        }
+        alpha_area.add_controller(drag);
+    }
+    {
+        // Manual hex entry: 6 or 8 hex digits, updates the HSV state too.
+        let chosen = Rc::clone(&chosen);
         let set_chosen = Rc::clone(&set_chosen);
-        let live_preview = live_preview.clone();
+        let hue_state = Rc::clone(&hue_state);
+        let sat_state = Rc::clone(&sat_state);
+        let val_state = Rc::clone(&val_state);
+        let alpha_state = Rc::clone(&alpha_state);
         hex_entry.connect_changed(move |entry| {
             let text = entry.text().to_string();
             let candidate = if text.len() == 6 {
@@ -7265,8 +7697,16 @@ fn open_color_stop_picker(parent: &gtk::Button, token: &str, on_apply: Rc<dyn Fn
                 None
             };
             if let Some(color) = candidate {
+                if color == *chosen.borrow() {
+                    return;
+                }
+                let (hue, saturation, value) =
+                    crate::ux_presentation::rgb_to_hsv(color.red, color.green, color.blue);
+                hue_state.set(hue);
+                sat_state.set(saturation);
+                val_state.set(value);
+                alpha_state.set(color.alpha);
                 set_chosen(color);
-                live_preview.queue_draw();
             }
         });
     }
@@ -7277,22 +7717,40 @@ fn open_color_stop_picker(parent: &gtk::Button, token: &str, on_apply: Rc<dyn Fn
         });
     }
     {
-        let picker = picker.clone();
-        cancel.connect_clicked(move |_| picker.popdown());
+        let dialog = dialog.clone();
+        cancel.connect_clicked(move |_| {
+            dialog.close();
+        });
     }
     {
-        let picker = picker.clone();
+        let dialog = dialog.clone();
         let chosen = Rc::clone(&chosen);
         let token = token.to_string();
         select.connect_clicked(move |_| {
+            let color = *chosen.borrow();
+            let chosen_token = rgba_token(color);
+            // Remember non-palette picks as this session's custom swatches.
+            if !palette_tokens.contains(&chosen_token) {
+                CUSTOM_PICKER_COLORS.with(|store| {
+                    let mut store = store.borrow_mut();
+                    store.retain(|existing| existing != &chosen_token);
+                    store.insert(0, chosen_token.clone());
+                    store.truncate(8);
+                });
+            }
             // Preserve the original token's format family; the caller
             // routes the result through the reversible preview path.
-            let rendered = crate::ux_presentation::render_color_like(&token, *chosen.borrow());
+            let rendered = crate::ux_presentation::render_color_like(&token, color);
             on_apply(rendered);
-            picker.popdown();
+            dialog.close();
         });
     }
-    picker.popup();
+
+    // The dialog sizes to whichever view is visible (the stack is not
+    // homogeneous); no scroll container, so switching to the taller custom
+    // view grows the dialog instead of clipping the alpha slider.
+    dialog.set_child(Some(&content));
+    dialog.present(Some(parent));
 }
 
 /// Raw-only editor for color rows whose current value is not in a
@@ -7308,9 +7766,10 @@ fn attach_raw_color_entry(
     let button = gtk::Button::new();
     button.set_widget_name(control_name);
     button.set_valign(gtk::Align::Center);
+    button.add_css_class("hyprland-settings-swatch-button");
     // Checkered empty swatch: the value is not in a recognized color form
     // yet, but the affordance still looks like a color control.
-    button.set_child(Some(&color_swatch_area("", 30, 18)));
+    button.set_child(Some(&color_swatch_area("", 44, 26)));
     button.update_property(&[gtk::accessible::Property::Label("Edit color")]);
     let picker = gtk::Popover::new();
     picker.set_parent(&button);

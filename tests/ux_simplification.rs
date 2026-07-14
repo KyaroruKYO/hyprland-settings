@@ -51,11 +51,13 @@ fn config_page_stays_settings_first() {
     }
     assert!(
         !config_view.contains("structured_family_preview_controls_section("),
-        "the record picker card belongs to Animations, not Settings"
+        "the record picker workbench must not render on Settings"
     );
-    assert!(
-        window.contains("sections_box.append(&structured_family_preview_controls_section(model))")
-    );
+    // The workbench moved off the normal Animations page too: it lives on
+    // Safety Details, while Animations exposes the same gates through the
+    // per-record row menus and the Bezier editor dialog.
+    assert!(window.contains("content.append(&structured_family_preview_controls_section(model))"));
+    assert!(!window.contains("sections_box.append(&structured_family_preview_controls_section"));
 }
 
 #[test]
@@ -72,7 +74,10 @@ fn safety_details_page_hosts_every_moved_surface() {
             "Safety Details must render {section} (moved, not removed)"
         );
     }
-    assert!(safety_view.contains("Nothing on this page changes behavior"));
+    // The intro is honest about the one interactive surface hosted here:
+    // the supervised record workbench (same gates as the row menus).
+    assert!(safety_view.contains("supervised record workbench"));
+    assert!(safety_view.contains("structured_family_preview_controls_section(model)"));
     // The page is reachable: page layout entry, dashboard card, routing.
     assert!(window.contains("const SAFETY_ID: &str = \"safety-details\""));
     assert!(window.contains("title: \"Safety Details\""));
@@ -208,9 +213,10 @@ fn short_descriptions_are_one_line() {
     let shortened = short_description(&long);
     assert!(shortened.chars().count() <= 110);
     assert!(shortened.ends_with('…'));
+    // Sentence-cased: official descriptions often start lowercase.
     assert_eq!(
         short_description("  plain text without period  "),
-        "plain text without period"
+        "Plain text without period"
     );
 }
 

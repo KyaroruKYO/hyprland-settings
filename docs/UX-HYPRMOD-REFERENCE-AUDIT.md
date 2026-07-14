@@ -126,6 +126,21 @@ No third-party code, assets, or authored text were copied.
 
 Screenshot-driven review of Hyprland Settings against the source-derived reference spec closed the visible gaps (header title, section splits, status text, stop-based color rows, palette/HSV picker, sidebar polish). Running the reference app offline was not possible (uninstalled Python deps); the report records the comparison notes and remaining deliberate differences. All code original.
 
+## Sixth-pass update (screenshot-grounded fixes, 2026-07-13)
+
+This time both apps ran live side by side and the user captured 19 review
+screenshots (`/home/kyo/review/`), giving the first pixel-level comparison
+against the actual reference UI rather than a source-derived spec. The
+findings (`docs/MANUAL-VISUAL-REVIEW-FINDINGS.md`) drove: the in-window
+Bezier editor dialog, the six-section Animations page with friendly record
+rows, the opaque picker dialog with hue-column palette + custom-swatch
+memory + continuous-HSV custom view, larger rounded color tiles with the
+reference control order, compact numeric spinners, and the
+XWayland/Ecosystem page-claim fix. All visual patterns recreated with
+original Rust; the only reference-derived identifiers are freedesktop
+theme icon names (e.g. `draw-arc-symbolic`), which are system icons, not
+HyprMod assets. No third-party code, assets, or authored text were copied.
+
 ## What we deliberately do NOT copy
 
 - HyprMod's write model (it applies changes; our saves stay behind Safe

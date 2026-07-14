@@ -49,6 +49,24 @@ classification/behavior change (guard-tested, `tests/gui_correction.rs`).
 
 **Update 2026-07-13 (pixel-fidelity pass):** the six visual acceptance rules pass (page-title header, split General sections, no routine status text, no generic color button, screenshot comparison recorded, guards added). Zero classification/behavior change.
 
+**Update 2026-07-13 (screenshot-grounded fidelity implementation):** the user
+captured 19 side-by-side review screenshots of both apps running live
+(`/home/kyo/review/`); Fable inspected them as pixels and recorded six
+comparisons in `docs/MANUAL-VISUAL-REVIEW-FINDINGS.md`, then implemented the
+fixes: Bezier editor now an in-window `adw::Dialog` (no second tiled
+Hyprland client); Animations page rebuilt into the six reference sections
+with switch rows and friendly "4.0ds · easeOutQuint" subtitles (raw record
+text and all preview/save prose off the page — the workbench moved to
+Safety Details); color picker rebuilt as an opaque `adw::Dialog` with
+hue-column shade-stack palette, session custom-swatch memory, and a custom
+view with eyedropper placeholder, vertical rainbow hue bar, continuous SV
+plane with crosshair, and checkerboard alpha slider; color row tiles
+enlarged/rounded with the add-stop button moved after the angle spinner;
+numeric General rows use compact spinners with integer formatting; and the
+XWayland/Ecosystem pages were un-hidden (their prefix claims pointed at the
+wrong model tab — a real routing bug the screenshots caught). Guards:
+`tests/screenshot_fidelity_fixes.rs`. Zero classification/behavior change.
+
 Everything below this line is **dated history** (earlier audits and
 marathon logs), kept as a record and not to be read as current state.
 

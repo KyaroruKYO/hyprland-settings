@@ -168,17 +168,21 @@ pub const SIDEBAR_PAGE_LAYOUT: &[SidebarCategoryPages] = &[
     SidebarCategoryPages {
         label: "Advanced",
         pages: &[
+            // The xwayland.* rows live in the model's "display" tab and the
+            // ecosystem.* rows in "permissions" — claiming them from the
+            // wrong tab silently hid both pages (zero claimed rows) while
+            // the rows fell to the Monitors/Permissions rest pages.
             PageSpec {
                 id: "xwayland",
                 label: "XWayland",
-                source_tab: Some("system"),
+                source_tab: Some("display"),
                 include_prefixes: Some(&["xwayland."]),
                 extra_sources: &[],
             },
             PageSpec {
                 id: "ecosystem",
                 label: "Ecosystem",
-                source_tab: Some("system"),
+                source_tab: Some("permissions"),
                 include_prefixes: Some(&["ecosystem."]),
                 extra_sources: &[],
             },
@@ -355,6 +359,9 @@ pub fn row_badge(chip: StatusChip, needs_attention: bool) -> Option<&'static str
 /// without an entry fall back to their generated subsection.
 pub fn section_for_row(official_setting: &str, subsection: &str, page_label: &str) -> String {
     const CURATED_PREFIXES: &[(&str, &str)] = &[
+        // Animations scalar rows sit in a "General" section above the
+        // record groups, matching the reference page order.
+        ("animations.", "General"),
         ("general.gaps_", "Gaps"),
         ("general.float_gaps", "Gaps"),
         ("general.col.", "Border Colors"),
@@ -535,6 +542,21 @@ pub fn fallback_display_label(official_label: &str, tab_label: &str) -> String {
 /// heading already shows) and the redundant "Col " color-group marker.
 /// Purely formatting — the remaining official words are unchanged.
 pub fn row_display_title(official_label: &str, tab_label: &str, official_setting: &str) -> String {
+    // Curated titles for the few rows whose mechanical fallback reads
+    // awkwardly ("Nogroup Border"). Presentation only.
+    const CURATED_TITLES: &[(&str, &str)] = &[
+        ("general.col.nogroup_border", "No-group border color"),
+        (
+            "general.col.nogroup_border_active",
+            "Active no-group border color",
+        ),
+    ];
+    if let Some((_, curated)) = CURATED_TITLES
+        .iter()
+        .find(|(key, _)| *key == official_setting)
+    {
+        return (*curated).to_string();
+    }
     let mut title = fallback_display_label(official_label, tab_label);
     if let Some(section) = official_setting.split('.').next() {
         let mut section_word = section.to_string();
@@ -570,6 +592,121 @@ pub fn choice_display_label(raw_value: &str) -> String {
         Some(first) => first.to_uppercase().collect::<String>() + characters.as_str(),
         None => spaced,
     }
+}
+
+/// HyprMod-style Animations page grouping: section heading -> the runtime
+/// animation record names it hosts, in display order. Records present in
+/// the runtime listing but not named here render at the end of "Other"
+/// when they carry an explicit override, so nothing editable is hidden.
+pub const ANIMATION_RECORD_GROUPS: &[(&str, &[&str])] = &[
+    ("Global", &["global"]),
+    ("Windows & Layers", &["windows", "layers"]),
+    ("Fading", &["fade"]),
+    ("Workspaces", &["workspaces"]),
+    (
+        "Other",
+        &["border", "borderangle", "zoomFactor", "monitorAdded"],
+    ),
+];
+
+/// Friendly display name for a runtime animation record.
+pub fn animation_record_display_name(name: &str) -> String {
+    match name {
+        "global" => "Global".to_string(),
+        "windows" => "Windows".to_string(),
+        "layers" => "Layers".to_string(),
+        "fade" => "Fade".to_string(),
+        "workspaces" => "Workspaces".to_string(),
+        "border" => "Border".to_string(),
+        "borderangle" => "Border Angle".to_string(),
+        "zoomFactor" => "Zoom Factor".to_string(),
+        "monitorAdded" => "Monitor Added".to_string(),
+        "specialWorkspace" => "Special Workspace".to_string(),
+        other => choice_display_label(other),
+    }
+}
+
+/// Compact friendly subtitle for an animation record row, in the
+/// "4.0ds · easeOutQuint [· style]" shape; disabled and inherited records
+/// lead with that word instead of raw flag digits.
+pub fn animation_record_subtitle(
+    enabled: &str,
+    speed: &str,
+    bezier: &str,
+    style: &str,
+    overridden: bool,
+) -> String {
+    let speed_text = match speed.trim().parse::<f64>() {
+        Ok(value) => format!("{value:.1}ds"),
+        Err(_) => format!("{}ds", speed.trim()),
+    };
+    let curve = if bezier.trim().is_empty() {
+        "default"
+    } else {
+        bezier.trim()
+    };
+    let mut parts: Vec<String> = Vec::new();
+    if !overridden {
+        parts.push("inherited".to_string());
+    } else if enabled.trim() == "0" {
+        parts.push("disabled".to_string());
+    }
+    parts.push(speed_text);
+    parts.push(curve.to_string());
+    if overridden && !style.trim().is_empty() {
+        parts.push(style.trim().to_string());
+    }
+    parts.join(" · ")
+}
+
+/// The picker palette in the reference layout: nine columns (six hue
+/// families, brown, then light and dark neutrals), five shades each,
+/// lighter at the top. Rendered as contiguous vertical shade stacks.
+pub fn picker_palette_columns() -> Vec<Vec<ParsedColor>> {
+    fn hsv(hue: f64, saturation: f64, value: f64) -> ParsedColor {
+        let (red, green, blue) = hsv_to_rgb(hue, saturation, value);
+        ParsedColor {
+            red,
+            green,
+            blue,
+            alpha: 0xff,
+        }
+    }
+    let mut columns = Vec::new();
+    for &hue in &[217.0, 145.0, 50.0, 28.0, 2.0, 282.0] {
+        columns.push(vec![
+            hsv(hue, 0.45, 0.95),
+            hsv(hue, 0.62, 0.92),
+            hsv(hue, 0.80, 0.88),
+            hsv(hue, 0.92, 0.78),
+            hsv(hue, 0.95, 0.62),
+        ]);
+    }
+    // Brown: muted orange family.
+    columns.push(vec![
+        hsv(26.0, 0.45, 0.80),
+        hsv(26.0, 0.55, 0.70),
+        hsv(26.0, 0.62, 0.58),
+        hsv(26.0, 0.68, 0.46),
+        hsv(26.0, 0.72, 0.35),
+    ]);
+    // Light neutrals.
+    columns.push(vec![
+        hsv(0.0, 0.0, 0.97),
+        hsv(0.0, 0.0, 0.90),
+        hsv(0.0, 0.0, 0.82),
+        hsv(0.0, 0.0, 0.72),
+        hsv(0.0, 0.0, 0.62),
+    ]);
+    // Dark neutrals down to black.
+    columns.push(vec![
+        hsv(0.0, 0.0, 0.42),
+        hsv(0.0, 0.0, 0.33),
+        hsv(0.0, 0.0, 0.24),
+        hsv(0.0, 0.0, 0.14),
+        hsv(0.0, 0.0, 0.0),
+    ]);
+    columns
 }
 
 /// A parsed color for swatch/preview rendering. Presentation only: the
@@ -740,9 +877,18 @@ pub fn short_description(description: &str) -> String {
         .unwrap_or(trimmed)
         .trim();
     const MAX: usize = 110;
-    if first_sentence.chars().count() <= MAX {
-        return first_sentence.to_string();
+    let sentence = if first_sentence.chars().count() <= MAX {
+        first_sentence.to_string()
+    } else {
+        let cut: String = first_sentence.chars().take(MAX - 1).collect();
+        format!("{}…", cut.trim_end())
+    };
+    // Sentence-case: official descriptions often start lowercase.
+    let mut characters = sentence.chars();
+    match characters.next() {
+        Some(first) if first.is_ascii_lowercase() => {
+            first.to_ascii_uppercase().to_string() + characters.as_str()
+        }
+        _ => sentence,
     }
-    let cut: String = first_sentence.chars().take(MAX - 1).collect();
-    format!("{}…", cut.trim_end())
 }

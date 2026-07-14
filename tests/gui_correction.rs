@@ -78,9 +78,11 @@ fn normal_ui_builders_carry_no_tooltips() {
         "build_dashboard_card",
         "dashboard_cards",
         "build_config_view",
-        "append_animations_page_extras",
+        "append_animations_bezier_row",
+        "append_animation_record_groups",
+        "animation_record_row",
         "animation_record_menu_box",
-        "open_bezier_editor_window",
+        "open_bezier_editor_dialog",
         "bezier_graph_area",
         "render_settings_view",
         "append_structured_entries_card",
@@ -190,14 +192,17 @@ fn startup_pages_exist_and_add_no_write_paths() {
 #[test]
 fn bezier_editor_lives_under_animations_not_settings() {
     let window = fs::read_to_string("src/ui/window.rs").expect("window reads");
-    // Animations page: editor entry row + records card with menu buttons.
-    let extras = fn_slice(&window, "append_animations_page_extras");
-    assert!(extras.contains("Bezier Curve Editor"));
-    assert!(extras.contains("Create and manage animation curves"));
-    assert!(extras.contains("go-next-symbolic"));
-    assert!(extras.contains("open_bezier_editor_window"));
-    assert!(extras.contains("open-menu-symbolic"));
-    assert!(extras.contains("hyprland-settings-animation-menu-"));
+    // Animations page: editor entry row (icon + chevron) and record rows
+    // with menu buttons.
+    let bezier_row = fn_slice(&window, "append_animations_bezier_row");
+    assert!(bezier_row.contains("Bezier Curve Editor"));
+    assert!(bezier_row.contains("Create and manage animation curves"));
+    assert!(bezier_row.contains("draw-arc-symbolic"));
+    assert!(bezier_row.contains("go-next-symbolic"));
+    assert!(bezier_row.contains("open_bezier_editor_dialog"));
+    let record_row = fn_slice(&window, "animation_record_row");
+    assert!(record_row.contains("open-menu-symbolic"));
+    assert!(record_row.contains("hyprland-settings-animation-menu-"));
 
     // The Settings (config) page no longer hosts the pickers.
     let config = fn_slice(&window, "build_config_view");
@@ -212,10 +217,13 @@ fn bezier_editor_lives_under_animations_not_settings() {
     assert!(menu.contains("PickedRecordValues::AnimationRecord"));
     assert!(!menu.contains("style"));
 
-    // The editor window shows the curve graph and the proven curve picker.
-    let editor = fn_slice(&window, "open_bezier_editor_window");
+    // The editor dialog shows the curve graph and the proven curve picker
+    // — presented in-window, never as a separate toplevel.
+    let editor = fn_slice(&window, "open_bezier_editor_dialog");
     assert!(editor.contains("bezier_graph_area()"));
     assert!(editor.contains("curve_record_picker_group"));
+    assert!(editor.contains("adw::Dialog::new()"));
+    assert!(!editor.contains("gtk::Window::new()"));
 }
 
 #[test]
@@ -236,7 +244,7 @@ fn color_rows_are_stop_based_with_discard_and_angle() {
     assert!(color.contains("attach_raw_color_entry"));
     // Swatches are checkered for alpha visibility.
     let swatch = fn_slice(&window, "live_swatch_area");
-    assert!(swatch.contains("Checkerboard"));
+    assert!(swatch.contains("draw_checkerboard"));
     // The per-stop picker validates and preserves the raw token.
     let picker = fn_slice(&window, "open_color_stop_picker");
     assert!(picker.contains("parse_hyprland_color"));
@@ -291,9 +299,9 @@ fn all_seven_families_are_mapped_to_pages() {
         window.contains("\"hl.windowrule\""),
         "window rules page shows entries"
     );
-    let extras = fn_slice(&window, "append_animations_page_extras");
-    assert!(extras.contains("list_animation_records_live"));
-    let editor = fn_slice(&window, "open_bezier_editor_window");
+    let groups = fn_slice(&window, "append_animation_record_groups");
+    assert!(groups.contains("list_animation_records_live"));
+    let editor = fn_slice(&window, "open_bezier_editor_dialog");
     assert!(editor.contains("curve_record_picker_group"));
 
     // Page specs exist for the two standalone family shells too.

@@ -197,18 +197,31 @@ exist; inline dead-man supervision stays in the detail surface.
 
 Header shows the page title; General renders Gaps/Borders/Border Colors/Layout/Snap (cross-tab claims); routine status text left normal rows (badge-only); color rows seed from defaults with no generic button; the picker gained palette + custom HSV views; the sidebar gained an identity header, icon search, and page icons. Guards: `tests/visual_fidelity.rs`. Screenshots: `/tmp/hyprland-settings-visual-fidelity/`.
 
+## Implemented in the sixth pass (screenshot-grounded fidelity fixes)
+
+Driven by 19 user-captured side-by-side screenshots of both apps running
+live (`/home/kyo/review/`, findings in
+`docs/MANUAL-VISUAL-REVIEW-FINDINGS.md`): the Bezier editor became an
+in-window `adw::Dialog` (no second tiled compositor client); the
+Animations page regrouped into General / Global / Windows & Layers /
+Fading / Workspaces / Other with switch rows and friendly
+"speed · curve" subtitles (raw record text and preview/save prose off the
+page; the workbench moved to Safety Details); the color picker became an
+opaque `adw::Dialog` with a hue-column shade-stack palette, session
+custom-swatch memory, and a rebuilt custom view (eyedropper placeholder,
+vertical rainbow hue bar, continuous SV plane with crosshair,
+checkerboard alpha); color row tiles grew to rounded 44×26 with the
+add-stop button after the angle spinner; numeric rows use compact
+spinners with integer formatting; XWayland/Ecosystem pages un-hidden
+(tab-claim routing bug). Guards: `tests/screenshot_fidelity_fixes.rs`.
+
 ## Follow-ups (next passes)
 
 - Detail-pane simplification: short chip + expander for the full
   classification/proof text (the pane still shows verbose text today).
-- Color picker window + gradient row for the 22 color entries (HyprMod
-  `options/color.py` pattern).
-- Profiles page with a real empty state ("No profiles yet") instead of a
-  status frame.
-- Merged "Layouts" presentation for dwindle/master subsections.
-- Toggleable sidebar search (Ctrl+F) with the entry hidden by default.
-- Humanized label overrides for the most-seen rows (e.g. "Inner gaps"
-  style) where the official names are terse.
+- Eyedropper: wire the picker's screen-pick button to the XDG desktop
+  portal PickColor call (button ships disabled today).
+- Custom-swatch persistence across sessions (in-memory only today).
 
 ## Safety boundaries (unchanged)
 

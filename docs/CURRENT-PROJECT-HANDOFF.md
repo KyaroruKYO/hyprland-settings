@@ -225,6 +225,17 @@ Save persistence and migration marathon complete on `structured-family-editors-u
 
 Header = page title; General shows the five target sections via cross-tab page claims; badge-only row status; default-seeded stop swatches (no generic color button); palette + custom HSV picker; sidebar identity header with icon search and page icons; harness identification converted from tooltips to accessibility labels. Report: `data/reports/hyprmod-pixel-fidelity-correction.v0.55.2.json`; guards: `tests/visual_fidelity.rs`.
 
+## Screenshot-Grounded Fidelity Pass Additions (2026-07-13)
+
+Driven by 19 user-captured live side-by-side screenshots (`/home/kyo/review/`; findings `docs/MANUAL-VISUAL-REVIEW-FINDINGS.md`), re-verified with after-captures (`/home/kyo/review-after/`):
+
+- Bezier Curve Editor is an in-window `adw::Dialog` overlay (row opens via list selection; `hyprctl clients` count proven unchanged 5→5 — no separately tiled client).
+- Animations page = six reference sections (General scalar rows, then Global / Windows & Layers / Fading / Workspaces / Other record groups) of switch rows with friendly "4.0ds · easeOutQuint"-style subtitles; the supervised workbench moved to Safety Details; per-record menus keep the gated preview/save controls; no raw record text or safety prose on the page.
+- Color picker = opaque `adw::Dialog`: nine contiguous hue/neutral shade columns, Custom row with session-remembered swatches + selected checkmark; custom view = eyedropper placeholder (disabled; portal integration deferred) | live preview | hex over vertical rainbow hue bar + continuous SV plane with crosshair + checkerboard alpha slider.
+- Color rows: rounded 44×26 checkered tiles; order swatch/remove/…/angle/plus; numeric rows use compact spinners with integer formatting; sentence-cased subtitles; curated no-group border titles.
+- XWayland/Ecosystem sidebar pages un-hidden — their prefix claims pointed at the wrong model tab (`system` instead of `display`/`permissions`); rows had silently landed on Monitors/Permissions rest pages. Permissions now legitimately hides (all three of its rows are `ecosystem.*`).
+- Report: `data/reports/manual-visual-review-implementation.v0.55.2.json`; guards: `tests/screenshot_fidelity_fixes.rs` (10).
+
 ## Next Exact Work
 
 The release is complete and three UX passes are in (adoption, simplification, whole-GUI overhaul). Remaining:

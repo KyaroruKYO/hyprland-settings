@@ -13,7 +13,7 @@ fn no_generic_color_button_label_remains() {
         "no normal color row may show a generic Color button"
     );
     // The unparseable fallback is a checkered swatch, not a text button.
-    assert!(window.contains("color_swatch_area(\"\", 30, 18)"));
+    assert!(window.contains("color_swatch_area(\"\", 44, 26)"));
 }
 
 #[test]

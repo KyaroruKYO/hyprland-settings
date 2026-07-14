@@ -1,0 +1,252 @@
+{
+  "report": "manual-visual-review-findings",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-13",
+  "appCommitAtCapture": "8c16572",
+  "screenshotsDir": "/home/kyo/review",
+  "screenshotCount": 19,
+  "inspection": {
+    "imagesActuallyInspected": true,
+    "method": "All 19 screenshots were loaded as pixels into Fable's visual context (user-provided in-conversation); 03-closeup-hs-active-border-color-row.png was additionally re-read from disk with the Read tool. No finding is inferred from filenames alone.",
+    "unusableFiles": [
+      {
+        "file": "03-closeup-hs-active-border-color-row.png",
+        "reason": "Mis-crop: contains two lines of rendered document text, not the app row. HS side of comparison 2 assessed from 01-side-by-side-general.png instead; re-capture requested after fixes."
+      }
+    ],
+    "valueContentExcluded": "HM shows live config values, HS shows model values; value differences are not reported as defects — only control chrome, layout, and behavior."
+  },
+  "implementationPerformed": false,
+  "comparisons": [
+    {
+      "id": 1,
+      "area": "General page",
+      "filesInspected": ["01-side-by-side-general.png"],
+      "observations": {
+        "sectionNamesMatch": true,
+        "sections": ["Gaps", "Borders", "Border Colors", "Layout", "Snap"],
+        "headerTitleMatches": true,
+        "sidebarBroadlyMatches": true,
+        "spacingCardWidthRowHeight": "comparable; HM rows have slightly roomier padding; both apps place headings above cards"
+      },
+      "differences": [
+        "HS Gaps rows use wide plain text entries; HM uses compact -/+ spin groups",
+        "HS formats integer options as '0.00'; HM shows '1'",
+        "HS color-row swatches are ~22px sharp squares with '+' before the angle spinner; HM uses ~44x28 rounded checkered tiles with '+' after the angle spinner at row end",
+        "HS exposes extra rows (Nogroup Border, Nogroup Border Active; Window snap gap, Monitor snap gap, Border overlap, Respect gaps) - deliberate 341-row model, denser than HM",
+        "HM shows 'Resize on border' under Borders; HS keeps it on another page",
+        "HS shows 'Needs attention' badge on Layout row; HM shows no inline statuses (badge explicitly allowed by prior acceptance rules; user decision)",
+        "HS subtitles are raw official descriptions with inconsistent capitalization and two-line wraps; HM uses single-line sentence-case summaries",
+        "HS sidebar is missing XWayland and Ecosystem under ADVANCED; HM shows both. Source: sidebar_items() hides model-backed pages claiming zero rows at runtime (src/ui/window.rs:607) - runtime page-claiming anomaly to investigate"
+      ],
+      "requiredFixes": [
+        "Compact spin controls for numeric General rows; plain entry only where multi-value syntax requires it",
+        "Integer formatting for integer options",
+        "Swatch tile geometry and '+'-after-angle reorder (see comparison 2)",
+        "Sentence-case single-line subtitles and title casing",
+        "Investigate and fix XWayland/Ecosystem page hiding at runtime"
+      ],
+      "acceptanceCriteria": [
+        "Re-captured side-by-side shows -/+ spinners on Gaps/Borders rows",
+        "Integer rows show '1' style values",
+        "Color-row control order matches HM",
+        "XWayland and Ecosystem visible in HS sidebar or documented reason they are empty at runtime"
+      ],
+      "confidence": "high",
+      "findingSource": "image-inspection (sidebar-hiding mechanism from source inspection)"
+    },
+    {
+      "id": 2,
+      "area": "Active border color row",
+      "filesInspected": [
+        "04-closeup-hm-active-border-color-row.png",
+        "01-side-by-side-general.png"
+      ],
+      "observations": {
+        "hmRowOrder": "checkered tile, backspace-remove, tile, remove, '45 - +' spinner, '+' at row end",
+        "hsRowOrder": "solid square, remove, square, remove, '+', '45 - +'"
+      },
+      "differences": [
+        "Tile size: HS ~22x22px vs HM ~44x28px",
+        "Tile shape: HS square/sharp vs HM wide rounded rect",
+        "Checkerboard: HM clearly visible under translucent color; HS tiles opaque in this capture so checkerboard rendering unverifiable from pixels (closeup missing)",
+        "Spacing between tile and remove: similar, not a defect",
+        "Remove button placement: both immediately right of each tile - matches",
+        "Plus placement: HS before angle spinner; HM after angle spinner at row end - mismatch",
+        "Angle spinner: both segmented 'value - +' groups, visually close",
+        "Overall: structure matches, geometry and ordering do not - HS does not yet pass as HM-equivalent"
+      ],
+      "requiredFixes": [
+        "Enlarge swatch tiles to ~44x28 rounded",
+        "Move add-stop '+' to end of control group after the angle spinner",
+        "Re-capture a valid HS closeup"
+      ],
+      "acceptanceCriteria": [
+        "Valid HS closeup shows rounded ~44x28 checkered tiles, remove per tile, angle spinner, then '+' last - same order as 04-closeup-hm-active-border-color-row.png"
+      ],
+      "confidence": "high for HM (closeup); medium-high for HS (full-page resolution only)",
+      "findingSource": "image-inspection"
+    },
+    {
+      "id": 3,
+      "area": "Color picker - palette view",
+      "filesInspected": [
+        "05-closeup-hs-color-picker-palette.png",
+        "05-hs-color-picker-palette.png",
+        "06-closeup-hm-color-picker-palette.png",
+        "06-hm-color-picker-palette.png"
+      ],
+      "observations": {
+        "hsSurface": "popover attached to swatch; page content ('45', remove icons, 'Needs attention') visibly bleeds through the picker surface",
+        "hmSurface": "centered opaque floating dialog with shadow; content behind slightly dimmed"
+      },
+      "differences": [
+        "Surface/dimming: HS translucent popover vs HM opaque elevated dialog",
+        "Dialog size: HS ~370px wide and short; HM wider (~430px) and taller",
+        "Header: HS Cancel is plain text; HM Cancel is a pill button; title and blue Select pill match",
+        "Palette structure transposed: HS 8x5 grid of small (~40px) detached squares (row 1 grayscale, rows 2-5 hue rows); HM 9 hue columns x 5 vertically contiguous shades, ~72x44 tiles, rounded column ends, includes brown and neutral columns",
+        "Custom row: HS 'Custom' label + bare '+' icon, no stored swatches; HM '+' tile followed by saved checkered custom swatches with a checkmark on the selected one",
+        "Verdict: HS still looks too raw/simple compared to HM - yes"
+      ],
+      "requiredFixes": [
+        "Present picker as opaque in-window adw::Dialog",
+        "Rebuild palette as hue-column shade-stacks with HM-scale tiles",
+        "Pill-style Cancel button",
+        "Custom row with persisted custom swatches and selected checkmark"
+      ],
+      "acceptanceCriteria": [
+        "Re-captured HS palette shows opaque dialog with no page text readable through it",
+        ">=9 hue columns of 5 contiguous shades",
+        "Cancel rendered as a button",
+        "Custom row grows as custom colors are picked"
+      ],
+      "confidence": "high",
+      "findingSource": "image-inspection"
+    },
+    {
+      "id": 4,
+      "area": "Color picker - custom/HSV view",
+      "filesInspected": [
+        "07a-closeup-hs-color-picker-custom-top.png",
+        "07-hs-color-picker-custom.png",
+        "08a-closeup-hm-color-picker-custom-top.png",
+        "08a-hm-color-picker-custom-top.png",
+        "08b-closeup-hm-color-picker-custom-bottom.png",
+        "08b-hm-color-picker-custom-scrolled.png"
+      ],
+      "observations": {
+        "hsLayoutOrder": "full-width preview strip -> full-width hex entry -> stepped SV rectangle with hollow-circle marker -> horizontal hue slider with plain gray trough -> horizontal blue-filled alpha slider without checkerboard; translucent popover",
+        "hmLayoutOrder": "top row [eyedropper | rounded preview swatch | hex entry] -> vertical rainbow hue bar (left) + large continuous SV square with crosshair lines (right) -> horizontal checkerboard-under-gradient alpha slider; larger opaque dialog whose top and scrolled captures show different regions (scrollable)"
+      },
+      "differences": [
+        "Layout order does not match HM",
+        "Eyedropper: HS none; HM present",
+        "Preview/hex: HS separate full-width rows; HM compact three-element top row",
+        "Hue: HS horizontal with plain trough (no rainbow gradient visible); HM vertical rainbow bar",
+        "SV area: HS visibly stepped/blocky cells with dot marker; HM continuous gradient with full-length crosshair lines",
+        "Alpha: HS standard blue-filled scale, no checkerboard; HM checkered gradient trough",
+        "Scroll/resize: HM dialog larger and scrollable; HS fixed compact popover would clip an HM-scale layout - HS needs a bigger dialog and/or scrollable content",
+        "No missing bottom controls beyond the eyedropper row placement"
+      ],
+      "requiredFixes": [
+        "Restructure to HM order: eyedropper+preview+hex row, vertical rainbow hue, large continuous SV with crosshair, checkered alpha",
+        "Continuous SV gradient rendering (replace stepped cells)",
+        "Custom-drawn hue and alpha troughs",
+        "Eyedropper via XDG desktop portal color picking",
+        "Host in the same opaque adw::Dialog as the palette view with scrollable content"
+      ],
+      "acceptanceCriteria": [
+        "Re-captured HS custom view pixel-comparable to 08a/08b: three-element top row, vertical rainbow hue, smooth SV with crosshair, checkered alpha, opaque surface"
+      ],
+      "confidence": "high",
+      "findingSource": "image-inspection"
+    },
+    {
+      "id": 5,
+      "area": "Animations page",
+      "filesInspected": [
+        "09-side-by-side-animations.png",
+        "09a-closeup-hs-animations-bezier-row.png",
+        "10a-closeup-hm-animations-bezier-row.png",
+        "09b-closeup-hs-animation-record-menu.png",
+        "10b-closeup-hm-animation-row-controls.png"
+      ],
+      "observations": {
+        "hs": "Bezier Curve Editor card without icon/chevron; flat Animation Records list with raw 'speed 3.00 (enabled 1, bezier quick)' subtitles and menu buttons but no switches; large 'Animations & curves' workbench card with record dropdown, Speed/Enabled/Curve controls, five-button rows, supervised-preview prose, and 'Save writes once with a backup / Requires Safe Live Save Mode / Full safety detail: Safety Details page' footer on the normal page",
+        "hm": "Bezier row with curve icon and chevron; sections General/Global/Windows & Layers/Fading/Workspaces/Other; every record a switch row with friendly summary ('4.0ds - easeOutQuint', 'inherited - 8.0ds - default') plus menu button and expander chevron; no safety prose"
+      },
+      "promptClaimsVerified": {
+        "hsStillRecordDebugOriented": "confirmed",
+        "hmGroupedIntoSixSections": "confirmed",
+        "hsExposesRawSpeedEnabledBezierText": "confirmed",
+        "hmUsesFriendlySummariesAndToggleRows": "confirmed",
+        "hsBezierRowLacksIconChevronCompactStyle": "confirmed",
+        "hsRecordMenuDiffersFromHmRowControls": "partially - HS rows have menu buttons but no enable switch, no expander, raw subtitles",
+        "hsProofSafetyTextLeaksIntoNormalPage": "confirmed"
+      },
+      "requiredFixes": [
+        "Regroup records into HM's six sections (General/Global/Windows & Layers/Fading/Workspaces/Other)",
+        "Make each record a switch row with friendly 'speed - curve [- style]' subtitle",
+        "Move workbench Speed/Curve/Preview/Save controls into per-record menu/expander",
+        "Move supervised-preview and save-gating prose to detail popover and Safety Details",
+        "Add icon + chevron to Bezier row",
+        "Constraint: presentation only - gated preview/save flow must not change"
+      ],
+      "acceptanceCriteria": [
+        "Re-captured side-by-side shows grouped switch rows with friendly subtitles",
+        "No raw '(enabled 1, bezier ...)' text on the page",
+        "No proof prose on the normal page",
+        "Bezier row has icon and chevron",
+        "All existing safety guards still green"
+      ],
+      "confidence": "high",
+      "findingSource": "image-inspection"
+    },
+    {
+      "id": 6,
+      "area": "Bezier editor windowing behavior",
+      "filesInspected": [
+        "09d-hs-bezier-editor-opens-as-separate-tiled-window.png",
+        "09b-closeup-hs-animation-record-menu.png",
+        "10b-closeup-hm-animation-row-controls.png"
+      ],
+      "observations": {
+        "hs": "Bezier editor is a separate top-level window that Hyprland tiled - its own frame stacked above the main window, both tiled",
+        "hm": "Bezier editor is an in-window modal overlay dialog centered inside the HM window with page content dimmed behind"
+      },
+      "differences": [
+        "HS Bezier editor is incorrectly a separate top-level window - confirmed from pixels",
+        "It should be an attached modal/dialog overlay like HM's - confirmed behavior mismatch"
+      ],
+      "requiredFixes": [
+        "Present the editor as adw::Dialog on the main window: renders as an overlay widget inside the parent window, never maps a new toplevel surface, so tiling compositors cannot tile it",
+        "gtk::Window with set_transient_for + set_modal is not sufficient on Hyprland (transients may still tile or depend on user windowrules)",
+        "Apply the same adw::Dialog host to the color picker (comparisons 3-4)"
+      ],
+      "acceptanceCriteria": [
+        "Opening the Bezier editor produces zero new Hyprland clients (hyprctl clients count unchanged)",
+        "Re-captured screenshot shows it overlaying the Animations page inside the main window, matching HM"
+      ],
+      "confidence": "high",
+      "findingSource": "image-inspection (fix approach from GTK/libadwaita knowledge, not pixels)"
+    }
+  ],
+  "fixPriority": [
+    "1. Bezier editor windowing (comparison 6)",
+    "2. Animations page regrouping and safety-prose relocation (5)",
+    "3. Picker surface (opaque adw::Dialog) + palette redesign (3)",
+    "4. Custom/HSV view rebuild (4)",
+    "5. Color row geometry/order (2) and General numeric controls (1)",
+    "6. XWayland/Ecosystem sidebar-hiding investigation (1)"
+  ],
+  "deliberateNonFixes": [
+    "HS's extra rows (Nogroup/Snap detail) - the 341-row model is a feature",
+    "'Needs attention' badge - explicitly allowed by prior acceptance rules; user decision"
+  ],
+  "safety": {
+    "applyClicked": false,
+    "realConfigEdited": false,
+    "runtimeMutated": false,
+    "codeChanged": false
+  }
+}

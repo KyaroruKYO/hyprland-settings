@@ -10,7 +10,7 @@ name = "hyprland-settings"
 path = "src/main.rs"
 
 [dependencies]
-adw = { package = "libadwaita", version = "0.9.1" }
+adw = { package = "libadwaita", version = "0.9.1", features = ["v1_5"] }
 anyhow = "1"
 gtk4 = "0.11.3"
 serde = { version = "1", features = ["derive"] }
