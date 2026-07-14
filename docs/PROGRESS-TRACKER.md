@@ -47,6 +47,8 @@ Devices/Gestures) and renames (Monitors, Keybinds, Settings); 341/341 rows
 reachable exactly once; 7/7 families mapped; Startup shells added. Zero
 classification/behavior change (guard-tested, `tests/gui_correction.rs`).
 
+**Update 2026-07-13 (pixel-fidelity pass):** the six visual acceptance rules pass (page-title header, split General sections, no routine status text, no generic color button, screenshot comparison recorded, guards added). Zero classification/behavior change.
+
 Everything below this line is **dated history** (earlier audits and
 marathon logs), kept as a record and not to be read as current state.
 

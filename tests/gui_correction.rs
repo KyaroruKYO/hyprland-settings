@@ -16,7 +16,7 @@ use hyprland_settings::export::ExportBundle;
 use hyprland_settings::metadata::resolve_metadata_path_with_env;
 use hyprland_settings::ui::model::UiProjection;
 use hyprland_settings::ux_presentation::{
-    page_claims_row, page_spec, section_display_name, SIDEBAR_PAGE_LAYOUT,
+    page_claims_row_in_tab, page_source_tabs, page_spec, section_display_name, SIDEBAR_PAGE_LAYOUT,
 };
 use hyprland_settings::validation::validate_bundle;
 use hyprland_settings::write_classification::SAFE_WRITABLE_ROWS;
@@ -55,14 +55,17 @@ fn normal_ui_builders_carry_no_tooltips() {
     // exceptions (sidebar navigation names, setting-row accessibility
     // text, detail-pane identification) and the review-card descriptors on
     // the Safety Details surfaces.
-    // build_setting_row keeps exactly one tooltip call: the documented
-    // accessibility/harness exception carrying the row identification
-    // text. Nothing decorative.
+    // Identification for the harness moved to accessibility labels: the
+    // row builder carries no tooltip at all, only an accessible name.
     let row_builder = fn_slice(&window, "build_setting_row");
-    assert_eq!(row_builder.matches("set_tooltip_text").count(), 1);
+    assert_eq!(row_builder.matches("set_tooltip_text").count(), 0);
     assert!(row_builder.contains("setting_row_accessibility_text"));
+    assert!(row_builder.contains("gtk::accessible::Property::Label"));
 
     for builder in [
+        "build_setting_row",
+        "build_sidebar",
+        "build_detail_panel",
         "attach_inline_row_control",
         "attach_inline_color_control",
         "open_color_stop_picker",
@@ -88,8 +91,7 @@ fn normal_ui_builders_carry_no_tooltips() {
             "normal UI builder {builder} must not set tooltips"
         );
     }
-    // The three documented exceptions still exist (harness navigation and
-    // row/detail identification).
+    // Identification still exists — as accessible names, not tooltips.
     assert!(window.contains("Navigation: "));
     assert!(window.contains("setting_row_accessibility_text"));
     assert!(window.contains("detail_pane_accessibility_text"));
@@ -105,7 +107,7 @@ fn section_headings_render_outside_the_cards() {
     assert!(render.contains("sections_box.append(&heading)"));
     assert!(render.contains("sections_box.append(&list)"));
     assert!(render.contains("list.add_css_class(\"boxed-list\")"));
-    assert!(render.contains("section_display_name"));
+    assert!(render.contains("section_for_row"));
     assert!(
         !render.contains("set_header_func"),
         "section headings are standalone labels, not list headers"
@@ -248,13 +250,12 @@ fn every_scalar_row_is_reachable_exactly_once() -> Result<()> {
     let mut duplicates = Vec::new();
     for category in SIDEBAR_PAGE_LAYOUT {
         for page in category.pages {
-            let Some(source_tab) = page.source_tab else {
-                continue;
-            };
-            for setting in projection.settings_for_tab(source_tab) {
-                if page_claims_row(page, &setting.official_setting) {
-                    if !claimed.insert(setting.row_id.clone()) {
-                        duplicates.push((page.id, setting.row_id.clone()));
+            for tab in page_source_tabs(page) {
+                for setting in projection.settings_for_tab(tab) {
+                    if page_claims_row_in_tab(page, tab, &setting.official_setting) {
+                        if !claimed.insert(setting.row_id.clone()) {
+                            duplicates.push((page.id, setting.row_id.clone()));
+                        }
                     }
                 }
             }

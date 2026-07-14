@@ -554,7 +554,7 @@
   "evidenceRoot": "<tmp>/hyprland-settings-gtk-automation/<fresh-run>",
   "evidenceSummarySource": "tools/live_scenario_harness/summarize_gtk_evidence.py",
   "fallbackProofUsed": false,
-  "generatedAt": "2026-07-14T02:27:55.399936+00:00",
+  "generatedAt": "2026-07-14T03:28:02.441019+00:00",
   "goal": "Prove disabled approval review cards through screenshot-level safe-env automation using screenshots plus AT-SPI accessibility-tree text, not OCR.",
   "hyprlandReloaded": false,
   "installedHyprlandPackageVersion": "0.55.4-1",
@@ -1442,6 +1442,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -1963,15 +1964,15 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Decoration",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
         "General",
         "Navigation: Decoration",
-        "Decoration",
         "Navigation: Animations",
         "Animations",
         "Navigation: Cursor",
@@ -2375,11 +2376,11 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
           "appearance",
-          "config",
           "dashboard",
           "default",
           "display",
@@ -2886,13 +2887,13 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "General",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
-        "General",
         "Navigation: Decoration",
         "Decoration",
         "Navigation: Animations",
@@ -3297,6 +3298,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [],
@@ -3798,11 +3800,11 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Dashboard",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
-        "Dashboard",
         "Navigation: General",
         "General",
         "Navigation: Decoration",
@@ -4209,6 +4211,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -4226,6 +4229,7 @@
           "profile",
           "render",
           "script",
+          "search",
           "settings",
           "symlink"
         ],
@@ -4727,9 +4731,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Safety Details",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -4753,8 +4758,7 @@
         "Navigation: Layouts",
         "Layouts",
         "Navigation: Window Rules",
-        "Window Rules",
-        "Navigation: Layer Rules"
+        "Window Rules"
       ]
     },
     {
@@ -5138,6 +5142,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -5155,6 +5160,7 @@
           "profile",
           "render",
           "script",
+          "search",
           "settings",
           "symlink"
         ],
@@ -5656,9 +5662,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Safety Details",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -5682,8 +5689,7 @@
         "Navigation: Layouts",
         "Layouts",
         "Navigation: Window Rules",
-        "Window Rules",
-        "Navigation: Layer Rules"
+        "Window Rules"
       ]
     },
     {
@@ -6067,11 +6073,11 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
           "blocked",
-          "config",
           "dashboard",
           "default",
           "display",
@@ -6581,9 +6587,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Monitors",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -6601,7 +6608,6 @@
         "Navigation: Gestures",
         "Gestures",
         "Navigation: Monitors",
-        "Monitors",
         "Navigation: Workspaces",
         "Workspaces",
         "Navigation: Layouts",
@@ -6992,6 +6998,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -7508,9 +7515,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Monitors",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -7528,7 +7536,6 @@
         "Navigation: Gestures",
         "Gestures",
         "Navigation: Monitors",
-        "Monitors",
         "Navigation: Workspaces",
         "Workspaces",
         "Navigation: Layouts",
@@ -7919,11 +7926,11 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
           "blocked",
-          "config",
           "dashboard",
           "default",
           "display",
@@ -8433,9 +8440,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Monitors",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -8453,7 +8461,6 @@
         "Navigation: Gestures",
         "Gestures",
         "Navigation: Monitors",
-        "Monitors",
         "Navigation: Workspaces",
         "Workspaces",
         "Navigation: Layouts",
@@ -8844,6 +8851,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [],
@@ -9345,11 +9353,11 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Dashboard",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
-        "Dashboard",
         "Navigation: General",
         "General",
         "Navigation: Decoration",
@@ -9756,6 +9764,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [],
@@ -10257,11 +10266,11 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Dashboard",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
-        "Dashboard",
         "Navigation: General",
         "General",
         "Navigation: Decoration",
@@ -10668,6 +10677,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -11181,9 +11191,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Animations",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -11191,7 +11202,6 @@
         "Navigation: Decoration",
         "Decoration",
         "Navigation: Animations",
-        "Animations",
         "Navigation: Cursor",
         "Cursor",
         "Navigation: Keybinds",
@@ -11592,6 +11602,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -12105,13 +12116,13 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "General",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
-        "General",
         "Navigation: Decoration",
         "Decoration",
         "Navigation: Animations",
@@ -12516,6 +12527,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [],
@@ -13017,11 +13029,11 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Dashboard",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
-        "Dashboard",
         "Navigation: General",
         "General",
         "Navigation: Decoration",
@@ -13428,11 +13440,11 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
           "appearance",
-          "config",
           "dashboard",
           "default",
           "display",
@@ -13939,13 +13951,13 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "General",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
-        "General",
         "Navigation: Decoration",
         "Decoration",
         "Navigation: Animations",
@@ -14350,6 +14362,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -14864,9 +14877,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Devices",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -14880,7 +14894,6 @@
         "Navigation: Keybinds",
         "Keybinds",
         "Navigation: Devices",
-        "Devices",
         "Navigation: Gestures",
         "Gestures",
         "Navigation: Monitors",
@@ -15275,6 +15288,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -15292,6 +15306,7 @@
           "profile",
           "render",
           "script",
+          "search",
           "settings",
           "symlink"
         ],
@@ -15793,9 +15808,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Safety Details",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -15819,8 +15835,7 @@
         "Navigation: Layouts",
         "Layouts",
         "Navigation: Window Rules",
-        "Window Rules",
-        "Navigation: Layer Rules"
+        "Window Rules"
       ]
     },
     {
@@ -16204,11 +16219,11 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
           "appearance",
-          "config",
           "dashboard",
           "default",
           "display",
@@ -16715,13 +16730,13 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "General",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
-        "General",
         "Navigation: Decoration",
         "Decoration",
         "Navigation: Animations",
@@ -17126,11 +17141,11 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
           "appearance",
-          "config",
           "dashboard",
           "default",
           "display",
@@ -17637,13 +17652,13 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "General",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
-        "General",
         "Navigation: Decoration",
         "Decoration",
         "Navigation: Animations",
@@ -18048,6 +18063,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -18561,13 +18577,13 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "General",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
-        "General",
         "Navigation: Decoration",
         "Decoration",
         "Navigation: Animations",
@@ -18972,6 +18988,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [],
@@ -19473,11 +19490,11 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Dashboard",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
-        "Dashboard",
         "Navigation: General",
         "General",
         "Navigation: Decoration",
@@ -19884,6 +19901,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [],
@@ -20385,11 +20403,11 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Dashboard",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
-        "Dashboard",
         "Navigation: General",
         "General",
         "Navigation: Decoration",
@@ -20796,6 +20814,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -20813,6 +20832,7 @@
           "profile",
           "render",
           "script",
+          "search",
           "settings",
           "symlink"
         ],
@@ -21314,9 +21334,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Safety Details",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -21340,8 +21361,7 @@
         "Navigation: Layouts",
         "Layouts",
         "Navigation: Window Rules",
-        "Window Rules",
-        "Navigation: Layer Rules"
+        "Window Rules"
       ]
     },
     {
@@ -21725,6 +21745,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -21742,6 +21763,7 @@
           "profile",
           "render",
           "script",
+          "search",
           "settings",
           "symlink"
         ],
@@ -22243,9 +22265,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Safety Details",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -22269,8 +22292,7 @@
         "Navigation: Layouts",
         "Layouts",
         "Navigation: Window Rules",
-        "Window Rules",
-        "Navigation: Layer Rules"
+        "Window Rules"
       ]
     },
     {
@@ -22654,6 +22676,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [],
@@ -23155,11 +23178,11 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Dashboard",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
-        "Dashboard",
         "Navigation: General",
         "General",
         "Navigation: Decoration",
@@ -23566,6 +23589,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [],
@@ -24067,11 +24091,11 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Dashboard",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
-        "Dashboard",
         "Navigation: General",
         "General",
         "Navigation: Decoration",
@@ -24478,6 +24502,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -24495,6 +24520,7 @@
           "profile",
           "render",
           "script",
+          "search",
           "settings",
           "symlink"
         ],
@@ -24996,9 +25022,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Safety Details",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -25022,8 +25049,7 @@
         "Navigation: Layouts",
         "Layouts",
         "Navigation: Window Rules",
-        "Window Rules",
-        "Navigation: Layer Rules"
+        "Window Rules"
       ]
     },
     {
@@ -25407,6 +25433,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -25424,6 +25451,7 @@
           "profile",
           "render",
           "script",
+          "search",
           "settings",
           "symlink"
         ],
@@ -25925,9 +25953,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Safety Details",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -25951,8 +25980,7 @@
         "Navigation: Layouts",
         "Layouts",
         "Navigation: Window Rules",
-        "Window Rules",
-        "Navigation: Layer Rules"
+        "Window Rules"
       ]
     },
     {
@@ -26336,6 +26364,7 @@
           "hyprland",
           "profile",
           "render",
+          "search",
           "settings"
         ],
         "foundTermsAfterNavigation": [
@@ -26353,6 +26382,7 @@
           "profile",
           "render",
           "script",
+          "search",
           "settings",
           "symlink"
         ],
@@ -26854,9 +26884,10 @@
       "textSample": [
         "hyprland-settings",
         "Hyprland Settings",
-        "Hyprland config metadata and values",
+        "Safety Details",
         "Close",
         "Close the window",
+        "Search settings",
         "Navigation: Dashboard",
         "Dashboard",
         "Navigation: General",
@@ -26880,8 +26911,7 @@
         "Navigation: Layouts",
         "Layouts",
         "Navigation: Window Rules",
-        "Window Rules",
-        "Navigation: Layer Rules"
+        "Window Rules"
       ]
     }
   ],

@@ -56,7 +56,8 @@ fn setting_row_source_uses_friendly_copy_and_hides_raw_metadata_labels() {
         "write support:",
         "current-value-read-allowlisted",
         "not-write-allowlisted",
-        "setting.official_setting",
+        // The raw key is read for title formatting but never rendered:
+        // guarded separately by the visual-fidelity tests.
     ] {
         assert!(
             !row_source.contains(hidden),

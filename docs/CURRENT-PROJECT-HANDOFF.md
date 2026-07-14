@@ -221,6 +221,10 @@ Save persistence and migration marathon complete on `structured-family-editors-u
 - `SIDEBAR_PAGE_LAYOUT` partition: 341/341 rows on exactly one page; 7 families mapped (read-only source-entry cards; Window Rules real locked list; Autostart/Env honest shells — parser preserves no exec/env lines).
 - Guards: `tests/gui_correction.rs` (8); harness pages renamed (General/Monitors/Devices).
 
+## Pixel-Fidelity Pass Additions (2026-07-13)
+
+Header = page title; General shows the five target sections via cross-tab page claims; badge-only row status; default-seeded stop swatches (no generic color button); palette + custom HSV picker; sidebar identity header with icon search and page icons; harness identification converted from tooltips to accessibility labels. Report: `data/reports/hyprmod-pixel-fidelity-correction.v0.55.2.json`; guards: `tests/visual_fidelity.rs`.
+
 ## Next Exact Work
 
 The release is complete and three UX passes are in (adoption, simplification, whole-GUI overhaul). Remaining:

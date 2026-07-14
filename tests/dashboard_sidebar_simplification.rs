@@ -67,7 +67,7 @@ fn dashboard_sidebar_source_records_expected_navigation() {
         !source.contains("row_box.append(&count)"),
         "sidebar must not append a row-count widget"
     );
-    assert!(source.contains("page_claims_row(page, &setting.official_setting)"));
+    assert!(source.contains("page_claims_row_in_tab("));
 }
 
 #[test]

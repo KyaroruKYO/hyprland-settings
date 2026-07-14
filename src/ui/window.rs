@@ -260,9 +260,11 @@ pub fn show_main_window(
     let root = gtk::Box::new(gtk::Orientation::Vertical, 0);
     root.set_widget_name("hyprland-settings-root");
 
-    let title = adw::WindowTitle::new("Hyprland Settings", "Hyprland config metadata and values");
+    // The header title follows the current page (the app name lives in
+    // window metadata, not as a dominant page header).
+    let header_title = adw::WindowTitle::new("Dashboard", "");
     let header = adw::HeaderBar::new();
-    header.set_title_widget(Some(&title));
+    header.set_title_widget(Some(&header_title));
     root.append(&header);
 
     let body = gtk::Box::new(gtk::Orientation::Horizontal, 0);
@@ -277,9 +279,29 @@ pub fn show_main_window(
     let sidebar = build_sidebar(&sidebar_items);
     let sidebar_scroll = gtk::ScrolledWindow::builder()
         .min_content_width(250)
+        .max_content_width(300)
+        .vexpand(true)
+        .hexpand(false)
         .child(&sidebar)
         .build();
-    body.append(&sidebar_scroll);
+    // Sidebar column: compact identity header with the search icon, the
+    // hidden search entry sliding in below it, then the navigation list.
+    let sidebar_column = gtk::Box::new(gtk::Orientation::Vertical, 0);
+    sidebar_column.set_widget_name("hyprland-settings-sidebar-column");
+    sidebar_column.set_hexpand(false);
+    sidebar_column.set_size_request(260, -1);
+    let sidebar_header = gtk::Box::new(gtk::Orientation::Horizontal, 6);
+    sidebar_header.set_margin_top(8);
+    sidebar_header.set_margin_bottom(4);
+    sidebar_header.set_margin_start(12);
+    sidebar_header.set_margin_end(6);
+    let app_label = gtk::Label::new(Some("Hyprland Settings"));
+    app_label.set_halign(gtk::Align::Start);
+    app_label.set_hexpand(true);
+    app_label.add_css_class("heading");
+    sidebar_header.append(&app_label);
+    sidebar_column.append(&sidebar_header);
+    body.append(&sidebar_column);
 
     let content = gtk::Box::new(gtk::Orientation::Vertical, 12);
     content.set_margin_top(16);
@@ -367,17 +389,23 @@ pub fn show_main_window(
     // small toggle and slides in on Ctrl+F or the toggle; Escape clears
     // and hides it again. Browsing the grouped categories stays the
     // everyday path.
-    let search_toggle = gtk::ToggleButton::with_label("Search");
+    let search_toggle = gtk::ToggleButton::new();
+    search_toggle.set_icon_name("system-search-symbolic");
     search_toggle.set_widget_name("hyprland-settings-search-toggle");
-    search_toggle.set_halign(gtk::Align::End);
-    settings_view.append(&search_toggle);
+    search_toggle.add_css_class("flat");
+    search_toggle.update_property(&[gtk::accessible::Property::Label("Search settings")]);
 
     let search_entry = gtk::SearchEntry::new();
     search_entry.set_widget_name("hyprland-settings-search");
     search_entry.set_placeholder_text(Some("Search settings…"));
     search_entry.update_property(&[gtk::accessible::Property::Label("Search settings")]);
     search_entry.set_visible(false);
-    settings_view.append(&search_entry);
+    search_entry.set_margin_start(8);
+    search_entry.set_margin_end(8);
+    search_entry.set_margin_bottom(4);
+    sidebar_header.append(&search_toggle);
+    sidebar_column.append(&search_entry);
+    sidebar_column.append(&sidebar_scroll);
 
     {
         // The toggle is the one owner of visibility: Ctrl+F and Escape
@@ -420,8 +448,11 @@ pub fn show_main_window(
         });
     }
 
+    // The page name renders in the header; no duplicate giant content
+    // title on settings pages. The label stays alive for internal state.
     let tab_title = title_label("");
     tab_title.set_widget_name("hyprland-settings-category-title");
+    tab_title.set_visible(false);
     settings_view.append(&tab_title);
 
     // Settings pages are a single centered column of section cards:
@@ -481,10 +512,12 @@ pub fn show_main_window(
         let detail_content = detail_content.clone();
         let detail_popover = detail_popover.clone();
         let config_selection_state = Rc::clone(&config_selection_state);
+        let header_title = header_title.clone();
         sidebar.connect_row_selected(move |_, row| {
             if let Some(row) = row {
                 if let Some(item) = sidebar_items.get(row.index() as usize) {
                     *selected_tab_id.borrow_mut() = item.id.clone();
+                    header_title.set_title(&item.label);
                     render_main_view(
                         &model,
                         &selected_tab_id.borrow(),
@@ -546,7 +579,7 @@ pub fn show_error_window(app: &adw::Application, export_context: &str, error: &s
         .build();
 
     let root = gtk::Box::new(gtk::Orientation::Vertical, 0);
-    let title = adw::WindowTitle::new("Hyprland Settings", "Startup error");
+    let title = adw::WindowTitle::new("Startup Error", "Hyprland Settings");
     let header = adw::HeaderBar::new();
     header.set_title_widget(Some(&title));
     root.append(&header);
@@ -591,9 +624,18 @@ fn sidebar_items(model: &UiProjection) -> Vec<SidebarItem> {
                     target_tab_id: None,
                 }),
                 Some(source_tab) => {
-                    let has_rows = model.settings_for_tab(source_tab).iter().any(|setting| {
-                        crate::ux_presentation::page_claims_row(page, &setting.official_setting)
-                    });
+                    let has_rows =
+                        crate::ux_presentation::page_source_tabs(page)
+                            .iter()
+                            .any(|tab| {
+                                model.settings_for_tab(tab).iter().any(|setting| {
+                                    crate::ux_presentation::page_claims_row_in_tab(
+                                        page,
+                                        tab,
+                                        &setting.official_setting,
+                                    )
+                                })
+                            });
                     if has_rows {
                         items.push(SidebarItem {
                             id: page.id.to_string(),
@@ -654,13 +696,20 @@ fn build_sidebar(items: &[SidebarItem]) -> gtk::ListBox {
             "hyprland-settings-nav-{}",
             safe_widget_name(&item.id)
         ));
-        row.set_tooltip_text(Some(&format!("Navigation: {}", item.label)));
-        let row_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
-        row_box.set_margin_top(9);
-        row_box.set_margin_bottom(9);
-        row_box.set_margin_start(14);
-        row_box.set_margin_end(14);
+        row.update_property(&[gtk::accessible::Property::Label(&format!(
+            "Navigation: {}",
+            item.label
+        ))]);
+        let row_box = gtk::Box::new(gtk::Orientation::Horizontal, 10);
+        row_box.set_margin_top(8);
+        row_box.set_margin_bottom(8);
+        row_box.set_margin_start(12);
+        row_box.set_margin_end(12);
 
+        let icon = gtk::Image::from_icon_name(crate::ux_presentation::page_icon(&item.id));
+        icon.set_valign(gtk::Align::Center);
+        icon.add_css_class("dim-label");
+        row_box.append(&icon);
         let label = body_label(&item.label);
         label.set_halign(gtk::Align::Start);
         label.add_css_class("hyprland-settings-nav-row-label");
@@ -5824,14 +5873,29 @@ fn render_settings_view(
     };
     tab_title.set_label(page.label);
 
-    let view = search_projection(model, source_tab, query);
-    let results: Vec<&SearchResult> = view
-        .results
+    let _ = source_tab;
+    // Collect claimed rows from every model tab the page draws from
+    // (its own tab plus any cross-tab extra sources).
+    let mut views = Vec::new();
+    for tab in crate::ux_presentation::page_source_tabs(page) {
+        views.push((tab, search_projection(model, tab, query)));
+    }
+    let results: Vec<&SearchResult> = views
         .iter()
-        .filter(|result| {
-            crate::ux_presentation::page_claims_row(page, &result.setting.official_setting)
+        .flat_map(|(tab, view)| {
+            view.results.iter().filter(move |result| {
+                crate::ux_presentation::page_claims_row_in_tab(
+                    page,
+                    tab,
+                    &result.setting.official_setting,
+                )
+            })
         })
         .collect();
+    let view = &views
+        .first()
+        .map(|(_, view)| view)
+        .expect("page has at least one source tab");
 
     // Page-specific content above the sections.
     if page.id == "animations" {
@@ -5844,9 +5908,9 @@ fn render_settings_view(
 
     if results.is_empty() {
         let empty = body_label(
-            &view
-                .empty_title
-                .unwrap_or_else(|| "No settings match here.".to_string()),
+            view.empty_title
+                .as_deref()
+                .unwrap_or("No settings match here."),
         );
         empty.set_margin_top(18);
         empty.set_halign(gtk::Align::Center);
@@ -5854,11 +5918,16 @@ fn render_settings_view(
         return;
     }
 
-    // Group rows by subsection, preserving model order. Each group renders
-    // as a heading OUTSIDE the card and a rounded card of rows below it.
+    // Group rows by their curated section (falling back to the generated
+    // subsection), preserving model order. Each group renders as a heading
+    // OUTSIDE the card and a rounded card of rows below it.
     let mut groups: Vec<(String, Vec<&SearchResult>)> = Vec::new();
     for result in results {
-        let section = result.setting.subsection.clone();
+        let section = crate::ux_presentation::section_for_row(
+            &result.setting.official_setting,
+            &result.setting.subsection,
+            page.label,
+        );
         match groups.iter_mut().find(|(name, _)| *name == section) {
             Some((_, rows)) => rows.push(result),
             None => groups.push((section, vec![result])),
@@ -5867,7 +5936,7 @@ fn render_settings_view(
 
     let page_lists: Rc<RefCell<Vec<gtk::ListBox>>> = Rc::new(RefCell::new(Vec::new()));
     for (section, rows) in groups {
-        let heading_text = crate::ux_presentation::section_display_name(&section, page.label);
+        let heading_text = section.clone();
         let heading = body_label(&heading_text);
         heading.set_halign(gtk::Align::Start);
         heading.set_margin_top(14);
@@ -6345,7 +6414,9 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
         "hyprland-settings-setting-row-{}",
         safe_widget_name(&setting.row_id)
     ));
-    row.set_tooltip_text(Some(&setting_row_accessibility_text(setting)));
+    row.update_property(&[gtk::accessible::Property::Label(
+        &setting_row_accessibility_text(setting),
+    )]);
     row.set_activatable(true);
     row.set_selectable(true);
 
@@ -6365,7 +6436,11 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
     text_box.set_valign(gtk::Align::Center);
     let title_text = match crate::presentation_labels::display_label_for_row(&setting.row_id) {
         Some(matched) => matched.to_string(),
-        None => crate::ux_presentation::fallback_display_label(&setting.label, &setting.tab_label),
+        None => crate::ux_presentation::row_display_title(
+            &setting.label,
+            &setting.tab_label,
+            &setting.official_setting,
+        ),
     };
     let title = body_label(&title_text);
     title.set_halign(gtk::Align::Start);
@@ -6398,13 +6473,18 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
     let end_box = gtk::Box::new(gtk::Orientation::Horizontal, 8);
     end_box.set_halign(gtk::Align::End);
     end_box.set_valign(gtk::Align::Center);
-    let status = small_label(&format!(
-        "{} · {}",
-        friendly_row_current_status(setting),
-        crate::ux_presentation::status_chip_for_row(&setting.row_id).label()
-    ));
-    status.set_halign(gtk::Align::End);
-    end_box.append(&status);
+    // Routine status stays out of normal rows: only a compact badge for
+    // states that genuinely need attention. Full detail lives in the
+    // row's on-demand detail surface and Safety Details.
+    if let Some(badge_text) = crate::ux_presentation::row_badge(
+        crate::ux_presentation::status_chip_for_row(&setting.row_id),
+        setting.current_value.status == CurrentValueSourceStatus::DuplicateConflict,
+    ) {
+        let badge = small_label(badge_text);
+        badge.set_halign(gtk::Align::End);
+        badge.add_css_class("dim-label");
+        end_box.append(&badge);
+    }
     attach_inline_row_control(&end_box, setting);
     row_box.append(&end_box);
 
@@ -6491,7 +6571,12 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
     if !row_state.preview_enabled {
         return;
     }
-    let initial_value = setting.current_value.raw_value.clone().unwrap_or_default();
+    let initial_value = setting
+        .current_value
+        .raw_value
+        .clone()
+        .or_else(|| setting.edit.proposed_value.clone())
+        .unwrap_or_default();
     let control_name = format!(
         "hyprland-settings-inline-control-{}",
         safe_widget_name(&setting.row_id)
@@ -6777,6 +6862,8 @@ fn attach_inline_color_control(
                 let discard = gtk::Button::from_icon_name("edit-undo-symbolic");
                 discard.add_css_class("flat");
                 discard.set_widget_name(&format!("{control_name}-discard"));
+                discard
+                    .update_property(&[gtk::accessible::Property::Label("Discard color changes")]);
                 let state = Rc::clone(&state);
                 let original_raw = original_raw.clone();
                 let apply_state = Rc::clone(&apply_state_outer);
@@ -6795,6 +6882,10 @@ fn attach_inline_color_control(
                 let swatch = gtk::Button::new();
                 swatch.add_css_class("flat");
                 swatch.set_widget_name(&format!("{control_name}-stop-{index}"));
+                swatch.update_property(&[gtk::accessible::Property::Label(&format!(
+                    "Color stop {}",
+                    index + 1
+                ))]);
                 swatch.set_child(Some(&color_swatch_area(token, 30, 18)));
                 {
                     let state = Rc::clone(&state);
@@ -6822,6 +6913,8 @@ fn attach_inline_color_control(
                     remove.add_css_class("flat");
                     remove.add_css_class("circular");
                     remove.set_widget_name(&format!("{control_name}-remove-{index}"));
+                    remove
+                        .update_property(&[gtk::accessible::Property::Label("Remove color stop")]);
                     let state = Rc::clone(&state);
                     let apply_state = Rc::clone(&apply_state_outer);
                     remove.connect_clicked(move |_| {
@@ -6841,6 +6934,7 @@ fn attach_inline_color_control(
                 let add = gtk::Button::from_icon_name("list-add-symbolic");
                 add.add_css_class("flat");
                 add.set_widget_name(&format!("{control_name}-add-stop"));
+                add.update_property(&[gtk::accessible::Property::Label("Add color stop")]);
                 let state = Rc::clone(&state);
                 let apply_state = Rc::clone(&apply_state_outer);
                 add.connect_clicked(move |_| {
@@ -6876,62 +6970,327 @@ fn attach_inline_color_control(
     (rebuild.borrow())();
 }
 
-/// Per-stop picker: live preview swatch, manual entry seeded with the
-/// stop's exact raw token, Apply gated on parseability, Cancel. The
-/// edited token replaces only this stop; the rest of the value is
-/// untouched.
+/// Per-stop color picker: Cancel / "Pick a Color" / Select header over a
+/// palette grid view and a Custom view (preview, hex entry, hue slider,
+/// saturation-value area, alpha slider). The palette is generated
+/// programmatically; Select renders the choice in the original token's
+/// format family and routes through the caller (preview path only). The
+/// raw entry lives in the Custom view as the secondary affordance.
 fn open_color_stop_picker(parent: &gtk::Button, token: &str, on_apply: Rc<dyn Fn(String)>) {
     let picker = gtk::Popover::new();
     picker.set_parent(parent);
-    let picker_box = gtk::Box::new(gtk::Orientation::Vertical, 8);
-    picker_box.set_margin_top(10);
-    picker_box.set_margin_bottom(10);
-    picker_box.set_margin_start(10);
-    picker_box.set_margin_end(10);
-    picker_box.append(&small_label("rgba(RRGGBBAA), rgb(RRGGBB), or 0xAARRGGBB"));
-    let preview_state = Rc::new(RefCell::new(token.to_string()));
-    let preview = live_swatch_area(preview_state.clone(), 160, 22);
-    picker_box.append(&preview);
-    let entry = gtk::Entry::new();
-    entry.set_text(token);
-    entry.set_width_chars(18);
-    picker_box.append(&entry);
-    let buttons = gtk::Box::new(gtk::Orientation::Horizontal, 8);
-    buttons.set_halign(gtk::Align::End);
+
+    let initial = crate::ux_presentation::parse_hyprland_color(token).unwrap_or(
+        crate::ux_presentation::ParsedColor {
+            red: 0xff,
+            green: 0xff,
+            blue: 0xff,
+            alpha: 0xff,
+        },
+    );
+    let chosen = Rc::new(RefCell::new(initial));
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 10);
+    content.set_margin_top(10);
+    content.set_margin_bottom(10);
+    content.set_margin_start(10);
+    content.set_margin_end(10);
+
+    // Header: Cancel | Pick a Color | Select.
+    let header = gtk::Box::new(gtk::Orientation::Horizontal, 8);
     let cancel = gtk::Button::with_label("Cancel");
-    let apply_button = gtk::Button::with_label("Apply preview");
-    apply_button.add_css_class("suggested-action");
-    buttons.append(&cancel);
-    buttons.append(&apply_button);
-    picker_box.append(&buttons);
-    picker.set_child(Some(&picker_box));
+    cancel.add_css_class("flat");
+    let heading = gtk::Label::new(Some("Pick a Color"));
+    heading.set_hexpand(true);
+    heading.add_css_class("heading");
+    let select = gtk::Button::with_label("Select");
+    select.add_css_class("suggested-action");
+    header.append(&cancel);
+    header.append(&heading);
+    header.append(&select);
+    content.append(&header);
+
+    let stack = gtk::Stack::new();
+    stack.set_transition_type(gtk::StackTransitionType::Crossfade);
+
+    // Live shared preview text used by both views.
+    let preview_state = Rc::new(RefCell::new(format!(
+        "rgba({:02x}{:02x}{:02x}{:02x})",
+        initial.red, initial.green, initial.blue, initial.alpha
+    )));
+    let set_chosen: Rc<dyn Fn(crate::ux_presentation::ParsedColor)> = {
+        let chosen = Rc::clone(&chosen);
+        let preview_state = Rc::clone(&preview_state);
+        Rc::new(move |color: crate::ux_presentation::ParsedColor| {
+            *chosen.borrow_mut() = color;
+            *preview_state.borrow_mut() = format!(
+                "rgba({:02x}{:02x}{:02x}{:02x})",
+                color.red, color.green, color.blue, color.alpha
+            );
+        })
+    };
+
+    // ── Palette view: generated grid (grays + hue/value combinations). ──
+    let palette_box = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    let grid = gtk::FlowBox::new();
+    grid.set_selection_mode(gtk::SelectionMode::None);
+    grid.set_min_children_per_line(8);
+    grid.set_max_children_per_line(8);
+    grid.set_row_spacing(4);
+    grid.set_column_spacing(4);
+    grid.set_widget_name("hyprland-settings-color-palette-grid");
+    let mut palette: Vec<(u8, u8, u8)> = Vec::new();
+    for step in 0..8 {
+        let level = (step as f64 / 7.0 * 255.0).round() as u8;
+        palette.push((level, level, level));
+    }
+    for row in 0..4 {
+        for column in 0..8 {
+            let hue = column as f64 / 8.0 * 360.0;
+            let (saturation, value) = match row {
+                0 => (0.55, 1.0),
+                1 => (0.95, 1.0),
+                2 => (0.95, 0.72),
+                _ => (0.95, 0.45),
+            };
+            palette.push(crate::ux_presentation::hsv_to_rgb(hue, saturation, value));
+        }
+    }
+    for (red, green, blue) in palette {
+        let swatch = gtk::Button::new();
+        swatch.add_css_class("flat");
+        swatch.set_child(Some(&color_swatch_area(
+            &format!("rgb({red:02x}{green:02x}{blue:02x})"),
+            22,
+            22,
+        )));
+        let set_chosen = Rc::clone(&set_chosen);
+        swatch.connect_clicked(move |_| {
+            set_chosen(crate::ux_presentation::ParsedColor {
+                red,
+                green,
+                blue,
+                alpha: 0xff,
+            });
+        });
+        grid.insert(&swatch, -1);
+    }
+    palette_box.append(&grid);
+    let custom_row = gtk::Box::new(gtk::Orientation::Horizontal, 6);
+    let custom_label = small_label("Custom");
+    custom_label.set_hexpand(true);
+    custom_label.set_halign(gtk::Align::Start);
+    custom_row.append(&custom_label);
+    let open_custom = gtk::Button::from_icon_name("list-add-symbolic");
+    open_custom.add_css_class("flat");
+    open_custom.set_widget_name("hyprland-settings-color-open-custom");
+    open_custom.update_property(&[gtk::accessible::Property::Label("Custom color")]);
+    custom_row.append(&open_custom);
+    palette_box.append(&custom_row);
+    stack.add_named(&palette_box, Some("palette"));
+
+    // ── Custom view: preview, hex, hue, saturation/value area, alpha. ──
+    let custom_box = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    custom_box.set_widget_name("hyprland-settings-color-custom-view");
+    let live_preview = live_swatch_area(Rc::clone(&preview_state), 220, 26);
+    custom_box.append(&live_preview);
+
+    let hex_entry = gtk::Entry::new();
+    hex_entry.set_width_chars(12);
+    hex_entry.set_text(&format!(
+        "{:02x}{:02x}{:02x}{:02x}",
+        initial.red, initial.green, initial.blue, initial.alpha
+    ));
+    hex_entry.update_property(&[gtk::accessible::Property::Label("Hex color")]);
+    custom_box.append(&hex_entry);
+
+    let initial_hsv = crate::ux_presentation::rgb_to_hsv(initial.red, initial.green, initial.blue);
+    let hue_state = Rc::new(std::cell::Cell::new(initial_hsv.0));
+    let sat_state = Rc::new(std::cell::Cell::new(initial_hsv.1));
+    let val_state = Rc::new(std::cell::Cell::new(initial_hsv.2));
+    let alpha_state = Rc::new(std::cell::Cell::new(initial.alpha));
+
+    // Saturation/value area with drag: white->hue horizontally, fading to
+    // black vertically, with a marker at the current point.
+    let sv_area = gtk::DrawingArea::new();
+    sv_area.set_content_width(220);
+    sv_area.set_content_height(130);
+    sv_area.set_widget_name("hyprland-settings-color-sv-area");
     {
-        let preview_state = preview_state.clone();
-        let preview = preview.clone();
-        let apply_button = apply_button.clone();
-        entry.connect_changed(move |entry| {
-            let text = entry.text().to_string();
-            let valid = crate::ux_presentation::parse_hyprland_color(&text).is_some();
-            apply_button.set_sensitive(valid);
-            *preview_state.borrow_mut() = text;
-            preview.queue_draw();
+        let hue_state = Rc::clone(&hue_state);
+        let sat_state = Rc::clone(&sat_state);
+        let val_state = Rc::clone(&val_state);
+        sv_area.set_draw_func(move |_, context, width, height| {
+            let width = width as f64;
+            let height = height as f64;
+            let hue = hue_state.get();
+            let steps = 28;
+            for x_step in 0..steps {
+                for y_step in 0..steps {
+                    let saturation = x_step as f64 / (steps - 1) as f64;
+                    let value = 1.0 - y_step as f64 / (steps - 1) as f64;
+                    let (red, green, blue) =
+                        crate::ux_presentation::hsv_to_rgb(hue, saturation, value);
+                    context.set_source_rgb(
+                        red as f64 / 255.0,
+                        green as f64 / 255.0,
+                        blue as f64 / 255.0,
+                    );
+                    context.rectangle(
+                        x_step as f64 / steps as f64 * width,
+                        y_step as f64 / steps as f64 * height,
+                        width / steps as f64 + 1.0,
+                        height / steps as f64 + 1.0,
+                    );
+                    let _ = context.fill();
+                }
+            }
+            // Marker.
+            let marker_x = sat_state.get() * width;
+            let marker_y = (1.0 - val_state.get()) * height;
+            context.set_source_rgb(1.0, 1.0, 1.0);
+            context.set_line_width(2.0);
+            context.arc(marker_x, marker_y, 6.0, 0.0, std::f64::consts::TAU);
+            let _ = context.stroke();
+            context.set_source_rgb(0.0, 0.0, 0.0);
+            context.arc(marker_x, marker_y, 7.5, 0.0, std::f64::consts::TAU);
+            let _ = context.stroke();
+        });
+    }
+    custom_box.append(&sv_area);
+
+    let hue_scale = gtk::Scale::with_range(gtk::Orientation::Horizontal, 0.0, 360.0, 1.0);
+    hue_scale.set_value(initial_hsv.0);
+    hue_scale.set_widget_name("hyprland-settings-color-hue");
+    hue_scale.update_property(&[gtk::accessible::Property::Label("Hue")]);
+    custom_box.append(&hue_scale);
+
+    let alpha_scale = gtk::Scale::with_range(gtk::Orientation::Horizontal, 0.0, 255.0, 1.0);
+    alpha_scale.set_value(f64::from(initial.alpha));
+    alpha_scale.set_widget_name("hyprland-settings-color-alpha");
+    alpha_scale.update_property(&[gtk::accessible::Property::Label("Alpha")]);
+    custom_box.append(&alpha_scale);
+
+    stack.add_named(&custom_box, Some("custom"));
+    content.append(&stack);
+    picker.set_child(Some(&content));
+
+    // ── Wiring. ──
+    let sync_from_hsv: Rc<dyn Fn()> = {
+        let hue_state = Rc::clone(&hue_state);
+        let sat_state = Rc::clone(&sat_state);
+        let val_state = Rc::clone(&val_state);
+        let alpha_state = Rc::clone(&alpha_state);
+        let set_chosen = Rc::clone(&set_chosen);
+        let hex_entry = hex_entry.clone();
+        let live_preview = live_preview.clone();
+        let sv_area = sv_area.clone();
+        Rc::new(move || {
+            let (red, green, blue) = crate::ux_presentation::hsv_to_rgb(
+                hue_state.get(),
+                sat_state.get(),
+                val_state.get(),
+            );
+            let color = crate::ux_presentation::ParsedColor {
+                red,
+                green,
+                blue,
+                alpha: alpha_state.get(),
+            };
+            set_chosen(color);
+            hex_entry.set_text(&format!(
+                "{:02x}{:02x}{:02x}{:02x}",
+                color.red, color.green, color.blue, color.alpha
+            ));
+            live_preview.queue_draw();
+            sv_area.queue_draw();
+        })
+    };
+    {
+        let hue_state = Rc::clone(&hue_state);
+        let sync = Rc::clone(&sync_from_hsv);
+        hue_scale.connect_value_changed(move |scale| {
+            hue_state.set(scale.value());
+            sync();
         });
     }
     {
-        let entry = entry.clone();
-        let picker = picker.clone();
-        apply_button.connect_clicked(move |_| {
+        let alpha_state = Rc::clone(&alpha_state);
+        let sync = Rc::clone(&sync_from_hsv);
+        alpha_scale.connect_value_changed(move |scale| {
+            alpha_state.set(scale.value() as u8);
+            sync();
+        });
+    }
+    {
+        let sat_state = Rc::clone(&sat_state);
+        let val_state = Rc::clone(&val_state);
+        let sync = Rc::clone(&sync_from_hsv);
+        let sv_ref = sv_area.clone();
+        let update_sv = move |x: f64, y: f64| {
+            let width = f64::from(sv_ref.content_width()).max(1.0);
+            let height = f64::from(sv_ref.content_height()).max(1.0);
+            sat_state.set((x / width).clamp(0.0, 1.0));
+            val_state.set((1.0 - y / height).clamp(0.0, 1.0));
+            sync();
+        };
+        let click = gtk::GestureClick::new();
+        {
+            let update_sv = update_sv.clone();
+            click.connect_pressed(move |_, _, x, y| update_sv(x, y));
+        }
+        sv_area.add_controller(click);
+        let drag = gtk::GestureDrag::new();
+        {
+            let update_sv = update_sv.clone();
+            drag.connect_drag_update(move |gesture, dx, dy| {
+                if let Some((start_x, start_y)) = gesture.start_point() {
+                    update_sv(start_x + dx, start_y + dy);
+                }
+            });
+        }
+        sv_area.add_controller(drag);
+    }
+    {
+        // Manual hex entry (secondary): 6 or 8 hex digits.
+        let set_chosen = Rc::clone(&set_chosen);
+        let live_preview = live_preview.clone();
+        hex_entry.connect_changed(move |entry| {
             let text = entry.text().to_string();
-            // Single-stop edits accept single colors only (fail closed).
-            if crate::ux_presentation::parse_hyprland_color(&text).is_some() {
-                on_apply(text);
+            let candidate = if text.len() == 6 {
+                crate::ux_presentation::parse_hyprland_color(&format!("rgb({text})"))
+            } else if text.len() == 8 {
+                crate::ux_presentation::parse_hyprland_color(&format!("rgba({text})"))
+            } else {
+                None
+            };
+            if let Some(color) = candidate {
+                set_chosen(color);
+                live_preview.queue_draw();
             }
-            picker.popdown();
+        });
+    }
+    {
+        let stack = stack.clone();
+        open_custom.connect_clicked(move |_| {
+            stack.set_visible_child_name("custom");
         });
     }
     {
         let picker = picker.clone();
         cancel.connect_clicked(move |_| picker.popdown());
+    }
+    {
+        let picker = picker.clone();
+        let chosen = Rc::clone(&chosen);
+        let token = token.to_string();
+        select.connect_clicked(move |_| {
+            // Preserve the original token's format family; the caller
+            // routes the result through the reversible preview path.
+            let rendered = crate::ux_presentation::render_color_like(&token, *chosen.borrow());
+            on_apply(rendered);
+            picker.popdown();
+        });
     }
     picker.popup();
 }
@@ -6946,9 +7305,13 @@ fn attach_raw_color_entry(
     control_name: &str,
     throttle_ms: Option<u64>,
 ) {
-    let button = gtk::Button::with_label("Color…");
+    let button = gtk::Button::new();
     button.set_widget_name(control_name);
     button.set_valign(gtk::Align::Center);
+    // Checkered empty swatch: the value is not in a recognized color form
+    // yet, but the affordance still looks like a color control.
+    button.set_child(Some(&color_swatch_area("", 30, 18)));
+    button.update_property(&[gtk::accessible::Property::Label("Edit color")]);
     let picker = gtk::Popover::new();
     picker.set_parent(&button);
     let picker_box = gtk::Box::new(gtk::Orientation::Vertical, 8);
@@ -7099,10 +7462,12 @@ fn setting_row_accessibility_text(setting: &crate::ui::model::UiSetting) -> Stri
 fn build_detail_panel() -> (gtk::ScrolledWindow, gtk::Box) {
     let frame = gtk::Frame::new(None);
     frame.set_widget_name("hyprland-settings-detail-pane");
-    frame.set_tooltip_text(Some("Setting detail pane"));
+    frame.update_property(&[gtk::accessible::Property::Label("Setting detail pane")]);
     let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
     content.set_widget_name("hyprland-settings-detail-pane-content");
-    content.set_tooltip_text(Some("Setting detail pane content"));
+    content.update_property(&[gtk::accessible::Property::Label(
+        "Setting detail pane content",
+    )]);
     content.set_margin_top(12);
     content.set_margin_bottom(12);
     content.set_margin_start(12);
@@ -7153,7 +7518,9 @@ fn render_detail(
         "hyprland-settings-detail-pane-{}",
         safe_widget_name(row_id)
     ));
-    detail_content.set_tooltip_text(Some(&detail_pane_accessibility_text(&detail)));
+    detail_content.update_property(&[gtk::accessible::Property::Label(
+        &detail_pane_accessibility_text(&detail),
+    )]);
     clear_box(detail_content);
     append_detail_section(detail_content, "Setting", |section| {
         let heading = match crate::presentation_labels::display_label_for_row(&detail.row_id) {

@@ -1,0 +1,46 @@
+{
+  "artifactKind": "hyprmod-pixel-fidelity-correction-report",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "commitBefore": "e341c003c2f2ecb9eb3e91b2d2bb9cfee0c6ce1e",
+  "commitAfter": "the fidelity commit following e341c00 (see git log)",
+  "sprintDate": "2026-07-13",
+  "referenceHandling": "HyprMod source re-inspected as the visual specification; running HyprMod for screenshots was not possible offline (its hyprland-* Python dependencies are not installed and need network installs), so the comparison used the source-derived layout spec plus the owner-described reference visuals; Hyprland Settings screenshots were captured and visually reviewed page-by-page during implementation; all code remains original",
+  "screenshots": {
+    "settingsGeneral": "/tmp/hyprland-settings-visual-fidelity/settings-general-v3.png",
+    "settingsDecoration": "/tmp/hyprland-settings-visual-fidelity/settings-decoration.png",
+    "settingsAnimations": "/tmp/hyprland-settings-visual-fidelity/settings-animations.png",
+    "pickerPalette": "/tmp/hyprland-settings-visual-fidelity/settings-picker-palette.png",
+    "pickerCustom": "/tmp/hyprland-settings-visual-fidelity/settings-picker-custom.png",
+    "iterationHistory": "/tmp/hyprland-settings-visual-fidelity/settings-general.png (v1: sidebar width defect), settings-general-v2.png (v2: labels fixed)"
+  },
+  "acceptanceRules": {
+    "noGenericColorButton": "PASS - no Color… label exists; unparseable values show a checkered swatch button; verified in screenshots and by tests/visual_fidelity.rs",
+    "generalSectionsSeparate": "PASS - screenshot shows Gaps / Borders / Border Colors / Layout / Snap as separate headed cards; 'Gaps & Borders' removed from the curated table; layout/snap/tearing keys pulled onto General via cross-tab page claims",
+    "headerShowsPageTitle": "PASS - screenshot header reads 'General'; the app name moved to the sidebar identity label and window metadata; the duplicate giant content title is hidden",
+    "noRoutineStatusInline": "PASS - rows show label + one-line subtitle + control only; compact badges (Blocked / Hardware required / Not proven yet / Needs attention) appear only when needed; hover leakage fixed by converting harness identification from tooltips to accessibility labels",
+    "screenshotComparisonIncluded": "PASS - paths above; visual review notes below",
+    "testsProveVisibleFailuresGone": "PASS - tests/visual_fidelity.rs (6 guards) pins each acceptance rule at source/model level"
+  },
+  "visualComparisonNotes": {
+    "matches": "header page title; sidebar identity+search-icon header, uppercase categories, icons, row sizing; centered clamped column; section headings above rounded cards; inline right-aligned controls (spins, switches, dropdown showing 'Dwindle'); stop-based color rows with per-stop swatches, removes, add, angle stepper; picker with Cancel / Pick a Color / Select, palette grid, custom HSV view (preview, hex, SV area with marker, hue and alpha sliders)",
+    "remainingDifferences": "picker SV area uses a stepped gradient fill (28x28 cells) rather than a continuous shader; palette colors are a generated set, not a designed palette; recent/custom swatch memory not implemented; monitors/devices pages still lack live device cards (safe read-only projection needed); differences are deliberate original-implementation choices or recorded deferrals"
+  },
+  "colorRowReplacement": "22/22 color rows render stop-based swatch controls; unset rows seed from the official default value (same fallback as the detail surface), so real defaults show as swatches",
+  "colorPicker": "palette + custom views implemented with original GTK code (generated palette grid, HSV conversions in ux_presentation with unit-testable math, format-preserving Select via render_color_like)",
+  "headerTitle": "adw::WindowTitle follows the selected sidebar page; error window titled 'Startup Error'",
+  "sidebar": "identity header with icon-only search toggle (a11y-labeled, Ctrl+F unchanged), fixed 260px column (hexpand propagation defect found via screenshot and fixed), per-page symbolic icons",
+  "sectionSplit": "section_for_row curated key mapping + cross-tab extra_sources on the page model; 341/341 reachability guard updated and green",
+  "statusTextRemoval": "row_badge vocabulary excludes routine states; guard proves no chip label or current-status string renders inline",
+  "behaviorChanges": 0,
+  "safetyClassificationChanges": 0,
+  "safeWritableRowCount": 341,
+  "newRuntimeMutationPathAdded": false,
+  "newActiveConfigWritePathAdded": false,
+  "hyprctlReloadPathAdded": false,
+  "hyprctlReloadRan": false,
+  "monitorDisplayMutated": false,
+  "activeConfigWrittenDuringNormalTests": false,
+  "testsAdded": ["tests/visual_fidelity.rs (6 acceptance guards)"],
+  "validation": "cargo fmt/--check, cargo check, cargo test (267 binaries, all ok), jq, git diff --check, cargo build --release, GTK evidence matrix - final summary carries results"
+}

@@ -193,6 +193,10 @@ exist; inline dead-man supervision stays in the detail surface.
 7. **Startup pages**: Autostart and Env Variables as honest empty states
    (the parser does not preserve exec/env lines — documented blocker).
 
+## Implemented in the fifth pass (pixel fidelity)
+
+Header shows the page title; General renders Gaps/Borders/Border Colors/Layout/Snap (cross-tab claims); routine status text left normal rows (badge-only); color rows seed from defaults with no generic button; the picker gained palette + custom HSV views; the sidebar gained an identity header, icon search, and page icons. Guards: `tests/visual_fidelity.rs`. Screenshots: `/tmp/hyprland-settings-visual-fidelity/`.
+
 ## Follow-ups (next passes)
 
 - Detail-pane simplification: short chip + expander for the full

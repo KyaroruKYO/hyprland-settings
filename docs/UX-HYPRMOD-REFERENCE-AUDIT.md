@@ -122,6 +122,10 @@ stop-based color rows, headings-above-cards sections, the target sidebar
 naming/grouping, Startup shells, and the Animations-hosted Bezier editor.
 No third-party code, assets, or authored text were copied.
 
+## Fifth-pass update (pixel fidelity, 2026-07-13)
+
+Screenshot-driven review of Hyprland Settings against the source-derived reference spec closed the visible gaps (header title, section splits, status text, stop-based color rows, palette/HSV picker, sidebar polish). Running the reference app offline was not possible (uninstalled Python deps); the report records the comparison notes and remaining deliberate differences. All code original.
+
 ## What we deliberately do NOT copy
 
 - HyprMod's write model (it applies changes; our saves stay behind Safe

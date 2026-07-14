@@ -191,9 +191,10 @@ fn status_chips_stay_quiet_and_honest() {
         StatusChip::NotProvenYet
     );
 
-    // The row list uses the chip and the shortened description.
+    // The row list renders the chip as a compact badge only when needed
+    // (row_badge) and keeps the shortened description subtitle.
     let window = fs::read_to_string("src/ui/window.rs").expect("window reads");
-    assert!(window.contains("status_chip_for_row(&setting.row_id).label()"));
+    assert!(window.contains("ux_presentation::row_badge"));
     assert!(window.contains("ux_presentation::short_description("));
 }
 

@@ -130,7 +130,7 @@ fn dashboard_sidebar_normal_pages_and_counts_remain_preserved() {
     assert!(source.contains("(CONFIG_ID, config_view.clone())"));
     assert!(render_source.contains("settings_view.set_visible(false)"));
     assert!(render_source.contains("render_settings_view("));
-    assert!(source.contains("search_projection(model, source_tab, query)"));
+    assert!(source.contains("search_projection(model, tab, query)"));
     assert_eq!(SAFE_WRITABLE_ROWS.len(), 341);
 }
 

@@ -120,7 +120,7 @@ fn presentation_layer_changes_no_behavior_or_classification() {
     let window = fs::read_to_string("src/ui/window.rs").expect("window reads");
     assert!(window.contains("display_label_for_row(&setting.row_id)"));
     assert!(window.contains("display_label_for_row(&detail.row_id)"));
-    assert!(window.contains("fallback_display_label(&setting.label, &setting.tab_label)"));
+    assert!(window.contains("row_display_title("));
     assert!(window.contains("fallback_display_label(&detail.label, &detail.tab_label)"));
 }
 

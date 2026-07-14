@@ -26,6 +26,9 @@ pub struct PageSpec {
     /// Official-setting prefixes this page claims; None with a source tab
     /// means "every row of the tab not claimed by a sibling page".
     pub include_prefixes: Option<&'static [&'static str]>,
+    /// Cross-tab claims: (model tab, official prefixes) pulled onto this
+    /// page from other tabs (e.g. the layout/snap keys shown on General).
+    pub extra_sources: &'static [(&'static str, &'static [&'static str])],
 }
 
 /// The sidebar page layout: category headers with their pages.
@@ -44,24 +47,31 @@ pub const SIDEBAR_PAGE_LAYOUT: &[SidebarCategoryPages] = &[
                 label: "General",
                 source_tab: Some("appearance"),
                 include_prefixes: None,
+                extra_sources: &[(
+                    "windows-layout",
+                    &["general.layout", "general.allow_tearing", "general.snap."],
+                )],
             },
             PageSpec {
                 id: "decoration",
                 label: "Decoration",
                 source_tab: Some("appearance"),
                 include_prefixes: Some(&["decoration."]),
+                extra_sources: &[],
             },
             PageSpec {
                 id: "animations",
                 label: "Animations",
                 source_tab: Some("animations"),
                 include_prefixes: None,
+                extra_sources: &[],
             },
             PageSpec {
                 id: "cursor",
                 label: "Cursor",
                 source_tab: Some("cursor"),
                 include_prefixes: None,
+                extra_sources: &[],
             },
         ],
     },
@@ -73,18 +83,21 @@ pub const SIDEBAR_PAGE_LAYOUT: &[SidebarCategoryPages] = &[
                 label: "Keybinds",
                 source_tab: Some("keybinds"),
                 include_prefixes: None,
+                extra_sources: &[],
             },
             PageSpec {
                 id: "devices",
                 label: "Devices",
                 source_tab: Some("input"),
                 include_prefixes: None,
+                extra_sources: &[],
             },
             PageSpec {
                 id: "gestures",
                 label: "Gestures",
                 source_tab: Some("input"),
                 include_prefixes: Some(&["gestures.", "gesture."]),
+                extra_sources: &[],
             },
         ],
     },
@@ -96,12 +109,14 @@ pub const SIDEBAR_PAGE_LAYOUT: &[SidebarCategoryPages] = &[
                 label: "Monitors",
                 source_tab: Some("display"),
                 include_prefixes: None,
+                extra_sources: &[],
             },
             PageSpec {
                 id: "workspaces",
                 label: "Workspaces",
                 source_tab: None,
                 include_prefixes: None,
+                extra_sources: &[],
             },
         ],
     },
@@ -113,18 +128,21 @@ pub const SIDEBAR_PAGE_LAYOUT: &[SidebarCategoryPages] = &[
                 label: "Layouts",
                 source_tab: None,
                 include_prefixes: None,
+                extra_sources: &[],
             },
             PageSpec {
                 id: "window-rules",
                 label: "Window Rules",
                 source_tab: None,
                 include_prefixes: None,
+                extra_sources: &[],
             },
             PageSpec {
                 id: "layer-rules",
                 label: "Layer Rules",
                 source_tab: None,
                 include_prefixes: None,
+                extra_sources: &[],
             },
         ],
     },
@@ -136,12 +154,14 @@ pub const SIDEBAR_PAGE_LAYOUT: &[SidebarCategoryPages] = &[
                 label: "Autostart",
                 source_tab: None,
                 include_prefixes: None,
+                extra_sources: &[],
             },
             PageSpec {
                 id: "env-variables",
                 label: "Env Variables",
                 source_tab: None,
                 include_prefixes: None,
+                extra_sources: &[],
             },
         ],
     },
@@ -153,48 +173,56 @@ pub const SIDEBAR_PAGE_LAYOUT: &[SidebarCategoryPages] = &[
                 label: "XWayland",
                 source_tab: Some("system"),
                 include_prefixes: Some(&["xwayland."]),
+                extra_sources: &[],
             },
             PageSpec {
                 id: "ecosystem",
                 label: "Ecosystem",
                 source_tab: Some("system"),
                 include_prefixes: Some(&["ecosystem."]),
+                extra_sources: &[],
             },
             PageSpec {
                 id: "system",
                 label: "System",
                 source_tab: Some("system"),
                 include_prefixes: None,
+                extra_sources: &[],
             },
             PageSpec {
                 id: "permissions",
                 label: "Permissions",
                 source_tab: Some("permissions"),
                 include_prefixes: None,
+                extra_sources: &[],
             },
             PageSpec {
                 id: "windows-layout",
                 label: "Windows & Layout",
                 source_tab: Some("windows-layout"),
                 include_prefixes: None,
+                extra_sources: &[],
             },
             PageSpec {
                 id: "profiles",
                 label: "Profiles",
                 source_tab: None,
                 include_prefixes: None,
+                extra_sources: &[],
             },
             PageSpec {
                 id: "config",
                 label: "Settings",
                 source_tab: None,
                 include_prefixes: None,
+                extra_sources: &[],
             },
             PageSpec {
                 id: "safety-details",
                 label: "Safety Details",
                 source_tab: None,
                 include_prefixes: None,
+                extra_sources: &[],
             },
         ],
     },
@@ -208,28 +236,152 @@ pub fn page_spec(page_id: &str) -> Option<&'static PageSpec> {
         .find(|page| page.id == page_id)
 }
 
-/// Whether a row belongs on a page: prefix pages claim their prefixes; the
-/// tab's rest page takes everything no sibling prefix page claimed.
-pub fn page_claims_row(page: &PageSpec, official_setting: &str) -> bool {
-    let Some(source_tab) = page.source_tab else {
+/// Whether a row (from `row_tab`) belongs on a page: prefix pages claim
+/// their prefixes, cross-tab extra sources claim theirs, and the tab's
+/// rest page takes everything no other page claimed.
+pub fn page_claims_row_in_tab(page: &PageSpec, row_tab: &str, official_setting: &str) -> bool {
+    // Cross-tab claims win first.
+    if page.extra_sources.iter().any(|(tab, prefixes)| {
+        *tab == row_tab
+            && prefixes
+                .iter()
+                .any(|prefix| official_setting.starts_with(prefix))
+    }) {
+        return true;
+    }
+    if page.source_tab != Some(row_tab) {
         return false;
-    };
+    }
     match page.include_prefixes {
         Some(prefixes) => prefixes
             .iter()
             .any(|prefix| official_setting.starts_with(prefix)),
         None => {
             // Rest page: not claimed by any sibling prefix page of the
-            // same tab.
-            !SIDEBAR_PAGE_LAYOUT
+            // same tab, nor by any page's cross-tab claim on this tab.
+            let claimed_by_sibling = SIDEBAR_PAGE_LAYOUT
                 .iter()
                 .flat_map(|category| category.pages.iter())
-                .filter(|sibling| sibling.source_tab == Some(source_tab))
+                .filter(|sibling| sibling.source_tab == Some(row_tab))
                 .filter_map(|sibling| sibling.include_prefixes)
                 .flatten()
-                .any(|prefix| official_setting.starts_with(prefix))
+                .any(|prefix| official_setting.starts_with(prefix));
+            let claimed_cross_tab = SIDEBAR_PAGE_LAYOUT
+                .iter()
+                .flat_map(|category| category.pages.iter())
+                .flat_map(|sibling| sibling.extra_sources.iter())
+                .filter(|(tab, _)| *tab == row_tab)
+                .any(|(_, prefixes)| {
+                    prefixes
+                        .iter()
+                        .any(|prefix| official_setting.starts_with(prefix))
+                });
+            !claimed_by_sibling && !claimed_cross_tab
         }
     }
+}
+
+/// Every model tab a page draws rows from.
+pub fn page_source_tabs(page: &PageSpec) -> Vec<&'static str> {
+    let mut tabs = Vec::new();
+    if let Some(tab) = page.source_tab {
+        tabs.push(tab);
+    }
+    for (tab, _) in page.extra_sources {
+        if !tabs.contains(tab) {
+            tabs.push(tab);
+        }
+    }
+    tabs
+}
+
+/// Back-compat single-tab form used where the row's tab equals the page's
+/// source tab.
+pub fn page_claims_row(page: &PageSpec, official_setting: &str) -> bool {
+    match page.source_tab {
+        Some(tab) => page_claims_row_in_tab(page, tab, official_setting),
+        None => false,
+    }
+}
+
+/// Symbolic icon for a sidebar page (standard icon-theme names).
+pub fn page_icon(page_id: &str) -> &'static str {
+    match page_id {
+        "dashboard" => "go-home-symbolic",
+        "general" => "preferences-system-symbolic",
+        "decoration" => "applications-graphics-symbolic",
+        "animations" => "media-playback-start-symbolic",
+        "cursor" => "input-mouse-symbolic",
+        "keybinds" => "input-keyboard-symbolic",
+        "devices" => "input-touchpad-symbolic",
+        "gestures" => "input-tablet-symbolic",
+        "monitors" => "video-display-symbolic",
+        "workspaces" => "view-grid-symbolic",
+        "layouts" => "view-paged-symbolic",
+        "window-rules" => "window-new-symbolic",
+        "layer-rules" => "focus-windows-symbolic",
+        "autostart" => "system-run-symbolic",
+        "env-variables" => "utilities-terminal-symbolic",
+        "xwayland" => "application-x-executable-symbolic",
+        "ecosystem" => "network-workgroup-symbolic",
+        "system" => "emblem-system-symbolic",
+        "permissions" => "security-high-symbolic",
+        "windows-layout" => "window-restore-symbolic",
+        "profiles" => "folder-symbolic",
+        "config" => "document-properties-symbolic",
+        "safety-details" => "dialog-information-symbolic",
+        _ => "application-x-executable-symbolic",
+    }
+}
+
+/// The compact badge for a row, if it needs one. Routine states (live
+/// preview, save only, configured/default values) show nothing — that
+/// detail lives in the row's detail surface and Safety Details.
+pub fn row_badge(chip: StatusChip, needs_attention: bool) -> Option<&'static str> {
+    if needs_attention {
+        return Some("Needs attention");
+    }
+    match chip {
+        StatusChip::Blocked => Some("Blocked"),
+        StatusChip::HardwareRequired => Some("Hardware required"),
+        StatusChip::NotProvenYet => Some("Not proven yet"),
+        StatusChip::LivePreview | StatusChip::SaveOnly => None,
+    }
+}
+
+/// Curated per-row section placement for the pages where generated
+/// subsections would combine things the reference layout separates.
+/// Factual grouping by official key — nothing semantic is guessed; rows
+/// without an entry fall back to their generated subsection.
+pub fn section_for_row(official_setting: &str, subsection: &str, page_label: &str) -> String {
+    const CURATED_PREFIXES: &[(&str, &str)] = &[
+        ("general.gaps_", "Gaps"),
+        ("general.float_gaps", "Gaps"),
+        ("general.col.", "Border Colors"),
+        ("general.border_size", "Borders"),
+        ("general.no_border_on_floating", "Borders"),
+        ("general.resize_on_border", "Borders"),
+        ("general.extend_border_grab_area", "Borders"),
+        ("general.hover_icon_on_border", "Borders"),
+        ("general.resize_corner", "Borders"),
+        ("general.snap.", "Snap"),
+        ("general.layout", "Layout"),
+        ("general.allow_tearing", "Layout"),
+        ("general.no_focus_fallback", "Layout"),
+        ("decoration.rounding", "Rounding and Opacity"),
+        ("decoration.active_opacity", "Rounding and Opacity"),
+        ("decoration.inactive_opacity", "Rounding and Opacity"),
+        ("decoration.fullscreen_opacity", "Rounding and Opacity"),
+        ("decoration.blur.", "Blur"),
+        ("decoration.shadow.", "Shadow"),
+        ("decoration.dim_", "Dim"),
+    ];
+    for (prefix, section) in CURATED_PREFIXES {
+        if official_setting.starts_with(prefix) {
+            return (*section).to_string();
+        }
+    }
+    section_display_name(subsection, page_label)
 }
 
 /// Friendly section heading: strip redundant page words from generated
@@ -242,7 +394,6 @@ pub fn section_display_name(subsection: &str, page_label: &str) -> String {
         ("Decoration", "Rounding and Opacity"),
         ("General Col", "Border Colors"),
         ("General Snap", "Snap"),
-        ("General", "Gaps & Borders"),
         ("Group Groupbar", "Group Bar"),
         ("Input Touchpad", "Touchpad"),
         ("Input Touchdevice", "Touchscreen"),
@@ -379,6 +530,31 @@ pub fn fallback_display_label(official_label: &str, tab_label: &str) -> String {
     }
 }
 
+/// Stronger mechanical fallback used by row titles: also strips the
+/// official section word (the config-section name the page/section
+/// heading already shows) and the redundant "Col " color-group marker.
+/// Purely formatting — the remaining official words are unchanged.
+pub fn row_display_title(official_label: &str, tab_label: &str, official_setting: &str) -> String {
+    let mut title = fallback_display_label(official_label, tab_label);
+    if let Some(section) = official_setting.split('.').next() {
+        let mut section_word = section.to_string();
+        if let Some(first) = section_word.get_mut(0..1) {
+            first.make_ascii_uppercase();
+        }
+        if let Some(rest) = title.strip_prefix(&format!("{section_word} ")) {
+            if !rest.trim().is_empty() {
+                title = rest.trim().to_string();
+            }
+        }
+    }
+    if let Some(rest) = title.strip_prefix("Col ") {
+        if !rest.trim().is_empty() {
+            title = rest.trim().to_string();
+        }
+    }
+    title
+}
+
 /// A friendly display form for a finite-choice raw value: presentation
 /// only — the raw value is what gets validated and saved, unchanged.
 /// Generic humanization (separators to spaces, first letter capitalized);
@@ -487,6 +663,71 @@ pub fn parse_hyprland_gradient(raw: &str) -> Option<(Vec<ParsedColor>, Option<u1
         return None;
     }
     Some((colors, angle))
+}
+
+/// HSV -> RGB for the picker (h in degrees 0..360, s/v in 0..=1).
+pub fn hsv_to_rgb(hue: f64, saturation: f64, value: f64) -> (u8, u8, u8) {
+    let hue = hue.rem_euclid(360.0);
+    let chroma = value * saturation;
+    let x = chroma * (1.0 - ((hue / 60.0) % 2.0 - 1.0).abs());
+    let m = value - chroma;
+    let (red, green, blue) = match hue as u32 {
+        0..=59 => (chroma, x, 0.0),
+        60..=119 => (x, chroma, 0.0),
+        120..=179 => (0.0, chroma, x),
+        180..=239 => (0.0, x, chroma),
+        240..=299 => (x, 0.0, chroma),
+        _ => (chroma, 0.0, x),
+    };
+    (
+        ((red + m) * 255.0).round() as u8,
+        ((green + m) * 255.0).round() as u8,
+        ((blue + m) * 255.0).round() as u8,
+    )
+}
+
+/// RGB -> HSV for the picker (returns h in degrees, s/v in 0..=1).
+pub fn rgb_to_hsv(red: u8, green: u8, blue: u8) -> (f64, f64, f64) {
+    let red = red as f64 / 255.0;
+    let green = green as f64 / 255.0;
+    let blue = blue as f64 / 255.0;
+    let max = red.max(green).max(blue);
+    let min = red.min(green).min(blue);
+    let delta = max - min;
+    let hue = if delta == 0.0 {
+        0.0
+    } else if max == red {
+        60.0 * (((green - blue) / delta).rem_euclid(6.0))
+    } else if max == green {
+        60.0 * ((blue - red) / delta + 2.0)
+    } else {
+        60.0 * ((red - green) / delta + 4.0)
+    };
+    let saturation = if max == 0.0 { 0.0 } else { delta / max };
+    (hue, saturation, max)
+}
+
+/// Render a picked color in the same format family as the original token
+/// (0xAARRGGBB stays 0x-form; rgb(hex6) stays rgb when fully opaque;
+/// everything else renders the canonical rgba(RRGGBBAA)).
+pub fn render_color_like(original_token: &str, color: ParsedColor) -> String {
+    let trimmed = original_token.trim();
+    if trimmed.starts_with("0x") {
+        return format!(
+            "0x{:02x}{:02x}{:02x}{:02x}",
+            color.alpha, color.red, color.green, color.blue
+        );
+    }
+    if trimmed.starts_with("rgb(") && color.alpha == 0xff {
+        return format!(
+            "rgb({:02x}{:02x}{:02x})",
+            color.red, color.green, color.blue
+        );
+    }
+    format!(
+        "rgba({:02x}{:02x}{:02x}{:02x})",
+        color.red, color.green, color.blue, color.alpha
+    )
 }
 
 /// Shorten an official description to its first sentence, capped for a
