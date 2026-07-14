@@ -111,6 +111,17 @@ reference also builds on. No third-party code, assets, or authored text
 were copied, so nothing required local-only marking or attribution
 handling in this pass.
 
+## Fourth-pass update (correction/precision, 2026-07-13)
+
+Re-inspected before implementing: the gradient option row (stop model with
+per-stop remove, add-at-max hiding, angle spinner, rebuild-raw emission),
+the sidebar category styling, the autostart page's per-keyword source
+groups with locked rows, and the clamped page layout helper. The
+correction pass recreated these interaction patterns with original code:
+stop-based color rows, headings-above-cards sections, the target sidebar
+naming/grouping, Startup shells, and the Animations-hosted Bezier editor.
+No third-party code, assets, or authored text were copied.
+
 ## What we deliberately do NOT copy
 
 - HyprMod's write model (it applies changes; our saves stay behind Safe

@@ -192,6 +192,27 @@ struct SidebarItem {
     target_tab_id: Option<String>,
 }
 
+/// The standalone (non-settings-list) pages, keyed by page id. One bundle
+/// instead of a dozen threaded parameters.
+#[derive(Clone)]
+struct StandalonePages {
+    pages: Rc<Vec<(&'static str, gtk::ScrolledWindow)>>,
+}
+
+impl StandalonePages {
+    /// Show the selected standalone page and hide the rest; false when the
+    /// selected id is not a standalone page.
+    fn show_only(&self, selected: &str) -> bool {
+        let mut matched = false;
+        for (page_id, view) in self.pages.iter() {
+            let is_selected = *page_id == selected;
+            view.set_visible(is_selected);
+            matched |= is_selected;
+        }
+        matched
+    }
+}
+
 pub fn show_main_window(
     app: &adw::Application,
     bundle: ExportBundle,
@@ -207,7 +228,18 @@ pub fn show_main_window(
     ));
     let selected_tab_id = Rc::new(RefCell::new(String::from(DASHBOARD_ID)));
     let current_query = Rc::new(RefCell::new(String::new()));
-    let displayed_row_ids = Rc::new(RefCell::new(Vec::new()));
+
+    // App-level presentation CSS: sidebar legibility only (slightly larger
+    // nav labels). Loaded once per display.
+    if let Some(display) = gtk::gdk::Display::default() {
+        let provider = gtk::CssProvider::new();
+        provider.load_from_data(".hyprland-settings-nav-row-label { font-size: 1.08em; }\n");
+        gtk::style_context_add_provider_for_display(
+            &display,
+            &provider,
+            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
+    }
 
     let window = adw::ApplicationWindow::builder()
         .application(app)
@@ -260,32 +292,73 @@ pub fn show_main_window(
 
     let dashboard_view = build_dashboard_view(&model, &sidebar, &sidebar_items);
     dashboard_view.set_widget_name("hyprland-settings-dashboard-page");
-    dashboard_view.set_tooltip_text(Some("Dashboard page"));
-    content.append(&dashboard_view);
-
     let config_view = build_config_view(&model, &window, &config_selection_state);
     config_view.set_widget_name("hyprland-settings-config-page");
-    config_view.set_tooltip_text(Some("Config page"));
-    content.append(&config_view);
-
     let safety_view = build_safety_details_view(&model);
     safety_view.set_widget_name("hyprland-settings-safety-details-page");
-    safety_view.set_tooltip_text(Some("Safety Details page"));
-    content.append(&safety_view);
-
     let layouts_view = build_layouts_view(&model);
     layouts_view.set_widget_name("hyprland-settings-layouts-page");
-    layouts_view.set_tooltip_text(Some("Layouts page"));
-    content.append(&layouts_view);
-
     let profiles_view = build_profiles_view();
     profiles_view.set_widget_name("hyprland-settings-profiles-page");
-    profiles_view.set_tooltip_text(Some("Profiles page"));
-    content.append(&profiles_view);
+    let workspaces_view = empty_state_view(
+        "hyprland-settings-workspaces-content",
+        "view-grid-symbolic",
+        "Workspaces",
+        "Workspace rules are not editable here yet. Anything in your config stays exactly as written.",
+    );
+    workspaces_view.set_widget_name("hyprland-settings-workspaces-page");
+    let window_rules_view = structured_locked_list_view(
+        &model,
+        "hl.windowrule",
+        "hyprland-settings-window-rules-content",
+        "Window Rules",
+        "These rules come from your hyprland.conf or its sourced files. They are read-only here.",
+        "No Window Rules",
+        "Rules found in your config will show here, read-only.",
+    );
+    window_rules_view.set_widget_name("hyprland-settings-window-rules-page");
+    let layer_rules_view = empty_state_view(
+        "hyprland-settings-layer-rules-content",
+        "text-x-generic-symbolic",
+        "Layer Rules",
+        "Layer rules are not shown yet: the read-only config view does not cover them. Your files stay untouched.",
+    );
+    layer_rules_view.set_widget_name("hyprland-settings-layer-rules-page");
+    let autostart_view = empty_state_view(
+        "hyprland-settings-autostart-content",
+        "media-playback-start-symbolic",
+        "Autostart",
+        "Autostart entries come from exec lines in your hyprland.conf or its sourced files. A safe read-only view is not available yet, and nothing is changed.",
+    );
+    autostart_view.set_widget_name("hyprland-settings-autostart-page");
+    let env_variables_view = empty_state_view(
+        "hyprland-settings-env-variables-content",
+        "utilities-terminal-symbolic",
+        "Env Variables",
+        "Environment variables come from env lines in your config files. A safe read-only view is not available yet, and nothing is changed.",
+    );
+    env_variables_view.set_widget_name("hyprland-settings-env-variables-page");
+
+    let standalone = StandalonePages {
+        pages: Rc::new(vec![
+            (DASHBOARD_ID, dashboard_view.clone()),
+            (CONFIG_ID, config_view.clone()),
+            (SAFETY_ID, safety_view.clone()),
+            (LAYOUTS_ID, layouts_view.clone()),
+            (PROFILES_ID, profiles_view.clone()),
+            ("workspaces", workspaces_view.clone()),
+            ("window-rules", window_rules_view.clone()),
+            ("layer-rules", layer_rules_view.clone()),
+            ("autostart", autostart_view.clone()),
+            ("env-variables", env_variables_view.clone()),
+        ]),
+    };
+    for (_, view) in standalone.pages.iter() {
+        content.append(view);
+    }
 
     let settings_view = gtk::Box::new(gtk::Orientation::Vertical, 12);
     settings_view.set_widget_name("hyprland-settings-category-page");
-    settings_view.set_tooltip_text(Some("Settings category page"));
     settings_view.set_hexpand(true);
     settings_view.set_vexpand(true);
     content.append(&settings_view);
@@ -296,14 +369,13 @@ pub fn show_main_window(
     // everyday path.
     let search_toggle = gtk::ToggleButton::with_label("Search");
     search_toggle.set_widget_name("hyprland-settings-search-toggle");
-    search_toggle.set_tooltip_text(Some("Search settings (Ctrl+F)"));
     search_toggle.set_halign(gtk::Align::End);
     settings_view.append(&search_toggle);
 
     let search_entry = gtk::SearchEntry::new();
     search_entry.set_widget_name("hyprland-settings-search");
     search_entry.set_placeholder_text(Some("Search settings…"));
-    search_entry.set_tooltip_text(Some("Search settings (Ctrl+F)"));
+    search_entry.update_property(&[gtk::accessible::Property::Label("Search settings")]);
     search_entry.set_visible(false);
     settings_view.append(&search_entry);
 
@@ -352,15 +424,12 @@ pub fn show_main_window(
     tab_title.set_widget_name("hyprland-settings-category-title");
     settings_view.append(&tab_title);
 
-    // Settings pages are a single centered column: rounded card list with
-    // section headings, clamped to a readable width. No permanent detail
-    // pane — details open on demand anchored to the selected row.
-    let settings_list = gtk::ListBox::new();
-    settings_list.set_widget_name("hyprland-settings-setting-list");
-    settings_list.set_tooltip_text(Some("Setting row list"));
-    settings_list.set_selection_mode(gtk::SelectionMode::Single);
-    settings_list.add_css_class("boxed-list");
-    settings_list.set_valign(gtk::Align::Start);
+    // Settings pages are a single centered column of section cards:
+    // a heading label above each rounded card, rows inside, controls on
+    // the rows. No permanent detail pane — details open on demand
+    // anchored to the opened row.
+    let sections_box = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    sections_box.set_widget_name("hyprland-settings-sections");
 
     let settings_clamp = adw::Clamp::new();
     settings_clamp.set_maximum_size(800);
@@ -369,7 +438,7 @@ pub fn show_main_window(
     settings_clamp.set_margin_bottom(24);
     settings_clamp.set_margin_start(12);
     settings_clamp.set_margin_end(12);
-    settings_clamp.set_child(Some(&settings_list));
+    settings_clamp.set_child(Some(&sections_box));
 
     let settings_scroll = gtk::ScrolledWindow::builder()
         .vexpand(true)
@@ -378,29 +447,25 @@ pub fn show_main_window(
         .build();
 
     let (detail_panel, detail_content) = build_detail_panel();
-    // The detail surface is a popover anchored to the selected row: it
-    // appears only when a row is opened and never occupies the page.
+    // The detail surface is a popover anchored to the opened row: it
+    // appears only on demand and never occupies the page.
     let detail_popover = gtk::Popover::new();
     detail_popover.set_widget_name("hyprland-settings-detail-popover");
     detail_popover.set_child(Some(&detail_panel));
-    detail_popover.set_parent(&settings_list);
+    detail_popover.set_parent(&sections_box);
     detail_popover.set_autohide(true);
     settings_view.append(&settings_scroll);
 
     render_main_view(
         &model,
         &selected_tab_id.borrow(),
-        &dashboard_view,
-        &config_view,
-        &safety_view,
-        &layouts_view,
-        &profiles_view,
+        &standalone,
         &settings_view,
         &current_query.borrow(),
         &tab_title,
-        &settings_list,
-        &displayed_row_ids,
+        &sections_box,
         &detail_content,
+        &detail_popover,
         &config_selection_state,
     );
 
@@ -409,16 +474,12 @@ pub fn show_main_window(
         let selected_tab_id = Rc::clone(&selected_tab_id);
         let current_query = Rc::clone(&current_query);
         let sidebar_items = Rc::clone(&sidebar_items);
-        let dashboard_view = dashboard_view.clone();
-        let config_view = config_view.clone();
-        let safety_view = safety_view.clone();
-        let layouts_view = layouts_view.clone();
-        let profiles_view = profiles_view.clone();
+        let standalone = standalone.clone();
         let settings_view = settings_view.clone();
         let tab_title = tab_title.clone();
-        let settings_list = settings_list.clone();
-        let displayed_row_ids = Rc::clone(&displayed_row_ids);
+        let sections_box = sections_box.clone();
         let detail_content = detail_content.clone();
+        let detail_popover = detail_popover.clone();
         let config_selection_state = Rc::clone(&config_selection_state);
         sidebar.connect_row_selected(move |_, row| {
             if let Some(row) = row {
@@ -427,17 +488,13 @@ pub fn show_main_window(
                     render_main_view(
                         &model,
                         &selected_tab_id.borrow(),
-                        &dashboard_view,
-                        &config_view,
-                        &safety_view,
-                        &layouts_view,
-                        &profiles_view,
+                        &standalone,
                         &settings_view,
                         &current_query.borrow(),
                         &tab_title,
-                        &settings_list,
-                        &displayed_row_ids,
+                        &sections_box,
                         &detail_content,
+                        &detail_popover,
                         &config_selection_state,
                     );
                 }
@@ -449,69 +506,27 @@ pub fn show_main_window(
         let model = Rc::clone(&model);
         let selected_tab_id = Rc::clone(&selected_tab_id);
         let current_query = Rc::clone(&current_query);
-        let dashboard_view = dashboard_view.clone();
-        let config_view = config_view.clone();
-        let safety_view = safety_view.clone();
-        let layouts_view = layouts_view.clone();
-        let profiles_view = profiles_view.clone();
+        let standalone = standalone.clone();
         let settings_view = settings_view.clone();
         let tab_title = tab_title.clone();
-        let settings_list = settings_list.clone();
-        let displayed_row_ids = Rc::clone(&displayed_row_ids);
+        let sections_box = sections_box.clone();
         let detail_content = detail_content.clone();
+        let detail_popover = detail_popover.clone();
         let config_selection_state = Rc::clone(&config_selection_state);
         search_entry.connect_search_changed(move |entry| {
             *current_query.borrow_mut() = entry.text().to_string();
             render_main_view(
                 &model,
                 &selected_tab_id.borrow(),
-                &dashboard_view,
-                &config_view,
-                &safety_view,
-                &layouts_view,
-                &profiles_view,
+                &standalone,
                 &settings_view,
                 &current_query.borrow(),
                 &tab_title,
-                &settings_list,
-                &displayed_row_ids,
+                &sections_box,
                 &detail_content,
+                &detail_popover,
                 &config_selection_state,
             );
-        });
-    }
-
-    {
-        let model = Rc::clone(&model);
-        let displayed_row_ids = Rc::clone(&displayed_row_ids);
-        let detail_content = detail_content.clone();
-        let config_selection_state = Rc::clone(&config_selection_state);
-        let detail_popover = detail_popover.clone();
-        settings_list.connect_row_selected(move |_, row| {
-            let Some(row) = row else {
-                render_empty_detail(&detail_content);
-                detail_popover.popdown();
-                return;
-            };
-            let row_id = displayed_row_ids
-                .borrow()
-                .get(row.index() as usize)
-                .cloned();
-            if let Some(row_id) = row_id {
-                render_detail(&model, &row_id, &detail_content, &config_selection_state);
-                // Anchor the on-demand detail surface to the opened row.
-                let allocation = row.allocation();
-                detail_popover.set_pointing_to(Some(&gtk::gdk::Rectangle::new(
-                    allocation.x(),
-                    allocation.y(),
-                    allocation.width(),
-                    allocation.height(),
-                )));
-                detail_popover.popup();
-            } else {
-                render_empty_detail(&detail_content);
-                detail_popover.popdown();
-            }
         });
     }
 
@@ -557,48 +572,33 @@ pub fn show_error_window(app: &adw::Application, export_context: &str, error: &s
 }
 
 fn sidebar_items(model: &UiProjection) -> Vec<SidebarItem> {
-    // Task-oriented grouping (see src/ux_presentation.rs): Dashboard is
-    // pinned on top, then the categories in order. Tabs with zero rows are
-    // hidden, matching the version-aware-hiding pattern.
+    // Page-driven sidebar (see ux_presentation::SIDEBAR_PAGE_LAYOUT):
+    // Dashboard pinned on top, then the categories in order. Model-backed
+    // pages hide when no row of their tab lands on them (version-aware
+    // hiding); standalone pages always show.
     let mut items = vec![SidebarItem {
         id: DASHBOARD_ID.to_string(),
         label: "Dashboard".to_string(),
         target_tab_id: None,
     }];
 
-    for category in crate::ux_presentation::SIDEBAR_CATEGORIES {
-        for tab_id in category.tab_ids {
-            match *tab_id {
-                CONFIG_ID => items.push(SidebarItem {
-                    id: CONFIG_ID.to_string(),
-                    label: "Config".to_string(),
+    for category in crate::ux_presentation::SIDEBAR_PAGE_LAYOUT {
+        for page in category.pages {
+            match page.source_tab {
+                None => items.push(SidebarItem {
+                    id: page.id.to_string(),
+                    label: page.label.to_string(),
                     target_tab_id: None,
                 }),
-                SAFETY_ID => items.push(SidebarItem {
-                    id: SAFETY_ID.to_string(),
-                    label: "Safety Details".to_string(),
-                    target_tab_id: None,
-                }),
-                LAYOUTS_ID => items.push(SidebarItem {
-                    id: LAYOUTS_ID.to_string(),
-                    label: "Layouts".to_string(),
-                    target_tab_id: None,
-                }),
-                PROFILES_ID => items.push(SidebarItem {
-                    id: PROFILES_ID.to_string(),
-                    label: "Profiles".to_string(),
-                    target_tab_id: None,
-                }),
-                tab_id => {
-                    if let Some(tab) = model
-                        .tabs
-                        .iter()
-                        .find(|tab| tab.id == tab_id && tab.row_count > 0)
-                    {
+                Some(source_tab) => {
+                    let has_rows = model.settings_for_tab(source_tab).iter().any(|setting| {
+                        crate::ux_presentation::page_claims_row(page, &setting.official_setting)
+                    });
+                    if has_rows {
                         items.push(SidebarItem {
-                            id: tab.id.clone(),
-                            label: sidebar_tab_label(&tab.id, &tab.label),
-                            target_tab_id: Some(tab.id.clone()),
+                            id: page.id.to_string(),
+                            label: page.label.to_string(),
+                            target_tab_id: Some(source_tab.to_string()),
                         });
                     }
                 }
@@ -608,17 +608,11 @@ fn sidebar_items(model: &UiProjection) -> Vec<SidebarItem> {
     items
 }
 
-fn sidebar_tab_label(tab_id: &str, label: &str) -> String {
-    match tab_id {
-        "keybinds" => "Keyboard".to_string(),
-        _ => label.to_string(),
-    }
-}
-
 fn build_sidebar(items: &[SidebarItem]) -> gtk::ListBox {
     let sidebar = gtk::ListBox::new();
     sidebar.set_widget_name("hyprland-settings-navigation-sidebar");
     sidebar.set_selection_mode(gtk::SelectionMode::Single);
+    sidebar.add_css_class("navigation-sidebar");
 
     // Category headers render via the ListBox header mechanism so they are
     // not rows: selection indices keep mapping 1:1 onto `items`.
@@ -634,10 +628,15 @@ fn build_sidebar(items: &[SidebarItem]) -> gtk::ListBox {
             .flatten();
         if let Some(label) = category {
             if Some(label) != previous {
-                let header = small_label(label);
-                header.set_margin_top(10);
-                header.set_margin_start(12);
-                header.set_margin_bottom(2);
+                // Category headers render uppercase in a small caption
+                // style, hanging above the group like a section label.
+                let header = gtk::Label::new(Some(&label.to_uppercase()));
+                header.set_halign(gtk::Align::Start);
+                header.set_margin_top(14);
+                header.set_margin_start(14);
+                header.set_margin_bottom(3);
+                header.add_css_class("caption-heading");
+                header.add_css_class("dim-label");
                 header.set_widget_name(&format!(
                     "hyprland-settings-nav-category-{}",
                     safe_widget_name(label)
@@ -657,12 +656,15 @@ fn build_sidebar(items: &[SidebarItem]) -> gtk::ListBox {
         ));
         row.set_tooltip_text(Some(&format!("Navigation: {}", item.label)));
         let row_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
-        row_box.set_margin_top(8);
-        row_box.set_margin_bottom(8);
-        row_box.set_margin_start(12);
-        row_box.set_margin_end(12);
+        row_box.set_margin_top(9);
+        row_box.set_margin_bottom(9);
+        row_box.set_margin_start(14);
+        row_box.set_margin_end(14);
 
-        row_box.append(&body_label(&item.label));
+        let label = body_label(&item.label);
+        label.set_halign(gtk::Align::Start);
+        label.add_css_class("hyprland-settings-nav-row-label");
+        row_box.append(&label);
 
         row.set_child(Some(&row_box));
         sidebar.append(&row);
@@ -738,14 +740,14 @@ struct DashboardCard {
 fn dashboard_cards() -> [DashboardCard; 9] {
     [
         DashboardCard {
-            title: "Config",
+            title: "Settings",
             description: "Choose which Hyprland config the app reviews and where future changes should be saved.",
             target_tab_id: CONFIG_ID,
         },
         DashboardCard {
-            title: "Appearance",
-            description: "Change blur, shadows, borders, gaps, and other visual settings.",
-            target_tab_id: "appearance",
+            title: "General",
+            description: "Change gaps, borders, border colors, layout, and snapping.",
+            target_tab_id: "general",
         },
         DashboardCard {
             title: "Animations",
@@ -753,27 +755,27 @@ fn dashboard_cards() -> [DashboardCard; 9] {
             target_tab_id: "animations",
         },
         DashboardCard {
-            title: "Windows & Layout",
-            description: "Choose how windows open, move, resize, snap, and tile.",
-            target_tab_id: "windows-layout",
+            title: "Decoration",
+            description: "Change rounding, opacity, blur, and shadows.",
+            target_tab_id: "decoration",
         },
         DashboardCard {
-            title: "Input",
-            description: "Adjust keyboard, mouse, touchpad, gestures, and focus behavior.",
-            target_tab_id: "input",
+            title: "Devices",
+            description: "Adjust keyboard, mouse, touchpad, and focus behavior.",
+            target_tab_id: "devices",
         },
         DashboardCard {
-            title: "Displays",
+            title: "Monitors",
             description: "Review monitor, rendering, color, and display-related options.",
-            target_tab_id: "display",
+            target_tab_id: "monitors",
         },
         DashboardCard {
-            title: "Shortcuts",
+            title: "Keybinds",
             description: "Browse keybind-related settings and preserved shortcut entries.",
             target_tab_id: "keybinds",
         },
         DashboardCard {
-            title: "Advanced",
+            title: "System",
             description: "Review settings that need extra care before changing.",
             target_tab_id: "system",
         },
@@ -797,7 +799,6 @@ fn build_dashboard_card(
         "hyprland-settings-dashboard-card-{}",
         safe_widget_name(title)
     ));
-    frame.set_tooltip_text(Some(&format!("Dashboard card: {title}")));
     let card = gtk::Box::new(gtk::Orientation::Vertical, 8);
     card.set_margin_top(12);
     card.set_margin_bottom(12);
@@ -814,7 +815,6 @@ fn build_dashboard_card(
             "hyprland-settings-open-{}",
             safe_widget_name(title)
         ));
-        button.set_tooltip_text(Some(&format!("Open {title}")));
         let sidebar = sidebar.clone();
         button.connect_clicked(move |_| {
             if let Some(row) = sidebar.row_at_index(index as i32) {
@@ -852,9 +852,9 @@ fn build_config_view(
     content.set_margin_start(4);
     content.set_margin_end(4);
 
-    content.append(&title_label("Config"));
+    content.append(&title_label("Settings"));
     content.append(&body_label(
-        "Review which Hyprland config the app is using before making changes.",
+        "Where the app reads your Hyprland config and how saving behaves.",
     ));
 
     content.append(&config_file_selection_section(
@@ -864,8 +864,6 @@ fn build_config_view(
     ));
 
     content.append(&safe_live_save_mode_section(model));
-
-    content.append(&structured_family_preview_controls_section(model));
 
     content.append(&config_section(
         "Future changes",
@@ -952,9 +950,6 @@ fn build_profiles_view() -> gtk::ScrolledWindow {
     action.set_halign(gtk::Align::Center);
     action.set_sensitive(false);
     action.set_widget_name("hyprland-settings-profiles-save-disabled");
-    action.set_tooltip_text(Some(
-        "Not available yet: profile switching has no enabled production behavior.",
-    ));
     content.append(&action);
 
     gtk::ScrolledWindow::builder()
@@ -1054,6 +1049,133 @@ fn build_layouts_view(model: &Rc<UiProjection>) -> gtk::ScrolledWindow {
         .vexpand(true)
         .hexpand(true)
         .child(&content)
+        .build()
+}
+
+/// A centered empty state used by pages whose editing surface is not
+/// safely available yet. Honest: it explains where entries come from and
+/// adds no write path.
+fn empty_state_view(
+    widget_name: &str,
+    icon_name: &str,
+    heading: &str,
+    text: &str,
+) -> gtk::ScrolledWindow {
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 10);
+    content.set_widget_name(widget_name);
+    content.set_valign(gtk::Align::Center);
+    content.set_halign(gtk::Align::Center);
+    content.set_vexpand(true);
+    let icon = gtk::Image::from_icon_name(icon_name);
+    icon.set_pixel_size(96);
+    content.append(&icon);
+    let title = title_label(heading);
+    title.set_halign(gtk::Align::Center);
+    content.append(&title);
+    let body = body_label(text);
+    body.set_halign(gtk::Align::Center);
+    body.set_wrap(true);
+    content.append(&body);
+    gtk::ScrolledWindow::builder()
+        .vexpand(true)
+        .hexpand(true)
+        .child(&content)
+        .build()
+}
+
+/// Source-file-grouped, read-only list of preserved structured config
+/// entries for one family. Locked rows: raw line, source path and line
+/// number, a lock icon, and no edit affordance — the entries stay exactly
+/// as written in the user's files.
+fn structured_locked_list_view(
+    model: &UiProjection,
+    family_id: &str,
+    widget_name: &str,
+    heading: &str,
+    explanation: &str,
+    empty_heading: &str,
+    empty_text: &str,
+) -> gtk::ScrolledWindow {
+    let entries: Vec<crate::ui::model::UiStructuredEntry> = model
+        .structured_families
+        .iter()
+        .filter(|family| family.family_id == family_id)
+        .flat_map(|family| family.entries.iter().cloned())
+        .collect();
+    if entries.is_empty() {
+        return empty_state_view(
+            widget_name,
+            "text-x-generic-symbolic",
+            empty_heading,
+            empty_text,
+        );
+    }
+
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_widget_name(widget_name);
+    content.append(&title_label(heading));
+    let explain = small_label(explanation);
+    explain.set_halign(gtk::Align::Start);
+    content.append(&explain);
+
+    // Group by source file, preserving order.
+    let mut groups: Vec<(String, Vec<crate::ui::model::UiStructuredEntry>)> = Vec::new();
+    for entry in entries {
+        match groups
+            .iter_mut()
+            .find(|(path, _)| *path == entry.source_path)
+        {
+            Some((_, list)) => list.push(entry),
+            None => groups.push((entry.source_path.clone(), vec![entry])),
+        }
+    }
+    for (path, list_entries) in groups {
+        let heading = small_label(&path);
+        heading.set_halign(gtk::Align::Start);
+        heading.set_margin_top(10);
+        heading.add_css_class("heading");
+        content.append(&heading);
+        let list = gtk::ListBox::new();
+        list.set_selection_mode(gtk::SelectionMode::None);
+        list.add_css_class("boxed-list");
+        for entry in list_entries {
+            let row = gtk::ListBoxRow::new();
+            row.set_activatable(false);
+            let row_box = gtk::Box::new(gtk::Orientation::Horizontal, 10);
+            row_box.set_margin_top(6);
+            row_box.set_margin_bottom(6);
+            row_box.set_margin_start(12);
+            row_box.set_margin_end(12);
+            let text_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
+            text_box.set_hexpand(true);
+            let line = body_label(entry.raw_line.trim());
+            line.set_halign(gtk::Align::Start);
+            text_box.append(&line);
+            let origin = small_label(&format!("line {}", entry.line_number));
+            origin.set_halign(gtk::Align::Start);
+            text_box.append(&origin);
+            row_box.append(&text_box);
+            let lock = gtk::Image::from_icon_name("system-lock-screen-symbolic");
+            lock.set_valign(gtk::Align::Center);
+            row_box.append(&lock);
+            row.set_child(Some(&row_box));
+            list.append(&row);
+        }
+        content.append(&list);
+    }
+
+    let clamp = adw::Clamp::new();
+    clamp.set_maximum_size(800);
+    clamp.set_tightening_threshold(600);
+    clamp.set_margin_top(12);
+    clamp.set_margin_bottom(24);
+    clamp.set_margin_start(12);
+    clamp.set_margin_end(12);
+    clamp.set_child(Some(&content));
+    gtk::ScrolledWindow::builder()
+        .vexpand(true)
+        .hexpand(true)
+        .child(&clamp)
         .build()
 }
 
@@ -2022,7 +2144,6 @@ fn structured_family_record_draft_family_card(
     let apply =
         gtk::Button::with_label("Apply structured-family draft to real config (not available)");
     apply.set_sensitive(false);
-    apply.set_tooltip_text(Some("Disabled. This button has no write callback."));
     content.append(&apply);
 
     frame.set_child(Some(&content));
@@ -2175,7 +2296,6 @@ fn structured_family_record_draft_binding_family_card(
     let reset =
         gtk::Button::with_label("Reset structured-family GTK draft binding (not available)");
     reset.set_sensitive(false);
-    reset.set_tooltip_text(Some("Disabled. This button has no reset callback."));
     content.append(&reset);
 
     let persist =
@@ -2190,7 +2310,6 @@ fn structured_family_record_draft_binding_family_card(
         "Apply structured-family GTK draft binding to real config (not available)",
     );
     apply.set_sensitive(false);
-    apply.set_tooltip_text(Some("Disabled. This button has no write callback."));
     content.append(&apply);
 
     frame.set_child(Some(&content));
@@ -2744,9 +2863,6 @@ fn production_activation_draft_persistence_boundary_section() -> gtk::Frame {
     frame.set_widget_name(
         "hyprland-settings-production-activation-draft-persistence-boundary-section",
     );
-    frame.set_tooltip_text(Some(
-        "Activation draft persistence is forbidden by default. This section adds no storage or serializer.",
-    ));
 
     let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
     content.set_margin_top(8);
@@ -3081,9 +3197,6 @@ fn production_activation_safety_gate_proof_review_card(
 
     let enable = gtk::Button::with_label(&proof.disabled_enable_label);
     enable.set_widget_name(&proof.disabled_enable_widget_name);
-    enable.set_tooltip_text(Some(
-        "Production activation is not available. This button has no write or executor callback.",
-    ));
     enable.set_sensitive(false);
     content.append(&enable);
 
@@ -3236,9 +3349,6 @@ fn production_activation_approval_and_dry_run_reviews_section() -> gtk::Frame {
     frame.set_widget_name(
         "hyprland-settings-production-activation-approval-ux-and-dry-run-policy-section",
     );
-    frame.set_tooltip_text(Some(
-        "Default-disabled approval UX and live dry-run policy. These cards cannot approve production or run live dry-runs.",
-    ));
 
     let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
     content.set_margin_top(8);
@@ -3388,9 +3498,6 @@ fn production_activation_opt_in_requirement_review_card(
 
     let flag = gtk::Button::with_label(&review.disabled_flag_label);
     flag.set_widget_name(&review.disabled_flag_widget_name);
-    flag.set_tooltip_text(Some(
-        "Production flag opt-in is not available. This button does not change flags.",
-    ));
     flag.set_sensitive(false);
     content.append(&flag);
 
@@ -3522,9 +3629,6 @@ fn production_activation_approval_ux_review_card(
 
     let flag = gtk::Button::with_label(&review.disabled_flag_label);
     flag.set_widget_name(&review.disabled_flag_widget_name);
-    flag.set_tooltip_text(Some(
-        "Production flag opt-in is not available. This button does not change flags.",
-    ));
     flag.set_sensitive(false);
     content.append(&flag);
 
@@ -5028,9 +5132,6 @@ fn record_picker_action_row(
         "hyprland-settings-record-picker-status-{family_slug}"
     ));
 
-    preview_button.set_tooltip_text(Some(
-        "Apply the values live under a recovery countdown. GTK automation must not activate this control.",
-    ));
     {
         let combo = combo.clone();
         let values_for_save = values_for_save.clone();
@@ -5188,9 +5289,6 @@ fn record_picker_action_row(
     let save_button = gtk::Button::with_label("Save previewed value");
     save_button.set_widget_name(&format!(
         "hyprland-settings-record-picker-save-{family_slug}"
-    ));
-    save_button.set_tooltip_text(Some(
-        "Persist once to your config with backup and reread verification; requires Safe Live Save Mode. GTK automation must not activate this control.",
     ));
     {
         let combo = combo.clone();
@@ -5659,133 +5757,585 @@ fn config_section(title: &str, lines: Vec<String>, button: Option<(&str, bool)>)
 }
 
 fn render_main_view(
-    model: &UiProjection,
-    selected_tab_id: &str,
-    dashboard_view: &gtk::ScrolledWindow,
-    config_view: &gtk::ScrolledWindow,
-    safety_view: &gtk::ScrolledWindow,
-    layouts_view: &gtk::ScrolledWindow,
-    profiles_view: &gtk::ScrolledWindow,
+    model: &Rc<UiProjection>,
+    selected_page_id: &str,
+    standalone: &StandalonePages,
     settings_view: &gtk::Box,
     query: &str,
     tab_title: &gtk::Label,
-    settings_list: &gtk::ListBox,
-    displayed_row_ids: &Rc<RefCell<Vec<String>>>,
+    sections_box: &gtk::Box,
     detail_content: &gtk::Box,
+    detail_popover: &gtk::Popover,
     config_selection_state: &Rc<RefCell<ConfigSelectionState>>,
 ) {
-    // The standalone pages share one show-this-hide-the-rest path.
-    for page_id in [DASHBOARD_ID, CONFIG_ID, SAFETY_ID, LAYOUTS_ID, PROFILES_ID] {
-        if selected_tab_id == page_id {
-            dashboard_view.set_visible(page_id == DASHBOARD_ID);
-            config_view.set_visible(page_id == CONFIG_ID);
-            safety_view.set_visible(page_id == SAFETY_ID);
-            layouts_view.set_visible(page_id == LAYOUTS_ID);
-            profiles_view.set_visible(page_id == PROFILES_ID);
-            settings_view.set_visible(false);
-            settings_list.unselect_all();
-            while let Some(row) = settings_list.row_at_index(0) {
-                settings_list.remove(&row);
-            }
-            displayed_row_ids.borrow_mut().clear();
-            render_empty_detail(detail_content);
-            return;
-        }
+    if standalone.show_only(selected_page_id) {
+        settings_view.set_visible(false);
+        clear_sections_box(sections_box);
+        render_empty_detail(detail_content);
+        detail_popover.popdown();
+        return;
     }
-
-    dashboard_view.set_visible(false);
-    config_view.set_visible(false);
-    safety_view.set_visible(false);
-    layouts_view.set_visible(false);
-    profiles_view.set_visible(false);
     settings_view.set_visible(true);
     render_settings_view(
         model,
-        selected_tab_id,
+        selected_page_id,
         query,
         tab_title,
-        settings_list,
-        displayed_row_ids,
+        sections_box,
         detail_content,
+        detail_popover,
         config_selection_state,
     );
 }
 
+/// Remove every child of the sections container except the detail popover
+/// (which is parented here so its anchor coordinates match the rows).
+fn clear_sections_box(sections_box: &gtk::Box) {
+    let mut child = sections_box.first_child();
+    while let Some(current) = child {
+        child = current.next_sibling();
+        if current.widget_name() != "hyprland-settings-detail-popover" {
+            sections_box.remove(&current);
+        }
+    }
+}
+
 fn render_settings_view(
-    model: &UiProjection,
-    selected_tab_id: &str,
+    model: &Rc<UiProjection>,
+    selected_page_id: &str,
     query: &str,
     tab_title: &gtk::Label,
-    settings_list: &gtk::ListBox,
-    displayed_row_ids: &Rc<RefCell<Vec<String>>>,
+    sections_box: &gtk::Box,
     detail_content: &gtk::Box,
-    _config_selection_state: &Rc<RefCell<ConfigSelectionState>>,
+    detail_popover: &gtk::Popover,
+    config_selection_state: &Rc<RefCell<ConfigSelectionState>>,
 ) {
-    settings_list.unselect_all();
-    while let Some(row) = settings_list.row_at_index(0) {
-        settings_list.remove(&row);
-    }
-    displayed_row_ids.borrow_mut().clear();
+    clear_sections_box(sections_box);
     render_empty_detail(detail_content);
+    detail_popover.popdown();
 
-    let view = search_projection(model, selected_tab_id, query);
-    // Page title only — row counts and metadata belong to reports, not
-    // page headings.
-    tab_title.set_label(view.title.split(" · ").next().unwrap_or(&view.title));
+    let Some(page) = crate::ux_presentation::page_spec(selected_page_id) else {
+        tab_title.set_label("");
+        return;
+    };
+    let Some(source_tab) = page.source_tab else {
+        tab_title.set_label(page.label);
+        return;
+    };
+    tab_title.set_label(page.label);
 
-    // Section headings render through the list-header mechanism: a heading
-    // appears above the first row of each subsection group.
-    let sections: Vec<String> = view
+    let view = search_projection(model, source_tab, query);
+    let results: Vec<&SearchResult> = view
         .results
         .iter()
-        .map(|result| result.setting.subsection.clone())
+        .filter(|result| {
+            crate::ux_presentation::page_claims_row(page, &result.setting.official_setting)
+        })
         .collect();
-    settings_list.set_header_func(move |row, before| {
-        let section = sections.get(row.index() as usize);
-        let previous = before.and_then(|previous_row| sections.get(previous_row.index() as usize));
-        if let Some(section) = section {
-            if previous != Some(section) && !section.is_empty() {
-                let heading = body_label(section);
-                heading.set_margin_top(14);
-                heading.set_margin_start(6);
-                heading.set_margin_bottom(4);
-                heading.add_css_class("heading");
-                heading.set_widget_name(&format!(
-                    "hyprland-settings-section-heading-{}",
-                    safe_widget_name(section)
-                ));
-                row.set_header(Some(&heading));
-                return;
-            }
-        }
-        row.set_header(None::<&gtk::Widget>);
-    });
 
-    if view.results.is_empty() {
-        let empty = gtk::ListBoxRow::new();
-        empty.set_selectable(false);
-        let content = gtk::Box::new(gtk::Orientation::Vertical, 4);
-        content.set_margin_top(12);
-        content.set_margin_bottom(12);
-        content.set_margin_start(12);
-        content.set_margin_end(12);
-        if let Some(title) = view.empty_title {
-            content.append(&body_label(&title));
-        }
-        if let Some(detail) = view.empty_detail {
-            content.append(&small_label(&detail));
-        }
-        empty.set_child(Some(&content));
-        settings_list.append(&empty);
+    // Page-specific content above the sections.
+    if page.id == "animations" {
+        append_animations_page_extras(model, sections_box);
+        sections_box.append(&structured_family_preview_controls_section(model));
+    }
+    if let Some(family_id) = page_structured_family(page.id) {
+        append_structured_entries_card(model, family_id, sections_box);
+    }
+
+    if results.is_empty() {
+        let empty = body_label(
+            &view
+                .empty_title
+                .unwrap_or_else(|| "No settings match here.".to_string()),
+        );
+        empty.set_margin_top(18);
+        empty.set_halign(gtk::Align::Center);
+        sections_box.append(&empty);
         return;
     }
 
-    for result in &view.results {
-        displayed_row_ids
-            .borrow_mut()
-            .push(result.setting.row_id.clone());
-        settings_list.append(&build_setting_row(result, view.is_searching));
+    // Group rows by subsection, preserving model order. Each group renders
+    // as a heading OUTSIDE the card and a rounded card of rows below it.
+    let mut groups: Vec<(String, Vec<&SearchResult>)> = Vec::new();
+    for result in results {
+        let section = result.setting.subsection.clone();
+        match groups.iter_mut().find(|(name, _)| *name == section) {
+            Some((_, rows)) => rows.push(result),
+            None => groups.push((section, vec![result])),
+        }
     }
+
+    let page_lists: Rc<RefCell<Vec<gtk::ListBox>>> = Rc::new(RefCell::new(Vec::new()));
+    for (section, rows) in groups {
+        let heading_text = crate::ux_presentation::section_display_name(&section, page.label);
+        let heading = body_label(&heading_text);
+        heading.set_halign(gtk::Align::Start);
+        heading.set_margin_top(14);
+        heading.set_margin_start(6);
+        heading.add_css_class("heading");
+        heading.set_widget_name(&format!(
+            "hyprland-settings-section-heading-{}",
+            safe_widget_name(&heading_text)
+        ));
+        sections_box.append(&heading);
+
+        let list = gtk::ListBox::new();
+        list.set_selection_mode(gtk::SelectionMode::Single);
+        list.add_css_class("boxed-list");
+        list.set_widget_name(&format!(
+            "hyprland-settings-section-card-{}",
+            safe_widget_name(&heading_text)
+        ));
+        let mut row_ids = Vec::new();
+        for result in &rows {
+            row_ids.push(result.setting.row_id.clone());
+            list.append(&build_setting_row(result, view.is_searching));
+        }
+        let row_ids = Rc::new(row_ids);
+        {
+            let model = Rc::clone(model);
+            let detail_content = detail_content.clone();
+            let detail_popover = detail_popover.clone();
+            let config_selection_state = Rc::clone(config_selection_state);
+            let sections_box = sections_box.clone();
+            let page_lists = Rc::clone(&page_lists);
+            list.connect_row_selected(move |current_list, row| {
+                let Some(row) = row else {
+                    return;
+                };
+                // Single selection across every card on the page.
+                for other in page_lists.borrow().iter() {
+                    if other != current_list {
+                        other.unselect_all();
+                    }
+                }
+                let Some(row_id) = row_ids.get(row.index() as usize) else {
+                    return;
+                };
+                render_detail(&model, row_id, &detail_content, &config_selection_state);
+                if let Some(bounds) = row.compute_bounds(&sections_box) {
+                    detail_popover.set_pointing_to(Some(&gtk::gdk::Rectangle::new(
+                        bounds.x() as i32,
+                        bounds.y() as i32,
+                        bounds.width() as i32,
+                        bounds.height() as i32,
+                    )));
+                }
+                detail_popover.popup();
+            });
+        }
+        page_lists.borrow_mut().push(list.clone());
+        sections_box.append(&list);
+    }
+}
+
+/// Structured families shown read-only on their HyprMod-equivalent pages.
+/// Animations page extras: the Bezier Curve Editor entry row and the
+/// per-record menu card, both driving the existing proven picker gates
+/// (existing records only, existing curves only, style preserved, Save
+/// gated by Safe Live Save Mode). Nothing new is enabled here.
+fn append_animations_page_extras(model: &Rc<UiProjection>, parent: &gtk::Box) {
+    let discovery = model.config_discovery.clone();
+
+    // Bezier Curve Editor row (opens a separate editor window).
+    let editor_list = gtk::ListBox::new();
+    editor_list.set_selection_mode(gtk::SelectionMode::None);
+    editor_list.add_css_class("boxed-list");
+    editor_list.set_margin_top(8);
+    let editor_row = gtk::ListBoxRow::new();
+    editor_row.set_activatable(true);
+    editor_row.set_widget_name("hyprland-settings-bezier-editor-row");
+    let row_box = gtk::Box::new(gtk::Orientation::Horizontal, 12);
+    row_box.set_margin_top(10);
+    row_box.set_margin_bottom(10);
+    row_box.set_margin_start(12);
+    row_box.set_margin_end(12);
+    let text_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
+    text_box.set_hexpand(true);
+    let title = body_label("Bezier Curve Editor");
+    title.set_halign(gtk::Align::Start);
+    text_box.append(&title);
+    let subtitle = small_label("Create and manage animation curves");
+    subtitle.set_halign(gtk::Align::Start);
+    text_box.append(&subtitle);
+    row_box.append(&text_box);
+    let chevron = gtk::Image::from_icon_name("go-next-symbolic");
+    chevron.set_valign(gtk::Align::Center);
+    row_box.append(&chevron);
+    editor_row.set_child(Some(&row_box));
+    editor_list.append(&editor_row);
+    {
+        let discovery = discovery.clone();
+        editor_list.connect_row_activated(move |_, _| {
+            open_bezier_editor_window(&discovery);
+        });
+    }
+    parent.append(&editor_list);
+
+    // Animation records card: one row per editable record, with a menu
+    // button opening the record's compact controls.
+    let entries = match list_animation_records_live() {
+        Ok(entries) => entries,
+        Err(_) => Vec::new(),
+    };
+    let selectable: Vec<AnimationRecordEntry> = entries
+        .iter()
+        .filter(|entry| entry.save_supported)
+        .cloned()
+        .collect();
+    if selectable.is_empty() {
+        return;
+    }
+    let heading = body_label("Animation Records");
+    heading.set_halign(gtk::Align::Start);
+    heading.set_margin_top(14);
+    heading.set_margin_start(6);
+    heading.add_css_class("heading");
+    parent.append(&heading);
+    let records_list = gtk::ListBox::new();
+    records_list.set_selection_mode(gtk::SelectionMode::None);
+    records_list.add_css_class("boxed-list");
+    records_list.set_widget_name("hyprland-settings-animation-records-card");
+    for entry in &selectable {
+        let row = gtk::ListBoxRow::new();
+        row.set_activatable(false);
+        let row_box = gtk::Box::new(gtk::Orientation::Horizontal, 12);
+        row_box.set_margin_top(8);
+        row_box.set_margin_bottom(8);
+        row_box.set_margin_start(12);
+        row_box.set_margin_end(12);
+        let text_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
+        text_box.set_hexpand(true);
+        let title = body_label(&crate::ux_presentation::choice_display_label(
+            &entry.record.name,
+        ));
+        title.set_halign(gtk::Align::Start);
+        text_box.append(&title);
+        let subtitle = small_label(&entry.current_value_text);
+        subtitle.set_halign(gtk::Align::Start);
+        text_box.append(&subtitle);
+        row_box.append(&text_box);
+
+        let menu_button = gtk::MenuButton::new();
+        menu_button.set_icon_name("open-menu-symbolic");
+        menu_button.set_valign(gtk::Align::Center);
+        menu_button.add_css_class("flat");
+        menu_button.set_widget_name(&format!(
+            "hyprland-settings-animation-menu-{}",
+            safe_widget_name(&entry.record.name)
+        ));
+        let menu_popover = gtk::Popover::new();
+        menu_popover.set_child(Some(&animation_record_menu_box(entry, &discovery)));
+        menu_button.set_popover(Some(&menu_popover));
+        row_box.append(&menu_button);
+
+        row.set_child(Some(&row_box));
+        records_list.append(&row);
+    }
+    parent.append(&records_list);
+}
+
+/// Compact per-record controls: enabled toggle, speed, curve selector
+/// (existing curves only), preview with recovery, and the gated Save. The
+/// style is preserved and never editable. Same controller and save wiring
+/// as the proven picker path.
+fn animation_record_menu_box(
+    entry: &AnimationRecordEntry,
+    discovery: &ConfigDiscovery,
+) -> gtk::Box {
+    let record_name = entry.record.name.clone();
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    content.set_margin_top(10);
+    content.set_margin_bottom(10);
+    content.set_margin_start(10);
+    content.set_margin_end(10);
+
+    let controls = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    controls.append(&small_label("Enabled"));
+    let enabled_switch = gtk::Switch::new();
+    enabled_switch.set_valign(gtk::Align::Center);
+    enabled_switch.set_active(entry.record.enabled == "1");
+    controls.append(&enabled_switch);
+    controls.append(&small_label("Speed"));
+    let speed_spin = gtk::SpinButton::with_range(0.1, 20.0, 0.1);
+    speed_spin.set_digits(2);
+    if let Ok(speed) = entry.record.speed.parse::<f64>() {
+        speed_spin.set_value(speed);
+    }
+    controls.append(&speed_spin);
+    controls.append(&small_label("Curve"));
+    let curve_combo = gtk::ComboBoxText::new();
+    let curves: Vec<String> = list_curve_records_live()
+        .map(|entries| entries.into_iter().map(|curve| curve.record.name).collect())
+        .unwrap_or_default();
+    for curve in &curves {
+        curve_combo.append(Some(curve), curve);
+    }
+    if entry.record.bezier.is_empty() {
+        curve_combo.set_active_id(Some("default"));
+    } else {
+        curve_combo.set_active_id(Some(&entry.record.bezier));
+    }
+    controls.append(&curve_combo);
+    content.append(&controls);
+
+    let status = small_label("");
+    status.set_halign(gtk::Align::Start);
+    content.append(&status);
+
+    let values_for_save: Rc<dyn Fn() -> PickedRecordValues> = {
+        let enabled_switch = enabled_switch.clone();
+        let speed_spin = speed_spin.clone();
+        let curve_combo = curve_combo.clone();
+        Rc::new(move || PickedRecordValues::AnimationRecord {
+            enabled: enabled_switch.is_active(),
+            speed: speed_spin.value(),
+            bezier: curve_combo
+                .active_id()
+                .map(|id| id.to_string())
+                .unwrap_or_else(|| "default".to_string()),
+        })
+    };
+
+    let controller_slot: Rc<RefCell<Option<Rc<RefCell<FamilyRecordPreviewController>>>>> =
+        Rc::new(RefCell::new(None));
+    let buttons = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    let preview_button = gtk::Button::with_label("Preview with recovery");
+    preview_button.set_sensitive(entry.preview_supported);
+    let keep_button = gtk::Button::with_label("Keep changes");
+    let revert_button = gtk::Button::with_label("Revert now");
+    let save_button = gtk::Button::with_label("Save previewed value");
+
+    {
+        let record_name = record_name.clone();
+        let controller_slot = Rc::clone(&controller_slot);
+        let values_for_save = Rc::clone(&values_for_save);
+        let status = status.clone();
+        preview_button.connect_clicked(move |_| {
+            if controller_slot.borrow().is_none() {
+                match FamilyRecordPreviewController::new_live(PickedFamily::Animation, &record_name)
+                {
+                    Ok(controller) => {
+                        let controller = Rc::new(RefCell::new(controller));
+                        register_record_picker_controller(&controller);
+                        *controller_slot.borrow_mut() = Some(controller);
+                    }
+                    Err(error) => {
+                        status.set_label(&error.user_text());
+                        return;
+                    }
+                }
+            }
+            let Some(controller) = controller_slot.borrow().as_ref().cloned() else {
+                return;
+            };
+            let outcome = controller.borrow_mut().preview(values_for_save());
+            match outcome {
+                Ok(receipt) => status.set_label(&receipt.status_text),
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        });
+    }
+    {
+        let controller_slot = Rc::clone(&controller_slot);
+        let status = status.clone();
+        keep_button.connect_clicked(move |_| {
+            let Some(controller) = controller_slot.borrow().as_ref().cloned() else {
+                return;
+            };
+            let outcome = controller.borrow_mut().keep();
+            match outcome {
+                Ok(receipt) => status.set_label(&receipt.status_text),
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        });
+    }
+    {
+        let controller_slot = Rc::clone(&controller_slot);
+        let status = status.clone();
+        revert_button.connect_clicked(move |_| {
+            let Some(controller) = controller_slot.borrow().as_ref().cloned() else {
+                return;
+            };
+            let outcome = controller.borrow_mut().revert_now();
+            match outcome {
+                Ok(receipt) => status.set_label(&receipt.status_text),
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        });
+    }
+    {
+        let record_name = record_name.clone();
+        let discovery = discovery.clone();
+        let values_for_save = Rc::clone(&values_for_save);
+        let status = status.clone();
+        save_button.connect_clicked(move |_| {
+            match save_picked_record_live(
+                &discovery,
+                PickedFamily::Animation,
+                &record_name,
+                values_for_save(),
+            ) {
+                Ok(receipt) => status.set_label(&receipt.status_text),
+                Err(error) => status.set_label(&error.user_text()),
+            }
+        });
+    }
+    buttons.append(&preview_button);
+    buttons.append(&keep_button);
+    buttons.append(&revert_button);
+    buttons.append(&save_button);
+    content.append(&buttons);
+    content
+}
+
+/// The Bezier Curve Editor window: a read-only graph of the existing
+/// curves plus the proven curve picker controls (existing curves only,
+/// gated Save). Opened from the Animations page.
+fn open_bezier_editor_window(discovery: &ConfigDiscovery) {
+    let window = gtk::Window::new();
+    window.set_title(Some("Bezier Curve Editor"));
+    window.set_default_size(560, 520);
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 10);
+    content.set_margin_top(14);
+    content.set_margin_bottom(14);
+    content.set_margin_start(14);
+    content.set_margin_end(14);
+    content.append(&title_label("Bezier Curve Editor"));
+    content.append(&small_label(
+        "Existing curves from your session. Edit control points below; Save is gated as always.",
+    ));
+    content.append(&bezier_graph_area());
+    curve_record_picker_group(discovery, &content);
+    let scroll = gtk::ScrolledWindow::builder()
+        .vexpand(true)
+        .child(&content)
+        .build();
+    window.set_child(Some(&scroll));
+    window.present();
+}
+
+/// Read-only graph of the existing curves (cubic bezier from each curve's
+/// control points), drawn once when the editor opens.
+fn bezier_graph_area() -> gtk::DrawingArea {
+    let area = gtk::DrawingArea::new();
+    area.set_content_width(480);
+    area.set_content_height(220);
+    area.set_widget_name("hyprland-settings-bezier-graph");
+    let curves: Vec<(String, f64, f64, f64, f64)> = list_curve_records_live()
+        .map(|entries| {
+            entries
+                .into_iter()
+                .map(|entry| {
+                    (
+                        entry.record.name.clone(),
+                        entry.record.x0,
+                        entry.record.y0,
+                        entry.record.x1,
+                        entry.record.y1,
+                    )
+                })
+                .collect()
+        })
+        .unwrap_or_default();
+    area.set_draw_func(move |_, context, width, height| {
+        let width = width as f64;
+        let height = height as f64;
+        // Frame.
+        context.set_source_rgba(0.5, 0.5, 0.5, 0.4);
+        context.rectangle(0.5, 0.5, width - 1.0, height - 1.0);
+        let _ = context.stroke();
+        let palette = [
+            (0.40, 0.65, 0.95),
+            (0.55, 0.85, 0.55),
+            (0.95, 0.65, 0.35),
+            (0.85, 0.50, 0.85),
+        ];
+        for (index, (_name, x0, y0, x1, y1)) in curves.iter().enumerate() {
+            let (red, green, blue) = palette[index % palette.len()];
+            context.set_source_rgba(red, green, blue, 0.95);
+            context.set_line_width(2.0);
+            // Map unit space to the widget (y up, small margin).
+            let map_x = |x: f64| 12.0 + x * (width - 24.0);
+            let map_y = |y: f64| height - 12.0 - y * (height - 24.0);
+            context.move_to(map_x(0.0), map_y(0.0));
+            context.curve_to(
+                map_x(*x0),
+                map_y(*y0),
+                map_x(*x1),
+                map_y(*y1),
+                map_x(1.0),
+                map_y(1.0),
+            );
+            let _ = context.stroke();
+        }
+    });
+    area
+}
+
+fn page_structured_family(page_id: &str) -> Option<&'static str> {
+    match page_id {
+        "keybinds" => Some("hl.bind"),
+        "monitors" => Some("hl.monitor"),
+        "gestures" => Some("hl.gesture"),
+        "devices" => Some("hl.device"),
+        "ecosystem" => Some("hl.permission"),
+        _ => None,
+    }
+}
+
+/// A compact read-only card of preserved config entries for one family,
+/// grouped by source file. Locked rows only — no edit affordance.
+fn append_structured_entries_card(model: &UiProjection, family_id: &str, parent: &gtk::Box) {
+    let entries: Vec<crate::ui::model::UiStructuredEntry> = model
+        .structured_families
+        .iter()
+        .filter(|family| family.family_id == family_id)
+        .flat_map(|family| family.entries.iter().cloned())
+        .collect();
+    if entries.is_empty() {
+        return;
+    }
+    let heading = body_label("From your config (read-only)");
+    heading.set_halign(gtk::Align::Start);
+    heading.set_margin_top(14);
+    heading.set_margin_start(6);
+    heading.add_css_class("heading");
+    parent.append(&heading);
+    let list = gtk::ListBox::new();
+    list.set_selection_mode(gtk::SelectionMode::None);
+    list.add_css_class("boxed-list");
+    list.set_widget_name(&format!(
+        "hyprland-settings-config-entries-{}",
+        safe_widget_name(family_id)
+    ));
+    for entry in entries.iter().take(40) {
+        let row = gtk::ListBoxRow::new();
+        row.set_activatable(false);
+        let row_box = gtk::Box::new(gtk::Orientation::Horizontal, 10);
+        row_box.set_margin_top(6);
+        row_box.set_margin_bottom(6);
+        row_box.set_margin_start(12);
+        row_box.set_margin_end(12);
+        let text_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
+        text_box.set_hexpand(true);
+        let line = body_label(entry.raw_line.trim());
+        line.set_halign(gtk::Align::Start);
+        text_box.append(&line);
+        let origin = small_label(&format!(
+            "{} · line {}",
+            entry.source_path, entry.line_number
+        ));
+        origin.set_halign(gtk::Align::Start);
+        text_box.append(&origin);
+        row_box.append(&text_box);
+        let lock = gtk::Image::from_icon_name("system-lock-screen-symbolic");
+        lock.set_valign(gtk::Align::Center);
+        row_box.append(&lock);
+        row.set_child(Some(&row_box));
+        list.append(&row);
+    }
+    parent.append(&list);
 }
 
 fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListBoxRow {
@@ -5866,8 +6416,8 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
 /// preview controller is created on first interaction only (creating one
 /// per visible row would hammer the readback), registered for session-drop
 /// revert, and drives the same offer/throttle/drain path as the detail
-/// controls. Feedback lands in the control's tooltip; nothing here can
-/// write config or reload — it is the existing preview executor.
+/// controls. Errors surface by styling the control (no tooltips); nothing
+/// here can write config or reload — it is the existing preview executor.
 fn inline_preview_apply(
     row_id: String,
     throttle_ms: Option<u64>,
@@ -5876,6 +6426,13 @@ fn inline_preview_apply(
     let controller_slot: Rc<RefCell<Option<Rc<RefCell<RuntimePreviewUiController>>>>> =
         Rc::new(RefCell::new(None));
     let drain_scheduled = Rc::new(std::cell::Cell::new(false));
+    fn mark(feedback: &gtk::Widget, failed: bool) {
+        if failed {
+            feedback.add_css_class("error");
+        } else {
+            feedback.remove_css_class("error");
+        }
+    }
     Rc::new(move |value: String| {
         if controller_slot.borrow().is_none() {
             match RuntimePreviewUiController::new_live(&row_id) {
@@ -5884,8 +6441,8 @@ fn inline_preview_apply(
                     register_preview_controller(&controller);
                     *controller_slot.borrow_mut() = Some(controller);
                 }
-                Err(error) => {
-                    feedback.set_tooltip_text(Some(&error.user_text()));
+                Err(_) => {
+                    mark(&feedback, true);
                     return;
                 }
             }
@@ -5897,7 +6454,7 @@ fn inline_preview_apply(
             .borrow_mut()
             .offer_value(&value, preview_now_ms());
         match outcome {
-            Ok(Some(receipt)) => feedback.set_tooltip_text(Some(&receipt.status_text)),
+            Ok(Some(_receipt)) => mark(&feedback, false),
             Ok(None) => {
                 if !drain_scheduled.get() {
                     drain_scheduled.set(true);
@@ -5910,17 +6467,14 @@ fn inline_preview_apply(
                         move || {
                             drain_scheduled.set(false);
                             match controller.borrow_mut().drain_pending(preview_now_ms()) {
-                                Ok(Some(receipt)) => {
-                                    feedback.set_tooltip_text(Some(&receipt.status_text))
-                                }
-                                Ok(None) => {}
-                                Err(error) => feedback.set_tooltip_text(Some(&error.user_text())),
+                                Ok(_) => mark(&feedback, false),
+                                Err(_) => mark(&feedback, true),
                             }
                         },
                     );
                 }
             }
-            Err(error) => feedback.set_tooltip_text(Some(&error.user_text())),
+            Err(_) => mark(&feedback, true),
         }
     })
 }
@@ -6065,6 +6619,24 @@ fn live_swatch_area(shared: Rc<RefCell<String>>, width: i32, height: i32) -> gtk
         let raw = shared.borrow().clone();
         let width = width as f64;
         let height = height as f64;
+        // Checkerboard behind the color so alpha is visible.
+        let square = 6.0;
+        context.set_source_rgba(0.45, 0.45, 0.45, 1.0);
+        context.rectangle(0.0, 0.0, width, height);
+        let _ = context.fill();
+        context.set_source_rgba(0.66, 0.66, 0.66, 1.0);
+        let mut y = 0.0;
+        let mut odd_row = false;
+        while y < height {
+            let mut x = if odd_row { square } else { 0.0 };
+            while x < width {
+                context.rectangle(x, y, square, square);
+                let _ = context.fill();
+                x += square * 2.0;
+            }
+            y += square;
+            odd_row = !odd_row;
+        }
         if let Some(color) = crate::ux_presentation::parse_hyprland_color(&raw) {
             context.set_source_rgba(
                 color.red as f64 / 255.0,
@@ -6096,13 +6668,14 @@ fn live_swatch_area(shared: Rc<RefCell<String>>, width: i32, height: i32) -> gtk
     area
 }
 
-/// Inline color row control: a swatch/preview-strip button that opens a
-/// small picker popover with a live preview, manual value entry, Apply,
-/// and Cancel. Apply is validated (parse must succeed) and routes through
-/// the same reversible preview path as every other control; the exact
-/// entered raw text is what gets applied, preserving the value format.
-/// Unparseable current values show no swatch and the picker refuses Apply
-/// until the text parses — fail closed, no save/write path here.
+/// Inline color row control in the stops style: one checkered swatch
+/// button per color stop (clicking a swatch opens that stop's picker),
+/// a small remove button beside each stop when more than one exists, an
+/// add-stop button, an angle stepper for gradients, and a back-arrow
+/// discard button that reappears while the row differs from its original
+/// value. Every change routes through the same reversible preview path;
+/// the exact raw token text is preserved and invalid input fails closed.
+/// Unparseable current values fall back to a raw text editor.
 fn attach_inline_color_control(
     end_box: &gtk::Box,
     setting: &crate::ui::model::UiSetting,
@@ -6110,25 +6683,274 @@ fn attach_inline_color_control(
     control_name: &str,
     throttle_ms: Option<u64>,
 ) {
-    let parseable = crate::ux_presentation::parse_hyprland_color(initial_value).is_some()
-        || crate::ux_presentation::parse_hyprland_gradient(initial_value).is_some();
-
-    let swatch_button = gtk::Button::new();
-    swatch_button.set_widget_name(control_name);
-    swatch_button.set_valign(gtk::Align::Center);
-    if parseable {
-        swatch_button.set_child(Some(&color_swatch_area(initial_value, 44, 18)));
-        swatch_button.set_tooltip_text(Some(&format!("{} — edit color", initial_value.trim())));
-    } else {
-        swatch_button.set_label("Color…");
-        swatch_button.set_tooltip_text(Some(
-            "Current value is not in a recognized color form; edit it as text",
-        ));
+    #[derive(Clone)]
+    struct ColorRowState {
+        tokens: Vec<String>,
+        angle: Option<u16>,
+    }
+    fn raw_from_state(state: &ColorRowState) -> String {
+        let mut parts = state.tokens.clone();
+        if state.tokens.len() > 1 {
+            if let Some(angle) = state.angle {
+                parts.push(format!("{angle}deg"));
+            }
+        }
+        parts.join(" ")
+    }
+    fn state_from_raw(raw: &str) -> Option<ColorRowState> {
+        let trimmed = raw.trim();
+        if crate::ux_presentation::parse_hyprland_color(trimmed).is_some() {
+            return Some(ColorRowState {
+                tokens: vec![trimmed.to_string()],
+                angle: None,
+            });
+        }
+        if crate::ux_presentation::parse_hyprland_gradient(trimmed).is_some() {
+            let mut tokens = Vec::new();
+            let mut angle = None;
+            for part in trimmed.split_whitespace() {
+                if let Some(value) = part.strip_suffix("deg") {
+                    angle = value.parse::<u16>().ok();
+                } else {
+                    tokens.push(part.to_string());
+                }
+            }
+            return Some(ColorRowState { tokens, angle });
+        }
+        None
     }
 
+    let Some(initial_state) = state_from_raw(initial_value) else {
+        // Fail closed: not a recognized color form. Raw text editing only.
+        attach_raw_color_entry(end_box, setting, initial_value, control_name, throttle_ms);
+        return;
+    };
+
+    let original_raw = initial_value.trim().to_string();
+    let state = Rc::new(RefCell::new(initial_state));
+    let apply = inline_preview_apply(
+        setting.row_id.clone(),
+        throttle_ms,
+        end_box.clone().upcast(),
+    );
+
+    let container = gtk::Box::new(gtk::Orientation::Horizontal, 4);
+    container.set_widget_name(control_name);
+    container.set_valign(gtk::Align::Center);
+    end_box.append(&container);
+
+    // Rebuild renders the whole control from state: discard arrow, stop
+    // swatches with remove buttons, add button, angle stepper.
+    let rebuild: Rc<RefCell<Box<dyn Fn()>>> = Rc::new(RefCell::new(Box::new(|| {})));
+    let apply_state = {
+        let state = Rc::clone(&state);
+        let apply = apply.clone();
+        let rebuild = Rc::clone(&rebuild);
+        Rc::new(move || {
+            let raw = raw_from_state(&state.borrow());
+            let valid = crate::ux_presentation::parse_hyprland_color(&raw).is_some()
+                || crate::ux_presentation::parse_hyprland_gradient(&raw).is_some();
+            if valid {
+                apply(raw);
+            }
+            (rebuild.borrow())();
+        })
+    };
+
+    {
+        let container = container.clone();
+        let state = Rc::clone(&state);
+        let original_raw = original_raw.clone();
+        let apply_state_outer = Rc::clone(&apply_state);
+        let control_name = control_name.to_string();
+        let rebuild_slot = Rc::clone(&rebuild);
+        *rebuild.borrow_mut() = Box::new(move || {
+            while let Some(child) = container.first_child() {
+                container.remove(&child);
+            }
+            let current_raw = raw_from_state(&state.borrow());
+            let changed = current_raw != original_raw;
+
+            // Discard: back-arrow that restores the original value through
+            // the same preview path.
+            if changed {
+                let discard = gtk::Button::from_icon_name("edit-undo-symbolic");
+                discard.add_css_class("flat");
+                discard.set_widget_name(&format!("{control_name}-discard"));
+                let state = Rc::clone(&state);
+                let original_raw = original_raw.clone();
+                let apply_state = Rc::clone(&apply_state_outer);
+                discard.connect_clicked(move |_| {
+                    if let Some(reset) = state_from_raw(&original_raw) {
+                        *state.borrow_mut() = reset;
+                        apply_state();
+                    }
+                });
+                container.append(&discard);
+            }
+
+            let token_count = state.borrow().tokens.len();
+            for (index, token) in state.borrow().tokens.iter().enumerate() {
+                let stop_box = gtk::Box::new(gtk::Orientation::Horizontal, 0);
+                let swatch = gtk::Button::new();
+                swatch.add_css_class("flat");
+                swatch.set_widget_name(&format!("{control_name}-stop-{index}"));
+                swatch.set_child(Some(&color_swatch_area(token, 30, 18)));
+                {
+                    let state = Rc::clone(&state);
+                    let apply_state = Rc::clone(&apply_state_outer);
+                    let token = token.clone();
+                    let swatch_ref = swatch.clone();
+                    swatch.connect_clicked(move |_| {
+                        let state = Rc::clone(&state);
+                        let apply_state = Rc::clone(&apply_state);
+                        open_color_stop_picker(
+                            &swatch_ref,
+                            &token,
+                            Rc::new(move |new_token: String| {
+                                if let Some(slot) = state.borrow_mut().tokens.get_mut(index) {
+                                    *slot = new_token.clone();
+                                }
+                                apply_state();
+                            }),
+                        );
+                    });
+                }
+                stop_box.append(&swatch);
+                if token_count > 1 {
+                    let remove = gtk::Button::from_icon_name("edit-clear-symbolic");
+                    remove.add_css_class("flat");
+                    remove.add_css_class("circular");
+                    remove.set_widget_name(&format!("{control_name}-remove-{index}"));
+                    let state = Rc::clone(&state);
+                    let apply_state = Rc::clone(&apply_state_outer);
+                    remove.connect_clicked(move |_| {
+                        if state.borrow().tokens.len() > 1 {
+                            state.borrow_mut().tokens.remove(index);
+                            apply_state();
+                        }
+                    });
+                    stop_box.append(&remove);
+                }
+                container.append(&stop_box);
+            }
+
+            // Add a stop (duplicates the last color; max 10 like the
+            // upstream gradient grammar comfortably allows).
+            if token_count < 10 {
+                let add = gtk::Button::from_icon_name("list-add-symbolic");
+                add.add_css_class("flat");
+                add.set_widget_name(&format!("{control_name}-add-stop"));
+                let state = Rc::clone(&state);
+                let apply_state = Rc::clone(&apply_state_outer);
+                add.connect_clicked(move |_| {
+                    let last = state.borrow().tokens.last().cloned();
+                    if let Some(last) = last {
+                        state.borrow_mut().tokens.push(last);
+                        if state.borrow().angle.is_none() {
+                            state.borrow_mut().angle = Some(0);
+                        }
+                        apply_state();
+                    }
+                });
+                container.append(&add);
+            }
+
+            // Gradient angle stepper.
+            if token_count > 1 {
+                let angle_spin = gtk::SpinButton::with_range(0.0, 360.0, 1.0);
+                angle_spin.set_valign(gtk::Align::Center);
+                angle_spin.set_widget_name(&format!("{control_name}-angle"));
+                angle_spin.set_value(f64::from(state.borrow().angle.unwrap_or(0)));
+                let state = Rc::clone(&state);
+                let apply_state = Rc::clone(&apply_state_outer);
+                angle_spin.connect_value_changed(move |spin| {
+                    state.borrow_mut().angle = Some(spin.value() as u16);
+                    apply_state();
+                });
+                container.append(&angle_spin);
+            }
+            let _ = &rebuild_slot;
+        });
+    }
+    (rebuild.borrow())();
+}
+
+/// Per-stop picker: live preview swatch, manual entry seeded with the
+/// stop's exact raw token, Apply gated on parseability, Cancel. The
+/// edited token replaces only this stop; the rest of the value is
+/// untouched.
+fn open_color_stop_picker(parent: &gtk::Button, token: &str, on_apply: Rc<dyn Fn(String)>) {
     let picker = gtk::Popover::new();
-    picker.set_widget_name(&format!("{control_name}-picker"));
-    picker.set_parent(&swatch_button);
+    picker.set_parent(parent);
+    let picker_box = gtk::Box::new(gtk::Orientation::Vertical, 8);
+    picker_box.set_margin_top(10);
+    picker_box.set_margin_bottom(10);
+    picker_box.set_margin_start(10);
+    picker_box.set_margin_end(10);
+    picker_box.append(&small_label("rgba(RRGGBBAA), rgb(RRGGBB), or 0xAARRGGBB"));
+    let preview_state = Rc::new(RefCell::new(token.to_string()));
+    let preview = live_swatch_area(preview_state.clone(), 160, 22);
+    picker_box.append(&preview);
+    let entry = gtk::Entry::new();
+    entry.set_text(token);
+    entry.set_width_chars(18);
+    picker_box.append(&entry);
+    let buttons = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    buttons.set_halign(gtk::Align::End);
+    let cancel = gtk::Button::with_label("Cancel");
+    let apply_button = gtk::Button::with_label("Apply preview");
+    apply_button.add_css_class("suggested-action");
+    buttons.append(&cancel);
+    buttons.append(&apply_button);
+    picker_box.append(&buttons);
+    picker.set_child(Some(&picker_box));
+    {
+        let preview_state = preview_state.clone();
+        let preview = preview.clone();
+        let apply_button = apply_button.clone();
+        entry.connect_changed(move |entry| {
+            let text = entry.text().to_string();
+            let valid = crate::ux_presentation::parse_hyprland_color(&text).is_some();
+            apply_button.set_sensitive(valid);
+            *preview_state.borrow_mut() = text;
+            preview.queue_draw();
+        });
+    }
+    {
+        let entry = entry.clone();
+        let picker = picker.clone();
+        apply_button.connect_clicked(move |_| {
+            let text = entry.text().to_string();
+            // Single-stop edits accept single colors only (fail closed).
+            if crate::ux_presentation::parse_hyprland_color(&text).is_some() {
+                on_apply(text);
+            }
+            picker.popdown();
+        });
+    }
+    {
+        let picker = picker.clone();
+        cancel.connect_clicked(move |_| picker.popdown());
+    }
+    picker.popup();
+}
+
+/// Raw-only editor for color rows whose current value is not in a
+/// recognized form: a text button opening entry + Apply/Cancel. Fail
+/// closed — Apply stays insensitive until the text parses.
+fn attach_raw_color_entry(
+    end_box: &gtk::Box,
+    setting: &crate::ui::model::UiSetting,
+    initial_value: &str,
+    control_name: &str,
+    throttle_ms: Option<u64>,
+) {
+    let button = gtk::Button::with_label("Color…");
+    button.set_widget_name(control_name);
+    button.set_valign(gtk::Align::Center);
+    let picker = gtk::Popover::new();
+    picker.set_parent(&button);
     let picker_box = gtk::Box::new(gtk::Orientation::Vertical, 8);
     picker_box.set_margin_top(10);
     picker_box.set_margin_bottom(10);
@@ -6149,14 +6971,12 @@ fn attach_inline_color_control(
     let cancel = gtk::Button::with_label("Cancel");
     let apply_button = gtk::Button::with_label("Apply preview");
     apply_button.add_css_class("suggested-action");
-    apply_button.set_sensitive(parseable);
+    apply_button.set_sensitive(false);
     buttons.append(&cancel);
     buttons.append(&apply_button);
     picker_box.append(&buttons);
     picker.set_child(Some(&picker_box));
-
     {
-        // Live preview swatch + Apply validation as the text changes.
         let preview_state = preview_state.clone();
         let preview = preview.clone();
         let apply_button = apply_button.clone();
@@ -6169,26 +6989,16 @@ fn attach_inline_color_control(
             preview.queue_draw();
         });
     }
-
-    let apply = inline_preview_apply(
-        setting.row_id.clone(),
-        throttle_ms,
-        swatch_button.clone().upcast(),
-    );
+    let apply = inline_preview_apply(setting.row_id.clone(), throttle_ms, button.clone().upcast());
     {
         let entry = entry.clone();
         let picker = picker.clone();
-        let swatch_button = swatch_button.clone();
         apply_button.connect_clicked(move |_| {
             let text = entry.text().to_string();
-            // Validated: Apply is only sensitive when the text parses, and
-            // the exact entered text is what gets previewed (format kept).
             if crate::ux_presentation::parse_hyprland_color(&text).is_some()
                 || crate::ux_presentation::parse_hyprland_gradient(&text).is_some()
             {
-                apply(text.clone());
-                swatch_button.set_child(Some(&color_swatch_area(&text, 44, 18)));
-                swatch_button.set_tooltip_text(Some(&format!("{} — edit color", text.trim())));
+                apply(text);
             }
             picker.popdown();
         });
@@ -6199,9 +7009,9 @@ fn attach_inline_color_control(
     }
     {
         let picker = picker.clone();
-        swatch_button.connect_clicked(move |_| picker.popup());
+        button.connect_clicked(move |_| picker.popup());
     }
-    end_box.append(&swatch_button);
+    end_box.append(&button);
 }
 
 fn friendly_row_current_status(setting: &crate::ui::model::UiSetting) -> String {
@@ -6429,7 +7239,6 @@ fn append_current_value_summary(detail: &RowDetailProjection, section: &gtk::Box
             "This setting appears more than once in your config. The app will not write this setting until the duplicate entries are resolved manually.",
         );
         duplicate.set_widget_name("hyprland-settings-blocked-duplicate-conflict");
-        duplicate.set_tooltip_text(Some("Blocked reason: duplicate conflict"));
         section.append(&duplicate);
     }
     if let Some(warning) = &detail.current_value.warning {
@@ -7376,9 +8185,6 @@ fn append_screen_shader_advisory_controls(detail: &RowDetailProjection, detail_c
     controls.append(&small_label(&advisory.production_gate_disclaimer));
 
     let button = gtk::Button::with_label(&widget.button_label);
-    button.set_tooltip_text(Some(
-        "This visible control uses the advisory action model. Direct GTK file chooser execution remains deferred.",
-    ));
     controls.append(&button);
 
     let initial = initial_screen_shader_advisory_ui_action(&detail.row_id)
@@ -7406,7 +8212,6 @@ fn append_detail_section(parent: &gtk::Box, title: &str, build: impl FnOnce(&gtk
         "hyprland-settings-detail-section-{}",
         safe_widget_name(title)
     ));
-    frame.set_tooltip_text(Some(&format!("Detail section: {title}")));
     let content = gtk::Box::new(gtk::Orientation::Vertical, 6);
     content.set_margin_top(10);
     content.set_margin_bottom(10);
@@ -7492,11 +8297,6 @@ fn append_dead_man_preview_panel(detail: &RowDetailProjection, section: &gtk::Bo
         safe_widget_name(&detail.row_id)
     ));
     arm_button.set_sensitive(ui_state.arm_enabled);
-    arm_button.set_tooltip_text(Some(if ui_state.arm_enabled {
-        "Start a supervised preview with automatic revert. GTK automation must not activate this control."
-    } else {
-        "Supervised preview is not enabled for this setting yet."
-    }));
 
     let keep_button = gtk::Button::with_label("Keep changes");
     keep_button.set_widget_name(&format!(
@@ -7751,11 +8551,6 @@ fn append_runtime_preview_controls(
         "hyprland-settings-live-preview-badge-{}",
         safe_widget_name(&detail.row_id)
     ));
-    badge.set_tooltip_text(Some(&format!(
-        "Live preview capability: {} (risk {})",
-        row_state.capability.as_str(),
-        row_state.risk.as_str()
-    )));
     section.append(&badge);
 
     if !row_state.preview_enabled {
@@ -7934,7 +8729,6 @@ fn append_runtime_preview_controls(
             ));
             entry.set_text(&initial_value);
             entry.set_hexpand(true);
-            entry.set_tooltip_text(Some("Press Enter to preview this value live."));
             let apply = apply_from_control.clone();
             entry.connect_activate(move |entry| {
                 apply(entry.text().to_string());
@@ -7963,11 +8757,6 @@ fn append_runtime_preview_controls(
             .map(|pending| pending.can_review)
             .unwrap_or(false);
     save_button.set_sensitive(can_persist);
-    save_button.set_tooltip_text(Some(if can_persist {
-        "Persist the last previewed value once through the app's backup/write/reread flow. GTK automation must not activate this control."
-    } else {
-        "Save is unavailable: persistence gates for this row are not open. Preview stays temporary; use Revert or Cancel."
-    }));
     if !can_persist {
         buttons.append(&save_button);
         let reason = small_label(&format!("Save disabled: {}", row_state.save_state.reason()));
@@ -8027,9 +8816,6 @@ fn append_runtime_preview_controls(
         "hyprland-settings-live-preview-revert-{}",
         safe_widget_name(&detail.row_id)
     ));
-    revert_button.set_tooltip_text(Some(
-        "Restore the runtime value captured when the preview session started.",
-    ));
     {
         let controller = controller.clone();
         let status = status.clone();
@@ -8044,9 +8830,6 @@ fn append_runtime_preview_controls(
     cancel_button.set_widget_name(&format!(
         "hyprland-settings-live-preview-cancel-{}",
         safe_widget_name(&detail.row_id)
-    ));
-    cancel_button.set_tooltip_text(Some(
-        "Restore the original runtime value and clear the preview session.",
     ));
     {
         let controller = controller.clone();
@@ -8073,9 +8856,6 @@ fn append_write_controls(
 
     let controls = gtk::Box::new(gtk::Orientation::Vertical, 6);
     controls.set_widget_name("hyprland-settings-review-apply-area");
-    controls.set_tooltip_text(Some(
-        "Review and Apply area. GTK automation must not click Apply.",
-    ));
     controls.set_margin_top(8);
 
     controls.append(&body_label("Write review"));
@@ -8125,9 +8905,6 @@ fn append_write_controls(
 
     let apply_button = gtk::Button::with_label("Apply reviewed change");
     apply_button.set_widget_name("hyprland-settings-apply-reviewed-change-button");
-    apply_button.set_tooltip_text(Some(
-        "Apply reviewed change. GTK automation must not activate this control.",
-    ));
     let can_review = detail
         .edit
         .pending
@@ -8189,9 +8966,7 @@ fn append_detail_line(parent: &gtk::Box, label: &str, value: &str) {
     if label.eq_ignore_ascii_case("status")
         || label.eq_ignore_ascii_case("warning")
         || label.eq_ignore_ascii_case("write target")
-    {
-        line.set_tooltip_text(Some(&format!("Blocked or status detail: {value}")));
-    }
+    {}
     parent.append(&line);
 }
 

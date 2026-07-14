@@ -78,13 +78,13 @@ run_probe minimal_single_config "Safety Details"
 run_probe generated_config "Safety Details"
 run_probe script_managed_config "Safety Details"
 run_probe symlink_current_profile "Safety Details"
-run_probe minimal_single_config Appearance
-run_probe high_risk_display_risk Display
+run_probe minimal_single_config General
+run_probe high_risk_display_risk Monitors
 run_probe source_include_config Config
 run_probe nested_source_config Config
-run_probe duplicate_conflict Appearance
+run_probe duplicate_conflict General
 run_probe duplicate_conflict DuplicateConflictDetail
-run_probe missing_default_only Appearance
+run_probe missing_default_only General
 run_probe missing_default_only MissingDefaultDetail
 run_probe generated_config Config
 run_probe generated_config GeneratedConnectedFileDetail

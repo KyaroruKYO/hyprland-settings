@@ -39,6 +39,14 @@ normalized search index over friendly labels/raw keys/categories, a
 Profiles empty state, and a merged Layouts page. Zero classification or
 behavior change (guard-tested, `tests/gui_overhaul.rs`).
 
+**Update 2026-07-13 (GUI correction pass):** tooltips purged from the normal
+UI; section headings above cards with natural names; stop-based color rows
+with discard; Bezier editor + record menus under Animations; sidebar rebuilt
+to the six-category target model with page splits (General/Decoration,
+Devices/Gestures) and renames (Monitors, Keybinds, Settings); 341/341 rows
+reachable exactly once; 7/7 families mapped; Startup shells added. Zero
+classification/behavior change (guard-tested, `tests/gui_correction.rs`).
+
 Everything below this line is **dated history** (earlier audits and
 marathon logs), kept as a record and not to be read as current state.
 

@@ -61,15 +61,18 @@ fn config_selection_ui_preserves_existing_config_routes_and_details() {
     let dashboard_source = source_slice(&source, "fn dashboard_cards", "fn build_dashboard_card");
 
     assert!(source.contains("const CONFIG_ID: &str = \"config\""));
-    assert!(source.contains("label: \"Config\".to_string()"));
-    assert!(dashboard_source.contains("title: \"Config\""));
+    // The config page id keeps its internal name; the sidebar shows "Settings".
+    assert!(fs::read_to_string("src/ux_presentation.rs")
+        .expect("presentation reads")
+        .contains("label: \"Settings\""));
+    assert!(dashboard_source.contains("title: \"Settings\""));
     assert!(dashboard_source.contains("target_tab_id: CONFIG_ID"));
     // The Config page routes through the shared standalone-page path.
-    assert!(render_source.contains("[DASHBOARD_ID, CONFIG_ID, SAFETY_ID, LAYOUTS_ID, PROFILES_ID]"));
-    assert!(render_source.contains("config_view.set_visible(page_id == CONFIG_ID)"));
+    assert!(render_source.contains("standalone.show_only(selected_page_id)"));
+    assert!(source.contains("(CONFIG_ID, config_view.clone())"));
     assert!(source.contains("append_connected_file_details"));
     assert!(source.contains("connected_file_card(file, graph)"));
-    assert!(source.contains("search_projection(model, selected_tab_id, query)"));
+    assert!(source.contains("search_projection(model, source_tab, query)"));
     // Scalar saves route through the Safe Live Save Mode gate; UI code no
     // longer calls apply_setting_change directly.
     assert!(source.contains("gated_scalar_save_live("));

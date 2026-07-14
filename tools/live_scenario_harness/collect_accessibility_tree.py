@@ -518,10 +518,11 @@ SAFE_NAVIGATION_TARGETS = {
     "Dashboard",
     "Config",
     "Safety Details",
-    "Appearance",
+    "General",
+    "Decoration",
     "Animations",
-    "Input",
-    "Display",
+    "Devices",
+    "Monitors",
     "Search",
     "FirstSafeSettingRow",
     "FirstBlockedSettingRow",
@@ -547,7 +548,7 @@ SAFE_NAVIGATION_TARGETS = {
 BLOCKED_CATEGORY_TARGETS = {
     "MissingDefaultDetail": {
         "category": "default_missing_line",
-        "page": "Appearance",
+        "page": "General",
         "terms": ["missing/default", "uses hyprland default", "default value"],
         "row_terms": ["missing/default setting row", "uses hyprland default"],
     },
@@ -619,7 +620,7 @@ BLOCKED_CATEGORY_TARGETS = {
     },
     "HighRiskDetail": {
         "category": "high_risk",
-        "page": "Display",
+        "page": "Monitors",
         "terms": ["high-risk", "extra care needed", "family-specific recovery"],
         "row_terms": ["high-risk setting row", "extra care needed"],
     },
@@ -637,7 +638,7 @@ BLOCKED_CATEGORY_TARGETS = {
     },
     "InputProofDetail": {
         "category": "input_proof",
-        "page": "Input",
+        "page": "Devices",
         "terms": [
             "needs per-row live proof",
             "fallback requirement",
@@ -649,7 +650,7 @@ BLOCKED_CATEGORY_TARGETS = {
     },
     "DisplayRenderRiskDetail": {
         "category": "display_render_risk",
-        "page": "Display",
+        "page": "Monitors",
         "terms": ["display/render", "screen shader", "render", "extra care needed"],
         "row_terms": ["display/render risk setting row", "screen shader", "render"],
     },
@@ -1407,7 +1408,7 @@ def blocked_category_text_collected(values, target):
 
 
 def open_duplicate_conflict_detail(app):
-    ok, message = click_named_target(app, "Appearance")
+    ok, message = click_named_target(app, "Decoration")
     if not ok:
         return False, f"could not open Appearance before duplicate detail: {message}"
     time.sleep(1)
@@ -1456,7 +1457,7 @@ def click_named_target(app, target):
         # equivalent), and the toggle lives on the settings work area — so
         # open a settings page first, click the toggle to prove the reveal
         # behavior, then find the revealed entry.
-        ok, message = click_named_target(app, "Appearance")
+        ok, message = click_named_target(app, "General")
         if not ok:
             return False, f"could not open a settings page before Search: {message}"
         time.sleep(1)
@@ -1489,13 +1490,15 @@ def click_named_target(app, target):
     if target == "DetailPane":
         # The detail surface opens on demand (a popover anchored to the
         # opened row) — select a setting row first, then find the pane.
-        ok, message = click_named_target(app, "Appearance")
+        ok, message = click_named_target(app, "General")
         if not ok:
             return False, f"could not open a settings page before DetailPane: {message}"
         time.sleep(1)
-        row, parent = find_first_node_with_parent(
-            app, lambda current: safe_row_candidate(current, False)
-        )
+        def any_setting_row(current):
+            text = node_text_lower(current)
+            return "setting row:" in text and "apply" not in text
+
+        row, parent = find_first_node_with_parent(app, any_setting_row)
         if row is not None:
             safe_select_node(row, parent)
             time.sleep(1)

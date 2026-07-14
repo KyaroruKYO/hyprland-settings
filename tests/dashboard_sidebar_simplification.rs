@@ -48,7 +48,7 @@ fn dashboard_sidebar_source_records_expected_navigation() {
     // The tab ordering now lives in the grouped category model.
     let categories =
         fs::read_to_string("src/ux_presentation.rs").expect("presentation source should read");
-    assert!(source.contains("SIDEBAR_CATEGORIES"));
+    assert!(source.contains("SIDEBAR_PAGE_LAYOUT"));
     assert!(categories.contains("\"appearance\""));
     assert!(categories.contains("\"windows-layout\""));
     assert!(categories.contains("\"display\""));
@@ -58,7 +58,6 @@ fn dashboard_sidebar_source_records_expected_navigation() {
     assert!(categories.contains("\"permissions\""));
     assert!(categories.contains("\"system\""));
     assert!(categories.contains("\"animations\""));
-    assert!(source.contains("\"keybinds\" => \"Keyboard\".to_string()"));
 
     assert!(
         !source.contains("format!(\"{} rows\", tab.row_count)"),
@@ -68,7 +67,7 @@ fn dashboard_sidebar_source_records_expected_navigation() {
         !source.contains("row_box.append(&count)"),
         "sidebar must not append a row-count widget"
     );
-    assert!(source.contains("find(|tab| tab.id == tab_id && tab.row_count > 0)"));
+    assert!(source.contains("page_claims_row(page, &setting.official_setting)"));
 }
 
 #[test]
@@ -78,9 +77,9 @@ fn dashboard_source_hides_settings_work_area_and_omits_backend_counts() {
     assert!(source.contains("fn build_dashboard_view"));
     assert!(source.contains("fn render_main_view"));
     // Standalone pages share one routed show/hide path.
-    assert!(source.contains("dashboard_view.set_visible(page_id == DASHBOARD_ID)"));
+    assert!(source.contains("(DASHBOARD_ID, dashboard_view.clone())"));
     assert!(source.contains("settings_view.set_visible(false)"));
-    assert!(source.contains("dashboard_view.set_visible(false)"));
+    assert!(source.contains("view.set_visible(is_selected)"));
     assert!(source.contains("settings_view.set_visible(true)"));
     assert!(source.contains("render_empty_detail(detail_content)"));
 
@@ -100,13 +99,13 @@ fn dashboard_source_hides_settings_work_area_and_omits_backend_counts() {
     let dashboard_cards_source = &source[dashboard_cards_start..dashboard_cards_end];
 
     for card in [
-        "Config",
-        "Appearance",
-        "Windows & Layout",
-        "Input",
-        "Displays",
-        "Shortcuts",
-        "Advanced",
+        "Settings",
+        "General",
+        "Decoration",
+        "Devices",
+        "Monitors",
+        "Keybinds",
+        "System",
     ] {
         assert!(
             dashboard_cards_source.contains(card),

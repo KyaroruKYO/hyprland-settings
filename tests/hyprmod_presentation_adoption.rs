@@ -132,7 +132,7 @@ fn hidden_search_is_wired_for_ctrl_f_and_escape() {
     // entry uses the same clear-and-hide path.
     assert!(window.contains("search_entry.set_visible(false)"));
     assert!(window.contains("hyprland-settings-search-toggle"));
-    assert!(window.contains("Search settings (Ctrl+F)"));
+    // Tooltips were removed app-wide; the shortcut remains wired below.
     assert!(window.contains("gtk::EventControllerKey::new()"));
     assert!(window.contains("gtk::gdk::Key::f"));
     assert!(window.contains("search_toggle.set_active(true)"));

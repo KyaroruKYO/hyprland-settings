@@ -112,12 +112,12 @@ fn dashboard_cards_keep_open_button_navigation_targets() {
     );
 
     for (title, target) in [
-        ("Appearance", "appearance"),
-        ("Windows & Layout", "windows-layout"),
-        ("Input", "input"),
-        ("Displays", "display"),
-        ("Shortcuts", "keybinds"),
-        ("Advanced", "system"),
+        ("General", "general"),
+        ("Decoration", "decoration"),
+        ("Devices", "devices"),
+        ("Monitors", "monitors"),
+        ("Keybinds", "keybinds"),
+        ("System", "system"),
     ] {
         assert!(dashboard_source.contains(title), "missing card {title}");
         assert!(

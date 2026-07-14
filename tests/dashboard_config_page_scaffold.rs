@@ -40,19 +40,15 @@ fn source_slice<'a>(source: &'a str, start: &str, end: &str) -> &'a str {
 #[test]
 fn dashboard_and_sidebar_include_config_entry_point() {
     let source = fs::read_to_string("src/ui/window.rs").expect("window source should read");
-    let sidebar_source = source_slice(&source, "fn sidebar_items", "fn sidebar_tab_label");
+    let sidebar_source = source_slice(&source, "fn sidebar_items", "fn build_sidebar");
     let dashboard_source = source_slice(&source, "fn dashboard_cards", "fn build_dashboard_card");
 
     assert!(source.contains("const DASHBOARD_ID: &str = \"dashboard\""));
     assert!(source.contains("const CONFIG_ID: &str = \"config\""));
     assert!(sidebar_source.contains("label: \"Dashboard\".to_string()"));
-    assert!(sidebar_source.contains("label: \"Config\".to_string()"));
-    assert!(
-        sidebar_source.find("label: \"Dashboard\".to_string()")
-            < sidebar_source.find("label: \"Config\".to_string()"),
-        "Config should appear after Dashboard"
-    );
-    assert!(dashboard_source.contains("title: \"Config\""));
+    assert!(sidebar_source.contains("SIDEBAR_PAGE_LAYOUT"));
+
+    assert!(dashboard_source.contains("title: \"Settings\""));
     assert!(dashboard_source.contains("target_tab_id: CONFIG_ID"));
     assert!(dashboard_source.contains("Choose which Hyprland config the app reviews"));
 }
@@ -130,8 +126,8 @@ fn config_page_is_read_only_scaffold_with_future_controls_disabled() {
     assert!(source.contains("hyprland-settings-profile-mode-detail"));
     assert!(source.contains("action.set_sensitive(active)"));
     // The Config page routes through the shared standalone-page path.
-    assert!(render_source.contains("[DASHBOARD_ID, CONFIG_ID, SAFETY_ID, LAYOUTS_ID, PROFILES_ID]"));
-    assert!(render_source.contains("config_view.set_visible(page_id == CONFIG_ID)"));
+    assert!(render_source.contains("standalone.show_only(selected_page_id)"));
+    assert!(source.contains("(CONFIG_ID, config_view.clone())"));
     assert!(render_source.contains("settings_view.set_visible(false)"));
     assert!(render_source.contains("render_empty_detail(detail_content)"));
 }

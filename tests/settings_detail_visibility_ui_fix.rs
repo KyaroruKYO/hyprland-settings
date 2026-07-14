@@ -46,7 +46,7 @@ fn window_layout_hides_diagnostics_and_uses_centered_column_with_on_demand_detai
     assert!(!source.contains("gtk::Paned::new(gtk::Orientation::Horizontal)"));
     assert!(source.contains("adw::Clamp::new()"));
     assert!(source.contains("settings_clamp.set_maximum_size(800)"));
-    assert!(source.contains("settings_list.add_css_class(\"boxed-list\")"));
+    assert!(source.contains("list.add_css_class(\"boxed-list\")"));
     assert!(source.contains("hyprland-settings-detail-popover"));
     assert!(source.contains("detail_popover.set_child(Some(&detail_panel))"));
     assert!(source.contains("detail_popover.popup()"));

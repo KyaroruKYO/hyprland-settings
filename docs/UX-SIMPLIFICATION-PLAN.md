@@ -165,6 +165,34 @@ cards/badges, source-grouped rules/autostart/env lists, and the Workspaces
 page all need safe read-only model projections before an honest shell can
 exist; inline dead-man supervision stays in the detail surface.
 
+## Implemented in the fourth pass (correction/precision)
+
+1. **Tooltips removed app-wide** (146 calls) except the documented
+   harness/accessibility identifiers and the Safety-Details review-card
+   descriptors; inline-control feedback moved to an error style class.
+2. **Section headings hang above the cards**: per-section standalone
+   heading label + separate rounded card, with natural section names
+   (Blur, Shadow, Border Colors, Snap, Rounding and Opacity, ...).
+3. **Stop-based color rows**: checkered per-stop swatches with their own
+   validated pickers, per-stop remove, add-stop, gradient angle stepper,
+   and a back-arrow discard that restores the original value — all through
+   the reversible preview path, fail-closed on anything unparseable.
+4. **Bezier Curve Editor moved under Animations** (chevron row opening an
+   editor window with a multi-curve graph + the proven curve picker), and
+   editable animation records got menu buttons with compact per-record
+   controls. The Settings page no longer hosts animation/curve controls.
+5. **Sidebar matched to the target model**: LOOK & FEEL / INPUT / DISPLAY /
+   WINDOW MANAGEMENT / STARTUP / ADVANCED with General, Decoration,
+   Keybinds, Devices, Gestures, Monitors, Workspaces, Layouts, Window
+   Rules, Layer Rules, Autostart, Env Variables, XWayland, Ecosystem,
+   Profiles, Settings; uppercase caption headers and larger row labels.
+6. **Page partition model** (`SIDEBAR_PAGE_LAYOUT`): 341/341 rows land on
+   exactly one page (guard-tested); all 7 families mapped (read-only
+   source-entry cards on Keybinds/Monitors/Gestures/Devices/Ecosystem;
+   Window Rules is a real source-grouped locked list).
+7. **Startup pages**: Autostart and Env Variables as honest empty states
+   (the parser does not preserve exec/env lines — documented blocker).
+
 ## Follow-ups (next passes)
 
 - Detail-pane simplification: short chip + expander for the full

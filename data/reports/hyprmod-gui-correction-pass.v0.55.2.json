@@ -1,0 +1,93 @@
+{
+  "artifactKind": "hyprmod-gui-correction-pass-report",
+  "projectDataVersion": "v0.55.2",
+  "branch": "structured-family-editors-unified",
+  "commitBefore": "da0cb854157fa92b62b6b8774b4561c1dfbed603",
+  "commitAfter": "the correction-pass commit following da0cb85 (see git log)",
+  "sprintDate": "2026-07-13",
+  "referenceFilesReInspected": [
+    "hyprmod/ui/options/color.py (gradient stop model: per-stop button + circular flat remove, add hidden at max, remove hidden at one stop, angle spinner, rebuild-raw emission)",
+    "hyprmod/ui/sidebar.py + hyprmod/style.css (category header class, navigation-sidebar lists)",
+    "hyprmod/pages/autostart.py (per-keyword source groups, locked rows with source metadata)",
+    "hyprmod/ui/__init__.py make_page_layout (clamped page column)"
+  ],
+  "implementationNote": "all code and user-facing text are original (standard GTK/libadwaita idioms); the reference informed layout and interaction structure only",
+  "issue1Tooltips": {
+    "status": "complete",
+    "removed": 146,
+    "keptWithDocumentedReason": "sidebar navigation names, setting-row accessibility text, and detail-pane identification (probe/driver targets), plus the review-card descriptors on Safety Details surfaces whose text the evidence harness asserts",
+    "feedbackReplacement": "inline-control feedback moved from tooltips to an error style class; picker guidance is visible text",
+    "guard": "tests/gui_correction.rs::normal_ui_builders_carry_no_tooltips (20 normal builders pinned tooltip-free; row builder pinned to exactly its one accessibility call)"
+  },
+  "issue2SectionHeadings": {
+    "status": "complete",
+    "change": "settings pages render per-section: a standalone heading label appended to the centered column, then a separate rounded boxed-list card of rows; the previous in-list header mechanism is gone; page titles show the page name only",
+    "sectionNameCleanup": "curated map + mechanical page-prefix strip (Decoration Blur -> Blur, Decoration Shadow -> Shadow, General Col -> Border Colors, General Snap -> Snap, Decoration -> Rounding and Opacity, Misc -> Miscellaneous, ...)"
+  },
+  "issue3ColorRows": {
+    "status": "complete",
+    "change": "color rows are stop-based: one checkered swatch button per color stop (clicking a stop opens its own validated picker with live preview, manual entry, Apply, Cancel), a circular remove button beside each stop when more than one exists, an add-stop button (duplicates the last stop, max 10), an angle stepper for gradients, and a back-arrow discard button that appears while the row differs from its original value and restores it through the same reversible preview path",
+    "failClosed": "unparseable current values fall back to a raw text editor with Apply gated on parseability; per-stop edits accept single colors only; raw token text is preserved exactly",
+    "colorRowCount": 22,
+    "safety": "everything routes through the existing reversible preview executor; Save stays the separate gated step; no new write/reload/runtime path"
+  },
+  "issue4BezierEditor": {
+    "status": "complete",
+    "change": "the Animations page opens with a 'Bezier Curve Editor / Create and manage animation curves' chevron row that opens an editor window (read-only multi-curve graph drawn from the session's control points + the proven curve picker controls), followed by an Animation Records card whose rows (the editable records, e.g. windows/layers/fade/workspaces when overridden) carry a menu button opening compact per-record controls: enabled toggle, speed, curve selector limited to existing curves, preview with recovery, gated Save; style preserved and not editable",
+    "configPage": "the Settings (config) page no longer hosts any animation/curve controls - it keeps the config file row, Safe Live Save Mode, and the save note"
+  },
+  "issue5Sidebar": {
+    "status": "complete",
+    "categories": ["LOOK & FEEL", "INPUT", "DISPLAY", "WINDOW MANAGEMENT", "STARTUP", "ADVANCED"],
+    "pages": "General, Decoration, Animations, Cursor / Keybinds, Devices, Gestures / Monitors, Workspaces / Layouts, Window Rules, Layer Rules / Autostart, Env Variables / XWayland, Ecosystem, System, Permissions, Windows & Layout, Profiles, Settings, Safety Details",
+    "renames": "Appearance split into General + Decoration (prefix partition), Input split into Devices + Gestures, Displays -> Monitors, Keyboard -> Keybinds, Config -> Settings; XWayland and Env Variables capitalized as targets",
+    "styling": "uppercase caption category headers (dim label), larger nav row labels via an app CSS provider (1.08em), roomier row padding"
+  },
+  "issue6Organization": {
+    "status": "complete",
+    "mechanism": "ux_presentation::SIDEBAR_PAGE_LAYOUT PageSpec model: prefix pages claim official-setting prefixes, exactly one rest page per model tab catches everything unclaimed",
+    "reachability": "341/341 scalar rows land on exactly one page (guard-tested with duplicate detection)",
+    "familyMapping": {
+      "hl.animation": "Animations (records card + picker)",
+      "hl.curve": "Animations / Bezier Curve Editor",
+      "hl.bind": "Keybinds (read-only source entries card)",
+      "hl.monitor": "Monitors (read-only source entries card)",
+      "hl.gesture": "Gestures (read-only source entries card)",
+      "hl.device": "Devices (read-only source entries card)",
+      "hl.permission": "Ecosystem (read-only source entries card)",
+      "hl.windowrule": "Window Rules page (source-grouped locked rows; preserved by the parser)"
+    }
+  },
+  "issue7Startup": {
+    "status": "complete as honest shells",
+    "autostart": "sidebar page with a centered empty state explaining entries come from exec lines in hyprland.conf or sourced files; blocker: the read-only parser preserves structured families but not exec/env lines, so no entries are projected and none are invented",
+    "envVariables": "same pattern for env lines",
+    "noWritePath": "guard-tested (no edit affordance, no gated call, no fs write in the shells)"
+  },
+  "issue8Pages": {
+    "status": "advanced",
+    "done": "General/Decoration split with natural section names outside cards; Animations top row + record menus; Monitors/Devices/Gestures/Keybinds/Ecosystem read-only family entry cards; Window Rules real source-grouped locked list; Workspaces/Layer Rules honest empty states; Settings page slimmed; Safety Details unchanged as the proof home",
+    "deferred": [
+      "Monitors live monitor cards with HDR/VRR badges (needs a safe read-only monitor projection; the UI never calls hyprctl directly)",
+      "Devices 'No touchpad detected' notice (same projection dependency)",
+      "Autostart/Env real entries (parser does not preserve exec/env lines; extending the parser is out of scope for a presentation sprint)",
+      "Layer Rules entries (layerrule lines not preserved by the parser)",
+      "live-linked bezier graph while editing control points (graph draws on window open)"
+    ]
+  },
+  "scalarRowsTotal": 341,
+  "scalarReachability": "341 reachable exactly once",
+  "familiesMapped": 7,
+  "behaviorChanges": 0,
+  "safetyClassificationChanges": 0,
+  "safeWritableRowCount": 341,
+  "newRuntimeMutationPathAdded": false,
+  "newActiveConfigWritePathAdded": false,
+  "hyprctlReloadPathAdded": false,
+  "hyprctlReloadRan": false,
+  "monitorDisplayMutated": false,
+  "activeConfigWrittenDuringNormalTests": false,
+  "harnessUpdates": "probe pages renamed (Appearance->General, Display->Monitors, Input->Devices) in targets, specs, and matrix runs; Search probe already toggle-aware; DetailPane probe already row-first",
+  "testsAdded": ["tests/gui_correction.rs (8 guards)"],
+  "validation": "cargo fmt, cargo fmt --check, cargo check, cargo test (full suite, all ok), jq empty data/reports/*.json, git diff --check, cargo build --release, GTK evidence matrix - results in the final summary"
+}

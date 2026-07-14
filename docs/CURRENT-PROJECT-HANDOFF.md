@@ -211,6 +211,16 @@ Save persistence and migration marathon complete on `structured-family-editors-u
 - **Fallback labels**: unmatched rows strip the redundant page-name prefix (formatting only).
 - Guards: `tests/gui_overhaul.rs` (8 tests); harness DetailPane probe opens a row first. Deferred with reasons: Monitors cards, rules/autostart/env locked lists, Workspaces page (all need safe read-only model projections first).
 
+## GUI Correction Pass Additions (2026-07-13)
+
+- Tooltips removed from the normal UI (146 calls; documented exceptions: navigation/row/detail identification for the harness, Safety-Details review-card descriptors).
+- Section headings now hang above separate rounded cards with natural names; page titles are just the page name.
+- Stop-based color rows (checkered swatches, per-stop pickers/remove, add-stop, angle, discard back-arrow) — reversible preview path only, fail-closed.
+- Bezier Curve Editor row + editor window (multi-curve graph + proven picker) and per-record menu controls live under **Animations**; the Settings page is animation-free.
+- Sidebar rebuilt to the target model (six uppercase categories, HyprMod-equivalent page names, General/Decoration and Devices/Gestures splits, Monitors/Keybinds/Settings renames, larger labels).
+- `SIDEBAR_PAGE_LAYOUT` partition: 341/341 rows on exactly one page; 7 families mapped (read-only source-entry cards; Window Rules real locked list; Autostart/Env honest shells — parser preserves no exec/env lines).
+- Guards: `tests/gui_correction.rs` (8); harness pages renamed (General/Monitors/Devices).
+
 ## Next Exact Work
 
 The release is complete and three UX passes are in (adoption, simplification, whole-GUI overhaul). Remaining:

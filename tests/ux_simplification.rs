@@ -7,7 +7,7 @@ use std::fs;
 use hyprland_settings::runtime_preview::runtime_preview_capability_matrix;
 use hyprland_settings::ux_presentation::{
     category_for_tab, short_description, status_chip_for_row, StatusChip, SAVE_GATE_CHIP,
-    SIDEBAR_CATEGORIES,
+    SIDEBAR_PAGE_LAYOUT,
 };
 
 fn source_slice<'a>(source: &'a str, start: &str, end: &str) -> &'a str {
@@ -41,14 +41,21 @@ fn config_page_stays_settings_first() {
             "the Config page must not render the developer surface {section}"
         );
     }
-    // The user-facing cards stay.
+    // The user-facing cards stay; the record picker card now lives on the
+    // Animations page instead of here.
     for kept in [
         "config_file_selection_section(",
         "safe_live_save_mode_section(",
-        "structured_family_preview_controls_section(",
     ] {
-        assert!(config_view.contains(kept), "Config page keeps {kept}");
+        assert!(config_view.contains(kept), "Settings page keeps {kept}");
     }
+    assert!(
+        !config_view.contains("structured_family_preview_controls_section("),
+        "the record picker card belongs to Animations, not Settings"
+    );
+    assert!(
+        window.contains("sections_box.append(&structured_family_preview_controls_section(model))")
+    );
 }
 
 #[test]
@@ -66,18 +73,19 @@ fn safety_details_page_hosts_every_moved_surface() {
         );
     }
     assert!(safety_view.contains("Nothing on this page changes behavior"));
-    // The page is reachable: sidebar item, dashboard card, view routing.
+    // The page is reachable: page layout entry, dashboard card, routing.
     assert!(window.contains("const SAFETY_ID: &str = \"safety-details\""));
-    assert!(window.contains("label: \"Safety Details\".to_string()"));
     assert!(window.contains("title: \"Safety Details\""));
-    assert!(window.contains("safety_view.set_visible(page_id == SAFETY_ID)"));
+    assert!(window.contains("(SAFETY_ID, safety_view.clone())"));
+    let layout = fs::read_to_string("src/ux_presentation.rs").expect("presentation reads");
+    assert!(layout.contains("label: \"Safety Details\""));
 }
 
 #[test]
 fn sidebar_is_grouped_by_task_categories() {
-    // The category model covers every existing tab plus the two standalone
-    // Advanced pages, and the window renders headers from it.
-    let labels: Vec<&str> = SIDEBAR_CATEGORIES
+    // The page layout covers the HyprMod-style category set, every page id
+    // resolves a category, and the window renders headers from it.
+    let labels: Vec<&str> = SIDEBAR_PAGE_LAYOUT
         .iter()
         .map(|category| category.label)
         .collect();
@@ -88,35 +96,53 @@ fn sidebar_is_grouped_by_task_categories() {
             "Input",
             "Display",
             "Window Management",
+            "Startup",
             "Advanced"
         ]
     );
-    for tab_id in [
-        "appearance",
+    for page_id in [
+        "general",
+        "decoration",
         "animations",
         "cursor",
-        "input",
         "keybinds",
-        "display",
-        "windows-layout",
+        "devices",
+        "gestures",
+        "monitors",
+        "workspaces",
+        "layouts",
+        "window-rules",
+        "layer-rules",
+        "autostart",
+        "env-variables",
+        "xwayland",
+        "ecosystem",
         "system",
         "permissions",
+        "profiles",
         "config",
         "safety-details",
     ] {
         assert!(
-            category_for_tab(tab_id).is_some(),
-            "{tab_id} must belong to a sidebar category"
+            category_for_tab(page_id).is_some(),
+            "{page_id} must belong to a sidebar category"
         );
     }
     assert_eq!(category_for_tab("dashboard"), None);
     assert_eq!(category_for_tab("config"), Some("Advanced"));
     assert_eq!(category_for_tab("safety-details"), Some("Advanced"));
+    assert_eq!(category_for_tab("autostart"), Some("Startup"));
 
     let window = fs::read_to_string("src/ui/window.rs").expect("window reads");
-    assert!(window.contains("SIDEBAR_CATEGORIES"));
+    assert!(window.contains("SIDEBAR_PAGE_LAYOUT"));
     assert!(window.contains("set_header_func"));
     assert!(window.contains("hyprland-settings-nav-category-"));
+    // Category headers render uppercase in a caption style, and nav rows
+    // carry the legibility class backed by the app CSS provider.
+    assert!(window.contains("label.to_uppercase()"));
+    assert!(window.contains("caption-heading"));
+    assert!(window.contains("hyprland-settings-nav-row-label"));
+    assert!(window.contains("font-size: 1.08em"));
 }
 
 #[test]

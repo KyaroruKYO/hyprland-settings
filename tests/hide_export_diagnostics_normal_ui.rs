@@ -35,7 +35,10 @@ fn dashboard_sidebar_row_copy_and_details_remain_intact() {
     assert!(source.contains("const DASHBOARD_ID: &str = \"dashboard\""));
     assert!(source.contains("fn build_dashboard_view"));
     assert!(source.contains("fn dashboard_cards"));
-    assert!(source.contains("\"keybinds\" => \"Keyboard\".to_string()"));
+    // Page labels now come from the sidebar page layout ("Keybinds").
+    assert!(fs::read_to_string("src/ux_presentation.rs")
+        .expect("presentation reads")
+        .contains("label: \"Keybinds\""));
     assert!(source.contains("friendly_row_current_status"));
     assert!(source.contains("friendly_row_attention_status"));
     assert!(source.contains("Source / advanced metadata"));
