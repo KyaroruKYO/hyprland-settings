@@ -75,6 +75,79 @@ pub fn next_save_config_text(original: &str, changes: &[NextSaveChange]) -> Resu
     Ok(text)
 }
 
+/// Whether two staged/original value strings mean the same thing: exact
+/// match, boolean synonyms (true/1/yes/on vs false/0/no/off), numeric and
+/// css-gap-shorthand equality, or color/gradient equality across the
+/// accepted spellings (rgba() tokens vs the readback's bare AARRGGBB hex,
+/// missing angle vs 0deg). Fail closed: unparseable pairs compare as plain
+/// strings. The pending ledger uses this so format differences between the
+/// UI's applied values and the runtime readback's originals never mark a
+/// semantic no-op as pending.
+pub fn values_semantically_equal(left: &str, right: &str) -> bool {
+    let left = left.trim();
+    let right = right.trim();
+    if left == right {
+        return true;
+    }
+    fn boolish(value: &str) -> Option<bool> {
+        match value.to_ascii_lowercase().as_str() {
+            "true" | "1" | "yes" | "on" => Some(true),
+            "false" | "0" | "no" | "off" => Some(false),
+            _ => None,
+        }
+    }
+    if let (Some(a), Some(b)) = (boolish(left), boolish(right)) {
+        return a == b;
+    }
+    // Numeric values, including css-gap shorthand expansion (a single "5"
+    // means "5 5 5 5").
+    fn gap_vector(value: &str) -> Option<[f64; 4]> {
+        let parts: Vec<f64> = value
+            .split_whitespace()
+            .map(str::parse)
+            .collect::<Result<_, _>>()
+            .ok()?;
+        match parts[..] {
+            [all] => Some([all, all, all, all]),
+            [vertical, horizontal] => Some([vertical, horizontal, vertical, horizontal]),
+            [top, horizontal, bottom] => Some([top, horizontal, bottom, horizontal]),
+            [top, right, bottom, left] => Some([top, right, bottom, left]),
+            _ => None,
+        }
+    }
+    if let (Some(a), Some(b)) = (gap_vector(left), gap_vector(right)) {
+        return a.iter().zip(b.iter()).all(|(x, y)| (x - y).abs() < 1e-9);
+    }
+    // Colors and gradients across spellings; a missing angle means 0deg.
+    fn color_key(value: &str) -> Option<(Vec<crate::ux_presentation::ParsedColor>, u16)> {
+        if let Some(color) = crate::ux_presentation::parse_hyprland_color(value) {
+            return Some((vec![color], 0));
+        }
+        // Int-typed single-color readbacks ("1426063360", bits AARRGGBB).
+        // Only ever reached when the OTHER side already parsed as a color
+        // (plain number pairs are handled by the numeric rule first).
+        if value.len() >= 8 && value.chars().all(|character| character.is_ascii_digit()) {
+            if let Ok(bits) = value.parse::<u32>() {
+                return Some((
+                    vec![crate::ux_presentation::ParsedColor {
+                        alpha: (bits >> 24) as u8,
+                        red: (bits >> 16) as u8,
+                        green: (bits >> 8) as u8,
+                        blue: bits as u8,
+                    }],
+                    0,
+                ));
+            }
+        }
+        crate::ux_presentation::parse_hyprland_gradient(value)
+            .map(|(colors, angle)| (colors, angle.unwrap_or(0)))
+    }
+    if let (Some(a), Some(b)) = (color_key(left), color_key(right)) {
+        return a == b;
+    }
+    false
+}
+
 /// One rendered diff line.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DiffLineKind {

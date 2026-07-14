@@ -779,6 +779,35 @@ pub fn parse_hyprland_color(raw: &str) -> Option<ParsedColor> {
         }
         return None;
     }
+    // Bare hex: the legacy config form and the runtime readback's gradient
+    // tokens. Eight digits are AARRGGBB (like the 0x form); six are RRGGBB.
+    // The readback prints %x without zero padding, so seven digits pad to
+    // eight (AARRGGBB).
+    if (trimmed.len() == 8 || trimmed.len() == 7)
+        && trimmed
+            .chars()
+            .all(|character| character.is_ascii_hexdigit())
+    {
+        let padded = format!("{trimmed:0>8}");
+        return Some(ParsedColor {
+            alpha: hex_byte(&padded[0..2])?,
+            red: hex_byte(&padded[2..4])?,
+            green: hex_byte(&padded[4..6])?,
+            blue: hex_byte(&padded[6..8])?,
+        });
+    }
+    if trimmed.len() == 6
+        && trimmed
+            .chars()
+            .all(|character| character.is_ascii_hexdigit())
+    {
+        return Some(ParsedColor {
+            red: hex_byte(&trimmed[0..2])?,
+            green: hex_byte(&trimmed[2..4])?,
+            blue: hex_byte(&trimmed[4..6])?,
+            alpha: 0xff,
+        });
+    }
     None
 }
 
@@ -806,7 +835,13 @@ pub fn parse_hyprland_gradient(raw: &str) -> Option<(Vec<ParsedColor>, Option<u1
         }
         return None;
     }
-    if colors.len() < 2 {
+    // A lone color is not gradient syntax, but a single color WITH an
+    // angle is (the runtime readback reports single-stop gradients as
+    // "AARRGGBB 0deg").
+    if colors.len() < 2 && angle.is_none() {
+        return None;
+    }
+    if colors.is_empty() {
         return None;
     }
     Some((colors, angle))

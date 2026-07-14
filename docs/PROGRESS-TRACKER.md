@@ -85,6 +85,28 @@ generated table of trusted 0.55.4 official defaults). Guards:
 `data/reports/pending-changes-fidelity.v0.55.2.json`. Zero
 classification/gate change.
 
+**Update 2026-07-14 (pending-changes reliability marathon):** the user
+reported unreliable pending indicators (double toggles, missing
+chip/bar/badges). A live AT-SPI reliability matrix
+(`tools/live_scenario_harness/pending_reliability_matrix.py` +
+`data/reports/pending-changes-reliability-matrix.v0.55.2.json`) now drives
+every eligible inline control through one user-like change and asserts all
+five pending surfaces on the FIRST change, then discards and asserts
+everything clears. Root causes found and fixed: (1) controls seeded from
+config/flip-suggestions instead of live runtime — first changes could be
+runtime no-ops (double-toggle symptom); all controls now seed
+runtime-first through `read_runtime_option_live`; (2) color/gradient
+preview sessions could never start (the `gradient data:` readback prefix
+was unparsed) and their applies/reverts rendered an invalid string form —
+the executor now parses the prefix and renders the proven
+`{ colors = { "rgba(RRGGBBAA)" }, angle = N }` lua table for both Color
+and Gradient kinds; (3) the pending ledger held weak controller references
+and re-created sessions on page re-render, losing the true original — it
+now owns sessions strongly and creation paths reuse them; (4) the pending
+predicate compared value strings — bool/number/gap/color spellings now
+compare semantically. Guards: `tests/pending_changes_reliability.rs`.
+Zero gate/classification change.
+
 Everything below this line is **dated history** (earlier audits and
 marathon logs), kept as a record and not to be read as current state.
 

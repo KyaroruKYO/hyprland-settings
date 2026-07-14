@@ -239,6 +239,11 @@ defaults instead of the edit projection's flip-suggestion. Guards:
 - Custom-swatch persistence across sessions (in-memory only today).
 - Structured-family record previews in the pending ledger (their
   supervised auto-revert flow does not fit applied-live-until-discarded).
+- SIGTERM/SIGINT preview revert (glib 0.22 exposes no unix-signal
+  binding; normal window close reverts, plain kill does not).
+- GtkComboBoxText popups are invisible to AT-SPI (harness drives the
+  Selection interface instead); consider gtk::DropDown for better
+  accessibility.
 
 ## Safety boundaries (unchanged)
 

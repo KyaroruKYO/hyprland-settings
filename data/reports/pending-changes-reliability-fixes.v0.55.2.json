@@ -1,0 +1,91 @@
+{
+  "report": "pending-changes-reliability-fixes",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-14",
+  "startingCommit": "ce97eef",
+  "endingCommit": "the commit titled 'Fix pending-changes reliability across controls' that adds this report",
+  "userReportedSymptoms": [
+    "some changed/toggled settings did not show the top pending chip",
+    "some did not show the bottom unsaved-changes bar",
+    "some did not show the sidebar/page count pill",
+    "some required toggling twice before the pending UI appeared"
+  ],
+  "rootCausesFixed": [
+    {
+      "id": "seed-vs-runtime-mismatch",
+      "symptom": "double toggle required; first change produced no pending UI",
+      "cause": "controls seeded their initial display from the config line or edit.proposed_value (which for booleans is next_bool_value \u2014 a FLIP suggestion, not a value); when live runtime differed (lua-side config, options set outside the parsed file, earlier previews), the first user change applied a value equal to the session's runtime original \u2014 a genuine no-op the ledger correctly refused to mark pending; the SECOND toggle then differed and registered",
+      "fix": "every inline and detail control seeds runtime-first via the new read_runtime_option_live wrapper (~1.6ms per control on this machine), falling back to config raw, then the trusted official default, then the suggestion; uniform css-gap readbacks collapse to shorthand for display (runtime_seed_initial_value/collapse_uniform_gap in src/ui/window.rs)"
+    },
+    {
+      "id": "color-previews-never-started",
+      "symptom": "color/gradient rows never showed any pending UI; picker Select silently failed (red error class only)",
+      "cause": "start_runtime_preview_session requires a parsable original, but parse_getoption_value did not know the 'gradient data:' readback prefix this compositor uses for every col.*/gradient option \u2014 every color preview session failed at start, so no apply, no pending, nothing",
+      "fix": "parse_getoption_value accepts 'gradient data:' (src/runtime_preview_executor.rs)"
+    },
+    {
+      "id": "color-apply-revert-grammar",
+      "symptom": "even with a session, color applies and reverts were rejected by the runtime ('invalid color')",
+      "cause": "Color and Gradient value kinds fell through to the quoted-string lua rendering; the lua runtime rejects multi-stop or angle-suffixed color STRINGS and requires the table form; reverts re-apply the readback original ('AARRGGBB [AARRGGBB\u2026] Ndeg'), which is exactly such a string",
+      "fix": "rendered_color_lua_table renders the live-proven { colors = { \"rgba(RRGGBBAA)\", \u2026 }, angle = N } table for both Color and Gradient kinds; color_token_to_rgba normalizes rgba(hex8 RRGGBBAA), rgb(hex6), 0xAARRGGBB, and bare AARRGGBB/RRGGBB hex, so applies AND reverts round-trip; parse_hyprland_color additionally accepts bare hex so swatches render runtime-seeded values and the gradient parser accepts single-stop-plus-angle readbacks"
+    },
+    {
+      "id": "number-rows-with-gap-shaped-runtime",
+      "symptom": "reverting/discarding some spinner rows failed silently, leaving a stuck pending session that poisoned every later pending readout (found live by the matrix at general.float_gaps)",
+      "cause": "rows classified Number can be css-gap typed at runtime (float_gaps reads back '1 1 1 1'); the revert re-applies that readback original through the Number renderer, whose f64 parse fails, so the session stayed Active and pending forever",
+      "fix": "the Number/Percent renderer falls back to the proven css-gap lua table for 2-4 finite-number values (rendered_css_gap_table)"
+    },
+    {
+      "id": "int-typed-color-options",
+      "symptom": "single-color rows (shadow/glow colors) could not preview at all: seeds fell back to the raw text editor and applies/reverts were rejected (found live by the matrix)",
+      "cause": "int-typed color options read back as decimal u32 ('int: 1426063360', bits AARRGGBB), which neither the color parser nor the color renderer understood; additionally this compositor rejects the gradient TABLE for color-typed options ('color type requires a color string') while rejecting STRINGS for multi-stop gradient options \u2014 the renderer used one form for everything",
+      "fix": "decimal u32 tokens are accepted as color spellings (executor renderer, semantic equality, and the color-row seed, which converts them to hex for the stop-based control); the renderer picks the grammar by shape \u2014 single stop without angle renders as a quoted color string (accepted by both option types), multi-stop or angled values render as the table"
+    },
+    {
+      "id": "ledger-lifetime-and-rebaseline",
+      "symptom": "pending state could vanish (or its original silently re-baseline) when a page re-rendered mid-preview",
+      "cause": "the ledger held weak controller references and every rebuilt control created a fresh controller whose new session captured the ALREADY-PREVIEWED runtime value as its original",
+      "fix": "ledger entries own their controllers (strong Rc); inline and detail creation paths reuse the row's ledger controller (pending_controller_for_row), so one session and its true original survive re-renders; window-close revert still covers every session"
+    },
+    {
+      "id": "string-equality-pending-predicate",
+      "symptom": "format differences could mis-classify changes in either direction",
+      "cause": "pending = last_applied != original as plain strings ('true' vs '1', '0.5' vs '0.500000', rgba() vs bare-hex readback spellings)",
+      "fix": "pending_changes_ui::values_semantically_equal \u2014 boolean synonyms, numeric and css-gap-shorthand equality, color/gradient equality across spellings with missing angle treated as 0deg; fail-closed string comparison otherwise"
+    },
+    {
+      "id": "harness-findings-in-the-harness-itself",
+      "symptom": "initial matrix runs mis-clicked and mis-reported",
+      "cause": "substring button matching hit the color rows' 'Discard color changes' arrow instead of the bar's Discard; GtkComboBoxText popups are invisible to AT-SPI",
+      "fix": "exact-name matching for Discard; dropdowns drive the combo's AT-SPI Selection interface (selectChild), which performs a real model selection"
+    }
+  ],
+  "matrixTotals": {
+    "scalarRows": 341,
+    "structuredFamilies": 7,
+    "editableAndPendingRequired": 133,
+    "visibleButNotEditable": 206,
+    "editableButNoOpInThisSession": 2,
+    "bug": 0,
+    "liveDriven": {
+      "pass": 125,
+      "notAutomatedWithReasons": 8,
+      "noOpUpstreamReadbackBroken": 2
+    }
+  },
+  "bugCountBefore": "matrix-reproduced before the fixes: all 22 color/gradient controls could never register pending (sessions failed at start; applies/reverts rejected by the runtime grammar); Number rows with gap-shaped runtime (float_gaps) had stuck unrevertable sessions that cascaded; rows whose runtime diverged from the displayed seed required a double toggle; page re-renders could drop or re-baseline sessions",
+  "bugCountAfter": 0,
+  "outsidePendingSupport": {
+    "scalarRows": "206 visible-but-not-editable rows (blocked high-risk, hardware-gated, not-proven, save-only \u2014 save-only rows have no unsaved intermediate state by design; dead-man rows preview through their own supervised confirm flow), plus 3 text-entry rows that are pending-capable but not automatable by the harness (verified via code path shared with other kinds); per-row reasons in the matrix report",
+    "families": "hl.animation and hl.curve have real edit paths but use the supervised Preview/Keep/Revert/Save flow with auto-revert \u2014 outside the applied-live-until-discarded ledger by design; the other five families are read-only views with no edit path"
+  },
+  "validation": "cargo fmt/check clean; full suite green (see final response for counts); jq clean; git diff --check clean; release build is the binary the matrix drove",
+  "safety": {
+    "saveClicked": false,
+    "realConfigEdited": false,
+    "hyprlandReloaded": false,
+    "safetyClassificationChanged": false,
+    "gatesChanged": false,
+    "runtimeMutated": "only via the app's own reversible preview controls during the live matrix; every change discarded per row and cross-checked reverted with getoption"
+  }
+}

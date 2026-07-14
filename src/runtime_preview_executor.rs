@@ -46,6 +46,149 @@ pub struct RuntimePreviewCommand {
     pub rendered_value: String,
 }
 
+/// One color token normalized to the `rgba(RRGGBBAA)` string the runtime
+/// color-table grammar accepts. Accepts `rgba(hex8)` (RRGGBBAA),
+/// `rgb(hex6)`, the `0xAARRGGBB` config form, and the readback's bare
+/// `AARRGGBB`/`RRGGBB` hex. Anything else is rejected (fail closed).
+fn color_token_to_rgba(token: &str) -> Option<String> {
+    fn is_hex(text: &str) -> bool {
+        !text.is_empty() && text.chars().all(|character| character.is_ascii_hexdigit())
+    }
+    let token = token.trim();
+    if let Some(inner) = token
+        .strip_prefix("rgba(")
+        .and_then(|rest| rest.strip_suffix(')'))
+    {
+        let inner = inner.trim();
+        if inner.len() == 8 && is_hex(inner) {
+            return Some(format!("rgba({})", inner.to_ascii_lowercase()));
+        }
+        return None;
+    }
+    if let Some(inner) = token
+        .strip_prefix("rgb(")
+        .and_then(|rest| rest.strip_suffix(')'))
+    {
+        let inner = inner.trim();
+        if inner.len() == 6 && is_hex(inner) {
+            return Some(format!("rgba({}ff)", inner.to_ascii_lowercase()));
+        }
+        return None;
+    }
+    // Pure-decimal u32: the readback form for int-typed single-color
+    // options ("int: 1426063360"); the bits are AARRGGBB.
+    if token.chars().all(|character| character.is_ascii_digit()) && token.len() >= 8 {
+        if let Ok(bits) = token.parse::<u32>() {
+            let hex = format!("{bits:08x}");
+            return Some(format!("rgba({}{})", &hex[2..8], &hex[0..2]));
+        }
+    }
+    let bare = token.strip_prefix("0x").unwrap_or(token);
+    // Six bare digits keep the config convention (RRGGBB, opaque).
+    if bare.len() == 6 && is_hex(bare) && !token.starts_with("0x") {
+        return Some(format!("rgba({}ff)", bare.to_ascii_lowercase()));
+    }
+    // AARRGGBB (config 0x form and getoption readback) -> RRGGBBAA. The
+    // readback prints %x without zero padding, so seven-digit (or shorter
+    // non-six) tokens left-pad to eight. Known ambiguity: a fully
+    // transparent color whose readback collapses to exactly six digits
+    // reads as opaque RGB instead; there is no type information to
+    // disambiguate.
+    if (1..=8).contains(&bare.len()) && bare.len() != 6 && is_hex(bare) {
+        let padded = format!("{:0>8}", bare.to_ascii_lowercase());
+        return Some(format!("rgba({}{})", &padded[2..8], &padded[0..2]));
+    }
+    if bare.len() == 6 && is_hex(bare) {
+        // 0x-prefixed six digits: zero-padded AARRGGBB.
+        let padded = format!("{:0>8}", bare.to_ascii_lowercase());
+        return Some(format!("rgba({}{})", &padded[2..8], &padded[0..2]));
+    }
+    None
+}
+
+/// Render 2-4 finite numbers as the proven css-gap lua table (CSS
+/// shorthand order); None when the text is not gap-shaped.
+fn rendered_css_gap_table(value: &str) -> Option<String> {
+    let parts: Vec<&str> = value.split_whitespace().collect();
+    if !(2..=4).contains(&parts.len())
+        || !parts
+            .iter()
+            .all(|part| part.parse::<f64>().map(f64::is_finite).unwrap_or(false))
+    {
+        return None;
+    }
+    Some(match parts.as_slice() {
+        [vertical, horizontal] => format!(
+            "{{ top = {vertical}, right = {horizontal}, bottom = {vertical}, left = {horizontal} }}"
+        ),
+        [top, horizontal, bottom] => format!(
+            "{{ top = {top}, right = {horizontal}, bottom = {bottom}, left = {horizontal} }}"
+        ),
+        [top, right, bottom, left] => {
+            format!("{{ top = {top}, right = {right}, bottom = {bottom}, left = {left} }}")
+        }
+        _ => unreachable!(),
+    })
+}
+
+/// Render a color/gradient value as the runtime's proven lua table form.
+fn rendered_color_lua_table(
+    row: &SafeWritableRow,
+    value: &str,
+) -> Result<String, RuntimePreviewError> {
+    let mut colors: Vec<String> = Vec::new();
+    let mut angle: Option<u16> = None;
+    for part in value.split_whitespace() {
+        if let Some(degrees) = part.strip_suffix("deg") {
+            if angle.is_some() {
+                return Err(RuntimePreviewError::InvalidValue {
+                    row_id: row.row_id.to_string(),
+                    reason: "color value has more than one angle",
+                });
+            }
+            angle =
+                Some(
+                    degrees
+                        .parse::<u16>()
+                        .map_err(|_| RuntimePreviewError::InvalidValue {
+                            row_id: row.row_id.to_string(),
+                            reason: "color angle must be a whole number of degrees",
+                        })?,
+                );
+            continue;
+        }
+        colors.push(
+            color_token_to_rgba(part).ok_or(RuntimePreviewError::InvalidValue {
+                row_id: row.row_id.to_string(),
+                reason: "color token is not in a recognized color form",
+            })?,
+        );
+    }
+    if colors.is_empty() || colors.len() > 10 {
+        return Err(RuntimePreviewError::InvalidValue {
+            row_id: row.row_id.to_string(),
+            reason: "color value must have between one and ten color stops",
+        });
+    }
+    // Shape picks the grammar: int-typed single-color options reject the
+    // gradient table ("color type requires a color string") and accept a
+    // plain color string, which single-stop gradient options accept too;
+    // multi-stop or angled values require the table (strings are rejected
+    // with "invalid color" there).
+    if colors.len() == 1 && angle.is_none() {
+        return Ok(format!("\"{}\"", colors[0]));
+    }
+    let rendered_colors = colors
+        .iter()
+        .map(|color| format!("\"{color}\""))
+        .collect::<Vec<_>>()
+        .join(", ");
+    Ok(match angle {
+        Some(angle) => format!("{{ colors = {{ {rendered_colors} }}, angle = {angle} }}"),
+        None => format!("{{ colors = {{ {rendered_colors} }} }}"),
+    })
+}
+
 fn rendered_lua_value(
     row: &SafeWritableRow,
     raw_value: &str,
@@ -84,6 +227,13 @@ fn rendered_lua_value(
         ScalarWriteValueKind::Number | ScalarWriteValueKind::Percent => {
             if value.parse::<f64>().map(f64::is_finite).unwrap_or(false) {
                 Ok(value.to_string())
+            } else if let Some(rendered) = rendered_css_gap_table(value) {
+                // Some Number-classified rows are css-gap typed at runtime
+                // (float_gaps reads back "1 1 1 1"): a revert re-applies
+                // that readback original, which must render as the proven
+                // gap table instead of failing the numeric parse and
+                // leaving the session stuck.
+                Ok(rendered)
             } else {
                 Err(RuntimePreviewError::InvalidValue {
                     row_id: row.row_id.to_string(),
@@ -141,6 +291,16 @@ fn rendered_lua_value(
                     reason: "css gap value must be 1-4 finite numbers",
                 }),
             }
+        }
+        ScalarWriteValueKind::Color | ScalarWriteValueKind::Gradient => {
+            // Live-proven grammar on the lua runtime: color/gradient
+            // options accept a table `{ colors = { "rgba(RRGGBBAA)", … },
+            // angle = N }`; multi-stop or angle-suffixed plain strings are
+            // rejected with "invalid color". Tokens normalize from every
+            // accepted config form — including the bare AARRGGBB hex the
+            // getoption readback reports — so applies AND reverts (which
+            // re-apply the readback original) round-trip.
+            rendered_color_lua_table(row, value)
         }
         ScalarWriteValueKind::Vector2
         | ScalarWriteValueKind::NumericList
@@ -273,11 +433,22 @@ pub fn read_runtime_option(
 }
 
 /// Parse the value out of a `getoption` response (`int: 5`, `float: 0.5`,
-/// `bool: false`, `css gap data: 5 5 5 5`, `str: ...`).
+/// `bool: false`, `css gap data: 5 5 5 5`, `str: ...`, and gradient/color
+/// rows' `gradient data: AARRGGBB [AARRGGBB…] [Ndeg]` — without this
+/// prefix, color-row preview sessions could never capture an original and
+/// every color preview failed at session start).
 pub fn parse_getoption_value(output: &str) -> Option<String> {
     for line in output.lines() {
         let line = line.trim();
-        for prefix in ["int:", "float:", "bool:", "css gap data:", "str:", "color:"] {
+        for prefix in [
+            "int:",
+            "float:",
+            "bool:",
+            "css gap data:",
+            "str:",
+            "color:",
+            "gradient data:",
+        ] {
             if let Some(rest) = line.strip_prefix(prefix) {
                 let value = rest.trim();
                 if !value.is_empty() {

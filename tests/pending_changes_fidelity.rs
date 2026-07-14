@@ -249,9 +249,13 @@ fn unset_switches_seed_from_official_defaults_not_flip_suggestions() {
     assert_eq!(official_default_value("not.a.setting"), None);
 
     let window = window_source();
+    // Seeding now goes runtime-first through the shared helper; the
+    // official default remains the fallback when runtime and config are
+    // silent (see tests/pending_changes_reliability.rs for the ordering
+    // guard).
     let inline = fn_slice(&window, "attach_inline_row_control");
-    assert!(inline.contains("official_default_value"));
-    // Both switch builders (inline row and detail pane) use the honest seed.
+    assert!(inline.contains("runtime_seed_initial_value"));
+    assert!(fn_slice(&window, "runtime_seed_initial_value").contains("official_default_value"));
     assert_eq!(window.matches("official_default_value(").count() >= 2, true);
 }
 
@@ -266,7 +270,8 @@ fn preview_plumbing_feeds_the_ledger_without_new_write_paths() {
     assert!(snapshots.contains("PreviewingLive"));
     assert!(snapshots.contains("original_runtime_value"));
     assert!(snapshots.contains("last_applied_value"));
-    assert!(snapshots.contains("current == original"));
+    // Semantic no-op comparison replaced plain string equality.
+    assert!(snapshots.contains("values_semantically_equal"));
     // The scalar-write preview helper is read-only.
     let scalar = fs::read_to_string("src/scalar_write.rs").expect("scalar_write reads");
     let preview = &scalar[scalar

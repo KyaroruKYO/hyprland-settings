@@ -193,7 +193,11 @@ struct PendingLedgerEntry {
     row_id: String,
     official_setting: String,
     page_id: Option<&'static str>,
-    controller: std::rc::Weak<RefCell<RuntimePreviewUiController>>,
+    /// Strong reference: a live preview session must outlive its widget
+    /// (page re-renders destroy controls), or the pending state and the
+    /// ability to revert it from the pending surfaces would vanish while
+    /// the runtime change stayed applied.
+    controller: Rc<RefCell<RuntimePreviewUiController>>,
 }
 
 /// A snapshot of one pending (previewed-live, not saved) change.
@@ -227,27 +231,39 @@ fn register_pending_controller(
 ) {
     PENDING_LEDGER.with(|ledger| {
         let mut ledger = ledger.borrow_mut();
-        ledger.retain(|entry| entry.controller.upgrade().is_some() && entry.row_id != row_id);
+        ledger.retain(|entry| entry.row_id != row_id);
         ledger.push(PendingLedgerEntry {
             row_id: row_id.to_string(),
             official_setting: official_setting.to_string(),
             page_id,
-            controller: Rc::downgrade(controller),
+            controller: Rc::clone(controller),
         });
     });
+}
+
+/// The ledger's controller for a row, if one exists. Creation paths reuse
+/// it so a row keeps ONE preview session across page re-renders — creating
+/// a fresh controller mid-preview would re-capture the already-previewed
+/// runtime value as the new "original" and silently lose the pending state.
+fn pending_controller_for_row(row_id: &str) -> Option<Rc<RefCell<RuntimePreviewUiController>>> {
+    PENDING_LEDGER.with(|ledger| {
+        ledger
+            .borrow()
+            .iter()
+            .find(|entry| entry.row_id == row_id)
+            .map(|entry| Rc::clone(&entry.controller))
+    })
 }
 
 /// Snapshot of every pending change: the session is still previewing live
 /// and the applied value differs from the session's original.
 fn pending_change_snapshots() -> Vec<PendingChangeSnapshot> {
     PENDING_LEDGER.with(|ledger| {
-        let mut ledger = ledger.borrow_mut();
-        ledger.retain(|entry| entry.controller.upgrade().is_some());
         ledger
+            .borrow()
             .iter()
             .filter_map(|entry| {
-                let controller = entry.controller.upgrade()?;
-                let controller_ref = controller.try_borrow().ok()?;
+                let controller_ref = entry.controller.try_borrow().ok()?;
                 if controller_ref.session_state()
                     != crate::runtime_preview_ui_projection::RuntimePreviewUiSessionState::PreviewingLive
                 {
@@ -255,7 +271,9 @@ fn pending_change_snapshots() -> Vec<PendingChangeSnapshot> {
                 }
                 let original = controller_ref.original_runtime_value()?;
                 let current = controller_ref.last_applied_value()?;
-                if current == original {
+                // Semantic comparison: "true" vs "1", "0.5" vs "0.500000",
+                // rgba() vs bare-hex readback spellings are not changes.
+                if crate::pending_changes_ui::values_semantically_equal(&current, &original) {
                     return None;
                 }
                 Some(PendingChangeSnapshot {
@@ -263,7 +281,7 @@ fn pending_change_snapshots() -> Vec<PendingChangeSnapshot> {
                     official_setting: entry.official_setting.clone(),
                     page_id: entry.page_id,
                     current_value: current,
-                    controller: entry.controller.clone(),
+                    controller: Rc::downgrade(&entry.controller),
                 })
             })
             .collect()
@@ -288,8 +306,12 @@ fn notify_pending_changed() {
             if let Some(row) = weak.upgrade() {
                 if pending_rows.contains(row_id) {
                     row.add_css_class("hyprland-settings-row-pending");
+                    row.update_property(&[gtk::accessible::Property::Description(
+                        "Pending change",
+                    )]);
                 } else {
                     row.remove_css_class("hyprland-settings-row-pending");
+                    row.update_property(&[gtk::accessible::Property::Description("")]);
                 }
             }
         }
@@ -1376,7 +1398,16 @@ fn build_pending_bottom_bar(model: &Rc<UiProjection>) -> (gtk::Revealer, Rc<dyn 
             for snapshot in pending_change_snapshots() {
                 if let Some(controller) = snapshot.controller.upgrade() {
                     if let Ok(mut controller) = controller.try_borrow_mut() {
-                        let _ = controller.revert();
+                        let outcome = controller.revert();
+                        if std::env::var("HYPRLAND_SETTINGS_DEBUG_PENDING").is_ok() {
+                            eprintln!(
+                                "pending-debug: discard revert {} -> {:?}",
+                                snapshot.row_id,
+                                outcome.as_ref().map(|_| "ok").map_err(|e| e.user_text())
+                            );
+                        }
+                    } else if std::env::var("HYPRLAND_SETTINGS_DEBUG_PENDING").is_ok() {
+                        eprintln!("pending-debug: discard borrow failed {}", snapshot.row_id);
                     }
                 }
             }
@@ -7404,6 +7435,7 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
         .any(|snapshot| snapshot.row_id == setting.row_id)
     {
         row.add_css_class("hyprland-settings-row-pending");
+        row.update_property(&[gtk::accessible::Property::Description("Pending change")]);
     }
     row
 }
@@ -7436,23 +7468,30 @@ fn inline_preview_apply(
     }
     Rc::new(move |value: String| {
         if controller_slot.borrow().is_none() {
-            match RuntimePreviewUiController::new_live(&row_id) {
-                Ok(controller) => {
-                    let controller = Rc::new(RefCell::new(controller));
-                    register_preview_controller(&controller);
-                    if !official_setting.is_empty() {
-                        register_pending_controller(
-                            &row_id,
-                            &official_setting,
-                            page_id,
-                            &controller,
-                        );
+            // Reuse the ledger's controller when the row already has one
+            // (page re-renders rebuild controls but must keep the one
+            // preview session and its true original).
+            if let Some(existing) = pending_controller_for_row(&row_id) {
+                *controller_slot.borrow_mut() = Some(existing);
+            } else {
+                match RuntimePreviewUiController::new_live(&row_id) {
+                    Ok(controller) => {
+                        let controller = Rc::new(RefCell::new(controller));
+                        register_preview_controller(&controller);
+                        if !official_setting.is_empty() {
+                            register_pending_controller(
+                                &row_id,
+                                &official_setting,
+                                page_id,
+                                &controller,
+                            );
+                        }
+                        *controller_slot.borrow_mut() = Some(controller);
                     }
-                    *controller_slot.borrow_mut() = Some(controller);
-                }
-                Err(_) => {
-                    mark(&feedback, true);
-                    return;
+                    Err(_) => {
+                        mark(&feedback, true);
+                        return;
+                    }
                 }
             }
         }
@@ -7497,6 +7536,40 @@ fn inline_preview_apply(
 /// default-previewable get a live control (the same reversible preview
 /// path as the detail surface — Save stays a separate gated step);
 /// everything else keeps its quiet chip and opens details on demand.
+/// The value an inline control displays before any interaction: live
+/// runtime truth first (so the first user change is always a real change
+/// relative to the session original the preview executor captures), then
+/// the config line, then the official default, then the edit projection's
+/// suggestion. Uniform css-gap readbacks collapse to the single-number
+/// shorthand for compact display.
+fn runtime_seed_initial_value(
+    official_setting: &str,
+    setting: &crate::ui::model::UiSetting,
+) -> String {
+    let value = crate::runtime_preview_ui_projection::read_runtime_option_live(official_setting)
+        .or_else(|| setting.current_value.raw_value.clone())
+        .or_else(|| {
+            crate::official_defaults::official_default_value(official_setting).map(str::to_string)
+        })
+        .or_else(|| setting.edit.proposed_value.clone())
+        .unwrap_or_default();
+    collapse_uniform_gap(&value)
+}
+
+/// "5 5 5 5" -> "5" (css-gap shorthand) when every component is the same
+/// number; anything else passes through unchanged.
+fn collapse_uniform_gap(value: &str) -> String {
+    let parts: Vec<&str> = value.split_whitespace().collect();
+    if (2..=4).contains(&parts.len())
+        && parts.iter().all(|part| part.parse::<f64>().is_ok())
+        && parts.windows(2).all(|window| window[0] == window[1])
+    {
+        parts[0].to_string()
+    } else {
+        value.to_string()
+    }
+}
+
 fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiSetting) {
     let Some(row_state) = runtime_preview_ui_row_state(&setting.row_id) else {
         return;
@@ -7507,12 +7580,7 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
     if !row_state.preview_enabled {
         return;
     }
-    let initial_value = setting
-        .current_value
-        .raw_value
-        .clone()
-        .or_else(|| setting.edit.proposed_value.clone())
-        .unwrap_or_default();
+    let initial_value = runtime_seed_initial_value(&setting.official_setting, setting);
     let control_name = format!(
         "hyprland-settings-inline-control-{}",
         safe_widget_name(&setting.row_id)
@@ -7522,20 +7590,8 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
             let switch = gtk::Switch::new();
             switch.set_widget_name(&control_name);
             switch.set_valign(gtk::Align::Center);
-            // Unset rows seed from the official default — never from the
-            // edit projection's flip-suggestion, which would render the
-            // switch inverted for a value the user has not set.
-            let switch_initial = setting
-                .current_value
-                .raw_value
-                .clone()
-                .or_else(|| {
-                    crate::official_defaults::official_default_value(&setting.official_setting)
-                        .map(str::to_string)
-                })
-                .unwrap_or(initial_value.clone());
             switch.set_active(matches!(
-                switch_initial.trim().to_ascii_lowercase().as_str(),
+                initial_value.trim().to_ascii_lowercase().as_str(),
                 "1" | "true" | "yes" | "on"
             ));
             let apply = inline_preview_apply(
@@ -7762,6 +7818,16 @@ fn attach_inline_color_control(
     let inline_page_id =
         crate::ux_presentation::page_for_row(&setting.tab_id, &setting.official_setting)
             .map(|page| page.id);
+    // Int-typed single-color readbacks arrive as decimal u32 (AARRGGBB
+    // bits); render them as bare hex so the stop-based control parses
+    // them instead of falling back to the raw editor.
+    let decimal_as_hex = initial_value
+        .trim()
+        .parse::<u32>()
+        .ok()
+        .filter(|_| initial_value.trim().len() >= 8)
+        .map(|bits| format!("{bits:08x}"));
+    let initial_value: &str = decimal_as_hex.as_deref().unwrap_or(initial_value);
     #[derive(Clone)]
     struct ColorRowState {
         tokens: Vec<String>,
@@ -8752,6 +8818,7 @@ fn friendly_row_attention_status(setting: &crate::ui::model::UiSetting) -> Optio
 fn setting_row_accessibility_text(setting: &crate::ui::model::UiSetting) -> String {
     let mut parts = vec![
         format!("Setting row: {}", setting.label),
+        format!("Official key: {}", setting.official_setting),
         friendly_row_current_status(setting),
     ];
 
@@ -10263,12 +10330,16 @@ fn append_runtime_preview_controls(
         return;
     }
 
-    let controller = match RuntimePreviewUiController::new_live(&detail.row_id) {
-        Ok(controller) => Rc::new(RefCell::new(controller)),
-        Err(error) => {
-            section.append(&small_label(&error.user_text()));
-            return;
-        }
+    let controller = match pending_controller_for_row(&detail.row_id) {
+        // Reuse the row's existing preview session (see the inline path).
+        Some(existing) => existing,
+        None => match RuntimePreviewUiController::new_live(&detail.row_id) {
+            Ok(controller) => Rc::new(RefCell::new(controller)),
+            Err(error) => {
+                section.append(&small_label(&error.user_text()));
+                return;
+            }
+        },
     };
     register_preview_controller(&controller);
     {
@@ -10300,12 +10371,19 @@ fn append_runtime_preview_controls(
         safe_widget_name(&detail.row_id)
     ));
 
-    let initial_value = detail
-        .current_value
-        .raw_value
-        .clone()
-        .or_else(|| detail.edit.proposed_value.clone())
-        .unwrap_or_default();
+    // Runtime truth first, like the inline controls: the displayed value
+    // must match the session original the executor will capture, or the
+    // first change can be a runtime no-op that never registers as pending.
+    let initial_value =
+        crate::runtime_preview_ui_projection::read_runtime_option_live(&detail.official_setting)
+            .or_else(|| detail.current_value.raw_value.clone())
+            .or_else(|| {
+                crate::official_defaults::official_default_value(&detail.official_setting)
+                    .map(str::to_string)
+            })
+            .or_else(|| detail.edit.proposed_value.clone())
+            .map(|value| collapse_uniform_gap(&value))
+            .unwrap_or_default();
 
     let apply_from_control = {
         let controller = controller.clone();
@@ -10357,19 +10435,7 @@ fn append_runtime_preview_controls(
                 "hyprland-settings-live-preview-switch-{}",
                 safe_widget_name(&detail.row_id)
             ));
-            // Unset rows seed from the official default (see the inline
-            // switch): the edit projection's flip-suggestion would render
-            // an inverted state.
-            let switch_initial = detail
-                .current_value
-                .raw_value
-                .clone()
-                .or_else(|| {
-                    crate::official_defaults::official_default_value(&detail.official_setting)
-                        .map(str::to_string)
-                })
-                .unwrap_or(initial_value.clone());
-            switch.set_active(matches!(switch_initial.trim(), "true" | "1" | "yes" | "on"));
+            switch.set_active(matches!(initial_value.trim(), "true" | "1" | "yes" | "on"));
             switch.set_valign(gtk::Align::Center);
             let apply = apply_from_control.clone();
             switch.connect_active_notify(move |switch| {

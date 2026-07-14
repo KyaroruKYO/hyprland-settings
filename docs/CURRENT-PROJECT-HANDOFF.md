@@ -247,6 +247,17 @@ Reference-matched unsaved-changes system, grounded in eight user screenshots (`/
 - **Bug fixed**: unset boolean switches seeded from `edit.proposed_value` — a flip-suggestion (`next_bool_value`) — rendering inverted states; now seeded from generated `src/official_defaults.rs` (341 defaults from the pinned trusted 0.55.4 descriptions capture).
 - Guards: `tests/pending_changes_fidelity.rs` (11). Report: `data/reports/pending-changes-fidelity.v0.55.2.json`. Known limits recorded there (family records outside the ledger; lua-configured rows invisible to the .conf parser can make toggles honest runtime no-ops).
 
+## Pending-Changes Reliability Marathon Additions (2026-07-14)
+
+User-reported bug: pending indicators unreliable (double toggles, missing chip/bar/badges). Root causes found by a live reliability matrix and fixed:
+
+- **Seed-vs-runtime mismatch (the double-toggle)**: controls seeded from the config line or the edit projection's flip-suggestion; when the live runtime differed (lua-side config, prior previews), the first user change applied a value equal to the session original — a real no-op the ledger correctly refused. All inline and detail controls now seed **runtime-first** (`runtime_preview_ui_projection::read_runtime_option_live`, ~1.6 ms per control) with config → official default → suggestion as fallbacks; uniform css-gap readbacks collapse to shorthand for display.
+- **Color/gradient previews were fully broken on this compositor**: session start required a parsable original but the `gradient data:` getoption prefix was unknown (every color session failed), and applies/reverts rendered a quoted string the lua runtime rejects ("invalid color"). `parse_getoption_value` now knows the prefix; `rendered_color_lua_table` renders the live-proven `{ colors = { "rgba(RRGGBBAA)", … }, angle = N }` table for BOTH `Color` and `Gradient` value kinds, normalizing rgba()/rgb()/0x/bare-hex spellings (readback bare hex is AARRGGBB; rgba() is RRGGBBAA). `parse_hyprland_color` accepts bare hex too, so swatches render runtime-seeded values.
+- **Ledger lifetime**: entries now hold **strong** controller references and creation paths (inline + detail) **reuse** the row's controller, so one session (and its true original) survives page re-renders; previously a re-render could drop the session or re-baseline the original.
+- **Semantic pending predicate**: `pending_changes_ui::values_semantically_equal` (bool synonyms, numeric + css-gap shorthand, color/gradient across spellings, missing angle = 0deg) replaces string equality — no-ops never mark pending regardless of formatting.
+- **Matrix harness**: `tools/live_scenario_harness/pending_reliability_matrix.py` consumes an env-gated skeleton (`HYPRLAND_SETTINGS_EXPORT_PENDING_SKELETON=1 cargo test --test pending_changes_reliability export_reliability_skeleton`), drives every eligible control (switch toggle, spin/slider Value interface, dropdown via the combo's AT-SPI Selection interface, color via the picker dialog), asserts chip/bar/badge/accent/page-listing on the first change and full clearing after Discard, cross-checking runtime with getoption. Rows expose `Official key: <key>` in their accessible text and a "Pending change" accessible description for the harness.
+- Known limitation: SIGTERM/SIGKILL still skip the close-request revert (glib 0.22 exposes no unix-signal binding); close the window normally.
+
 ## Next Exact Work
 
 The release is complete and three UX passes are in (adoption, simplification, whole-GUI overhaul). Remaining:

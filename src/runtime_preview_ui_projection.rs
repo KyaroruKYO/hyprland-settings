@@ -187,6 +187,15 @@ fn control_kind_for_row(
     }
 }
 
+/// Read one option's live runtime value (read-only `getoption`). The
+/// wrapper owns the runner so UI code never constructs one; controls seed
+/// their initial display from this so the first user change is always a
+/// real change relative to the session original the executor will capture.
+pub fn read_runtime_option_live(official_setting: &str) -> Option<String> {
+    let mut runner = crate::runtime_preview_executor::HyprctlRuntimePreviewRunner;
+    crate::runtime_preview_executor::read_runtime_option(&mut runner, official_setting)
+}
+
 pub fn runtime_preview_ui_row_state(row_id: &str) -> Option<RuntimePreviewUiRowState> {
     let row = SAFE_WRITABLE_ROWS.iter().find(|row| row.row_id == row_id)?;
     let capability = classify_runtime_preview_row(row);
