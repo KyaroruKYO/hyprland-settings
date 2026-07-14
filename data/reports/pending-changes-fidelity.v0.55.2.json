@@ -1,0 +1,91 @@
+{
+  "report": "pending-changes-fidelity",
+  "modelVersion": "v0.55.2",
+  "generatedAt": "2026-07-14",
+  "startingCommit": "d24afb3",
+  "endingCommit": "the commit titled 'Match the reference pending-changes experience' that adds this report",
+  "grounding": {
+    "screenshotsInspectedAsImages": [
+      "/home/kyo/review/hm-general-pending-changes.png",
+      "/home/kyo/review/hm-hidden-pending-changes-tab.png",
+      "/home/kyo/review/hm-no-pending-changes.png",
+      "/home/kyo/review/hm-pending-multiple-changes.png",
+      "/home/kyo/review/hm-closeup-setting-pending-change.png",
+      "/home/kyo/review/hm-closeup-tab-pending-changes.png",
+      "/home/kyo/review/hm-closeup-top-right-yellow-pending-changes-tab-button.png",
+      "/home/kyo/review/hm-closeup-unsaved-changes.png"
+    ],
+    "inspectionMethod": "All eight reference screenshots were loaded as pixels into Fable's visual context; every visual spec below (accent placement, chip anatomy, bar layout, page structure, diff format, empty state) was read from them, then cross-checked against the reference app's source (pending page, chip group, dirty banner, diff widget, stylesheet) for behavior details the pixels cannot show. The reference app itself was NOT interacted with live for this pass: creating a pending change in it applies the change to the live compositor session, and its own screenshots already document the flow — mutating the user's session through a third-party editor was not justified.",
+    "referenceSourceAreasReviewed": [
+      "pending chip: flat header button '[icon] N', hidden at zero, one per page header except the review page",
+      "sidebar badge and chip styling: warning palette pills (alpha 0.18-0.25 backgrounds, 9999px radius)",
+      "changed-row accent: 3px warning-color border-left on the dirty option row",
+      "dirty banner: slide-up revealer, warning icon, status text, Discard, suggested-action split Save button with profile menu, saved-state transition then auto-hide",
+      "pending page: title-2 count header, per-category groups with change captions, ActionRow with icon/badge/undo/chevron, config diff preview group hidden when empty, empty state with emblem-ok icon",
+      "diff widget: unified diff with file header and +N/-N counts, added/removed/context/meta line classes"
+    ]
+  },
+  "deltasFoundBeforeImplementation": [
+    "No changed-setting indication existed anywhere in the normal UI",
+    "No header pending affordance existed (nothing between the page title and the close button)",
+    "No bottom unsaved-changes action area existed",
+    "No pending-changes review surface existed at all (no hidden page, no diff preview, no empty state)",
+    "Live preview state was per-row only (detail pane status text); nothing aggregated unsaved previews or offered discard/save-all"
+  ],
+  "implemented": {
+    "changedRowIndicator": "3px amber (warning color) left-edge accent on any setting row whose live-previewed value differs from its session original; applied at row build and kept current through the pending ledger notifier",
+    "headerChip": "amber pill button (view-list icon + count) packed at the header end, hidden at zero and on the review page itself; opens the review page",
+    "sidebarBadges": "per-page amber count pills on nav rows, computed from the ledger through the same page-claim logic rows use",
+    "bottomBar": "slide-up revealer spanning the content column: warning icon, 'Unsaved changes — applied live, not saved to disk', Discard (reverts every pending preview through its controller), 'Save now' adw::SplitButton (suggested action) whose menu carries a disabled 'Save as new profile' item (profile saving has no enabled behavior); saved state shows 'Changes saved to disk' with a check icon then auto-hides",
+    "pendingChangesPage": "hidden page (id pending-changes, never in the sidebar layout) with title-2 'N unsaved change(s)' header, page-grouped change rows (page icon, friendly row title, 'key · set to value' subtitle, Added/Modified pill, revert button, navigation chevron), and a calm emblem-ok 'No Pending Changes' empty state",
+    "configDiffPreview": "'Config diff preview' group with explanatory caption and a diff card: config file name header with +N/−N counts, then a unified diff (three-line context hunks, ---/+++/@@ meta) between the saved config text and a READ-ONLY rendering of what the next gated save would write, computed with the same replace/append helpers the real writer uses (new read-only preview_scalar_change_text)",
+    "pendingModel": "a thread-local ledger of scalar preview controllers keyed by row identity; pending = session previewing live AND applied value differs from the session's original runtime value; every preview/revert/save/drain operation notifies one refresher that updates accents, chip, badges, bar, and page"
+  },
+  "saveAndDiscardSemantics": {
+    "saveNow": "iterates pending rows through the EXISTING per-row gated scalar save (production_save::gated_scalar_save_live) — Safe Live Save Mode is live-verified per write, fails closed, no new write primitive; partial failure reports 'Saved X of Y — reason' honestly",
+    "discard": "reverts each pending preview through its own controller (the existing reversible preview path)",
+    "reviewPageWritesNothing": true
+  },
+  "bugsFoundByThisPass": [
+    {
+      "bug": "Unset boolean rows seeded their switches from edit.proposed_value, which for booleans is next_bool_value — a FLIP suggestion, not a value. Unset switches rendered inverted (e.g. 'Dim inactive' showed ON while runtime and default were false), and toggling them applied runtime no-ops.",
+      "fix": "generated src/official_defaults.rs from the pinned trusted 0.55.4 hyprctl descriptions capture (341 defaults) and seed unset switches (inline row + detail pane) from the official default; guarded by tests",
+      "foundBy": "the pending ledger correctly refused to count the no-op toggles during live verification — the screenshots then exposed the inverted seeds"
+    }
+  ],
+  "beforeAfterScreenshots": {
+    "before": "the prior pass captures in /home/kyo/review-after/ (same build lineage, no pending-changes UI: no row accent, no chip, no badges, no bar, no review page)",
+    "after": [
+      "/home/kyo/review-pending-after/ps-01-hs-general-pending.png (row accent + chip + sidebar badge + bottom bar, one change)",
+      "/home/kyo/review-pending-after/ps-02-hs-closeup-pending-chip.png",
+      "/home/kyo/review-pending-after/ps-03-hs-closeup-unsaved-bar.png",
+      "/home/kyo/review-pending-after/ps-04-hs-pending-changes-page.png (1 unsaved change, General group, Added pill, diff +1 −0)",
+      "/home/kyo/review-pending-after/ps-05-hs-pending-multiple.png (2 unsaved changes across General + Decoration, badges on both, diff +2 −0)",
+      "/home/kyo/review-pending-after/ps-06-hs-no-pending-changes.png (empty state; badges, chip, and bar all gone after Discard)"
+    ],
+    "verification": "every after-capture was re-read as pixels and compared against the corresponding reference screenshot; the live flow (toggle → surfaces appear → review page → discard → surfaces disappear → runtime byte-identical) was exercised end to end with hyprctl getoption checks before and after"
+  },
+  "remainingDifferences": [
+    "Scope is scalar rows: structured-family record previews (animations/curves) keep their own supervised preview/keep/revert flow and do not enter the pending ledger — their apply semantics (auto-revert timers) do not fit the applied-live-until-discarded model",
+    "The reference monitors group ('HDMI-A-1 — …' rows) has no equivalent: monitor editing is not an enabled capability here",
+    "The split-button menu item 'Save as new profile' is present but disabled: profile saving has no enabled production behavior (the reference saves profiles)",
+    "The reference shows the diff card even when only its generated header line differs; here an empty diff hides the section (same rule its own code uses — the visible difference in its screenshot comes from its always-regenerated header)",
+    "Rows configured only through this machine's lua config remain invisible to the .conf parser (pre-existing model limitation): such rows display official defaults that may differ from runtime, and toggling them can be a runtime no-op the ledger honestly ignores (e.g. general:allow_tearing here)"
+  ],
+  "validation": {
+    "cargoFmtCheck": "clean",
+    "cargoTest": "full suite green after the pass (see final response for counts)",
+    "jqReports": "all data/reports/*.json parse",
+    "gitDiffCheck": "clean",
+    "cargoBuildRelease": "success (the binary used for the after-captures)",
+    "newGuards": "tests/pending_changes_fidelity.rs (11): summary/subtitle/kind shapes, unified diff hunks+counts, read-only next-save rendering, row accent, chip visibility rules, sidebar badges, bottom bar + gated save + disabled profile action, hidden page structure + diff + review-only, official-default switch seeding, ledger predicate + no new write paths"
+  },
+  "safety": {
+    "applyClicked": false,
+    "saveNowClickedDuringVerification": false,
+    "realConfigEdited": false,
+    "hyprlandReloaded": false,
+    "safetyClassificationChanged": false,
+    "runtimeMutated": "only through the existing explicitly gated reversible preview path during live verification (switch toggles), every value reverted via the new Discard control and verified byte-identical with hyprctl getoption afterwards; one interim residue (a preview left applied when a test instance was killed with SIGKILL, which bypasses the window-close revert) was detected and manually restored during the session, and is recorded here for honesty"
+  }
+}

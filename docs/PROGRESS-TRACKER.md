@@ -67,6 +67,24 @@ XWayland/Ecosystem pages were un-hidden (their prefix claims pointed at the
 wrong model tab — a real routing bug the screenshots caught). Guards:
 `tests/screenshot_fidelity_fixes.rs`. Zero classification/behavior change.
 
+**Update 2026-07-14 (pending-changes fidelity pass):** the reference
+pending-changes experience is matched from eight user-captured screenshots
+(`/home/kyo/review/`): amber left-edge accents on changed rows, per-page
+sidebar count pills, an amber header chip that opens a hidden Pending
+Changes review page (large count header, page-grouped change rows with
+Added/Modified pills, per-row revert and navigation, config diff preview of
+what the next gated save would write, calm empty state), and a slide-up
+"Unsaved changes — applied live, not saved to disk" action bar with Discard
+and a gated Save now split button. Pending = live-previewed value differing
+from the session original; Save now routes through the existing per-row
+gated scalar save; Discard reverts through the existing controllers. The
+pass also found and fixed a latent seeding bug (unset boolean switches
+rendered the edit projection's flip-suggestion; they now seed from a
+generated table of trusted 0.55.4 official defaults). Guards:
+`tests/pending_changes_fidelity.rs` (11). Report:
+`data/reports/pending-changes-fidelity.v0.55.2.json`. Zero
+classification/gate change.
+
 Everything below this line is **dated history** (earlier audits and
 marathon logs), kept as a record and not to be read as current state.
 

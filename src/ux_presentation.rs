@@ -285,6 +285,16 @@ pub fn page_claims_row_in_tab(page: &PageSpec, row_tab: &str, official_setting: 
     }
 }
 
+/// The sidebar page that claims a row, by its model tab and official key.
+/// Used to attribute pending changes to their page (sidebar badges,
+/// review-row navigation).
+pub fn page_for_row(row_tab: &str, official_setting: &str) -> Option<&'static PageSpec> {
+    SIDEBAR_PAGE_LAYOUT
+        .iter()
+        .flat_map(|category| category.pages.iter())
+        .find(|page| page_claims_row_in_tab(page, row_tab, official_setting))
+}
+
 /// Every model tab a page draws rows from.
 pub fn page_source_tabs(page: &PageSpec) -> Vec<&'static str> {
     let mut tabs = Vec::new();

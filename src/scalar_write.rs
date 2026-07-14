@@ -11,6 +11,25 @@ use crate::write_classification::{
 };
 use crate::write_safety::{WritePlan, WritePlanAction, WriteResult};
 
+/// Read-only: what the config text would become if this change were
+/// written. Uses the exact same line-replacement/append helpers the real
+/// writer uses, but never touches a file — the pending-changes review
+/// surface renders its diff preview from this.
+pub fn preview_scalar_change_text(
+    contents: &str,
+    setting_id: &str,
+    line_number: Option<usize>,
+    proposed_value: &str,
+) -> Result<String> {
+    let official_setting = safe_writable_official_setting(setting_id)
+        .ok_or_else(|| anyhow!("setting is not safe-writable: {setting_id}"))?;
+    let config_key = config_key_from_official_setting(official_setting);
+    match line_number {
+        Some(line) => replace_line_value(contents, line, &config_key, proposed_value),
+        None => Ok(append_scalar_setting(contents, &config_key, proposed_value)),
+    }
+}
+
 pub fn apply_scalar_write_plan(plan: &WritePlan) -> Result<WriteResult> {
     let official_setting = safe_writable_official_setting(&plan.setting_id)
         .ok_or_else(|| anyhow!("setting is not safe-writable: {}", plan.setting_id))?;

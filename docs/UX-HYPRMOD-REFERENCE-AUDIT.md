@@ -141,6 +141,24 @@ original Rust; the only reference-derived identifiers are freedesktop
 theme icon names (e.g. `draw-arc-symbolic`), which are system icons, not
 HyprMod assets. No third-party code, assets, or authored text were copied.
 
+## Seventh-pass update (pending-changes fidelity, 2026-07-14)
+
+Eight user-captured screenshots of the reference pending-changes flow
+(`/home/kyo/review/hm-*.png`) were inspected as pixels, and the reference
+source (chip, dirty banner, pending page, diff widget, stylesheet) was
+re-read for the behavior the pixels cannot show. The system was recreated
+in original Rust on our existing preview/save plumbing: the pending ledger
+derives from live preview controllers; Save now is the existing per-row
+gated scalar save; the diff preview reuses the real writer's helpers
+read-only. Reference-derived elements are limited to the visual spec
+(warning-palette pills, 3px left accents, layout structure) and short
+functional UI strings ("Pending Changes", "Save now", "Unsaved changes —
+applied live, not saved to disk"); longer explanatory sentences were
+rewritten. The reference app was not driven live for this pass: exercising
+its pending flow would have mutated the live compositor session through a
+third-party editor, and the user's captures already document it. No
+third-party code, assets, or authored prose were copied.
+
 ## What we deliberately do NOT copy
 
 - HyprMod's write model (it applies changes; our saves stay behind Safe

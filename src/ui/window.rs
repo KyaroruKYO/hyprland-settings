@@ -185,6 +185,132 @@ fn revert_all_unconfirmed_dead_man_previews() {
     });
 }
 
+const PENDING_ID: &str = "pending-changes";
+
+/// One row's live-preview session as the pending-changes surfaces see it:
+/// the row identity plus a weak handle to its preview controller.
+struct PendingLedgerEntry {
+    row_id: String,
+    official_setting: String,
+    page_id: Option<&'static str>,
+    controller: std::rc::Weak<RefCell<RuntimePreviewUiController>>,
+}
+
+/// A snapshot of one pending (previewed-live, not saved) change.
+#[derive(Clone)]
+struct PendingChangeSnapshot {
+    row_id: String,
+    official_setting: String,
+    page_id: Option<&'static str>,
+    current_value: String,
+    controller: std::rc::Weak<RefCell<RuntimePreviewUiController>>,
+}
+
+thread_local! {
+    /// Every scalar preview controller with its row identity: the source
+    /// of truth for "unsaved changes" (previewing live, value differs from
+    /// the session's original runtime value).
+    static PENDING_LEDGER: RefCell<Vec<PendingLedgerEntry>> = const { RefCell::new(Vec::new()) };
+    /// UI refreshers to run whenever the pending set may have changed
+    /// (header chip, sidebar badges, bottom bar, review page, row accents).
+    static PENDING_LISTENERS: RefCell<Vec<Box<dyn Fn()>>> = const { RefCell::new(Vec::new()) };
+    /// Currently rendered setting rows by row id, for live accent updates.
+    static PENDING_ROW_WIDGETS: RefCell<Vec<(String, gtk::glib::WeakRef<gtk::ListBoxRow>)>> =
+        const { RefCell::new(Vec::new()) };
+}
+
+fn register_pending_controller(
+    row_id: &str,
+    official_setting: &str,
+    page_id: Option<&'static str>,
+    controller: &Rc<RefCell<RuntimePreviewUiController>>,
+) {
+    PENDING_LEDGER.with(|ledger| {
+        let mut ledger = ledger.borrow_mut();
+        ledger.retain(|entry| entry.controller.upgrade().is_some() && entry.row_id != row_id);
+        ledger.push(PendingLedgerEntry {
+            row_id: row_id.to_string(),
+            official_setting: official_setting.to_string(),
+            page_id,
+            controller: Rc::downgrade(controller),
+        });
+    });
+}
+
+/// Snapshot of every pending change: the session is still previewing live
+/// and the applied value differs from the session's original.
+fn pending_change_snapshots() -> Vec<PendingChangeSnapshot> {
+    PENDING_LEDGER.with(|ledger| {
+        let mut ledger = ledger.borrow_mut();
+        ledger.retain(|entry| entry.controller.upgrade().is_some());
+        ledger
+            .iter()
+            .filter_map(|entry| {
+                let controller = entry.controller.upgrade()?;
+                let controller_ref = controller.try_borrow().ok()?;
+                if controller_ref.session_state()
+                    != crate::runtime_preview_ui_projection::RuntimePreviewUiSessionState::PreviewingLive
+                {
+                    return None;
+                }
+                let original = controller_ref.original_runtime_value()?;
+                let current = controller_ref.last_applied_value()?;
+                if current == original {
+                    return None;
+                }
+                Some(PendingChangeSnapshot {
+                    row_id: entry.row_id.clone(),
+                    official_setting: entry.official_setting.clone(),
+                    page_id: entry.page_id,
+                    current_value: current,
+                    controller: entry.controller.clone(),
+                })
+            })
+            .collect()
+    })
+}
+
+fn add_pending_listener(listener: Box<dyn Fn()>) {
+    PENDING_LISTENERS.with(|listeners| listeners.borrow_mut().push(listener));
+}
+
+/// Run every pending-changes refresher (and refresh row accents). Called
+/// after any operation that may change the pending set.
+fn notify_pending_changed() {
+    let pending_rows: std::collections::HashSet<String> = pending_change_snapshots()
+        .into_iter()
+        .map(|snapshot| snapshot.row_id)
+        .collect();
+    PENDING_ROW_WIDGETS.with(|rows| {
+        let mut rows = rows.borrow_mut();
+        rows.retain(|(_, weak)| weak.upgrade().is_some());
+        for (row_id, weak) in rows.iter() {
+            if let Some(row) = weak.upgrade() {
+                if pending_rows.contains(row_id) {
+                    row.add_css_class("hyprland-settings-row-pending");
+                } else {
+                    row.remove_css_class("hyprland-settings-row-pending");
+                }
+            }
+        }
+    });
+    PENDING_LISTENERS.with(|listeners| {
+        for listener in listeners.borrow().iter() {
+            listener();
+        }
+    });
+}
+
+fn register_pending_row_widget(row_id: &str, row: &gtk::ListBoxRow) {
+    let weak = gtk::glib::WeakRef::new();
+    weak.set(Some(row));
+    PENDING_ROW_WIDGETS.with(|rows| {
+        let mut rows = rows.borrow_mut();
+        rows.retain(|(_, existing)| existing.upgrade().is_some());
+        rows.push((row_id.to_string(), weak));
+    });
+}
+
 #[derive(Debug, Clone)]
 struct SidebarItem {
     id: String,
@@ -236,7 +362,23 @@ pub fn show_main_window(
         provider.load_from_data(
             ".hyprland-settings-nav-row-label { font-size: 1.08em; }\n\
              .hyprland-settings-swatch-button { padding: 0; min-width: 0; min-height: 0; }\n\
-             .hyprland-settings-palette-tile { padding: 0; min-width: 0; min-height: 0; background: none; border: none; box-shadow: none; outline-offset: -2px; }\n",
+             .hyprland-settings-palette-tile { padding: 0; min-width: 0; min-height: 0; background: none; border: none; box-shadow: none; outline-offset: -2px; }\n\
+             .hyprland-settings-row-pending { border-left: 3px solid @warning_bg_color; }\n\
+             .hyprland-settings-pending-chip { background-color: alpha(@warning_bg_color, 0.18); color: @warning_color; border-radius: 9999px; padding: 0 10px; min-height: 26px; font-weight: 700; }\n\
+             .hyprland-settings-pending-chip:hover { background-color: alpha(@warning_bg_color, 0.28); }\n\
+             .hyprland-settings-pending-chip:active { background-color: alpha(@warning_bg_color, 0.36); }\n\
+             .hyprland-settings-sidebar-badge { background-color: alpha(@warning_bg_color, 0.25); color: @warning_color; border-radius: 9999px; padding: 0 7px; font-size: 0.75em; font-weight: 700; min-height: 18px; min-width: 18px; }\n\
+             .hyprland-settings-pending-badge { border-radius: 9999px; padding: 2px 10px; font-size: 0.75em; font-weight: 700; letter-spacing: 0.03em; }\n\
+             .hyprland-settings-pending-badge-added { background-color: alpha(@success_bg_color, 0.25); color: @success_color; }\n\
+             .hyprland-settings-pending-badge-modified { background-color: alpha(@warning_bg_color, 0.25); color: @warning_color; }\n\
+             .hyprland-settings-diff-card { background-color: alpha(@view_fg_color, 0.04); border-radius: 12px; }\n\
+             .hyprland-settings-diff-line { font-family: monospace; font-size: 0.85em; padding: 0 10px; }\n\
+             .hyprland-settings-diff-added { background-color: alpha(@success_bg_color, 0.18); color: @success_color; }\n\
+             .hyprland-settings-diff-removed { background-color: alpha(@error_bg_color, 0.16); color: @error_color; }\n\
+             .hyprland-settings-diff-meta { opacity: 0.55; font-style: italic; }\n\
+             .hyprland-settings-diff-context { opacity: 0.7; }\n\
+             .hyprland-settings-diff-count-added { color: @success_color; font-weight: 700; }\n\
+             .hyprland-settings-diff-count-removed { color: @error_color; font-weight: 700; }\n",
         );
         gtk::style_context_add_provider_for_display(
             &display,
@@ -269,6 +411,21 @@ pub fn show_main_window(
     let header_title = adw::WindowTitle::new("Dashboard", "");
     let header = adw::HeaderBar::new();
     header.set_title_widget(Some(&header_title));
+    // Pending-changes chip: amber count button in the header, visible only
+    // while unsaved (previewed-live) changes exist; opens the hidden
+    // Pending Changes review page.
+    let pending_chip = gtk::Button::new();
+    pending_chip.add_css_class("flat");
+    pending_chip.add_css_class("hyprland-settings-pending-chip");
+    pending_chip.set_widget_name("hyprland-settings-pending-chip");
+    pending_chip.update_property(&[gtk::accessible::Property::Label("View pending changes")]);
+    let chip_box = gtk::Box::new(gtk::Orientation::Horizontal, 6);
+    chip_box.append(&gtk::Image::from_icon_name("view-list-symbolic"));
+    let pending_chip_count = gtk::Label::new(None);
+    chip_box.append(&pending_chip_count);
+    pending_chip.set_child(Some(&chip_box));
+    pending_chip.set_visible(false);
+    header.pack_end(&pending_chip);
     root.append(&header);
 
     let body = gtk::Box::new(gtk::Orientation::Horizontal, 0);
@@ -280,7 +437,7 @@ pub fn show_main_window(
     let config_selection_state = Rc::new(RefCell::new(config_selection_state_for_discovery(
         &model.config_discovery,
     )));
-    let sidebar = build_sidebar(&sidebar_items);
+    let (sidebar, sidebar_badges) = build_sidebar(&sidebar_items);
     let sidebar_scroll = gtk::ScrolledWindow::builder()
         .min_content_width(250)
         .max_content_width(300)
@@ -314,7 +471,13 @@ pub fn show_main_window(
     content.set_margin_end(16);
     content.set_hexpand(true);
     content.set_vexpand(true);
-    body.append(&content);
+    // The content column hosts the pages and, below them, the slide-up
+    // unsaved-changes action bar (content-area width, like the reference).
+    let content_column = gtk::Box::new(gtk::Orientation::Vertical, 0);
+    content_column.set_hexpand(true);
+    content_column.set_vexpand(true);
+    content_column.append(&content);
+    body.append(&content_column);
 
     let dashboard_view = build_dashboard_view(&model, &sidebar, &sidebar_items);
     dashboard_view.set_widget_name("hyprland-settings-dashboard-page");
@@ -365,8 +528,26 @@ pub fn show_main_window(
     );
     env_variables_view.set_widget_name("hyprland-settings-env-variables-page");
 
+    let navigate_to_page: Rc<dyn Fn(&str)> = {
+        let sidebar = sidebar.clone();
+        let sidebar_items = Rc::clone(&sidebar_items);
+        Rc::new(move |page_id: &str| {
+            if let Some(index) = sidebar_items.iter().position(|item| item.id == page_id) {
+                if let Some(target_row) = sidebar.row_at_index(index as i32) {
+                    sidebar.select_row(Some(&target_row));
+                }
+            }
+        })
+    };
+    let (pending_view, pending_refresh) =
+        build_pending_changes_view(&model, Rc::clone(&navigate_to_page));
+    pending_view.set_widget_name("hyprland-settings-pending-changes-page");
+    let (pending_bar, pending_bar_refresh) = build_pending_bottom_bar(&model);
+    content_column.append(&pending_bar);
+
     let standalone = StandalonePages {
         pages: Rc::new(vec![
+            (PENDING_ID, pending_view.clone()),
             (DASHBOARD_ID, dashboard_view.clone()),
             (CONFIG_ID, config_view.clone()),
             (SAFETY_ID, safety_view.clone()),
@@ -534,9 +715,79 @@ pub fn show_main_window(
                         &detail_popover,
                         &config_selection_state,
                     );
+                    // Leaving/entering pages updates the pending chip
+                    // visibility (it hides on the review page itself).
+                    notify_pending_changed();
                 }
             }
         });
+    }
+
+    {
+        // Header chip opens the hidden Pending Changes review page.
+        let model = Rc::clone(&model);
+        let selected_tab_id = Rc::clone(&selected_tab_id);
+        let current_query = Rc::clone(&current_query);
+        let standalone = standalone.clone();
+        let settings_view = settings_view.clone();
+        let tab_title = tab_title.clone();
+        let sections_box = sections_box.clone();
+        let detail_content = detail_content.clone();
+        let detail_popover = detail_popover.clone();
+        let config_selection_state = Rc::clone(&config_selection_state);
+        let header_title = header_title.clone();
+        let sidebar = sidebar.clone();
+        let pending_refresh = Rc::clone(&pending_refresh);
+        pending_chip.connect_clicked(move |_| {
+            *selected_tab_id.borrow_mut() = PENDING_ID.to_string();
+            header_title.set_title("Pending Changes");
+            sidebar.unselect_all();
+            pending_refresh();
+            render_main_view(
+                &model,
+                &selected_tab_id.borrow(),
+                &standalone,
+                &settings_view,
+                &current_query.borrow(),
+                &tab_title,
+                &sections_box,
+                &detail_content,
+                &detail_popover,
+                &config_selection_state,
+            );
+            notify_pending_changed();
+        });
+    }
+
+    {
+        // The one pending-changes refresher: chip count/visibility, sidebar
+        // badges, bottom bar, and the review page, from the ledger.
+        let pending_chip = pending_chip.clone();
+        let pending_chip_count = pending_chip_count.clone();
+        let sidebar_badges = sidebar_badges.clone();
+        let selected_tab_id = Rc::clone(&selected_tab_id);
+        let pending_bar_refresh = Rc::clone(&pending_bar_refresh);
+        let pending_refresh = Rc::clone(&pending_refresh);
+        add_pending_listener(Box::new(move || {
+            let snapshots = pending_change_snapshots();
+            let count = snapshots.len();
+            pending_chip_count.set_label(&count.to_string());
+            pending_chip.set_visible(count > 0 && selected_tab_id.borrow().as_str() != PENDING_ID);
+            let mut per_page: std::collections::HashMap<&str, usize> =
+                std::collections::HashMap::new();
+            for snapshot in &snapshots {
+                if let Some(page_id) = snapshot.page_id {
+                    *per_page.entry(page_id).or_insert(0) += 1;
+                }
+            }
+            for (page_id, badge) in sidebar_badges.iter() {
+                let page_count = per_page.get(page_id.as_str()).copied().unwrap_or(0);
+                badge.set_label(&page_count.to_string());
+                badge.set_visible(page_count > 0);
+            }
+            pending_bar_refresh();
+            pending_refresh();
+        }));
     }
 
     {
@@ -654,7 +905,8 @@ fn sidebar_items(model: &UiProjection) -> Vec<SidebarItem> {
     items
 }
 
-fn build_sidebar(items: &[SidebarItem]) -> gtk::ListBox {
+fn build_sidebar(items: &[SidebarItem]) -> (gtk::ListBox, Vec<(String, gtk::Label)>) {
+    let mut badges: Vec<(String, gtk::Label)> = Vec::new();
     let sidebar = gtk::ListBox::new();
     sidebar.set_widget_name("hyprland-settings-navigation-sidebar");
     sidebar.set_selection_mode(gtk::SelectionMode::Single);
@@ -716,14 +968,29 @@ fn build_sidebar(items: &[SidebarItem]) -> gtk::ListBox {
         row_box.append(&icon);
         let label = body_label(&item.label);
         label.set_halign(gtk::Align::Start);
+        label.set_hexpand(true);
         label.add_css_class("hyprland-settings-nav-row-label");
         row_box.append(&label);
+
+        // Pending-change count pill: amber, hidden while the page has no
+        // unsaved (previewed-live) changes.
+        let badge = gtk::Label::new(None);
+        badge.set_halign(gtk::Align::End);
+        badge.set_valign(gtk::Align::Center);
+        badge.add_css_class("hyprland-settings-sidebar-badge");
+        badge.set_visible(false);
+        badge.set_widget_name(&format!(
+            "hyprland-settings-nav-badge-{}",
+            safe_widget_name(&item.id)
+        ));
+        row_box.append(&badge);
+        badges.push((item.id.clone(), badge));
 
         row.set_child(Some(&row_box));
         sidebar.append(&row);
     }
 
-    sidebar
+    (sidebar, badges)
 }
 
 fn build_dashboard_view(
@@ -974,6 +1241,543 @@ fn build_safety_details_view(model: &UiProjection) -> gtk::ScrolledWindow {
         .hexpand(true)
         .child(&content)
         .build()
+}
+
+/// The active config path the next save would write, when one is
+/// detected. Read-only helper for the pending-changes review surfaces.
+fn pending_target_config_path(discovery: &ConfigDiscovery) -> Option<std::path::PathBuf> {
+    match &discovery.status {
+        crate::config_discovery::ConfigDiscoveryStatus::Found { path, .. } => Some(path.clone()),
+        _ => None,
+    }
+}
+
+/// The staged next-save inputs for every pending change: proposed value
+/// plus the config line the save would replace (None appends).
+fn pending_next_save_changes(
+    model: &UiProjection,
+    snapshots: &[PendingChangeSnapshot],
+    target_path: &std::path::Path,
+) -> Vec<crate::pending_changes_ui::NextSaveChange> {
+    snapshots
+        .iter()
+        .map(|snapshot| {
+            let current = model
+                .settings
+                .iter()
+                .find(|setting| setting.row_id == snapshot.row_id)
+                .map(|setting| setting.current_value.clone());
+            let line_in_target = current.as_ref().and_then(|value| {
+                if value.source_path.as_deref() == Some(target_path) {
+                    value.line_number
+                } else {
+                    None
+                }
+            });
+            crate::pending_changes_ui::NextSaveChange {
+                setting_id: snapshot.row_id.clone(),
+                proposed_value: snapshot.current_value.clone(),
+                line_in_target,
+            }
+        })
+        .collect()
+}
+
+/// The bottom unsaved-changes action bar: a slide-up strip with the
+/// warning icon and "Unsaved changes — applied live, not saved to disk"
+/// status on the left and Discard / Save now (split button) on the right.
+/// Save now routes every pending row through the existing per-row gated
+/// scalar save (Safe Live Save Mode verified per write, fails closed);
+/// Discard reverts every pending preview through its own controller. The
+/// split menu's "Save as new profile" stays disabled: profile saving has
+/// no enabled production behavior.
+fn build_pending_bottom_bar(model: &Rc<UiProjection>) -> (gtk::Revealer, Rc<dyn Fn()>) {
+    let revealer = gtk::Revealer::new();
+    revealer.set_transition_type(gtk::RevealerTransitionType::SlideUp);
+    revealer.set_reveal_child(false);
+    revealer.set_widget_name("hyprland-settings-pending-bar");
+
+    let bar = gtk::Box::new(gtk::Orientation::Horizontal, 8);
+    bar.add_css_class("toolbar");
+    bar.set_margin_start(12);
+    bar.set_margin_end(12);
+    bar.set_margin_top(4);
+    bar.set_margin_bottom(4);
+
+    let icon = gtk::Image::from_icon_name("dialog-warning-symbolic");
+    icon.add_css_class("warning");
+    bar.append(&icon);
+
+    let status_label = gtk::Label::new(Some("Unsaved changes — applied live, not saved to disk"));
+    status_label.set_hexpand(true);
+    status_label.set_xalign(0.0);
+    status_label.set_widget_name("hyprland-settings-pending-bar-status");
+    bar.append(&status_label);
+
+    let discard_button = gtk::Button::with_label("Discard");
+    discard_button.set_widget_name("hyprland-settings-pending-discard");
+    bar.append(&discard_button);
+
+    let save_split = adw::SplitButton::new();
+    save_split.set_label("Save now");
+    save_split.add_css_class("suggested-action");
+    save_split.set_widget_name("hyprland-settings-pending-save-now");
+    {
+        // Split menu mirrors the reference affordance; the profile action
+        // is registered but disabled — profile saving is not enabled.
+        let menu = gtk::gio::Menu::new();
+        menu.append(
+            Some("Save as new profile"),
+            Some("pendingbar.save-as-new-profile"),
+        );
+        let group = gtk::gio::SimpleActionGroup::new();
+        let action = gtk::gio::SimpleAction::new("save-as-new-profile", None);
+        action.set_enabled(false);
+        group.add_action(&action);
+        save_split.insert_action_group("pendingbar", Some(&group));
+        save_split.set_menu_model(Some(&menu));
+    }
+    bar.append(&save_split);
+    revealer.set_child(Some(&bar));
+
+    let saved_state = Rc::new(std::cell::Cell::new(false));
+
+    // Refresh: reveal while pending changes exist, restoring the default
+    // "unsaved" presentation whenever the pending set changes.
+    let refresh: Rc<dyn Fn()> = {
+        let revealer = revealer.clone();
+        let status_label = status_label.clone();
+        let icon = icon.clone();
+        let discard_button = discard_button.clone();
+        let save_split = save_split.clone();
+        let saved_state = Rc::clone(&saved_state);
+        Rc::new(move || {
+            let count = pending_change_snapshots().len();
+            if count > 0 {
+                saved_state.set(false);
+                status_label.set_label("Unsaved changes — applied live, not saved to disk");
+                icon.set_icon_name(Some("dialog-warning-symbolic"));
+                icon.remove_css_class("accent");
+                icon.add_css_class("warning");
+                discard_button.set_visible(true);
+                discard_button.set_sensitive(true);
+                save_split.set_sensitive(true);
+                revealer.set_reveal_child(true);
+            } else if !saved_state.get() {
+                revealer.set_reveal_child(false);
+            }
+        })
+    };
+
+    {
+        let saved_state = Rc::clone(&saved_state);
+        discard_button.connect_clicked(move |_| {
+            saved_state.set(false);
+            for snapshot in pending_change_snapshots() {
+                if let Some(controller) = snapshot.controller.upgrade() {
+                    if let Ok(mut controller) = controller.try_borrow_mut() {
+                        let _ = controller.revert();
+                    }
+                }
+            }
+            notify_pending_changed();
+        });
+    }
+
+    {
+        let model = Rc::clone(model);
+        let status_label = status_label.clone();
+        let icon = icon.clone();
+        let discard_button = discard_button.clone();
+        let revealer = revealer.clone();
+        let saved_state = Rc::clone(&saved_state);
+        save_split.connect_clicked(move |split| {
+            let snapshots = pending_change_snapshots();
+            if snapshots.is_empty() {
+                return;
+            }
+            let total = snapshots.len();
+            let mut saved = 0usize;
+            let mut first_error: Option<String> = None;
+            for snapshot in &snapshots {
+                match crate::production_save::gated_scalar_save_live(
+                    model.known_setting_ids.clone(),
+                    &model.config_discovery,
+                    &model.current_config,
+                    &snapshot.row_id,
+                    &snapshot.current_value,
+                ) {
+                    Ok(_) => {
+                        saved += 1;
+                        if let Some(controller) = snapshot.controller.upgrade() {
+                            if let Ok(mut controller) = controller.try_borrow_mut() {
+                                let _ = controller.mark_saved();
+                            }
+                        }
+                    }
+                    Err(reason) => {
+                        first_error = Some(reason);
+                        break;
+                    }
+                }
+            }
+            match first_error {
+                None => {
+                    // Saved state: brief confirmation, then slide away.
+                    saved_state.set(true);
+                    status_label.set_label("Changes saved to disk");
+                    icon.set_icon_name(Some("emblem-ok-symbolic"));
+                    icon.remove_css_class("warning");
+                    icon.add_css_class("accent");
+                    discard_button.set_visible(false);
+                    split.set_sensitive(false);
+                    let revealer = revealer.clone();
+                    let saved_state = Rc::clone(&saved_state);
+                    gtk::glib::timeout_add_local_once(
+                        std::time::Duration::from_millis(1500),
+                        move || {
+                            saved_state.set(false);
+                            revealer.set_reveal_child(false);
+                        },
+                    );
+                }
+                Some(reason) => {
+                    status_label.set_label(&format!("Saved {saved} of {total} — {reason}"));
+                }
+            }
+            notify_pending_changed();
+        });
+    }
+
+    (revealer, refresh)
+}
+
+/// The hidden Pending Changes review page: a large unsaved-change count,
+/// grouped change rows (icon, friendly label, key · value subtitle,
+/// Added/Modified pill, revert button, navigation chevron), a config diff
+/// preview of what the next gated save would write, and a calm
+/// no-pending-changes empty state. Reached from the header chip, not the
+/// sidebar. Review only: the page renders ledger state and never writes.
+fn build_pending_changes_view(
+    model: &Rc<UiProjection>,
+    navigate_to_page: Rc<dyn Fn(&str)>,
+) -> (gtk::ScrolledWindow, Rc<dyn Fn()>) {
+    let content = gtk::Box::new(gtk::Orientation::Vertical, 14);
+    content.set_widget_name("hyprland-settings-pending-changes-content");
+    content.set_margin_top(8);
+    content.set_margin_bottom(24);
+
+    let summary = gtk::Label::new(None);
+    summary.set_xalign(0.0);
+    summary.add_css_class("title-2");
+    summary.set_widget_name("hyprland-settings-pending-summary");
+    content.append(&summary);
+
+    // Calm empty state, shown only when nothing is pending.
+    let empty_box = gtk::Box::new(gtk::Orientation::Vertical, 10);
+    empty_box.set_valign(gtk::Align::Center);
+    empty_box.set_halign(gtk::Align::Center);
+    empty_box.set_margin_top(90);
+    empty_box.set_margin_bottom(40);
+    empty_box.set_widget_name("hyprland-settings-pending-empty-state");
+    let empty_icon = gtk::Image::from_icon_name("emblem-ok-symbolic");
+    empty_icon.set_pixel_size(96);
+    empty_icon.add_css_class("dim-label");
+    empty_box.append(&empty_icon);
+    let empty_title = title_label("No Pending Changes");
+    empty_title.set_halign(gtk::Align::Center);
+    empty_box.append(&empty_title);
+    let empty_body =
+        body_label("Changes previewed on any page appear here for review before saving.");
+    empty_body.set_halign(gtk::Align::Center);
+    empty_body.add_css_class("dim-label");
+    empty_box.append(&empty_body);
+    content.append(&empty_box);
+
+    let groups_box = gtk::Box::new(gtk::Orientation::Vertical, 6);
+    groups_box.set_widget_name("hyprland-settings-pending-groups");
+    content.append(&groups_box);
+
+    // Config diff preview section (hidden while the next save would write
+    // nothing new).
+    let diff_section = gtk::Box::new(gtk::Orientation::Vertical, 4);
+    diff_section.set_widget_name("hyprland-settings-pending-diff-section");
+    let diff_heading = body_label("Config diff preview");
+    diff_heading.set_halign(gtk::Align::Start);
+    diff_heading.set_margin_top(14);
+    diff_heading.add_css_class("heading");
+    diff_section.append(&diff_heading);
+    let diff_caption =
+        small_label("What the next gated save would write, compared with the saved config.");
+    diff_caption.set_halign(gtk::Align::Start);
+    diff_caption.add_css_class("dim-label");
+    diff_section.append(&diff_caption);
+    let diff_card = gtk::Box::new(gtk::Orientation::Vertical, 0);
+    diff_card.add_css_class("hyprland-settings-diff-card");
+    diff_card.set_margin_top(8);
+    diff_section.append(&diff_card);
+    content.append(&diff_section);
+
+    let clamp = adw::Clamp::new();
+    clamp.set_maximum_size(800);
+    clamp.set_tightening_threshold(600);
+    clamp.set_margin_top(12);
+    clamp.set_margin_bottom(12);
+    clamp.set_margin_start(12);
+    clamp.set_margin_end(12);
+    clamp.set_child(Some(&content));
+
+    let refresh: Rc<dyn Fn()> = {
+        let model = Rc::clone(model);
+        let summary = summary.clone();
+        let empty_box = empty_box.clone();
+        let groups_box = groups_box.clone();
+        let diff_section = diff_section.clone();
+        let diff_card = diff_card.clone();
+        let navigate_to_page = Rc::clone(&navigate_to_page);
+        Rc::new(move || {
+            let snapshots = pending_change_snapshots();
+            let count = snapshots.len();
+            summary.set_visible(count > 0);
+            summary.set_label(&crate::pending_changes_ui::pending_summary_title(count));
+            empty_box.set_visible(count == 0);
+
+            while let Some(child) = groups_box.first_child() {
+                groups_box.remove(&child);
+            }
+
+            // Group change rows by their page, in sidebar order.
+            let mut grouped: Vec<(&'static str, String, Vec<&PendingChangeSnapshot>)> = Vec::new();
+            for snapshot in &snapshots {
+                let page_id = snapshot.page_id.unwrap_or("general");
+                let label = crate::ux_presentation::page_spec(page_id)
+                    .map(|page| page.label.to_string())
+                    .unwrap_or_else(|| "Options".to_string());
+                match grouped.iter_mut().find(|(id, _, _)| *id == page_id) {
+                    Some((_, _, rows)) => rows.push(snapshot),
+                    None => grouped.push((page_id, label, vec![snapshot])),
+                }
+            }
+
+            for (page_id, page_label, rows) in &grouped {
+                let heading = body_label(page_label);
+                heading.set_halign(gtk::Align::Start);
+                heading.set_margin_top(14);
+                heading.set_margin_start(6);
+                heading.add_css_class("heading");
+                groups_box.append(&heading);
+                let caption = small_label(&crate::pending_changes_ui::pending_group_caption(
+                    rows.len(),
+                ));
+                caption.set_halign(gtk::Align::Start);
+                caption.set_margin_start(6);
+                caption.add_css_class("dim-label");
+                groups_box.append(&caption);
+
+                let list = gtk::ListBox::new();
+                list.set_selection_mode(gtk::SelectionMode::None);
+                list.add_css_class("boxed-list");
+                list.set_margin_top(4);
+                for snapshot in rows {
+                    let row = gtk::ListBoxRow::new();
+                    row.set_activatable(false);
+                    let row_box = gtk::Box::new(gtk::Orientation::Horizontal, 12);
+                    row_box.set_margin_top(8);
+                    row_box.set_margin_bottom(8);
+                    row_box.set_margin_start(12);
+                    row_box.set_margin_end(12);
+
+                    let icon =
+                        gtk::Image::from_icon_name(crate::ux_presentation::page_icon(page_id));
+                    icon.set_valign(gtk::Align::Center);
+                    icon.add_css_class("dim-label");
+                    row_box.append(&icon);
+
+                    let text_box = gtk::Box::new(gtk::Orientation::Vertical, 2);
+                    text_box.set_hexpand(true);
+                    // Same friendly title resolution the setting rows use.
+                    let friendly =
+                        match crate::presentation_labels::display_label_for_row(&snapshot.row_id) {
+                            Some(matched) => matched.to_string(),
+                            None => model
+                                .settings
+                                .iter()
+                                .find(|setting| setting.row_id == snapshot.row_id)
+                                .map(|setting| {
+                                    crate::ux_presentation::row_display_title(
+                                        &setting.label,
+                                        &setting.tab_label,
+                                        &setting.official_setting,
+                                    )
+                                })
+                                .unwrap_or_else(|| snapshot.row_id.clone()),
+                        };
+                    let title = body_label(&friendly);
+                    title.set_halign(gtk::Align::Start);
+                    text_box.append(&title);
+                    let subtitle =
+                        small_label(&crate::pending_changes_ui::pending_change_subtitle(
+                            &snapshot.official_setting,
+                            &snapshot.current_value,
+                        ));
+                    subtitle.set_halign(gtk::Align::Start);
+                    subtitle.add_css_class("dim-label");
+                    text_box.append(&subtitle);
+                    row_box.append(&text_box);
+
+                    // Added / Modified pill from what the save would do.
+                    let config_has_line = model
+                        .settings
+                        .iter()
+                        .find(|setting| setting.row_id == snapshot.row_id)
+                        .map(|setting| setting.current_value.raw_value.is_some())
+                        .unwrap_or(false);
+                    let kind = crate::pending_changes_ui::pending_change_kind(config_has_line);
+                    let badge = gtk::Label::new(Some(kind));
+                    badge.set_valign(gtk::Align::Center);
+                    badge.add_css_class("hyprland-settings-pending-badge");
+                    badge.add_css_class(if kind == "Added" {
+                        "hyprland-settings-pending-badge-added"
+                    } else {
+                        "hyprland-settings-pending-badge-modified"
+                    });
+                    row_box.append(&badge);
+
+                    let revert = gtk::Button::from_icon_name("edit-undo-symbolic");
+                    revert.add_css_class("flat");
+                    revert.set_valign(gtk::Align::Center);
+                    revert.set_widget_name(&format!(
+                        "hyprland-settings-pending-revert-{}",
+                        safe_widget_name(&snapshot.row_id)
+                    ));
+                    revert
+                        .update_property(&[gtk::accessible::Property::Label("Revert this change")]);
+                    {
+                        let controller = snapshot.controller.clone();
+                        revert.connect_clicked(move |_| {
+                            if let Some(controller) = controller.upgrade() {
+                                if let Ok(mut controller) = controller.try_borrow_mut() {
+                                    let _ = controller.revert();
+                                }
+                            }
+                            notify_pending_changed();
+                        });
+                    }
+                    row_box.append(&revert);
+
+                    let open = gtk::Button::from_icon_name("go-next-symbolic");
+                    open.add_css_class("flat");
+                    open.set_valign(gtk::Align::Center);
+                    open.update_property(&[gtk::accessible::Property::Label(&format!(
+                        "Open {page_label}"
+                    ))]);
+                    {
+                        let navigate_to_page = Rc::clone(&navigate_to_page);
+                        let page_id = (*page_id).to_string();
+                        open.connect_clicked(move |_| navigate_to_page(&page_id));
+                    }
+                    row_box.append(&open);
+
+                    row.set_child(Some(&row_box));
+                    list.append(&row);
+                }
+                groups_box.append(&list);
+            }
+
+            // Diff preview: saved config vs what the next save would write.
+            while let Some(child) = diff_card.first_child() {
+                diff_card.remove(&child);
+            }
+            let target_path = pending_target_config_path(&model.config_discovery);
+            let preview = target_path.as_ref().and_then(|path| {
+                let original = std::fs::read_to_string(path).ok()?;
+                let changes = pending_next_save_changes(&model, &snapshots, path);
+                let next =
+                    crate::pending_changes_ui::next_save_config_text(&original, &changes).ok()?;
+                Some((path.clone(), original, next))
+            });
+            match preview {
+                Some((path, original, next)) => {
+                    let diff = crate::pending_changes_ui::unified_diff(
+                        &original,
+                        &next,
+                        &path.display().to_string(),
+                        &format!("{} (next save)", path.display()),
+                    );
+                    if diff.is_empty() {
+                        diff_section.set_visible(false);
+                    } else {
+                        diff_section.set_visible(true);
+                        // Header strip: file name + added/removed counts.
+                        let header = gtk::Box::new(gtk::Orientation::Horizontal, 12);
+                        header.set_margin_top(10);
+                        header.set_margin_bottom(10);
+                        header.set_margin_start(12);
+                        header.set_margin_end(12);
+                        let name = path
+                            .file_name()
+                            .map(|name| name.to_string_lossy().to_string())
+                            .unwrap_or_else(|| path.display().to_string());
+                        let file_label = gtk::Label::new(Some(&name));
+                        file_label.set_xalign(0.0);
+                        file_label.set_hexpand(true);
+                        file_label.add_css_class("heading");
+                        header.append(&file_label);
+                        let added = gtk::Label::new(Some(&format!("+{}", diff.added)));
+                        added.add_css_class("hyprland-settings-diff-count-added");
+                        header.append(&added);
+                        let removed = gtk::Label::new(Some(&format!("−{}", diff.removed)));
+                        removed.add_css_class("hyprland-settings-diff-count-removed");
+                        header.append(&removed);
+                        diff_card.append(&header);
+                        diff_card.append(&gtk::Separator::new(gtk::Orientation::Horizontal));
+
+                        const MAX_DIFF_LINES: usize = 400;
+                        for line in diff.lines.iter().take(MAX_DIFF_LINES) {
+                            let label = gtk::Label::new(Some(&line.text));
+                            label.set_xalign(0.0);
+                            label.set_wrap(false);
+                            label.add_css_class("hyprland-settings-diff-line");
+                            label.add_css_class(match line.kind {
+                                crate::pending_changes_ui::DiffLineKind::Added => {
+                                    "hyprland-settings-diff-added"
+                                }
+                                crate::pending_changes_ui::DiffLineKind::Removed => {
+                                    "hyprland-settings-diff-removed"
+                                }
+                                crate::pending_changes_ui::DiffLineKind::Meta
+                                | crate::pending_changes_ui::DiffLineKind::Hunk => {
+                                    "hyprland-settings-diff-meta"
+                                }
+                                crate::pending_changes_ui::DiffLineKind::Context => {
+                                    "hyprland-settings-diff-context"
+                                }
+                            });
+                            diff_card.append(&label);
+                        }
+                        if diff.lines.len() > MAX_DIFF_LINES {
+                            let truncated = small_label("… diff truncated");
+                            truncated.set_margin_start(12);
+                            truncated.set_margin_bottom(8);
+                            diff_card.append(&truncated);
+                        }
+                        let bottom_pad = gtk::Box::new(gtk::Orientation::Vertical, 0);
+                        bottom_pad.set_margin_bottom(8);
+                        diff_card.append(&bottom_pad);
+                    }
+                }
+                None => diff_section.set_visible(false),
+            }
+        })
+    };
+    refresh();
+
+    let scroll = gtk::ScrolledWindow::builder()
+        .vexpand(true)
+        .hexpand(true)
+        .child(&clamp)
+        .build();
+    (scroll, refresh)
 }
 
 /// Profiles page: a friendly centered empty state. Profile switching has
@@ -6592,6 +7396,15 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
     row_box.append(&end_box);
 
     row.set_child(Some(&row_box));
+    // Pending-change accent: an amber left edge while this row has a live
+    // previewed value that is not saved, kept current by the ledger.
+    register_pending_row_widget(&setting.row_id, &row);
+    if pending_change_snapshots()
+        .iter()
+        .any(|snapshot| snapshot.row_id == setting.row_id)
+    {
+        row.add_css_class("hyprland-settings-row-pending");
+    }
     row
 }
 
@@ -6601,8 +7414,13 @@ fn build_setting_row(result: &SearchResult, include_context: bool) -> gtk::ListB
 /// revert, and drives the same offer/throttle/drain path as the detail
 /// controls. Errors surface by styling the control (no tooltips); nothing
 /// here can write config or reload — it is the existing preview executor.
+/// Inline preview apply with pending-changes tracking: the controller is
+/// registered in the pending ledger under its row identity, and every
+/// state-changing operation notifies the pending-changes surfaces.
 fn inline_preview_apply(
     row_id: String,
+    official_setting: String,
+    page_id: Option<&'static str>,
     throttle_ms: Option<u64>,
     feedback: gtk::Widget,
 ) -> Rc<dyn Fn(String)> {
@@ -6622,6 +7440,14 @@ fn inline_preview_apply(
                 Ok(controller) => {
                     let controller = Rc::new(RefCell::new(controller));
                     register_preview_controller(&controller);
+                    if !official_setting.is_empty() {
+                        register_pending_controller(
+                            &row_id,
+                            &official_setting,
+                            page_id,
+                            &controller,
+                        );
+                    }
                     *controller_slot.borrow_mut() = Some(controller);
                 }
                 Err(_) => {
@@ -6637,7 +7463,10 @@ fn inline_preview_apply(
             .borrow_mut()
             .offer_value(&value, preview_now_ms());
         match outcome {
-            Ok(Some(_receipt)) => mark(&feedback, false),
+            Ok(Some(_receipt)) => {
+                mark(&feedback, false);
+                notify_pending_changed();
+            }
             Ok(None) => {
                 if !drain_scheduled.get() {
                     drain_scheduled.set(true);
@@ -6653,6 +7482,7 @@ fn inline_preview_apply(
                                 Ok(_) => mark(&feedback, false),
                                 Err(_) => mark(&feedback, true),
                             }
+                            notify_pending_changed();
                         },
                     );
                 }
@@ -6671,6 +7501,9 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
     let Some(row_state) = runtime_preview_ui_row_state(&setting.row_id) else {
         return;
     };
+    let inline_page_id =
+        crate::ux_presentation::page_for_row(&setting.tab_id, &setting.official_setting)
+            .map(|page| page.id);
     if !row_state.preview_enabled {
         return;
     }
@@ -6689,12 +7522,26 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
             let switch = gtk::Switch::new();
             switch.set_widget_name(&control_name);
             switch.set_valign(gtk::Align::Center);
+            // Unset rows seed from the official default — never from the
+            // edit projection's flip-suggestion, which would render the
+            // switch inverted for a value the user has not set.
+            let switch_initial = setting
+                .current_value
+                .raw_value
+                .clone()
+                .or_else(|| {
+                    crate::official_defaults::official_default_value(&setting.official_setting)
+                        .map(str::to_string)
+                })
+                .unwrap_or(initial_value.clone());
             switch.set_active(matches!(
-                initial_value.trim().to_ascii_lowercase().as_str(),
+                switch_initial.trim().to_ascii_lowercase().as_str(),
                 "1" | "true" | "yes" | "on"
             ));
             let apply = inline_preview_apply(
                 setting.row_id.clone(),
+                setting.official_setting.clone(),
+                inline_page_id,
                 row_state.throttle_ms,
                 switch.clone().upcast(),
             );
@@ -6736,6 +7583,8 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
             }
             let apply = inline_preview_apply(
                 setting.row_id.clone(),
+                setting.official_setting.clone(),
+                inline_page_id,
                 row_state.throttle_ms,
                 spin.clone().upcast(),
             );
@@ -6760,6 +7609,8 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
             combo.set_active_id(Some(initial_value.trim()));
             let apply = inline_preview_apply(
                 setting.row_id.clone(),
+                setting.official_setting.clone(),
+                inline_page_id,
                 row_state.throttle_ms,
                 combo.clone().upcast(),
             );
@@ -6797,6 +7648,8 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
                 spin.set_value(value);
                 let apply = inline_preview_apply(
                     setting.row_id.clone(),
+                    setting.official_setting.clone(),
+                    inline_page_id,
                     row_state.throttle_ms,
                     spin.clone().upcast(),
                 );
@@ -6819,6 +7672,8 @@ fn attach_inline_row_control(end_box: &gtk::Box, setting: &crate::ui::model::UiS
             entry.set_text(initial_value.trim());
             let apply = inline_preview_apply(
                 setting.row_id.clone(),
+                setting.official_setting.clone(),
+                inline_page_id,
                 row_state.throttle_ms,
                 entry.clone().upcast(),
             );
@@ -6904,6 +7759,9 @@ fn attach_inline_color_control(
     control_name: &str,
     throttle_ms: Option<u64>,
 ) {
+    let inline_page_id =
+        crate::ux_presentation::page_for_row(&setting.tab_id, &setting.official_setting)
+            .map(|page| page.id);
     #[derive(Clone)]
     struct ColorRowState {
         tokens: Vec<String>,
@@ -6951,6 +7809,8 @@ fn attach_inline_color_control(
     let state = Rc::new(RefCell::new(initial_state));
     let apply = inline_preview_apply(
         setting.row_id.clone(),
+        setting.official_setting.clone(),
+        inline_page_id,
         throttle_ms,
         end_box.clone().upcast(),
     );
@@ -7763,6 +8623,9 @@ fn attach_raw_color_entry(
     control_name: &str,
     throttle_ms: Option<u64>,
 ) {
+    let inline_page_id =
+        crate::ux_presentation::page_for_row(&setting.tab_id, &setting.official_setting)
+            .map(|page| page.id);
     let button = gtk::Button::new();
     button.set_widget_name(control_name);
     button.set_valign(gtk::Align::Center);
@@ -7811,7 +8674,13 @@ fn attach_raw_color_entry(
             preview.queue_draw();
         });
     }
-    let apply = inline_preview_apply(setting.row_id.clone(), throttle_ms, button.clone().upcast());
+    let apply = inline_preview_apply(
+        setting.row_id.clone(),
+        setting.official_setting.clone(),
+        inline_page_id,
+        throttle_ms,
+        button.clone().upcast(),
+    );
     {
         let entry = entry.clone();
         let picker = picker.clone();
@@ -9402,6 +10271,24 @@ fn append_runtime_preview_controls(
         }
     };
     register_preview_controller(&controller);
+    {
+        // The detail-pane preview participates in the pending-changes
+        // surfaces exactly like inline controls do.
+        let page_id = model
+            .settings
+            .iter()
+            .find(|setting| setting.row_id == detail.row_id)
+            .and_then(|setting| {
+                crate::ux_presentation::page_for_row(&setting.tab_id, &setting.official_setting)
+            })
+            .map(|page| page.id);
+        register_pending_controller(
+            &detail.row_id,
+            &detail.official_setting,
+            page_id,
+            &controller,
+        );
+    }
 
     section.append(&small_label(
         "Preview applies the value to the running Hyprland session only. Nothing is written to your config until you choose Save.",
@@ -9429,7 +10316,10 @@ fn append_runtime_preview_controls(
                 .borrow_mut()
                 .offer_value(&value, preview_now_ms());
             match outcome {
-                Ok(Some(receipt)) => status.set_label(&receipt.status_text),
+                Ok(Some(receipt)) => {
+                    status.set_label(&receipt.status_text);
+                    notify_pending_changed();
+                }
                 Ok(None) => {
                     // Value is pending in the throttle; schedule one trailing
                     // drain if none is queued yet.
@@ -9448,6 +10338,7 @@ fn append_runtime_preview_controls(
                                     Ok(None) => {}
                                     Err(error) => status.set_label(&error.user_text()),
                                 }
+                                notify_pending_changed();
                             },
                         );
                     }
@@ -9466,7 +10357,19 @@ fn append_runtime_preview_controls(
                 "hyprland-settings-live-preview-switch-{}",
                 safe_widget_name(&detail.row_id)
             ));
-            switch.set_active(matches!(initial_value.trim(), "true" | "1" | "yes" | "on"));
+            // Unset rows seed from the official default (see the inline
+            // switch): the edit projection's flip-suggestion would render
+            // an inverted state.
+            let switch_initial = detail
+                .current_value
+                .raw_value
+                .clone()
+                .or_else(|| {
+                    crate::official_defaults::official_default_value(&detail.official_setting)
+                        .map(str::to_string)
+                })
+                .unwrap_or(initial_value.clone());
+            switch.set_active(matches!(switch_initial.trim(), "true" | "1" | "yes" | "on"));
             switch.set_valign(gtk::Align::Center);
             let apply = apply_from_control.clone();
             switch.connect_active_notify(move |switch| {
@@ -9634,6 +10537,7 @@ fn append_runtime_preview_controls(
                 }
                 Err(reason) => status.set_label(&reason),
             }
+            notify_pending_changed();
         });
     }
 
@@ -9645,9 +10549,12 @@ fn append_runtime_preview_controls(
     {
         let controller = controller.clone();
         let status = status.clone();
-        revert_button.connect_clicked(move |_| match controller.borrow_mut().revert() {
-            Ok(receipt) => status.set_label(&receipt.status_text),
-            Err(error) => status.set_label(&error.user_text()),
+        revert_button.connect_clicked(move |_| {
+            match controller.borrow_mut().revert() {
+                Ok(receipt) => status.set_label(&receipt.status_text),
+                Err(error) => status.set_label(&error.user_text()),
+            }
+            notify_pending_changed();
         });
     }
     buttons.append(&revert_button);
@@ -9660,9 +10567,12 @@ fn append_runtime_preview_controls(
     {
         let controller = controller.clone();
         let status = status.clone();
-        cancel_button.connect_clicked(move |_| match controller.borrow_mut().cancel() {
-            Ok(receipt) => status.set_label(&receipt.status_text),
-            Err(error) => status.set_label(&error.user_text()),
+        cancel_button.connect_clicked(move |_| {
+            match controller.borrow_mut().cancel() {
+                Ok(receipt) => status.set_label(&receipt.status_text),
+                Err(error) => status.set_label(&error.user_text()),
+            }
+            notify_pending_changed();
         });
     }
     buttons.append(&cancel_button);

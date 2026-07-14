@@ -215,6 +215,21 @@ add-stop button after the angle spinner; numeric rows use compact
 spinners with integer formatting; XWayland/Ecosystem pages un-hidden
 (tab-claim routing bug). Guards: `tests/screenshot_fidelity_fixes.rs`.
 
+## Implemented in the seventh pass (pending-changes fidelity)
+
+Screenshot-grounded match of the reference unsaved-changes system
+(`/home/kyo/review/`, report
+`data/reports/pending-changes-fidelity.v0.55.2.json`): changed rows carry
+an amber left-edge accent; nav rows carry per-page count pills; an amber
+header chip (icon + count, hidden at zero) opens a hidden Pending Changes
+review page — count header, page-grouped rows with Added/Modified pills,
+per-row revert/navigate, a config diff preview rendered read-only with the
+real writer's helpers, and a calm empty state; a slide-up bottom bar
+offers Discard and a gated Save now split button (profile item disabled).
+Unset boolean switches now seed from generated trusted 0.55.4 official
+defaults instead of the edit projection's flip-suggestion. Guards:
+`tests/pending_changes_fidelity.rs`.
+
 ## Follow-ups (next passes)
 
 - Detail-pane simplification: short chip + expander for the full
@@ -222,6 +237,8 @@ spinners with integer formatting; XWayland/Ecosystem pages un-hidden
 - Eyedropper: wire the picker's screen-pick button to the XDG desktop
   portal PickColor call (button ships disabled today).
 - Custom-swatch persistence across sessions (in-memory only today).
+- Structured-family record previews in the pending ledger (their
+  supervised auto-revert flow does not fit applied-live-until-discarded).
 
 ## Safety boundaries (unchanged)
 

@@ -236,6 +236,17 @@ Driven by 19 user-captured live side-by-side screenshots (`/home/kyo/review/`; f
 - XWayland/Ecosystem sidebar pages un-hidden — their prefix claims pointed at the wrong model tab (`system` instead of `display`/`permissions`); rows had silently landed on Monitors/Permissions rest pages. Permissions now legitimately hides (all three of its rows are `ecosystem.*`).
 - Report: `data/reports/manual-visual-review-implementation.v0.55.2.json`; guards: `tests/screenshot_fidelity_fixes.rs` (10).
 
+## Pending-Changes Fidelity Pass Additions (2026-07-14)
+
+Reference-matched unsaved-changes system, grounded in eight user screenshots (`/home/kyo/review/`) and verified live with before/after captures (`/home/kyo/review-pending-after/`):
+
+- **Pending model**: thread-local ledger of scalar preview controllers (row id, official key, claimed page); pending = session PreviewingLive AND applied value ≠ session original; one notifier refreshes every surface (`notify_pending_changed`).
+- **Surfaces**: amber 3px left accent on changed rows; per-page sidebar count pills; amber header chip (view-list icon + count; hidden at zero and on the review page) opening the hidden `pending-changes` page (never in `SIDEBAR_PAGE_LAYOUT`); slide-up bottom bar ("Unsaved changes — applied live, not saved to disk", Discard, gated **Save now** `adw::SplitButton` with a disabled "Save as new profile" item).
+- **Review page**: "N unsaved change(s)" header; page-grouped rows (page icon, friendly title, `key · set to value` subtitle, Added/Modified pill from config-line presence, revert, navigate chevron); **config diff preview** — `pending_changes_ui::next_save_config_text` renders the next save read-only via `scalar_write::preview_scalar_change_text` (same replace/append helpers as the writer), diffed by an in-house unified LCS diff with +/− counts; calm `emblem-ok` empty state.
+- **Save/Discard**: Save now iterates pending rows through `production_save::gated_scalar_save_live` (per-write Safe Live Save Mode verification, fail closed, partial failures reported); Discard reverts through each controller.
+- **Bug fixed**: unset boolean switches seeded from `edit.proposed_value` — a flip-suggestion (`next_bool_value`) — rendering inverted states; now seeded from generated `src/official_defaults.rs` (341 defaults from the pinned trusted 0.55.4 descriptions capture).
+- Guards: `tests/pending_changes_fidelity.rs` (11). Report: `data/reports/pending-changes-fidelity.v0.55.2.json`. Known limits recorded there (family records outside the ledger; lua-configured rows invisible to the .conf parser can make toggles honest runtime no-ops).
+
 ## Next Exact Work
 
 The release is complete and three UX passes are in (adoption, simplification, whole-GUI overhaul). Remaining:
